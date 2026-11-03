@@ -8,9 +8,8 @@ export default defineConfig({
   plugins: [
     Vue({ isProduction: true }),
   ],
-  // rolldown-plugin-dts 0.29 reads the Vue switch from `tsc`, not from `dts.vue`
   dts: {
-    tsc: { vue: true },
+    vue: true,
   },
   clean: true,
   publint: { level: 'error' },
