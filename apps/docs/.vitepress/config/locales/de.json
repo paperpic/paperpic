@@ -1,0 +1,33 @@
+{
+  "label": "Deutsch",
+  "lang": "de",
+  "ogLocale": "de_DE",
+  "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
+  "guide": "Anleitung",
+  "playground": "Playground",
+  "theme": {
+    "outline": {
+      "label": "Auf dieser Seite"
+    },
+    "docFooter": {
+      "prev": "Vorherige Seite",
+      "next": "Nächste Seite"
+    },
+    "lastUpdated": {
+      "text": "Zuletzt aktualisiert"
+    },
+    "langMenuLabel": "Sprache ändern",
+    "returnToTopLabel": "Nach oben",
+    "sidebarMenuLabel": "Menü",
+    "darkModeSwitchLabel": "Darstellung",
+    "lightModeSwitchTitle": "Zum hellen Modus wechseln",
+    "darkModeSwitchTitle": "Zum dunklen Modus wechseln",
+    "skipToContentLabel": "Zum Inhalt springen",
+    "notFound": {
+      "title": "Seite nicht gefunden",
+      "quote": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+      "linkLabel": "Zur Startseite gehen",
+      "linkText": "Zurück zur Startseite"
+    }
+  }
+}

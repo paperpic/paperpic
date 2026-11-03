@@ -1,5 +1,8 @@
 ---
 layout: home
+title: PaperPic
+titleTemplate: Document image viewer and editor
+description: Open-source document image viewer and editor. Zoom, rotate, correct perspective, adjust brightness and contrast, convert to black & white and remove shadows.
 
 hero:
   name: PaperPic

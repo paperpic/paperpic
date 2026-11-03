@@ -1,0 +1,33 @@
+{
+  "label": "Português (Brasil)",
+  "lang": "pt-BR",
+  "ogLocale": "pt_BR",
+  "description": "Visualizador e editor de imagens de documentos: zoom, rotação, correção de perspectiva, brilho e contraste, preto e branco e remoção de sombras.",
+  "guide": "Guia",
+  "playground": "Playground",
+  "theme": {
+    "outline": {
+      "label": "Nesta página"
+    },
+    "docFooter": {
+      "prev": "Página anterior",
+      "next": "Próxima página"
+    },
+    "lastUpdated": {
+      "text": "Última atualização"
+    },
+    "langMenuLabel": "Mudar idioma",
+    "returnToTopLabel": "Voltar ao topo",
+    "sidebarMenuLabel": "Menu",
+    "darkModeSwitchLabel": "Aparência",
+    "lightModeSwitchTitle": "Mudar para o modo claro",
+    "darkModeSwitchTitle": "Mudar para o modo escuro",
+    "skipToContentLabel": "Pular para o conteúdo",
+    "notFound": {
+      "title": "Página não encontrada",
+      "quote": "A página que você procura não existe ou foi movida.",
+      "linkLabel": "Ir para a página inicial",
+      "linkText": "Voltar ao início"
+    }
+  }
+}

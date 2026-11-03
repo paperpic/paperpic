@@ -1,0 +1,9 @@
+{
+  "label": "English",
+  "lang": "en",
+  "ogLocale": "en_US",
+  "description": "Document image viewer & editor: zoom, rotate, perspective correction, brightness/contrast, black & white and shadow removal.",
+  "guide": "Guide",
+  "playground": "Playground",
+  "theme": {}
+}

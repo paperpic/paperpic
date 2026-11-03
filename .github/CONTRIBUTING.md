@@ -62,6 +62,12 @@ CI runs lint, typecheck, test and build on every pull request.
 
 4. Open a pull request against `development`.
 
+## Translating the docs
+
+The docs site is available in several languages. English, in `apps/docs/src/en`, is the source of truth. Each other language has its own folder with the same file names, such as `apps/docs/src/es`, and a file with its interface texts, such as `apps/docs/.vitepress/config/locales/es.json`.
+
+A page does not have to exist in every language. A missing translation does not break the build, and search engines are only pointed to the languages where the page exists.
+
 ## Pull requests
 
 - The title must follow Conventional Commits, and its subject must not start with an uppercase letter. A check validates it, and a workflow adds the type's [gitmoji](https://gitmoji.dev) after the colon, so you never type it.
