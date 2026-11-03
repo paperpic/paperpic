@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "description": "Vue 3 components to view and edit document images with PaperPic.",
+  "author": "Marco Caparrós <hello@paperpic.dev>",
   "license": "MIT",
   "homepage": "https://paperpic.dev",
   "repository": {
