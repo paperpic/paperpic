@@ -1,0 +1,33 @@
+{
+  "label": "한국어",
+  "lang": "ko",
+  "ogLocale": "ko_KR",
+  "description": "문서 이미지 뷰어 및 편집기: 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 흑백 변환, 그림자 제거.",
+  "guide": "가이드",
+  "playground": "플레이그라운드",
+  "theme": {
+    "outline": {
+      "label": "이 페이지에서"
+    },
+    "docFooter": {
+      "prev": "이전 페이지",
+      "next": "다음 페이지"
+    },
+    "lastUpdated": {
+      "text": "마지막 업데이트"
+    },
+    "langMenuLabel": "언어 변경",
+    "returnToTopLabel": "맨 위로",
+    "sidebarMenuLabel": "메뉴",
+    "darkModeSwitchLabel": "화면 모드",
+    "lightModeSwitchTitle": "라이트 모드로 전환",
+    "darkModeSwitchTitle": "다크 모드로 전환",
+    "skipToContentLabel": "본문으로 건너뛰기",
+    "notFound": {
+      "title": "페이지를 찾을 수 없습니다",
+      "quote": "찾으시는 페이지가 없거나 이동되었습니다.",
+      "linkLabel": "홈페이지로 이동",
+      "linkText": "홈으로 돌아가기"
+    }
+  }
+}

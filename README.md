@@ -1,4 +1,4 @@
-<img src="apps/docs/public/logo.png" alt="PaperPic logo" width="128">
+<img src="apps/docs/src/public/logo.png" alt="PaperPic logo" width="128">
 
 # PaperPic
 

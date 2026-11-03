@@ -1,0 +1,42 @@
+:root {
+  /* The logo's blue is too light for white text and small links: these shades reach 4.5:1 */
+  --vp-c-brand-1: #06c;
+  --vp-c-brand-2: #0059b3;
+  --vp-c-brand-3: #06c;
+  --vp-c-brand-soft: rgb(10 132 255 / 14%);
+  --vp-button-brand-bg: #06c;
+  --vp-button-brand-hover-bg: #0059b3;
+  --vp-button-brand-active-bg: #004f9e;
+
+  /* White "Paper" would vanish on the light theme, so it takes the navy of the logo's background */
+  --vp-home-hero-name-color: #1a263c;
+  --name-accent: linear-gradient(90deg, #0a84ff, #0b8f80);
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #0a84ff 50%, #14c8b4 50%);
+  --vp-home-hero-image-filter: blur(44px);
+}
+
+.dark {
+  --vp-c-brand-1: #5cb5ff;
+  --vp-c-brand-2: #3da5ff;
+  --vp-c-brand-soft: rgb(10 132 255 / 16%);
+  --vp-home-hero-name-color: #fff;
+  --name-accent: linear-gradient(90deg, #0090f0, #00c5c1);
+}
+
+.name-accent {
+  background: var(--name-accent);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (width >= 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (width >= 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}

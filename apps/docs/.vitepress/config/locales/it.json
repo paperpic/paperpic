@@ -1,0 +1,33 @@
+{
+  "label": "Italiano",
+  "lang": "it",
+  "ogLocale": "it_IT",
+  "description": "Visualizzatore ed editor di immagini di documenti: zoom, rotazione, correzione della prospettiva, luminosità e contrasto, bianco e nero e rimozione delle ombre.",
+  "guide": "Guida",
+  "playground": "Playground",
+  "theme": {
+    "outline": {
+      "label": "In questa pagina"
+    },
+    "docFooter": {
+      "prev": "Pagina precedente",
+      "next": "Pagina successiva"
+    },
+    "lastUpdated": {
+      "text": "Ultimo aggiornamento"
+    },
+    "langMenuLabel": "Cambia lingua",
+    "returnToTopLabel": "Torna su",
+    "sidebarMenuLabel": "Menu",
+    "darkModeSwitchLabel": "Aspetto",
+    "lightModeSwitchTitle": "Passa alla modalità chiara",
+    "darkModeSwitchTitle": "Passa alla modalità scura",
+    "skipToContentLabel": "Vai al contenuto",
+    "notFound": {
+      "title": "Pagina non trovata",
+      "quote": "La pagina che cerchi non esiste o è stata spostata.",
+      "linkLabel": "Vai alla home page",
+      "linkText": "Torna alla home"
+    }
+  }
+}

@@ -1,3 +1,8 @@
+---
+title: Getting started with Vue
+description: Install @paperpic/vue and show your first document image with the PaperPic component in a Vue 3 app.
+---
+
 # Getting started
 
 PaperPic is in early development. The API below is a placeholder and will change.

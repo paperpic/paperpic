@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="url(#brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <linearGradient id="brand" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a84ff"/>
+      <stop offset="1" stop-color="#14c8b4"/>
+    </linearGradient>
+  </defs>
+  <circle cx="12" cy="12" r="9"/>
+  <path d="M12 3a9 9 0 0 1 0 18Z" fill="url(#brand)"/>
+</svg>
