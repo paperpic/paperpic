@@ -8,7 +8,7 @@ PaperPic is in early development. Only the latest `0.x` release receives securit
 
 Do not open a public issue for security problems.
 
-Report them privately through [GitHub's vulnerability reporting](https://github.com/paperpic/paperpic/security/advisories/new). Include:
+Report them privately through [GitHub's vulnerability reporting](https://github.com/paperpic/paperpic/security/advisories/new). If you cannot use it, email [security@paperpic.dev](mailto:security@paperpic.dev). Include:
 
 - The affected package (`@paperpic/core` or `@paperpic/vue`) and version
 - A description of the problem and its impact

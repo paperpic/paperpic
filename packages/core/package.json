@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "description": "Framework-agnostic core of PaperPic: image processing for document photos.",
+  "author": "Marco Caparrós <hello@paperpic.dev>",
   "license": "MIT",
   "homepage": "https://paperpic.dev",
   "repository": {
