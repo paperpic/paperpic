@@ -13,8 +13,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "pnpm -r typecheck",
-    "lint": "eslint . && stylelint \"**/*.{css,vue}\"",
-    "lint:fix": "stylelint \"**/*.{css,vue}\" --fix && eslint . --fix",
+    "lint": "eslint . && stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\"",
+    "lint:fix": "stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --fix && eslint . --fix",
     "changeset": "changeset",
     "prepare": "husky"
   },

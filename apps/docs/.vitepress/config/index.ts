@@ -19,6 +19,14 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/logo-mark.svg',
+      },
+    ],
+    [
+      'link',
+      {
+        rel: 'icon',
         type: 'image/png',
         sizes: '48x48',
         href: '/favicon.png',
@@ -30,6 +38,12 @@ export default defineConfig({
     hostname,
   },
   themeConfig: {
+    logo: {
+      src: '/logo-mark.svg',
+      width: 24,
+      height: 24,
+      alt: '',
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/paperpic/paperpic' },
     ],

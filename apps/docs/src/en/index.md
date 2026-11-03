@@ -5,11 +5,11 @@ titleTemplate: Document image viewer and editor
 description: Open-source document image viewer and editor. Zoom, rotate, correct perspective, adjust brightness and contrast, convert to black & white and remove shadows.
 
 hero:
-  name: PaperPic
+  name: Paper<span class="name-accent">Pic</span>
   text: Document images, done right
   tagline: View and edit document photos. Zoom, rotate, correct perspective, adjust brightness and contrast, convert to clean black & white and remove shadows.
   image:
-    src: /logo.png
+    src: /hero.svg
     alt: PaperPic
   actions:
     - theme: brand
@@ -18,12 +18,18 @@ hero:
     - theme: alt
       text: Playground
       link: /playground
+    - theme: alt
+      text: GitHub
+      link: https://github.com/paperpic/paperpic
 
 features:
-  - title: Viewer
+  - icon: { src: /icons/viewer.svg, wrap: true, width: 24, height: 24 }
+    title: Viewer
     details: Zoom, pan and rotate document images in a small, framework-friendly component.
-  - title: Perspective & crop
+  - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
+    title: Perspective & crop
     details: Straighten photos of documents taken at an angle and crop them to the page.
-  - title: Clean B&W
+  - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
+    title: Clean B&W
     details: Adjust brightness and contrast, remove shadows and get a crisp black & white scan.
 ---
