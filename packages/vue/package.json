@@ -50,17 +50,17 @@
   },
   "devDependencies": {
     "@arethetypeswrong/core": "0.18.5",
-    "@tsdown/css": "0.23.2",
-    "@types/node": "26.6.5",
+    "@tsdown/css": "0.23.4",
+    "@types/node": "26.6.6",
     "@vitejs/plugin-vue": "6.0.10",
     "@vue/test-utils": "2.5.1",
     "happy-dom": "21.0.4",
     "publint": "0.3.25",
-    "tsdown": "0.23.2",
+    "tsdown": "0.23.4",
     "typescript": "6.0.3",
-    "unplugin-vue": "8.0.0",
+    "unplugin-vue": "8.0.1",
     "vite": "8.3.5",
     "vue": "3.5.44",
-    "vue-tsc": "3.3.13"
+    "vue-tsc": "3.3.14"
   }
 }
