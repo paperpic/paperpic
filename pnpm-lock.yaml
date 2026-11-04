@@ -310,11 +310,23 @@ importers:
         specifier: 3.3.14
         version: 3.3.14(typescript@6.0.3)
 
+  playgrounds/shared:
+    devDependencies:
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+      vite:
+        specifier: 8.3.5
+        version: 8.3.5(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1)
+
   playgrounds/vanilla:
     dependencies:
       '@paperpic/core':
         specifier: workspace:*
         version: link:../../packages/core
+      playground-shared:
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: 26.6.6
@@ -331,6 +343,9 @@ importers:
       '@paperpic/vue':
         specifier: workspace:*
         version: link:../../packages/vue
+      playground-shared:
+        specifier: workspace:*
+        version: link:../shared
       vue:
         specifier: 3.5.44
         version: 3.5.44(typescript@6.0.3)

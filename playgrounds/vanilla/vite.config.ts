@@ -8,6 +8,7 @@ const sourceAliases = {
 }
 
 export default defineConfig(({ mode }) => ({
+  publicDir: '../shared/public',
   resolve: {
     // Without aliases, the package resolves through its `exports`, as it does for a consumer
     alias: mode === 'dist'

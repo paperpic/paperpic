@@ -10,6 +10,7 @@ const sourceAliases = {
 }
 
 export default defineConfig(({ mode }) => ({
+  publicDir: '../shared/public',
   plugins: [
     vue(),
   ],

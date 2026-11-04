@@ -31,6 +31,7 @@ pnpm install
 | `apps/docs`           | Documentation site, built with VitePress                   |
 | `playgrounds/vanilla` | Local playground to develop `@paperpic/core`, not deployed |
 | `playgrounds/vue`     | Local playground to develop `@paperpic/vue`, not deployed  |
+| `playgrounds/shared`  | Page, controls and sample files that the playgrounds share |
 
 ## Architecture
 

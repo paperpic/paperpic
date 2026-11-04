@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@paperpic/core": "workspace:*"
+    "@paperpic/core": "workspace:*",
+    "playground-shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "26.6.6",
