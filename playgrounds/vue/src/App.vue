@@ -2,6 +2,9 @@
 import { PaperPic } from '@paperpic/vue'
 import { shallowRef } from 'vue'
 
+const packagesOrigin = import.meta.env.MODE === 'dist'
+  ? 'the built packages, without hot reload'
+  : 'the packages from source, with hot reload'
 const rotations = [0, 90, 180, 270]
 const rotation = shallowRef(0)
 </script>
@@ -22,7 +25,7 @@ const rotation = shallowRef(0)
 
     <p class="notice">
       <strong>Development only.</strong>
-      Runs the packages from source with hot reload. It is not published or deployed.
+      Runs {{ packagesOrigin }}. It is not published or deployed.
       The public demo is at <a class="notice-link" href="https://paperpic.dev/playground">paperpic.dev/playground</a>.
     </p>
 

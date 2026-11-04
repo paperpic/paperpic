@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --open",
+    "dev:dist": "vite --mode dist --open /dist.html",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {

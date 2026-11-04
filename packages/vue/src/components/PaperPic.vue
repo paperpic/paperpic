@@ -18,14 +18,16 @@ const transform = computed(() => `rotate(${normalizeRotation(props.rotation)}deg
 </template>
 
 <style>
-.paperpic {
-  display: inline-block;
-  overflow: hidden;
-}
+@layer paperpic {
+  .paperpic {
+    display: inline-block;
+    overflow: hidden;
+  }
 
-.paperpic img {
-  display: block;
-  max-width: 100%;
-  transition: transform 0.2s ease;
+  .paperpic img {
+    display: block;
+    max-width: 100%;
+    transition: transform var(--paperpic-transition-duration, 0.2s) ease;
+  }
 }
 </style>

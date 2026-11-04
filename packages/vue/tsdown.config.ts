@@ -5,6 +5,7 @@ export default defineConfig({
   entry: ['src/index.ts'],
   format: 'esm',
   platform: 'neutral',
+  target: 'baseline-widely-available',
   plugins: [
     Vue({ isProduction: true }),
   ],
