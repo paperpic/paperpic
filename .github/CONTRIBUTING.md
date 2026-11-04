@@ -36,6 +36,7 @@ pnpm install
 | Command              | What it does                                                             |
 | -------------------- | ------------------------------------------------------------------------ |
 | `pnpm dev`           | Starts the Vue playground, with hot reload of the packages' source       |
+| `pnpm dev:dist`      | Builds the packages and starts the Vue playground against their `dist`   |
 | `pnpm dev:docs`      | Starts the docs site                                                     |
 | `pnpm test`          | Runs all tests (`pnpm test:watch` for watch mode)                        |
 | `pnpm test:coverage` | Runs all tests with a coverage report in `coverage/`                     |
@@ -63,6 +64,16 @@ CI runs lint, typecheck, test and build on every pull request.
    Pick the bump type and write a short summary for the changelog. Changes to docs, tests or tooling do not need one.
 
 4. Open a pull request against `development`.
+
+## Styles
+
+The CSS that `@paperpic/vue` ships follows these rules:
+
+- Every rule goes inside `@layer paperpic`, so a consumer's CSS wins without specificity fights.
+- Customization goes through `--paperpic-*` custom properties. Stylelint rejects other names in `packages/vue`.
+- Features must work in [Baseline Widely Available](https://web.dev/baseline) browsers, the build target of the published packages.
+
+`pnpm dev` injects each component's styles directly. Use `pnpm dev:dist` to check the `style.css` that consumers import.
 
 ## Translating the docs
 

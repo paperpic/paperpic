@@ -8,14 +8,15 @@
   },
   "scripts": {
     "dev": "pnpm --filter playground-vue dev",
+    "dev:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vue dev:dist",
     "dev:docs": "pnpm --filter docs dev",
     "build": "pnpm -r build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "typecheck": "pnpm -r typecheck",
-    "lint": "eslint . && stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\"",
-    "lint:fix": "stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --fix && eslint . --fix",
+    "lint": "eslint . --cache && stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --cache",
+    "lint:fix": "stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --cache --fix && eslint . --cache --fix",
     "changeset": "changeset",
     "prepare": "husky"
   },
