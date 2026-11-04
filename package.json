@@ -7,7 +7,8 @@
     "node": "26"
   },
   "scripts": {
-    "dev": "pnpm --filter docs dev",
+    "dev": "pnpm --filter playground-vue dev",
+    "dev:docs": "pnpm --filter docs dev",
     "build": "pnpm -r build",
     "test": "vitest run",
     "test:watch": "vitest",

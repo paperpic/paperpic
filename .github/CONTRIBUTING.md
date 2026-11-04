@@ -24,17 +24,19 @@ pnpm install
 
 ## Project structure
 
-| Path            | Contents                                              |
-| --------------- | ----------------------------------------------------- |
-| `packages/core` | `@paperpic/core`: framework-agnostic image processing |
-| `packages/vue`  | `@paperpic/vue`: Vue 3 components                     |
-| `apps/docs`     | Documentation site, built with VitePress              |
+| Path              | Contents                                               |
+| ----------------- | ------------------------------------------------------ |
+| `packages/core`   | `@paperpic/core`: framework-agnostic image processing  |
+| `packages/vue`    | `@paperpic/vue`: Vue 3 components                      |
+| `apps/docs`       | Documentation site, built with VitePress               |
+| `playgrounds/vue` | Local playground to develop the packages, not deployed |
 
 ## Scripts
 
 | Command              | What it does                                                             |
 | -------------------- | ------------------------------------------------------------------------ |
-| `pnpm dev`           | Starts the docs site                                                     |
+| `pnpm dev`           | Starts the Vue playground, with hot reload of the packages' source       |
+| `pnpm dev:docs`      | Starts the docs site                                                     |
 | `pnpm test`          | Runs all tests (`pnpm test:watch` for watch mode)                        |
 | `pnpm test:coverage` | Runs all tests with a coverage report in `coverage/`                     |
 | `pnpm typecheck`     | Type-checks every package                                                |
@@ -50,7 +52,7 @@ CI runs lint, typecheck, test and build on every pull request.
    If you push to this repository instead of a fork, the branch name must start with a type, such as `feat/zoom-controls` or `fix/rotation-angle`.
 2. Commit using [Conventional Commits](https://www.conventionalcommits.org/), for example `feat(vue): add zoom controls`.
    - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
-   - Optional scopes: `core`, `vue`, `docs`.
+   - Optional scopes: `core`, `vue`, `docs`, `playground`.
    - A git hook checks each commit message, and another one fixes lint problems in staged files.
 3. If your change affects `@paperpic/core` or `@paperpic/vue`, add a changeset:
 

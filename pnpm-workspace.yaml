@@ -22,6 +22,7 @@ savePrefix: ''
 packages:
   - packages/*
   - apps/*
+  - playgrounds/*
 
 # Force patched versions of vulnerable transitive dependencies
 overrides:

@@ -19,7 +19,7 @@ There is no hotfix branch: fixes follow the same path as any other change.
 ## From a change to `development`
 
 1. **Branch from `development`** with a name from the list above.
-2. **Commit** with [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, scopes `core`, `vue` or `docs`. Two git hooks run on every commit:
+2. **Commit** with [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, scopes `core`, `vue`, `docs` or `playground`. Two git hooks run on every commit:
    - `pre-commit` runs lint-staged, which fixes ESLint and Stylelint problems in the staged files.
    - `commit-msg` runs commitlint. It rejects messages that break the convention, and body lines over 100 characters.
 3. **Add a changeset** if the change affects `@paperpic/core` or `@paperpic/vue`. See [Changesets](#changesets).
@@ -38,7 +38,7 @@ The changelog is written by people, not generated from commits. Each pull reques
 ### When a changeset is needed
 
 - **Needed:** any change to what `@paperpic/core` or `@paperpic/vue` ship to users, such as their source, types or styles.
-- **Not needed:** tests, docs, the docs site (`apps/docs`), CI and tooling.
+- **Not needed:** tests, docs, the docs site (`apps/docs`), the playground (`playgrounds/vue`), CI and tooling.
 
 ### How to create one
 
