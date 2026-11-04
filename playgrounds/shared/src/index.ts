@@ -1,3 +1,5 @@
+/// <reference path="./env.d.ts" />
+import 'virtual:playground-stylesheet'
 import './style.css'
 
 interface Control {
@@ -15,16 +17,19 @@ const controls = {
 
 const entries = Object.entries(controls)
 
-export type ControlValues = Record<keyof typeof controls, number>
+export type PlaygroundOptions = Record<keyof typeof controls, number> & {
+  src: string
+  alt: string
+}
 
-export const initialValues = Object.fromEntries(
-  entries.map(([name, control]) => [name, control.options[0]]),
-) as ControlValues
-
-export interface PlaygroundOptions {
-  title: string
-  panelTitle: string
-  onChange: (values: ControlValues) => void
+export interface Playground {
+  name: string
+  /**
+   * Mounts the component on the stage.
+   *
+   * @returns The function that applies changed options to the component.
+   */
+  mount: (stage: HTMLElement, options: PlaygroundOptions) => (options: PlaygroundOptions) => void
 }
 
 function renderControl(name: string, { options, unit = '' }: Control): string {
@@ -38,25 +43,27 @@ function renderControl(name: string, { options, unit = '' }: Control): string {
   `
 }
 
-/**
- * Renders the page around the component, which is the same for every framework.
- *
- * @returns The element where the playground mounts its component.
- */
-export function createPlayground({ title, panelTitle, onChange }: PlaygroundOptions): HTMLElement {
-  const packagesOrigin = import.meta.env.MODE === 'dist'
+/** Renders the page around the component, which is the same for every framework. */
+export function createPlayground({ name, mount }: Playground): void {
+  const isDist = import.meta.env.MODE === 'dist'
+  const packagesOrigin = isDist
     ? 'the built packages, without hot reload'
     : 'the packages from source, with hot reload'
-  const values = { ...initialValues }
+  const options = {
+    src: '/samples/document.svg',
+    alt: 'Sample document',
+    ...Object.fromEntries(entries.map(([control, { options }]) => [control, options[0]])),
+  } as PlaygroundOptions
   const app = document.querySelector('#app')!
 
+  document.title = `PaperPic ${name} playground${isDist ? ' (dist)' : ''}`
   app.innerHTML = `
     <div class="layout">
       <header class="header">
         <h1 class="brand">
           <img class="logo" src="/logo-mark.svg" alt="" width="32" height="32">
           <span class="wordmark">Paper<span class="wordmark-accent">Pic</span></span>
-          <span class="title">${title}</span>
+          <span class="title">${name} playground</span>
         </h1>
         <nav class="links" aria-label="Project links">
           <a class="link" href="https://paperpic.dev">Docs</a>
@@ -72,8 +79,8 @@ export function createPlayground({ title, panelTitle, onChange }: PlaygroundOpti
 
       <div class="workspace">
         <aside class="panel" aria-labelledby="panel-heading">
-          <h2 id="panel-heading" class="panel-heading">${panelTitle}</h2>
-          ${entries.map(([name, control]) => renderControl(name, control)).join('')}
+          <h2 id="panel-heading" class="panel-heading">Options</h2>
+          ${entries.map(([control, config]) => renderControl(control, config)).join('')}
         </aside>
 
         <main class="stage"></main>
@@ -81,11 +88,11 @@ export function createPlayground({ title, panelTitle, onChange }: PlaygroundOpti
     </div>
   `
 
-  app.querySelector('.panel')!.addEventListener('change', (event) => {
-    const { name, value } = event.target as HTMLSelectElement
-    values[name as keyof ControlValues] = Number(value)
-    onChange({ ...values })
-  })
+  const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options })
 
-  return app.querySelector<HTMLElement>('.stage')!
+  app.querySelector('.panel')!.addEventListener('change', (event) => {
+    const { name: control, value } = event.target as HTMLSelectElement
+    options[control as keyof typeof controls] = Number(value)
+    update({ ...options })
+  })
 }

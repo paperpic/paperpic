@@ -1,13 +1,14 @@
-import { createPlayground, initialValues } from 'playground-shared'
+import { PaperPic } from '@paperpic/vue'
+import { createPlayground } from 'playground-shared'
 import { createApp, h, reactive } from 'vue'
-import App from './App.vue'
 
-const props = reactive({ ...initialValues })
+createPlayground({
+  name: 'Vue',
+  mount(stage, options) {
+    const props = reactive(options)
 
-const stage = createPlayground({
-  title: 'Vue playground',
-  panelTitle: 'Props',
-  onChange: values => Object.assign(props, values),
+    createApp(() => h(PaperPic, { ...props })).mount(stage)
+
+    return changed => Object.assign(props, changed)
+  },
 })
-
-createApp(() => h(App, { ...props })).mount(stage)
