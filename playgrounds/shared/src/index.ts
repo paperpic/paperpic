@@ -63,7 +63,7 @@ export function createPlayground({ name, mount }: Playground): void {
         <h1 class="brand">
           <img class="logo" src="/logo-mark.svg" alt="" width="32" height="32">
           <span class="wordmark">Paper<span class="wordmark-accent">Pic</span></span>
-          <span class="title">${name} playground</span>
+          <span class="title"></span>
         </h1>
         <nav class="links" aria-label="Project links">
           <a class="link" href="https://paperpic.dev">Docs</a>
@@ -87,6 +87,8 @@ export function createPlayground({ name, mount }: Playground): void {
       </div>
     </div>
   `
+
+  app.querySelector('.title')!.textContent = `${name} playground`
 
   const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options })
 
