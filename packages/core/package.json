@@ -2,7 +2,7 @@
   "name": "@paperpic/core",
   "type": "module",
   "version": "0.0.0",
-  "description": "Framework-agnostic core of PaperPic: image processing for document photos.",
+  "description": "Framework-agnostic document image viewer and editor, for use with plain JavaScript or through a PaperPic wrapper.",
   "author": "Marco Caparrós <hello@paperpic.dev>",
   "license": "MIT",
   "homepage": "https://paperpic.dev",
@@ -19,12 +19,15 @@
     "threshold",
     "image-processing"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
+    "./style.css": "./dist/style.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -39,8 +42,10 @@
   },
   "devDependencies": {
     "@arethetypeswrong/core": "0.18.5",
+    "@tsdown/css": "0.23.4",
+    "happy-dom": "21.0.4",
     "publint": "0.3.25",
-    "tsdown": "0.23.2",
+    "tsdown": "0.23.4",
     "typescript": "6.0.3"
   }
 }

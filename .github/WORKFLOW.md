@@ -38,7 +38,7 @@ The changelog is written by people, not generated from commits. Each pull reques
 ### When a changeset is needed
 
 - **Needed:** any change to what `@paperpic/core` or `@paperpic/vue` ship to users, such as their source, types or styles.
-- **Not needed:** tests, docs, the docs site (`apps/docs`), the playground (`playgrounds/vue`), CI and tooling.
+- **Not needed:** tests, docs, the docs site (`apps/docs`), the playgrounds (`playgrounds/*`), CI and tooling.
 
 ### How to create one
 

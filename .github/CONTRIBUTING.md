@@ -24,26 +24,40 @@ pnpm install
 
 ## Project structure
 
-| Path              | Contents                                               |
-| ----------------- | ------------------------------------------------------ |
-| `packages/core`   | `@paperpic/core`: framework-agnostic image processing  |
-| `packages/vue`    | `@paperpic/vue`: Vue 3 components                      |
-| `apps/docs`       | Documentation site, built with VitePress               |
-| `playgrounds/vue` | Local playground to develop the packages, not deployed |
+| Path                  | Contents                                                   |
+| --------------------- | ---------------------------------------------------------- |
+| `packages/core`       | `@paperpic/core`: framework-agnostic viewer and editor     |
+| `packages/vue`        | `@paperpic/vue`: Vue 3 wrapper around `@paperpic/core`     |
+| `apps/docs`           | Documentation site, built with VitePress                   |
+| `playgrounds/vanilla` | Local playground to develop `@paperpic/core`, not deployed |
+| `playgrounds/vue`     | Local playground to develop `@paperpic/vue`, not deployed  |
+
+## Architecture
+
+`@paperpic/core` holds the component in plain TypeScript, and each framework package is a thin wrapper around it. `PaperPic.vue` still renders its own markup until the component moves to `@paperpic/core`.
+
+- **No DOM access at import time.** Use `window` and `document` only once an instance is created, so the packages can load during server-side rendering.
+- **`destroy()` releases everything.** It removes every listener, observer and worker the instance created. Creating and destroying must be repeatable, because a framework can mount a component twice.
+- **Events report user actions only.** `setOptions()` does not emit `change`, so two-way bindings such as `v-model` do not loop.
+- **Wrappers hold no business logic.** A wrapper creates the instance on mount, forwards prop changes, translates events and destroys the instance on unmount. Anything else belongs in `@paperpic/core`.
+- **Image processing stays pure.** Code in `packages/core/src/processing` works on pixel arrays, so it can be tested without a browser.
+- **The public API documents itself.** Every public export has JSDoc, and error messages say how to fix the problem, because the published types are what developers and their AI tools read first.
 
 ## Scripts
 
-| Command              | What it does                                                             |
-| -------------------- | ------------------------------------------------------------------------ |
-| `pnpm dev`           | Starts the Vue playground, with hot reload of the packages' source       |
-| `pnpm dev:dist`      | Builds the packages and starts the Vue playground against their `dist`   |
-| `pnpm dev:docs`      | Starts the docs site                                                     |
-| `pnpm test`          | Runs all tests (`pnpm test:watch` for watch mode)                        |
-| `pnpm test:coverage` | Runs all tests with a coverage report in `coverage/`                     |
-| `pnpm typecheck`     | Type-checks every package                                                |
-| `pnpm lint`          | Runs ESLint and Stylelint                                                |
-| `pnpm lint:fix`      | Fixes lint and formatting problems                                       |
-| `pnpm build`         | Builds every package and checks each published one with publint and attw |
+| Command              | What it does                                                               |
+| -------------------- | -------------------------------------------------------------------------- |
+| `pnpm dev`           | Starts the vanilla playground, with hot reload of the packages' source     |
+| `pnpm dev:vue`       | Starts the Vue playground, with hot reload of the packages' source         |
+| `pnpm dev:dist`      | Builds the packages and starts the vanilla playground against their `dist` |
+| `pnpm dev:vue:dist`  | Builds the packages and starts the Vue playground against their `dist`     |
+| `pnpm dev:docs`      | Starts the docs site                                                       |
+| `pnpm test`          | Runs all tests (`pnpm test:watch` for watch mode)                          |
+| `pnpm test:coverage` | Runs all tests with a coverage report in `coverage/`                       |
+| `pnpm typecheck`     | Type-checks every package                                                  |
+| `pnpm lint`          | Runs ESLint and Stylelint                                                  |
+| `pnpm lint:fix`      | Fixes lint and formatting problems                                         |
+| `pnpm build`         | Builds every package and checks each published one with publint and attw   |
 
 CI runs lint, typecheck, test and build on every pull request.
 
@@ -67,13 +81,15 @@ CI runs lint, typecheck, test and build on every pull request.
 
 ## Styles
 
-The CSS that `@paperpic/vue` ships follows these rules:
+The CSS that the packages ship lives in `packages/core/src/styles` and follows these rules:
 
+- Plain CSS, without preprocessors or CSS Modules, because class names are public and must stay stable.
 - Every rule goes inside `@layer paperpic`, so a consumer's CSS wins without specificity fights.
-- Customization goes through `--paperpic-*` custom properties. Stylelint rejects other names in `packages/vue`.
+- Customization goes through `--paperpic-*` custom properties, declared in `tokens.css`. Renaming or removing one is a breaking change.
+- Classes are `paperpic` or start with `paperpic-`. Stylelint enforces this and the custom property names in `packages/core` and `packages/vue`.
 - Features must work in [Baseline Widely Available](https://web.dev/baseline) browsers, the build target of the published packages.
 
-`pnpm dev` injects each component's styles directly. Use `pnpm dev:dist` to check the `style.css` that consumers import.
+`pnpm dev` and `pnpm dev:vue` inject the styles directly. Use `pnpm dev:dist` or `pnpm dev:vue:dist` to check the `style.css` that consumers import.
 
 ## Translating the docs
 

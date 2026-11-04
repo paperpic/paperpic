@@ -1,0 +1,151 @@
+/* Page-level rules only: styling .paperpic here would hide bugs in the component's own CSS */
+:root {
+  --color-text: light-dark(#1a263c, #f2f5f9);
+  --color-muted: light-dark(#55627a, #a5b1c4);
+  --color-link: light-dark(#06c, #5cb5ff);
+  --color-accent-start: light-dark(#0a84ff, #0090f0);
+  --color-accent-end: light-dark(#0b8f80, #00c5c1);
+  --color-border: light-dark(#dde3ec, #2e3a4f);
+  --color-surface: light-dark(#fff, #151e2e);
+  --color-canvas: light-dark(#f4f6f9, #0e1521);
+  --color-dot: light-dark(#cfd7e3, #2e3a4f);
+  --color-notice-text: light-dark(#6b4500, #ffd98a);
+  --color-notice-bg: light-dark(#fff6df, #33270d);
+
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.brand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  align-items: center;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.wordmark-accent {
+  background: linear-gradient(90deg, var(--color-accent-start), var(--color-accent-end));
+  background-clip: text;
+  color: transparent;
+}
+
+.title {
+  margin-inline-start: 0.25rem;
+  padding-inline-start: 0.75rem;
+  border-inline-start: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.link {
+  color: var(--color-link);
+}
+
+.notice {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background: var(--color-notice-bg);
+  color: var(--color-notice-text);
+  font-size: 0.875rem;
+}
+
+.notice-link {
+  color: inherit;
+}
+
+.workspace {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 16rem minmax(0, 1fr);
+}
+
+.panel {
+  padding: 1rem;
+  border-inline-end: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.panel-heading {
+  margin: 0 0 0.75rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.field {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font: inherit;
+}
+
+.stage {
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+  background-image: radial-gradient(var(--color-dot) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Placeholder until the component exists: the token proves the stylesheet reached the page */
+.preview {
+  display: block;
+  max-width: 100%;
+  transition: transform var(--paperpic-transition-duration) ease;
+}
+
+@media (width < 640px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .panel {
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--color-border);
+  }
+}

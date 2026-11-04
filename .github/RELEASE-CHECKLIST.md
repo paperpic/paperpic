@@ -11,7 +11,7 @@ What is left before `@paperpic/core` and `@paperpic/vue` can be published. Delet
 - [x] **Environment `npm`:** deploys only from `main`, needs approval from `@Unlooper`, and administrators cannot bypass it.
 - [x] **Release tags ruleset:** `@paperpic/*` tags cannot be deleted, moved or force-pushed.
 - [x] **npm:** the `paperpic` organization exists and the maintainer account has 2FA.
-- [x] **Packaging:** a local `pnpm pack` produced tarballs with only `dist/`, `LICENSE`, `README.md` and `package.json`, and `workspace:^` was rewritten to a version range.
+- [x] **Packaging:** a local `pnpm pack` produced tarballs with only `dist/`, `LICENSE`, `README.md` and `package.json`, and `workspace:*` was rewritten to the exact version.
 
 ## 1. Check that the Release workflow starts
 
