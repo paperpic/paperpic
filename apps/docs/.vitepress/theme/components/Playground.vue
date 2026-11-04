@@ -12,8 +12,12 @@ const rotation = shallowRef(0)
 </script>
 
 <template>
-  <div class="playground">
-    <div class="toolbar">
+  <main class="playground">
+    <div class="panel">
+      <div class="vp-doc">
+        <slot />
+      </div>
+
       <label class="field">
         {{ rotationLabel }}
         <select v-model.number="rotation" class="select">
@@ -27,21 +31,19 @@ const rotation = shallowRef(0)
     <div class="stage">
       <PaperPic src="/samples/document.svg" :alt :rotation />
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
 .playground {
-  overflow: hidden;
-  margin-block-start: 1.5rem;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  min-height: calc(100dvh - var(--vp-layout-top-height, 0px) - var(--vp-nav-height));
 }
 
-.toolbar {
-  padding: 0.75rem 1rem;
-  border-block-end: 1px solid var(--vp-c-divider);
-  background: var(--vp-c-bg);
+.panel {
+  padding: 1.5rem;
+  border-inline-end: 1px solid var(--vp-c-divider);
 }
 
 .field {
@@ -49,6 +51,7 @@ const rotation = shallowRef(0)
   gap: 0.75rem;
   align-items: center;
   justify-content: space-between;
+  margin-block-start: 1.5rem;
   color: var(--vp-c-text-2);
   font-size: 0.875rem;
 }
@@ -68,7 +71,19 @@ const rotation = shallowRef(0)
   place-items: center;
   padding: 2rem 1rem;
   background-color: var(--vp-c-bg-soft);
-  background-image: radial-gradient(var(--vp-c-divider) 1px, transparent 1px);
+  background-image: radial-gradient(var(--vp-c-border) 1px, transparent 1px);
   background-size: 16px 16px;
+}
+
+@media (width < 768px) {
+  .playground {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .panel {
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--vp-c-divider);
+  }
 }
 </style>
