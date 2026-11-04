@@ -1,57 +1,28 @@
-<script setup lang="ts">
-import { PaperPic } from '@paperpic/vue'
-import { shallowRef } from 'vue'
+/* Page-level rules only: styling img or .paperpic here would hide bugs in the component's own CSS */
+:root {
+  --color-text: light-dark(#1a263c, #f2f5f9);
+  --color-muted: light-dark(#55627a, #a5b1c4);
+  --color-link: light-dark(#06c, #5cb5ff);
+  --color-accent-start: light-dark(#0a84ff, #0090f0);
+  --color-accent-end: light-dark(#0b8f80, #00c5c1);
+  --color-border: light-dark(#dde3ec, #2e3a4f);
+  --color-surface: light-dark(#fff, #151e2e);
+  --color-canvas: light-dark(#f4f6f9, #0e1521);
+  --color-dot: light-dark(#cfd7e3, #2e3a4f);
+  --color-notice-text: light-dark(#6b4500, #ffd98a);
+  --color-notice-bg: light-dark(#fff6df, #33270d);
 
-const packagesOrigin = import.meta.env.MODE === 'dist'
-  ? 'the built packages, without hot reload'
-  : 'the packages from source, with hot reload'
-const rotations = [0, 90, 180, 270]
-const rotation = shallowRef(0)
-</script>
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
 
-<template>
-  <div class="layout">
-    <header class="header">
-      <h1 class="brand">
-        <img class="logo" src="/logo-mark.svg" alt="" width="32" height="32">
-        <span class="wordmark">Paper<span class="wordmark-accent">Pic</span></span>
-        <span class="title">Vue playground</span>
-      </h1>
-      <nav class="links" aria-label="Project links">
-        <a class="link" href="https://paperpic.dev">Docs</a>
-        <a class="link" href="https://github.com/paperpic/paperpic">GitHub</a>
-      </nav>
-    </header>
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+}
 
-    <p class="notice">
-      <strong>Development only.</strong>
-      Runs {{ packagesOrigin }}. It is not published or deployed.
-      The public demo is at <a class="notice-link" href="https://paperpic.dev/playground">paperpic.dev/playground</a>.
-    </p>
-
-    <div class="workspace">
-      <aside class="panel" aria-labelledby="props-heading">
-        <h2 id="props-heading" class="panel-heading">
-          Props
-        </h2>
-        <label class="field">
-          <code>rotation</code>
-          <select v-model.number="rotation" class="select">
-            <option v-for="degrees in rotations" :key="degrees" :value="degrees">
-              {{ degrees }}°
-            </option>
-          </select>
-        </label>
-      </aside>
-
-      <main class="stage">
-        <PaperPic src="/samples/document.svg" alt="Sample document" :rotation />
-      </main>
-    </div>
-  </div>
-</template>
-
-<style scoped>
 .layout {
   display: flex;
   flex-direction: column;
@@ -171,4 +142,3 @@ const rotation = shallowRef(0)
     border-block-end: 1px solid var(--color-border);
   }
 }
-</style>

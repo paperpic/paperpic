@@ -1,5 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import './style.css'
+import { PaperPic } from '@paperpic/vue'
+import { createPlayground } from 'playground-shared'
+import { createApp, h, reactive } from 'vue'
 
-createApp(App).mount('#app')
+createPlayground({
+  name: 'Vue',
+  mount(stage, options) {
+    const props = reactive(options)
+
+    createApp(() => h(PaperPic, { ...props })).mount(stage)
+
+    return changed => Object.assign(props, changed)
+  },
+})

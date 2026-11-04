@@ -27,7 +27,7 @@ const transform = computed(() => `rotate(${normalizeRotation(props.rotation)}deg
   .paperpic img {
     display: block;
     max-width: 100%;
-    transition: transform var(--paperpic-transition-duration, 0.2s) ease;
+    transition: transform var(--paperpic-transition-duration) ease;
   }
 }
 </style>

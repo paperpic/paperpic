@@ -46,7 +46,7 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "@paperpic/core": "workspace:^"
+    "@paperpic/core": "workspace:*"
   },
   "devDependencies": {
     "@arethetypeswrong/core": "0.18.5",

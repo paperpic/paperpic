@@ -1,0 +1,19 @@
+{
+  "name": "playground-vanilla",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite --open",
+    "dev:dist": "vite --mode dist --open",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@paperpic/core": "workspace:*",
+    "playground-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "6.0.3",
+    "vite": "8.3.5"
+  }
+}

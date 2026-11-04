@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "vite --open",
-    "dev:dist": "vite --mode dist --open /dist.html",
+    "dev:dist": "vite --mode dist --open",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@paperpic/vue": "workspace:*",
+    "playground-shared": "workspace:*",
     "vue": "3.5.44"
   },
   "devDependencies": {

@@ -7,8 +7,10 @@
     "node": "26"
   },
   "scripts": {
-    "dev": "pnpm --filter playground-vue dev",
-    "dev:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vue dev:dist",
+    "dev": "pnpm --filter playground-vanilla dev",
+    "dev:vue": "pnpm --filter playground-vue dev",
+    "dev:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vanilla dev:dist",
+    "dev:vue:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vue dev:dist",
     "dev:docs": "pnpm --filter docs dev",
     "build": "pnpm -r build",
     "test": "vitest run",

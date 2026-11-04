@@ -1,0 +1,11 @@
+/* Public theming API: renaming or removing a token is a breaking change */
+@layer paperpic {
+  /* On :root, so a consumer can override a token on :root, on any ancestor or on .paperpic */
+  :root {
+    --paperpic-color-surface: #fff;
+    --paperpic-color-text: #1a263c;
+    --paperpic-color-accent: #0a84ff;
+    --paperpic-radius: 6px;
+    --paperpic-transition-duration: 0.2s;
+  }
+}
