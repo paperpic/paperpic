@@ -22,7 +22,8 @@ Requires Node.js 26 and pnpm 12.
 
 ```sh
 pnpm install
-pnpm dev    # docs site with the playground
+pnpm dev         # Vue playground with hot reload
+pnpm dev:docs    # docs site
 pnpm test
 pnpm build
 ```
