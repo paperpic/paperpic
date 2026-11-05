@@ -3,6 +3,7 @@
 ## Read first
 
 - Changing `packages/` or `playgrounds/`: read [Architecture](.github/CONTRIBUTING.md#architecture) and [Styles](.github/CONTRIBUTING.md#styles).
+- Building the component, or changing its behavior or API: read [the spec](docs/spec/paperpic-component.md) and follow its roadmap.
 - Committing, adding a changeset or opening a pull request: read [WORKFLOW.md](.github/WORKFLOW.md).
 - Changing docs pages in `apps/docs`: read [Translating the docs](.github/CONTRIBUTING.md#translating-the-docs).
 

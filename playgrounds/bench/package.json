@@ -1,0 +1,15 @@
+{
+  "name": "playground-bench",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite --open",
+    "dev:host": "vite --host",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "6.0.3",
+    "vite": "8.3.5"
+  }
+}
