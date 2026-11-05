@@ -12,6 +12,8 @@
     "dev:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vanilla dev:dist",
     "dev:vue:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vue dev:dist",
     "dev:docs": "pnpm --filter docs dev",
+    "dev:bench": "pnpm --filter playground-bench dev",
+    "dev:bench:host": "pnpm --filter playground-bench dev:host",
     "build": "pnpm -r build",
     "test": "vitest run",
     "test:watch": "vitest",

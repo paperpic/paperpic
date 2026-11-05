@@ -1,0 +1,139 @@
+# PaperPic component spec
+
+**Status:** draft. This file grows as decisions are made. Anything not listed under [Decisions](#decisions) is still open.
+
+## Goal
+
+An image viewer and editor for the web, built as a framework-agnostic component with thin wrappers. It displays an image and lets the user straighten and clean it up, as a scanner app would.
+
+The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md#architecture) apply to everything here.
+
+## Decisions
+
+| ID  | Decision                                                                                                                                                                                                                                     | Reason                                                                                                                                                           |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | Targets are vanilla, Vue, React and, if feasible, Angular. Vanilla and Vue come first.                                                                                                                                                       | One core with wrappers keeps this affordable.                                                                                                                    |
+| D2  | No wizard. An added image loads as is, and the user enters editing through an Edit button, as in a phone gallery.                                                                                                                            | Processing must never happen without the user asking for it.                                                                                                     |
+| D3  | Editing covers crop, perspective change, permanent rotation and threshold. More tools may follow.                                                                                                                                            | Core feature set.                                                                                                                                                |
+| D4  | No background loading of a higher-resolution image.                                                                                                                                                                                          | The component does not know about any backend.                                                                                                                   |
+| D5  | No PDF support.                                                                                                                                                                                                                              | Out of scope.                                                                                                                                                    |
+| D6  | Use an established library when one holds up. Write our own only when it is worth it, and measure before adding GPU code.                                                                                                                    | Avoid reinventing the wheel, and avoid dependencies that do not fit.                                                                                             |
+| D7  | WebGPU, if ever used, is an optional acceleration with a fallback. It cannot be required.                                                                                                                                                    | The packages target Baseline Widely Available browsers.                                                                                                          |
+| D8  | The Edit button opens a toolbar with crop, adaptive threshold, permanent rotation and perspective change.                                                                                                                                    | Each edit is a choice the user makes, in the order they want.                                                                                                    |
+| D9  | Crop and perspective are two separate tools.                                                                                                                                                                                                 | They are different tasks with different selection flows.                                                                                                         |
+| D10 | Perspective works with 4 manually selected points. Automatic detection is optional and is dropped if it proves too much.                                                                                                                     | The manual flow must work alone, so detection never blocks a release.                                                                                            |
+| D11 | Edits can be undone with an Undo button until they are applied.                                                                                                                                                                              | The user can experiment safely.                                                                                                                                  |
+| D12 | Applying the changes emits an event with the changed image. Sending it to a backend is up to the consumer.                                                                                                                                   | The component does not know about any backend.                                                                                                                   |
+| D13 | No TIFF. No pagination for now, though it may come later.                                                                                                                                                                                    | Browsers rarely decode TIFF, and pages depended on a backend.                                                                                                    |
+| D14 | Rotate and threshold apply at once and can be undone. Crop and perspective have their own confirm inside the tool. Apply confirms everything.                                                                                                | A selection needs an explicit end, and a button press does not.                                                                                                  |
+| D15 | Threshold is one on/off setting that always runs after geometry. Its slider controls the real sensitivity, and preview and export share one pipeline. The output keeps some gray by default, and `softness: 0` gives strict black and white. | The result must not depend on tool order, and what the user sees must be what is exported. Strict black and white breaks thin strokes in real photos.            |
+| D16 | Rotation exists only in edit mode, and it is permanent. View mode has no rotation.                                                                                                                                                           | One rotation cannot be confused with another. A view rotation can be added later without breaking anyone, and removing it later would break them.                |
+| D17 | Images come from the same origin or are attached on the client.                                                                                                                                                                              | Pixels can always be read, so cross-origin support is out of scope.                                                                                              |
+| D18 | The attach button belongs to the consumer. The component takes `src: string \| Blob \| File`. The playground and the docs demo offer an attach button and a preloaded sample image.                                                          | Each app decides its own file picker and validation. Demo visitors can try it with no file of their own.                                                         |
+| D19 | The Apply event carries `{ blob, width, height, type }`. The type is PNG with threshold on, and otherwise the source type (JPEG, PNG, WebP). `output: { type, quality }` overrides it.                                                       | JPEG artifacts damage the sharp edges of a cleaned document.                                                                                                     |
+| D20 | Output is full resolution by default, with an optional `maxOutputSize`. Benchmarks must validate this default on large phone photos.                                                                                                         | The old 1920 px cap lost quality without telling anyone.                                                                                                         |
+| D21 | A later edit starts from the last applied image. The component does not keep the first one.                                                                                                                                                  | Keeping originals is up to the consumer, who can pass one again through `src`.                                                                                   |
+| D22 | The entry point is the class `new PaperPic(container, options)`.                                                                                                                                                                             | It matches the package name, and the component does more than view.                                                                                              |
+| D23 | A built-in toolbar by default, with `tools` to choose tools, `editable: false` to hide Edit, and `toolbar: false` plus public commands for a custom interface.                                                                               | Most consumers want it to work at once, and others need their own interface.                                                                                     |
+| D24 | The only extra in the first version is Redo.                                                                                                                                                                                                 | It costs little once Undo exists.                                                                                                                                |
+| D25 | Every tool is independent and testable, new tools can be added without changing the others, and painting the canvas is a separate part.                                                                                                      | The set of tools will grow.                                                                                                                                      |
+| D26 | Edits are an internal list of operations over the base image, not a sequence of applied pixels. The list is not public in the first version.                                                                                                 | Undo and Redo stay simple and quality does not degrade between steps. Exposing the list later breaks nothing.                                                    |
+| D27 | Third parties cannot register their own tools in the first version.                                                                                                                                                                          | A public contract must stay compatible, so it waits until our own tools have proven it.                                                                          |
+| D28 | The wheel zooms over the image. `wheelZoom: false` turns it off.                                                                                                                                                                             | Zooming is the main action in a viewer, and a long page can opt out.                                                                                             |
+| D29 | In view mode, one finger scrolls the page while the image is fitted and pans it only when zoomed. Edit mode always captures gestures.                                                                                                        | The viewer must not trap page scrolling on mobile.                                                                                                               |
+| D30 | Texts are in English by default, and the `labels` option replaces any of them. No translations ship with the packages.                                                                                                                       | Shipped translations would need maintenance in every release. The name leaves `locale` free for later.                                                           |
+| D31 | Dragging a corner by touch shows a magnifier, in crop and perspective. It is part of those tools.                                                                                                                                            | The finger hides the exact point being placed.                                                                                                                   |
+| D32 | Threshold and perspective are our own code, with no dependencies. Threshold uses the Bradley comparison with soft output.                                                                                                                    | The [spike](spike-results.md) found no library with an adaptive threshold at a reasonable size, and our warp is faster and much smaller than the best candidate. |
+| D33 | Perspective estimates the proportions of the document, and the `aspectRatio` option fixes them when they are known, as width divided by height.                                                                                              | An estimate from a photo cannot be exact, and consumers often know their document.                                                                               |
+| D34 | The public demo uses a made-up receipt, printed and photographed by us. Real receipts stay out of the repo.                                                                                                                                  | It tests the tools on a real photo without publishing purchases or brands.                                                                                       |
+
+## Architecture
+
+The code lives in `packages/core/src`. Dependencies point downwards in this table, and `processing` knows nothing about the others.
+
+| Layer         | Responsibility                                                                                            |
+| ------------- | --------------------------------------------------------------------------------------------------------- |
+| `paperpic.ts` | Public class. Connects the other layers.                                                                  |
+| `ui/`         | Optional toolbar. It only calls public commands and reads state.                                          |
+| `tools/`      | One folder per tool: `crop/`, `perspective/`, `rotate/`, `threshold/`.                                    |
+| `input/`      | Turns Pointer Events into drag, pinch and wheel gestures, and routes them to the active tool or the view. |
+| `render/`     | Paints a scene on the canvas. It decides nothing.                                                         |
+| `pipeline/`   | Turns the operation list into an image. Preview and export use the same code.                             |
+| `state/`      | Mode, zoom and pan, operation list, Undo and Redo history.                                                |
+| `processing/` | Pure functions on pixel arrays: homography, warp, threshold. Tested without a browser.                    |
+
+### Tools
+
+Adding a tool means creating its folder and registering it. A tool handles its own interaction and, on confirm, adds an operation such as `{ type: 'crop', params }`. It does not paint the image or touch pixels.
+
+```ts
+interface Tool {
+  id: string
+  activate: (context: ToolContext) => void
+  deactivate: () => void
+  /** Returns true when the tool handles the event, so it does not pan the view. */
+  onPointer?: (event: ToolPointerEvent) => boolean
+  onKey?: (event: KeyboardEvent) => boolean
+  drawOverlay?: (painter: Painter, view: ViewTransform) => void
+}
+```
+
+### Rendering
+
+- The image is repainted when something changes: zoom, pan, container size, a loaded image, a new pipeline result, rotation, Undo or Redo. There is no continuous loop.
+- Changes are coalesced with `requestAnimationFrame`, so one frame paints once.
+- Painting never processes pixels. It draws an image the pipeline has already produced.
+- The canvas respects `devicePixelRatio`.
+- One pure function computes the transform matrix. Painting and converting pointer coordinates to image coordinates both use it.
+- A 90 degree rotation is applied in the matrix, so it is instant. Export bakes it into the pixels.
+- There are three layers: a canvas for the image, a canvas for the dimmed area and selection lines, and DOM elements for the corner handles, so they can take focus and work with a keyboard.
+- Mobile and desktop share this one path.
+
+### Risks to prove first
+
+The [spike results](spike-results.md) track the status of each one. One top Android phone is measured. Mid-range Android and iOS are not.
+
+- **Worker packaging.** Heavy processing belongs in a worker, which must work with consumers' bundlers and Content Security Policy. Proven in Vite and webpack 5, falling back to the main thread if a policy blocks it.
+- **Preview and export.** The threshold slider works on a copy of about 2 MP to stay fluid, at 40 ms per change on a top Android phone. Code and parameters are the same, but the result can differ slightly from full resolution.
+- **Memory.** A 12 MP photo takes 48 MB as RGBA, so only the base image and the last result are kept. Undo recomputes from the base image. Threshold peaks at about 340 MB at 37.5 MP.
+- **Text sharpness when downscaling.** No visible difference on desktop or Android, so painting needs no reduced copy for sharpness. Whether very large images keep zoom and pan fluid can only be checked with the real viewer.
+
+## Accessibility
+
+The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors`.
+
+- The canvas has `role="img"` and uses the `alt` the consumer passes.
+- The toolbar has `role="toolbar"` and arrow key navigation.
+- Corner handles take focus with Tab and move with the arrow keys: 1 px, or 10 px with Shift. Each move is announced to screen readers.
+- An `aria-live` region announces processing, the active tool and results.
+
+| Key                         | Action             |
+| --------------------------- | ------------------ |
+| `+` and `-`                 | Zoom               |
+| Arrow keys                  | Pan                |
+| `0`                         | Fit to the screen  |
+| `Ctrl+Z` and `Ctrl+Shift+Z` | Undo and Redo      |
+| `Enter` and `Esc`           | Confirm and cancel |
+
+## Responsive behavior
+
+- The component fills its container and adapts with `ResizeObserver` and container queries. It does not detect the device.
+- The toolbar is vertical when there is width to spare, and horizontal at the bottom when there is not.
+- Touch targets are at least 44 px with `pointer: coarse`.
+- Pinch zooms around the point between the fingers. Double tap toggles between fitted and 100%.
+
+## Roadmap
+
+1. **Technical spike.** Done, see the [results](spike-results.md). Worker packaging, threshold and perspective implementations, benchmarks and a wider library search.
+2. **Viewer.** Renderer, gestures, view mode and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
+3. **Edit base.** Toolbar, operation list, Undo, Redo and Apply, with Rotate as the first tool.
+4. **Tools.** Crop, then Perspective, then Threshold.
+5. **Other frameworks.** React and, if feasible, Angular.
+6. **Automatic detection.** Only if it proves worth it.
+
+## Open decisions
+
+- Whether the toolbar offers paper size presets on top of the `aspectRatio` option.
+- Tools for later versions: free-angle straightening, brightness and contrast, flip.
+- Whether full resolution holds as the default (D20). It works on a top Android phone, and mid-range Android and iOS are not measured.
+- Library or own implementation for point detection, after a prototype on real photos.

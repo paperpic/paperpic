@@ -32,6 +32,8 @@ pnpm install
 | `playgrounds/vanilla` | Local playground to develop `@paperpic/core`, not deployed |
 | `playgrounds/vue`     | Local playground to develop `@paperpic/vue`, not deployed  |
 | `playgrounds/shared`  | Page, controls, config and samples the playgrounds share   |
+| `playgrounds/bench`   | Benchmarks of the image processing, not deployed           |
+| `docs/spec`           | Component spec, and the measurements behind its decisions  |
 
 ## Architecture
 
@@ -46,21 +48,25 @@ pnpm install
 
 ## Scripts
 
-| Command              | What it does                                                               |
-| -------------------- | -------------------------------------------------------------------------- |
-| `pnpm dev`           | Starts the vanilla playground, with hot reload of the packages' source     |
-| `pnpm dev:vue`       | Starts the Vue playground, with hot reload of the packages' source         |
-| `pnpm dev:dist`      | Builds the packages and starts the vanilla playground against their `dist` |
-| `pnpm dev:vue:dist`  | Builds the packages and starts the Vue playground against their `dist`     |
-| `pnpm dev:docs`      | Starts the docs site                                                       |
-| `pnpm test`          | Runs all tests (`pnpm test:watch` for watch mode)                          |
-| `pnpm test:coverage` | Runs all tests with a coverage report in `coverage/`                       |
-| `pnpm typecheck`     | Type-checks every package                                                  |
-| `pnpm lint`          | Runs ESLint and Stylelint                                                  |
-| `pnpm lint:fix`      | Fixes lint and formatting problems                                         |
-| `pnpm build`         | Builds every package and checks each published one with publint and attw   |
+| Command               | What it does                                                                  |
+| --------------------- | ----------------------------------------------------------------------------- |
+| `pnpm dev`            | Starts the vanilla playground, with hot reload of the packages' source        |
+| `pnpm dev:vue`        | Starts the Vue playground, with hot reload of the packages' source            |
+| `pnpm dev:dist`       | Builds the packages and starts the vanilla playground against their `dist`    |
+| `pnpm dev:vue:dist`   | Builds the packages and starts the Vue playground against their `dist`        |
+| `pnpm dev:docs`       | Starts the docs site                                                          |
+| `pnpm dev:bench`      | Starts the benchmarks of the image processing                                 |
+| `pnpm dev:bench:host` | Starts the same page for other devices on your network, to measure on a phone |
+| `pnpm test`           | Runs all tests (`pnpm test:watch` for watch mode)                             |
+| `pnpm test:coverage`  | Runs all tests with a coverage report in `coverage/`                          |
+| `pnpm typecheck`      | Type-checks every package                                                     |
+| `pnpm lint`           | Runs ESLint and Stylelint                                                     |
+| `pnpm lint:fix`       | Fixes lint and formatting problems                                            |
+| `pnpm build`          | Builds every package and checks each published one with publint and attw      |
 
 CI runs lint, typecheck, test and build on every pull request.
+
+`pnpm dev:bench:host` exposes the development server, and files of the repository, to your whole network. Use it only on a network you trust, and stop it when you finish. Photos you choose in the benchmarks stay in the browser, so never add real documents to the repository.
 
 ## Making changes
 
