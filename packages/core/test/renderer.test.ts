@@ -11,7 +11,12 @@ describe('renderer', () => {
     imageSmoothingEnabled: false,
     imageSmoothingQuality: 'low',
   }
+  const overlayContext = {
+    setTransform: vi.fn(),
+    clearRect: vi.fn(),
+  }
   let canvas: HTMLCanvasElement
+  let overlay: HTMLCanvasElement
   let frames: (() => void)[]
   let scene: Scene | null
 
@@ -30,6 +35,8 @@ describe('renderer', () => {
     })
     canvas = document.createElement('canvas')
     canvas.getContext = (() => context) as unknown as HTMLCanvasElement['getContext']
+    overlay = document.createElement('canvas')
+    overlay.getContext = (() => overlayContext) as unknown as HTMLCanvasElement['getContext']
     scene = {
       image: {} as CanvasImageSource,
       imageSize: { width: 600, height: 250 },
@@ -44,14 +51,14 @@ describe('renderer', () => {
   afterEach(() => vi.unstubAllGlobals())
 
   it('sizes the canvas in device pixels', () => {
-    const renderer = new Renderer(canvas, () => scene)
+    const renderer = new Renderer(canvas, overlay, () => scene)
     renderer.resize({ width: 300, height: 150 }, 2)
     expect(canvas.width).toBe(600)
     expect(canvas.height).toBe(300)
   })
 
   it('paints once per frame, however many changes arrive', () => {
-    const renderer = new Renderer(canvas, () => scene)
+    const renderer = new Renderer(canvas, overlay, () => scene)
     renderer.requestPaint()
     renderer.requestPaint()
     renderer.requestPaint()
@@ -64,7 +71,7 @@ describe('renderer', () => {
   })
 
   it('draws through the transform, scaled to device pixels', () => {
-    const renderer = new Renderer(canvas, () => scene)
+    const renderer = new Renderer(canvas, overlay, () => scene)
     renderer.resize({ width: 300, height: 150 }, 2)
     paint()
     expect(context.setTransform).toHaveBeenLastCalledWith(1, 0, -0, 1, 0, 25)
@@ -74,7 +81,7 @@ describe('renderer', () => {
 
   it('only clears when there is nothing to show', () => {
     scene = null
-    const renderer = new Renderer(canvas, () => scene)
+    const renderer = new Renderer(canvas, overlay, () => scene)
     renderer.requestPaint()
     paint()
     expect(context.clearRect).toHaveBeenCalled()
@@ -82,7 +89,7 @@ describe('renderer', () => {
   })
 
   it('cancels a pending paint when destroyed', () => {
-    const renderer = new Renderer(canvas, () => scene)
+    const renderer = new Renderer(canvas, overlay, () => scene)
     renderer.requestPaint()
     renderer.destroy()
     paint()

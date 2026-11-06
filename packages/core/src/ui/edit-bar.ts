@@ -10,6 +10,8 @@ export interface EditBarCommands {
   redo: () => void
   apply: () => void
   runTool: (run: Tool['actions'][number]['run']) => void
+  confirmTool: () => void
+  cancelTool: () => void
 }
 
 /** What the edit bar shows. */
@@ -18,15 +20,22 @@ export interface EditBarState {
   canRedo: boolean
   canApply: boolean
   busy: boolean
+  /** Whether a tool with its own selection can open. A preview in progress prevents it. */
+  canOpenTool: boolean
 }
 
-/** The controls of the edit mode: Cancel, the tools, Undo, Redo and Apply. */
+/** The controls of the edit mode: Cancel, the tools, Undo, Redo and Apply. An open tool replaces them with its own. */
 export class EditBar {
   readonly element: HTMLElement
   private readonly controls: HTMLElement
+  private readonly toolControls: HTMLElement
+  private readonly hint: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
-  private readonly toolButtons: { toolId: ToolId, id: Tool['actions'][number]['id'], button: HTMLButtonElement }[] = []
+  private readonly toolButtons: { tool: Tool, id: Tool['actions'][number]['id'], button: HTMLButtonElement }[] = []
+  private readonly cancelToolButton: HTMLButtonElement
+  private readonly confirmToolButton: HTMLButtonElement
+  private readonly confirmToolText: HTMLElement
   private readonly cancelButton: HTMLButtonElement
   private readonly undoButton: HTMLButtonElement
   private readonly redoButton: HTMLButtonElement
@@ -35,10 +44,13 @@ export class EditBar {
   private readonly keepButton: HTMLButtonElement
   private readonly discardButton: HTMLButtonElement
   private readonly fixTabOrder: () => void
+  private labels: PaperPicLabels
+  private activeTool: Tool | null = null
   private canApply = false
   private busy = false
 
   constructor(commands: EditBarCommands, tools: readonly Tool[], labels: PaperPicLabels) {
+    this.labels = labels
     this.element = document.createElement('div')
     this.element.className = 'paperpic-edit-bar'
     this.element.hidden = true
@@ -59,7 +71,7 @@ export class EditBar {
     for (const tool of tools) {
       for (const action of tool.actions) {
         const button = createButton(ICONS[action.id], () => commands.runTool(action.run))
-        this.toolButtons.push({ toolId: tool.id, id: action.id, button })
+        this.toolButtons.push({ tool, id: action.id, button })
         toolGroup.append(button)
       }
     }
@@ -69,6 +81,17 @@ export class EditBar {
     history.append(this.undoButton, this.redoButton)
 
     this.controls.append(this.cancelButton, toolGroup, history, this.applyButton)
+
+    this.toolControls = document.createElement('div')
+    this.toolControls.className = 'paperpic-edit-tool'
+    this.toolControls.hidden = true
+    this.cancelToolButton = createButton(ICONS.cancel, commands.cancelTool)
+    this.hint = document.createElement('span')
+    this.hint.className = 'paperpic-edit-message'
+    this.confirmToolButton = createButton(ICONS.apply, commands.confirmTool, 'paperpic-button paperpic-button-primary')
+    this.confirmToolText = document.createElement('span')
+    this.confirmToolButton.append(this.confirmToolText)
+    this.toolControls.append(this.cancelToolButton, this.hint, this.confirmToolButton)
 
     this.confirmation = document.createElement('div')
     this.confirmation.className = 'paperpic-edit-confirmation'
@@ -91,7 +114,7 @@ export class EditBar {
       }
     })
 
-    this.element.append(this.controls, this.confirmation)
+    this.element.append(this.controls, this.toolControls, this.confirmation)
 
     this.fixTabOrder = attachRovingFocus(this.controls, () => [
       this.cancelButton,
@@ -106,7 +129,12 @@ export class EditBar {
 
   /** Updates the texts. */
   setLabels(labels: PaperPicLabels): void {
+    this.labels = labels
     this.controls.setAttribute('aria-label', labels.editBar)
+    nameButton(this.cancelToolButton, labels.cancelTool)
+    nameButton(this.confirmToolButton, labels.confirm)
+    this.confirmToolText.textContent = labels.confirm
+    this.showHint()
     nameButton(this.cancelButton, labels.cancel)
     nameButton(this.undoButton, labels.undo)
     nameButton(this.redoButton, labels.redo)
@@ -123,10 +151,18 @@ export class EditBar {
 
   /** Chooses which tools appear. */
   setTools(ids: readonly ToolId[]): void {
-    for (const { toolId, button } of this.toolButtons) {
-      button.hidden = !ids.includes(toolId)
+    for (const { tool, button } of this.toolButtons) {
+      button.hidden = !ids.includes(tool.id)
     }
     this.fixTabOrder()
+  }
+
+  /** Shows the controls of an open tool, or the usual ones with `null`. */
+  setActiveTool(tool: Tool | null): void {
+    this.activeTool = tool
+    this.toolControls.hidden = tool === null
+    this.controls.hidden = tool !== null
+    this.showHint()
   }
 
   /** Shows or hides the bar. Hiding it closes any open question. */
@@ -138,15 +174,15 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow. */
-  update({ canUndo, canRedo, canApply, busy }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, busy, canOpenTool }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
-    for (const { button } of this.toolButtons) {
-      button.setAttribute('aria-disabled', String(busy))
+    for (const { tool, button } of this.toolButtons) {
+      button.setAttribute('aria-disabled', String(busy || (tool.activate !== undefined && !canOpenTool)))
     }
   }
 
@@ -165,15 +201,24 @@ export class EditBar {
     this.keepButton.focus()
   }
 
-  /** Moves the keyboard focus to the bar. */
-  focus(): void {
-    this.controls.querySelector<HTMLButtonElement>('button[tabindex="0"]')?.focus()
+  /** Moves the keyboard focus to the bar, or to the button of a tool. */
+  focus(toolId?: ToolId): void {
+    const button = this.toolButtons.find(({ tool }) => tool.id === toolId)?.button
+      ?? this.controls.querySelector<HTMLButtonElement>('button[tabindex="0"]')
+    button?.focus()
+  }
+
+  private showHint(): void {
+    const hint = this.activeTool?.hint
+    this.hint.textContent = hint
+      ? this.labels[hint]
+      : ''
   }
 
   private closeConfirmation(restoreFocus = true): void {
     const wasOpen = !this.confirmation.hidden
     this.confirmation.hidden = true
-    this.controls.hidden = false
+    this.controls.hidden = this.activeTool !== null
     if (wasOpen && restoreFocus) {
       this.cancelButton.focus()
     }

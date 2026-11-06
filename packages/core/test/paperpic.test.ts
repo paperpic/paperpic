@@ -114,6 +114,7 @@ describe('paperPic', () => {
       canRedo: false,
       canApply: false,
       busy: false,
+      activeTool: null,
     })
   })
 

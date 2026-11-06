@@ -41,10 +41,29 @@ export function createView(): View {
   }
 }
 
-function displayedSize(image: Size, rotation: Rotation): Size {
+/** The size of the image as the user sees it, turned. */
+export function displayedSize(image: Size, rotation: Rotation): Size {
   return rotation === 90 || rotation === 270
     ? { width: image.height, height: image.width }
     : image
+}
+
+/** Converts a position in the image as the user sees it, turned, to the viewport. */
+export function frameToViewport(view: View, image: Size, viewport: Size, { x, y }: ViewPoint): ViewPoint {
+  const { width, height } = displayedSize(image, view.rotation)
+  return {
+    x: viewport.width / 2 + view.panX + (x - width / 2) * view.zoom,
+    y: viewport.height / 2 + view.panY + (y - height / 2) * view.zoom,
+  }
+}
+
+/** Converts a position in the viewport to the image as the user sees it, turned. */
+export function viewportToFrame(view: View, image: Size, viewport: Size, { x, y }: ViewPoint): ViewPoint {
+  const { width, height } = displayedSize(image, view.rotation)
+  return {
+    x: (x - viewport.width / 2 - view.panX) / view.zoom + width / 2,
+    y: (y - viewport.height / 2 - view.panY) / view.zoom + height / 2,
+  }
 }
 
 function fitZoom(fit: Fit, image: Size, viewport: Size, rotation: Rotation): number {

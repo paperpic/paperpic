@@ -1,6 +1,6 @@
 ---
 title: Live playground
-description: "Try the PaperPic Vue component live: zoom, pan, rotate and download a sample receipt or your own image in your browser."
+description: "Try the PaperPic Vue component live: zoom, pan, crop, rotate and download a sample receipt or your own image in your browser."
 layout: page
 ---
 
@@ -8,6 +8,6 @@ layout: page
 
 # Playground
 
-Try PaperPic on a sample receipt, or attach your own image, which stays in your browser. You can zoom and pan it. To edit it, press the pencil, rotate it and apply the changes to download the result.
+Try PaperPic on a sample receipt, or attach your own image, which stays in your browser. You can zoom and pan it. To edit it, press the pencil, crop or rotate it and apply the changes to download the result.
 
 </Playground>

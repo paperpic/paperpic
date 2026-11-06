@@ -13,6 +13,19 @@ export interface PaperPicLabels {
   fitHeight: string
   rotateLeft: string
   rotateRight: string
+  crop: string
+  /** What to do in the crop tool. */
+  cropHint: string
+  /** Closes a tool, keeping its selection. */
+  confirm: string
+  /** Closes a tool, discarding its selection. */
+  cancelTool: string
+  cornerTopLeft: string
+  cornerTopRight: string
+  cornerBottomRight: string
+  cornerBottomLeft: string
+  /** Announced after moving a corner, with its position in image pixels. */
+  cornerMoved: (corner: string, x: number, y: number) => string
   cancel: string
   undo: string
   redo: string
@@ -47,6 +60,15 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   fitHeight: 'Fit to height',
   rotateLeft: 'Rotate left',
   rotateRight: 'Rotate right',
+  crop: 'Crop',
+  cropHint: 'Drag the corners',
+  confirm: 'Done',
+  cancelTool: 'Cancel this tool',
+  cornerTopLeft: 'Top left corner',
+  cornerTopRight: 'Top right corner',
+  cornerBottomRight: 'Bottom right corner',
+  cornerBottomLeft: 'Bottom left corner',
+  cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
   cancel: 'Cancel',
   undo: 'Undo',
   redo: 'Redo',

@@ -1,6 +1,6 @@
 import type { PixelBuffer } from '../src/processing/types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { exportImage, outputSize, resolveOutputType } from '../src/pipeline/export'
+import { exportImage, resolveOutputType } from '../src/pipeline/export'
 import { PipelineRunner } from '../src/pipeline/run'
 
 const steps = [
@@ -94,6 +94,46 @@ describe('pipelineRunner', () => {
       },
     })
     await second
+  })
+
+  it('runs several jobs at once, and gives each its own result', async () => {
+    const runner = new PipelineRunner()
+    const first = runner.run(pixels(), steps)
+    const second = runner.run(pixels(), steps)
+    const worker = await started()
+    worker.onmessage!({
+      data: { ready: true },
+    })
+    await vi.waitFor(() => expect(worker.postMessage).toHaveBeenCalledTimes(2))
+    const [firstId, secondId] = worker.postMessage.mock.calls.map(([request]) => request.id)
+
+    const firstResult = pixels()
+    const secondResult = pixels()
+    worker.onmessage!({
+      data: { id: secondId, result: secondResult, milliseconds: 1 },
+    })
+    worker.onmessage!({
+      data: { id: firstId, result: firstResult, milliseconds: 1 },
+    })
+
+    await expect(first).resolves.toBe(firstResult)
+    await expect(second).resolves.toBe(secondResult)
+  })
+
+  it('fails every job when the worker crashes', async () => {
+    const runner = new PipelineRunner()
+    const first = runner.run(pixels(), steps)
+    const second = runner.run(pixels(), steps)
+    const worker = await started()
+    worker.onmessage!({
+      data: { ready: true },
+    })
+    await vi.waitFor(() => expect(worker.postMessage).toHaveBeenCalledTimes(2))
+
+    worker.onerror!({ message: 'crashed' })
+
+    await expect(first).rejects.toThrow('crashed')
+    await expect(second).rejects.toThrow('crashed')
   })
 
   it('falls back to the main thread when the worker fails to start, such as under a CSP', async () => {
@@ -236,18 +276,45 @@ describe('resolveOutputType', () => {
   })
 })
 
-describe('outputSize', () => {
-  it('keeps the full size by default', () => {
-    expect(outputSize(4590, 8160)).toEqual({ width: 4590, height: 8160 })
-  })
+describe('exportImage with a crop', () => {
+  it('reads only that part, and has nothing left to run', async () => {
+    const drawImage = vi.fn()
+    vi.stubGlobal('ImageData', class {})
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+      drawImage,
+      getImageData: (_x: number, _y: number, width: number, height: number) => ({
+        data: new Uint8ClampedArray(width * height * 4),
+      }),
+      putImageData: vi.fn(),
+    } as unknown as CanvasRenderingContext2D)
+    HTMLCanvasElement.prototype.toBlob = (done, type) => done(new Blob(['x'], { type }))
+    const image = {} as CanvasImageSource
+    const run = vi.fn()
 
-  it('limits the longest side, keeping the proportions', () => {
-    expect(outputSize(4000, 2000, 1000)).toEqual({ width: 1000, height: 500 })
-    expect(outputSize(2000, 4000, 1000)).toEqual({ width: 500, height: 1000 })
-  })
+    const result = await exportImage({
+      image,
+      width: 400,
+      height: 200,
+      steps: [
+        {
+          type: 'crop',
+          rect: {
+            x: 0.5,
+            y: 0.5,
+            width: 0.5,
+            height: 0.5,
+          },
+        },
+      ],
+      run,
+      source: '/a.png',
+    })
 
-  it('never enlarges', () => {
-    expect(outputSize(100, 50, 1000)).toEqual({ width: 100, height: 50 })
+    expect(drawImage).toHaveBeenCalledWith(image, 200, 100, 200, 100, 0, 0, 200, 100)
+    expect(run).not.toHaveBeenCalled()
+    expect(result).toMatchObject({ width: 200, height: 100, type: 'image/png' })
+    vi.restoreAllMocks()
+    vi.unstubAllGlobals()
   })
 })
 
@@ -299,14 +366,14 @@ describe('exportImage', () => {
 
   it('runs the steps and reports the size of the result', async () => {
     const result = await exportImage(request)
-    expect(run.mock.calls[0]![1]).toBe(steps)
+    expect(run.mock.calls[0]![1]).toEqual(steps)
     expect(result).toMatchObject({ width: 200, height: 400, type: 'image/jpeg' })
     expect(result.blob.type).toBe('image/jpeg')
   })
 
   it('reads the image at the limited size', async () => {
     await exportImage({ ...request, maxOutputSize: 100 })
-    expect(drawImage).toHaveBeenCalledWith(image, 0, 0, 100, 50)
+    expect(drawImage).toHaveBeenCalledWith(image, 0, 0, 400, 200, 0, 0, 100, 50)
     expect(run.mock.calls[0]![0]).toMatchObject({ width: 100, height: 50 })
   })
 
