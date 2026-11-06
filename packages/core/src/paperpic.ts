@@ -13,6 +13,7 @@ import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
 import { exportImage } from './pipeline/export'
 import { toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
+import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PipelineRunner } from './pipeline/run'
 import { loadImage } from './render/load-image'
@@ -55,6 +56,8 @@ export interface PaperPicOptions {
   output?: PaperPicOutput
   /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
   maxOutputSize?: number
+  /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
+  aspectRatio?: number
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
 }
@@ -94,7 +97,8 @@ export interface PaperPicEvents {
 
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
 type Listeners = { [Name in keyof PaperPicEvents]: Set<Listener<Name>> }
-type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | 'labels' | 'output' | 'maxOutputSize'>> & Pick<PaperPicOptions, 'labels' | 'output' | 'maxOutputSize'>
+type OptionalOption = 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio'
+type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | OptionalOption>> & Pick<PaperPicOptions, OptionalOption>
 
 const DEFAULT_OPTIONS: ResolvedOptions = {
   alt: '',
@@ -104,6 +108,7 @@ const DEFAULT_OPTIONS: ResolvedOptions = {
   wheelZoom: true,
   output: undefined,
   maxOutputSize: undefined,
+  aspectRatio: undefined,
   labels: undefined,
 }
 
@@ -571,6 +576,8 @@ export class PaperPic {
         this.status.textContent = text
       },
       labels: () => this.labels,
+      photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
+      aspectRatio: () => this.options.aspectRatio,
       paintLens: (context, lens) => this.paintLens(context, lens),
     }
   }

@@ -1,7 +1,9 @@
 import type { PixelBuffer } from '../processing/types'
 import type { PipelineStep } from './operations'
 import { cropPixels } from '../processing/crop'
+import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { rotatePixels } from '../processing/rotate'
+import { warpPerspective } from '../processing/warp'
 
 function applyStep(pixels: PixelBuffer, step: PipelineStep): PixelBuffer {
   switch (step.type) {
@@ -9,6 +11,11 @@ function applyStep(pixels: PixelBuffer, step: PipelineStep): PixelBuffer {
       return rotatePixels(pixels, step.rotation)
     case 'crop':
       return cropPixels(pixels, step.rect)
+    case 'perspective': {
+      const quad = scaleQuad(step.quad, pixels.width, pixels.height)
+      const { width, height } = estimateOutputSize(quad, pixels, { aspectRatio: step.aspectRatio })
+      return warpPerspective(pixels, quad, width, height)
+    }
   }
 }
 

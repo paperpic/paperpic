@@ -69,6 +69,11 @@ export function applyHomography(matrix: Matrix3, { x, y }: Point): Point {
   return { x: (a * x + b * y + c) / w, y: (d * x + e * y + f) / w }
 }
 
+/** Turns corners given as fractions of an image into its pixels. */
+export function scaleQuad(quad: Quad, width: number, height: number): Quad {
+  return quad.map(({ x, y }) => ({ x: x * width, y: y * height })) as unknown as Quad
+}
+
 /** A size in pixels. */
 export interface Size {
   width: number
@@ -108,6 +113,14 @@ export function estimateOutputSize(quad: Quad, photo: Size, { aspectRatio }: Out
     width: Math.max(1, Math.round(width)),
     height: Math.max(1, Math.round(width * ratio)),
   }
+}
+
+/**
+ * Estimates the proportions of a straightened document, as width divided by height.
+ * `quad` and `photo` follow the same rules as in `estimateOutputSize`.
+ */
+export function estimateAspectRatio(quad: Quad, photo: Size): number {
+  return 1 / estimateHeightOverWidth(quad, photo)
 }
 
 function estimateHeightOverWidth([topLeft, topRight, bottomRight, bottomLeft]: Quad, photo: Size): number {

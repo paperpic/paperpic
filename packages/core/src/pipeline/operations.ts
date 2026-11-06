@@ -1,7 +1,15 @@
 import type { QuarterTurn } from '../processing/rotate'
-import type { NormalizedRect } from '../processing/types'
+import type { NormalizedRect, Quad } from '../processing/types'
 import type { Rotation } from '../rotation'
 import { normalizeRotation } from '../rotation'
+
+/** Straightens the area inside `quad`, whose corners are fractions of the image, into these proportions. */
+export interface PerspectiveEdit {
+  type: 'perspective'
+  quad: Quad
+  /** The proportions of the result, as width divided by height. */
+  aspectRatio: number
+}
 
 /**
  * One edit, as the history stores it.
@@ -10,11 +18,13 @@ import { normalizeRotation } from '../rotation'
 export type Operation
   = | { type: 'rotate', direction: 1 | -1 }
     | { type: 'crop', rect: NormalizedRect }
+    | PerspectiveEdit
 
 /** One thing the pipeline does to the pixels. */
 export type PipelineStep
   = | { type: 'rotate', rotation: QuarterTurn }
     | { type: 'crop', rect: NormalizedRect }
+    | PerspectiveEdit
 
 function addRotation(steps: PipelineStep[], degrees: number): void {
   const rotation = normalizeRotation(degrees)

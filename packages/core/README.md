@@ -34,13 +34,14 @@ The pencil opens the edit mode. When the user applies the changes, the result re
 | `alt`           | `string`                  | `''`                 | Describes the image for screen readers                                               |
 | `editable`      | `boolean`                 | `true`               | With `false` it is a read-only viewer, whose toolbar can also rotate the image       |
 | `toolbar`       | `boolean`                 | `true`               | Shows the built-in toolbar and edit bar. Without them, use the methods below         |
-| `tools`         | `ToolId[]`                | All of them          | Which tools the edit bar offers: `crop` and `rotate`                                 |
+| `tools`         | `ToolId[]`                | All of them          | Which tools the edit bar offers: `crop`, `perspective` and `rotate`                  |
 | `wheelZoom`     | `boolean`                 | `true`               | Whether the wheel zooms. Turn it off when the viewer sits in a long page             |
 | `output`        | `{ type, quality }`       | Format of the source | The format of the result: `image/jpeg`, `image/png` or `image/webp`, and from 0 to 1 |
 | `maxOutputSize` | `number`                  | Full resolution      | The longest side of the result, in pixels                                            |
+| `aspectRatio`   | `number`                  | Estimated            | The real proportions of the document, as width divided by height, for Straighten     |
 | `labels`        | `Partial<PaperPicLabels>` |                      | Replaces any of the texts, which are in English by default                           |
 
-Methods: `zoomIn()`, `zoomOut()`, `zoomTo(zoom, point?)`, `fit('image' | 'width' | 'height')`, `edit()`, `rotate(direction)`, `openTool('crop')`, `confirmTool()`, `cancelTool()`, `undo()`, `redo()`, `apply()`, `cancel()`, `reload()`, `setOptions(options)`, `getState()`, `on(event, listener)` and `destroy()`.
+Methods: `zoomIn()`, `zoomOut()`, `zoomTo(zoom, point?)`, `fit('image' | 'width' | 'height')`, `edit()`, `rotate(direction)`, `openTool('crop' | 'perspective')`, `confirmTool()`, `cancelTool()`, `undo()`, `redo()`, `apply()`, `cancel()`, `reload()`, `setOptions(options)`, `getState()`, `on(event, listener)` and `destroy()`.
 
 Events: `load`, `error`, `change` and `apply`. `change` reports user actions, and `setOptions()` never emits it.
 

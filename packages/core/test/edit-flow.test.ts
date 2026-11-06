@@ -593,6 +593,27 @@ describe('editing', () => {
       expect(releasePreview).toHaveBeenCalled()
     })
 
+    it('straightens with the proportions the consumer knows, and exports them', async () => {
+      pic.setOptions({ aspectRatio: 0.5 })
+      pic.openTool('perspective')
+      expect(pic.getState().activeTool).toBe('perspective')
+      button('Done').click()
+      await flush()
+
+      const applying = pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        expect.objectContaining({ type: 'perspective', aspectRatio: 0.5 }),
+      ])
+      await finishLoading()
+      await applying
+    })
+
+    it('tells the user how to use the perspective tool', () => {
+      pic.openTool('perspective')
+      expect(button('Done').parentElement!.textContent).toContain('Drag each corner to a corner of the document')
+    })
+
     it('ignores other edits while it is open', async () => {
       crop().click()
       pic.rotate(1)

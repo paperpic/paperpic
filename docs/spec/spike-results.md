@@ -124,6 +124,18 @@ Why the real photo still has an error:
 
 So the estimate is much better but not exact. When the real proportions are known, the `aspectRatio` option replaces the estimate: with `80 / 204`, this photo gives exactly 1:2.55. The method needs the size of the whole photo, because it assumes the camera axis passes through the center. Running perspective after a crop must therefore use the center of the original photo.
 
+### In the component
+
+The real tool, on the 4590×8160 photo with corners placed by hand, on desktop. Applying includes reading the area around the corners, the warp in the worker and exporting a JPEG.
+
+| Step                             | Time    |
+| -------------------------------- | ------- |
+| Preview, after confirming        | 368 ms  |
+| Apply, 3064×6861 result          | 1660 ms |
+| Longest block of the main thread | 300 ms  |
+
+The result has the proportions the method predicts: 1:2.24 as estimated, and exactly 1:2.55 with `aspectRatio: 80 / 204`.
+
 ## Libraries
 
 Reviewed on npm, without claiming to be exhaustive: `image-js`, `@silvia-odwyer/photon`, `wasm-vips`, `pica`, `opencv.js`, `@techstark/opencv-js`, `jimp`, `imagescript`, `homography`, `perspective-transform`, `glfx-es6`, `ml-matrix` and `otsu`.

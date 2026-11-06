@@ -1,10 +1,11 @@
 import type { PixelRect } from '../processing/crop'
 import type { QuarterTurn } from '../processing/rotate'
-import type { NormalizedRect } from '../processing/types'
+import type { NormalizedRect, Quad } from '../processing/types'
 import type { Rotation } from '../rotation'
 import type { Size } from '../state/view'
-import type { PipelineStep } from './operations'
+import type { PerspectiveEdit, PipelineStep } from './operations'
 import { cropBox } from '../processing/crop'
+import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { normalizeRotation } from '../rotation'
 
 /** What to read from an image, and what is left to do with those pixels. */
@@ -57,9 +58,43 @@ function shortenSide(side: number, scale: number): number {
   return Math.max(1, Math.round(side * scale))
 }
 
+/** The smallest rectangle around some corners. */
+function quadBounds(quad: Quad): NormalizedRect {
+  const xs = quad.map(({ x }) => x)
+  const ys = quad.map(({ y }) => y)
+  const x = Math.min(...xs)
+  const y = Math.min(...ys)
+  return {
+    x,
+    y,
+    width: Math.max(...xs) - x,
+    height: Math.max(...ys) - y,
+  }
+}
+
+function sizeAfterStep({ width, height }: Size, step: PipelineStep): Size {
+  switch (step.type) {
+    case 'rotate':
+      return step.rotation === 180
+        ? { width, height }
+        : { width: height, height: width }
+    case 'crop': {
+      const box = cropBox(step.rect, width, height)
+      return { width: box.width, height: box.height }
+    }
+    case 'perspective':
+      return estimateOutputSize(scaleQuad(step.quad, width, height), { width, height }, { aspectRatio: step.aspectRatio })
+  }
+}
+
+function sizeAfterSteps(start: Size, steps: readonly PipelineStep[]): Size {
+  return steps.reduce(sizeAfterStep, start)
+}
+
 /**
  * Plans the read of an image, so the steps work with as few pixels as possible.
- * The crops at the start become the region to read, which also keeps a small crop of a large photo sharp in a preview.
+ * The crops at the start become the region to read, and so does the area around the first perspective change.
+ * That keeps a small selection of a large photo sharp in a preview.
  */
 export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide, maxPixels }: ReadLimits = {}): ReadPlan {
   let left = 0
@@ -68,18 +103,34 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
   let regionHeight = 1
   let degrees = 0
   let index = 0
+  let perspective: PerspectiveEdit | null = null
 
-  for (; index < steps.length; index++) {
-    const step = steps[index]!
+  const keep = (frameRect: NormalizedRect) => {
+    const rect = unrotateRect(frameRect, normalizeRotation(degrees))
+    left += rect.x * regionWidth
+    top += rect.y * regionHeight
+    regionWidth *= rect.width
+    regionHeight *= rect.height
+  }
+
+  while (index < steps.length && !perspective) {
+    const step = steps[index++]!
     if (step.type === 'rotate') {
       degrees += step.rotation
     }
+    else if (step.type === 'crop') {
+      keep(step.rect)
+    }
     else {
-      const rect = unrotateRect(step.rect, normalizeRotation(degrees))
-      left += rect.x * regionWidth
-      top += rect.y * regionHeight
-      regionWidth *= rect.width
-      regionHeight *= rect.height
+      const bounds = quadBounds(step.quad)
+      keep(bounds)
+      perspective = {
+        ...step,
+        quad: step.quad.map(({ x, y }) => ({
+          x: (x - bounds.x) / bounds.width,
+          y: (y - bounds.y) / bounds.height,
+        })) as unknown as Quad,
+      }
     }
   }
 
@@ -89,38 +140,36 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
     width: regionWidth,
     height: regionHeight,
   }, image.width, image.height)
+  const rotation = normalizeRotation(degrees)
+  const remaining: PipelineStep[] = [
+    ...(rotation === 0
+      ? []
+      : [
+          { type: 'rotate' as const, rotation: rotation as QuarterTurn },
+        ]),
+    ...(perspective
+      ? [perspective]
+      : []),
+    ...steps.slice(index),
+  ]
+
+  const result = sizeAfterSteps({ width: region.width, height: region.height }, remaining)
   const scale = Math.min(
     1,
-    (maxSide ?? Number.POSITIVE_INFINITY) / Math.max(region.width, region.height),
+    (maxSide ?? Number.POSITIVE_INFINITY) / Math.max(result.width, result.height),
     Math.sqrt((maxPixels ?? Number.POSITIVE_INFINITY) / (region.width * region.height)),
   )
-  const rotation = normalizeRotation(degrees)
 
   return {
     region,
     width: shortenSide(region.width, scale),
     height: shortenSide(region.height, scale),
-    steps: [
-      ...(rotation === 0
-        ? []
-        : [
-            { type: 'rotate' as const, rotation: rotation as QuarterTurn },
-          ]),
-      ...steps.slice(index),
-    ],
+    steps: remaining,
   }
 }
 
 /** The size the result has at full resolution. */
 export function resultSize(image: Size, steps: readonly PipelineStep[]): Size {
   const { region, steps: remaining } = planRead(image, steps)
-  return remaining.reduce<Size>(({ width, height }, step) => {
-    if (step.type === 'crop') {
-      const box = cropBox(step.rect, width, height)
-      return { width: box.width, height: box.height }
-    }
-    return step.rotation === 180
-      ? { width, height }
-      : { width: height, height: width }
-  }, { width: region.width, height: region.height })
+  return sizeAfterSteps({ width: region.width, height: region.height }, remaining)
 }

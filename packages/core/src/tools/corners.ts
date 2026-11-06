@@ -69,6 +69,39 @@ export const constrainToRectangle: ConstrainCorner = (corners, index, point, fra
   )
 }
 
+function isConvex(corners: Quad, minTurn: number): boolean {
+  return corners.every((corner, index) => {
+    const next = corners[(index + 1) % 4]!
+    const last = corners[(index + 2) % 4]!
+    return (next.x - corner.x) * (last.y - next.y) - (next.y - corner.y) * (last.x - next.x) >= minTurn
+  })
+}
+
+/**
+ * Keeps the corners a convex shape inside the frame, so they can always be straightened.
+ * A move that would break it slides along the side that still allows it, or stays where it was.
+ */
+export const constrainToConvex: ConstrainCorner = (corners, index, point, frame) => {
+  const previous = corners[index]!
+  const x = clamp(point.x, 0, frame.width)
+  const y = clamp(point.y, 0, frame.height)
+  const minSide = Math.min(MIN_SIDE, frame.width, frame.height)
+  const candidates = [
+    { x, y },
+    { x, y: previous.y },
+    { x: previous.x, y },
+  ]
+  for (const candidate of candidates) {
+    const moved = corners.map((corner, position) => position === index
+      ? candidate
+      : corner) as unknown as Quad
+    if (isConvex(moved, minSide * minSide)) {
+      return moved
+    }
+  }
+  return corners
+}
+
 /** Dims what stays out of a selection, and outlines it so it shows on any image. */
 function drawSelection(context: CanvasRenderingContext2D, frame: readonly ViewPoint[], selection: readonly ViewPoint[]): void {
   const trace = (points: readonly ViewPoint[]) => {

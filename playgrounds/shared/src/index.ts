@@ -12,6 +12,7 @@ export interface PlaygroundOptions {
   alt: string
   editable: boolean
   wheelZoom: boolean
+  aspectRatio?: number
 }
 
 export interface Playground {
@@ -88,6 +89,10 @@ export function createPlayground({ name, mount }: Playground): void {
             <code>wheelZoom</code>
             <input name="wheelZoom" type="checkbox" checked>
           </label>
+          <label class="field">
+            <code>aspectRatio</code>
+            <input class="number" name="aspectRatio" type="number" min="0" step="any">
+          </label>
           <p class="hint">The sample images are AI-generated. They show no real purchase.</p>
           <p class="hint result" role="status"></p>
         </aside>
@@ -133,6 +138,11 @@ export function createPlayground({ name, mount }: Playground): void {
     }
     else if (input.name === 'wheelZoom') {
       options.wheelZoom = input.checked
+    }
+    else if (input.name === 'aspectRatio') {
+      options.aspectRatio = input.valueAsNumber > 0
+        ? input.valueAsNumber
+        : undefined
     }
     update({ ...options })
   })
