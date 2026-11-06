@@ -5,6 +5,7 @@ import { Toolbar } from '../src/ui/toolbar'
 
 const state: ToolbarState = {
   fit: 'image',
+  canEdit: false,
   canZoomIn: true,
   canZoomOut: true,
   canRotate: true,
@@ -12,6 +13,7 @@ const state: ToolbarState = {
 
 describe('toolbar', () => {
   const commands = {
+    edit: vi.fn(),
     zoomIn: vi.fn(),
     zoomOut: vi.fn(),
     fit: vi.fn(),
@@ -55,6 +57,24 @@ describe('toolbar', () => {
       [-1],
       [1],
     ])
+  })
+
+  it('shows the Edit pencil first, only when editing is available', () => {
+    expect(button('Edit').hidden).toBe(true)
+    toolbar.update({ ...state, canEdit: true })
+    expect(button('Edit').hidden).toBe(false)
+    expect(toolbar.element.firstElementChild).toBe(button('Edit'))
+
+    button('Edit').click()
+    expect(commands.edit).toHaveBeenCalledOnce()
+  })
+
+  it('moves the focus to the pencil, or to zoom when the pencil is hidden', () => {
+    toolbar.focus()
+    expect(document.activeElement).toBe(button('Zoom in'))
+    toolbar.update({ ...state, canEdit: true })
+    toolbar.focus()
+    expect(document.activeElement).toBe(button('Edit'))
   })
 
   it('hides rotation when it is not available', () => {

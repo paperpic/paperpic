@@ -4,10 +4,10 @@ import { createApp, h, reactive } from 'vue'
 
 createPlayground({
   name: 'Vue',
-  mount(stage, options) {
+  mount(stage, options, onApply) {
     const props = reactive(options)
 
-    createApp(() => h(PaperPic, { ...props })).mount(stage)
+    createApp(() => h(PaperPic, { ...props, onApply })).mount(stage)
 
     return changed => Object.assign(props, changed)
   },

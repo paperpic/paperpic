@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // Envoyez l’image modifiée
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="Document numérisé" :editable="false" />
+    <PaperPic src="/document.jpg" alt="Document numérisé" @apply="save" />
   </div>
 </template>
 ```
 
-La visionneuse remplit son élément parent : donnez-lui une hauteur.
+La visionneuse remplit son élément parent : donnez-lui une hauteur. Le crayon ouvre le mode d’édition, et `apply` fournit l’image modifiée sous forme de `Blob`. Avec `:editable="false"`, c’est une visionneuse en lecture seule.
 
 Essayez-le en direct dans le [playground](/fr/playground).

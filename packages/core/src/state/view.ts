@@ -132,17 +132,25 @@ export function panBy(view: View, deltaX: number, deltaY: number, image: Size, v
   return clampPan({ ...view, panX: view.panX + deltaX, panY: view.panY + deltaY }, image, viewport, sideMargin)
 }
 
-/** Turns the view by a quarter turn, keeping the fit in effect if there is one. */
-export function rotateView(view: View, direction: 1 | -1, image: Size, viewport: Size): View {
+/** Sets the rotation, keeping the fit in effect if there is one. */
+export function setRotation(view: View, rotation: Rotation, image: Size, viewport: Size): View {
+  if (rotation === view.rotation) {
+    return view
+  }
   const rotated: View = {
     ...view,
-    rotation: normalizeRotation(view.rotation + 90 * direction),
+    rotation,
     panX: 0,
     panY: 0,
   }
   return view.fit
     ? fitView(rotated, view.fit, image, viewport)
     : clampPan(rotated, image, viewport)
+}
+
+/** Turns the view by a quarter turn. */
+export function rotateView(view: View, direction: 1 | -1, image: Size, viewport: Size): View {
+  return setRotation(view, normalizeRotation(view.rotation + 90 * direction), image, viewport)
 }
 
 /** Adapts the view to a new viewport size. */

@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // 上传编辑后的图片
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="扫描的文档" :editable="false" />
+    <PaperPic src="/document.jpg" alt="扫描的文档" @apply="save" />
   </div>
 </template>
 ```
 
-查看器会填满其父元素，因此请为父元素设置高度。
+查看器会填满其父元素，因此请为父元素设置高度。铅笔会打开编辑模式，`apply` 会以 `Blob` 形式提供编辑后的图片。设置 `:editable="false"` 后，它就是只读查看器。
 
 可以在[演练场](/zh/playground)中在线试用。

@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // 編集後の画像をアップロードします
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="スキャンした文書" :editable="false" />
+    <PaperPic src="/document.jpg" alt="スキャンした文書" @apply="save" />
   </div>
 </template>
 ```
 
-ビューアーは親要素いっぱいに広がるため、親要素に高さを指定してください。
+ビューアーは親要素いっぱいに広がるため、親要素に高さを指定してください。鉛筆で編集モードが開き、`apply` は編集後の画像を `Blob` として渡します。`:editable="false"` を指定すると読み取り専用のビューアーになります。
 
 [プレイグラウンド](/ja/playground)で実際に試せます。

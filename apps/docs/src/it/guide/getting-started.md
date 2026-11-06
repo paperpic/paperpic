@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // Carica l’immagine modificata
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="Documento scansionato" :editable="false" />
+    <PaperPic src="/document.jpg" alt="Documento scansionato" @apply="save" />
   </div>
 </template>
 ```
 
-Il visualizzatore riempie il suo elemento genitore, quindi assegnagli un’altezza.
+Il visualizzatore riempie il suo elemento genitore, quindi assegnagli un’altezza. La matita apre la modalità di modifica, e `apply` fornisce l’immagine modificata come `Blob`. Con `:editable="false"` è un visualizzatore di sola lettura.
 
 Provalo dal vivo nel [playground](/it/playground).

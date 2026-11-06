@@ -66,7 +66,7 @@ describe('paperPic', () => {
     expect(core.instances[0]!.setOptions).toHaveBeenCalledWith(expect.objectContaining({ editable: false, src: '/doc.png' }))
   })
 
-  it.each(['load', 'error', 'change'])('translates the %s event', (name) => {
+  it.each(['load', 'error', 'change', 'apply'])('translates the %s event', (name) => {
     const wrapper = mount(PaperPic, {
       props: { src: '/doc.png' },
     })
