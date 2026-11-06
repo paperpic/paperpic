@@ -16,6 +16,9 @@ export interface PaperPicLabels {
   crop: string
   /** What to do in the crop tool. */
   cropHint: string
+  perspective: string
+  /** What to do in the perspective tool. */
+  perspectiveHint: string
   /** Closes a tool, keeping its selection. */
   confirm: string
   /** Closes a tool, discarding its selection. */
@@ -62,6 +65,8 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   rotateRight: 'Rotate right',
   crop: 'Crop',
   cropHint: 'Drag the corners',
+  perspective: 'Straighten',
+  perspectiveHint: 'Drag each corner to a corner of the document',
   confirm: 'Done',
   cancelTool: 'Cancel this tool',
   cornerTopLeft: 'Top left corner',

@@ -63,6 +63,7 @@ const pic = new PaperPic(container, {
   wheelZoom, // boolean, true by default
   output, // { type, quality }, the format of the source by default
   maxOutputSize, // number, full resolution by default
+  aspectRatio, // number, width divided by height, estimated by default
   labels, // Partial<PaperPicLabels>
 })
 
@@ -72,7 +73,7 @@ pic.zoomTo(1)
 pic.fit('image') // or 'width', 'height'
 pic.edit()
 pic.rotate(1) // or -1. An edit while editing, display only with editable: false
-pic.openTool('crop')
+pic.openTool('crop') // or 'perspective'
 pic.confirmTool()
 pic.cancelTool()
 pic.undo()
@@ -91,6 +92,7 @@ pic.destroy()
 - Rotations that cancel out are no change, so Apply stays disabled.
 - While a tool with its own selection is open, the other edits, Undo, Redo and Apply do nothing. `Enter` confirms it and `Esc` cancels it.
 - After an edit that needs new pixels, the viewer shows a preview on a copy of about 2 MP, painted at the size of the result. Zoom and coordinates do not change, but the preview looks softer than the result when zoomed in. Apply computes everything at full resolution.
+- Perspective keeps the corners a convex shape inside the image, so they can always be straightened. It stores the proportions when the user confirms. They come from `aspectRatio`, or else from an estimate that follows crops and rotations back to the center of the photo. After another perspective change, or after Apply, that center is unknown and the current image counts as the photo.
 - `getState().image` is the size of the result so far. `maxOutputSize` limits the longest side of the result.
 - Apply cannot be interrupted. It blocks the controls and shows a message. If it fails, the edit stays open.
 - After Apply, the result is the image on display, the history is empty and the mode is View. Passing the same `src` again does nothing, because wrappers resend it. `reload()` brings back the original.
@@ -160,7 +162,7 @@ interface ToolSession {
 - The canvas respects `devicePixelRatio`.
 - One pure function computes the transform matrix. Painting and converting pointer coordinates to image coordinates both use it.
 - A 90 degree rotation after the last edit that needs new pixels is applied in the matrix, so it is instant. Export bakes it into the pixels.
-- The crops at the start of the edits decide which part of the image gets read, so a small crop of a large photo stays sharp in the preview and uses less memory on export.
+- The crops at the start of the edits, and the area around the first perspective change, decide which part of the image gets read. A small selection of a large photo stays sharp in the preview and uses less memory on export.
 - There are three layers: a canvas for the image, a canvas for the dimmed area and selection lines, and DOM elements for the corner handles, so they can take focus and work with a keyboard.
 - Mobile and desktop share this one path.
 
@@ -204,7 +206,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 1. **Technical spike.** Done, see the [results](spike-results.md). Worker packaging, threshold and perspective implementations, benchmarks and a wider library search.
 2. **Viewer.** Renderer, gestures, view mode with its rotate buttons for `editable: false`, and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
 3. **Edit base.** Done. Edit bar, operation list, Undo, Redo and Apply, with Rotate as the first tool and processing in a packaged worker.
-4. **Tools.** Crop, with the shared corner handles, magnifier and preview, is done. Then Perspective, then Threshold.
+4. **Tools.** Crop, with the shared corner handles, magnifier and preview, and Perspective are done. Then Threshold.
 5. **Other frameworks.** React and, if feasible, Angular.
 6. **Automatic detection.** Only if it proves worth it.
 

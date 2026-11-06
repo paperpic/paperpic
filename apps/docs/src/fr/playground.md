@@ -1,6 +1,6 @@
 ---
 title: Playground en direct
-description: "Essayez en direct le composant Vue de PaperPic : zoomez, déplacez, recadrez, faites pivoter et téléchargez un ticket d’exemple ou votre propre image dans votre navigateur."
+description: "Essayez en direct le composant Vue de PaperPic : zoomez, déplacez, recadrez, redressez, faites pivoter et téléchargez un ticket d’exemple ou votre propre image dans votre navigateur."
 layout: page
 ---
 
@@ -8,6 +8,6 @@ layout: page
 
 # Playground
 
-Essayez PaperPic sur un ticket d’exemple, ou joignez votre propre image, qui reste dans votre navigateur. Vous pouvez zoomer et la déplacer. Pour la modifier, appuyez sur le crayon, recadrez-la ou faites-la pivoter et appliquez les changements pour télécharger le résultat.
+Essayez PaperPic sur un ticket d’exemple, ou joignez votre propre image, qui reste dans votre navigateur. Vous pouvez zoomer et la déplacer. Pour la modifier, appuyez sur le crayon, recadrez-la, redressez-la ou faites-la pivoter et appliquez les changements pour télécharger le résultat.
 
 </Playground>

@@ -1,11 +1,12 @@
 import type { Operation } from '../pipeline/operations'
+import type { PhotoFrame } from '../pipeline/photo-frame'
 import type { Point } from '../processing/types'
 import type { Size, ViewPoint } from '../state/view'
 import type { PaperPicLabels } from '../ui/labels'
 import type { Lens } from './magnifier'
 
 /** The tools the edit bar can offer. */
-export type ToolId = 'crop' | 'rotate'
+export type ToolId = 'crop' | 'perspective' | 'rotate'
 
 /** What a button of a tool can do to the edit in progress. */
 export interface ToolContext {
@@ -16,7 +17,7 @@ export interface ToolContext {
 /** A button in the edit bar. */
 export interface ToolAction {
   /** Its key in `PaperPicLabels` and in the icons. */
-  id: 'crop' | 'rotateLeft' | 'rotateRight'
+  id: 'crop' | 'perspective' | 'rotateLeft' | 'rotateRight'
   run: (context: ToolContext) => void
 }
 
@@ -36,6 +37,10 @@ export interface ToolHost {
   requestPaint: () => void
   announce: (text: string) => void
   labels: () => PaperPicLabels
+  /** Where the image on display sits in the photo it comes from. */
+  photoFrame: () => PhotoFrame
+  /** The proportions the consumer knows for the document, as width divided by height. */
+  aspectRatio: () => number | undefined
   /** Paints a magnified part of the image. */
   paintLens: (context: CanvasRenderingContext2D, lens: Lens) => void
 }
@@ -60,5 +65,5 @@ export interface Tool {
   /** Only for a tool with its own selection and confirmation. */
   activate?: (host: ToolHost) => ToolSession
   /** Tells the user what to do in the tool. */
-  hint?: 'cropHint'
+  hint?: 'cropHint' | 'perspectiveHint'
 }

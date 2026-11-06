@@ -17,6 +17,8 @@ export interface PaperPicProps {
   output?: PaperPicOutput
   /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
   maxOutputSize?: number
+  /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
+  aspectRatio?: number
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
 }

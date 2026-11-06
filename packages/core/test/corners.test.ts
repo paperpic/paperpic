@@ -101,6 +101,11 @@ describe('cornerEditor', () => {
       requestPaint: vi.fn(),
       announce: vi.fn(),
       labels: () => DEFAULT_LABELS,
+      photoFrame: () => ({
+        photo: frame,
+        origin: { x: 0, y: 0 },
+      }),
+      aspectRatio: () => undefined,
       paintLens: vi.fn(),
     }
   })
