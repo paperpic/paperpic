@@ -127,7 +127,7 @@ The [spike results](spike-results.md) track the status of each one. One top Andr
 - **Worker packaging.** Heavy processing belongs in a worker, which must work with consumers' bundlers and Content Security Policy. Proven in Vite and webpack 5, falling back to the main thread if a policy blocks it.
 - **Preview and export.** The threshold slider works on a copy of about 2 MP to stay fluid, at 40 ms per change on a top Android phone. Code and parameters are the same, but the result can differ slightly from full resolution.
 - **Memory.** A 12 MP photo takes 48 MB as RGBA, so only the base image and the last result are kept. Undo recomputes from the base image. Threshold peaks at about 340 MB at 37.5 MP.
-- **Text sharpness when downscaling.** No visible difference on desktop or Android, so painting needs no reduced copy for sharpness. Whether very large images keep zoom and pan fluid can only be checked with the real viewer.
+- **Text sharpness when downscaling.** No visible difference on desktop or Android, so painting needs no reduced copy for sharpness. Zoom and pan also work well with a 37.5 MP photo on a top Android phone, checked by hand.
 
 ## Accessibility
 
