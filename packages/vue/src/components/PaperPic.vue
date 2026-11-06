@@ -1,33 +1,44 @@
 <script setup lang="ts">
+import type { PaperPicEvents } from '@paperpic/core'
 import type { PaperPicProps } from '../types'
-import { normalizeRotation } from '@paperpic/core'
-import { computed } from 'vue'
+import { PaperPic } from '@paperpic/core'
+import { onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
 
 const props = withDefaults(defineProps<PaperPicProps>(), {
-  alt: '',
-  rotation: 0,
+  editable: true,
+  toolbar: true,
+  wheelZoom: true,
 })
 
-const transform = computed(() => `rotate(${normalizeRotation(props.rotation)}deg)`)
+const emit = defineEmits<{
+  load: [payload: PaperPicEvents['load']]
+  error: [payload: PaperPicEvents['error']]
+  change: [payload: PaperPicEvents['change']]
+}>()
+
+const host = useTemplateRef<HTMLElement>('host')
+
+/** The viewer, for a custom interface. It is `null` until the component mounts. */
+const instance = shallowRef<PaperPic | null>(null)
+
+onMounted(() => {
+  const pic = new PaperPic(host.value!, { ...props })
+  pic.on('load', payload => emit('load', payload))
+  pic.on('error', payload => emit('error', payload))
+  pic.on('change', payload => emit('change', payload))
+  instance.value = pic
+})
+
+watch(() => ({ ...props }), options => instance.value?.setOptions(options))
+
+onBeforeUnmount(() => {
+  instance.value?.destroy()
+  instance.value = null
+})
+
+defineExpose({ instance })
 </script>
 
 <template>
-  <div class="paperpic">
-    <img :src :alt :style="{ transform }">
-  </div>
+  <div ref="host" class="paperpic-host" />
 </template>
-
-<style>
-@layer paperpic {
-  .paperpic {
-    display: inline-block;
-    overflow: hidden;
-  }
-
-  .paperpic img {
-    display: block;
-    max-width: 100%;
-    transition: transform var(--paperpic-transition-duration) ease;
-  }
-}
-</style>

@@ -7,10 +7,6 @@
 - Committing, adding a changeset or opening a pull request: read [WORKFLOW.md](.github/WORKFLOW.md).
 - Changing docs pages in `apps/docs`: read [Translating the docs](.github/CONTRIBUTING.md#translating-the-docs).
 
-## Current state
-
-`packages/vue/src/components/PaperPic.vue` is temporary, including its rotation clipping bug. New rendering work goes in `packages/core`.
-
 ## Done means
 
 A task is done when both of these hold:

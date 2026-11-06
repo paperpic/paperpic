@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="Gescanntes Dokument" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="Gescanntes Dokument" :editable="false" />
+  </div>
 </template>
 ```
+
+Der Viewer füllt sein Elternelement aus, gib diesem also eine Höhe.
 
 Probiere es live im [Playground](/de/playground) aus.

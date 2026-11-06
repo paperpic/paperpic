@@ -26,7 +26,7 @@ body {
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  height: 100dvh;
 }
 
 .header {
@@ -91,6 +91,7 @@ body {
   display: grid;
   flex: 1;
   grid-template-columns: 16rem minmax(0, 1fr);
+  min-height: 0;
 }
 
 .panel {
@@ -113,20 +114,36 @@ body {
   gap: 0.75rem;
   align-items: center;
   justify-content: space-between;
+  margin-block-end: 0.75rem;
   font-size: 0.875rem;
 }
 
-.select {
+.select,
+.file {
+  min-width: 0;
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--color-border);
   border-radius: 4px;
   font: inherit;
 }
 
+.select {
+  max-width: 9rem;
+}
+
+.file {
+  max-width: 8rem;
+}
+
+.hint {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
 .stage {
-  display: grid;
-  place-items: center;
-  padding: 2rem 1rem;
+  min-height: 0;
+  padding: 1rem;
   background-image: radial-gradient(var(--color-dot) 1px, transparent 1px);
   background-size: 16px 16px;
 }

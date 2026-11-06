@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="Отсканированный документ" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="Отсканированный документ" :editable="false" />
+  </div>
 </template>
 ```
+
+Просмотрщик заполняет родительский элемент, поэтому задайте ему высоту.
 
 Попробуйте в [песочнице](/ru/playground).

@@ -1,22 +1,11 @@
-import { normalizeRotation } from '@paperpic/core'
+import { PaperPic } from '@paperpic/core'
 import { createPlayground } from 'playground-shared'
-import './style.css'
 
 createPlayground({
   name: 'Vanilla',
-  mount(stage, { src, alt, rotation }) {
-    const preview = document.createElement('img')
-    preview.className = 'preview'
-    preview.src = src
-    preview.alt = alt
+  mount(stage, options) {
+    const pic = new PaperPic(stage, options)
 
-    const rotate = (degrees: number) => {
-      preview.style.transform = `rotate(${normalizeRotation(degrees)}deg)`
-    }
-
-    rotate(rotation)
-    stage.append(preview)
-
-    return options => rotate(options.rotation)
+    return changed => pic.setOptions(changed)
   },
 })

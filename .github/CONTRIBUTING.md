@@ -37,7 +37,7 @@ pnpm install
 
 ## Architecture
 
-`@paperpic/core` holds the component in plain TypeScript, and each framework package is a thin wrapper around it. `PaperPic.vue` still renders its own markup until the component moves to `@paperpic/core`.
+`@paperpic/core` holds the component in plain TypeScript, and each framework package is a thin wrapper around it.
 
 - **No DOM access at import time.** Use `window` and `document` only once an instance is created, so the packages can load during server-side rendering.
 - **`destroy()` releases everything.** It removes every listener, observer and worker the instance created. Creating and destroying must be repeatable, because a framework can mount a component twice.

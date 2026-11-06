@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="Document numérisé" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="Document numérisé" :editable="false" />
+  </div>
 </template>
 ```
+
+La visionneuse remplit son élément parent : donnez-lui une hauteur.
 
 Essayez-le en direct dans le [playground](/fr/playground).

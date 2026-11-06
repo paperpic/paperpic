@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="스캔한 문서" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="스캔한 문서" :editable="false" />
+  </div>
 </template>
 ```
+
+뷰어는 부모 요소를 가득 채우므로 부모 요소에 높이를 지정하세요.
 
 [플레이그라운드](/ko/playground)에서 바로 사용해 보세요.
