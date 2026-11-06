@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { netRotation, toPipelineSteps } from '../src/pipeline/operations'
+import { toPipelineSteps, trailingRotation } from '../src/pipeline/operations'
 import { applySteps } from '../src/pipeline/pipeline'
 import { rotatePixels } from '../src/processing/rotate'
 import { addToHistory, createHistory, redoHistory, undoHistory } from '../src/state/history'
@@ -44,10 +44,10 @@ describe('history', () => {
 
 describe('operations', () => {
   it('adds up the rotation', () => {
-    expect(netRotation([])).toBe(0)
-    expect(netRotation([right])).toBe(90)
-    expect(netRotation([left])).toBe(270)
-    expect(netRotation([right, right, left])).toBe(90)
+    expect(trailingRotation([])).toBe(0)
+    expect(trailingRotation([right])).toBe(90)
+    expect(trailingRotation([left])).toBe(270)
+    expect(trailingRotation([right, right, left])).toBe(90)
   })
 
   it('leaves no steps when the rotations cancel out', () => {

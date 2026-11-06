@@ -1,22 +1,25 @@
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
-import type { Operation } from './pipeline/operations'
+import type { Operation, PipelineStep } from './pipeline/operations'
 import type { LoadedImage } from './render/load-image'
 import type { Scene } from './render/renderer'
 import type { Rotation } from './rotation'
 import type { History } from './state/history'
 import type { Fit, Size, View, ViewPoint } from './state/view'
-import type { ToolContext, ToolId } from './tools/types'
+import type { Lens } from './tools/magnifier'
+import type { Tool, ToolContext, ToolHost, ToolId, ToolSession } from './tools/types'
 import type { PaperPicLabels } from './ui/labels'
 import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
 import { exportImage } from './pipeline/export'
-import { netRotation, toPipelineSteps } from './pipeline/operations'
+import { toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
+import { renderPreview } from './pipeline/preview'
 import { PipelineRunner } from './pipeline/run'
 import { loadImage } from './render/load-image'
 import { Renderer } from './render/renderer'
+import { computeTransform } from './render/transform'
 import { addToHistory, createHistory, redoHistory, undoHistory } from './state/history'
-import { createView, fitView, overflows, panBy, resizeView, rotateView, setRotation, zoomLimits, zoomTo } from './state/view'
+import { createView, displayedSize, fitView, frameToViewport, overflows, panBy, resizeView, rotateView, setRotation, viewportToFrame, zoomLimits, zoomTo } from './state/view'
 import { ALL_TOOL_IDS, TOOLS } from './tools'
 import { EditBar } from './ui/edit-bar'
 import { DEFAULT_LABELS } from './ui/labels'
@@ -25,6 +28,9 @@ import { Toolbar } from './ui/toolbar'
 const ZOOM_STEP = 1.25
 const ZOOM_TOLERANCE = 0.001
 const TOOLBAR_GAP = 16
+const LENS_ZOOM = 3
+/** How close to the edge of the viewer a point can be and still count as on screen. */
+const REVEAL_MARGIN = 24
 
 /** The image to show: a URL from the same origin, or a file attached on the client. */
 export type PaperPicSource = string | Blob
@@ -58,7 +64,7 @@ export interface PaperPicState {
   status: 'empty' | 'loading' | 'ready' | 'error'
   /** Whether the user is viewing or editing the image. */
   mode: 'view' | 'edit'
-  /** The size of the loaded image in pixels, or `null` if there is none. */
+  /** The size of the image on display in pixels, with the edits so far, or `null` if there is none. */
   image: Size | null
   /** Screen pixels per image pixel. */
   zoom: number
@@ -71,6 +77,8 @@ export interface PaperPicState {
   canApply: boolean
   /** Whether the changes are being applied. */
   busy: boolean
+  /** The tool with an open selection, or `null`. */
+  activeTool: ToolId | null
 }
 
 export interface PaperPicEvents {
@@ -110,6 +118,7 @@ export class PaperPic {
   private readonly root: HTMLElement
   private readonly viewportElement: HTMLElement
   private readonly canvas: HTMLCanvasElement
+  private readonly handles: HTMLElement
   private readonly status: HTMLElement
   private readonly toolbar: Toolbar
   private readonly editBar: EditBar
@@ -128,6 +137,12 @@ export class PaperPic {
   private labels: PaperPicLabels = DEFAULT_LABELS
   private source: PaperPicSource | undefined
   private image: LoadedImage | null = null
+  /** What the edits look like, while they need other pixels than the image. */
+  private preview: LoadedImage | null = null
+  private previewKey = '[]'
+  private previewId = 0
+  private previewing = false
+  private session: { tool: Tool, handle: ToolSession } | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
   private view: View = createView()
@@ -161,7 +176,12 @@ export class PaperPic {
     this.canvas = document.createElement('canvas')
     this.canvas.className = 'paperpic-canvas'
     this.canvas.setAttribute('role', 'img')
-    this.viewportElement.append(this.canvas)
+    const overlay = document.createElement('canvas')
+    overlay.className = 'paperpic-overlay'
+    overlay.setAttribute('aria-hidden', 'true')
+    this.handles = document.createElement('div')
+    this.handles.className = 'paperpic-handles'
+    this.viewportElement.append(this.canvas, overlay, this.handles)
 
     this.status = document.createElement('div')
     this.status.className = 'paperpic-status'
@@ -180,6 +200,7 @@ export class PaperPic {
 
     const toolContext: ToolContext = {
       addOperation: operation => this.addOperation(operation),
+      openTool: id => this.openTool(id),
     }
     this.editBar = new EditBar(
       {
@@ -188,6 +209,8 @@ export class PaperPic {
         redo: () => this.redo(),
         apply: () => this.apply(),
         runTool: run => run(toolContext),
+        confirmTool: () => this.confirmTool(),
+        cancelTool: () => this.cancelTool(),
       },
       TOOLS,
       this.labels,
@@ -197,7 +220,7 @@ export class PaperPic {
     this.root.append(stage, this.editBar.element)
     container.append(this.root)
 
-    this.renderer = new Renderer(this.canvas, () => this.scene())
+    this.renderer = new Renderer(this.canvas, overlay, () => this.scene())
 
     this.cleanups.push(attachGestures(this.viewportElement, {
       onPan: (deltaX, deltaY) => this.pan(deltaX, deltaY),
@@ -265,10 +288,11 @@ export class PaperPic {
 
   /** Returns what the viewer is showing. */
   getState(): PaperPicState {
+    const shown = this.preview ?? this.image
     return {
       status: this.loadStatus,
       mode: this.mode,
-      image: this.image && { width: this.image.width, height: this.image.height },
+      image: shown && { width: shown.width, height: shown.height },
       zoom: this.view.zoom,
       fit: this.view.fit,
       rotation: this.view.rotation,
@@ -276,6 +300,7 @@ export class PaperPic {
       canRedo: this.history.undone.length > 0,
       canApply: toPipelineSteps(this.history.done).length > 0,
       busy: this.busy,
+      activeTool: this.session?.tool.id ?? null,
     }
   }
 
@@ -324,6 +349,9 @@ export class PaperPic {
    * @param direction 1 for clockwise, -1 for counterclockwise.
    */
   rotate(direction: 1 | -1 = 1): void {
+    if (this.session) {
+      return
+    }
     if (this.mode === 'edit') {
       this.addOperation({ type: 'rotate', direction })
       return
@@ -351,15 +379,61 @@ export class PaperPic {
 
   /** Undoes the last edit. */
   undo(): void {
-    if (this.mode === 'edit' && !this.busy && this.history.done.length > 0) {
+    if (this.mode === 'edit' && !this.busy && !this.session && this.history.done.length > 0) {
       this.setHistory(undoHistory(this.history))
     }
   }
 
   /** Brings back the last edit undone. */
   redo(): void {
-    if (this.mode === 'edit' && !this.busy && this.history.undone.length > 0) {
+    if (this.mode === 'edit' && !this.busy && !this.session && this.history.undone.length > 0) {
       this.setHistory(redoHistory(this.history))
+    }
+  }
+
+  /**
+   * Opens a tool with its own selection, such as `crop`. It stays open until `confirmTool()` or `cancelTool()`.
+   * It does nothing outside the edit mode, or while a preview is on its way.
+   */
+  openTool(id: ToolId): void {
+    const tool = TOOLS.find(candidate => candidate.id === id)
+    if (this.mode !== 'edit' || this.busy || this.previewing || this.session || !tool?.activate || !this.options.tools.includes(id)) {
+      return
+    }
+    const hadFocus = this.hasFocus()
+    this.session = {
+      tool,
+      handle: tool.activate(this.toolHost()),
+    }
+    this.editBar.setActiveTool(tool)
+    this.refresh()
+    if (hadFocus) {
+      this.session.handle.focus()
+    }
+    this.emit('change', this.getState())
+  }
+
+  /** Closes the open tool and adds its selection to the edits. */
+  confirmTool(): void {
+    if (this.session) {
+      const operation = this.session.handle.confirm()
+      this.closeTool()
+      if (operation) {
+        this.addOperation(operation)
+      }
+      else {
+        this.refresh()
+        this.emit('change', this.getState())
+      }
+    }
+  }
+
+  /** Closes the open tool without adding anything to the edits. */
+  cancelTool(): void {
+    if (this.session) {
+      this.closeTool()
+      this.refresh()
+      this.emit('change', this.getState())
     }
   }
 
@@ -382,7 +456,7 @@ export class PaperPic {
   async apply(): Promise<void> {
     const image = this.image
     const steps = toPipelineSteps(this.history.done)
-    if (this.mode !== 'edit' || this.busy || !image || steps.length === 0) {
+    if (this.mode !== 'edit' || this.busy || this.session || !image || steps.length === 0) {
       return
     }
 
@@ -412,6 +486,7 @@ export class PaperPic {
       this.busy = false
       this.mode = 'view'
       this.history = createHistory()
+      this.setPreview(null)
       this.setImage(loaded, 'ready')
       this.restoreFocus(hadFocus)
       this.status.textContent = this.labels.applied
@@ -447,8 +522,12 @@ export class PaperPic {
     for (const cleanup of this.cleanups) {
       cleanup()
     }
+    this.closeTool()
     this.renderer.destroy()
     this.runner.destroy()
+    this.previewId++
+    this.preview?.release()
+    this.preview = null
     this.image?.release()
     this.image = null
     this.root.remove()
@@ -458,11 +537,88 @@ export class PaperPic {
   }
 
   private scene(): Scene | null {
-    return this.image && {
-      image: this.image.element,
-      imageSize: this.image,
+    const shown = this.preview ?? this.image
+    return shown && {
+      image: shown.element,
+      imageSize: shown,
       view: this.view,
       viewport: this.viewport,
+      drawOverlay: this.session?.handle.drawOverlay,
+    }
+  }
+
+  private toolHost(): ToolHost {
+    const shown = () => (this.preview ?? this.image)!
+    return {
+      layer: this.handles,
+      frameSize: () => displayedSize(shown(), this.view.rotation),
+      frameToViewport: point => frameToViewport(this.view, shown(), this.viewport, point),
+      viewportToFrame: point => viewportToFrame(this.view, shown(), this.viewport, point),
+      toolbarCorner: () => {
+        if (!this.options.toolbar) {
+          return null
+        }
+        const { offsetLeft, offsetTop, offsetHeight } = this.toolbar.element
+        return { x: offsetLeft, y: offsetTop + offsetHeight }
+      },
+      reveal: (point) => {
+        const { x, y } = frameToViewport(this.view, shown(), this.viewport, point)
+        const distance = (position: number, size: number) => Math.max(0, REVEAL_MARGIN - position) - Math.max(0, position - size + REVEAL_MARGIN)
+        this.pan(distance(x, this.viewport.width), distance(y, this.viewport.height))
+      },
+      requestPaint: () => this.renderer.requestPaint(),
+      announce: (text) => {
+        this.status.textContent = text
+      },
+      labels: () => this.labels,
+      paintLens: (context, lens) => this.paintLens(context, lens),
+    }
+  }
+
+  /** Paints the image larger around a point, inside a circle. */
+  private paintLens(context: CanvasRenderingContext2D, { point, center, radius }: Lens): void {
+    const shown = (this.preview ?? this.image)!
+    const [a, b, c, d, e, f] = computeTransform(this.view, shown, this.viewport)
+    const target = frameToViewport(this.view, shown, this.viewport, point)
+    context.save()
+    context.beginPath()
+    context.arc(center.x, center.y, radius, 0, Math.PI * 2)
+    context.clip()
+    context.fillStyle = '#fff'
+    context.fill()
+    context.transform(
+      a * LENS_ZOOM,
+      b * LENS_ZOOM,
+      c * LENS_ZOOM,
+      d * LENS_ZOOM,
+      center.x + (e - target.x) * LENS_ZOOM,
+      center.y + (f - target.y) * LENS_ZOOM,
+    )
+    context.drawImage(shown.element, 0, 0, shown.width, shown.height)
+    context.restore()
+
+    context.beginPath()
+    context.arc(center.x, center.y, radius, 0, Math.PI * 2)
+    context.moveTo(center.x - 8, center.y)
+    context.lineTo(center.x + 8, center.y)
+    context.moveTo(center.x, center.y - 8)
+    context.lineTo(center.x, center.y + 8)
+    context.lineWidth = 2
+    context.strokeStyle = '#fff'
+    context.stroke()
+  }
+
+  private closeTool(): void {
+    if (!this.session) {
+      return
+    }
+    const hadFocus = this.hasFocus()
+    const { tool, handle } = this.session
+    handle.deactivate()
+    this.session = null
+    this.editBar.setActiveTool(null)
+    if (hadFocus && this.options.toolbar) {
+      this.editBar.focus(tool.id)
     }
   }
 
@@ -525,15 +681,17 @@ export class PaperPic {
 
   /** Ends the edit without a trace. In-progress work is ignored when it finishes, because a load changes `loadId`. */
   private leaveEdit(): void {
+    this.closeTool()
     this.mode = 'view'
     this.busy = false
     this.applyFailed = false
     this.history = createHistory()
+    this.setPreview(null)
     this.syncRotation()
   }
 
   private addOperation(operation: Operation): void {
-    if (this.mode === 'edit' && !this.busy) {
+    if (this.mode === 'edit' && !this.busy && !this.session) {
       this.setHistory(addToHistory(this.history, operation))
     }
   }
@@ -541,7 +699,16 @@ export class PaperPic {
   private setHistory(history: History<Operation>): void {
     this.history = history
     this.applyFailed = false
-    this.syncRotation()
+    const steps = toPreviewSteps(history.done)
+    if (JSON.stringify(steps) === this.previewKey) {
+      this.syncRotation()
+    }
+    else if (steps.length === 0) {
+      this.setPreview(null)
+    }
+    else {
+      this.startPreview(steps)
+    }
     this.showStatus()
     this.refresh()
     this.emit('change', this.getState())
@@ -551,8 +718,57 @@ export class PaperPic {
   private syncRotation(): void {
     const image = this.measuredImage()
     if (image && this.options.editable) {
-      this.view = setRotation(this.view, netRotation(this.history.done), image, this.viewport)
+      this.view = setRotation(this.view, trailingRotation(this.history.done), image, this.viewport)
     }
+  }
+
+  /** Computes the pixels of the edits. A result that arrives after newer edits is ignored. */
+  private async startPreview(steps: PipelineStep[]): Promise<void> {
+    const id = ++this.previewId
+    this.previewKey = JSON.stringify(steps)
+    this.previewing = true
+    try {
+      const preview = await renderPreview(this.image!, steps, (source, remaining) => this.runner.run(source, remaining))
+      if (id !== this.previewId) {
+        preview.release()
+        return
+      }
+      this.setPreview(preview)
+      this.emit('change', this.getState())
+    }
+    catch (cause) {
+      if (id !== this.previewId) {
+        return
+      }
+      this.previewing = false
+      this.applyFailed = true
+      this.showStatus()
+      this.refresh()
+      this.emit('error', { error: cause as Error })
+    }
+  }
+
+  /**
+   * Changes the pixels on display, which start from a fitted view.
+   * With `null` it goes back to the image, and any preview in progress is forgotten.
+   */
+  private setPreview(preview: LoadedImage | null): void {
+    const changed = preview !== this.preview
+    if (!preview) {
+      this.previewId++
+      this.previewKey = '[]'
+    }
+    this.previewing = false
+    this.preview?.release()
+    this.preview = preview
+    if (changed) {
+      this.view = {
+        ...createView(),
+        rotation: trailingRotation(this.history.done),
+      }
+    }
+    this.applyViewport()
+    this.showStatus()
   }
 
   private showStatus(): void {
@@ -569,7 +785,7 @@ export class PaperPic {
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')
-    this.root.setAttribute('aria-busy', String(this.busy || this.loadStatus === 'loading'))
+    this.root.setAttribute('aria-busy', String(this.busy || this.previewing || this.loadStatus === 'loading'))
   }
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. */
@@ -588,10 +804,10 @@ export class PaperPic {
     this.applyViewport()
   }
 
-  /** The image, once the viewer has a size to show it in. A hidden container has none. */
+  /** The image on display, once the viewer has a size to show it in. A hidden container has none. */
   private measuredImage(): LoadedImage | null {
     return this.viewport.width > 0 && this.viewport.height > 0
-      ? this.image
+      ? this.preview ?? this.image
       : null
   }
 
@@ -616,7 +832,8 @@ export class PaperPic {
       canRotate: !this.options.editable,
     })
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
-    this.editBar.update(state)
+    this.editBar.update({ ...state, canOpenTool: !this.previewing })
+    this.session?.handle.update()
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
     this.viewportElement.classList.toggle(
       'paperpic-viewport-pannable',
@@ -700,6 +917,10 @@ export class PaperPic {
         this.redo()
         return editing
       case 'cancel':
+        if (this.session) {
+          this.cancelTool()
+          return true
+        }
         // Without the built-in bar there is nowhere to ask, and a custom interface decides what Esc does
         if (editing && this.options.toolbar) {
           this.editBar.requestCancel({
@@ -709,6 +930,10 @@ export class PaperPic {
         }
         return false
       case 'apply':
+        if (this.session && this.viewportElement.contains(target as Node)) {
+          this.confirmTool()
+          return true
+        }
         // Enter on a button must press that button
         if (editing && target === this.viewportElement) {
           this.apply()

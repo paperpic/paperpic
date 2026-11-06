@@ -5,9 +5,11 @@ import { PaperPic } from '../src'
 
 const mocks = vi.hoisted(() => ({
   exportImage: vi.fn(),
+  renderPreview: vi.fn(),
 }))
 
 vi.mock('../src/pipeline/export', () => ({ exportImage: mocks.exportImage }))
+vi.mock('../src/pipeline/preview', () => ({ renderPreview: mocks.renderPreview }))
 
 let images: { resolve: () => void }[]
 const revoke = vi.fn()
@@ -21,6 +23,17 @@ async function flush() {
 async function finishLoading() {
   images.at(-1)!.resolve()
   await flush()
+}
+
+const releasePreview = vi.fn()
+
+function preview() {
+  return {
+    element: {},
+    width: 480,
+    height: 200,
+    release: releasePreview,
+  }
 }
 
 const exported = {
@@ -49,6 +62,8 @@ describe('editing', () => {
     revoke.mockClear()
     mocks.exportImage.mockReset()
     mocks.exportImage.mockResolvedValue(exported)
+    mocks.renderPreview.mockReset()
+    mocks.renderPreview.mockImplementation(async () => preview())
 
     vi.stubGlobal('Image', class {
       src = ''
@@ -442,6 +457,228 @@ describe('editing', () => {
     await finishLoading()
     await applying
     expect(onApply).not.toHaveBeenCalled()
+  })
+
+  describe('with a tool that has its own selection', () => {
+    const handles = () => [
+      ...container.querySelectorAll('.paperpic-handle'),
+    ]
+    const crop = () => bar().querySelector<HTMLButtonElement>('[aria-label="Crop"]')!
+
+    beforeEach(() => {
+      releasePreview.mockClear()
+      pic.edit()
+    })
+
+    it('shows the handles and its own controls, and hides the rest', () => {
+      crop().click()
+      expect(pic.getState().activeTool).toBe('crop')
+      expect(handles()).toHaveLength(4)
+      expect(button('Done').hidden).toBe(false)
+      expect(button('Done').parentElement!.hidden).toBe(false)
+      expect(button('Apply').parentElement!.hidden).toBe(true)
+      expect(onChange).toHaveBeenCalled()
+    })
+
+    it('moves the focus to the first corner, and back to the button of the tool', () => {
+      crop().focus()
+      crop().click()
+      expect(document.activeElement).toBe(handles()[0])
+      button('Cancel this tool').click()
+      expect(document.activeElement).toBe(crop())
+    })
+
+    it('leaves no trace when cancelled', () => {
+      crop().click()
+      button('Cancel this tool').click()
+      expect(pic.getState()).toMatchObject({ activeTool: null, canUndo: false, canApply: false })
+      expect(handles()).toHaveLength(0)
+      expect(mocks.renderPreview).not.toHaveBeenCalled()
+    })
+
+    it('adds the crop on confirm, and shows the preview at the size of the result', async () => {
+      crop().click()
+      button('Done').click()
+      expect(pic.getState()).toMatchObject({ activeTool: null, canUndo: true, canApply: true })
+      expect(handles()).toHaveLength(0)
+      expect(mocks.renderPreview.mock.calls[0]![1]).toEqual([
+        {
+          type: 'crop',
+          rect: {
+            x: 0.1,
+            y: 0.1,
+            width: expect.any(Number),
+            height: 0.8,
+          },
+        },
+      ])
+
+      await flush()
+      expect(pic.getState().image).toEqual({ width: 480, height: 200 })
+    })
+
+    it('fits the preview in the viewer, like any other image', async () => {
+      expect(pic.getState().zoom).toBe(0.5)
+      crop().click()
+      button('Done').click()
+      await flush()
+      expect(pic.getState()).toMatchObject({ zoom: 0.625, fit: 'image' })
+
+      pic.undo()
+      expect(pic.getState()).toMatchObject({ zoom: 0.5, fit: 'image' })
+    })
+
+    it('goes back to the image with Undo, without computing anything', async () => {
+      crop().click()
+      button('Done').click()
+      await flush()
+
+      pic.undo()
+
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+      expect(pic.getState().image).toEqual({ width: 600, height: 250 })
+      expect(releasePreview).toHaveBeenCalledOnce()
+
+      pic.redo()
+      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
+    })
+
+    it('does not compute the preview again for a rotation after the crop', async () => {
+      crop().click()
+      button('Done').click()
+      await flush()
+
+      pic.rotate(1)
+      expect(pic.getState()).toMatchObject({
+        rotation: 90,
+        image: { width: 480, height: 200 },
+      })
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+
+      pic.undo()
+      expect(pic.getState()).toMatchObject({
+        rotation: 0,
+        image: { width: 480, height: 200 },
+      })
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+    })
+
+    it('bakes an earlier rotation into the preview', async () => {
+      pic.rotate(1)
+      crop().click()
+      button('Done').click()
+      expect(mocks.renderPreview.mock.calls[0]![1][0]).toEqual({ type: 'rotate', rotation: 90 })
+      await flush()
+      expect(pic.getState().rotation).toBe(0)
+    })
+
+    it('exports all the edits', async () => {
+      crop().click()
+      button('Done').click()
+      await flush()
+      pic.rotate(1)
+      const applying = pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        expect.objectContaining({ type: 'crop' }),
+        { type: 'rotate', rotation: 90 },
+      ])
+      await finishLoading()
+      await applying
+      expect(pic.getState()).toMatchObject({
+        mode: 'view',
+        rotation: 0,
+        image: { width: 600, height: 250 },
+      })
+      expect(releasePreview).toHaveBeenCalled()
+    })
+
+    it('ignores other edits while it is open', async () => {
+      crop().click()
+      pic.rotate(1)
+      pic.undo()
+      await pic.apply()
+      expect(pic.getState()).toMatchObject({ activeTool: 'crop', rotation: 0, canUndo: false })
+      expect(mocks.exportImage).not.toHaveBeenCalled()
+    })
+
+    it('cannot open a tool that was not chosen', () => {
+      pic.setOptions({
+        tools: ['rotate'],
+      })
+      pic.openTool('crop')
+      expect(pic.getState().activeTool).toBeNull()
+    })
+
+    it('cannot open while a preview is on its way', async () => {
+      crop().click()
+      button('Done').click()
+      expect(crop().getAttribute('aria-disabled')).toBe('true')
+      pic.openTool('crop')
+      expect(pic.getState().activeTool).toBeNull()
+
+      await flush()
+      expect(crop().getAttribute('aria-disabled')).toBe('false')
+      pic.openTool('crop')
+      expect(pic.getState().activeTool).toBe('crop')
+    })
+
+    it('closes with Esc, without asking to discard the edit', () => {
+      pic.rotate(1)
+      crop().click()
+      press('Escape', {}, handles()[0]!)
+      expect(pic.getState()).toMatchObject({ mode: 'edit', activeTool: null, rotation: 90 })
+      expect(container.querySelector('.paperpic-edit-confirmation')!.hasAttribute('hidden')).toBe(true)
+    })
+
+    it('confirms with Enter on a corner or the viewer', () => {
+      crop().click()
+      press('Enter', {}, handles()[1]!)
+      expect(pic.getState()).toMatchObject({ activeTool: null, canApply: true })
+    })
+
+    it('closes when the edit ends', () => {
+      crop().click()
+      pic.cancel()
+      expect(pic.getState()).toMatchObject({ mode: 'view', activeTool: null })
+      expect(handles()).toHaveLength(0)
+    })
+
+    it('closes when the source changes', () => {
+      crop().click()
+      pic.setOptions({ src: '/another.jpg' })
+      expect(pic.getState().activeTool).toBeNull()
+      expect(handles()).toHaveLength(0)
+    })
+
+    it('ignores a preview that newer edits have replaced', async () => {
+      crop().click()
+      button('Done').click()
+      pic.undo()
+      await flush()
+      expect(pic.getState().image).toEqual({ width: 600, height: 250 })
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('ignores a preview that arrives after destroy', async () => {
+      crop().click()
+      button('Done').click()
+      pic.destroy()
+      await flush()
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('reports a preview that fails, and the edit stays open', async () => {
+      const onError = vi.fn()
+      pic.on('error', onError)
+      mocks.renderPreview.mockRejectedValue(new Error('too large'))
+      crop().click()
+      button('Done').click()
+      await flush()
+      expect(onError.mock.calls[0]![0].error.message).toBe('too large')
+      expect(pic.getState()).toMatchObject({ mode: 'edit', canUndo: true })
+      expect(crop().getAttribute('aria-disabled')).toBe('false')
+    })
   })
 
   it('offers only the chosen tools', () => {

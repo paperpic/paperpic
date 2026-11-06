@@ -72,13 +72,16 @@ pic.zoomTo(1)
 pic.fit('image') // or 'width', 'height'
 pic.edit()
 pic.rotate(1) // or -1. An edit while editing, display only with editable: false
+pic.openTool('crop')
+pic.confirmTool()
+pic.cancelTool()
 pic.undo()
 pic.redo()
 await pic.apply() // emits 'apply' with { blob, width, height, type }
 pic.cancel()
 pic.reload()
 pic.setOptions({ alt: 'A receipt' })
-pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy }
+pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy, activeTool }
 const off = pic.on('change', listener) // also 'load', 'error' and 'apply'
 pic.destroy()
 ```
@@ -86,6 +89,9 @@ pic.destroy()
 - The component fills its container, which needs a height.
 - `change` reports user actions, and `setOptions()` never emits it. `load` reports a loaded image, and `error` a failed load or a failed Apply. `apply` carries the result.
 - Rotations that cancel out are no change, so Apply stays disabled.
+- While a tool with its own selection is open, the other edits, Undo, Redo and Apply do nothing. `Enter` confirms it and `Esc` cancels it.
+- After an edit that needs new pixels, the viewer shows a preview on a copy of about 2 MP, painted at the size of the result. Zoom and coordinates do not change, but the preview looks softer than the result when zoomed in. Apply computes everything at full resolution.
+- `getState().image` is the size of the result so far. `maxOutputSize` limits the longest side of the result.
 - Apply cannot be interrupted. It blocks the controls and shows a message. If it fails, the edit stays open.
 - After Apply, the result is the image on display, the history is empty and the mode is View. Passing the same `src` again does nothing, because wrappers resend it. `reload()` brings back the original.
 - Changing `src` or `editable` while editing discards the edit.
@@ -110,14 +116,18 @@ The code lives in `packages/core/src`. Dependencies point downwards in this tabl
 
 ### Tools
 
-Adding a tool means creating its folder and registering it. A tool handles its own interaction and, on confirm, adds an operation such as `{ type: 'crop', params }`. It does not paint the image or touch pixels.
+Adding a tool means creating its folder and registering it. A tool handles its own interaction and, on confirm, adds an operation such as `{ type: 'crop', rect }`. It does not paint the image or touch pixels.
 
-The contract holds only what the tools need so far. Rotate acts at once, so it has actions, which become buttons in the edit bar:
+Operations store fractions of the image, as the user saw it at that moment with the earlier edits done, so they mean the same on a preview and at full resolution.
+
+Each action of a tool becomes a button in the edit bar. A tool that holds a selection open also has `activate`, and its corner handles are DOM elements with their own pointer events, so any other drag still pans the view.
 
 ```ts
 interface Tool {
   id: ToolId
   actions: readonly ToolAction[]
+  /** Only for a tool with its own selection and confirmation. */
+  activate?: (host: ToolHost) => ToolSession
 }
 
 interface ToolAction {
@@ -127,21 +137,20 @@ interface ToolAction {
 
 interface ToolContext {
   addOperation: (operation: Operation) => void
+  openTool: (id: ToolId) => void
 }
-```
 
-Crop and Perspective hold an interaction open, so they will add these when they arrive:
-
-```ts
-interface InteractiveTool extends Tool {
-  activate: (context: ToolContext) => void
+interface ToolSession {
+  focus: () => void
+  update: () => void
+  drawOverlay: (context: CanvasRenderingContext2D) => void
+  /** The edit the user chose, or `null` if it changes nothing. */
+  confirm: () => Operation | null
   deactivate: () => void
-  /** Returns true when the tool handles the event, so it does not pan the view. */
-  onPointer?: (event: ToolPointerEvent) => boolean
-  onKey?: (event: KeyboardEvent) => boolean
-  drawOverlay?: (painter: Painter, view: ViewTransform) => void
 }
 ```
+
+`ToolHost` gives an open tool the layer for its elements, conversions between the image and the viewport, and ways to paint and announce.
 
 ### Rendering
 
@@ -150,7 +159,8 @@ interface InteractiveTool extends Tool {
 - Painting never processes pixels. It draws an image the pipeline has already produced.
 - The canvas respects `devicePixelRatio`.
 - One pure function computes the transform matrix. Painting and converting pointer coordinates to image coordinates both use it.
-- A 90 degree rotation is applied in the matrix, so it is instant. Export bakes it into the pixels.
+- A 90 degree rotation after the last edit that needs new pixels is applied in the matrix, so it is instant. Export bakes it into the pixels.
+- The crops at the start of the edits decide which part of the image gets read, so a small crop of a large photo stays sharp in the preview and uses less memory on export.
 - There are three layers: a canvas for the image, a canvas for the dimmed area and selection lines, and DOM elements for the corner handles, so they can take focus and work with a keyboard.
 - Mobile and desktop share this one path.
 
@@ -169,7 +179,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 
 - The canvas has `role="img"` and uses the `alt` the consumer passes.
 - The toolbar has `role="toolbar"` and arrow key navigation.
-- Corner handles take focus with Tab and move with the arrow keys: 1 px, or 10 px with Shift. Each move is announced to screen readers.
+- Corner handles take focus with Tab and move with the arrow keys: 1 screen pixel, or 10 with Shift. Each move is announced to screen readers.
 - An `aria-live` region announces processing, the active tool and results.
 
 | Key                                      | Action                                    |
@@ -194,7 +204,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 1. **Technical spike.** Done, see the [results](spike-results.md). Worker packaging, threshold and perspective implementations, benchmarks and a wider library search.
 2. **Viewer.** Renderer, gestures, view mode with its rotate buttons for `editable: false`, and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
 3. **Edit base.** Done. Edit bar, operation list, Undo, Redo and Apply, with Rotate as the first tool and processing in a packaged worker.
-4. **Tools.** Crop, then Perspective, then Threshold.
+4. **Tools.** Crop, with the shared corner handles, magnifier and preview, is done. Then Perspective, then Threshold.
 5. **Other frameworks.** React and, if feasible, Angular.
 6. **Automatic detection.** Only if it proves worth it.
 

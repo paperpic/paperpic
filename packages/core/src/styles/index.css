@@ -64,8 +64,15 @@
 
   .paperpic-edit-bar[hidden],
   .paperpic-edit-controls[hidden],
+  .paperpic-edit-tool[hidden],
   .paperpic-edit-confirmation[hidden] {
     display: none;
+  }
+
+  .paperpic-edit-tool {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
   }
 
   .paperpic-edit-controls,
@@ -112,6 +119,60 @@
     display: block;
     inline-size: 100%;
     block-size: 100%;
+  }
+
+  .paperpic-overlay,
+  .paperpic-handles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .paperpic-overlay {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* Clips handles out of view, without becoming a box that the focus could scroll */
+  .paperpic-handles {
+    overflow: clip;
+  }
+
+  .paperpic-handle {
+    position: absolute;
+    box-sizing: border-box;
+    inline-size: 2rem;
+    block-size: 2rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: move;
+    translate: -50% -50%;
+    pointer-events: auto;
+    touch-action: none;
+  }
+
+  .paperpic-handle[hidden] {
+    display: none;
+  }
+
+  .paperpic-handle::before {
+    content: '';
+    display: block;
+    box-sizing: border-box;
+    inline-size: 1rem;
+    block-size: 1rem;
+    margin: auto;
+    border: 2px solid var(--paperpic-color-accent);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 60%);
+  }
+
+  .paperpic-handle:focus-visible {
+    outline: 2px solid var(--paperpic-color-accent);
+    outline-offset: -2px;
+    border-radius: 50%;
   }
 
   .paperpic-toolbar {
@@ -242,6 +303,11 @@
   @media (pointer: coarse) {
     .paperpic-button {
       min-inline-size: 2.75rem;
+      block-size: 2.75rem;
+    }
+
+    .paperpic-handle {
+      inline-size: 2.75rem;
       block-size: 2.75rem;
     }
   }

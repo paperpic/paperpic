@@ -1,6 +1,6 @@
 /** An image ready to paint. */
 export interface LoadedImage {
-  element: HTMLImageElement
+  element: CanvasImageSource
   width: number
   height: number
   /** Frees the memory the image holds. */

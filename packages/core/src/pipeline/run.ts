@@ -3,6 +3,11 @@ import type { WorkerResponse } from '../processing/worker'
 import type { PipelineStep } from './operations'
 import { applySteps } from './pipeline'
 
+interface Job {
+  resolve: (result: PixelBuffer) => void
+  reject: (reason: Error) => void
+}
+
 /** How long a worker can take to start before the main thread does the work instead. */
 const WORKER_START_LIMIT = 5000
 
@@ -12,7 +17,7 @@ const WORKER_START_LIMIT = 5000
  */
 export class PipelineRunner {
   private worker: Promise<Worker | null> | null = null
-  private rejectJob: ((reason: Error) => void) | null = null
+  private readonly jobs = new Map<number, Job>()
   private abandonStart: (() => void) | null = null
   private current: Worker | null = null
   private nextId = 0
@@ -36,8 +41,7 @@ export class PipelineRunner {
     this.abandonStart?.()
     this.current?.terminate()
     this.current = null
-    this.rejectJob?.(new Error('The viewer was destroyed while processing.'))
-    this.rejectJob = null
+    this.rejectJobs(new Error('The viewer was destroyed while processing.'))
   }
 
   /**
@@ -71,34 +75,47 @@ export class PipelineRunner {
       this.abandonStart = () => settle(null)
 
       worker.onerror = () => settle(null)
-      worker.onmessage = () => settle(worker)
+      worker.onmessage = () => {
+        this.listen(worker)
+        settle(worker)
+      }
     })
+  }
+
+  private listen(worker: Worker): void {
+    worker.onerror = (event) => {
+      // It may be dead, as when it runs out of memory, so the next job starts a new one
+      worker.terminate()
+      this.current = null
+      this.worker = null
+      this.rejectJobs(new Error(`The image could not be processed: ${event.message}`))
+    }
+    worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
+      if ('ready' in data) {
+        return
+      }
+      const job = this.jobs.get(data.id)
+      this.jobs.delete(data.id)
+      if ('error' in data) {
+        job?.reject(new Error(data.error))
+      }
+      else {
+        job?.resolve(data.result)
+      }
+    }
+  }
+
+  private rejectJobs(reason: Error): void {
+    for (const job of this.jobs.values()) {
+      job.reject(reason)
+    }
+    this.jobs.clear()
   }
 
   private runInWorker(worker: Worker, source: PixelBuffer, steps: readonly PipelineStep[]): Promise<PixelBuffer> {
     return new Promise((resolve, reject) => {
       const id = this.nextId++
-      this.rejectJob = reject
-      worker.onerror = (event) => {
-        // It may be dead, as when it runs out of memory, so the next job starts a new one
-        worker.terminate()
-        this.current = null
-        this.worker = null
-        this.rejectJob = null
-        reject(new Error(`The image could not be processed: ${event.message}`))
-      }
-      worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
-        if ('ready' in data || data.id !== id) {
-          return
-        }
-        this.rejectJob = null
-        if ('error' in data) {
-          reject(new Error(data.error))
-        }
-        else {
-          resolve(data.result)
-        }
-      }
+      this.jobs.set(id, { resolve, reject })
       worker.postMessage({
         id,
         operation: 'pipeline',
