@@ -27,7 +27,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D13 | No TIFF. No pagination for now, though it may come later.                                                                                                                                                                                    | Browsers rarely decode TIFF, and pages depended on a backend.                                                                                                    |
 | D14 | Rotate and threshold apply at once and can be undone. Crop and perspective have their own confirm inside the tool. Apply confirms everything.                                                                                                | A selection needs an explicit end, and a button press does not.                                                                                                  |
 | D15 | Threshold is one on/off setting that always runs after geometry. Its slider controls the real sensitivity, and preview and export share one pipeline. The output keeps some gray by default, and `softness: 0` gives strict black and white. | The result must not depend on tool order, and what the user sees must be what is exported. Strict black and white breaks thin strokes in real photos.            |
-| D16 | Rotation exists only in edit mode, and it is permanent. View mode has no rotation.                                                                                                                                                           | One rotation cannot be confused with another. A view rotation can be added later without breaking anyone, and removing it later would break them.                |
+| D16 | Rotation in edit mode is permanent. With `editable: false`, view mode has rotate buttons, which only change the display. With editing available, view mode has no rotation.                                                                  | A read-only viewer needs to turn a sideways image, and each case still shows only one kind of rotation, so they cannot be confused.                              |
 | D17 | Images come from the same origin or are attached on the client.                                                                                                                                                                              | Pixels can always be read, so cross-origin support is out of scope.                                                                                              |
 | D18 | The attach button belongs to the consumer. The component takes `src: string \| Blob \| File`. The playground and the docs demo offer an attach button and a preloaded sample image.                                                          | Each app decides its own file picker and validation. Demo visitors can try it with no file of their own.                                                         |
 | D19 | The Apply event carries `{ blob, width, height, type }`. The type is PNG with threshold on, and otherwise the source type (JPEG, PNG, WebP). `output: { type, quality }` overrides it.                                                       | JPEG artifacts damage the sharp edges of a cleaned document.                                                                                                     |
@@ -45,7 +45,38 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D31 | Dragging a corner by touch shows a magnifier, in crop and perspective. It is part of those tools.                                                                                                                                            | The finger hides the exact point being placed.                                                                                                                   |
 | D32 | Threshold and perspective are our own code, with no dependencies. Threshold uses the Bradley comparison with soft output.                                                                                                                    | The [spike](spike-results.md) found no library with an adaptive threshold at a reasonable size, and our warp is faster and much smaller than the best candidate. |
 | D33 | Perspective estimates the proportions of the document, and the `aspectRatio` option fixes them when they are known, as width divided by height.                                                                                              | An estimate from a photo cannot be exact, and consumers often know their document.                                                                               |
-| D34 | The public demo uses a made-up receipt, printed and photographed by us. Real receipts stay out of the repo.                                                                                                                                  | It tests the tools on a real photo without publishing purchases or brands.                                                                                       |
+| D34 | The public demo uses a made-up, AI-generated receipt, labelled as such. Real receipts stay out of the repo, and quality is still checked on real photos, locally.                                                                            | It shows the tools without publishing purchases or brands.                                                                                                       |
+| D35 | Corner handles stay inside the image. When a corner of the document is cut off by the photo, the user places its handle on the photo border, along the edge that keeps the content.                                                          | No invented pixels and no margin around the viewer. The last rows lean slightly and the estimated proportions suffer, and `aspectRatio` can fix the proportions. |
+| D36 | The view toolbar sits at the right: zoom in, zoom out, fit to width, fit to height and, only with `editable: false`, rotate left and right.                                                                                                  | The controls of the previous viewer, which already worked for long documents.                                                                                    |
+| D37 | The Edit pencil goes at the top of the right toolbar and disappears while editing. A bar at the bottom holds Cancel, the tools, Undo, Redo and Apply. The zoom toolbar stays, because placing corners needs it.                              | One place for editing, and it fits in a phone by splitting into two rows.                                                                                        |
+
+## Public API
+
+```ts
+const pic = new PaperPic(container, {
+  src, // string | Blob | File
+  alt, // string
+  editable, // boolean, true by default
+  toolbar, // boolean, true by default
+  wheelZoom, // boolean, true by default
+  labels, // Partial<PaperPicLabels>
+})
+
+pic.zoomIn()
+pic.zoomOut()
+pic.zoomTo(1)
+pic.fit('image') // or 'width', 'height'
+pic.rotate(1) // or -1. Only with editable: false
+pic.setOptions({ alt: 'A receipt' })
+pic.getState() // { status, image, zoom, fit, rotation }
+const off = pic.on('change', listener) // also 'load' and 'error'
+pic.destroy()
+```
+
+- The component fills its container, which needs a height.
+- `change` reports user actions, and `setOptions()` never emits it. `load` and `error` report the result of a load.
+- The zoom goes from the fit of the whole image, or 100% if that is smaller, up to 800%. Only a very small image can fit beyond that.
+- An image that fits stays centered. One that overflows pans up to its edges, plus the width of the toolbar at the sides, so the toolbar never hides a part for good.
 
 ## Architecture
 
@@ -96,7 +127,7 @@ The [spike results](spike-results.md) track the status of each one. One top Andr
 - **Worker packaging.** Heavy processing belongs in a worker, which must work with consumers' bundlers and Content Security Policy. Proven in Vite and webpack 5, falling back to the main thread if a policy blocks it.
 - **Preview and export.** The threshold slider works on a copy of about 2 MP to stay fluid, at 40 ms per change on a top Android phone. Code and parameters are the same, but the result can differ slightly from full resolution.
 - **Memory.** A 12 MP photo takes 48 MB as RGBA, so only the base image and the last result are kept. Undo recomputes from the base image. Threshold peaks at about 340 MB at 37.5 MP.
-- **Text sharpness when downscaling.** No visible difference on desktop or Android, so painting needs no reduced copy for sharpness. Whether very large images keep zoom and pan fluid can only be checked with the real viewer.
+- **Text sharpness when downscaling.** No visible difference on desktop or Android, so painting needs no reduced copy for sharpness. Zoom and pan also work well with a 37.5 MP photo on a top Android phone, checked by hand.
 
 ## Accessibility
 
@@ -118,14 +149,15 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 ## Responsive behavior
 
 - The component fills its container and adapts with `ResizeObserver` and container queries. It does not detect the device.
-- The toolbar is vertical when there is width to spare, and horizontal at the bottom when there is not.
+- The main toolbar is always vertical, at the right. It scrolls when the container is too short for its buttons.
+- The edit bar sits at the bottom, on one row when it fits and on two when it does not.
 - Touch targets are at least 44 px with `pointer: coarse`.
 - Pinch zooms around the point between the fingers. Double tap toggles between fitted and 100%.
 
 ## Roadmap
 
 1. **Technical spike.** Done, see the [results](spike-results.md). Worker packaging, threshold and perspective implementations, benchmarks and a wider library search.
-2. **Viewer.** Renderer, gestures, view mode and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
+2. **Viewer.** Renderer, gestures, view mode with its rotate buttons for `editable: false`, and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
 3. **Edit base.** Toolbar, operation list, Undo, Redo and Apply, with Rotate as the first tool.
 4. **Tools.** Crop, then Perspective, then Threshold.
 5. **Other frameworks.** React and, if feasible, Angular.

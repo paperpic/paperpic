@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="スキャンした文書" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="スキャンした文書" :editable="false" />
+  </div>
 </template>
 ```
+
+ビューアーは親要素いっぱいに広がるため、親要素に高さを指定してください。
 
 [プレイグラウンド](/ja/playground)で実際に試せます。

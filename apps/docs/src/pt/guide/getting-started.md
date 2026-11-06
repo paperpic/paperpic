@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="Documento digitalizado" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="Documento digitalizado" :editable="false" />
+  </div>
 </template>
 ```
+
+O visualizador preenche o elemento pai, então defina uma altura para ele.
 
 Experimente ao vivo no [playground](/pt/playground).

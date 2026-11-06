@@ -1,13 +1,13 @@
 ---
 title: Live-Playground
-description: Probiere die Vue-Komponente von PaperPic live aus und drehe ein Beispieldokument im Browser.
+description: "Probiere die Vue-Komponente von PaperPic live aus: Zoome, verschiebe und drehe einen Beispielbeleg oder dein eigenes Bild im Browser."
 layout: page
 ---
 
-<Playground rotation-label="Drehung" alt="Beispieldokument">
+<Playground alt="Beispielbeleg" sample-label="Beispiel" receipt-label="Beleg" cut-corner-label="Beleg mit abgeschnittener Ecke" attach-label="Bild hinzufügen" ai-notice="Die Beispielbilder sind KI-generiert und zeigen keinen echten Einkauf.">
 
 # Playground
 
-Probiere die PaperPic-Komponente mit einem Beispieldokument aus. Im Moment kannst du es nur drehen.
+Probiere den PaperPic-Viewer mit einem Beispielbeleg aus oder füge dein eigenes Bild hinzu, das in deinem Browser bleibt. Du kannst zoomen, es verschieben und drehen.
 
 </Playground>

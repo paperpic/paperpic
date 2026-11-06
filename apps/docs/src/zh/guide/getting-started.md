@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="扫描的文档" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="扫描的文档" :editable="false" />
+  </div>
 </template>
 ```
+
+查看器会填满其父元素，因此请为父元素设置高度。
 
 可以在[演练场](/zh/playground)中在线试用。

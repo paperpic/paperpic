@@ -76,7 +76,7 @@ Only the 2 MP preview meets the 100 ms limit, so the slider works on a copy of a
 
 Two versions of the 37.5 MP photo were compared at 506×900, by eye, on desktop and Android: painted directly with `drawImage`, and painted from a copy reduced beforehand. Nobody could see a difference, so painting needs no reduced copy for sharpness.
 
-The time of painting itself could not be measured, because `drawImage` hands the work to the GPU and returns at once. Check how fluid zoom and pan feel with very large images when the viewer exists.
+The time of painting itself could not be measured, because `drawImage` hands the work to the GPU and returns at once. Checked by hand with the real viewer instead: zoom and pan work well on the 37.5 MP photo on the Pixel 10 Pro.
 
 ## Threshold
 
@@ -166,6 +166,5 @@ At 37.5 MP, threshold peaks at about 340 MB: 150 MB for the source, 37.5 MB for 
 
 ## Open risks
 
-- **Painting very large images:** zoom and pan may not stay fluid. This can only be checked with the real viewer.
-- **Mid-range Android:** only a top phone was tested. Time and memory may not hold on weaker ones.
+- **Mid-range Android:** only a top phone was tested. Time, memory and the fluidity of zoom and pan with very large images may not hold on weaker ones.
 - **iOS:** not measured, because no device was available. Safari has been the most restrictive browser for canvas size, so full resolution by default stays unproven there. Review this when the public demo exists.

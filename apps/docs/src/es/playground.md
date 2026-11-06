@@ -1,13 +1,13 @@
 ---
 title: Playground en vivo
-description: Prueba en vivo el componente de Vue de PaperPic y gira un documento de ejemplo en tu navegador.
+description: "Prueba en vivo el componente de Vue de PaperPic: haz zoom, desplaza y gira un ticket de ejemplo o tu propia imagen en tu navegador."
 layout: page
 ---
 
-<Playground rotation-label="Rotación" alt="Documento de ejemplo">
+<Playground alt="Ticket de ejemplo" sample-label="Ejemplo" receipt-label="Ticket" cut-corner-label="Ticket con una esquina cortada" attach-label="Adjuntar una imagen" ai-notice="Las imágenes de ejemplo están generadas por IA y no muestran ninguna compra real.">
 
 # Playground
 
-Prueba el componente PaperPic con un documento de ejemplo. Por ahora solo puedes girarlo.
+Prueba el visor de PaperPic con un ticket de ejemplo o adjunta tu propia imagen, que se queda en tu navegador. Puedes hacer zoom, desplazarla y girarla.
 
 </Playground>

@@ -1,13 +1,13 @@
 ---
 title: 在线演练场
-description: 在线试用 PaperPic 的 Vue 组件，在浏览器中旋转示例文档。
+description: "在线试用 PaperPic 的 Vue 组件：在浏览器中缩放、移动和旋转示例小票或你自己的图片。"
 layout: page
 ---
 
-<Playground rotation-label="旋转角度" alt="示例文档">
+<Playground alt="示例小票" sample-label="示例" receipt-label="小票" cut-corner-label="缺一角的小票" attach-label="添加图片" ai-notice="示例图片由 AI 生成，不代表任何真实购买。">
 
 # 演练场
 
-用示例文档试用 PaperPic 组件。目前仅支持旋转。
+用示例小票试用 PaperPic 查看器，或添加你自己的图片，图片只保留在你的浏览器中。你可以缩放、移动和旋转图片。
 
 </Playground>

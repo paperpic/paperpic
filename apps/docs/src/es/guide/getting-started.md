@@ -24,8 +24,12 @@ import '@paperpic/vue/style.css'
 </script>
 
 <template>
-  <PaperPic src="/document.jpg" alt="Documento escaneado" :rotation="90" />
+  <div style="height: 480px">
+    <PaperPic src="/document.jpg" alt="Documento escaneado" :editable="false" />
+  </div>
 </template>
 ```
+
+El visor llena su elemento padre, así que dale una altura.
 
 Pruébalo en vivo en el [playground](/es/playground).

@@ -2,24 +2,16 @@
 import 'virtual:playground-stylesheet'
 import './style.css'
 
-interface Control {
-  /** The first option is the initial value. */
-  options: number[]
-  unit?: string
-}
+const samples = [
+  { src: '/samples/receipt.jpg', name: 'Receipt', alt: 'Sample receipt' },
+  { src: '/samples/receipt-cut-corner.jpg', name: 'Receipt with a cut-off corner', alt: 'Sample receipt with one corner outside the photo' },
+]
 
-const controls = {
-  rotation: {
-    options: [0, 90, 180, 270],
-    unit: '°',
-  },
-} satisfies Record<string, Control>
-
-const entries = Object.entries(controls)
-
-export type PlaygroundOptions = Record<keyof typeof controls, number> & {
-  src: string
+export interface PlaygroundOptions {
+  src: string | File
   alt: string
+  editable: boolean
+  wheelZoom: boolean
 }
 
 export interface Playground {
@@ -32,28 +24,18 @@ export interface Playground {
   mount: (stage: HTMLElement, options: PlaygroundOptions) => (options: PlaygroundOptions) => void
 }
 
-function renderControl(name: string, { options, unit = '' }: Control): string {
-  return `
-    <label class="field">
-      <code>${name}</code>
-      <select class="select" name="${name}">
-        ${options.map(option => `<option value="${option}">${option}${unit}</option>`).join('')}
-      </select>
-    </label>
-  `
-}
-
 /** Renders the page around the component, which is the same for every framework. */
 export function createPlayground({ name, mount }: Playground): void {
   const isDist = import.meta.env.MODE === 'dist'
   const packagesOrigin = isDist
     ? 'the built packages, without hot reload'
     : 'the packages from source, with hot reload'
-  const options = {
-    src: '/samples/document.svg',
-    alt: 'Sample document',
-    ...Object.fromEntries(entries.map(([control, { options }]) => [control, options[0]])),
-  } as PlaygroundOptions
+  const options: PlaygroundOptions = {
+    src: samples[0]!.src,
+    alt: samples[0]!.alt,
+    editable: false,
+    wheelZoom: true,
+  }
   const app = document.querySelector('#app')!
 
   document.title = `PaperPic ${name} playground${isDist ? ' (dist)' : ''}`
@@ -80,7 +62,25 @@ export function createPlayground({ name, mount }: Playground): void {
       <div class="workspace">
         <aside class="panel" aria-labelledby="panel-heading">
           <h2 id="panel-heading" class="panel-heading">Options</h2>
-          ${entries.map(([control, config]) => renderControl(control, config)).join('')}
+          <label class="field">
+            <code>src</code>
+            <select class="select" name="sample">
+              ${samples.map(({ src, name }) => `<option value="${src}">${name}</option>`).join('')}
+            </select>
+          </label>
+          <label class="field">
+            Attach an image
+            <input class="file" name="attach" type="file" accept="image/*">
+          </label>
+          <label class="field">
+            <code>editable</code>
+            <input name="editable" type="checkbox">
+          </label>
+          <label class="field">
+            <code>wheelZoom</code>
+            <input name="wheelZoom" type="checkbox" checked>
+          </label>
+          <p class="hint">The sample images are AI-generated. They show no real purchase.</p>
         </aside>
 
         <main class="stage"></main>
@@ -93,8 +93,21 @@ export function createPlayground({ name, mount }: Playground): void {
   const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options })
 
   app.querySelector('.panel')!.addEventListener('change', (event) => {
-    const { name: control, value } = event.target as HTMLSelectElement
-    options[control as keyof typeof controls] = Number(value)
+    const input = event.target as HTMLInputElement
+    if (input.name === 'sample') {
+      options.src = input.value
+      options.alt = samples.find(({ src }) => src === input.value)!.alt
+    }
+    else if (input.name === 'attach' && input.files?.[0]) {
+      options.src = input.files[0]
+      options.alt = input.files[0].name
+    }
+    else if (input.name === 'editable') {
+      options.editable = input.checked
+    }
+    else if (input.name === 'wheelZoom') {
+      options.wheelZoom = input.checked
+    }
     update({ ...options })
   })
 }
