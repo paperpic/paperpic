@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
-import { computed, shallowRef } from 'vue'
+import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
 
 const props = defineProps<{
   alt: string
@@ -9,7 +9,15 @@ const props = defineProps<{
   cutCornerLabel: string
   attachLabel: string
   aiNotice: string
+  resultLabel: string
+  downloadLabel: string
 }>()
+
+interface Result {
+  url: string
+  fileName: string
+  summary: string
+}
 
 const samples = computed(() => [
   { src: '/samples/receipt.jpg', name: props.receiptLabel },
@@ -32,6 +40,26 @@ function attach(event: Event) {
     src.value = file
   }
 }
+
+const result = shallowRef<Result | null>(null)
+
+function setResult(next: Result | null) {
+  if (result.value) {
+    URL.revokeObjectURL(result.value.url)
+  }
+  result.value = next
+}
+
+function showResult({ blob, width, height, type }: { blob: Blob, width: number, height: number, type: string }) {
+  setResult({
+    url: URL.createObjectURL(blob),
+    fileName: `paperpic-result.${type.split('/')[1]}`,
+    summary: `${width}×${height}, ${Math.round(blob.size / 1024)} KB, ${type}`,
+  })
+}
+
+watch(src, () => setResult(null))
+onBeforeUnmount(() => setResult(null))
 </script>
 
 <template>
@@ -58,10 +86,17 @@ function attach(event: Event) {
       <p class="notice">
         {{ aiNotice }}
       </p>
+
+      <p class="result" role="status">
+        <template v-if="result">
+          {{ resultLabel }}: {{ result.summary }}.
+          <a class="download" :href="result.url" :download="result.fileName">{{ downloadLabel }}</a>
+        </template>
+      </p>
     </div>
 
     <div class="stage">
-      <PaperPic :src :alt :editable="false" />
+      <PaperPic :src :alt @apply="showResult" />
     </div>
   </main>
 </template>
@@ -109,6 +144,17 @@ function attach(event: Event) {
   margin-block-start: 1.5rem;
   color: var(--vp-c-text-3);
   font-size: 0.75rem;
+}
+
+.result {
+  margin-block-start: 1rem;
+  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+}
+
+.download {
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
 }
 
 .stage {

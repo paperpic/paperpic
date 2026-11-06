@@ -157,8 +157,12 @@ function toCanvas({ data, width, height }: PixelBuffer): OffscreenCanvas {
 function startWorker() {
   const worker = new Worker(new URL('../../../packages/core/src/processing/worker.ts', import.meta.url), { type: 'module' })
   let nextId = 0
-  const send = (request: Job) => new Promise<WorkerResponse>((resolve, reject) => {
-    worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => resolve(data)
+  const send = (request: Job) => new Promise<Exclude<WorkerResponse, { ready: true }>>((resolve, reject) => {
+    worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
+      if (!('ready' in data)) {
+        resolve(data)
+      }
+    }
     worker.onerror = event => reject(new Error(event.message))
     const copy = {
       ...request,

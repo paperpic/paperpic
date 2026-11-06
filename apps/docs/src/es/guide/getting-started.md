@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // Sube la imagen editada
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="Documento escaneado" :editable="false" />
+    <PaperPic src="/document.jpg" alt="Documento escaneado" @apply="save" />
   </div>
 </template>
 ```
 
-El visor llena su elemento padre, así que dale una altura.
+El visor llena su elemento padre, así que dale una altura. El lápiz abre el modo de edición, y `apply` entrega la imagen editada como un `Blob`. Con `:editable="false"` es un visor de solo lectura.
 
 Pruébalo en vivo en el [playground](/es/playground).

@@ -32,7 +32,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D18 | The attach button belongs to the consumer. The component takes `src: string \| Blob \| File`. The playground and the docs demo offer an attach button and a preloaded sample image.                                                          | Each app decides its own file picker and validation. Demo visitors can try it with no file of their own.                                                         |
 | D19 | The Apply event carries `{ blob, width, height, type }`. The type is PNG with threshold on, and otherwise the source type (JPEG, PNG, WebP). `output: { type, quality }` overrides it.                                                       | JPEG artifacts damage the sharp edges of a cleaned document.                                                                                                     |
 | D20 | Output is full resolution by default, with an optional `maxOutputSize`. Benchmarks must validate this default on large phone photos.                                                                                                         | The old 1920 px cap lost quality without telling anyone.                                                                                                         |
-| D21 | A later edit starts from the last applied image. The component does not keep the first one.                                                                                                                                                  | Keeping originals is up to the consumer, who can pass one again through `src`.                                                                                   |
+| D21 | A later edit starts from the last applied image. The component does not keep the first one.                                                                                                                                                  | Keeping originals is up to the consumer, who can bring one back with `reload()` or a new `src`.                                                                  |
 | D22 | The entry point is the class `new PaperPic(container, options)`.                                                                                                                                                                             | It matches the package name, and the component does more than view.                                                                                              |
 | D23 | A built-in toolbar by default, with `tools` to choose tools, `editable: false` to hide Edit, and `toolbar: false` plus public commands for a custom interface.                                                                               | Most consumers want it to work at once, and others need their own interface.                                                                                     |
 | D24 | The only extra in the first version is Redo.                                                                                                                                                                                                 | It costs little once Undo exists.                                                                                                                                |
@@ -49,6 +49,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D35 | Corner handles stay inside the image. When a corner of the document is cut off by the photo, the user places its handle on the photo border, along the edge that keeps the content.                                                          | No invented pixels and no margin around the viewer. The last rows lean slightly and the estimated proportions suffer, and `aspectRatio` can fix the proportions. |
 | D36 | The view toolbar sits at the right: zoom in, zoom out, fit to width, fit to height and, only with `editable: false`, rotate left and right.                                                                                                  | The controls of the previous viewer, which already worked for long documents.                                                                                    |
 | D37 | The Edit pencil goes at the top of the right toolbar and disappears while editing. A bar at the bottom holds Cancel, the tools, Undo, Redo and Apply. The zoom toolbar stays, because placing corners needs it.                              | One place for editing, and it fits in a phone by splitting into two rows.                                                                                        |
+| D38 | Passing the same `src` again does not reload the image. `reload()` does.                                                                                                                                                                     | Wrappers resend every option on each change, which would erase the result of an edit.                                                                            |
 
 ## Public API
 
@@ -58,7 +59,10 @@ const pic = new PaperPic(container, {
   alt, // string
   editable, // boolean, true by default
   toolbar, // boolean, true by default
+  tools, // readonly ToolId[], all of them by default
   wheelZoom, // boolean, true by default
+  output, // { type, quality }, the format of the source by default
+  maxOutputSize, // number, full resolution by default
   labels, // Partial<PaperPicLabels>
 })
 
@@ -66,15 +70,26 @@ pic.zoomIn()
 pic.zoomOut()
 pic.zoomTo(1)
 pic.fit('image') // or 'width', 'height'
-pic.rotate(1) // or -1. Only with editable: false
+pic.edit()
+pic.rotate(1) // or -1. An edit while editing, display only with editable: false
+pic.undo()
+pic.redo()
+await pic.apply() // emits 'apply' with { blob, width, height, type }
+pic.cancel()
+pic.reload()
 pic.setOptions({ alt: 'A receipt' })
-pic.getState() // { status, image, zoom, fit, rotation }
-const off = pic.on('change', listener) // also 'load' and 'error'
+pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy }
+const off = pic.on('change', listener) // also 'load', 'error' and 'apply'
 pic.destroy()
 ```
 
 - The component fills its container, which needs a height.
-- `change` reports user actions, and `setOptions()` never emits it. `load` and `error` report the result of a load.
+- `change` reports user actions, and `setOptions()` never emits it. `load` reports a loaded image, and `error` a failed load or a failed Apply. `apply` carries the result.
+- Rotations that cancel out are no change, so Apply stays disabled.
+- Apply cannot be interrupted. It blocks the controls and shows a message. If it fails, the edit stays open.
+- After Apply, the result is the image on display, the history is empty and the mode is View. Passing the same `src` again does nothing, because wrappers resend it. `reload()` brings back the original.
+- Changing `src` or `editable` while editing discards the edit.
+- `cancel()` does not ask. The built-in Cancel button and `Esc` ask first when there are changes to lose.
 - The zoom goes from the fit of the whole image, or 100% if that is smaller, up to 800%. Only a very small image can fit beyond that.
 - An image that fits stays centered. One that overflows pans up to its edges, plus the width of the toolbar at the sides, so the toolbar never hides a part for good.
 
@@ -85,7 +100,7 @@ The code lives in `packages/core/src`. Dependencies point downwards in this tabl
 | Layer         | Responsibility                                                                                            |
 | ------------- | --------------------------------------------------------------------------------------------------------- |
 | `paperpic.ts` | Public class. Connects the other layers.                                                                  |
-| `ui/`         | Optional toolbar. It only calls public commands and reads state.                                          |
+| `ui/`         | Optional toolbar and edit bar. They only call commands and read state.                                    |
 | `tools/`      | One folder per tool: `crop/`, `perspective/`, `rotate/`, `threshold/`.                                    |
 | `input/`      | Turns Pointer Events into drag, pinch and wheel gestures, and routes them to the active tool or the view. |
 | `render/`     | Paints a scene on the canvas. It decides nothing.                                                         |
@@ -97,9 +112,28 @@ The code lives in `packages/core/src`. Dependencies point downwards in this tabl
 
 Adding a tool means creating its folder and registering it. A tool handles its own interaction and, on confirm, adds an operation such as `{ type: 'crop', params }`. It does not paint the image or touch pixels.
 
+The contract holds only what the tools need so far. Rotate acts at once, so it has actions, which become buttons in the edit bar:
+
 ```ts
 interface Tool {
+  id: ToolId
+  actions: readonly ToolAction[]
+}
+
+interface ToolAction {
   id: string
+  run: (context: ToolContext) => void
+}
+
+interface ToolContext {
+  addOperation: (operation: Operation) => void
+}
+```
+
+Crop and Perspective hold an interaction open, so they will add these when they arrive:
+
+```ts
+interface InteractiveTool extends Tool {
   activate: (context: ToolContext) => void
   deactivate: () => void
   /** Returns true when the tool handles the event, so it does not pan the view. */
@@ -138,13 +172,14 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 - Corner handles take focus with Tab and move with the arrow keys: 1 px, or 10 px with Shift. Each move is announced to screen readers.
 - An `aria-live` region announces processing, the active tool and results.
 
-| Key                         | Action             |
-| --------------------------- | ------------------ |
-| `+` and `-`                 | Zoom               |
-| Arrow keys                  | Pan                |
-| `0`                         | Fit to the screen  |
-| `Ctrl+Z` and `Ctrl+Shift+Z` | Undo and Redo      |
-| `Enter` and `Esc`           | Confirm and cancel |
+| Key                                      | Action                                    |
+| ---------------------------------------- | ----------------------------------------- |
+| `+` and `-`                              | Zoom                                      |
+| Arrow keys                               | Pan                                       |
+| `0`                                      | Fit to the screen                         |
+| `Ctrl+Z`, and `Ctrl+Shift+Z` or `Ctrl+Y` | Undo and Redo                             |
+| `Enter`, with the focus on the viewer    | Apply                                     |
+| `Esc`                                    | Cancel, asking first if there are changes |
 
 ## Responsive behavior
 
@@ -158,7 +193,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 
 1. **Technical spike.** Done, see the [results](spike-results.md). Worker packaging, threshold and perspective implementations, benchmarks and a wider library search.
 2. **Viewer.** Renderer, gestures, view mode with its rotate buttons for `editable: false`, and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
-3. **Edit base.** Toolbar, operation list, Undo, Redo and Apply, with Rotate as the first tool.
+3. **Edit base.** Done. Edit bar, operation list, Undo, Redo and Apply, with Rotate as the first tool and processing in a packaged worker.
 4. **Tools.** Crop, then Perspective, then Threshold.
 5. **Other frameworks.** React and, if feasible, Angular.
 6. **Automatic detection.** Only if it proves worth it.

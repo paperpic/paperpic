@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // Lade das bearbeitete Bild hoch
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="Gescanntes Dokument" :editable="false" />
+    <PaperPic src="/document.jpg" alt="Gescanntes Dokument" @apply="save" />
   </div>
 </template>
 ```
 
-Der Viewer füllt sein Elternelement aus, gib diesem also eine Höhe.
+Der Viewer füllt sein Elternelement aus, gib diesem also eine Höhe. Der Stift öffnet den Bearbeitungsmodus, und `apply` liefert das bearbeitete Bild als `Blob`. Mit `:editable="false"` ist es ein schreibgeschützter Viewer.
 
 Probiere es live im [Playground](/de/playground) aus.

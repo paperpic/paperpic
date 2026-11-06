@@ -21,24 +21,36 @@ import '@paperpic/core/style.css'
 const pic = new PaperPic(document.querySelector('#viewer'), {
   src: '/receipt.jpg',
   alt: 'A receipt',
-  editable: false,
 })
 
-pic.on('load', ({ width, height }) => console.log(width, height))
+pic.on('apply', ({ blob, width, height, type }) => upload(blob))
 ```
 
-| Option      | Type                      | Default | Description                                                                    |
-| ----------- | ------------------------- | ------- | ------------------------------------------------------------------------------ |
-| `src`       | `string \| Blob \| File`  |         | The image: a URL from the same origin, or a file attached on the client        |
-| `alt`       | `string`                  | `''`    | Describes the image for screen readers                                         |
-| `editable`  | `boolean`                 | `true`  | With `false` it is a read-only viewer, whose toolbar can also rotate the image |
-| `toolbar`   | `boolean`                 | `true`  | Shows the built-in toolbar. Without it, build your own with the methods below  |
-| `wheelZoom` | `boolean`                 | `true`  | Whether the wheel zooms. Turn it off when the viewer sits in a long page       |
-| `labels`    | `Partial<PaperPicLabels>` |         | Replaces any of the texts, which are in English by default                     |
+The pencil opens the edit mode. When the user applies the changes, the result replaces the image on display and the `apply` event carries it. With `editable: false` it is a read-only viewer.
 
-Methods: `zoomIn()`, `zoomOut()`, `zoomTo(zoom, point?)`, `fit('image' | 'width' | 'height')`, `rotate(direction)`, `setOptions(options)`, `getState()`, `on(event, listener)` and `destroy()`.
+| Option          | Type                      | Default              | Description                                                                          |
+| --------------- | ------------------------- | -------------------- | ------------------------------------------------------------------------------------ |
+| `src`           | `string \| Blob \| File`  |                      | The image: a URL from the same origin, or a file attached on the client              |
+| `alt`           | `string`                  | `''`                 | Describes the image for screen readers                                               |
+| `editable`      | `boolean`                 | `true`               | With `false` it is a read-only viewer, whose toolbar can also rotate the image       |
+| `toolbar`       | `boolean`                 | `true`               | Shows the built-in toolbar and edit bar. Without them, use the methods below         |
+| `tools`         | `ToolId[]`                | All of them          | Which tools the edit bar offers. For now, `rotate`                                   |
+| `wheelZoom`     | `boolean`                 | `true`               | Whether the wheel zooms. Turn it off when the viewer sits in a long page             |
+| `output`        | `{ type, quality }`       | Format of the source | The format of the result: `image/jpeg`, `image/png` or `image/webp`, and from 0 to 1 |
+| `maxOutputSize` | `number`                  | Full resolution      | The longest side of the result, in pixels                                            |
+| `labels`        | `Partial<PaperPicLabels>` |                      | Replaces any of the texts, which are in English by default                           |
 
-Events: `load`, `error` and `change`. `change` reports user actions, and `setOptions()` never emits it.
+Methods: `zoomIn()`, `zoomOut()`, `zoomTo(zoom, point?)`, `fit('image' | 'width' | 'height')`, `edit()`, `rotate(direction)`, `undo()`, `redo()`, `apply()`, `cancel()`, `reload()`, `setOptions(options)`, `getState()`, `on(event, listener)` and `destroy()`.
+
+Events: `load`, `error`, `change` and `apply`. `change` reports user actions, and `setOptions()` never emits it.
+
+Passing the same `src` again does not reload the image, so it keeps the result of an edit. To bring back the original, call `reload()`.
+
+## Processing
+
+Editing runs in a web worker, which bundlers such as Vite and webpack pick up on their own. If the worker cannot start, the processing runs on the main thread, so it still works but the page can freeze for a moment with large images.
+
+With a Content Security Policy, allow the worker with `worker-src 'self'`. The viewer also needs `img-src blob:`, because it shows attached files and the result of an edit through `blob:` URLs.
 
 ## Styling
 

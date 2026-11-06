@@ -14,6 +14,7 @@ const emit = defineEmits<{
   load: [payload: PaperPicEvents['load']]
   error: [payload: PaperPicEvents['error']]
   change: [payload: PaperPicEvents['change']]
+  apply: [payload: PaperPicEvents['apply']]
 }>()
 
 const host = useTemplateRef<HTMLElement>('host')
@@ -26,6 +27,7 @@ onMounted(() => {
   pic.on('load', payload => emit('load', payload))
   pic.on('error', payload => emit('error', payload))
   pic.on('change', payload => emit('change', payload))
+  pic.on('apply', payload => emit('apply', payload))
   instance.value = pic
 })
 

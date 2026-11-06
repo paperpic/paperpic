@@ -8,8 +8,8 @@
   }
 
   .paperpic {
-    position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     box-sizing: border-box;
     inline-size: 100%;
@@ -18,6 +18,14 @@
     /* A container without a height would otherwise hide the viewer */
     min-block-size: 16rem;
     color: var(--paperpic-color-text);
+    container-type: inline-size;
+  }
+
+  /* Shrinks to leave room for the edit bar, so it never covers the image */
+  .paperpic-stage {
+    position: relative;
+    flex: 1;
+    min-block-size: 0;
   }
 
   .paperpic-viewport {
@@ -40,6 +48,64 @@
 
   .paperpic-viewport-pannable:active {
     cursor: grabbing;
+  }
+
+  .paperpic-editing .paperpic-viewport {
+    touch-action: none;
+  }
+
+  .paperpic-edit-bar {
+    flex: none;
+    padding: 0.25rem;
+    border-block-start: 1px solid color-mix(in srgb, var(--paperpic-color-text) 20%, transparent);
+    background: var(--paperpic-color-surface);
+    color: var(--paperpic-color-text);
+  }
+
+  .paperpic-edit-bar[hidden],
+  .paperpic-edit-controls[hidden],
+  .paperpic-edit-confirmation[hidden] {
+    display: none;
+  }
+
+  .paperpic-edit-controls,
+  .paperpic-edit-confirmation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  .paperpic-edit-tools,
+  .paperpic-edit-history {
+    display: flex;
+    gap: 0.125rem;
+  }
+
+  .paperpic-edit-tools {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .paperpic-edit-confirmation {
+    justify-content: flex-end;
+  }
+
+  .paperpic-edit-message {
+    flex: 1;
+    padding-inline: 0.5rem;
+  }
+
+  /* On a narrow viewer the tools take their own row, under the actions */
+  @container (width < 28rem) {
+    .paperpic-edit-tools {
+      flex-basis: 100%;
+      order: 1;
+    }
+
+    .paperpic-edit-history {
+      margin-inline-start: auto;
+    }
   }
 
   .paperpic-canvas {
@@ -114,7 +180,38 @@
     cursor: not-allowed;
   }
 
+  .paperpic-button-primary,
+  .paperpic-button-text {
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+    justify-content: center;
+    inline-size: auto;
+    padding-inline: 0.75rem;
+    font: inherit;
+    white-space: nowrap;
+  }
+
+  .paperpic-button-primary {
+    font-weight: 600;
+    box-shadow: inset 0 0 0 2px var(--paperpic-color-accent);
+  }
+
+  .paperpic-button-primary[aria-disabled='true'] {
+    box-shadow: inset 0 0 0 1px currentcolor;
+  }
+
+  .paperpic-button-text {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentcolor 40%, transparent);
+  }
+
+  .paperpic-button-danger {
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px currentcolor;
+  }
+
   .paperpic-icon {
+    flex: none;
     inline-size: 1.25rem;
     block-size: 1.25rem;
   }
@@ -144,7 +241,7 @@
 
   @media (pointer: coarse) {
     .paperpic-button {
-      inline-size: 2.75rem;
+      min-inline-size: 2.75rem;
       block-size: 2.75rem;
     }
   }
@@ -160,6 +257,12 @@
     .paperpic-button[aria-pressed='true'] {
       outline: 2px solid Highlight;
       outline-offset: -2px;
+    }
+
+    .paperpic-button-primary,
+    .paperpic-button-text {
+      outline: 1px solid ButtonText;
+      outline-offset: -1px;
     }
   }
 }

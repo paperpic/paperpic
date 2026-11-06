@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // Envie a imagem editada
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="Documento digitalizado" :editable="false" />
+    <PaperPic src="/document.jpg" alt="Documento digitalizado" @apply="save" />
   </div>
 </template>
 ```
 
-O visualizador preenche o elemento pai, então defina uma altura para ele.
+O visualizador preenche o elemento pai, então defina uma altura para ele. O lápis abre o modo de edição, e `apply` entrega a imagem editada como um `Blob`. Com `:editable="false"`, é um visualizador somente leitura.
 
 Experimente ao vivo no [playground](/pt/playground).

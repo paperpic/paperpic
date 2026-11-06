@@ -21,13 +21,43 @@ function send(request: WorkerRequest) {
 }
 
 describe('processing worker', () => {
+  let firstMessage: Parameters<typeof postMessage> | undefined
+
   beforeAll(async () => {
     vi.stubGlobal('postMessage', postMessage)
     await import('../src/processing/worker')
+    firstMessage = postMessage.mock.calls[0]
+    postMessage.mockClear()
   })
 
   afterEach(() => {
     postMessage.mockClear()
+  })
+
+  it('reports that it loaded, before any job', () => {
+    expect(firstMessage).toEqual([
+      { ready: true },
+      [],
+    ])
+  })
+
+  it('runs the pipeline', () => {
+    const [response] = send({
+      id: 4,
+      operation: 'pipeline',
+      source: {
+        data: new Uint8ClampedArray(2 * 1 * 4),
+        width: 2,
+        height: 1,
+      },
+      steps: [
+        { type: 'rotate', rotation: 90 },
+      ],
+    })
+    expect(response).toMatchObject({
+      id: 4,
+      result: { width: 1, height: 2 },
+    })
   })
 
   it('answers a threshold job and transfers the result', () => {
@@ -36,8 +66,8 @@ describe('processing worker', () => {
       operation: 'threshold',
       source: grayImage(8),
     })
-    expect(response.id).toBe(1)
     expect(response).toMatchObject({
+      id: 1,
       result: { width: 8, height: 8 },
     })
     expect(response).toHaveProperty('milliseconds')

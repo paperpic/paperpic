@@ -122,6 +122,7 @@ describe('attachGestures', () => {
 
 describe('keyToCommand', () => {
   const key = (value: string, modifiers = {}) => ({
+    shiftKey: false,
     key: value,
     ctrlKey: false,
     metaKey: false,
@@ -148,5 +149,18 @@ describe('keyToCommand', () => {
     expect(keyToCommand(key('+', { ctrlKey: true }))).toBeNull()
     expect(keyToCommand(key('0', { metaKey: true }))).toBeNull()
     expect(keyToCommand(key('a'))).toBeNull()
+    expect(keyToCommand(key('c', { ctrlKey: true }))).toBeNull()
+  })
+
+  it('maps Undo and Redo on both platforms', () => {
+    expect(keyToCommand(key('z', { ctrlKey: true }))?.type).toBe('undo')
+    expect(keyToCommand(key('z', { metaKey: true }))?.type).toBe('undo')
+    expect(keyToCommand(key('Z', { ctrlKey: true, shiftKey: true }))?.type).toBe('redo')
+    expect(keyToCommand(key('y', { ctrlKey: true }))?.type).toBe('redo')
+  })
+
+  it('maps Esc and Enter', () => {
+    expect(keyToCommand(key('Escape'))?.type).toBe('cancel')
+    expect(keyToCommand(key('Enter'))?.type).toBe('apply')
   })
 })

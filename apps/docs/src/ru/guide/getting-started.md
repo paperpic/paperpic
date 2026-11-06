@@ -21,15 +21,19 @@ pnpm add @paperpic/vue
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
+
+function save({ blob }: { blob: Blob }) {
+  // Загрузите изменённое изображение
+}
 </script>
 
 <template>
   <div style="height: 480px">
-    <PaperPic src="/document.jpg" alt="Отсканированный документ" :editable="false" />
+    <PaperPic src="/document.jpg" alt="Отсканированный документ" @apply="save" />
   </div>
 </template>
 ```
 
-Просмотрщик заполняет родительский элемент, поэтому задайте ему высоту.
+Просмотрщик заполняет родительский элемент, поэтому задайте ему высоту. Карандаш открывает режим редактирования, а `apply` передаёт изменённое изображение как `Blob`. С `:editable="false"` это просмотрщик только для чтения.
 
 Попробуйте в [песочнице](/ru/playground).

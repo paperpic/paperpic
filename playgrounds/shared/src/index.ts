@@ -17,11 +17,19 @@ export interface PlaygroundOptions {
 export interface Playground {
   name: string
   /**
-   * Mounts the component on the stage.
+   * Mounts the component on the stage, and calls `onApply` with the result when the user applies the changes.
    *
    * @returns The function that applies changed options to the component.
    */
-  mount: (stage: HTMLElement, options: PlaygroundOptions) => (options: PlaygroundOptions) => void
+  mount: (stage: HTMLElement, options: PlaygroundOptions, onApply: (result: AppliedImage) => void) => (options: PlaygroundOptions) => void
+}
+
+/** What the component delivers when the user applies the changes. */
+export interface AppliedImage {
+  blob: Blob
+  width: number
+  height: number
+  type: string
 }
 
 /** Renders the page around the component, which is the same for every framework. */
@@ -33,7 +41,7 @@ export function createPlayground({ name, mount }: Playground): void {
   const options: PlaygroundOptions = {
     src: samples[0]!.src,
     alt: samples[0]!.alt,
-    editable: false,
+    editable: true,
     wheelZoom: true,
   }
   const app = document.querySelector('#app')!
@@ -74,13 +82,14 @@ export function createPlayground({ name, mount }: Playground): void {
           </label>
           <label class="field">
             <code>editable</code>
-            <input name="editable" type="checkbox">
+            <input name="editable" type="checkbox" checked>
           </label>
           <label class="field">
             <code>wheelZoom</code>
             <input name="wheelZoom" type="checkbox" checked>
           </label>
           <p class="hint">The sample images are AI-generated. They show no real purchase.</p>
+          <p class="hint result" role="status"></p>
         </aside>
 
         <main class="stage"></main>
@@ -90,7 +99,24 @@ export function createPlayground({ name, mount }: Playground): void {
 
   app.querySelector('.title')!.textContent = `${name} playground`
 
-  const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options })
+  const result = app.querySelector<HTMLElement>('.result')!
+  let resultUrl: string | undefined
+
+  const showResult = ({ blob, width, height, type }: AppliedImage) => {
+    if (resultUrl) {
+      URL.revokeObjectURL(resultUrl)
+    }
+    resultUrl = URL.createObjectURL(blob)
+    result.textContent = `Applied: ${width}×${height}, ${Math.round(blob.size / 1024)} KB, ${type}. `
+    const link = document.createElement('a')
+    link.className = 'link'
+    link.href = resultUrl
+    link.download = `paperpic-result.${type.split('/')[1]}`
+    link.textContent = 'Download'
+    result.append(link)
+  }
+
+  const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options }, showResult)
 
   app.querySelector('.panel')!.addEventListener('change', (event) => {
     const input = event.target as HTMLInputElement

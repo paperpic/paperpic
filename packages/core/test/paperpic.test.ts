@@ -105,10 +105,15 @@ describe('paperPic', () => {
     expect(onLoad).toHaveBeenCalledWith({ width: 600, height: 250 })
     expect(pic.getState()).toEqual({
       status: 'ready',
+      mode: 'view',
       image: { width: 600, height: 250 },
       zoom: 0.5,
       fit: 'image',
       rotation: 0,
+      canUndo: false,
+      canRedo: false,
+      canApply: false,
+      busy: false,
     })
   })
 
