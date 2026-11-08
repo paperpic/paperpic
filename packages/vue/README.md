@@ -67,13 +67,29 @@ The styles live in the `paperpic` cascade layer, so any of your CSS outside a la
 
 Set any of these custom properties on `:root`, on an ancestor or on `.paperpic`:
 
-| Custom property                  | Default   | Description                           |
-| -------------------------------- | --------- | ------------------------------------- |
-| `--paperpic-color-surface`       | `#fff`    | Background of the interface           |
-| `--paperpic-color-text`          | `#1a263c` | Text of the interface                 |
-| `--paperpic-color-accent`        | `#0a84ff` | Accent of the interface               |
-| `--paperpic-radius`              | `6px`     | Corner radius of the interface        |
-| `--paperpic-transition-duration` | `0.2s`    | Duration of the interface transitions |
+| Custom property                  | Default   | Dark default | Description                           |
+| -------------------------------- | --------- | ------------ | ------------------------------------- |
+| `--paperpic-color-surface`       | `#fff`    | `#151e2e`    | Background of the interface           |
+| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9`    | Text of the interface                 |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff`    | Accent of the interface               |
+| `--paperpic-radius`              | `6px`     | `6px`        | Corner radius of the interface        |
+| `--paperpic-transition-duration` | `0.2s`    | `0.2s`       | Duration of the interface transitions |
+
+The dark defaults apply when the user's system prefers a dark color scheme. If your site switches themes in another way, such as a class on `<html>`, set the colors of each theme yourself:
+
+```css
+:root {
+  --paperpic-color-surface: #fff;
+  --paperpic-color-text: #1a263c;
+  --paperpic-color-accent: #0a84ff;
+}
+
+:root.dark {
+  --paperpic-color-surface: #151e2e;
+  --paperpic-color-text: #f2f5f9;
+  --paperpic-color-accent: #5cb5ff;
+}
+```
 
 ## Browser support
 

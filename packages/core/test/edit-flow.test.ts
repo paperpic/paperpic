@@ -148,17 +148,16 @@ describe('editing', () => {
     expect(pic.getState()).toMatchObject({ rotation: 90, canUndo: true, canRedo: false })
   })
 
-  it('offers two rotate buttons in the bar, and not in the toolbar', () => {
+  it('offers one rotate button in the bar, to the left, and none in the toolbar', () => {
     pic.edit()
-    const rotateRight = bar().querySelector<HTMLButtonElement>('[aria-label="Rotate right"]')!
     const rotateLeft = bar().querySelector<HTMLButtonElement>('[aria-label="Rotate left"]')!
-    expect(container.querySelector<HTMLButtonElement>('.paperpic-toolbar [aria-label="Rotate right"]')!.hidden).toBe(true)
+    expect(bar().querySelector('[aria-label="Rotate right"]')).toBeNull()
+    expect(container.querySelector<HTMLButtonElement>('.paperpic-toolbar [aria-label="Rotate left"]')!.hidden).toBe(true)
 
-    rotateRight.click()
-    expect(pic.getState().rotation).toBe(90)
-    rotateLeft.click()
     rotateLeft.click()
     expect(pic.getState().rotation).toBe(270)
+    rotateLeft.click()
+    expect(pic.getState().rotation).toBe(180)
   })
 
   it('has nothing to apply when the rotations cancel out', () => {
@@ -879,8 +878,8 @@ describe('editing', () => {
   it('offers only the chosen tools', () => {
     pic.edit()
     pic.setOptions({ tools: [] })
-    expect(bar().querySelector<HTMLButtonElement>('[aria-label="Rotate right"]')!.hidden).toBe(true)
+    expect(bar().querySelector<HTMLButtonElement>('[aria-label="Rotate left"]')!.hidden).toBe(true)
     pic.setOptions({ tools: undefined })
-    expect(bar().querySelector<HTMLButtonElement>('[aria-label="Rotate right"]')!.hidden).toBe(false)
+    expect(bar().querySelector<HTMLButtonElement>('[aria-label="Rotate left"]')!.hidden).toBe(false)
   })
 })

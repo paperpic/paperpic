@@ -311,6 +311,10 @@ importers:
         version: 3.3.14(typescript@6.0.3)
 
   playgrounds/bench:
+    dependencies:
+      playground-shared:
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
       '@types/node':
         specifier: 26.6.6

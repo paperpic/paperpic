@@ -18,7 +18,9 @@ export interface ToolContext {
 /** A button in the edit bar. */
 export interface ToolAction {
   /** Its key in `PaperPicLabels` and in the icons. */
-  id: 'crop' | 'perspective' | 'rotateLeft' | 'rotateRight' | 'threshold'
+  id: 'crop' | 'perspective' | 'rotateLeft' | 'threshold'
+  /** Its icon, when it is not the one named by `id`. */
+  icon?: 'rotateDocument'
   run: (context: ToolContext) => void
 }
 

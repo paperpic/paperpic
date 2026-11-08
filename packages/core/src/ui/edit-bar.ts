@@ -81,7 +81,7 @@ export class EditBar {
     toolGroup.className = 'paperpic-edit-tools'
     for (const tool of tools) {
       for (const action of tool.actions) {
-        const button = createButton(ICONS[action.id], () => commands.runTool(action.run))
+        const button = createButton(ICONS[action.icon ?? action.id], () => commands.runTool(action.run))
         this.toolButtons.push({ tool, id: action.id, button })
         toolGroup.append(button)
       }

@@ -4,7 +4,7 @@ description: "Try the PaperPic Vue component live: zoom, pan, crop, straighten, 
 layout: page
 ---
 
-<Playground alt="Sample receipt" sample-label="Sample" receipt-label="Receipt" cut-corner-label="Receipt with a cut-off corner" attach-label="Attach an image" ai-notice="The sample images are AI-generated and show no real purchase." result-label="Result" download-label="Download">
+<Playground alt="Sample receipt" sample-label="Sample" receipt-label="Receipt" cut-corner-label="Receipt with a cut-off corner" attach-label="Attach an image" photo-label="Take a photo" ai-notice="The sample images are AI-generated and show no real purchase." result-label="Result" download-label="Download">
 
 # Playground
 

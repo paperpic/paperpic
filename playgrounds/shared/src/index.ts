@@ -1,6 +1,6 @@
 /// <reference path="./env.d.ts" />
+import { renderHeader } from './page'
 import 'virtual:playground-stylesheet'
-import './style.css'
 
 const samples = [
   { src: '/samples/receipt.jpg', name: 'Receipt', alt: 'Sample receipt' },
@@ -57,18 +57,6 @@ export function createPlayground({ name, mount }: Playground): void {
   document.title = `PaperPic ${name} playground${isDist ? ' (dist)' : ''}`
   app.innerHTML = `
     <div class="layout">
-      <header class="header">
-        <h1 class="brand">
-          <img class="logo" src="/logo-mark.svg" alt="" width="32" height="32">
-          <span class="wordmark">Paper<span class="wordmark-accent">Pic</span></span>
-          <span class="title"></span>
-        </h1>
-        <nav class="links" aria-label="Project links">
-          <a class="link" href="https://paperpic.dev">Docs</a>
-          <a class="link" href="https://github.com/paperpic/paperpic">GitHub</a>
-        </nav>
-      </header>
-
       <p class="notice">
         <strong>Development only.</strong>
         Runs ${packagesOrigin}. It is not published or deployed.
@@ -84,10 +72,16 @@ export function createPlayground({ name, mount }: Playground): void {
               ${samples.map(({ src, name }) => `<option value="${src}">${name}</option>`).join('')}
             </select>
           </label>
-          <label class="field">
-            Attach an image
-            <input class="file" name="attach" type="file" accept="image/*">
-          </label>
+          <div class="attach">
+            <label class="button">
+              Attach an image
+              <input class="file" name="attach" type="file" accept="image/*">
+            </label>
+            <label class="button button-photo">
+              Take a photo
+              <input class="file" name="attach" type="file" accept="image/*" capture="environment">
+            </label>
+          </div>
           <label class="field">
             <code>editable</code>
             <input name="editable" type="checkbox" checked>
@@ -113,7 +107,7 @@ export function createPlayground({ name, mount }: Playground): void {
     </div>
   `
 
-  app.querySelector('.title')!.textContent = `${name} playground`
+  app.querySelector('.layout')!.prepend(renderHeader(`${name} playground`))
 
   const result = app.querySelector<HTMLElement>('.result')!
   let resultUrl: string | undefined

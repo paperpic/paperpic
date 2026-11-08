@@ -5,100 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
     <title>PaperPic benchmarks</title>
-    <style>
-      body {
-        font:
-          14px/1.5 system-ui,
-          sans-serif;
-        margin: 16px;
-        color: #222;
-      }
-
-      label {
-        display: block;
-        margin-block: 8px;
-      }
-
-      input[type='text'] {
-        inline-size: min(100%, 640px);
-      }
-
-      button {
-        font: inherit;
-        padding: 8px 16px;
-        margin-inline-end: 8px;
-      }
-
-      table {
-        border-collapse: collapse;
-        margin-block: 12px;
-      }
-
-      th,
-      td {
-        border: 1px solid #bbb;
-        padding: 2px 8px;
-        text-align: start;
-      }
-
-      td.failed {
-        background: #fdd;
-      }
-
-      #log {
-        font-weight: 600;
-      }
-
-      #json {
-        inline-size: 100%;
-        block-size: 96px;
-      }
-
-      #previews {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: flex-start;
-      }
-
-      figure {
-        margin: 0;
-      }
-
-      figcaption {
-        font-size: 12px;
-      }
-
-      canvas {
-        display: block;
-        border: 1px solid #bbb;
-      }
-    </style>
   </head>
   <body>
-    <h1>PaperPic benchmarks</h1>
-    <p>Development only. Photos stay in this browser: nothing is uploaded or saved.</p>
-    <label>Photo <input id="file" type="file" accept="image/*" /></label>
-    <label>
-      Corners for the warp, as fractions of the image, in order: top left, top right, bottom right, bottom left. The
-      default is a plain rectangle, which only crops: use the corners of the document to correct perspective.
-      <input id="corners" type="text" value="0.1,0.1, 0.9,0.1, 0.9,0.9, 0.1,0.9" />
-    </label>
-    <label>Aspect ratio as width/height, such as 80/204. Empty to estimate it <input id="aspect" type="text" /></label>
-    <label>Sizes in megapixels, or "full" <input id="sizes" type="text" value="2,12,full" /></label>
-    <label>Runs per measurement <input id="runs" type="number" value="3" min="1" max="10" /></label>
-    <label
-      >Threshold sensitivity for the visual results
-      <input id="sensitivity" type="number" value="0.5" min="0" max="1" step="0.05"
-    /></label>
-    <button id="run" type="button">Run benchmarks</button>
-    <button id="visual" type="button">Show visual results</button>
-    <button id="painting" type="button">Compare painting</button>
-    <button id="copy" type="button">Copy results</button>
-    <p id="log" role="status" aria-live="polite">Choose a photo.</p>
-    <table id="results"></table>
-    <label>Results <textarea id="json" readonly></textarea></label>
-    <div id="previews"></div>
+    <div class="layout bench-layout">
+      <p class="notice">
+        <strong>Development only.</strong>
+        Measures the image processing on this device. Photos stay in this browser: nothing is uploaded or saved.
+      </p>
+
+      <div class="workspace bench-workspace">
+        <aside class="panel bench-panel" aria-labelledby="photo-heading">
+          <h2 id="photo-heading" class="panel-heading">Photo</h2>
+          <div class="attach">
+            <label class="button">
+              Choose a photo
+              <input class="file" name="photo" type="file" accept="image/*" />
+            </label>
+            <label class="button button-photo">
+              Take a photo
+              <input class="file" name="photo" type="file" accept="image/*" capture="environment" />
+            </label>
+          </div>
+          <p id="photo-name" class="hint">No photo chosen.</p>
+
+          <h2 class="panel-heading bench-heading">Options</h2>
+          <label class="bench-field">
+            <span class="bench-label">Corners</span>
+            <input id="corners" class="bench-input" type="text" value="0.1,0.1, 0.9,0.1, 0.9,0.9, 0.1,0.9" />
+            <span class="hint">
+              Fractions of the image, in order: top left, top right, bottom right, bottom left. A rectangle only crops:
+              the corners of the document correct perspective.
+            </span>
+          </label>
+          <label class="bench-field">
+            <span class="bench-label">Aspect ratio</span>
+            <input id="aspect" class="bench-input" type="text" placeholder="Estimated" />
+            <span class="hint">Width/height, such as 80/204. Empty to estimate it.</span>
+          </label>
+          <label class="bench-field">
+            <span class="bench-label">Sizes</span>
+            <input id="sizes" class="bench-input" type="text" value="2,12,full" />
+            <span class="hint">In megapixels, or "full".</span>
+          </label>
+          <div class="bench-pair">
+            <label class="bench-field">
+              <span class="bench-label">Runs</span>
+              <input id="runs" class="bench-input" type="number" value="3" min="1" max="10" />
+              <span class="hint">Per measurement.</span>
+            </label>
+            <label class="bench-field">
+              <span class="bench-label">Sensitivity</span>
+              <input id="sensitivity" class="bench-input" type="number" value="0.5" min="0" max="1" step="0.05" />
+              <span class="hint">Of the visual threshold.</span>
+            </label>
+          </div>
+
+          <div class="bench-actions">
+            <button id="run" class="button button-primary" type="button">Run benchmarks</button>
+            <button id="visual" class="button" type="button">Show visual results</button>
+            <button id="painting" class="button" type="button">Compare painting</button>
+          </div>
+        </aside>
+
+        <main class="bench-report">
+          <p id="log" class="bench-status" role="status" aria-live="polite">Choose a photo.</p>
+
+          <section class="bench-section" aria-labelledby="results-heading">
+            <div class="bench-section-header">
+              <h2 id="results-heading" class="panel-heading">Results</h2>
+              <button id="copy" class="button" type="button">Copy results</button>
+            </div>
+            <div class="bench-table-frame">
+              <table id="results" class="bench-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Size</th>
+                    <th scope="col">Operation</th>
+                    <th scope="col">Where</th>
+                    <th scope="col" class="bench-number">Median</th>
+                    <th scope="col">Note</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <p class="bench-empty">No results yet. Choose a photo and run the benchmarks.</p>
+            <label class="bench-field">
+              <span class="bench-label">As plain text, to paste in an issue</span>
+              <textarea id="json" class="bench-input bench-text" readonly></textarea>
+            </label>
+          </section>
+
+          <section class="bench-section" aria-labelledby="previews-heading">
+            <h2 id="previews-heading" class="panel-heading">Visual results</h2>
+            <div id="previews" class="bench-previews"></div>
+            <p class="bench-empty">Nothing to show yet. Show the visual results or compare painting.</p>
+          </section>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

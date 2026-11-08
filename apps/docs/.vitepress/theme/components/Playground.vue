@@ -10,6 +10,7 @@ const props = defineProps<{
   receiptLabel: string
   cutCornerLabel: string
   attachLabel: string
+  photoLabel: string
   aiNotice: string
   resultLabel: string
   downloadLabel: string
@@ -95,10 +96,16 @@ onBeforeUnmount(() => setResult(null))
         </select>
       </label>
 
-      <label class="field">
-        {{ attachLabel }}
-        <input class="file" type="file" accept="image/*" @change="attach">
-      </label>
+      <div class="attach">
+        <label class="button">
+          {{ attachLabel }}
+          <input class="file" type="file" accept="image/*" @change="attach">
+        </label>
+        <label class="button button-photo">
+          {{ photoLabel }}
+          <input class="file" type="file" accept="image/*" capture="environment" @change="attach">
+        </label>
+      </div>
 
       <p class="notice">
         {{ aiNotice }}
@@ -152,9 +159,54 @@ onBeforeUnmount(() => setResult(null))
   color: var(--vp-c-text-1);
 }
 
+.attach {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 1.5rem;
+}
+
+/* A label styled as a button, because the native file input looks different in each browser and language */
+.button {
+  position: relative;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+.button:has(:focus-visible) {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+/* A camera only helps where the browser can open one, which is on phones and tablets */
+.button-photo {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .button-photo {
+    display: block;
+  }
+}
+
 .file {
-  max-width: 100%;
-  font-size: 0.75rem;
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .notice {

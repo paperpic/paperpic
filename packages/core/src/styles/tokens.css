@@ -8,4 +8,13 @@
     --paperpic-radius: 6px;
     --paperpic-transition-duration: 0.2s;
   }
+
+  /* A page that switches themes with a class, and not with this query, sets the tokens itself */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paperpic-color-surface: #151e2e;
+      --paperpic-color-text: #f2f5f9;
+      --paperpic-color-accent: #5cb5ff;
+    }
+  }
 }

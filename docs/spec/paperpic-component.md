@@ -50,6 +50,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D36 | The view toolbar sits at the right: zoom in, zoom out, fit to width, fit to height and, only with `editable: false`, rotate left and right.                                                                                                  | The controls of the previous viewer, which already worked for long documents.                                                                                    |
 | D37 | The Edit pencil goes at the top of the right toolbar and disappears while editing. A bar at the bottom holds Cancel, the tools, Undo, Redo and Apply. The zoom toolbar stays, because placing corners needs it.                              | One place for editing, and it fits in a phone by splitting into two rows.                                                                                        |
 | D38 | Passing the same `src` again does not reload the image. `reload()` does.                                                                                                                                                                     | Wrappers resend every option on each change, which would erase the result of an edit.                                                                            |
+| D39 | The color tokens have dark defaults under `prefers-color-scheme: dark`. A site that switches themes another way sets the tokens for each theme.                                                                                              | It follows the system, as the browser does, and `light-dark()` is only just Baseline Widely Available.                                                           |
 
 ## Public API
 
@@ -91,6 +92,7 @@ pic.destroy()
 
 - The component fills its container, which needs a height.
 - `change` reports user actions, and `setOptions()` never emits it. `load` reports a loaded image, and `error` a failed load or a failed Apply. `apply` carries the result.
+- Rotate is one button in the edit bar that turns a quarter turn to the left, as in photo galleries. `rotate(1)` still turns right.
 - Rotations that cancel out are no change, so Apply stays disabled.
 - While a tool with its own selection is open, the other edits, Undo, Redo and Apply do nothing. `Enter` confirms it and `Esc` cancels it.
 - After an edit that needs new pixels, the viewer shows a preview on a copy of about 2 MP, painted at the size of the result. Zoom and coordinates do not change, but the preview looks softer than the result when zoomed in. Apply computes everything at full resolution.
