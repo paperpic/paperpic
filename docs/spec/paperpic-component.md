@@ -92,6 +92,7 @@ pic.destroy()
 
 - The component fills its container, which needs a height.
 - `change` reports user actions, and `setOptions()` never emits it. `load` reports a loaded image, and `error` a failed load or a failed Apply. `apply` carries the result.
+- Rotate is one button in the edit bar that turns a quarter turn to the left, as in photo galleries. `rotate(1)` still turns right.
 - Rotations that cancel out are no change, so Apply stays disabled.
 - While a tool with its own selection is open, the other edits, Undo, Redo and Apply do nothing. `Enter` confirms it and `Esc` cancels it.
 - After an edit that needs new pixels, the viewer shows a preview on a copy of about 2 MP, painted at the size of the result. Zoom and coordinates do not change, but the preview looks softer than the result when zoomed in. Apply computes everything at full resolution.

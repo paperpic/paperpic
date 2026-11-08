@@ -6,6 +6,7 @@ import fitHeight from '../assets/icons/fit-height.svg?raw'
 import fitWidth from '../assets/icons/fit-width.svg?raw'
 import perspective from '../assets/icons/perspective.svg?raw'
 import redo from '../assets/icons/redo.svg?raw'
+import rotateDocument from '../assets/icons/rotate-document.svg?raw'
 import rotateLeft from '../assets/icons/rotate-left.svg?raw'
 import rotateRight from '../assets/icons/rotate-right.svg?raw'
 import threshold from '../assets/icons/threshold.svg?raw'
@@ -22,6 +23,7 @@ export const ICONS = {
   fitHeight,
   rotateLeft,
   rotateRight,
+  rotateDocument,
   crop,
   perspective,
   threshold,
