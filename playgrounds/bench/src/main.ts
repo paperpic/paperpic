@@ -1,9 +1,11 @@
 import type { PreparedThreshold } from '../../../packages/core/src/processing/threshold'
 import type { PixelBuffer, Quad } from '../../../packages/core/src/processing/types'
 import type { WorkerRequest, WorkerResponse } from '../../../packages/core/src/processing/worker'
+import { renderHeader } from 'playground-shared/page'
 import { estimateOutputSize } from '../../../packages/core/src/processing/homography'
 import { adaptiveThreshold, applyThreshold, prepareThreshold } from '../../../packages/core/src/processing/threshold'
 import { warpPerspective } from '../../../packages/core/src/processing/warp'
+import './style.css'
 
 interface Row {
   size: string
@@ -19,20 +21,36 @@ type Job<T = WorkerRequest> = T extends unknown ? Omit<T, 'id'> : never
 
 const element = <T extends HTMLElement>(id: string) => document.querySelector<T>(`#${id}`)!
 
-const fileInput = element<HTMLInputElement>('file')
 const cornersInput = element<HTMLInputElement>('corners')
 const sizesInput = element<HTMLInputElement>('sizes')
 const runsInput = element<HTMLInputElement>('runs')
 const sensitivityInput = element<HTMLInputElement>('sensitivity')
 const log = element('log')
-const resultsTable = element<HTMLTableElement>('results')
+const resultsBody = element<HTMLTableElement>('results').tBodies[0]!
 const jsonOutput = element<HTMLTextAreaElement>('json')
 const previews = element('previews')
 
 const rows: Row[] = []
 
-function say(message: string) {
+document.querySelector('.layout')!.prepend(renderHeader('Benchmarks'))
+
+let photo: File | undefined
+
+for (const input of document.querySelectorAll<HTMLInputElement>('input[name="photo"]')) {
+  input.addEventListener('change', () => {
+    const file = input.files?.[0]
+    if (file) {
+      photo = file
+      element('photo-name').textContent = `${file.name}, ${(file.size / 1e6).toFixed(1)} MB`
+      say('Ready. Run the benchmarks or show the visual results.')
+    }
+  })
+}
+
+/** Shows a message, with a pulsing dot while work goes on. */
+function say(message: string, busy = false) {
   log.textContent = message
+  log.toggleAttribute('data-busy', busy)
 }
 
 /** Gives the browser a chance to paint the log before a long task. */
@@ -60,7 +78,8 @@ function record(row: Row) {
         note,
       ].join(' | ')),
   ].join('\n')
-  const line = resultsTable.insertRow()
+  const line = resultsBody.insertRow()
+  line.classList.toggle('bench-failed', row.milliseconds === null)
   const cells = [
     row.size,
     row.operation,
@@ -70,15 +89,15 @@ function record(row: Row) {
       : `${Math.round(row.milliseconds)} ms`,
     row.note,
   ]
-  for (const text of cells) {
+  for (const [index, text] of cells.entries()) {
     const cell = line.insertCell()
     cell.textContent = text
-    cell.classList.toggle('failed', row.milliseconds === null)
+    cell.classList.toggle('bench-number', index === 3)
   }
 }
 
 async function measure(row: Omit<Row, 'milliseconds' | 'note'>, runs: number, operation: () => Promise<number | void> | number | void, note = '') {
-  say(`Running ${row.operation} at ${row.size}, ${row.where}…`)
+  say(`Running ${row.operation} at ${row.size}, ${row.where}…`, true)
   await nextFrame()
   try {
     const times: number[] = []
@@ -181,13 +200,13 @@ function startWorker() {
 }
 
 async function runBenchmarks() {
-  const file = fileInput.files?.[0]
+  const file = photo
   if (!file) {
     say('Choose a photo first.')
     return
   }
   rows.length = 0
-  resultsTable.replaceChildren()
+  resultsBody.replaceChildren()
   const runs = Number(runsInput.value)
   const sizes = sizesInput.value.split(',').map(size => size.trim() === 'full'
     ? 'full' as const
@@ -309,13 +328,13 @@ function showDetail(caption: string, source: OffscreenCanvas) {
 }
 
 async function showVisualResults() {
-  const file = fileInput.files?.[0]
+  const file = photo
   if (!file) {
     say('Choose a photo first.')
     return
   }
   previews.replaceChildren()
-  say('Processing…')
+  say('Processing…', true)
   await nextFrame()
 
   const bitmap = await createImageBitmap(file)
@@ -344,13 +363,13 @@ async function showVisualResults() {
 }
 
 async function comparePainting() {
-  const file = fileInput.files?.[0]
+  const file = photo
   if (!file) {
     say('Choose a photo first.')
     return
   }
   previews.replaceChildren()
-  say('Painting…')
+  say('Painting…', true)
   await nextFrame()
 
   const bitmap = await createImageBitmap(file)
@@ -392,9 +411,33 @@ async function comparePainting() {
   say('Done.')
 }
 
-element('run').addEventListener('click', runBenchmarks)
-element('visual').addEventListener('click', showVisualResults)
-element('painting').addEventListener('click', comparePainting)
+const actions = [
+  ...document.querySelectorAll<HTMLButtonElement>('.bench-actions button'),
+]
+
+/** Runs one task at a time, and reports its error instead of failing silently. */
+function exclusive(task: () => Promise<void>) {
+  return async () => {
+    for (const button of actions) {
+      button.disabled = true
+    }
+    try {
+      await task()
+    }
+    catch (error) {
+      say(String(error))
+    }
+    finally {
+      for (const button of actions) {
+        button.disabled = false
+      }
+    }
+  }
+}
+
+element('run').addEventListener('click', exclusive(runBenchmarks))
+element('visual').addEventListener('click', exclusive(showVisualResults))
+element('painting').addEventListener('click', exclusive(comparePainting))
 element('copy').addEventListener('click', () => {
   // The Clipboard API needs HTTPS, and a phone reaches this page through plain HTTP
   jsonOutput.select()
