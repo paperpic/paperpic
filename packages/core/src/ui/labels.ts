@@ -19,6 +19,11 @@ export interface PaperPicLabels {
   perspective: string
   /** What to do in the perspective tool. */
   perspectiveHint: string
+  threshold: string
+  /** Name of the slider of the threshold. */
+  thresholdSensitivity: string
+  /** Announced after changing the slider of the threshold. */
+  thresholdLevel: (percent: number) => string
   /** Closes a tool, keeping its selection. */
   confirm: string
   /** Closes a tool, discarding its selection. */
@@ -67,6 +72,9 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   cropHint: 'Drag the corners',
   perspective: 'Straighten',
   perspectiveHint: 'Drag each corner to a corner of the document',
+  threshold: 'Clean up',
+  thresholdSensitivity: 'Sensitivity',
+  thresholdLevel: percent => `Sensitivity ${percent}%`,
   confirm: 'Done',
   cancelTool: 'Cancel this tool',
   cornerTopLeft: 'Top left corner',

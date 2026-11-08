@@ -43,13 +43,15 @@ const EXTENSIONS: Record<string, string> = {
 const DEFAULT_TYPE = 'image/png'
 const DEFAULT_QUALITY = 0.92
 
-/** Chooses the output format: the one requested, or the one of the source, or PNG. */
-export function resolveOutputType(source: string | Blob | undefined, output: PaperPicOutput = {}): string {
-  const type = output.type ?? (
-    typeof source === 'string'
-      ? EXTENSIONS[source.split(/[?#]/)[0]!.split('.').pop()!.toLowerCase()]
-      : source?.type
-  )
+/**
+ * Chooses the output format: the one requested, or PNG for a cleaned document, whose sharp edges JPEG would damage,
+ * or the one of the source, or PNG.
+ */
+export function resolveOutputType(source: string | Blob | undefined, output: PaperPicOutput = {}, cleaned = false): string {
+  const sourceType = typeof source === 'string'
+    ? EXTENSIONS[source.split(/[?#]/)[0]!.split('.').pop()!.toLowerCase()]
+    : source?.type
+  const type = output.type ?? (cleaned ? DEFAULT_TYPE : sourceType)
   return type && ENCODABLE.has(type)
     ? type
     : DEFAULT_TYPE
@@ -89,7 +91,7 @@ export async function exportImage(request: ExportRequest): Promise<ExportedImage
   const result = plan.steps.length > 0
     ? await request.run(pixels, plan.steps)
     : pixels
-  const blob = await encode(result, resolveOutputType(request.source, request.output), request.output?.quality ?? DEFAULT_QUALITY)
+  const blob = await encode(result, resolveOutputType(request.source, request.output, request.steps.some(({ type }) => type === 'threshold')), request.output?.quality ?? DEFAULT_QUALITY)
   return {
     blob,
     width: result.width,

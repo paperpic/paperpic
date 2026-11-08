@@ -12,6 +12,10 @@ export interface EditBarCommands {
   runTool: (run: Tool['actions'][number]['run']) => void
   confirmTool: () => void
   cancelTool: () => void
+  /** Shows a sensitivity while the user drags the slider, without any edit. */
+  previewThreshold: (sensitivity: number) => void
+  /** The user chose a sensitivity. */
+  setThreshold: (sensitivity: number) => void
 }
 
 /** What the edit bar shows. */
@@ -22,6 +26,7 @@ export interface EditBarState {
   busy: boolean
   /** Whether a tool with its own selection can open. A preview in progress prevents it. */
   canOpenTool: boolean
+  threshold: { enabled: boolean, sensitivity: number }
 }
 
 /** The controls of the edit mode: Cancel, the tools, Undo, Redo and Apply. An open tool replaces them with its own. */
@@ -29,6 +34,9 @@ export class EditBar {
   readonly element: HTMLElement
   private readonly controls: HTMLElement
   private readonly toolControls: HTMLElement
+  private readonly thresholdRow: HTMLElement
+  private readonly thresholdName: HTMLElement
+  private readonly thresholdSlider: HTMLInputElement
   private readonly hint: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
@@ -46,6 +54,9 @@ export class EditBar {
   private readonly fixTabOrder: () => void
   private labels: PaperPicLabels
   private activeTool: Tool | null = null
+  private thresholdEnabled = false
+  private thresholdOffered = true
+  private dragging = false
   private canApply = false
   private busy = false
 
@@ -114,7 +125,32 @@ export class EditBar {
       }
     })
 
-    this.element.append(this.controls, this.toolControls, this.confirmation)
+    this.thresholdRow = document.createElement('label')
+    this.thresholdRow.className = 'paperpic-edit-threshold'
+    this.thresholdRow.hidden = true
+    this.thresholdName = document.createElement('span')
+    this.thresholdSlider = document.createElement('input')
+    this.thresholdSlider.type = 'range'
+    this.thresholdSlider.min = '0'
+    this.thresholdSlider.max = '1'
+    this.thresholdSlider.step = '0.01'
+    this.thresholdSlider.addEventListener('input', () => {
+      this.dragging = true
+      commands.previewThreshold(this.thresholdSlider.valueAsNumber)
+    })
+    this.thresholdSlider.addEventListener('change', () => {
+      this.dragging = false
+      commands.setThreshold(this.thresholdSlider.valueAsNumber)
+    })
+    // The arrow keys move the slider here, instead of panning the image
+    this.thresholdSlider.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') {
+        event.stopPropagation()
+      }
+    })
+    this.thresholdRow.append(this.thresholdName, this.thresholdSlider)
+
+    this.element.append(this.controls, this.toolControls, this.thresholdRow, this.confirmation)
 
     this.fixTabOrder = attachRovingFocus(this.controls, () => [
       this.cancelButton,
@@ -133,6 +169,7 @@ export class EditBar {
     this.controls.setAttribute('aria-label', labels.editBar)
     nameButton(this.cancelToolButton, labels.cancelTool)
     nameButton(this.confirmToolButton, labels.confirm)
+    this.thresholdName.textContent = labels.thresholdSensitivity
     this.confirmToolText.textContent = labels.confirm
     this.showHint()
     nameButton(this.cancelButton, labels.cancel)
@@ -154,6 +191,8 @@ export class EditBar {
     for (const { tool, button } of this.toolButtons) {
       button.hidden = !ids.includes(tool.id)
     }
+    this.thresholdOffered = ids.includes('threshold')
+    this.showThresholdRow()
     this.fixTabOrder()
   }
 
@@ -163,6 +202,7 @@ export class EditBar {
     this.toolControls.hidden = tool === null
     this.controls.hidden = tool !== null
     this.showHint()
+    this.showThresholdRow()
   }
 
   /** Shows or hides the bar. Hiding it closes any open question. */
@@ -174,7 +214,7 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, busy, canOpenTool, threshold }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
@@ -183,7 +223,16 @@ export class EditBar {
     this.cancelButton.setAttribute('aria-disabled', String(busy))
     for (const { tool, button } of this.toolButtons) {
       button.setAttribute('aria-disabled', String(busy || (tool.activate !== undefined && !canOpenTool)))
+      if (tool.id === 'threshold') {
+        button.setAttribute('aria-pressed', String(threshold.enabled))
+      }
     }
+    this.thresholdEnabled = threshold.enabled
+    this.thresholdSlider.disabled = busy
+    if (!this.dragging) {
+      this.thresholdSlider.value = String(threshold.sensitivity)
+    }
+    this.showThresholdRow()
   }
 
   /** Cancels, asking first if there are changes to lose. */
@@ -197,6 +246,7 @@ export class EditBar {
     }
     this.controls.hidden = true
     this.confirmation.hidden = false
+    this.showThresholdRow()
     // The safe choice takes the focus, so pressing Enter again does not lose the work
     this.keepButton.focus()
   }
@@ -206,6 +256,15 @@ export class EditBar {
     const button = this.toolButtons.find(({ tool }) => tool.id === toolId)?.button
       ?? this.controls.querySelector<HTMLButtonElement>('button[tabindex="0"]')
     button?.focus()
+  }
+
+  private showThresholdRow(): void {
+    const visible = this.thresholdEnabled && this.thresholdOffered && this.activeTool === null && this.confirmation.hidden
+    // A control that disappears must not take the keyboard focus with it
+    if (!visible && document.activeElement === this.thresholdSlider) {
+      this.focus('threshold')
+    }
+    this.thresholdRow.hidden = !visible
   }
 
   private showHint(): void {
@@ -219,6 +278,7 @@ export class EditBar {
     const wasOpen = !this.confirmation.hidden
     this.confirmation.hidden = true
     this.controls.hidden = this.activeTool !== null
+    this.showThresholdRow()
     if (wasOpen && restoreFocus) {
       this.cancelButton.focus()
     }

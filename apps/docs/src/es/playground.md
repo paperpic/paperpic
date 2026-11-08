@@ -1,6 +1,6 @@
 ---
 title: Playground en vivo
-description: "Prueba en vivo el componente de Vue de PaperPic: haz zoom, desplaza, recorta, endereza, gira y descarga un ticket de ejemplo o tu propia imagen en tu navegador."
+description: "Prueba en vivo el componente de Vue de PaperPic: haz zoom, desplaza, recorta, endereza, gira, limpia y descarga un ticket de ejemplo o tu propia imagen en tu navegador."
 layout: page
 ---
 
@@ -8,6 +8,6 @@ layout: page
 
 # Playground
 
-Prueba PaperPic con un ticket de ejemplo o adjunta tu propia imagen, que se queda en tu navegador. Puedes hacer zoom y desplazarla. Para editarla, pulsa el lápiz, recórtala, enderézala o gírala y aplica los cambios para descargar el resultado.
+Prueba PaperPic con un ticket de ejemplo o adjunta tu propia imagen, que se queda en tu navegador. Puedes hacer zoom y desplazarla. Para editarla, pulsa el lápiz, recórtala, enderézala, gírala o límpiala y aplica los cambios para descargar el resultado.
 
 </Playground>

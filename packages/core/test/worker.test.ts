@@ -60,6 +60,22 @@ describe('processing worker', () => {
     })
   })
 
+  it('prepares a threshold after the steps, and transfers the result', () => {
+    const [response, transfer] = send({
+      id: 5,
+      operation: 'prepare',
+      source: grayImage(8),
+      steps: [
+        { type: 'rotate', rotation: 90 },
+      ],
+    })
+    expect(response).toMatchObject({
+      id: 5,
+      prepared: { width: 8, height: 8 },
+    })
+    expect(transfer).toHaveLength(1)
+  })
+
   it('answers a threshold job and transfers the result', () => {
     const [response, transfer] = send({
       id: 1,

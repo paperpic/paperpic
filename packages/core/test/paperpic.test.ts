@@ -115,6 +115,7 @@ describe('paperPic', () => {
       canApply: false,
       busy: false,
       activeTool: null,
+      threshold: { enabled: false, sensitivity: 0.5 },
     })
   })
 

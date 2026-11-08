@@ -1,13 +1,14 @@
 import type { PipelineStep } from '../pipeline/operations'
-import type { ThresholdOptions } from './threshold'
+import type { PreparedThreshold, ThresholdOptions } from './threshold'
 import type { PixelBuffer, Quad } from './types'
 import { applySteps } from '../pipeline/pipeline'
-import { adaptiveThreshold } from './threshold'
+import { adaptiveThreshold, prepareThreshold } from './threshold'
 import { warpPerspective } from './warp'
 
 /** A job for the processing worker. The pixel buffer is transferred, so the sender loses access to it. */
 export type WorkerRequest
   = | { id: number, operation: 'pipeline', source: PixelBuffer, steps: readonly PipelineStep[] }
+    | { id: number, operation: 'prepare', source: PixelBuffer, steps: readonly PipelineStep[] }
     | { id: number, operation: 'threshold', source: PixelBuffer, options?: ThresholdOptions }
     | { id: number, operation: 'warp', source: PixelBuffer, quad: Quad, width: number, height: number }
 
@@ -17,6 +18,7 @@ export type WorkerRequest
 export type WorkerResponse
   = | { ready: true }
     | { id: number, result: PixelBuffer, milliseconds: number }
+    | { id: number, prepared: PreparedThreshold, milliseconds: number }
     | { id: number, error: string }
 
 interface WorkerScope {
@@ -24,7 +26,7 @@ interface WorkerScope {
   postMessage: (message: WorkerResponse, transfer: Transferable[]) => void
 }
 
-function run(request: WorkerRequest): PixelBuffer {
+function run(request: Exclude<WorkerRequest, { operation: 'prepare' }>): PixelBuffer {
   switch (request.operation) {
     case 'pipeline':
       return applySteps(request.source, request.steps)
@@ -40,6 +42,11 @@ const scope = globalThis as unknown as WorkerScope
 scope.onmessage = ({ data: request }) => {
   try {
     const start = performance.now()
+    if (request.operation === 'prepare') {
+      const prepared = prepareThreshold(applySteps(request.source, request.steps))
+      scope.postMessage({ id: request.id, prepared, milliseconds: performance.now() - start }, [prepared.ratios.buffer as ArrayBuffer])
+      return
+    }
     const result = run(request)
     const milliseconds = performance.now() - start
     scope.postMessage({ id: request.id, result, milliseconds }, [result.data.buffer as ArrayBuffer])
