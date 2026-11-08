@@ -1,6 +1,6 @@
 ---
 title: Playground dal vivo
-description: "Prova dal vivo il componente Vue di PaperPic: ingrandisci, sposta, ritaglia, raddrizza, ruota e scarica uno scontrino di esempio o una tua immagine nel browser."
+description: "Prova dal vivo il componente Vue di PaperPic: ingrandisci, sposta, ritaglia, raddrizza, ruota, pulisci e scarica uno scontrino di esempio o una tua immagine nel browser."
 layout: page
 ---
 
@@ -8,6 +8,6 @@ layout: page
 
 # Playground
 
-Prova PaperPic su uno scontrino di esempio, oppure allega una tua immagine, che resta nel browser. Puoi ingrandirla e spostarla. Per modificarla, premi la matita, ritagliala, raddrizzala o ruotala e applica le modifiche per scaricare il risultato.
+Prova PaperPic su uno scontrino di esempio, oppure allega una tua immagine, che resta nel browser. Puoi ingrandirla e spostarla. Per modificarla, premi la matita, ritagliala, raddrizzala, ruotala o puliscila e applica le modifiche per scaricare il risultato.
 
 </Playground>

@@ -13,16 +13,23 @@ export interface PlaygroundOptions {
   editable: boolean
   wheelZoom: boolean
   aspectRatio?: number
+  softness?: number
 }
 
 export interface Playground {
   name: string
   /**
-   * Mounts the component on the stage, and calls `onApply` with the result when the user applies the changes.
+   * Mounts the component on the stage, and passes its `change` and `apply` events on.
    *
    * @returns The function that applies changed options to the component.
    */
-  mount: (stage: HTMLElement, options: PlaygroundOptions, onApply: (result: AppliedImage) => void) => (options: PlaygroundOptions) => void
+  mount: (stage: HTMLElement, options: PlaygroundOptions, listeners: PlaygroundListeners) => (options: PlaygroundOptions) => void
+}
+
+/** The events of the component that the page shows. */
+export interface PlaygroundListeners {
+  onChange: (state: { busy: boolean }) => void
+  onApply: (result: AppliedImage) => void
 }
 
 /** What the component delivers when the user applies the changes. */
@@ -93,6 +100,10 @@ export function createPlayground({ name, mount }: Playground): void {
             <code>aspectRatio</code>
             <input class="number" name="aspectRatio" type="number" min="0" step="any">
           </label>
+          <label class="field">
+            <code>softness</code>
+            <input class="number" name="softness" type="number" min="0" max="1" step="0.05">
+          </label>
           <p class="hint">The sample images are AI-generated. They show no real purchase.</p>
           <p class="hint result" role="status"></p>
         </aside>
@@ -107,12 +118,24 @@ export function createPlayground({ name, mount }: Playground): void {
   const result = app.querySelector<HTMLElement>('.result')!
   let resultUrl: string | undefined
 
+  let applyStart: number | undefined
+
+  const onChange = ({ busy }: { busy: boolean }) => {
+    if (busy && applyStart === undefined) {
+      applyStart = performance.now()
+    }
+  }
+
   const showResult = ({ blob, width, height, type }: AppliedImage) => {
+    const seconds = applyStart === undefined
+      ? ''
+      : ` in ${((performance.now() - applyStart) / 1000).toFixed(2)} s`
+    applyStart = undefined
     if (resultUrl) {
       URL.revokeObjectURL(resultUrl)
     }
     resultUrl = URL.createObjectURL(blob)
-    result.textContent = `Applied: ${width}×${height}, ${Math.round(blob.size / 1024)} KB, ${type}. `
+    result.textContent = `Applied${seconds}: ${width}×${height}, ${Math.round(blob.size / 1024)} KB, ${type}. `
     const link = document.createElement('a')
     link.className = 'link'
     link.href = resultUrl
@@ -121,7 +144,7 @@ export function createPlayground({ name, mount }: Playground): void {
     result.append(link)
   }
 
-  const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options }, showResult)
+  const update = mount(app.querySelector<HTMLElement>('.stage')!, { ...options }, { onChange, onApply: showResult })
 
   app.querySelector('.panel')!.addEventListener('change', (event) => {
     const input = event.target as HTMLInputElement
@@ -138,6 +161,11 @@ export function createPlayground({ name, mount }: Playground): void {
     }
     else if (input.name === 'wheelZoom') {
       options.wheelZoom = input.checked
+    }
+    else if (input.name === 'softness') {
+      options.softness = Number.isNaN(input.valueAsNumber)
+        ? undefined
+        : input.valueAsNumber
     }
     else if (input.name === 'aspectRatio') {
       options.aspectRatio = input.valueAsNumber > 0

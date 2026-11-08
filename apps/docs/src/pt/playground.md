@@ -1,6 +1,6 @@
 ---
 title: Playground ao vivo
-description: "Experimente ao vivo o componente Vue do PaperPic: amplie, mova, recorte, endireite, gire e baixe um recibo de exemplo ou a sua própria imagem no navegador."
+description: "Experimente ao vivo o componente Vue do PaperPic: amplie, mova, recorte, endireite, gire, limpe e baixe um recibo de exemplo ou a sua própria imagem no navegador."
 layout: page
 ---
 
@@ -8,6 +8,6 @@ layout: page
 
 # Playground
 
-Experimente o PaperPic com um recibo de exemplo ou anexe a sua própria imagem, que fica no seu navegador. Você pode ampliar e mover a imagem. Para editá-la, toque no lápis, recorte-a, endireite-a ou gire-a e aplique as alterações para baixar o resultado.
+Experimente o PaperPic com um recibo de exemplo ou anexe a sua própria imagem, que fica no seu navegador. Você pode ampliar e mover a imagem. Para editá-la, toque no lápis, recorte-a, endireite-a, gire-a ou limpe-a e aplique as alterações para baixar o resultado.
 
 </Playground>

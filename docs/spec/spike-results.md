@@ -99,6 +99,19 @@ Known limits:
 - Paper creases stay slightly visible in the soft output.
 - The soft output is not a true black and white image. Use `softness: 0` when that is required.
 
+### In the component
+
+The real tool on a 2 MP copy, after straightening the 4590×8160 photo, on desktop:
+
+| Step                                       | Time    |
+| ------------------------------------------ | ------- |
+| Preview, after turning it on               | 160 ms  |
+| One change of the slider, painted          | 16 ms   |
+| Apply, 3064×6861 PNG, with the perspective | 2191 ms |
+| Longest block of the main thread           | 257 ms  |
+
+On this photo the default sensitivity leaves gaps in some letters, where the print is worn and out of focus. They are in the photo too, and a sensitivity of 0.75 recovers part of them.
+
 ## Perspective
 
 The implementation solves the homography of the 4 corners and maps each output pixel back with bilinear interpolation.

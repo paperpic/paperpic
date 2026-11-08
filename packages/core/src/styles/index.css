@@ -65,8 +65,24 @@
   .paperpic-edit-bar[hidden],
   .paperpic-edit-controls[hidden],
   .paperpic-edit-tool[hidden],
+  .paperpic-edit-threshold[hidden],
   .paperpic-edit-confirmation[hidden] {
     display: none;
+  }
+
+  .paperpic-edit-threshold {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .paperpic-edit-threshold input {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 2rem;
+    margin: 0;
+    accent-color: var(--paperpic-color-accent);
   }
 
   .paperpic-edit-tool {
@@ -248,9 +264,18 @@
     align-items: center;
     justify-content: center;
     inline-size: auto;
-    padding-inline: 0.75rem;
     font: inherit;
     white-space: nowrap;
+  }
+
+  /* The space at the sides, which a global reset of padding cannot remove. With the gap, it adds up to 0.75rem */
+  .paperpic-button-primary::before,
+  .paperpic-button-primary::after,
+  .paperpic-button-text::before,
+  .paperpic-button-text::after {
+    content: '';
+    flex: none;
+    inline-size: 0.5rem;
   }
 
   .paperpic-button-primary {

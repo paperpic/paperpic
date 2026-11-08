@@ -3,6 +3,7 @@ import type { PipelineStep } from './operations'
 import { cropPixels } from '../processing/crop'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { rotatePixels } from '../processing/rotate'
+import { adaptiveThreshold } from '../processing/threshold'
 import { warpPerspective } from '../processing/warp'
 
 function applyStep(pixels: PixelBuffer, step: PipelineStep): PixelBuffer {
@@ -16,6 +17,8 @@ function applyStep(pixels: PixelBuffer, step: PipelineStep): PixelBuffer {
       const { width, height } = estimateOutputSize(quad, pixels, { aspectRatio: step.aspectRatio })
       return warpPerspective(pixels, quad, width, height)
     }
+    case 'threshold':
+      return adaptiveThreshold(pixels, { sensitivity: step.sensitivity, softness: step.softness })
   }
 }
 

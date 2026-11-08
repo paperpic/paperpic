@@ -1,10 +1,14 @@
+import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
 import type { WorkerResponse } from '../processing/worker'
 import type { PipelineStep } from './operations'
+import { prepareThreshold } from '../processing/threshold'
 import { applySteps } from './pipeline'
 
+type JobResponse = Exclude<WorkerResponse, { ready: true } | { error: string }>
+
 interface Job {
-  resolve: (result: PixelBuffer) => void
+  resolve: (response: JobResponse) => void
   reject: (reason: Error) => void
 }
 
@@ -25,14 +29,27 @@ export class PipelineRunner {
 
   /** Runs the steps. The buffer of `source` is transferred to the worker, so it cannot be used afterwards. */
   async run(source: PixelBuffer, steps: readonly PipelineStep[]): Promise<PixelBuffer> {
+    const worker = await this.ready()
+    return worker
+      ? this.send(worker, 'pipeline', source, steps, response => (response as { result: PixelBuffer }).result)
+      : applySteps(source, steps)
+  }
+
+  /** Runs the steps and prepares a threshold on the result, which a slider can then change at once. The buffer is transferred too. */
+  async prepare(source: PixelBuffer, steps: readonly PipelineStep[]): Promise<PreparedThreshold> {
+    const worker = await this.ready()
+    return worker
+      ? this.send(worker, 'prepare', source, steps, response => (response as { prepared: PreparedThreshold }).prepared)
+      : prepareThreshold(applySteps(source, steps))
+  }
+
+  private async ready(): Promise<Worker | null> {
     this.worker ??= this.start()
     const worker = await this.worker
     if (this.destroyed) {
       throw new Error('The viewer was destroyed while processing.')
     }
     return worker
-      ? this.runInWorker(worker, source, steps)
-      : applySteps(source, steps)
   }
 
   /** Stops the worker, even one still starting. A job in progress fails. */
@@ -100,7 +117,7 @@ export class PipelineRunner {
         job?.reject(new Error(data.error))
       }
       else {
-        job?.resolve(data.result)
+        job?.resolve(data)
       }
     }
   }
@@ -112,13 +129,22 @@ export class PipelineRunner {
     this.jobs.clear()
   }
 
-  private runInWorker(worker: Worker, source: PixelBuffer, steps: readonly PipelineStep[]): Promise<PixelBuffer> {
+  private send<Result>(
+    worker: Worker,
+    operation: 'pipeline' | 'prepare',
+    source: PixelBuffer,
+    steps: readonly PipelineStep[],
+    pick: (response: JobResponse) => Result,
+  ): Promise<Result> {
     return new Promise((resolve, reject) => {
       const id = this.nextId++
-      this.jobs.set(id, { resolve, reject })
+      this.jobs.set(id, {
+        resolve: response => resolve(pick(response)),
+        reject,
+      })
       worker.postMessage({
         id,
-        operation: 'pipeline',
+        operation,
         source,
         steps,
       }, [source.data.buffer as ArrayBuffer])

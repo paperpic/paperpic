@@ -64,6 +64,7 @@ const pic = new PaperPic(container, {
   output, // { type, quality }, the format of the source by default
   maxOutputSize, // number, full resolution by default
   aspectRatio, // number, width divided by height, estimated by default
+  softness, // number, from 0 to 1, 0.25 by default
   labels, // Partial<PaperPicLabels>
 })
 
@@ -76,13 +77,14 @@ pic.rotate(1) // or -1. An edit while editing, display only with editable: false
 pic.openTool('crop') // or 'perspective'
 pic.confirmTool()
 pic.cancelTool()
+pic.setThreshold({ enabled: true, sensitivity: 0.5 })
 pic.undo()
 pic.redo()
 await pic.apply() // emits 'apply' with { blob, width, height, type }
 pic.cancel()
 pic.reload()
 pic.setOptions({ alt: 'A receipt' })
-pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy, activeTool }
+pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy, activeTool, threshold }
 const off = pic.on('change', listener) // also 'load', 'error' and 'apply'
 pic.destroy()
 ```
@@ -93,8 +95,9 @@ pic.destroy()
 - While a tool with its own selection is open, the other edits, Undo, Redo and Apply do nothing. `Enter` confirms it and `Esc` cancels it.
 - After an edit that needs new pixels, the viewer shows a preview on a copy of about 2 MP, painted at the size of the result. Zoom and coordinates do not change, but the preview looks softer than the result when zoomed in. Apply computes everything at full resolution.
 - Perspective keeps the corners a convex shape inside the image, so they can always be straightened. It stores the proportions when the user confirms. They come from `aspectRatio`, or else from an estimate that follows crops and rotations back to the center of the photo. After another perspective change, or after Apply, that center is unknown and the current image counts as the photo.
+- Threshold is a button and a slider in the edit bar. Dragging the slider repaints the preview at once, and releasing it leaves one edit. An open tool sees the image without the threshold, because the edges of the paper are hard to find on a cleaned image. Rotating does not compute it again.
 - `getState().image` is the size of the result so far. `maxOutputSize` limits the longest side of the result.
-- Apply cannot be interrupted. It blocks the controls and shows a message. If it fails, the edit stays open.
+- Apply cannot be interrupted. It blocks the controls, shows a message and emits `change` with `busy: true`. If it fails, the edit stays open.
 - After Apply, the result is the image on display, the history is empty and the mode is View. Passing the same `src` again does nothing, because wrappers resend it. `reload()` brings back the original.
 - Changing `src` or `editable` while editing discards the edit.
 - `cancel()` does not ask. The built-in Cancel button and `Esc` ask first when there are changes to lose.
@@ -206,7 +209,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 1. **Technical spike.** Done, see the [results](spike-results.md). Worker packaging, threshold and perspective implementations, benchmarks and a wider library search.
 2. **Viewer.** Renderer, gestures, view mode with its rotate buttons for `editable: false`, and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
 3. **Edit base.** Done. Edit bar, operation list, Undo, Redo and Apply, with Rotate as the first tool and processing in a packaged worker.
-4. **Tools.** Crop, with the shared corner handles, magnifier and preview, and Perspective are done. Then Threshold.
+4. **Tools.** Done. Crop, with the shared corner handles, magnifier and preview, Perspective and Threshold.
 5. **Other frameworks.** React and, if feasible, Angular.
 6. **Automatic detection.** Only if it proves worth it.
 

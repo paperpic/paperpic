@@ -27,8 +27,8 @@ export interface PreparedThreshold {
 }
 
 const DEFAULT_WINDOW_RATIO = 1 / 16
-const DEFAULT_SENSITIVITY = 0.5
-const DEFAULT_SOFTNESS = 0.25
+export const DEFAULT_SENSITIVITY = 0.5
+export const DEFAULT_SOFTNESS = 0.25
 /** At the default sensitivity this gives the 15% from Bradley and Roth. */
 const MAX_DROP = 0.3
 /** How the gray range splits around the limit. Compared on real photos: letters need more range below it. */

@@ -1,6 +1,7 @@
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
 import type { Operation, PipelineStep } from './pipeline/operations'
+import type { Preview } from './pipeline/preview'
 import type { LoadedImage } from './render/load-image'
 import type { Scene } from './render/renderer'
 import type { Rotation } from './rotation'
@@ -12,7 +13,7 @@ import type { PaperPicLabels } from './ui/labels'
 import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
 import { exportImage } from './pipeline/export'
-import { toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
+import { thresholdSetting, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
 import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PipelineRunner } from './pipeline/run'
@@ -29,6 +30,7 @@ import { Toolbar } from './ui/toolbar'
 const ZOOM_STEP = 1.25
 const ZOOM_TOLERANCE = 0.001
 const TOOLBAR_GAP = 16
+const NO_PREVIEW = JSON.stringify({ steps: [], cleaned: false })
 const LENS_ZOOM = 3
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
@@ -58,6 +60,11 @@ export interface PaperPicOptions {
   maxOutputSize?: number
   /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
   aspectRatio?: number
+  /**
+   * From 0 to 1. How much gray cleaning up a document keeps, which makes letters easier to read. By default, 0.25.
+   * Use 0 for strict black and white, which gives smaller files but breaks thin strokes.
+   */
+  softness?: number
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
 }
@@ -82,6 +89,8 @@ export interface PaperPicState {
   busy: boolean
   /** The tool with an open selection, or `null`. */
   activeTool: ToolId | null
+  /** Whether the document gets cleaned up, and how much. */
+  threshold: { enabled: boolean, sensitivity: number }
 }
 
 export interface PaperPicEvents {
@@ -97,7 +106,7 @@ export interface PaperPicEvents {
 
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
 type Listeners = { [Name in keyof PaperPicEvents]: Set<Listener<Name>> }
-type OptionalOption = 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio'
+type OptionalOption = 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio' | 'softness'
 type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | OptionalOption>> & Pick<PaperPicOptions, OptionalOption>
 
 const DEFAULT_OPTIONS: ResolvedOptions = {
@@ -109,6 +118,7 @@ const DEFAULT_OPTIONS: ResolvedOptions = {
   output: undefined,
   maxOutputSize: undefined,
   aspectRatio: undefined,
+  softness: undefined,
   labels: undefined,
 }
 
@@ -143,8 +153,8 @@ export class PaperPic {
   private source: PaperPicSource | undefined
   private image: LoadedImage | null = null
   /** What the edits look like, while they need other pixels than the image. */
-  private preview: LoadedImage | null = null
-  private previewKey = '[]'
+  private preview: Preview | null = null
+  private previewKey = NO_PREVIEW
   private previewId = 0
   private previewing = false
   private session: { tool: Tool, handle: ToolSession } | null = null
@@ -206,6 +216,7 @@ export class PaperPic {
     const toolContext: ToolContext = {
       addOperation: operation => this.addOperation(operation),
       openTool: id => this.openTool(id),
+      toggleThreshold: () => this.setThreshold({ enabled: !thresholdSetting(this.history.done).enabled }),
     }
     this.editBar = new EditBar(
       {
@@ -216,6 +227,15 @@ export class PaperPic {
         runTool: run => run(toolContext),
         confirmTool: () => this.confirmTool(),
         cancelTool: () => this.cancelTool(),
+        previewThreshold: (sensitivity) => {
+          const { softness } = thresholdSetting(this.history.done)
+          this.preview?.tint?.({ sensitivity, softness })
+          this.renderer.requestPaint()
+        },
+        setThreshold: (sensitivity) => {
+          this.setThreshold({ sensitivity })
+          this.status.textContent = this.labels.thresholdLevel(Math.round(sensitivity * 100))
+        },
       },
       TOOLS,
       this.labels,
@@ -294,6 +314,7 @@ export class PaperPic {
   /** Returns what the viewer is showing. */
   getState(): PaperPicState {
     const shown = this.preview ?? this.image
+    const { enabled, sensitivity } = thresholdSetting(this.history.done)
     return {
       status: this.loadStatus,
       mode: this.mode,
@@ -306,6 +327,7 @@ export class PaperPic {
       canApply: toPipelineSteps(this.history.done).length > 0,
       busy: this.busy,
       activeTool: this.session?.tool.id ?? null,
+      threshold: { enabled, sensitivity },
     }
   }
 
@@ -411,6 +433,7 @@ export class PaperPic {
       handle: tool.activate(this.toolHost()),
     }
     this.editBar.setActiveTool(tool)
+    this.updatePreview()
     this.refresh()
     if (hadFocus) {
       this.session.handle.focus()
@@ -427,6 +450,7 @@ export class PaperPic {
         this.addOperation(operation)
       }
       else {
+        this.updatePreview()
         this.refresh()
         this.emit('change', this.getState())
       }
@@ -437,8 +461,36 @@ export class PaperPic {
   cancelTool(): void {
     if (this.session) {
       this.closeTool()
+      this.updatePreview()
       this.refresh()
       this.emit('change', this.getState())
+    }
+  }
+
+  /**
+   * Turns the clean up of the document on or off, or changes its sensitivity. It always runs after the other edits.
+   * It does nothing outside the edit mode, or while a tool is open.
+   *
+   * @throws {RangeError} If `sensitivity` is not between 0 and 1.
+   */
+  setThreshold({ enabled, sensitivity }: { enabled?: boolean, sensitivity?: number }): void {
+    if (sensitivity !== undefined && !(sensitivity >= 0 && sensitivity <= 1)) {
+      throw new RangeError(`sensitivity must be between 0 and 1, got ${sensitivity}`)
+    }
+    if (this.mode !== 'edit' || this.busy || this.session || !this.options.tools.includes('threshold')) {
+      return
+    }
+    const current = thresholdSetting(this.history.done)
+    const next = {
+      enabled: enabled ?? current.enabled,
+      sensitivity: sensitivity ?? current.sensitivity,
+    }
+    if (next.enabled !== current.enabled || next.sensitivity !== current.sensitivity) {
+      this.addOperation({
+        type: 'threshold',
+        ...next,
+        softness: this.options.softness ?? current.softness,
+      })
     }
   }
 
@@ -470,6 +522,7 @@ export class PaperPic {
     this.applyFailed = false
     this.showStatus()
     this.refresh()
+    this.emit('change', this.getState())
 
     try {
       const exported = await exportImage({
@@ -706,16 +759,7 @@ export class PaperPic {
   private setHistory(history: History<Operation>): void {
     this.history = history
     this.applyFailed = false
-    const steps = toPreviewSteps(history.done)
-    if (JSON.stringify(steps) === this.previewKey) {
-      this.syncRotation()
-    }
-    else if (steps.length === 0) {
-      this.setPreview(null)
-    }
-    else {
-      this.startPreview(steps)
-    }
+    this.updatePreview()
     this.showStatus()
     this.refresh()
     this.emit('change', this.getState())
@@ -729,18 +773,48 @@ export class PaperPic {
     }
   }
 
+  /**
+   * Makes the pixels on display match the edits. An open tool sees the image without the threshold,
+   * because the edges of the paper are hard to find on a cleaned image.
+   */
+  private updatePreview(): void {
+    const steps = toPreviewSteps(this.history.done)
+    const { enabled, sensitivity, softness } = thresholdSetting(this.history.done)
+    const cleaned = enabled && !this.session
+    const key = JSON.stringify({ steps, cleaned })
+    if (key === this.previewKey) {
+      this.syncRotation()
+      if (cleaned) {
+        this.preview?.tint?.({ sensitivity, softness })
+      }
+    }
+    else if (steps.length === 0 && !cleaned) {
+      this.setPreview(null)
+    }
+    else {
+      this.previewKey = key
+      this.startPreview(steps, cleaned)
+    }
+  }
+
   /** Computes the pixels of the edits. A result that arrives after newer edits is ignored. */
-  private async startPreview(steps: PipelineStep[]): Promise<void> {
+  private async startPreview(steps: PipelineStep[], cleaned: boolean): Promise<void> {
     const id = ++this.previewId
-    this.previewKey = JSON.stringify(steps)
     this.previewing = true
     try {
-      const preview = await renderPreview(this.image!, steps, (source, remaining) => this.runner.run(source, remaining))
+      const preview = await renderPreview(this.image!, steps, cleaned
+        ? thresholdSetting(this.history.done)
+        : null, this.runner)
       if (id !== this.previewId) {
         preview.release()
         return
       }
       this.setPreview(preview)
+      // The slider may have moved while the preview was on its way
+      if (cleaned) {
+        const { sensitivity, softness } = thresholdSetting(this.history.done)
+        preview.tint?.({ sensitivity, softness })
+      }
       this.emit('change', this.getState())
     }
     catch (cause) {
@@ -756,19 +830,23 @@ export class PaperPic {
   }
 
   /**
-   * Changes the pixels on display, which start from a fitted view.
+   * Changes the pixels on display. A new shape starts from a fitted view, and the same shape keeps the zoom, as when the threshold changes.
    * With `null` it goes back to the image, and any preview in progress is forgotten.
    */
-  private setPreview(preview: LoadedImage | null): void {
-    const changed = preview !== this.preview
+  private setPreview(preview: Preview | null): void {
+    const before = this.preview ?? this.image
     if (!preview) {
       this.previewId++
-      this.previewKey = '[]'
+      this.previewKey = NO_PREVIEW
     }
     this.previewing = false
     this.preview?.release()
     this.preview = preview
-    if (changed) {
+    const after = this.preview ?? this.image
+    if (before?.width === after?.width && before?.height === after?.height) {
+      this.syncRotation()
+    }
+    else {
       this.view = {
         ...createView(),
         rotation: trailingRotation(this.history.done),

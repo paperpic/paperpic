@@ -19,6 +19,11 @@ export interface PaperPicProps {
   maxOutputSize?: number
   /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
   aspectRatio?: number
+  /**
+   * From 0 to 1. How much gray cleaning up a document keeps, which makes letters easier to read. By default, 0.25.
+   * Use 0 for strict black and white, which gives smaller files but breaks thin strokes.
+   */
+  softness?: number
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
 }

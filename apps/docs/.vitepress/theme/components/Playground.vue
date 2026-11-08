@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { PaperPic } from '@paperpic/vue'
+import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
+import { PAPERPIC_LABELS } from './paperpic-labels'
 
 const props = defineProps<{
   alt: string
@@ -18,6 +20,9 @@ interface Result {
   fileName: string
   summary: string
 }
+
+const { lang, localeIndex } = useData()
+const labels = computed(() => PAPERPIC_LABELS[localeIndex.value])
 
 const samples = computed(() => [
   { src: '/samples/receipt.jpg', name: props.receiptLabel },
@@ -50,11 +55,23 @@ function setResult(next: Result | null) {
   result.value = next
 }
 
+let applyStart: number | undefined
+
+function onChange({ busy }: { busy: boolean }) {
+  if (busy && applyStart === undefined) {
+    applyStart = performance.now()
+  }
+}
+
 function showResult({ blob, width, height, type }: { blob: Blob, width: number, height: number, type: string }) {
+  const seconds = applyStart === undefined
+    ? ''
+    : `${new Intl.NumberFormat(lang.value, { style: 'unit', unit: 'second', maximumFractionDigits: 1 }).format((performance.now() - applyStart) / 1000)}, `
+  applyStart = undefined
   setResult({
     url: URL.createObjectURL(blob),
     fileName: `paperpic-result.${type.split('/')[1]}`,
-    summary: `${width}×${height}, ${Math.round(blob.size / 1024)} KB, ${type}`,
+    summary: `${seconds}${width}×${height}, ${Math.round(blob.size / 1024)} KB, ${type}`,
   })
 }
 
@@ -96,7 +113,7 @@ onBeforeUnmount(() => setResult(null))
     </div>
 
     <div class="stage">
-      <PaperPic :src :alt @apply="showResult" />
+      <PaperPic :src :alt :labels @change="onChange" @apply="showResult" />
     </div>
   </main>
 </template>

@@ -84,6 +84,8 @@ function sizeAfterStep({ width, height }: Size, step: PipelineStep): Size {
     }
     case 'perspective':
       return estimateOutputSize(scaleQuad(step.quad, width, height), { width, height }, { aspectRatio: step.aspectRatio })
+    case 'threshold':
+      return { width, height }
   }
 }
 
@@ -113,7 +115,7 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
     regionHeight *= rect.height
   }
 
-  while (index < steps.length && !perspective) {
+  while (index < steps.length && !perspective && steps[index]!.type !== 'threshold') {
     const step = steps[index++]!
     if (step.type === 'rotate') {
       degrees += step.rotation
@@ -121,7 +123,7 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
     else if (step.type === 'crop') {
       keep(step.rect)
     }
-    else {
+    else if (step.type === 'perspective') {
       const bounds = quadBounds(step.quad)
       keep(bounds)
       perspective = {

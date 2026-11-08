@@ -27,11 +27,14 @@ async function finishLoading() {
 
 const releasePreview = vi.fn()
 
+const tint = vi.fn()
+
 function preview() {
   return {
     element: {},
     width: 480,
     height: 200,
+    tint,
     release: releasePreview,
   }
 }
@@ -180,8 +183,10 @@ describe('editing', () => {
     pic.edit()
     pic.rotate(1)
 
+    onChange.mockClear()
     const applying = pic.apply()
     expect(pic.getState().busy).toBe(true)
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ busy: true }))
     expect(container.querySelector('.paperpic-status-visible')!.textContent).toBe('Applying changes')
 
     await flush()
@@ -699,6 +704,175 @@ describe('editing', () => {
       expect(onError.mock.calls[0]![0].error.message).toBe('too large')
       expect(pic.getState()).toMatchObject({ mode: 'edit', canUndo: true })
       expect(crop().getAttribute('aria-disabled')).toBe('false')
+    })
+  })
+
+  describe('cleaning up the document', () => {
+    const cleanUp = () => bar().querySelector<HTMLButtonElement>('[aria-label="Clean up"]')!
+    const slider = () => bar().querySelector<HTMLInputElement>('input[type="range"]')!
+    const row = () => bar().querySelector<HTMLElement>('.paperpic-edit-threshold')!
+    const move = (value: number, type: 'input' | 'change') => {
+      slider().value = String(value)
+      slider().dispatchEvent(new Event(type, { bubbles: true }))
+    }
+
+    beforeEach(() => {
+      tint.mockClear()
+      releasePreview.mockClear()
+      mocks.renderPreview.mockImplementation(async () => ({
+        ...preview(),
+        width: 600,
+        height: 250,
+      }))
+      pic.edit()
+    })
+
+    it('turns on from its button, with a preview and a slider', async () => {
+      expect(cleanUp().getAttribute('aria-pressed')).toBe('false')
+      expect(row().hidden).toBe(true)
+
+      cleanUp().click()
+
+      expect(pic.getState()).toMatchObject({
+        threshold: { enabled: true, sensitivity: 0.5 },
+        canUndo: true,
+        canApply: true,
+      })
+      expect(cleanUp().getAttribute('aria-pressed')).toBe('true')
+      expect(row().hidden).toBe(false)
+      expect(slider().value).toBe('0.5')
+      expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
+        [],
+        expect.objectContaining({ sensitivity: 0.5, softness: 0.25 }),
+      ])
+    })
+
+    it('goes back to the image when it turns off', async () => {
+      cleanUp().click()
+      await flush()
+      cleanUp().click()
+      expect(pic.getState()).toMatchObject({
+        threshold: { enabled: false },
+        canUndo: true,
+        canApply: false,
+      })
+      expect(row().hidden).toBe(true)
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('shows the slider live, and leaves one edit when it is released', async () => {
+      cleanUp().click()
+      await flush()
+      onChange.mockClear()
+
+      move(0.6, 'input')
+      move(0.7, 'input')
+      expect(tint).toHaveBeenLastCalledWith({ sensitivity: 0.7, softness: 0.25 })
+      expect(pic.getState().threshold.sensitivity).toBe(0.5)
+      expect(onChange).not.toHaveBeenCalled()
+
+      move(0.7, 'change')
+      expect(pic.getState().threshold.sensitivity).toBe(0.7)
+      expect(onChange).toHaveBeenCalledOnce()
+      expect(container.querySelector('[role="status"]')!.textContent).toBe('Sensitivity 70%')
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+
+      pic.undo()
+      expect(pic.getState().threshold).toEqual({ enabled: true, sensitivity: 0.5 })
+      expect(slider().value).toBe('0.5')
+      expect(tint).toHaveBeenLastCalledWith({ sensitivity: 0.5, softness: 0.25 })
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+    })
+
+    it('keeps the arrow keys of the slider from panning the image', () => {
+      cleanUp().click()
+      const onKey = vi.fn()
+      container.addEventListener('keydown', onKey)
+      slider().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))
+      expect(onKey).not.toHaveBeenCalled()
+      slider().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+      expect(onKey).toHaveBeenCalledOnce()
+    })
+
+    it('does not take the focus away when the slider disappears', () => {
+      cleanUp().click()
+      slider().focus()
+      pic.undo()
+      expect(row().hidden).toBe(true)
+      expect(document.activeElement).toBe(cleanUp())
+    })
+
+    it('keeps the zoom when it changes', async () => {
+      pic.zoomTo(2)
+      cleanUp().click()
+      await flush()
+      expect(pic.getState().zoom).toBe(2)
+    })
+
+    it('does not compute anything for a rotation', async () => {
+      cleanUp().click()
+      await flush()
+      pic.rotate(1)
+      expect(pic.getState().rotation).toBe(90)
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+    })
+
+    it('uses the softness of the option', async () => {
+      pic.setOptions({ softness: 0 })
+      cleanUp().click()
+      expect(mocks.renderPreview.mock.calls[0]![2]).toMatchObject({ softness: 0 })
+    })
+
+    it('exports with the threshold last', async () => {
+      cleanUp().click()
+      await flush()
+      pic.rotate(1)
+      const applying = pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        { type: 'rotate', rotation: 90 },
+        { type: 'threshold', sensitivity: 0.5, softness: 0.25 },
+      ])
+      await finishLoading()
+      await applying
+      expect(pic.getState().threshold.enabled).toBe(false)
+    })
+
+    it('shows the image without it while a tool is open, and brings it back', async () => {
+      cleanUp().click()
+      await flush()
+      pic.openTool('crop')
+      expect(pic.getState().activeTool).toBe('crop')
+      expect(row().hidden).toBe(true)
+      expect(pic.getState().image).toEqual({ width: 600, height: 250 })
+      expect(releasePreview).toHaveBeenCalledOnce()
+
+      pic.cancelTool()
+      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
+      expect(mocks.renderPreview.mock.calls[1]![2]).toMatchObject({ sensitivity: 0.5 })
+      await flush()
+      expect(row().hidden).toBe(false)
+    })
+
+    it('does nothing outside the edit mode or while a tool is open', () => {
+      pic.openTool('crop')
+      pic.setThreshold({ enabled: true })
+      expect(pic.getState().threshold.enabled).toBe(false)
+      pic.cancel()
+      pic.setThreshold({ enabled: true })
+      expect(pic.getState().threshold.enabled).toBe(false)
+    })
+
+    it('does nothing when it is not one of the chosen tools', () => {
+      pic.setOptions({
+        tools: ['crop'],
+      })
+      pic.setThreshold({ enabled: true })
+      expect(pic.getState().threshold.enabled).toBe(false)
+    })
+
+    it('explains a sensitivity out of range', () => {
+      expect(() => pic.setThreshold({ sensitivity: 2 })).toThrow('between 0 and 1')
     })
   })
 
