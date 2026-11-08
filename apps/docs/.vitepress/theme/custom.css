@@ -13,6 +13,11 @@
   --name-accent: linear-gradient(90deg, #0a84ff, #0b8f80);
   --vp-home-hero-image-background-image: linear-gradient(-45deg, #0a84ff 50%, #14c8b4 50%);
   --vp-home-hero-image-filter: blur(44px);
+
+  /* VitePress switches themes with a class, which the component's dark defaults do not follow */
+  --paperpic-color-surface: var(--vp-c-bg);
+  --paperpic-color-text: var(--vp-c-text-1);
+  --paperpic-color-accent: var(--vp-c-brand-1);
 }
 
 .dark {
