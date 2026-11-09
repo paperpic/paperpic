@@ -1049,6 +1049,75 @@ describe('editing', () => {
     })
   })
 
+  describe('flipping', () => {
+    const flip = () => bar().querySelector<HTMLButtonElement>('[aria-label="Flip"]')!
+
+    beforeEach(() => {
+      releasePreview.mockClear()
+      mocks.renderPreview.mockImplementation(async () => ({
+        ...preview(),
+        width: 600,
+        height: 250,
+      }))
+      pic.edit()
+    })
+
+    it('mirrors at once from its button, with a preview of the new pixels', () => {
+      flip().click()
+      expect(pic.getState()).toMatchObject({ canUndo: true, canApply: true })
+      expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
+        [
+          { type: 'flip' },
+        ],
+        null,
+      ])
+    })
+
+    it('is no change when it runs twice, and goes back to the image', async () => {
+      flip().click()
+      await flush()
+      flip().click()
+      expect(pic.getState()).toMatchObject({ canUndo: true, canApply: false })
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('mirrors the image as it is on display, after a turn', async () => {
+      pic.rotate(1)
+      pic.flip()
+      await flush()
+      // The preview holds the turn now, so the view matrix has none left
+      expect(pic.getState().rotation).toBe(0)
+      const applying = pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        { type: 'flip' },
+        { type: 'rotate', rotation: 270 },
+      ])
+      await finishLoading()
+      await applying
+    })
+
+    it('does nothing outside the edit mode, while a tool is open, or when it is not one of the chosen tools', () => {
+      pic.openTool('crop')
+      pic.flip()
+      expect(pic.getState().canUndo).toBe(false)
+      pic.cancelTool()
+
+      pic.setOptions({
+        tools: ['crop'],
+      })
+      pic.flip()
+      expect(pic.getState().canUndo).toBe(false)
+      expect(flip().hidden).toBe(true)
+      pic.setOptions({ tools: undefined })
+
+      pic.cancel()
+      pic.flip()
+      expect(pic.getState().mode).toBe('view')
+      expect(onChange).not.toHaveBeenCalledWith(expect.objectContaining({ canUndo: true }))
+    })
+  })
+
   it('offers only the chosen tools', () => {
     pic.edit()
     pic.setOptions({ tools: [] })

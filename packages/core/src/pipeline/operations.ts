@@ -25,6 +25,7 @@ export interface PerspectiveEdit {
  */
 export type Operation
   = | { direction: 1 | -1, type: 'rotate' }
+    | { type: 'flip' }
     | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveEdit
     | { enabled: boolean, sensitivity: number, softness: number, type: 'threshold' }
@@ -53,6 +54,8 @@ export type ToneStep = AdjustEdit | ThresholdStep
 /** One thing the pipeline does to the pixels. */
 export type PipelineStep
   = | { rotation: QuarterTurn, type: 'rotate' }
+    /** Mirrors the image left to right. */
+    | { type: 'flip' }
     | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveEdit
     | ToneStep
@@ -62,28 +65,53 @@ export function isToneStep(step: PipelineStep): step is ToneStep {
   return step.type === 'threshold' || step.type === 'adjust'
 }
 
-function addRotation(steps: PipelineStep[], degrees: number): void {
-  const rotation = normalizeRotation(degrees)
-  if (rotation !== 0) {
-    steps.push({ type: 'rotate', rotation })
-  }
+/** Every way to turn and mirror an image: a flip if `mirrored`, and then a clockwise turn. */
+export interface Orientation {
+  degrees: number
+  mirrored: boolean
 }
 
-/** The steps that change the shape of the image. Rotations next to each other merge or cancel out. */
+export const UPRIGHT: Orientation = { degrees: 0, mirrored: false }
+
+/** Mirrors an orientation left to right. A flip after a turn is the same as a flip before the opposite turn. */
+export function mirrorOrientation({ degrees, mirrored }: Orientation): Orientation {
+  return { degrees: -degrees, mirrored: !mirrored }
+}
+
+/** The steps of an orientation, in the order it means: the flip, then the turn. */
+export function orientationSteps({ degrees, mirrored }: Orientation): PipelineStep[] {
+  const rotation = normalizeRotation(degrees)
+  return [
+    ...(mirrored
+      ? [
+          { type: 'flip' as const },
+        ]
+      : []),
+    ...(rotation === 0
+      ? []
+      : [
+          { type: 'rotate' as const, rotation },
+        ]),
+  ]
+}
+
+/** The steps that change the shape of the image. Turns and flips next to each other merge or cancel out. */
 function geometrySteps(operations: readonly Operation[]): PipelineStep[] {
   const steps: PipelineStep[] = []
-  let degrees = 0
+  let orientation = UPRIGHT
   for (const operation of operations) {
     if (operation.type === 'rotate') {
-      degrees += 90 * operation.direction
+      orientation = { ...orientation, degrees: orientation.degrees + 90 * operation.direction }
     }
-    else if (operation.type !== 'threshold' && operation.type !== 'adjust') {
-      addRotation(steps, degrees)
-      degrees = 0
-      steps.push(operation)
+    else if (operation.type === 'flip') {
+      orientation = mirrorOrientation(orientation)
+    }
+    else if (operation.type === 'crop' || operation.type === 'perspective') {
+      steps.push(...orientationSteps(orientation), operation)
+      orientation = UPRIGHT
     }
   }
-  addRotation(steps, degrees)
+  steps.push(...orientationSteps(orientation))
   return steps
 }
 
@@ -151,8 +179,9 @@ export function toPipelineSteps(operations: readonly Operation[]): PipelineStep[
   return steps
 }
 
+/** The index of the last edit that the preview computes. A flip is one of them, because the view matrix only turns. */
 function lastPixelEdit(operations: readonly Operation[]): number {
-  return operations.map(({ type }) => type === 'crop' || type === 'perspective').lastIndexOf(true)
+  return operations.map(({ type }) => type === 'crop' || type === 'perspective' || type === 'flip').lastIndexOf(true)
 }
 
 /**

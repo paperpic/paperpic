@@ -6,7 +6,7 @@ import type { PaperPicLabels } from '../ui/labels'
 import type { Lens } from './magnifier'
 
 /** The tools the edit bar can offer. */
-export type ToolId = 'adjust' | 'crop' | 'perspective' | 'rotate' | 'threshold'
+export type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'threshold'
 
 /** What a button of a tool can do to the edit in progress. */
 export interface ToolContext {
@@ -22,7 +22,7 @@ export interface ToolAction {
   /** Its icon, when it is not the one named by `id`. */
   icon?: 'rotateDocument'
   /** Its key in `PaperPicLabels` and in the icons. */
-  id: 'adjust' | 'crop' | 'perspective' | 'rotateLeft' | 'threshold'
+  id: 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotateLeft' | 'threshold'
   run: (context: ToolContext) => void
 }
 

@@ -427,6 +427,16 @@ export class PaperPic {
     }
   }
 
+  /**
+   * Mirrors the image left to right, as it is on display. It is an edit that `apply()` makes permanent, and a vertical flip
+   * is a flip and a half turn. It does nothing outside the edit mode, or while a tool is open.
+   */
+  flip(): void {
+    if (this.options.tools.includes('flip')) {
+      this.addOperation({ type: 'flip' })
+    }
+  }
+
   /** Starts editing. It does nothing if the image is not ready or cannot be edited. */
   edit(): void {
     if (this.mode === 'edit' || !this.options.editable || this.loadStatus !== 'ready') {
