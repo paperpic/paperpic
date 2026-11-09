@@ -1,15 +1,23 @@
 /** Every text the component shows or announces. */
 export interface PaperPicLabels {
+  /** Shows the sliders of brightness and contrast. */
+  adjust: string
+  /** Announced after changing a slider of brightness or contrast, with its name and its value from -100 to 100. */
+  adjustmentLevel: (name: string, value: number) => string
   /** Announced when the changes are applied. */
   applied: string
   apply: string
   /** Shown when the changes cannot be applied. */
   applyError: string
+  /** Name of the slider of brightness. */
+  brightness: string
   cancel: string
   /** Closes a tool, discarding its selection. */
   cancelTool: string
   /** Closes a tool, keeping its selection. */
   confirm: string
+  /** Name of the slider of contrast. */
+  contrast: string
   cornerBottomLeft: string
   cornerBottomRight: string
   /** Announced after moving a corner, with its position in image pixels. */
@@ -58,13 +66,20 @@ export interface PaperPicLabels {
   zoomOut: string
 }
 
+/** Writes `+30` and `-20`, so the direction of a change is clear. */
+const SIGNED = new Intl.NumberFormat('en-US', { signDisplay: 'exceptZero' })
+
 export const DEFAULT_LABELS: PaperPicLabels = {
+  adjust: 'Adjust',
+  adjustmentLevel: (name, value) => `${name} ${SIGNED.format(value)}`,
   applied: 'Changes applied',
   apply: 'Apply',
   applyError: 'The changes could not be applied',
+  brightness: 'Brightness',
   cancel: 'Cancel',
   cancelTool: 'Cancel this tool',
   confirm: 'Done',
+  contrast: 'Contrast',
   cornerBottomLeft: 'Bottom left corner',
   cornerBottomRight: 'Bottom right corner',
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,

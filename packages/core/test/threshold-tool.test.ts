@@ -209,13 +209,24 @@ describe('renderPreview', () => {
       run: vi.fn(),
       prepare: vi.fn(async () => prepareThreshold(pixels())),
     }
-    const preview = await renderPreview(image, [], { sensitivity: 0.5, softness: 0.25 }, runner)
+    const preview = await renderPreview(image, [], step, runner)
     expect(runner.prepare).toHaveBeenCalledOnce()
     expect(putImageData).toHaveBeenCalledTimes(1)
 
-    preview.tint!({ sensitivity: 0.9, softness: 0.25 })
+    preview.tint!({ type: 'threshold', sensitivity: 0.9, softness: 0.25 })
 
     expect(runner.prepare).toHaveBeenCalledOnce()
     expect(putImageData).toHaveBeenCalledTimes(2)
+  })
+
+  it('with a threshold, ignores brightness and contrast', async () => {
+    stubCanvas()
+    const runner = {
+      run: vi.fn(),
+      prepare: vi.fn(async () => prepareThreshold(pixels())),
+    }
+    const preview = await renderPreview(image, [], step, runner)
+    preview.tint!({ type: 'adjust', brightness: 0.5, contrast: 0 })
+    expect(putImageData).toHaveBeenCalledTimes(1)
   })
 })

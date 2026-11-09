@@ -769,7 +769,7 @@ describe('editing', () => {
 
       move(0.6, 'input')
       move(0.7, 'input')
-      expect(tint).toHaveBeenLastCalledWith({ sensitivity: 0.7, softness: 0.25 })
+      expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.7, softness: 0.25 })
       expect(pic.getState().threshold.sensitivity).toBe(0.5)
       expect(onChange).not.toHaveBeenCalled()
 
@@ -782,7 +782,7 @@ describe('editing', () => {
       pic.undo()
       expect(pic.getState().threshold).toEqual({ enabled: true, sensitivity: 0.5 })
       expect(slider().value).toBe('0.5')
-      expect(tint).toHaveBeenLastCalledWith({ sensitivity: 0.5, softness: 0.25 })
+      expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.5, softness: 0.25 })
       expect(mocks.renderPreview).toHaveBeenCalledOnce()
     })
 
@@ -875,6 +875,177 @@ describe('editing', () => {
 
     it('explains a sensitivity out of range', () => {
       expect(() => pic.setThreshold({ sensitivity: 2 })).toThrow('between 0 and 1')
+    })
+  })
+
+  describe('adjusting brightness and contrast', () => {
+    const adjust = () => bar().querySelector<HTMLButtonElement>('[aria-label="Adjust"]')!
+    const cleanUp = () => bar().querySelector<HTMLButtonElement>('[aria-label="Clean up"]')!
+    const row = () => bar().querySelector<HTMLElement>('.paperpic-edit-adjust')!
+    const slider = (name: string) => [
+      ...row().querySelectorAll('label'),
+    ]
+      .find(label => label.textContent === name)!
+      .querySelector('input')!
+    const move = (name: string, value: number, type: 'input' | 'change') => {
+      slider(name).value = String(value)
+      slider(name).dispatchEvent(new Event(type, { bubbles: true }))
+    }
+    const status = () => container.querySelector('[role="status"]')!.textContent
+
+    beforeEach(() => {
+      tint.mockClear()
+      releasePreview.mockClear()
+      mocks.renderPreview.mockImplementation(async () => ({
+        ...preview(),
+        width: 600,
+        height: 250,
+      }))
+      pic.edit()
+    })
+
+    it('opens its sliders from its button, with a preview they can repaint', async () => {
+      expect(adjust().getAttribute('aria-expanded')).toBe('false')
+      expect(row().hidden).toBe(true)
+
+      adjust().click()
+
+      expect(adjust().getAttribute('aria-expanded')).toBe('true')
+      expect(row().hidden).toBe(false)
+      expect(slider('Brightness').value).toBe('0')
+      expect(slider('Contrast').value).toBe('0')
+      expect(pic.getState()).toMatchObject({
+        adjustments: { brightness: 0, contrast: 0 },
+        canUndo: false,
+        canApply: false,
+      })
+      expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
+        [],
+        { type: 'adjust', brightness: 0, contrast: 0 },
+      ])
+
+      await flush()
+      adjust().click()
+      expect(row().hidden).toBe(true)
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('shows a slider live, and leaves one edit when it is released', async () => {
+      adjust().click()
+      await flush()
+      onChange.mockClear()
+
+      move('Brightness', 0.2, 'input')
+      move('Brightness', 0.3, 'input')
+      expect(tint).toHaveBeenLastCalledWith({ type: 'adjust', brightness: 0.3, contrast: 0 })
+      expect(pic.getState().adjustments.brightness).toBe(0)
+      expect(onChange).not.toHaveBeenCalled()
+
+      move('Brightness', 0.3, 'change')
+      expect(pic.getState()).toMatchObject({
+        adjustments: { brightness: 0.3, contrast: 0 },
+        canApply: true,
+      })
+      expect(onChange).toHaveBeenCalledOnce()
+      expect(status()).toBe('Brightness +30')
+
+      move('Contrast', -0.2, 'change')
+      expect(pic.getState().adjustments).toEqual({ brightness: 0.3, contrast: -0.2 })
+      expect(status()).toBe('Contrast -20')
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+
+      pic.undo()
+      expect(pic.getState().adjustments).toEqual({ brightness: 0.3, contrast: 0 })
+      expect(slider('Contrast').value).toBe('0')
+      expect(tint).toHaveBeenLastCalledWith({ type: 'adjust', brightness: 0.3, contrast: 0 })
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+    })
+
+    it('is no change when the sliders go back to 0', () => {
+      pic.setAdjustments({ brightness: 0.4 })
+      pic.setAdjustments({ brightness: 0 })
+      expect(pic.getState()).toMatchObject({ canUndo: true, canApply: false })
+    })
+
+    it('closes and turns off while the document is cleaned up, and comes back after', async () => {
+      adjust().click()
+      move('Contrast', 0.5, 'change')
+      cleanUp().click()
+
+      expect(row().hidden).toBe(true)
+      expect(adjust().getAttribute('aria-expanded')).toBe('false')
+      expect(adjust().getAttribute('aria-disabled')).toBe('true')
+      adjust().click()
+      expect(row().hidden).toBe(true)
+      pic.setAdjustments({ brightness: 0.5 })
+      expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0.5 })
+      expect(mocks.renderPreview.mock.calls.at(-1)![2]).toMatchObject({ type: 'threshold' })
+
+      cleanUp().click()
+      expect(adjust().getAttribute('aria-disabled')).toBe('false')
+      expect(mocks.renderPreview.mock.calls.at(-1)![2]).toEqual({ type: 'adjust', brightness: 0, contrast: 0.5 })
+    })
+
+    it('keeps its sliders through a tool, without computing the preview again', async () => {
+      adjust().click()
+      await flush()
+      pic.openTool('crop')
+      expect(row().hidden).toBe(true)
+      pic.cancelTool()
+      expect(row().hidden).toBe(false)
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+    })
+
+    it('does not take the focus away when the sliders close', () => {
+      adjust().click()
+      slider('Contrast').focus()
+      adjust().click()
+      expect(row().hidden).toBe(true)
+      expect(document.activeElement).toBe(adjust())
+    })
+
+    it('closes its sliders when the edit ends', () => {
+      adjust().click()
+      pic.cancel()
+      pic.edit()
+      expect(row().hidden).toBe(true)
+      expect(adjust().getAttribute('aria-expanded')).toBe('false')
+    })
+
+    it('exports with the adjustments last', async () => {
+      pic.setAdjustments({ brightness: 0.1, contrast: 0.2 })
+      pic.rotate(1)
+      const applying = pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        { type: 'rotate', rotation: 90 },
+        { type: 'adjust', brightness: 0.1, contrast: 0.2 },
+      ])
+      await finishLoading()
+      await applying
+      expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0 })
+    })
+
+    it('does nothing outside the edit mode, while a tool is open, or when it is not one of the chosen tools', () => {
+      pic.openTool('crop')
+      pic.setAdjustments({ brightness: 0.5 })
+      expect(pic.getState().adjustments.brightness).toBe(0)
+      pic.cancelTool()
+
+      pic.setOptions({
+        tools: ['crop'],
+      })
+      pic.setAdjustments({ brightness: 0.5 })
+      expect(pic.getState().adjustments.brightness).toBe(0)
+      pic.setOptions({ tools: undefined })
+
+      pic.cancel()
+      pic.setAdjustments({ brightness: 0.5 })
+      expect(pic.getState().adjustments.brightness).toBe(0)
+    })
+
+    it('explains a value out of range', () => {
+      expect(() => pic.setAdjustments({ contrast: -2 })).toThrow('contrast must be between -1 and 1, got -2')
     })
   })
 

@@ -33,6 +33,7 @@ Turn photos of paper into clean, readable documents, right in the browser.
 - ✂️ **Crop** with draggable corners and a magnifier for touch screens
 - 📐 **Straighten** photos taken at an angle: drag four corners and get a flat page with its proportions estimated
 - 🔄 **Rotate** in 90° steps
+- ☀️ **Brightness and contrast** with live sliders
 - 🧼 **Clean up** into crisp black & white, removing shadows, with an adjustable sensitivity
 - ↩️ **Undo and redo** every edit until you apply, then get the result as a `Blob`
 - ⚡ **Off the main thread**: image processing runs in a Web Worker
@@ -51,7 +52,7 @@ Turn photos of paper into clean, readable documents, right in the browser.
 ## Roadmap
 
 - Wrappers for React and, if feasible, Angular
-- More tools: brightness and contrast, free-angle straightening and flip
+- More tools: free-angle straightening and flip
 - Automatic detection of the document corners
 
 ## Development

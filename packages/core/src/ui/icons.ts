@@ -1,3 +1,4 @@
+import adjust from '../assets/icons/adjust.svg?raw'
 import apply from '../assets/icons/apply.svg?raw'
 import cancel from '../assets/icons/cancel.svg?raw'
 import crop from '../assets/icons/crop.svg?raw'
@@ -28,6 +29,7 @@ export const ICONS = {
   rotateDocument,
   crop,
   perspective,
+  adjust,
   threshold,
   cancel,
   undo,

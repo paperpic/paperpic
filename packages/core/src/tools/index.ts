@@ -1,4 +1,5 @@
 import type { Tool, ToolId } from './types'
+import { adjustTool } from './adjust'
 import { cropTool } from './crop'
 import { perspectiveTool } from './perspective'
 import { rotateTool } from './rotate'
@@ -9,6 +10,7 @@ export const TOOLS: readonly Tool[] = [
   cropTool,
   perspectiveTool,
   rotateTool,
+  adjustTool,
   thresholdTool,
 ]
 
