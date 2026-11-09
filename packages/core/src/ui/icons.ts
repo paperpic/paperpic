@@ -6,6 +6,7 @@ import download from '../assets/icons/download.svg?raw'
 import edit from '../assets/icons/edit.svg?raw'
 import fitHeight from '../assets/icons/fit-height.svg?raw'
 import fitWidth from '../assets/icons/fit-width.svg?raw'
+import flip from '../assets/icons/flip.svg?raw'
 import perspective from '../assets/icons/perspective.svg?raw'
 import redo from '../assets/icons/redo.svg?raw'
 import rotateDocument from '../assets/icons/rotate-document.svg?raw'
@@ -29,6 +30,7 @@ export const ICONS = {
   rotateDocument,
   crop,
   perspective,
+  flip,
   adjust,
   threshold,
   cancel,

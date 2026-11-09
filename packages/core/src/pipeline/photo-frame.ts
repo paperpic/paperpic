@@ -11,7 +11,7 @@ export interface PhotoFrame {
 }
 
 /**
- * Follows crops and rotations back to the photo, because estimating proportions needs its center.
+ * Follows crops, rotations and flips back to the photo, because estimating proportions needs its center.
  * After a perspective change that center no longer means anything, so the result counts as a new photo.
  */
 export function photoFrame(image: Size, steps: readonly PipelineStep[]): PhotoFrame {
@@ -27,6 +27,9 @@ export function photoFrame(image: Size, steps: readonly PipelineStep[]): PhotoFr
           photo = { width: photo.height, height: photo.width }
           region = { width: region.height, height: region.width }
         }
+        break
+      case 'flip':
+        origin = { x: photo.width - origin.x - region.width, y: origin.y }
         break
       case 'crop':
         origin = { x: origin.x + step.rect.x * region.width, y: origin.y + step.rect.y * region.height }

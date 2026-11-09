@@ -1,5 +1,4 @@
 import type { PixelRect } from '../processing/crop'
-import type { QuarterTurn } from '../processing/rotate'
 import type { NormalizedRect, Quad } from '../processing/types'
 import type { Rotation } from '../rotation'
 import type { Size } from '../state/view'
@@ -7,7 +6,7 @@ import type { PerspectiveEdit, PipelineStep } from './operations'
 import { cropBox } from '../processing/crop'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { normalizeRotation } from '../rotation'
-import { isToneStep } from './operations'
+import { isToneStep, mirrorOrientation, orientationSteps, UPRIGHT } from './operations'
 
 /** What to read from an image, and what is left to do with those pixels. */
 export interface ReadPlan {
@@ -85,6 +84,7 @@ function sizeAfterStep({ width, height }: Size, step: PipelineStep): Size {
     }
     case 'perspective':
       return estimateOutputSize(scaleQuad(step.quad, width, height), { width, height }, { aspectRatio: step.aspectRatio })
+    case 'flip':
     case 'threshold':
     case 'adjust':
       return { width, height }
@@ -105,12 +105,16 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
   let top = 0
   let regionWidth = 1
   let regionHeight = 1
-  let degrees = 0
+  let orientation = UPRIGHT
   let index = 0
   let perspective: PerspectiveEdit | null = null
 
   const keep = (frameRect: NormalizedRect) => {
-    const rect = unrotateRect(frameRect, normalizeRotation(degrees))
+    const turned = unrotateRect(frameRect, normalizeRotation(orientation.degrees))
+    // The flip comes before the turn, so it is undone after it
+    const rect = orientation.mirrored
+      ? { ...turned, x: 1 - turned.x - turned.width }
+      : turned
     left += rect.x * regionWidth
     top += rect.y * regionHeight
     regionWidth *= rect.width
@@ -120,7 +124,10 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
   while (index < steps.length && !perspective && !isToneStep(steps[index]!)) {
     const step = steps[index++]!
     if (step.type === 'rotate') {
-      degrees += step.rotation
+      orientation = { ...orientation, degrees: orientation.degrees + step.rotation }
+    }
+    else if (step.type === 'flip') {
+      orientation = mirrorOrientation(orientation)
     }
     else if (step.type === 'crop') {
       keep(step.rect)
@@ -144,13 +151,8 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
     width: regionWidth,
     height: regionHeight,
   }, image.width, image.height)
-  const rotation = normalizeRotation(degrees)
   const remaining: PipelineStep[] = [
-    ...(rotation === 0
-      ? []
-      : [
-          { type: 'rotate' as const, rotation: rotation as QuarterTurn },
-        ]),
+    ...orientationSteps(orientation),
     ...(perspective
       ? [perspective]
       : []),

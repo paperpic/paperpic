@@ -38,6 +38,8 @@ export interface PaperPicLabels {
   editing: string
   fitHeight: string
   fitWidth: string
+  /** Mirrors the image left to right. */
+  flip: string
   keepEditing: string
   /** Shown when the image cannot be loaded. */
   loadError: string
@@ -95,6 +97,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   editing: 'Editing',
   fitHeight: 'Fit to height',
   fitWidth: 'Fit to width',
+  flip: 'Flip',
   keepEditing: 'Keep editing',
   loadError: 'The image could not be loaded',
   loading: 'Loading image',
