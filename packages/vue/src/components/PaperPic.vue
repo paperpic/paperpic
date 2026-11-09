@@ -13,6 +13,7 @@ const props = withDefaults(defineProps<PaperPicProps>(), {
 const emit = defineEmits<{
   apply: [payload: PaperPicEvents['apply']]
   change: [payload: PaperPicEvents['change']]
+  download: [payload: PaperPicEvents['download']]
   error: [payload: PaperPicEvents['error']]
   load: [payload: PaperPicEvents['load']]
 }>()
@@ -26,6 +27,7 @@ onMounted(() => {
   const pic = new PaperPic(host.value!, { ...props })
   pic.on('apply', payload => emit('apply', payload))
   pic.on('change', payload => emit('change', payload))
+  pic.on('download', payload => emit('download', payload))
   pic.on('error', payload => emit('error', payload))
   pic.on('load', payload => emit('load', payload))
   instance.value = pic

@@ -1,6 +1,7 @@
 import apply from '../assets/icons/apply.svg?raw'
 import cancel from '../assets/icons/cancel.svg?raw'
 import crop from '../assets/icons/crop.svg?raw'
+import download from '../assets/icons/download.svg?raw'
 import edit from '../assets/icons/edit.svg?raw'
 import fitHeight from '../assets/icons/fit-height.svg?raw'
 import fitWidth from '../assets/icons/fit-width.svg?raw'
@@ -23,6 +24,7 @@ export const ICONS = {
   fitHeight,
   rotateLeft,
   rotateRight,
+  download,
   rotateDocument,
   crop,
   perspective,

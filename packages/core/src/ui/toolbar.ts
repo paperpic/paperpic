@@ -5,6 +5,7 @@ import { ICONS } from './icons'
 
 /** What the toolbar can ask for. It only reaches the viewer through these. */
 export interface ToolbarCommands {
+  download: () => void
   edit: () => void
   fit: (fit: Fit) => void
   rotate: (direction: 1 | -1) => void
@@ -14,6 +15,7 @@ export interface ToolbarCommands {
 
 /** What the toolbar shows. */
 export interface ToolbarState {
+  canDownload: boolean
   canEdit: boolean
   canRotate: boolean
   canZoomIn: boolean
@@ -21,9 +23,9 @@ export interface ToolbarState {
   fit: Fit | null
 }
 
-type ButtonName = 'edit' | 'fitHeight' | 'fitWidth' | 'rotateLeft' | 'rotateRight' | 'zoomIn' | 'zoomOut'
+type ButtonName = 'download' | 'edit' | 'fitHeight' | 'fitWidth' | 'rotateLeft' | 'rotateRight' | 'zoomIn' | 'zoomOut'
 
-/** The controls that stay at the right: the Edit pencil, zoom, fit and, in a read-only viewer, rotation. */
+/** The controls that stay at the right: the Edit pencil, zoom, fit, rotation in a read-only viewer and, when chosen, download. */
 export class Toolbar {
   readonly element: HTMLElement
   private readonly buttons: Record<ButtonName, HTMLButtonElement>
@@ -43,6 +45,7 @@ export class Toolbar {
       fitHeight: createButton(ICONS.fitHeight, () => commands.fit('height')),
       rotateLeft: createButton(ICONS.rotateLeft, () => commands.rotate(-1)),
       rotateRight: createButton(ICONS.rotateRight, () => commands.rotate(1)),
+      download: createButton(ICONS.download, commands.download),
     }
     this.element.append(...Object.values(this.buttons))
 
@@ -64,7 +67,7 @@ export class Toolbar {
   }
 
   /** Updates what the buttons show. */
-  update({ fit, canEdit, canZoomIn, canZoomOut, canRotate }: ToolbarState): void {
+  update({ fit, canEdit, canZoomIn, canZoomOut, canRotate, canDownload }: ToolbarState): void {
     // aria-disabled instead of disabled, so a button reaching its limit keeps the keyboard focus
     this.buttons.zoomIn.setAttribute('aria-disabled', String(!canZoomIn))
     this.buttons.zoomOut.setAttribute('aria-disabled', String(!canZoomOut))
@@ -73,6 +76,7 @@ export class Toolbar {
     this.buttons.edit.hidden = !canEdit
     this.buttons.rotateLeft.hidden = !canRotate
     this.buttons.rotateRight.hidden = !canRotate
+    this.buttons.download.hidden = !canDownload
 
     // A hidden button cannot keep its place in the tab order
     for (const button of Object.values(this.buttons)) {

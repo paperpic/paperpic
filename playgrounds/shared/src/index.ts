@@ -10,6 +10,7 @@ const samples = [
 export interface PlaygroundOptions {
   alt: string
   aspectRatio?: number
+  download: boolean
   editable: boolean
   softness?: number
   src: string | File
@@ -51,6 +52,7 @@ export function createPlayground({ name, mount }: Playground): void {
     alt: samples[0]!.alt,
     editable: true,
     wheelZoom: true,
+    download: true,
   }
   const app = document.querySelector('#app')!
 
@@ -89,6 +91,10 @@ export function createPlayground({ name, mount }: Playground): void {
           <label class="field">
             <code>wheelZoom</code>
             <input name="wheelZoom" type="checkbox" checked>
+          </label>
+          <label class="field">
+            <code>download</code>
+            <input name="download" type="checkbox" checked>
           </label>
           <label class="field">
             <code>aspectRatio</code>
@@ -152,6 +158,9 @@ export function createPlayground({ name, mount }: Playground): void {
     }
     else if (input.name === 'editable') {
       options.editable = input.checked
+    }
+    else if (input.name === 'download') {
+      options.download = input.checked
     }
     else if (input.name === 'wheelZoom') {
       options.wheelZoom = input.checked

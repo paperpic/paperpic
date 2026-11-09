@@ -43,13 +43,18 @@ const EXTENSIONS: Record<string, string> = {
 const DEFAULT_TYPE = 'image/png'
 const DEFAULT_QUALITY = 0.92
 
+/** The format of a JPEG, PNG or WebP image, from the extension in its URL. */
+export function typeFromUrl(url: string): string | undefined {
+  return EXTENSIONS[url.split(/[?#]/)[0]!.split('.').pop()!.toLowerCase()]
+}
+
 /**
  * Chooses the output format: the one requested, or PNG for a cleaned document, whose sharp edges JPEG would damage,
  * or the one of the source, or PNG.
  */
 export function resolveOutputType(source: string | Blob | undefined, output: PaperPicOutput = {}, cleaned = false): string {
   const sourceType = typeof source === 'string'
-    ? EXTENSIONS[source.split(/[?#]/)[0]!.split('.').pop()!.toLowerCase()]
+    ? typeFromUrl(source)
     : source?.type
   const type = output.type ?? (cleaned ? DEFAULT_TYPE : sourceType)
   return type && ENCODABLE.has(type)
