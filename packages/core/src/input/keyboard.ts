@@ -1,7 +1,7 @@
 /** What a key asks the viewer to do. */
 export type KeyCommand
   = | { type: 'zoomIn' | 'zoomOut' | 'fit' | 'undo' | 'redo' | 'cancel' | 'apply' }
-    | { type: 'pan', deltaX: number, deltaY: number }
+    | { deltaX: number, deltaY: number, type: 'pan' }
 
 const PAN_STEP = 40
 

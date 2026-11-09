@@ -6,10 +6,10 @@ import { normalizeRotation } from '../rotation'
 
 /** Straightens the area inside `quad`, whose corners are fractions of the image, into these proportions. */
 export interface PerspectiveEdit {
-  type: 'perspective'
-  quad: Quad
   /** The proportions of the result, as width divided by height. */
   aspectRatio: number
+  quad: Quad
+  type: 'perspective'
 }
 
 /**
@@ -17,10 +17,10 @@ export interface PerspectiveEdit {
  * A rectangle refers to the image as the user saw it at that moment, with the earlier edits done.
  */
 export type Operation
-  = | { type: 'rotate', direction: 1 | -1 }
-    | { type: 'crop', rect: NormalizedRect }
+  = | { direction: 1 | -1, type: 'rotate' }
+    | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveEdit
-    | { type: 'threshold', enabled: boolean, sensitivity: number, softness: number }
+    | { enabled: boolean, sensitivity: number, softness: number, type: 'threshold' }
 
 /** The threshold in effect. */
 export interface ThresholdSetting {
@@ -31,15 +31,15 @@ export interface ThresholdSetting {
 
 /** Cleans up the image. */
 export interface ThresholdStep {
-  type: 'threshold'
   sensitivity: number
   softness: number
+  type: 'threshold'
 }
 
 /** One thing the pipeline does to the pixels. */
 export type PipelineStep
-  = | { type: 'rotate', rotation: QuarterTurn }
-    | { type: 'crop', rect: NormalizedRect }
+  = | { rotation: QuarterTurn, type: 'rotate' }
+    | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveEdit
     | ThresholdStep
 

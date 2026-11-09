@@ -3,12 +3,12 @@ import { computeTransform } from './transform'
 
 /** What one frame shows. */
 export interface Scene {
+  /** Paints over the image, in CSS pixels of the viewport. */
+  drawOverlay?: (context: CanvasRenderingContext2D) => void
   image: CanvasImageSource
   imageSize: Size
   view: View
   viewport: Size
-  /** Paints over the image, in CSS pixels of the viewport. */
-  drawOverlay?: (context: CanvasRenderingContext2D) => void
 }
 
 /** Paints scenes on a canvas and on the overlay above it. It decides nothing, and paints at most once per frame. */

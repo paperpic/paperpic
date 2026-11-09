@@ -39,69 +39,69 @@ const REVEAL_MARGIN = 24
 export type PaperPicSource = string | Blob
 
 export interface PaperPicOptions {
-  /** The image to show. Passing the same value again does not reload it: use `reload()`. */
-  src?: PaperPicSource
   /** Describes the image for screen readers. */
   alt?: string
+  /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
+  aspectRatio?: number
   /**
    * Whether the image can be edited. With `false` it is a read-only viewer, whose toolbar can also rotate the image.
    * That rotation only changes the display.
    */
   editable?: boolean
+  /** Replaces any of the texts, which are in English by default. */
+  labels?: Partial<PaperPicLabels>
+  /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
+  maxOutputSize?: number
+  /** The format of the edited image. By default, the format of the source. */
+  output?: PaperPicOutput
+  /**
+   * From 0 to 1. How much gray cleaning up a document keeps, which makes letters easier to read. By default, 0.25.
+   * Use 0 for strict black and white, which gives smaller files but breaks thin strokes.
+   */
+  softness?: number
+  /** The image to show. Passing the same value again does not reload it: use `reload()`. */
+  src?: PaperPicSource
   /** Whether to show the built-in toolbar and edit bar. Without them, build your own with the public methods. */
   toolbar?: boolean
   /** Which tools the edit bar offers. By default, all of them. */
   tools?: readonly ToolId[]
   /** Whether the wheel zooms. Turn it off when the viewer sits in a long page. */
   wheelZoom?: boolean
-  /** The format of the edited image. By default, the format of the source. */
-  output?: PaperPicOutput
-  /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
-  maxOutputSize?: number
-  /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
-  aspectRatio?: number
-  /**
-   * From 0 to 1. How much gray cleaning up a document keeps, which makes letters easier to read. By default, 0.25.
-   * Use 0 for strict black and white, which gives smaller files but breaks thin strokes.
-   */
-  softness?: number
-  /** Replaces any of the texts, which are in English by default. */
-  labels?: Partial<PaperPicLabels>
 }
 
 /** What the viewer is showing. */
 export interface PaperPicState {
-  status: 'empty' | 'loading' | 'ready' | 'error'
-  /** Whether the user is viewing or editing the image. */
-  mode: 'view' | 'edit'
-  /** The size of the image on display in pixels, with the edits so far, or `null` if there is none. */
-  image: Size | null
-  /** Screen pixels per image pixel. */
-  zoom: number
-  /** The fit in effect, or `null` once the user has zoomed by hand. */
-  fit: Fit | null
-  rotation: Rotation
-  canUndo: boolean
-  canRedo: boolean
-  /** Whether there are changes to apply. Rotations that cancel out are no change. */
-  canApply: boolean
-  /** Whether the changes are being applied. */
-  busy: boolean
   /** The tool with an open selection, or `null`. */
   activeTool: ToolId | null
+  /** Whether the changes are being applied. */
+  busy: boolean
+  /** Whether there are changes to apply. Rotations that cancel out are no change. */
+  canApply: boolean
+  canRedo: boolean
+  canUndo: boolean
+  /** The fit in effect, or `null` once the user has zoomed by hand. */
+  fit: Fit | null
+  /** The size of the image on display in pixels, with the edits so far, or `null` if there is none. */
+  image: Size | null
+  /** Whether the user is viewing or editing the image. */
+  mode: 'view' | 'edit'
+  rotation: Rotation
+  status: 'empty' | 'loading' | 'ready' | 'error'
   /** Whether the document gets cleaned up, and how much. */
   threshold: { enabled: boolean, sensitivity: number }
+  /** Screen pixels per image pixel. */
+  zoom: number
 }
 
 export interface PaperPicEvents {
-  /** The image is ready. */
-  load: { width: number, height: number }
-  /** The image could not be loaded, or the changes could not be applied. */
-  error: { error: Error }
-  /** The user changed the view or the edit. `setOptions()` never triggers it. */
-  change: PaperPicState
   /** The user applied the changes. The result is already on display. */
   apply: ExportedImage
+  /** The user changed the view or the edit. `setOptions()` never triggers it. */
+  change: PaperPicState
+  /** The image could not be loaded, or the changes could not be applied. */
+  error: { error: Error }
+  /** The image is ready. */
+  load: { height: number, width: number }
 }
 
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
@@ -111,15 +111,15 @@ type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | OptionalOption>> &
 
 const DEFAULT_OPTIONS: ResolvedOptions = {
   alt: '',
+  aspectRatio: undefined,
   editable: true,
+  labels: undefined,
+  maxOutputSize: undefined,
+  output: undefined,
+  softness: undefined,
   toolbar: true,
   tools: ALL_TOOL_IDS,
   wheelZoom: true,
-  output: undefined,
-  maxOutputSize: undefined,
-  aspectRatio: undefined,
-  softness: undefined,
-  labels: undefined,
 }
 
 /**
@@ -140,10 +140,10 @@ export class PaperPic {
   private readonly renderer: Renderer
   private readonly runner = new PipelineRunner()
   private readonly listeners: Listeners = {
-    load: new Set(),
-    error: new Set(),
-    change: new Set(),
     apply: new Set(),
+    change: new Set(),
+    error: new Set(),
+    load: new Set(),
   }
 
   private readonly cleanups: (() => void)[] = []
@@ -157,7 +157,7 @@ export class PaperPic {
   private previewKey = NO_PREVIEW
   private previewId = 0
   private previewing = false
-  private session: { tool: Tool, handle: ToolSession } | null = null
+  private session: { handle: ToolSession, tool: Tool } | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
   private view: View = createView()

@@ -8,8 +8,8 @@ import { applySteps } from './pipeline'
 type JobResponse = Exclude<WorkerResponse, { ready: true } | { error: string }>
 
 interface Job {
-  resolve: (response: JobResponse) => void
   reject: (reason: Error) => void
+  resolve: (response: JobResponse) => void
 }
 
 /** How long a worker can take to start before the main thread does the work instead. */

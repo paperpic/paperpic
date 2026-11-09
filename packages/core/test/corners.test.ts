@@ -67,7 +67,7 @@ describe('placeLens', () => {
 })
 
 describe('cornerEditor', () => {
-  let host: ToolHost & { reveal: Mock<ToolHost['reveal']>, announce: Mock<ToolHost['announce']>, paintLens: Mock<ToolHost['paintLens']> }
+  let host: ToolHost & { announce: Mock<ToolHost['announce']>, paintLens: Mock<ToolHost['paintLens']>, reveal: Mock<ToolHost['reveal']> }
   let layer: HTMLElement
 
   const press = (handle: Element, key: string, options = {}) => {

@@ -2,10 +2,10 @@ import type { NormalizedRect, PixelBuffer } from './types'
 
 /** A rectangle in whole pixels. */
 export interface PixelRect {
+  height: number
+  width: number
   x: number
   y: number
-  width: number
-  height: number
 }
 
 /** Turns a normalized rectangle into whole pixels of an image, always inside it and at least 1 pixel wide and high. */

@@ -1,10 +1,10 @@
 /** An image ready to paint. */
 export interface LoadedImage {
   element: CanvasImageSource
-  width: number
   height: number
   /** Frees the memory the image holds. */
   release: () => void
+  width: number
 }
 
 /**

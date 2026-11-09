@@ -5,27 +5,27 @@ import { ICONS } from './icons'
 
 /** What the edit bar can ask for. It only reaches the viewer through these. */
 export interface EditBarCommands {
-  cancel: () => void
-  undo: () => void
-  redo: () => void
   apply: () => void
-  runTool: (run: Tool['actions'][number]['run']) => void
-  confirmTool: () => void
+  cancel: () => void
   cancelTool: () => void
+  confirmTool: () => void
   /** Shows a sensitivity while the user drags the slider, without any edit. */
   previewThreshold: (sensitivity: number) => void
+  redo: () => void
+  runTool: (run: Tool['actions'][number]['run']) => void
   /** The user chose a sensitivity. */
   setThreshold: (sensitivity: number) => void
+  undo: () => void
 }
 
 /** What the edit bar shows. */
 export interface EditBarState {
-  canUndo: boolean
-  canRedo: boolean
-  canApply: boolean
   busy: boolean
+  canApply: boolean
   /** Whether a tool with its own selection can open. A preview in progress prevents it. */
   canOpenTool: boolean
+  canRedo: boolean
+  canUndo: boolean
   threshold: { enabled: boolean, sensitivity: number }
 }
 
@@ -40,7 +40,7 @@ export class EditBar {
   private readonly hint: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
-  private readonly toolButtons: { tool: Tool, id: Tool['actions'][number]['id'], button: HTMLButtonElement }[] = []
+  private readonly toolButtons: { button: HTMLButtonElement, id: Tool['actions'][number]['id'], tool: Tool }[] = []
   private readonly cancelToolButton: HTMLButtonElement
   private readonly confirmToolButton: HTMLButtonElement
   private readonly confirmToolText: HTMLElement

@@ -8,36 +8,36 @@ const samples = [
 ]
 
 export interface PlaygroundOptions {
-  src: string | File
   alt: string
-  editable: boolean
-  wheelZoom: boolean
   aspectRatio?: number
+  editable: boolean
   softness?: number
+  src: string | File
+  wheelZoom: boolean
 }
 
 export interface Playground {
-  name: string
   /**
    * Mounts the component on the stage, and passes its `change` and `apply` events on.
    *
    * @returns The function that applies changed options to the component.
    */
   mount: (stage: HTMLElement, options: PlaygroundOptions, listeners: PlaygroundListeners) => (options: PlaygroundOptions) => void
+  name: string
 }
 
 /** The events of the component that the page shows. */
 export interface PlaygroundListeners {
-  onChange: (state: { busy: boolean }) => void
   onApply: (result: AppliedImage) => void
+  onChange: (state: { busy: boolean }) => void
 }
 
 /** What the component delivers when the user applies the changes. */
 export interface AppliedImage {
   blob: Blob
-  width: number
   height: number
   type: string
+  width: number
 }
 
 /** Renders the page around the component, which is the same for every framework. */

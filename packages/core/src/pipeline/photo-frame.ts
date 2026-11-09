@@ -5,9 +5,9 @@ import { estimateOutputSize, scaleQuad } from '../processing/homography'
 
 /** Where the image on display sits in the photo it comes from, turned the same way. */
 export interface PhotoFrame {
-  photo: Size
   /** The top left corner of the image on display, in pixels of the photo. */
   origin: Point
+  photo: Size
 }
 
 /**

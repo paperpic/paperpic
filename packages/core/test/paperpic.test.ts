@@ -2,14 +2,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PaperPic } from '../src'
 
 interface FakeImage {
-  src: string
-  naturalWidth: number
-  naturalHeight: number
   decode: () => Promise<void>
+  naturalHeight: number
+  naturalWidth: number
+  src: string
 }
 
 /** The images created so far, each waiting for the test to finish its decoding. */
-let images: { image: FakeImage, resolve: () => void, reject: (reason: Error) => void }[]
+let images: { image: FakeImage, reject: (reason: Error) => void, resolve: () => void }[]
 let resizeCallback: () => void
 const disconnect = vi.fn()
 const revoke = vi.fn()

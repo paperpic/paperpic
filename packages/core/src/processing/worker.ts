@@ -9,17 +9,17 @@ import { warpPerspective } from './warp'
 export type WorkerRequest
   = | { id: number, operation: 'pipeline', source: PixelBuffer, steps: readonly PipelineStep[] }
     | { id: number, operation: 'prepare', source: PixelBuffer, steps: readonly PipelineStep[] }
-    | { id: number, operation: 'threshold', source: PixelBuffer, options?: ThresholdOptions }
-    | { id: number, operation: 'warp', source: PixelBuffer, quad: Quad, width: number, height: number }
+    | { id: number, operation: 'threshold', options?: ThresholdOptions, source: PixelBuffer }
+    | { height: number, id: number, operation: 'warp', quad: Quad, source: PixelBuffer, width: number }
 
 /**
  * What the worker sends: that it loaded and can take jobs, or the answer to a job, with the time the operation took.
  */
 export type WorkerResponse
   = | { ready: true }
-    | { id: number, result: PixelBuffer, milliseconds: number }
-    | { id: number, prepared: PreparedThreshold, milliseconds: number }
-    | { id: number, error: string }
+    | { id: number, milliseconds: number, result: PixelBuffer }
+    | { id: number, milliseconds: number, prepared: PreparedThreshold }
+    | { error: string, id: number }
 
 interface WorkerScope {
   onmessage: ((event: MessageEvent<WorkerRequest>) => void) | null

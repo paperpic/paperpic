@@ -10,19 +10,19 @@ import { normalizeRotation } from '../rotation'
 
 /** What to read from an image, and what is left to do with those pixels. */
 export interface ReadPlan {
+  height: number
   /** The part of the image to read, in its pixels. */
   region: PixelRect
+  steps: PipelineStep[]
   /** The size to read it at. */
   width: number
-  height: number
-  steps: PipelineStep[]
 }
 
 export interface ReadLimits {
-  /** The longest side of the result. */
-  maxSide?: number
   /** The pixels to read, at most. */
   maxPixels?: number
+  /** The longest side of the result. */
+  maxSide?: number
 }
 
 /** Takes a rectangle from the frame of an image turned clockwise back to the frame of the image. */

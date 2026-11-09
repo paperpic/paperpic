@@ -16,11 +16,11 @@ type ThemeStrings = Pick<
 >
 
 export interface Translation {
+  description: string
+  guide: string
   label: string
   lang: string
   ogLocale: string
-  description: string
-  guide: string
   playground: string
   theme: ThemeStrings
 }

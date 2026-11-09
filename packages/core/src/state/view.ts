@@ -3,8 +3,8 @@ import { normalizeRotation } from '../rotation'
 
 /** A size in CSS pixels. */
 export interface Size {
-  width: number
   height: number
+  width: number
 }
 
 /** A position in CSS pixels, relative to the top left corner of the viewport. */
@@ -18,14 +18,14 @@ export type Fit = 'image' | 'width' | 'height'
 
 /** What the viewport shows. */
 export interface View {
-  /** Screen pixels per image pixel. */
-  zoom: number
+  /** The fit in effect, or `null` once the user has zoomed by hand. */
+  fit: Fit | null
   /** Distance from the center of the viewport to the center of the image. */
   panX: number
   panY: number
   rotation: Rotation
-  /** The fit in effect, or `null` once the user has zoomed by hand. */
-  fit: Fit | null
+  /** Screen pixels per image pixel. */
+  zoom: number
 }
 
 const MAX_ZOOM = 8
@@ -81,7 +81,7 @@ function fitZoom(fit: Fit, image: Size, viewport: Size, rotation: Rotation): num
 }
 
 /** The zoom range for an image. Fitting a very small image can go over the usual maximum. */
-export function zoomLimits(image: Size, viewport: Size, rotation: Rotation): { min: number, max: number } {
+export function zoomLimits(image: Size, viewport: Size, rotation: Rotation): { max: number, min: number } {
   return {
     min: Math.min(fitZoom('image', image, viewport, rotation), 1),
     max: Math.max(MAX_ZOOM, fitZoom('width', image, viewport, rotation), fitZoom('height', image, viewport, rotation)),

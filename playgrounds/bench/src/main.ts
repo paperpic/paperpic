@@ -8,12 +8,12 @@ import { warpPerspective } from '../../../packages/core/src/processing/warp'
 import './style.css'
 
 interface Row {
-  size: string
-  operation: string
-  where: string
   /** Median in milliseconds, or null when it failed. */
   milliseconds: number | null
   note: string
+  operation: string
+  size: string
+  where: string
 }
 
 /** A worker request without its id, keeping the union of operations apart. */
