@@ -38,6 +38,7 @@ export function photoFrame(image: Size, steps: readonly PipelineStep[]): PhotoFr
         origin = { x: 0, y: 0 }
         break
       case 'threshold':
+      case 'adjust':
         break
     }
   }

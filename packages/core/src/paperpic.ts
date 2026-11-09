@@ -1,7 +1,7 @@
 import type { PaperPicDownload } from './download'
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
-import type { Operation, PipelineStep } from './pipeline/operations'
+import type { Operation, PipelineStep, ToneStep } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
 import type { LoadedImage } from './render/load-image'
 import type { Scene } from './render/renderer'
@@ -15,7 +15,7 @@ import { downloadName, saveFile } from './download'
 import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
 import { exportImage } from './pipeline/export'
-import { thresholdSetting, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
+import { adjustSetting, thresholdSetting, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
 import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PipelineRunner } from './pipeline/run'
@@ -32,7 +32,7 @@ import { Toolbar } from './ui/toolbar'
 const ZOOM_STEP = 1.25
 const ZOOM_TOLERANCE = 0.001
 const TOOLBAR_GAP = 16
-const NO_PREVIEW = JSON.stringify({ steps: [], cleaned: false })
+const NO_PREVIEW = JSON.stringify({ steps: [], tone: null })
 const LENS_ZOOM = 3
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
@@ -79,6 +79,8 @@ export interface PaperPicOptions {
 export interface PaperPicState {
   /** The tool with an open selection, or `null`. */
   activeTool: ToolId | null
+  /** The brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. Cleaning up the document leaves them out. */
+  adjustments: { brightness: number, contrast: number }
   /** Whether the changes are being applied. */
   busy: boolean
   /** Whether there are changes to apply. Rotations that cancel out are no change. */
@@ -170,6 +172,8 @@ export class PaperPic {
   private previewKey = NO_PREVIEW
   private previewId = 0
   private previewing = false
+  /** Whether the sliders of brightness and contrast are open, so the preview keeps the pixels they change. */
+  private adjusting = false
   private session: { handle: ToolSession, tool: Tool } | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
@@ -230,6 +234,7 @@ export class PaperPic {
     const toolContext: ToolContext = {
       addOperation: operation => this.addOperation(operation),
       openTool: id => this.openTool(id),
+      toggleAdjustments: () => this.toggleAdjustments(),
       toggleThreshold: () => this.setThreshold({ enabled: !thresholdSetting(this.history.done).enabled }),
     }
     this.editBar = new EditBar(
@@ -243,12 +248,24 @@ export class PaperPic {
         cancelTool: () => this.cancelTool(),
         previewThreshold: (sensitivity) => {
           const { softness } = thresholdSetting(this.history.done)
-          this.preview?.tint?.({ sensitivity, softness })
+          this.preview?.tint?.({ type: 'threshold', sensitivity, softness })
           this.renderer.requestPaint()
         },
         setThreshold: (sensitivity) => {
           this.setThreshold({ sensitivity })
           this.status.textContent = this.labels.thresholdLevel(Math.round(sensitivity * 100))
+        },
+        previewAdjustment: (name, value) => {
+          this.preview?.tint?.({
+            type: 'adjust',
+            ...adjustSetting(this.history.done),
+            [name]: value,
+          })
+          this.renderer.requestPaint()
+        },
+        setAdjustment: (name, value) => {
+          this.setAdjustments({ [name]: value })
+          this.status.textContent = this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100))
         },
       },
       TOOLS,
@@ -334,6 +351,7 @@ export class PaperPic {
   getState(): PaperPicState {
     const shown = this.preview ?? this.image
     const { enabled, sensitivity } = thresholdSetting(this.history.done)
+    const { brightness, contrast } = adjustSetting(this.history.done)
     return {
       status: this.loadStatus,
       mode: this.mode,
@@ -347,6 +365,7 @@ export class PaperPic {
       busy: this.busy,
       activeTool: this.session?.tool.id ?? null,
       threshold: { enabled, sensitivity },
+      adjustments: { brightness, contrast },
     }
   }
 
@@ -513,6 +532,31 @@ export class PaperPic {
     }
   }
 
+  /**
+   * Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits.
+   * It does nothing outside the edit mode, while a tool is open, or while the document is cleaned up, which has tones of its own.
+   *
+   * @throws {RangeError} If a value is not between -1 and 1.
+   */
+  setAdjustments({ brightness, contrast }: { brightness?: number, contrast?: number }): void {
+    for (const [name, value] of Object.entries({ brightness, contrast })) {
+      if (value !== undefined && !(value >= -1 && value <= 1)) {
+        throw new RangeError(`${name} must be between -1 and 1, got ${value}`)
+      }
+    }
+    if (!this.canAdjust()) {
+      return
+    }
+    const current = adjustSetting(this.history.done)
+    const next = {
+      brightness: brightness ?? current.brightness,
+      contrast: contrast ?? current.contrast,
+    }
+    if (next.brightness !== current.brightness || next.contrast !== current.contrast) {
+      this.addOperation({ type: 'adjust', ...next })
+    }
+  }
+
   /** Discards the edits and goes back to viewing. It does not ask: the built-in Cancel button does that. */
   cancel(): void {
     if (this.mode === 'edit' && !this.busy) {
@@ -562,6 +606,7 @@ export class PaperPic {
       const hadFocus = this.hasFocus()
       this.busy = false
       this.mode = 'view'
+      this.adjusting = false
       this.history = createHistory()
       this.setPreview(null)
       this.setImage(loaded, 'ready')
@@ -715,6 +760,23 @@ export class PaperPic {
     context.stroke()
   }
 
+  private canAdjust(): boolean {
+    return this.mode === 'edit'
+      && !this.busy
+      && !this.session
+      && this.options.tools.includes('adjust')
+      && !thresholdSetting(this.history.done).enabled
+  }
+
+  /** Opens or closes the sliders of brightness and contrast. */
+  private toggleAdjustments(): void {
+    if (this.canAdjust()) {
+      this.adjusting = !this.adjusting
+      this.updatePreview()
+      this.refresh()
+    }
+  }
+
   private closeTool(): void {
     if (!this.session) {
       return
@@ -803,6 +865,7 @@ export class PaperPic {
     this.mode = 'view'
     this.busy = false
     this.applyFailed = false
+    this.adjusting = false
     this.history = createHistory()
     this.setPreview(null)
     this.syncRotation()
@@ -817,6 +880,8 @@ export class PaperPic {
   private setHistory(history: History<Operation>): void {
     this.history = history
     this.applyFailed = false
+    // The sliders of brightness and contrast close when the clean up leaves them out
+    this.adjusting &&= !thresholdSetting(history.done).enabled
     this.updatePreview()
     this.showStatus()
     this.refresh()
@@ -832,46 +897,59 @@ export class PaperPic {
   }
 
   /**
-   * Makes the pixels on display match the edits. An open tool sees the image without the threshold,
-   * because the edges of the paper are hard to find on a cleaned image.
+   * The tones that the preview paints. An open tool sees the image without the threshold, because the edges of the paper
+   * are hard to find on a cleaned image. Open sliders of brightness and contrast need tones to change, even when they are at 0.
    */
+  private previewTone(): ToneStep | null {
+    const tone = toneStep(this.history.done)
+    if (tone?.type === 'threshold') {
+      return this.session
+        ? null
+        : tone
+    }
+    return tone ?? (this.adjusting
+      ? {
+          type: 'adjust',
+          ...adjustSetting(this.history.done),
+        }
+      : null)
+  }
+
+  /** Makes the pixels on display match the edits. A change of tones of the same kind only repaints the preview. */
   private updatePreview(): void {
     const steps = toPreviewSteps(this.history.done)
-    const { enabled, sensitivity, softness } = thresholdSetting(this.history.done)
-    const cleaned = enabled && !this.session
-    const key = JSON.stringify({ steps, cleaned })
+    const tone = this.previewTone()
+    const key = JSON.stringify({ steps, tone: tone?.type ?? null })
     if (key === this.previewKey) {
       this.syncRotation()
-      if (cleaned) {
-        this.preview?.tint?.({ sensitivity, softness })
+      if (tone) {
+        this.preview?.tint?.(tone)
       }
     }
-    else if (steps.length === 0 && !cleaned) {
+    else if (steps.length === 0 && !tone) {
       this.setPreview(null)
     }
     else {
       this.previewKey = key
-      this.startPreview(steps, cleaned)
+      this.startPreview(steps, tone)
     }
   }
 
   /** Computes the pixels of the edits. A result that arrives after newer edits is ignored. */
-  private async startPreview(steps: PipelineStep[], cleaned: boolean): Promise<void> {
+  private async startPreview(steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
     const id = ++this.previewId
     this.previewing = true
     try {
-      const preview = await renderPreview(this.image!, steps, cleaned
-        ? thresholdSetting(this.history.done)
-        : null, this.runner)
+      const preview = await renderPreview(this.image!, steps, tone, this.runner)
       if (id !== this.previewId) {
         preview.release()
         return
       }
       this.setPreview(preview)
       // The slider may have moved while the preview was on its way
-      if (cleaned) {
-        const { sensitivity, softness } = thresholdSetting(this.history.done)
-        preview.tint?.({ sensitivity, softness })
+      const latest = this.previewTone()
+      if (latest) {
+        preview.tint?.(latest)
       }
       this.emit('change', this.getState())
     }
@@ -976,7 +1054,7 @@ export class PaperPic {
       canDownload: this.options.download && this.mode === 'view' && this.loadStatus === 'ready',
     })
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
-    this.editBar.update({ ...state, canOpenTool: !this.previewing })
+    this.editBar.update({ ...state, canOpenTool: !this.previewing, adjusting: this.adjusting })
     this.session?.handle.update()
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
     this.viewportElement.classList.toggle(

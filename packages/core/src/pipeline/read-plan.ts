@@ -7,6 +7,7 @@ import type { PerspectiveEdit, PipelineStep } from './operations'
 import { cropBox } from '../processing/crop'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { normalizeRotation } from '../rotation'
+import { isToneStep } from './operations'
 
 /** What to read from an image, and what is left to do with those pixels. */
 export interface ReadPlan {
@@ -85,6 +86,7 @@ function sizeAfterStep({ width, height }: Size, step: PipelineStep): Size {
     case 'perspective':
       return estimateOutputSize(scaleQuad(step.quad, width, height), { width, height }, { aspectRatio: step.aspectRatio })
     case 'threshold':
+    case 'adjust':
       return { width, height }
   }
 }
@@ -115,7 +117,7 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
     regionHeight *= rect.height
   }
 
-  while (index < steps.length && !perspective && steps[index]!.type !== 'threshold') {
+  while (index < steps.length && !perspective && !isToneStep(steps[index]!)) {
     const step = steps[index++]!
     if (step.type === 'rotate') {
       degrees += step.rotation

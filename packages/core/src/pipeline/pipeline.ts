@@ -1,5 +1,6 @@
 import type { PixelBuffer } from '../processing/types'
 import type { PipelineStep } from './operations'
+import { adjustPixels } from '../processing/adjust'
 import { cropPixels } from '../processing/crop'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { rotatePixels } from '../processing/rotate'
@@ -19,6 +20,8 @@ function applyStep(pixels: PixelBuffer, step: PipelineStep): PixelBuffer {
     }
     case 'threshold':
       return adaptiveThreshold(pixels, { sensitivity: step.sensitivity, softness: step.softness })
+    case 'adjust':
+      return adjustPixels(pixels, { brightness: step.brightness, contrast: step.contrast })
   }
 }
 

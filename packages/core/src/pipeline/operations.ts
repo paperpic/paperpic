@@ -4,6 +4,13 @@ import type { Rotation } from '../rotation'
 import { DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS } from '../processing/threshold'
 import { normalizeRotation } from '../rotation'
 
+/** Changes the brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. */
+export interface AdjustEdit {
+  brightness: number
+  contrast: number
+  type: 'adjust'
+}
+
 /** Straightens the area inside `quad`, whose corners are fractions of the image, into these proportions. */
 export interface PerspectiveEdit {
   /** The proportions of the result, as width divided by height. */
@@ -21,6 +28,10 @@ export type Operation
     | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveEdit
     | { enabled: boolean, sensitivity: number, softness: number, type: 'threshold' }
+    | AdjustEdit
+
+/** The brightness and contrast in effect. */
+export type AdjustSetting = Omit<AdjustEdit, 'type'>
 
 /** The threshold in effect. */
 export interface ThresholdSetting {
@@ -36,12 +47,20 @@ export interface ThresholdStep {
   type: 'threshold'
 }
 
+/** A step that changes the tones and not the shape. It always runs after the others. */
+export type ToneStep = AdjustEdit | ThresholdStep
+
 /** One thing the pipeline does to the pixels. */
 export type PipelineStep
   = | { rotation: QuarterTurn, type: 'rotate' }
     | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveEdit
-    | ThresholdStep
+    | ToneStep
+
+/** Whether a step changes only the tones. */
+export function isToneStep(step: PipelineStep): step is ToneStep {
+  return step.type === 'threshold' || step.type === 'adjust'
+}
 
 function addRotation(steps: PipelineStep[], degrees: number): void {
   const rotation = normalizeRotation(degrees)
@@ -58,7 +77,7 @@ function geometrySteps(operations: readonly Operation[]): PipelineStep[] {
     if (operation.type === 'rotate') {
       degrees += 90 * operation.direction
     }
-    else if (operation.type !== 'threshold') {
+    else if (operation.type !== 'threshold' && operation.type !== 'adjust') {
       addRotation(steps, degrees)
       degrees = 0
       steps.push(operation)
@@ -87,15 +106,47 @@ export function thresholdSetting(operations: readonly Operation[]): ThresholdSet
   }
 }
 
+/** The brightness and contrast in effect: their last edit decides, wherever it is in the list. */
+export function adjustSetting(operations: readonly Operation[]): AdjustSetting {
+  for (let index = operations.length - 1; index >= 0; index--) {
+    const operation = operations[index]!
+    if (operation.type === 'adjust') {
+      return {
+        brightness: operation.brightness,
+        contrast: operation.contrast,
+      }
+    }
+  }
+  return {
+    brightness: 0,
+    contrast: 0,
+  }
+}
+
 /**
- * Turns edits into the shortest list of steps, with the threshold always last, so the result does not depend on when the user turned it on.
- * A user who turns the image all the way around has changed nothing.
+ * The step that changes the tones, or `null` if there is none. A cleaned document has tones of its own,
+ * so the threshold leaves out the brightness and contrast.
+ */
+export function toneStep(operations: readonly Operation[]): ToneStep | null {
+  const { enabled, sensitivity, softness } = thresholdSetting(operations)
+  if (enabled) {
+    return { type: 'threshold', sensitivity, softness }
+  }
+  const { brightness, contrast } = adjustSetting(operations)
+  return brightness !== 0 || contrast !== 0
+    ? { type: 'adjust', brightness, contrast }
+    : null
+}
+
+/**
+ * Turns edits into the shortest list of steps, with the tones always last, so the result does not depend on when the user changed them.
+ * A user who turns the image all the way around, or moves a slider back to 0, has changed nothing.
  */
 export function toPipelineSteps(operations: readonly Operation[]): PipelineStep[] {
   const steps = geometrySteps(operations)
-  const { enabled, sensitivity, softness } = thresholdSetting(operations)
-  if (enabled) {
-    steps.push({ type: 'threshold', sensitivity, softness })
+  const tone = toneStep(operations)
+  if (tone) {
+    steps.push(tone)
   }
   return steps
 }
@@ -119,7 +170,7 @@ export function trailingRotation(operations: readonly Operation[]): Rotation {
 
 /**
  * The steps that decide the shape on display. The last rotations are left out, because the view matrix does them,
- * and so is the threshold, which a preview paints apart so that a slider can change it.
+ * and so are the tones, which a preview paints apart so that a slider can change them.
  */
 export function toPreviewSteps(operations: readonly Operation[]): PipelineStep[] {
   return geometrySteps(operations.slice(0, lastPixelEdit(operations) + 1))

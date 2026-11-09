@@ -3,16 +3,25 @@ import type { PaperPicLabels } from './labels'
 import { attachRovingFocus, createButton, nameButton } from './button'
 import { ICONS } from './icons'
 
+/** A tone that a slider of the adjustments changes. */
+export type AdjustmentName = 'brightness' | 'contrast'
+
+const ADJUSTMENTS: readonly AdjustmentName[] = ['brightness', 'contrast']
+
 /** What the edit bar can ask for. It only reaches the viewer through these. */
 export interface EditBarCommands {
   apply: () => void
   cancel: () => void
   cancelTool: () => void
   confirmTool: () => void
+  /** Shows a value while the user drags a slider of the adjustments, without any edit. */
+  previewAdjustment: (name: AdjustmentName, value: number) => void
   /** Shows a sensitivity while the user drags the slider, without any edit. */
   previewThreshold: (sensitivity: number) => void
   redo: () => void
   runTool: (run: Tool['actions'][number]['run']) => void
+  /** The user chose a value for a slider of the adjustments. */
+  setAdjustment: (name: AdjustmentName, value: number) => void
   /** The user chose a sensitivity. */
   setThreshold: (sensitivity: number) => void
   undo: () => void
@@ -20,6 +29,9 @@ export interface EditBarCommands {
 
 /** What the edit bar shows. */
 export interface EditBarState {
+  /** Whether the sliders of the adjustments are open. */
+  adjusting: boolean
+  adjustments: Record<AdjustmentName, number>
   busy: boolean
   canApply: boolean
   /** Whether a tool with its own selection can open. A preview in progress prevents it. */
@@ -29,14 +41,20 @@ export interface EditBarState {
   threshold: { enabled: boolean, sensitivity: number }
 }
 
+interface Slider {
+  input: HTMLInputElement
+  name: HTMLElement
+  row: HTMLLabelElement
+}
+
 /** The controls of the edit mode: Cancel, the tools, Undo, Redo and Apply. An open tool replaces them with its own. */
 export class EditBar {
   readonly element: HTMLElement
   private readonly controls: HTMLElement
   private readonly toolControls: HTMLElement
-  private readonly thresholdRow: HTMLElement
-  private readonly thresholdName: HTMLElement
-  private readonly thresholdSlider: HTMLInputElement
+  private readonly threshold: Slider
+  private readonly adjustRow: HTMLElement
+  private readonly adjustSliders: Record<AdjustmentName, Slider>
   private readonly hint: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
@@ -55,7 +73,8 @@ export class EditBar {
   private labels: PaperPicLabels
   private activeTool: Tool | null = null
   private thresholdEnabled = false
-  private thresholdOffered = true
+  private adjusting = false
+  private offered: ReadonlySet<ToolId>
   private dragging = false
   private canApply = false
   private busy = false
@@ -77,6 +96,7 @@ export class EditBar {
     this.applyText = document.createElement('span')
     this.applyButton.append(this.applyText)
 
+    this.offered = new Set(tools.map(({ id }) => id))
     const toolGroup = document.createElement('div')
     toolGroup.className = 'paperpic-edit-tools'
     for (const tool of tools) {
@@ -125,32 +145,26 @@ export class EditBar {
       }
     })
 
-    this.thresholdRow = document.createElement('label')
-    this.thresholdRow.className = 'paperpic-edit-threshold'
-    this.thresholdRow.hidden = true
-    this.thresholdName = document.createElement('span')
-    this.thresholdSlider = document.createElement('input')
-    this.thresholdSlider.type = 'range'
-    this.thresholdSlider.min = '0'
-    this.thresholdSlider.max = '1'
-    this.thresholdSlider.step = '0.01'
-    this.thresholdSlider.addEventListener('input', () => {
-      this.dragging = true
-      commands.previewThreshold(this.thresholdSlider.valueAsNumber)
-    })
-    this.thresholdSlider.addEventListener('change', () => {
-      this.dragging = false
-      commands.setThreshold(this.thresholdSlider.valueAsNumber)
-    })
-    // The arrow keys move the slider here, instead of panning the image
-    this.thresholdSlider.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') {
-        event.stopPropagation()
-      }
-    })
-    this.thresholdRow.append(this.thresholdName, this.thresholdSlider)
+    this.threshold = this.createSlider('paperpic-edit-threshold', 0, commands.previewThreshold, commands.setThreshold)
+    this.threshold.row.hidden = true
 
-    this.element.append(this.controls, this.toolControls, this.thresholdRow, this.confirmation)
+    this.adjustRow = document.createElement('div')
+    this.adjustRow.className = 'paperpic-edit-adjust'
+    this.adjustRow.hidden = true
+    const sliders: Partial<Record<AdjustmentName, Slider>> = {}
+    for (const name of ADJUSTMENTS) {
+      const slider = this.createSlider(
+        'paperpic-edit-slider',
+        -1,
+        value => commands.previewAdjustment(name, value),
+        value => commands.setAdjustment(name, value),
+      )
+      this.adjustRow.append(slider.row)
+      sliders[name] = slider
+    }
+    this.adjustSliders = sliders as Record<AdjustmentName, Slider>
+
+    this.element.append(this.controls, this.toolControls, this.threshold.row, this.adjustRow, this.confirmation)
 
     this.fixTabOrder = attachRovingFocus(this.controls, () => [
       this.cancelButton,
@@ -169,7 +183,10 @@ export class EditBar {
     this.controls.setAttribute('aria-label', labels.editBar)
     nameButton(this.cancelToolButton, labels.cancelTool)
     nameButton(this.confirmToolButton, labels.confirm)
-    this.thresholdName.textContent = labels.thresholdSensitivity
+    this.threshold.name.textContent = labels.thresholdSensitivity
+    for (const name of ADJUSTMENTS) {
+      this.adjustSliders[name].name.textContent = labels[name]
+    }
     this.confirmToolText.textContent = labels.confirm
     this.showHint()
     nameButton(this.cancelButton, labels.cancel)
@@ -188,11 +205,11 @@ export class EditBar {
 
   /** Chooses which tools appear. */
   setTools(ids: readonly ToolId[]): void {
+    this.offered = new Set(ids)
     for (const { tool, button } of this.toolButtons) {
       button.hidden = !ids.includes(tool.id)
     }
-    this.thresholdOffered = ids.includes('threshold')
-    this.showThresholdRow()
+    this.showSliders()
     this.fixTabOrder()
   }
 
@@ -202,7 +219,7 @@ export class EditBar {
     this.toolControls.hidden = tool === null
     this.controls.hidden = tool !== null
     this.showHint()
-    this.showThresholdRow()
+    this.showSliders()
   }
 
   /** Shows or hides the bar. Hiding it closes any open question. */
@@ -214,7 +231,7 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool, threshold }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, busy, canOpenTool, threshold, adjusting, adjustments }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
@@ -222,17 +239,30 @@ export class EditBar {
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
     for (const { tool, button } of this.toolButtons) {
-      button.setAttribute('aria-disabled', String(busy || (tool.activate !== undefined && !canOpenTool)))
+      button.setAttribute('aria-disabled', String(busy
+        || (tool.activate !== undefined && !canOpenTool)
+        // A cleaned document has tones of its own
+        || (tool.id === 'adjust' && threshold.enabled)))
       if (tool.id === 'threshold') {
         button.setAttribute('aria-pressed', String(threshold.enabled))
       }
+      if (tool.id === 'adjust') {
+        button.setAttribute('aria-expanded', String(adjusting))
+      }
     }
     this.thresholdEnabled = threshold.enabled
-    this.thresholdSlider.disabled = busy
-    if (!this.dragging) {
-      this.thresholdSlider.value = String(threshold.sensitivity)
+    this.adjusting = adjusting
+    this.threshold.input.disabled = busy
+    for (const name of ADJUSTMENTS) {
+      this.adjustSliders[name].input.disabled = busy
     }
-    this.showThresholdRow()
+    if (!this.dragging) {
+      this.threshold.input.value = String(threshold.sensitivity)
+      for (const name of ADJUSTMENTS) {
+        this.adjustSliders[name].input.value = String(adjustments[name])
+      }
+    }
+    this.showSliders()
   }
 
   /** Cancels, asking first if there are changes to lose. */
@@ -246,7 +276,7 @@ export class EditBar {
     }
     this.controls.hidden = true
     this.confirmation.hidden = false
-    this.showThresholdRow()
+    this.showSliders()
     // The safe choice takes the focus, so pressing Enter again does not lose the work
     this.keepButton.focus()
   }
@@ -258,13 +288,46 @@ export class EditBar {
     button?.focus()
   }
 
-  private showThresholdRow(): void {
-    const visible = this.thresholdEnabled && this.thresholdOffered && this.activeTool === null && this.confirmation.hidden
+  /** Creates a slider that reports each value while it moves, and the one the user chooses when it is released. */
+  private createSlider(className: string, min: number, onInput: (value: number) => void, onChange: (value: number) => void): Slider {
+    const row = document.createElement('label')
+    row.className = className
+    const name = document.createElement('span')
+    const input = document.createElement('input')
+    input.type = 'range'
+    input.min = String(min)
+    input.max = '1'
+    input.step = '0.01'
+    input.addEventListener('input', () => {
+      this.dragging = true
+      onInput(input.valueAsNumber)
+    })
+    input.addEventListener('change', () => {
+      this.dragging = false
+      onChange(input.valueAsNumber)
+    })
+    // The arrow keys move the slider here, instead of panning the image
+    input.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') {
+        event.stopPropagation()
+      }
+    })
+    row.append(name, input)
+    return { row, name, input }
+  }
+
+  private showSliders(): void {
+    const free = this.activeTool === null && this.confirmation.hidden
+    this.showRow(this.threshold.row, 'threshold', free && this.thresholdEnabled && this.offered.has('threshold'))
+    this.showRow(this.adjustRow, 'adjust', free && this.adjusting && this.offered.has('adjust'))
+  }
+
+  private showRow(row: HTMLElement, toolId: ToolId, visible: boolean): void {
     // A control that disappears must not take the keyboard focus with it
-    if (!visible && document.activeElement === this.thresholdSlider) {
-      this.focus('threshold')
+    if (!visible && row.contains(document.activeElement)) {
+      this.focus(toolId)
     }
-    this.thresholdRow.hidden = !visible
+    row.hidden = !visible
   }
 
   private showHint(): void {
@@ -278,7 +341,7 @@ export class EditBar {
     const wasOpen = !this.confirmation.hidden
     this.confirmation.hidden = true
     this.controls.hidden = this.activeTool !== null
-    this.showThresholdRow()
+    this.showSliders()
     if (wasOpen && restoreFocus) {
       this.cancelButton.focus()
     }
