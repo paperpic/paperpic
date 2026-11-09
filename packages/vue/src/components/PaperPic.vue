@@ -11,10 +11,10 @@ const props = withDefaults(defineProps<PaperPicProps>(), {
 })
 
 const emit = defineEmits<{
-  load: [payload: PaperPicEvents['load']]
-  error: [payload: PaperPicEvents['error']]
-  change: [payload: PaperPicEvents['change']]
   apply: [payload: PaperPicEvents['apply']]
+  change: [payload: PaperPicEvents['change']]
+  error: [payload: PaperPicEvents['error']]
+  load: [payload: PaperPicEvents['load']]
 }>()
 
 const host = useTemplateRef<HTMLElement>('host')
@@ -24,10 +24,10 @@ const instance = shallowRef<PaperPic | null>(null)
 
 onMounted(() => {
   const pic = new PaperPic(host.value!, { ...props })
-  pic.on('load', payload => emit('load', payload))
-  pic.on('error', payload => emit('error', payload))
-  pic.on('change', payload => emit('change', payload))
   pic.on('apply', payload => emit('apply', payload))
+  pic.on('change', payload => emit('change', payload))
+  pic.on('error', payload => emit('error', payload))
+  pic.on('load', payload => emit('load', payload))
   instance.value = pic
 })
 

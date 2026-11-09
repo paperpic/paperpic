@@ -131,10 +131,10 @@ Each action of a tool becomes a button in the edit bar. A tool that holds a sele
 
 ```ts
 interface Tool {
-  id: ToolId
   actions: readonly ToolAction[]
   /** Only for a tool with its own selection and confirmation. */
   activate?: (host: ToolHost) => ToolSession
+  id: ToolId
 }
 
 interface ToolAction {
@@ -148,12 +148,12 @@ interface ToolContext {
 }
 
 interface ToolSession {
-  focus: () => void
-  update: () => void
-  drawOverlay: (context: CanvasRenderingContext2D) => void
   /** The edit the user chose, or `null` if it changes nothing. */
   confirm: () => Operation | null
   deactivate: () => void
+  drawOverlay: (context: CanvasRenderingContext2D) => void
+  focus: () => void
+  update: () => void
 }
 ```
 

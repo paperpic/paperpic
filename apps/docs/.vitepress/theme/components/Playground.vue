@@ -5,21 +5,21 @@ import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
 import { PAPERPIC_LABELS } from './paperpic-labels'
 
 const props = defineProps<{
-  alt: string
-  sampleLabel: string
-  receiptLabel: string
-  cutCornerLabel: string
-  attachLabel: string
-  photoLabel: string
   aiNotice: string
-  resultLabel: string
+  alt: string
+  attachLabel: string
+  cutCornerLabel: string
   downloadLabel: string
+  photoLabel: string
+  receiptLabel: string
+  resultLabel: string
+  sampleLabel: string
 }>()
 
 interface Result {
-  url: string
   fileName: string
   summary: string
+  url: string
 }
 
 const { lang, localeIndex } = useData()
@@ -64,7 +64,7 @@ function onChange({ busy }: { busy: boolean }) {
   }
 }
 
-function showResult({ blob, width, height, type }: { blob: Blob, width: number, height: number, type: string }) {
+function showResult({ blob, width, height, type }: { blob: Blob, height: number, type: string, width: number }) {
   const seconds = applyStart === undefined
     ? ''
     : `${new Intl.NumberFormat(lang.value, { style: 'unit', unit: 'second', maximumFractionDigits: 1 }).format((performance.now() - applyStart) / 1000)}, `

@@ -17,8 +17,8 @@ export interface Preview extends LoadedImage {
 
 /** Where the expensive part of a preview runs. */
 export interface PreviewRunner {
-  run: (source: PixelBuffer, steps: readonly PipelineStep[]) => Promise<PixelBuffer>
   prepare: (source: PixelBuffer, steps: readonly PipelineStep[]) => Promise<PreparedThreshold>
+  run: (source: PixelBuffer, steps: readonly PipelineStep[]) => Promise<PixelBuffer>
 }
 
 /**

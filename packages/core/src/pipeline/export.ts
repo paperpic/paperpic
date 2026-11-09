@@ -5,32 +5,32 @@ import { planRead } from './read-plan'
 
 /** The format of the image that editing produces. */
 export interface PaperPicOutput {
-  /** `image/jpeg`, `image/png` or `image/webp`. By default, the format of the source. */
-  type?: string
   /** From 0 to 1, for JPEG and WebP. */
   quality?: number
+  /** `image/jpeg`, `image/png` or `image/webp`. By default, the format of the source. */
+  type?: string
 }
 
 /** The image that editing produces. */
 export interface ExportedImage {
   blob: Blob
-  width: number
   height: number
   /** The format of `blob`. A browser that cannot encode the requested one gives PNG. */
   type: string
+  width: number
 }
 
 export interface ExportRequest {
-  image: CanvasImageSource
-  width: number
   height: number
-  steps: readonly PipelineStep[]
+  image: CanvasImageSource
+  /** The longest side of the result, in pixels. */
+  maxOutputSize?: number
+  output?: PaperPicOutput
   /** Runs the steps. It takes over the buffer it receives. */
   run: (source: PixelBuffer, steps: readonly PipelineStep[]) => Promise<PixelBuffer>
   source: string | Blob | undefined
-  output?: PaperPicOutput
-  /** The longest side of the result, in pixels. */
-  maxOutputSize?: number
+  steps: readonly PipelineStep[]
+  width: number
 }
 
 const ENCODABLE = new Set(['image/jpeg', 'image/png', 'image/webp'])

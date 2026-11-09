@@ -3,9 +3,9 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 
 interface PlaygroundConfig {
+  plugins?: PluginOption[]
   /** The stylesheet a consumer of this playground's package imports. */
   stylesheet: string
-  plugins?: PluginOption[]
 }
 
 const source = (path: string) => fileURLToPath(new URL(path, import.meta.url))

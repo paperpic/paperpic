@@ -20,10 +20,10 @@ export type ThresholdOptions = PrepareThresholdOptions & ApplyThresholdOptions
 
 /** The expensive part of a threshold, which sensitivity and softness do not change, so a slider can reuse it. */
 export interface PreparedThreshold {
+  height: number
   /** One byte per pixel: its brightness relative to the local mean, multiplied by `RATIO_SCALE`. */
   ratios: Uint8ClampedArray
   width: number
-  height: number
 }
 
 const DEFAULT_WINDOW_RATIO = 1 / 16

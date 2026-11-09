@@ -5,10 +5,10 @@ import { PaperPic } from '../src'
 const core = vi.hoisted(() => ({
   instances: [] as {
     container: HTMLElement
-    options: Record<string, unknown>
-    listeners: Record<string, (payload: unknown) => void>
-    setOptions: ReturnType<typeof vi.fn>
     destroy: ReturnType<typeof vi.fn>
+    listeners: Record<string, (payload: unknown) => void>
+    options: Record<string, unknown>
+    setOptions: ReturnType<typeof vi.fn>
   }[],
 }))
 
@@ -66,7 +66,7 @@ describe('paperPic', () => {
     expect(core.instances[0]!.setOptions).toHaveBeenCalledWith(expect.objectContaining({ editable: false, src: '/doc.png' }))
   })
 
-  it.each(['load', 'error', 'change', 'apply'])('translates the %s event', (name) => {
+  it.each(['apply', 'change', 'error', 'load'])('translates the %s event', (name) => {
     const wrapper = mount(PaperPic, {
       props: { src: '/doc.png' },
     })

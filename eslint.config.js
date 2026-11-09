@@ -13,6 +13,27 @@ export default antfu({
     '.agents/**',
   ],
 }, {
+  name: 'paperpic/sorted-types',
+  rules: {
+    'perfectionist/sort-interfaces': [
+      'error',
+      { type: 'alphabetical', order: 'asc', ignoreCase: true },
+    ],
+    'perfectionist/sort-object-types': [
+      'error',
+      { type: 'alphabetical', order: 'asc', ignoreCase: true },
+    ],
+  },
+}, {
+  name: 'paperpic/sorted-labels',
+  files: ['packages/core/src/ui/labels.ts', 'apps/docs/.vitepress/theme/components/paperpic-labels.ts'],
+  rules: {
+    'perfectionist/sort-objects': [
+      'error',
+      { type: 'alphabetical', order: 'asc', ignoreCase: true },
+    ],
+  },
+}, {
   name: 'paperpic/no-pnpm-catalogs',
   files: ['package.json', '**/package.json', 'pnpm-workspace.yaml'],
   rules: {

@@ -6,22 +6,22 @@ import { ICONS } from './icons'
 /** What the toolbar can ask for. It only reaches the viewer through these. */
 export interface ToolbarCommands {
   edit: () => void
-  zoomIn: () => void
-  zoomOut: () => void
   fit: (fit: Fit) => void
   rotate: (direction: 1 | -1) => void
+  zoomIn: () => void
+  zoomOut: () => void
 }
 
 /** What the toolbar shows. */
 export interface ToolbarState {
-  fit: Fit | null
   canEdit: boolean
+  canRotate: boolean
   canZoomIn: boolean
   canZoomOut: boolean
-  canRotate: boolean
+  fit: Fit | null
 }
 
-type ButtonName = 'edit' | 'zoomIn' | 'zoomOut' | 'fitWidth' | 'fitHeight' | 'rotateLeft' | 'rotateRight'
+type ButtonName = 'edit' | 'fitHeight' | 'fitWidth' | 'rotateLeft' | 'rotateRight' | 'zoomIn' | 'zoomOut'
 
 /** The controls that stay at the right: the Edit pencil, zoom, fit and, in a read-only viewer, rotation. */
 export class Toolbar {

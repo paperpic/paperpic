@@ -2,10 +2,10 @@ import type { ViewPoint } from '../state/view'
 
 /** What the gestures on an element ask for. */
 export interface GestureHandlers {
+  onDoubleTap: (point: ViewPoint) => void
   onPan: (deltaX: number, deltaY: number) => void
   /** `factor` multiplies the current zoom, around `point`. */
   onZoom: (factor: number, point: ViewPoint) => void
-  onDoubleTap: (point: ViewPoint) => void
   /** Whether the wheel zooms. If it does not, the page scrolls as usual. */
   wheelZoom: () => boolean
 }
@@ -25,7 +25,7 @@ const LINE_HEIGHT = 16
  */
 export function attachGestures(element: HTMLElement, handlers: GestureHandlers): () => void {
   const pointers = new Map<number, ViewPoint>()
-  let lastTap: { time: number, point: ViewPoint } | null = null
+  let lastTap: { point: ViewPoint, time: number } | null = null
   let travelled = 0
 
   const localPoint = (event: MouseEvent): ViewPoint => {

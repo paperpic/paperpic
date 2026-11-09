@@ -81,7 +81,7 @@ describe('estimateOutputSize', () => {
     ]
   }
 
-  const ratio = ({ width, height }: { width: number, height: number }) => height / width
+  const ratio = ({ width, height }: { height: number, width: number }) => height / width
 
   it('returns the sides of a rectangle seen from the front, wherever it is in the photo', () => {
     const rectangle: Quad = [

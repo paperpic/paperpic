@@ -76,8 +76,8 @@ export function scaleQuad(quad: Quad, width: number, height: number): Quad {
 
 /** A size in pixels. */
 export interface Size {
-  width: number
   height: number
+  width: number
 }
 
 export interface OutputSizeOptions {
