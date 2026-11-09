@@ -1,3 +1,4 @@
+import type { PaperPicDownload } from './download'
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
 import type { Operation, PipelineStep } from './pipeline/operations'
@@ -10,6 +11,7 @@ import type { Fit, Size, View, ViewPoint } from './state/view'
 import type { Lens } from './tools/magnifier'
 import type { Tool, ToolContext, ToolHost, ToolId, ToolSession } from './tools/types'
 import type { PaperPicLabels } from './ui/labels'
+import { downloadName, saveFile } from './download'
 import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
 import { exportImage } from './pipeline/export'
@@ -43,11 +45,15 @@ export interface PaperPicOptions {
   alt?: string
   /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
   aspectRatio?: number
+  /** Whether the toolbar has a button that saves the image on display, which is the result of the last Apply or else the source. */
+  download?: boolean
   /**
    * Whether the image can be edited. With `false` it is a read-only viewer, whose toolbar can also rotate the image.
    * That rotation only changes the display.
    */
   editable?: boolean
+  /** The name of the saved file. By default, the name of the source. The extension follows the format of the image. */
+  filename?: string
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
   /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
@@ -98,6 +104,8 @@ export interface PaperPicEvents {
   apply: ExportedImage
   /** The user changed the view or the edit. `setOptions()` never triggers it. */
   change: PaperPicState
+  /** The image is about to be saved. Call `preventDefault()` to save it another way. */
+  download: PaperPicDownload
   /** The image could not be loaded, or the changes could not be applied. */
   error: { error: Error }
   /** The image is ready. */
@@ -106,13 +114,15 @@ export interface PaperPicEvents {
 
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
 type Listeners = { [Name in keyof PaperPicEvents]: Set<Listener<Name>> }
-type OptionalOption = 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio' | 'softness'
+type OptionalOption = 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio' | 'softness' | 'filename'
 type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | OptionalOption>> & Pick<PaperPicOptions, OptionalOption>
 
 const DEFAULT_OPTIONS: ResolvedOptions = {
   alt: '',
   aspectRatio: undefined,
+  download: false,
   editable: true,
+  filename: undefined,
   labels: undefined,
   maxOutputSize: undefined,
   output: undefined,
@@ -142,6 +152,7 @@ export class PaperPic {
   private readonly listeners: Listeners = {
     apply: new Set(),
     change: new Set(),
+    download: new Set(),
     error: new Set(),
     load: new Set(),
   }
@@ -152,6 +163,8 @@ export class PaperPic {
   private labels: PaperPicLabels = DEFAULT_LABELS
   private source: PaperPicSource | undefined
   private image: LoadedImage | null = null
+  /** What a download saves: the source, or the result of the last Apply. */
+  private saved: { source: PaperPicSource, url: string | null } | null = null
   /** What the edits look like, while they need other pixels than the image. */
   private preview: Preview | null = null
   private previewKey = NO_PREVIEW
@@ -209,6 +222,7 @@ export class PaperPic {
         zoomOut: () => this.stepZoom(1 / ZOOM_STEP),
         fit: fit => this.fit(fit),
         rotate: direction => this.rotate(direction),
+        download: () => this.download(),
       },
       this.labels,
     )
@@ -262,6 +276,11 @@ export class PaperPic {
     }
     this.root.addEventListener('keydown', onKeyDown)
     this.cleanups.push(() => this.root.removeEventListener('keydown', onKeyDown))
+
+    // The menu of the browser would save the canvas, which holds the view on screen instead of the image
+    const onContextMenu = (event: Event) => event.preventDefault()
+    this.viewportElement.addEventListener('contextmenu', onContextMenu)
+    this.cleanups.push(() => this.viewportElement.removeEventListener('contextmenu', onContextMenu))
 
     const observer = new ResizeObserver(() => this.measure())
     observer.observe(this.viewportElement)
@@ -546,6 +565,7 @@ export class PaperPic {
       this.history = createHistory()
       this.setPreview(null)
       this.setImage(loaded, 'ready')
+      this.setSaved(exported.blob)
       this.restoreFocus(hadFocus)
       this.status.textContent = this.labels.applied
       this.emit('apply', exported)
@@ -560,6 +580,32 @@ export class PaperPic {
       this.showStatus()
       this.refresh()
       this.emit('error', { error: cause as Error })
+    }
+  }
+
+  /**
+   * Saves the image on display as a file: the result of the last Apply, or else the source.
+   * The `download` event comes first and can stop it. It does nothing while editing, because the edits are not applied yet.
+   */
+  download(): void {
+    const saved = this.saved
+    if (this.mode !== 'view' || this.loadStatus !== 'ready' || !saved) {
+      return
+    }
+    let prevented = false
+    const filename = downloadName(saved.source, this.source, this.options.filename)
+    this.emit('download', {
+      source: saved.source,
+      filename,
+      preventDefault: () => {
+        prevented = true
+      },
+    })
+    if (!prevented) {
+      saved.url ??= typeof saved.source === 'string'
+        ? saved.source
+        : URL.createObjectURL(saved.source)
+      saveFile(saved.url, filename)
     }
   }
 
@@ -588,6 +634,7 @@ export class PaperPic {
     this.preview = null
     this.image?.release()
     this.image = null
+    this.setSaved(undefined)
     this.root.remove()
     for (const listeners of Object.values(this.listeners)) {
       listeners.clear()
@@ -702,6 +749,7 @@ export class PaperPic {
   private async load(source: PaperPicSource | undefined): Promise<void> {
     const id = ++this.loadId
     this.source = source
+    this.setSaved(source)
     this.leaveEdit()
 
     if (source === undefined) {
@@ -728,6 +776,16 @@ export class PaperPic {
       this.setImage(null, 'error')
       this.emit('error', { error: cause as Error })
     }
+  }
+
+  /** Changes what a download saves, and frees the address of the file it saved before. */
+  private setSaved(source: PaperPicSource | undefined): void {
+    if (this.saved?.url && this.saved.url !== this.saved.source) {
+      URL.revokeObjectURL(this.saved.url)
+    }
+    this.saved = source === undefined
+      ? null
+      : { source, url: null }
   }
 
   private setImage(image: LoadedImage | null, status: PaperPicState['status']): void {
@@ -915,6 +973,7 @@ export class PaperPic {
       canZoomIn: limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE,
       canZoomOut: limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE,
       canRotate: !this.options.editable,
+      canDownload: this.options.download && this.mode === 'view' && this.loadStatus === 'ready',
     })
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
     this.editBar.update({ ...state, canOpenTool: !this.previewing })

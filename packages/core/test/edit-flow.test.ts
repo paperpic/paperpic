@@ -8,7 +8,10 @@ const mocks = vi.hoisted(() => ({
   renderPreview: vi.fn(),
 }))
 
-vi.mock('../src/pipeline/export', () => ({ exportImage: mocks.exportImage }))
+vi.mock('../src/pipeline/export', async importOriginal => ({
+  ...await importOriginal<typeof import('../src/pipeline/export')>(),
+  exportImage: mocks.exportImage,
+}))
 vi.mock('../src/pipeline/preview', () => ({ renderPreview: mocks.renderPreview }))
 
 let images: { resolve: () => void }[]
@@ -881,5 +884,104 @@ describe('editing', () => {
     expect(bar().querySelector<HTMLButtonElement>('[aria-label="Rotate left"]')!.hidden).toBe(true)
     pic.setOptions({ tools: undefined })
     expect(bar().querySelector<HTMLButtonElement>('[aria-label="Rotate left"]')!.hidden).toBe(false)
+  })
+
+  describe('downloading', () => {
+    let saves: { download: string, href: string }[]
+
+    const toolbarButton = (label: string) => container.querySelector<HTMLButtonElement>(`.paperpic-toolbar [aria-label="${label}"]`)!
+
+    async function applyRotation() {
+      pic.edit()
+      pic.rotate(1)
+      const applying = pic.apply()
+      await flush()
+      await finishLoading()
+      await applying
+    }
+
+    beforeEach(() => {
+      saves = []
+      vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+        saves.push({
+          href: this.getAttribute('href')!,
+          download: this.download,
+        })
+      })
+    })
+
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it('has no button unless it is chosen', () => {
+      expect(toolbarButton('Download').hidden).toBe(true)
+      pic.setOptions({ download: true })
+      expect(toolbarButton('Download').hidden).toBe(false)
+    })
+
+    it('hides the button while editing, because the edits are not applied yet', () => {
+      pic.setOptions({ download: true })
+      pic.edit()
+      expect(toolbarButton('Download').hidden).toBe(true)
+      pic.download()
+      expect(saves).toEqual([])
+    })
+
+    it('saves the source as it is, under its own name', () => {
+      pic.setOptions({ download: true })
+      toolbarButton('Download').click()
+      expect(saves).toEqual([
+        { href: '/receipt.jpg', download: 'receipt.jpg' },
+      ])
+    })
+
+    it('saves the result of the last Apply, with the extension of its format', async () => {
+      mocks.exportImage.mockResolvedValue({
+        ...exported,
+        blob: new Blob(['x'], { type: 'image/png' }),
+        type: 'image/png',
+      })
+      await applyRotation()
+      pic.download()
+      expect(saves).toEqual([
+        { href: 'blob:fake', download: 'receipt.png' },
+      ])
+    })
+
+    it('uses the chosen name', () => {
+      pic.setOptions({ filename: 'invoice-42' })
+      pic.download()
+      expect(saves[0]!.download).toBe('invoice-42.jpg')
+    })
+
+    it('reports the download first, and lets the consumer save it another way', () => {
+      const onDownload = vi.fn((event: { preventDefault: () => void }) => event.preventDefault())
+      pic.on('download', onDownload)
+      pic.download()
+      expect(onDownload).toHaveBeenCalledWith(expect.objectContaining({ source: '/receipt.jpg', filename: 'receipt.jpg' }))
+      expect(saves).toEqual([])
+    })
+
+    it('frees the address of a saved result when the image changes or the viewer goes away', async () => {
+      await applyRotation()
+      pic.download()
+      revoke.mockClear()
+      pic.reload()
+      expect(revoke).toHaveBeenCalledWith('blob:fake')
+
+      await finishLoading()
+      await applyRotation()
+      pic.download()
+      revoke.mockClear()
+      pic.destroy()
+      expect(revoke).toHaveBeenCalledWith('blob:fake')
+    })
+  })
+
+  it('keeps the menu of the browser away from the image', () => {
+    const event = new MouseEvent('contextmenu', { bubbles: true, cancelable: true })
+    container.querySelector('.paperpic-canvas')!.dispatchEvent(event)
+    expect(event.defaultPrevented).toBe(true)
   })
 })

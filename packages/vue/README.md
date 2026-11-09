@@ -41,13 +41,15 @@ The pencil opens the edit mode. When the user applies the changes, the result re
 | `toolbar`       | `boolean`                 | `true`               | Shows the built-in toolbar and edit bar. Without them, use the methods of `instance` |
 | `tools`         | `ToolId[]`                | All of them          | Which tools the edit bar offers: `crop`, `perspective`, `rotate` and `threshold`     |
 | `wheelZoom`     | `boolean`                 | `true`               | Whether the wheel zooms. Turn it off when the viewer sits in a long page             |
+| `download`      | `boolean`                 | `false`              | Shows a button that saves the image on display: the last result, or else the source  |
+| `filename`      | `string`                  | Name of the source   | The name of the saved file. The extension follows the format of the image            |
 | `output`        | `{ type, quality }`       | Format of the source | The format of the result: `image/jpeg`, `image/png` or `image/webp`, and from 0 to 1 |
 | `maxOutputSize` | `number`                  | Full resolution      | The longest side of the result, in pixels                                            |
 | `aspectRatio`   | `number`                  | Estimated            | The real proportions of the document, as width divided by height, for Straighten     |
 | `softness`      | `number`                  | `0.25`               | How much gray cleaning up keeps, from 0 to 1. Use 0 for strict black and white       |
 | `labels`        | `Partial<PaperPicLabels>` |                      | Replaces any of the texts, which are in English by default                           |
 
-It emits `load`, `error`, `change` and `apply`, and exposes the viewer as `instance`, with the methods of [`@paperpic/core`](https://www.npmjs.com/package/@paperpic/core).
+It emits `load`, `error`, `change`, `apply` and `download`, and exposes the viewer as `instance`, with the methods of [`@paperpic/core`](https://www.npmjs.com/package/@paperpic/core).
 
 Passing the same `src` again does not reload the image, so it keeps the result of an edit. To bring back the original, call `instance.reload()`.
 

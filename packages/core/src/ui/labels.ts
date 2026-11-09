@@ -22,6 +22,7 @@ export interface PaperPicLabels {
   discard: string
   /** The question before losing changes. */
   discardQuestion: string
+  download: string
   edit: string
   /** Name of the edit bar, for screen readers. */
   editBar: string
@@ -73,6 +74,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   cropHint: 'Drag the corners',
   discard: 'Discard',
   discardQuestion: 'Discard your changes?',
+  download: 'Download',
   edit: 'Edit',
   editBar: 'Editing controls',
   editing: 'Editing',

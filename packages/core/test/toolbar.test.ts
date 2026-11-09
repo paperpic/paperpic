@@ -9,6 +9,7 @@ const state: ToolbarState = {
   canZoomIn: true,
   canZoomOut: true,
   canRotate: true,
+  canDownload: false,
 }
 
 describe('toolbar', () => {
@@ -18,6 +19,7 @@ describe('toolbar', () => {
     zoomOut: vi.fn(),
     fit: vi.fn(),
     rotate: vi.fn(),
+    download: vi.fn(),
   }
   let toolbar: Toolbar
 
@@ -81,6 +83,16 @@ describe('toolbar', () => {
     toolbar.update({ ...state, canRotate: false })
     expect(button('Rotate left').hidden).toBe(true)
     expect(button('Rotate right').hidden).toBe(true)
+  })
+
+  it('shows the download button last, only when it is chosen', () => {
+    expect(button('Download').hidden).toBe(true)
+    toolbar.update({ ...state, canDownload: true })
+    expect(button('Download').hidden).toBe(false)
+    expect(toolbar.element.lastElementChild).toBe(button('Download'))
+
+    button('Download').click()
+    expect(commands.download).toHaveBeenCalledOnce()
   })
 
   it('marks the fit in effect', () => {

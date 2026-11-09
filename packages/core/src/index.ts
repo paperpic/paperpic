@@ -1,5 +1,6 @@
 import './styles/index.css'
 
+export type { PaperPicDownload } from './download'
 export * from './paperpic'
 export type { ExportedImage, PaperPicOutput } from './pipeline/export'
 export * from './rotation'
