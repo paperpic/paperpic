@@ -5,6 +5,7 @@
   "description": "文档图像查看与编辑工具：缩放、旋转、透视校正、亮度和对比度调整、黑白转换以及阴影去除。",
   "guide": "指南",
   "reference": "参考",
+  "examples": "示例",
   "playground": "演练场",
   "groups": {
     "introduction": "简介",
@@ -13,7 +14,8 @@
     "production": "生产环境",
     "api": "API",
     "customization": "自定义",
-    "frameworks": "框架"
+    "frameworks": "框架",
+    "examples": "示例"
   },
   "pages": {
     "guide/introduction": "什么是 PaperPic？",
@@ -37,7 +39,11 @@
     "reference/labels": "标签",
     "reference/css-tokens": "CSS 令牌",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "上传到服务器",
+    "examples/read-only": "只读查看器",
+    "examples/custom-toolbar": "自定义工具栏",
+    "examples/fixed-proportions": "固定宽高比"
   },
   "search": {
     "button": {

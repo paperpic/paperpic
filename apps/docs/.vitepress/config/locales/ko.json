@@ -5,6 +5,7 @@
   "description": "문서 이미지 뷰어 및 편집기: 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 흑백 변환, 그림자 제거.",
   "guide": "가이드",
   "reference": "레퍼런스",
+  "examples": "예제",
   "playground": "플레이그라운드",
   "groups": {
     "introduction": "소개",
@@ -13,7 +14,8 @@
     "production": "운영 환경",
     "api": "API",
     "customization": "사용자 지정",
-    "frameworks": "프레임워크"
+    "frameworks": "프레임워크",
+    "examples": "예제"
   },
   "pages": {
     "guide/introduction": "PaperPic이란?",
@@ -37,7 +39,11 @@
     "reference/labels": "레이블",
     "reference/css-tokens": "CSS 토큰",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "서버에 업로드",
+    "examples/read-only": "읽기 전용 뷰어",
+    "examples/custom-toolbar": "직접 만든 도구 모음",
+    "examples/fixed-proportions": "고정 비율"
   },
   "search": {
     "button": {

@@ -5,6 +5,7 @@
   "description": "文書画像のビューアー兼エディター：ズーム、回転、遠近補正、明るさとコントラストの調整、白黒変換、影の除去。",
   "guide": "ガイド",
   "reference": "リファレンス",
+  "examples": "例",
   "playground": "プレイグラウンド",
   "groups": {
     "introduction": "入門",
@@ -13,7 +14,8 @@
     "production": "本番運用",
     "api": "API",
     "customization": "カスタマイズ",
-    "frameworks": "フレームワーク"
+    "frameworks": "フレームワーク",
+    "examples": "例"
   },
   "pages": {
     "guide/introduction": "PaperPic とは",
@@ -37,7 +39,11 @@
     "reference/labels": "ラベル",
     "reference/css-tokens": "CSS トークン",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "サーバーへのアップロード",
+    "examples/read-only": "読み取り専用のビューアー",
+    "examples/custom-toolbar": "独自のツールバー",
+    "examples/fixed-proportions": "固定の縦横比"
   },
   "search": {
     "button": {

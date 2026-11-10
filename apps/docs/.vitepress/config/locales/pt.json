@@ -5,6 +5,7 @@
   "description": "Visualizador e editor de imagens de documentos: zoom, rotação, correção de perspectiva, brilho e contraste, preto e branco e remoção de sombras.",
   "guide": "Guia",
   "reference": "Referência",
+  "examples": "Exemplos",
   "playground": "Playground",
   "groups": {
     "introduction": "Introdução",
@@ -13,7 +14,8 @@
     "production": "Em produção",
     "api": "API",
     "customization": "Personalização",
-    "frameworks": "Frameworks"
+    "frameworks": "Frameworks",
+    "examples": "Exemplos"
   },
   "pages": {
     "guide/introduction": "O que é o PaperPic?",
@@ -37,7 +39,11 @@
     "reference/labels": "Rótulos",
     "reference/css-tokens": "Tokens CSS",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Enviar para um servidor",
+    "examples/read-only": "Visualizador somente leitura",
+    "examples/custom-toolbar": "Barra de ferramentas própria",
+    "examples/fixed-proportions": "Proporções fixas"
   },
   "search": {
     "button": {

@@ -43,7 +43,7 @@ function sidebarOf(prefix: string, { groups, pages }: Translation): DefaultTheme
 
 export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
   Object.entries(translations).map(([key, translation]) => {
-    const { label, lang, description, guide, reference, playground, theme } = translation
+    const { label, lang, description, examples, guide, reference, playground, theme } = translation
     const prefix = key === 'root'
       ? ''
       : `/${key}`
@@ -64,6 +64,7 @@ export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
           nav: [
             { text: guide, link: `${prefix}/guide/introduction`, activeMatch: `^${prefix}/guide/` },
             { text: reference, link: `${prefix}/reference/options`, activeMatch: `^${prefix}/reference/` },
+            { text: examples, link: `${prefix}/examples/upload`, activeMatch: `^${prefix}/examples/` },
             { text: playground, link: `${prefix}/playground` },
           ],
           sidebar: sidebarOf(prefix, translation),

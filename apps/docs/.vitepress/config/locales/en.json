@@ -5,6 +5,7 @@
   "description": "Document image viewer & editor: zoom, rotate, perspective correction, brightness/contrast, black & white and shadow removal.",
   "guide": "Guide",
   "reference": "Reference",
+  "examples": "Examples",
   "playground": "Playground",
   "groups": {
     "introduction": "Introduction",
@@ -13,7 +14,8 @@
     "production": "In production",
     "api": "API",
     "customization": "Customization",
-    "frameworks": "Frameworks"
+    "frameworks": "Frameworks",
+    "examples": "Examples"
   },
   "pages": {
     "guide/introduction": "What is PaperPic?",
@@ -37,7 +39,11 @@
     "reference/labels": "Labels",
     "reference/css-tokens": "CSS tokens",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Upload to a server",
+    "examples/read-only": "Read-only viewer",
+    "examples/custom-toolbar": "Custom toolbar",
+    "examples/fixed-proportions": "Fixed proportions"
   },
   "search": {
     "button": {

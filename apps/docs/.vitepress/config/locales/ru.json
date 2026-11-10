@@ -5,6 +5,7 @@
   "description": "Просмотр и редактирование изображений документов: масштабирование, поворот, коррекция перспективы, яркость и контраст, чёрно-белый режим и удаление теней.",
   "guide": "Руководство",
   "reference": "Справочник",
+  "examples": "Примеры",
   "playground": "Песочница",
   "groups": {
     "introduction": "Введение",
@@ -13,7 +14,8 @@
     "production": "В продакшене",
     "api": "API",
     "customization": "Настройка",
-    "frameworks": "Фреймворки"
+    "frameworks": "Фреймворки",
+    "examples": "Примеры"
   },
   "pages": {
     "guide/introduction": "Что такое PaperPic?",
@@ -37,7 +39,11 @@
     "reference/labels": "Подписи",
     "reference/css-tokens": "CSS-токены",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Загрузка на сервер",
+    "examples/read-only": "Просмотрщик только для чтения",
+    "examples/custom-toolbar": "Своя панель инструментов",
+    "examples/fixed-proportions": "Фиксированные пропорции"
   },
   "search": {
     "button": {
