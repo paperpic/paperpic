@@ -9,6 +9,7 @@ body:
       options:
         - '@paperpic/core'
         - '@paperpic/vue'
+        - '@paperpic/react'
         - Docs
     validations:
       required: true

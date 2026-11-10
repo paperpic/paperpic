@@ -1,4 +1,4 @@
 {
-  "*.{json,yaml,yml,md,js,ts,html}": "eslint --fix",
+  "*.{json,yaml,yml,md,js,ts,tsx,html}": "eslint --fix",
   "*.{vue,css}": ["stylelint --fix", "eslint --fix"]
 }

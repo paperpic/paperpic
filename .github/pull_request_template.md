@@ -6,6 +6,6 @@
 
 ## Checklist
 
-- [ ] Added a changeset (`pnpm changeset`) if `@paperpic/core` or `@paperpic/vue` changed
+- [ ] Added a changeset (`pnpm changeset`) if `@paperpic/core`, `@paperpic/vue` or `@paperpic/react` changed
 - [ ] Added or updated tests
 - [ ] Updated the docs if needed

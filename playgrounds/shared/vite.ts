@@ -12,6 +12,7 @@ const source = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
 const sourceAliases = {
   '@paperpic/vue': source('../../packages/vue/src/index.ts'),
+  '@paperpic/react': source('../../packages/react/src/index.ts'),
   '@paperpic/core': source('../../packages/core/src/index.ts'),
 }
 

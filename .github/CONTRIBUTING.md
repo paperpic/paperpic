@@ -24,16 +24,18 @@ pnpm install
 
 ## Project structure
 
-| Path                  | Contents                                                   |
-| --------------------- | ---------------------------------------------------------- |
-| `packages/core`       | `@paperpic/core`: framework-agnostic viewer and editor     |
-| `packages/vue`        | `@paperpic/vue`: Vue 3 wrapper around `@paperpic/core`     |
-| `apps/docs`           | Documentation site, built with VitePress                   |
-| `playgrounds/vanilla` | Local playground to develop `@paperpic/core`, not deployed |
-| `playgrounds/vue`     | Local playground to develop `@paperpic/vue`, not deployed  |
-| `playgrounds/shared`  | Page, controls, config and samples the playgrounds share   |
-| `playgrounds/bench`   | Benchmarks of the image processing, not deployed           |
-| `docs/spec`           | Component spec, and the measurements behind its decisions  |
+| Path                  | Contents                                                    |
+| --------------------- | ----------------------------------------------------------- |
+| `packages/core`       | `@paperpic/core`: framework-agnostic viewer and editor      |
+| `packages/vue`        | `@paperpic/vue`: Vue 3 wrapper around `@paperpic/core`      |
+| `packages/react`      | `@paperpic/react`: React 19 wrapper around `@paperpic/core` |
+| `apps/docs`           | Documentation site, built with VitePress                    |
+| `playgrounds/vanilla` | Local playground to develop `@paperpic/core`, not deployed  |
+| `playgrounds/vue`     | Local playground to develop `@paperpic/vue`, not deployed   |
+| `playgrounds/react`   | Local playground to develop `@paperpic/react`, not deployed |
+| `playgrounds/shared`  | Page, controls, config and samples the playgrounds share    |
+| `playgrounds/bench`   | Benchmarks of the image processing, not deployed            |
+| `docs/spec`           | Component spec, and the measurements behind its decisions   |
 
 ## Architecture
 
@@ -52,8 +54,10 @@ pnpm install
 | --------------------- | ----------------------------------------------------------------------------- |
 | `pnpm dev`            | Starts the vanilla playground, with hot reload of the packages' source        |
 | `pnpm dev:vue`        | Starts the Vue playground, with hot reload of the packages' source            |
+| `pnpm dev:react`      | Starts the React playground, with hot reload of the packages' source          |
 | `pnpm dev:dist`       | Builds the packages and starts the vanilla playground against their `dist`    |
 | `pnpm dev:vue:dist`   | Builds the packages and starts the Vue playground against their `dist`        |
+| `pnpm dev:react:dist` | Builds the packages and starts the React playground against their `dist`      |
 | `pnpm dev:docs`       | Starts the docs site                                                          |
 | `pnpm dev:bench`      | Starts the benchmarks of the image processing                                 |
 | `pnpm dev:bench:host` | Starts the same page for other devices on your network, to measure on a phone |
@@ -74,9 +78,9 @@ CI runs lint, typecheck, test and build on every pull request.
    If you push to this repository instead of a fork, the branch name must start with a type, such as `feat/zoom-controls` or `fix/rotation-angle`.
 2. Commit using [Conventional Commits](https://www.conventionalcommits.org/), for example `feat(vue): add zoom controls`.
    - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`.
-   - Optional scopes: `core`, `vue`, `docs`, `playground`.
+   - Optional scopes: `core`, `vue`, `react`, `docs`, `playground`.
    - A git hook checks each commit message, and another one fixes lint problems in staged files.
-3. If your change affects `@paperpic/core` or `@paperpic/vue`, add a changeset:
+3. If your change affects `@paperpic/core`, `@paperpic/vue` or `@paperpic/react`, add a changeset:
 
    ```sh
    pnpm changeset
@@ -96,7 +100,7 @@ The CSS that the packages ship lives in `packages/core/src/styles` and follows t
 - Classes are `paperpic` or start with `paperpic-`. Stylelint enforces this and the custom property names in `packages/core` and `packages/vue`.
 - Features must work in [Baseline Widely Available](https://web.dev/baseline) browsers, the build target of the published packages.
 
-`pnpm dev` and `pnpm dev:vue` inject the styles directly. Use `pnpm dev:dist` or `pnpm dev:vue:dist` to check the `style.css` that consumers import.
+`pnpm dev`, `pnpm dev:vue` and `pnpm dev:react` inject the styles directly. Use `pnpm dev:dist`, `pnpm dev:vue:dist` or `pnpm dev:react:dist` to check the `style.css` that consumers import.
 
 ## Translating the docs
 

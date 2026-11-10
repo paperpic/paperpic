@@ -19,10 +19,10 @@ There is no hotfix branch: fixes follow the same path as any other change.
 ## From a change to `development`
 
 1. **Branch from `development`** with a name from the list above.
-2. **Commit** with [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, scopes `core`, `vue`, `docs` or `playground`. Two git hooks run on every commit:
+2. **Commit** with [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, scopes `core`, `vue`, `react`, `docs` or `playground`. Two git hooks run on every commit:
    - `pre-commit` runs lint-staged, which fixes ESLint and Stylelint problems in the staged files.
    - `commit-msg` runs commitlint. It rejects messages that break the convention, and body lines over 100 characters.
-3. **Add a changeset** if the change affects `@paperpic/core` or `@paperpic/vue`. See [Changesets](#changesets).
+3. **Add a changeset** if the change affects `@paperpic/core`, `@paperpic/vue` or `@paperpic/react`. See [Changesets](#changesets).
 4. **Open a pull request against `development`.** Fill in the template. The title must follow Conventional Commits with a lowercase subject, for example `feat(vue): add zoom controls`. The `emoji` job then adds the type's [gitmoji](https://gitmoji.dev) after the colon (`feat(vue): ✨ add zoom controls`) and swaps it when the type changes. PRs from forks and Dependabot keep the plain title, since their token cannot edit it.
 5. **Get it merged.** `development` requires:
    - the `ci` check (lint, typecheck, test, build) and the `pr-title` check, on a branch that is up to date with `development`;
@@ -37,7 +37,7 @@ The changelog is written by people, not generated from commits. Each pull reques
 
 ### When a changeset is needed
 
-- **Needed:** any change to what `@paperpic/core` or `@paperpic/vue` ship to users, such as their source, types or styles.
+- **Needed:** any change to what `@paperpic/core`, `@paperpic/vue` or `@paperpic/react` ship to users, such as their source, types or styles.
 - **Not needed:** tests, docs, the docs site (`apps/docs`), the playgrounds (`playgrounds/*`), CI and tooling.
 
 ### How to create one
@@ -58,7 +58,7 @@ It writes a file such as `.changeset/zoom-controls.md`:
 Add zoom controls to `PaperPic`.
 ```
 
-Commit it with the rest of your change. One changeset per pull request is usual. If you change both packages, list both in the same file.
+Commit it with the rest of your change. One changeset per pull request is usual. If you change several packages, list them all in the same file.
 
 AI tools can draft this file. The maintainer's Claude Code setup, for instance, writes one from the commit type and subject. The draft is a starting point: the author owns the wording.
 
@@ -70,7 +70,7 @@ AI tools can draft this file. The maintainer's Claude Code setup, for instance, 
 | `minor` | New features that do not break existing code    | 0.1.0 → 0.2.0 |
 | `major` | Changes that force users to change their code   | 0.1.0 → 1.0.0 |
 
-The two packages share one version: `.changeset/config.json` puts them in a `fixed` group, so a bump to either one bumps both. A `major` bump on a 0.x version releases 1.0.0, so use it deliberately.
+The packages share one version: `.changeset/config.json` puts them in a `fixed` group, so a bump to any of them bumps them all. A `major` bump on a 0.x version releases 1.0.0, so use it deliberately.
 
 ### Writing a good entry
 
@@ -103,7 +103,7 @@ flowchart LR
 
 On every push to `development` that leaves changesets pending, the Release workflow (`.github/workflows/release.yml`) runs `changeset version` and opens or updates a pull request titled **`chore: version packages`** from `changeset-release/development`. That PR:
 
-- bumps the versions in both `package.json` files;
+- bumps the versions in every package's `package.json`;
 - writes the new entries into `packages/*/CHANGELOG.md`;
 - deletes the consumed `.changeset/*.md` files.
 
@@ -119,7 +119,7 @@ Leaving the version PR open is fine: it keeps collecting changes until the next 
 2. Open a pull request from `development` into `main`. `main` requires the `ci` check and a code owner approval, and only accepts **merge commits**, which keeps the history of `development` intact.
 3. Merge it. The Release workflow runs on `main`:
    - `pack` builds the packages and packs the tarballs;
-   - `publish` waits in the `npm` environment until a required reviewer (`@Unlooper`) approves it in the workflow run (**Review deployments**). Then it publishes to npm with trusted publishing and provenance, pushes one git tag per package (`@paperpic/core@x.y.z`, `@paperpic/vue@x.y.z`) and creates a GitHub Release for each.
+   - `publish` waits in the `npm` environment until a required reviewer (`@Unlooper`) approves it in the workflow run (**Review deployments**). Then it publishes to npm with trusted publishing and provenance, pushes one git tag per package (`@paperpic/core@x.y.z`, `@paperpic/vue@x.y.z`, `@paperpic/react@x.y.z`) and creates a GitHub Release for each.
 
 Nothing has to be merged back into `development`: the versions were bumped there in step 1.
 
