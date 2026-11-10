@@ -20,6 +20,7 @@ type ThemeStrings = Pick<
 
 export interface Translation {
   description: string
+  examples: string
   /** The titles of the sidebar groups. */
   groups: Record<SidebarGroup, string>
   guide: string

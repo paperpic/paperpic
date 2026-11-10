@@ -5,14 +5,17 @@
   "description": "Visionneuse et éditeur d’images de documents : zoom, rotation, correction de perspective, luminosité et contraste, noir et blanc et suppression des ombres.",
   "guide": "Guide",
   "reference": "Référence",
+  "examples": "Exemples",
   "playground": "Playground",
   "groups": {
     "introduction": "Introduction",
     "essentials": "L’essentiel",
     "tools": "Outils",
+    "production": "En production",
     "api": "API",
     "customization": "Personnalisation",
-    "frameworks": "Frameworks"
+    "frameworks": "Frameworks",
+    "examples": "Exemples"
   },
   "pages": {
     "guide/introduction": "Qu’est-ce que PaperPic ?",
@@ -25,6 +28,10 @@
     "guide/tools/rotate-and-flip": "Pivoter et retourner",
     "guide/tools/adjust": "Ajuster",
     "guide/tools/clean-up": "Nettoyer",
+    "guide/styling": "Styles",
+    "guide/labels": "Traduire l’interface",
+    "guide/accessibility": "Accessibilité",
+    "guide/performance": "Performances et compatibilité",
     "reference/options": "Options",
     "reference/methods": "Méthodes",
     "reference/events": "Événements",
@@ -32,7 +39,11 @@
     "reference/labels": "Libellés",
     "reference/css-tokens": "Jetons CSS",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Envoyer à un serveur",
+    "examples/read-only": "Visionneuse en lecture seule",
+    "examples/custom-toolbar": "Barre d’outils personnalisée",
+    "examples/fixed-proportions": "Proportions fixes"
   },
   "search": {
     "button": {

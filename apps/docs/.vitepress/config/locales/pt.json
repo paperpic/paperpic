@@ -5,14 +5,17 @@
   "description": "Visualizador e editor de imagens de documentos: zoom, rotação, correção de perspectiva, brilho e contraste, preto e branco e remoção de sombras.",
   "guide": "Guia",
   "reference": "Referência",
+  "examples": "Exemplos",
   "playground": "Playground",
   "groups": {
     "introduction": "Introdução",
     "essentials": "Fundamentos",
     "tools": "Ferramentas",
+    "production": "Em produção",
     "api": "API",
     "customization": "Personalização",
-    "frameworks": "Frameworks"
+    "frameworks": "Frameworks",
+    "examples": "Exemplos"
   },
   "pages": {
     "guide/introduction": "O que é o PaperPic?",
@@ -25,6 +28,10 @@
     "guide/tools/rotate-and-flip": "Girar e espelhar",
     "guide/tools/adjust": "Ajustar",
     "guide/tools/clean-up": "Limpar",
+    "guide/styling": "Estilos",
+    "guide/labels": "Traduzir a interface",
+    "guide/accessibility": "Acessibilidade",
+    "guide/performance": "Desempenho e compatibilidade",
     "reference/options": "Opções",
     "reference/methods": "Métodos",
     "reference/events": "Eventos",
@@ -32,7 +39,11 @@
     "reference/labels": "Rótulos",
     "reference/css-tokens": "Tokens CSS",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Enviar para um servidor",
+    "examples/read-only": "Visualizador somente leitura",
+    "examples/custom-toolbar": "Barra de ferramentas própria",
+    "examples/fixed-proportions": "Proporções fixas"
   },
   "search": {
     "button": {

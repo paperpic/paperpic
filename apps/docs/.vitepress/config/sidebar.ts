@@ -25,6 +25,16 @@ export const sidebar = [
     ],
   },
   {
+    section: 'guide',
+    group: 'customization',
+    pages: ['guide/styling', 'guide/labels'],
+  },
+  {
+    section: 'guide',
+    group: 'production',
+    pages: ['guide/accessibility', 'guide/performance'],
+  },
+  {
     section: 'reference',
     group: 'api',
     pages: [
@@ -43,6 +53,16 @@ export const sidebar = [
     section: 'reference',
     group: 'frameworks',
     pages: ['reference/vue', 'reference/react'],
+  },
+  {
+    section: 'examples',
+    group: 'examples',
+    pages: [
+      'examples/upload',
+      'examples/read-only',
+      'examples/custom-toolbar',
+      'examples/fixed-proportions',
+    ],
   },
 ] as const
 

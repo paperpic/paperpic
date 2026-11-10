@@ -5,14 +5,17 @@
   "description": "Просмотр и редактирование изображений документов: масштабирование, поворот, коррекция перспективы, яркость и контраст, чёрно-белый режим и удаление теней.",
   "guide": "Руководство",
   "reference": "Справочник",
+  "examples": "Примеры",
   "playground": "Песочница",
   "groups": {
     "introduction": "Введение",
     "essentials": "Основы",
     "tools": "Инструменты",
+    "production": "В продакшене",
     "api": "API",
     "customization": "Настройка",
-    "frameworks": "Фреймворки"
+    "frameworks": "Фреймворки",
+    "examples": "Примеры"
   },
   "pages": {
     "guide/introduction": "Что такое PaperPic?",
@@ -25,6 +28,10 @@
     "guide/tools/rotate-and-flip": "Поворот и отражение",
     "guide/tools/adjust": "Настроить",
     "guide/tools/clean-up": "Очистить",
+    "guide/styling": "Оформление",
+    "guide/labels": "Перевод интерфейса",
+    "guide/accessibility": "Доступность",
+    "guide/performance": "Производительность и поддержка",
     "reference/options": "Опции",
     "reference/methods": "Методы",
     "reference/events": "События",
@@ -32,7 +39,11 @@
     "reference/labels": "Подписи",
     "reference/css-tokens": "CSS-токены",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Загрузка на сервер",
+    "examples/read-only": "Просмотрщик только для чтения",
+    "examples/custom-toolbar": "Своя панель инструментов",
+    "examples/fixed-proportions": "Фиксированные пропорции"
   },
   "search": {
     "button": {

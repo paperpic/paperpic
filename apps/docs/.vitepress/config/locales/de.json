@@ -5,14 +5,17 @@
   "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
   "guide": "Anleitung",
   "reference": "Referenz",
+  "examples": "Beispiele",
   "playground": "Playground",
   "groups": {
     "introduction": "Einführung",
     "essentials": "Grundlagen",
     "tools": "Werkzeuge",
+    "production": "Im Einsatz",
     "api": "API",
     "customization": "Anpassung",
-    "frameworks": "Frameworks"
+    "frameworks": "Frameworks",
+    "examples": "Beispiele"
   },
   "pages": {
     "guide/introduction": "Was ist PaperPic?",
@@ -25,6 +28,10 @@
     "guide/tools/rotate-and-flip": "Drehen und spiegeln",
     "guide/tools/adjust": "Anpassen",
     "guide/tools/clean-up": "Bereinigen",
+    "guide/styling": "Gestaltung",
+    "guide/labels": "Die Oberfläche übersetzen",
+    "guide/accessibility": "Barrierefreiheit",
+    "guide/performance": "Leistung und Kompatibilität",
     "reference/options": "Optionen",
     "reference/methods": "Methoden",
     "reference/events": "Ereignisse",
@@ -32,7 +39,11 @@
     "reference/labels": "Beschriftungen",
     "reference/css-tokens": "CSS-Token",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Auf einen Server hochladen",
+    "examples/read-only": "Schreibgeschützter Viewer",
+    "examples/custom-toolbar": "Eigene Werkzeugleiste",
+    "examples/fixed-proportions": "Feste Seitenverhältnisse"
   },
   "search": {
     "button": {
