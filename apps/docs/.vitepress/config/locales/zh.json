@@ -10,6 +10,7 @@
     "introduction": "简介",
     "essentials": "基础",
     "tools": "工具",
+    "production": "生产环境",
     "api": "API",
     "customization": "自定义",
     "frameworks": "框架"
@@ -25,6 +26,10 @@
     "guide/tools/rotate-and-flip": "旋转和翻转",
     "guide/tools/adjust": "调整",
     "guide/tools/clean-up": "清理",
+    "guide/styling": "样式",
+    "guide/labels": "翻译界面",
+    "guide/accessibility": "无障碍",
+    "guide/performance": "性能与兼容性",
     "reference/options": "选项",
     "reference/methods": "方法",
     "reference/events": "事件",

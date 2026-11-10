@@ -10,6 +10,7 @@
     "introduction": "入門",
     "essentials": "基本",
     "tools": "ツール",
+    "production": "本番運用",
     "api": "API",
     "customization": "カスタマイズ",
     "frameworks": "フレームワーク"
@@ -25,6 +26,10 @@
     "guide/tools/rotate-and-flip": "回転と反転",
     "guide/tools/adjust": "調整",
     "guide/tools/clean-up": "クリーンアップ",
+    "guide/styling": "スタイル",
+    "guide/labels": "インターフェースの翻訳",
+    "guide/accessibility": "アクセシビリティ",
+    "guide/performance": "パフォーマンスと対応環境",
     "reference/options": "オプション",
     "reference/methods": "メソッド",
     "reference/events": "イベント",

@@ -10,6 +10,7 @@
     "introduction": "Einführung",
     "essentials": "Grundlagen",
     "tools": "Werkzeuge",
+    "production": "Im Einsatz",
     "api": "API",
     "customization": "Anpassung",
     "frameworks": "Frameworks"
@@ -25,6 +26,10 @@
     "guide/tools/rotate-and-flip": "Drehen und spiegeln",
     "guide/tools/adjust": "Anpassen",
     "guide/tools/clean-up": "Bereinigen",
+    "guide/styling": "Gestaltung",
+    "guide/labels": "Die Oberfläche übersetzen",
+    "guide/accessibility": "Barrierefreiheit",
+    "guide/performance": "Leistung und Kompatibilität",
     "reference/options": "Optionen",
     "reference/methods": "Methoden",
     "reference/events": "Ereignisse",

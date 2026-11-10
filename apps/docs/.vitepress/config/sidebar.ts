@@ -25,6 +25,16 @@ export const sidebar = [
     ],
   },
   {
+    section: 'guide',
+    group: 'customization',
+    pages: ['guide/styling', 'guide/labels'],
+  },
+  {
+    section: 'guide',
+    group: 'production',
+    pages: ['guide/accessibility', 'guide/performance'],
+  },
+  {
     section: 'reference',
     group: 'api',
     pages: [

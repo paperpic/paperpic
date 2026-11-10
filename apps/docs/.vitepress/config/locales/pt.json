@@ -10,6 +10,7 @@
     "introduction": "Introdução",
     "essentials": "Fundamentos",
     "tools": "Ferramentas",
+    "production": "Em produção",
     "api": "API",
     "customization": "Personalização",
     "frameworks": "Frameworks"
@@ -25,6 +26,10 @@
     "guide/tools/rotate-and-flip": "Girar e espelhar",
     "guide/tools/adjust": "Ajustar",
     "guide/tools/clean-up": "Limpar",
+    "guide/styling": "Estilos",
+    "guide/labels": "Traduzir a interface",
+    "guide/accessibility": "Acessibilidade",
+    "guide/performance": "Desempenho e compatibilidade",
     "reference/options": "Opções",
     "reference/methods": "Métodos",
     "reference/events": "Eventos",
