@@ -137,7 +137,7 @@ Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un qu
 function openTool(id: ToolId): void
 ```
 
-Apre Ritaglia, con `'crop'`, o Raddrizza, con `'perspective'`: gli strumenti con una selezione propria. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool), e nel frattempo gli altri cambiamenti, Annulla, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica.
+Apre Ritaglia, con `'crop'`, o Raddrizza, con `'perspective'`: gli strumenti con una selezione propria. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool), e nel frattempo gli altri cambiamenti, Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica.
 
 ### `confirmTool()`
 

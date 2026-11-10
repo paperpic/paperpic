@@ -8,12 +8,23 @@
   "playground": "演练场",
   "groups": {
     "introduction": "简介",
+    "essentials": "基础",
+    "tools": "工具",
     "api": "API",
     "customization": "自定义",
     "frameworks": "框架"
   },
   "pages": {
+    "guide/introduction": "什么是 PaperPic？",
     "guide/getting-started": "快速开始",
+    "guide/viewer": "查看器",
+    "guide/editing": "编辑",
+    "guide/saving": "保存结果",
+    "guide/tools/crop": "裁剪",
+    "guide/tools/straighten": "矫正",
+    "guide/tools/rotate-and-flip": "旋转和翻转",
+    "guide/tools/adjust": "调整",
+    "guide/tools/clean-up": "清理",
     "reference/options": "选项",
     "reference/methods": "方法",
     "reference/events": "事件",

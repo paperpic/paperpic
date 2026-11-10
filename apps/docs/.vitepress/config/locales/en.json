@@ -8,12 +8,23 @@
   "playground": "Playground",
   "groups": {
     "introduction": "Introduction",
+    "essentials": "Essentials",
+    "tools": "Tools",
     "api": "API",
     "customization": "Customization",
     "frameworks": "Frameworks"
   },
   "pages": {
+    "guide/introduction": "What is PaperPic?",
     "guide/getting-started": "Getting started",
+    "guide/viewer": "Viewer",
+    "guide/editing": "Editing",
+    "guide/saving": "Saving the result",
+    "guide/tools/crop": "Crop",
+    "guide/tools/straighten": "Straighten",
+    "guide/tools/rotate-and-flip": "Rotate and flip",
+    "guide/tools/adjust": "Adjust",
+    "guide/tools/clean-up": "Clean up",
     "reference/options": "Options",
     "reference/methods": "Methods",
     "reference/events": "Events",

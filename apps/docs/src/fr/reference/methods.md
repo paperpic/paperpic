@@ -137,7 +137,7 @@ Retourne l’image de gauche à droite telle qu’elle est affichée, donc aprè
 function openTool(id: ToolId): void
 ```
 
-Ouvre Recadrer, avec `'crop'`, ou Redresser, avec `'perspective'` : les outils qui ont leur propre sélection. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool), et pendant ce temps les autres changements, Annuler, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition.
+Ouvre Recadrer, avec `'crop'`, ou Redresser, avec `'perspective'` : les outils qui ont leur propre sélection. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool), et pendant ce temps les autres changements, Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition.
 
 ### `confirmTool()`
 

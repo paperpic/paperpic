@@ -65,7 +65,7 @@ const pic = new PaperPic(document.querySelector('#viewer'), {
 pic.on('apply', ({ blob }) => upload(blob))
 ```
 
-The viewer fills its container, so give `#viewer` a height. With Vue or React, use [`@paperpic/vue`](packages/vue) or [`@paperpic/react`](packages/react) instead. The [`@paperpic/core` README](packages/core) lists every option, method and event.
+The viewer fills its container, so give `#viewer` a height. With Vue or React, use [`@paperpic/vue`](packages/vue) or [`@paperpic/react`](packages/react) instead. The [docs](https://paperpic.dev/reference/options) list every option, method and event.
 
 ## Packages
 

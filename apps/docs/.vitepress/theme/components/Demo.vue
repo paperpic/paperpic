@@ -6,6 +6,7 @@ import { PAPERPIC_LABELS } from './paperpic-labels'
 /**
  * A live PaperPic inside a page. Its attributes go to the component, such as
  * `<Demo src="/samples/receipt.jpg" alt="A receipt" :editable="false" />`.
+ * The wheel scrolls the page, because a demo sits in a long page.
  */
 defineOptions({ inheritAttrs: false })
 
@@ -34,7 +35,7 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <template>
   <div ref="frame" class="demo">
-    <PaperPic v-if="visible" v-bind="$attrs" :labels />
+    <PaperPic v-if="visible" v-bind="$attrs" :labels :wheel-zoom="false" />
   </div>
 </template>
 
