@@ -17,14 +17,14 @@ Nada muda a imagem antes do Aplicar. Até lá, as alterações são uma lista qu
 
 ## Ferramentas
 
-| Ferramenta            | O que faz                                                     | Id            |
-| --------------------- | ------------------------------------------------------------- | ------------- |
-| Recortar              | Mantém a parte da imagem dentro de quatro cantos              | `crop`        |
-| Endireitar            | Transforma uma foto tirada em ângulo numa página plana        | `perspective` |
-| Girar para a esquerda | Gira a imagem um quarto de volta para a esquerda              | `rotate`      |
-| Espelhar              | Espelha a imagem da esquerda para a direita                   | `flip`        |
-| Ajustar               | Muda o brilho e o contraste                                   | `adjust`      |
-| Limpar                | Transforma o documento num preto e branco nítido, sem sombras | `threshold`   |
+| Ferramenta                                       | O que faz                                                     | Id            |
+| ------------------------------------------------ | ------------------------------------------------------------- | ------------- |
+| [Recortar](./tools/crop)                         | Mantém a parte da imagem dentro de quatro cantos              | `crop`        |
+| [Endireitar](./tools/straighten)                 | Transforma uma foto tirada em ângulo numa página plana        | `perspective` |
+| [Girar para a esquerda](./tools/rotate-and-flip) | Gira a imagem um quarto de volta para a esquerda              | `rotate`      |
+| [Espelhar](./tools/rotate-and-flip)              | Espelha a imagem da esquerda para a direita                   | `flip`        |
+| [Ajustar](./tools/adjust)                        | Muda o brilho e o contraste                                   | `adjust`      |
+| [Limpar](./tools/clean-up)                       | Transforma o documento num preto e branco nítido, sem sombras | `threshold`   |
 
 A opção [`tools`](../reference/options#tools) escolhe quais a barra de edição oferece:
 

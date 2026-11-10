@@ -17,14 +17,14 @@ Nothing changes the image until Apply. Before that, the edits are a list that th
 
 ## Tools
 
-| Tool        | What it does                                                   | Id            |
-| ----------- | -------------------------------------------------------------- | ------------- |
-| Crop        | Keeps the part of the image inside four corners                | `crop`        |
-| Straighten  | Turns a photo taken at an angle into a flat page               | `perspective` |
-| Rotate left | Turns the image a quarter turn to the left                     | `rotate`      |
-| Flip        | Mirrors the image left to right                                | `flip`        |
-| Adjust      | Changes the brightness and the contrast                        | `adjust`      |
-| Clean up    | Turns the document into crisp black and white, without shadows | `threshold`   |
+| Tool                                   | What it does                                                   | Id            |
+| -------------------------------------- | -------------------------------------------------------------- | ------------- |
+| [Crop](./tools/crop)                   | Keeps the part of the image inside four corners                | `crop`        |
+| [Straighten](./tools/straighten)       | Turns a photo taken at an angle into a flat page               | `perspective` |
+| [Rotate left](./tools/rotate-and-flip) | Turns the image a quarter turn to the left                     | `rotate`      |
+| [Flip](./tools/rotate-and-flip)        | Mirrors the image left to right                                | `flip`        |
+| [Adjust](./tools/adjust)               | Changes the brightness and the contrast                        | `adjust`      |
+| [Clean up](./tools/clean-up)           | Turns the document into crisp black and white, without shadows | `threshold`   |
 
 The [`tools`](../reference/options#tools) option chooses which ones the edit bar offers:
 

@@ -18,7 +18,7 @@ Small print and long receipts are hard to read at a glance on a screen. The view
 | Switch between the fit and 100% | Double click                  | Double tap |             |
 | Fit the whole image             |                               |            | `0`         |
 
-The keyboard works with the focus on the viewer. A pinch zooms around the point between the fingers.
+The keyboard works with the focus on the viewer. A pinch zooms around the point between the fingers. On a touch screen, one finger scrolls the page while the image is fitted, and pans the image once it is zoomed in.
 
 The zoom goes from the fit of the whole image, or 100% for a small image, up to 800%. An image that fits stays centered, and one that overflows pans up to its edges.
 
@@ -40,7 +40,7 @@ The toolbar sits at the right of the viewer, and scrolls when the viewer is too 
 
 With `toolbar: false`, the toolbar and the edit bar are hidden, and you can build your own controls with the [methods](../reference/methods).
 
-## Read-only viewer
+## Read-only viewer {#read-only}
 
 With `editable: false`, the Edit button goes away, and the toolbar gets two buttons that rotate the image. That rotation only changes the display, and nothing is saved. Use it for documents that people should read but not change, such as the attachments of a record.
 

@@ -9,6 +9,7 @@
   "groups": {
     "introduction": "Introduzione",
     "essentials": "Nozioni di base",
+    "tools": "Strumenti",
     "api": "API",
     "customization": "Personalizzazione",
     "frameworks": "Framework"
@@ -18,6 +19,12 @@
     "guide/getting-started": "Primi passi",
     "guide/viewer": "Visualizzatore",
     "guide/editing": "Modifica",
+    "guide/saving": "Salvare il risultato",
+    "guide/tools/crop": "Ritaglia",
+    "guide/tools/straighten": "Raddrizza",
+    "guide/tools/rotate-and-flip": "Ruota e capovolgi",
+    "guide/tools/adjust": "Regola",
+    "guide/tools/clean-up": "Pulisci",
     "reference/options": "Opzioni",
     "reference/methods": "Metodi",
     "reference/events": "Eventi",

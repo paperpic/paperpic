@@ -17,14 +17,14 @@ Nichts verändert das Bild vor dem Übernehmen. Bis dahin sind die Änderungen e
 
 ## Werkzeuge
 
-| Werkzeug          | Was es tut                                                  | Id            |
-| ----------------- | ----------------------------------------------------------- | ------------- |
-| Zuschneiden       | Behält den Teil des Bildes innerhalb von vier Ecken         | `crop`        |
-| Begradigen        | Macht aus einem schräg aufgenommenen Foto eine flache Seite | `perspective` |
-| Nach links drehen | Dreht das Bild um eine Vierteldrehung nach links            | `rotate`      |
-| Spiegeln          | Spiegelt das Bild von links nach rechts                     | `flip`        |
-| Anpassen          | Ändert Helligkeit und Kontrast                              | `adjust`      |
-| Bereinigen        | Macht aus dem Dokument klares Schwarzweiß, ohne Schatten    | `threshold`   |
+| Werkzeug                                     | Was es tut                                                  | Id            |
+| -------------------------------------------- | ----------------------------------------------------------- | ------------- |
+| [Zuschneiden](./tools/crop)                  | Behält den Teil des Bildes innerhalb von vier Ecken         | `crop`        |
+| [Begradigen](./tools/straighten)             | Macht aus einem schräg aufgenommenen Foto eine flache Seite | `perspective` |
+| [Nach links drehen](./tools/rotate-and-flip) | Dreht das Bild um eine Vierteldrehung nach links            | `rotate`      |
+| [Spiegeln](./tools/rotate-and-flip)          | Spiegelt das Bild von links nach rechts                     | `flip`        |
+| [Anpassen](./tools/adjust)                   | Ändert Helligkeit und Kontrast                              | `adjust`      |
+| [Bereinigen](./tools/clean-up)               | Macht aus dem Dokument klares Schwarzweiß, ohne Schatten    | `threshold`   |
 
 Die Option [`tools`](../reference/options#tools) wählt aus, welche die Bearbeitungsleiste anbietet:
 

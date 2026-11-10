@@ -11,7 +11,18 @@ export const sidebar = [
   {
     section: 'guide',
     group: 'essentials',
-    pages: ['guide/viewer', 'guide/editing'],
+    pages: ['guide/viewer', 'guide/editing', 'guide/saving'],
+  },
+  {
+    section: 'guide',
+    group: 'tools',
+    pages: [
+      'guide/tools/crop',
+      'guide/tools/straighten',
+      'guide/tools/rotate-and-flip',
+      'guide/tools/adjust',
+      'guide/tools/clean-up',
+    ],
   },
   {
     section: 'reference',
