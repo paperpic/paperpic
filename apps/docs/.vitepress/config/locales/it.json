@@ -8,12 +8,16 @@
   "playground": "Playground",
   "groups": {
     "introduction": "Introduzione",
+    "essentials": "Nozioni di base",
     "api": "API",
     "customization": "Personalizzazione",
     "frameworks": "Framework"
   },
   "pages": {
+    "guide/introduction": "Che cos’è PaperPic?",
     "guide/getting-started": "Primi passi",
+    "guide/viewer": "Visualizzatore",
+    "guide/editing": "Modifica",
     "reference/options": "Opzioni",
     "reference/methods": "Metodi",
     "reference/events": "Eventi",

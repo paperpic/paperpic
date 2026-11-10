@@ -8,12 +8,16 @@
   "playground": "プレイグラウンド",
   "groups": {
     "introduction": "入門",
+    "essentials": "基本",
     "api": "API",
     "customization": "カスタマイズ",
     "frameworks": "フレームワーク"
   },
   "pages": {
+    "guide/introduction": "PaperPic とは",
     "guide/getting-started": "はじめに",
+    "guide/viewer": "ビューアー",
+    "guide/editing": "編集",
     "reference/options": "オプション",
     "reference/methods": "メソッド",
     "reference/events": "イベント",

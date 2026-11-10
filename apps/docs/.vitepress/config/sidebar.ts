@@ -6,7 +6,12 @@ export const sidebar = [
   {
     section: 'guide',
     group: 'introduction',
-    pages: ['guide/getting-started'],
+    pages: ['guide/introduction', 'guide/getting-started'],
+  },
+  {
+    section: 'guide',
+    group: 'essentials',
+    pages: ['guide/viewer', 'guide/editing'],
   },
   {
     section: 'reference',

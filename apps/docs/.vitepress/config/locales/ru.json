@@ -8,12 +8,16 @@
   "playground": "Песочница",
   "groups": {
     "introduction": "Введение",
+    "essentials": "Основы",
     "api": "API",
     "customization": "Настройка",
     "frameworks": "Фреймворки"
   },
   "pages": {
+    "guide/introduction": "Что такое PaperPic?",
     "guide/getting-started": "Начало работы",
+    "guide/viewer": "Просмотрщик",
+    "guide/editing": "Редактирование",
     "reference/options": "Опции",
     "reference/methods": "Методы",
     "reference/events": "События",

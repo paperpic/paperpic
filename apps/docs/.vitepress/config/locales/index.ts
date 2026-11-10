@@ -62,7 +62,7 @@ export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
             level: [2, 3],
           },
           nav: [
-            { text: guide, link: `${prefix}/guide/getting-started`, activeMatch: `^${prefix}/guide/` },
+            { text: guide, link: `${prefix}/guide/introduction`, activeMatch: `^${prefix}/guide/` },
             { text: reference, link: `${prefix}/reference/options`, activeMatch: `^${prefix}/reference/` },
             { text: playground, link: `${prefix}/playground` },
           ],
