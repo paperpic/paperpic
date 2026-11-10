@@ -4,12 +4,24 @@
   "ogLocale": "it_IT",
   "description": "Visualizzatore ed editor di immagini di documenti: zoom, rotazione, correzione della prospettiva, luminosità e contrasto, bianco e nero e rimozione delle ombre.",
   "guide": "Guida",
+  "reference": "Riferimento",
   "playground": "Playground",
   "groups": {
-    "introduction": "Introduzione"
+    "introduction": "Introduzione",
+    "api": "API",
+    "customization": "Personalizzazione",
+    "frameworks": "Framework"
   },
   "pages": {
-    "guide/getting-started": "Primi passi"
+    "guide/getting-started": "Primi passi",
+    "reference/options": "Opzioni",
+    "reference/methods": "Metodi",
+    "reference/events": "Eventi",
+    "reference/state": "Stato",
+    "reference/labels": "Etichette",
+    "reference/css-tokens": "Token CSS",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

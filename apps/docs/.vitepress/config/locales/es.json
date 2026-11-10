@@ -4,12 +4,24 @@
   "ogLocale": "es_ES",
   "description": "Visor y editor de imágenes de documentos: zoom, rotación, corrección de perspectiva, brillo y contraste, blanco y negro y eliminación de sombras.",
   "guide": "Guía",
+  "reference": "Referencia",
   "playground": "Playground",
   "groups": {
-    "introduction": "Introducción"
+    "introduction": "Introducción",
+    "api": "API",
+    "customization": "Personalización",
+    "frameworks": "Frameworks"
   },
   "pages": {
-    "guide/getting-started": "Primeros pasos"
+    "guide/getting-started": "Primeros pasos",
+    "reference/options": "Opciones",
+    "reference/methods": "Métodos",
+    "reference/events": "Eventos",
+    "reference/state": "Estado",
+    "reference/labels": "Textos de la interfaz",
+    "reference/css-tokens": "Tokens CSS",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

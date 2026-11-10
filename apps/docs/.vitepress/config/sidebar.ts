@@ -8,6 +8,26 @@ export const sidebar = [
     group: 'introduction',
     pages: ['guide/getting-started'],
   },
+  {
+    section: 'reference',
+    group: 'api',
+    pages: [
+      'reference/options',
+      'reference/methods',
+      'reference/events',
+      'reference/state',
+    ],
+  },
+  {
+    section: 'reference',
+    group: 'customization',
+    pages: ['reference/labels', 'reference/css-tokens'],
+  },
+  {
+    section: 'reference',
+    group: 'frameworks',
+    pages: ['reference/vue', 'reference/react'],
+  },
 ] as const
 
 export type SidebarGroup = typeof sidebar[number]['group']

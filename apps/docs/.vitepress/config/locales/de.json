@@ -4,12 +4,24 @@
   "ogLocale": "de_DE",
   "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
   "guide": "Anleitung",
+  "reference": "Referenz",
   "playground": "Playground",
   "groups": {
-    "introduction": "Einführung"
+    "introduction": "Einführung",
+    "api": "API",
+    "customization": "Anpassung",
+    "frameworks": "Frameworks"
   },
   "pages": {
-    "guide/getting-started": "Erste Schritte"
+    "guide/getting-started": "Erste Schritte",
+    "reference/options": "Optionen",
+    "reference/methods": "Methoden",
+    "reference/events": "Ereignisse",
+    "reference/state": "Zustand",
+    "reference/labels": "Beschriftungen",
+    "reference/css-tokens": "CSS-Token",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

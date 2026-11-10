@@ -4,12 +4,24 @@
   "ogLocale": "en_US",
   "description": "Document image viewer & editor: zoom, rotate, perspective correction, brightness/contrast, black & white and shadow removal.",
   "guide": "Guide",
+  "reference": "Reference",
   "playground": "Playground",
   "groups": {
-    "introduction": "Introduction"
+    "introduction": "Introduction",
+    "api": "API",
+    "customization": "Customization",
+    "frameworks": "Frameworks"
   },
   "pages": {
-    "guide/getting-started": "Getting started"
+    "guide/getting-started": "Getting started",
+    "reference/options": "Options",
+    "reference/methods": "Methods",
+    "reference/events": "Events",
+    "reference/state": "State",
+    "reference/labels": "Labels",
+    "reference/css-tokens": "CSS tokens",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

@@ -4,12 +4,24 @@
   "ogLocale": "fr_FR",
   "description": "Visionneuse et éditeur d’images de documents : zoom, rotation, correction de perspective, luminosité et contraste, noir et blanc et suppression des ombres.",
   "guide": "Guide",
+  "reference": "Référence",
   "playground": "Playground",
   "groups": {
-    "introduction": "Introduction"
+    "introduction": "Introduction",
+    "api": "API",
+    "customization": "Personnalisation",
+    "frameworks": "Frameworks"
   },
   "pages": {
-    "guide/getting-started": "Bien démarrer"
+    "guide/getting-started": "Bien démarrer",
+    "reference/options": "Options",
+    "reference/methods": "Méthodes",
+    "reference/events": "Événements",
+    "reference/state": "État",
+    "reference/labels": "Libellés",
+    "reference/css-tokens": "Jetons CSS",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

@@ -4,12 +4,24 @@
   "ogLocale": "ru_RU",
   "description": "Просмотр и редактирование изображений документов: масштабирование, поворот, коррекция перспективы, яркость и контраст, чёрно-белый режим и удаление теней.",
   "guide": "Руководство",
+  "reference": "Справочник",
   "playground": "Песочница",
   "groups": {
-    "introduction": "Введение"
+    "introduction": "Введение",
+    "api": "API",
+    "customization": "Настройка",
+    "frameworks": "Фреймворки"
   },
   "pages": {
-    "guide/getting-started": "Начало работы"
+    "guide/getting-started": "Начало работы",
+    "reference/options": "Опции",
+    "reference/methods": "Методы",
+    "reference/events": "События",
+    "reference/state": "Состояние",
+    "reference/labels": "Подписи",
+    "reference/css-tokens": "CSS-токены",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

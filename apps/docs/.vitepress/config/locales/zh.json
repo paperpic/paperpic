@@ -4,12 +4,24 @@
   "ogLocale": "zh_CN",
   "description": "文档图像查看与编辑工具：缩放、旋转、透视校正、亮度和对比度调整、黑白转换以及阴影去除。",
   "guide": "指南",
+  "reference": "参考",
   "playground": "演练场",
   "groups": {
-    "introduction": "简介"
+    "introduction": "简介",
+    "api": "API",
+    "customization": "自定义",
+    "frameworks": "框架"
   },
   "pages": {
-    "guide/getting-started": "快速开始"
+    "guide/getting-started": "快速开始",
+    "reference/options": "选项",
+    "reference/methods": "方法",
+    "reference/events": "事件",
+    "reference/state": "状态",
+    "reference/labels": "标签",
+    "reference/css-tokens": "CSS 令牌",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {
