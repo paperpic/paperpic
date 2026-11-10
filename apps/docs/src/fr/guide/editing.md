@@ -17,14 +17,14 @@ Rien ne modifie l’image avant Appliquer. Jusque-là, les changements sont une 
 
 ## Outils
 
-| Outil            | Ce qu’il fait                                            | Id            |
-| ---------------- | -------------------------------------------------------- | ------------- |
-| Recadrer         | Garde la partie de l’image à l’intérieur de quatre coins | `crop`        |
-| Redresser        | Transforme une photo prise de biais en page bien à plat  | `perspective` |
-| Pivoter à gauche | Fait pivoter l’image d’un quart de tour vers la gauche   | `rotate`      |
-| Retourner        | Retourne l’image de gauche à droite                      | `flip`        |
-| Ajuster          | Change la luminosité et le contraste                     | `adjust`      |
-| Nettoyer         | Transforme le document en noir et blanc net, sans ombres | `threshold`   |
+| Outil                                       | Ce qu’il fait                                            | Id            |
+| ------------------------------------------- | -------------------------------------------------------- | ------------- |
+| [Recadrer](./tools/crop)                    | Garde la partie de l’image à l’intérieur de quatre coins | `crop`        |
+| [Redresser](./tools/straighten)             | Transforme une photo prise de biais en page bien à plat  | `perspective` |
+| [Pivoter à gauche](./tools/rotate-and-flip) | Fait pivoter l’image d’un quart de tour vers la gauche   | `rotate`      |
+| [Retourner](./tools/rotate-and-flip)        | Retourne l’image de gauche à droite                      | `flip`        |
+| [Ajuster](./tools/adjust)                   | Change la luminosité et le contraste                     | `adjust`      |
+| [Nettoyer](./tools/clean-up)                | Transforme le document en noir et blanc net, sans ombres | `threshold`   |
 
 L’option [`tools`](../reference/options#tools) choisit ceux que propose la barre de modification :
 

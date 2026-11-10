@@ -18,7 +18,7 @@ Kleingedrucktes und lange Kassenbons sind auf einem Bildschirm schwer auf einen 
 | Zwischen Einpassung und 100 % wechseln | Doppelklick                                | Doppeltippen |             |
 | Das ganze Bild einpassen               |                                            |              | `0`         |
 
-Die Tastatur funktioniert, wenn der Viewer den Fokus hat. Mit zwei Fingern zoomt man um den Punkt zwischen den Fingern.
+Die Tastatur funktioniert, wenn der Viewer den Fokus hat. Mit zwei Fingern zoomt man um den Punkt zwischen den Fingern. Auf einem Touchscreen scrollt ein Finger die Seite, solange das Bild eingepasst ist, und verschiebt das Bild, sobald es vergrößert ist.
 
 Der Zoom reicht von der Einpassung des ganzen Bildes, oder 100 % bei einem kleinen Bild, bis 800 %. Ein Bild, das hineinpasst, bleibt zentriert, und eines, das übersteht, lässt sich bis zu seinen Rändern verschieben.
 
@@ -40,7 +40,7 @@ Die Werkzeugleiste sitzt rechts im Viewer und scrollt, wenn der Viewer zu niedri
 
 Mit `toolbar: false` sind die Werkzeugleiste und die Bearbeitungsleiste ausgeblendet, und du kannst eigene Bedienelemente mit den [Methoden](../reference/methods) bauen.
 
-## Schreibgeschützter Viewer
+## Schreibgeschützter Viewer {#read-only}
 
 Mit `editable: false` verschwindet die Schaltfläche Bearbeiten, und die Werkzeugleiste bekommt zwei Schaltflächen, die das Bild drehen. Diese Drehung ändert nur die Anzeige, und nichts wird gespeichert. Nutze das für Dokumente, die man lesen, aber nicht ändern soll, etwa die Anhänge einer Akte.
 

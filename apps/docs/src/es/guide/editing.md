@@ -17,14 +17,14 @@ Nada cambia la imagen hasta Aplicar. Antes, los cambios son una lista de la que 
 
 ## Herramientas
 
-| Herramienta          | Qué hace                                                        | Id            |
-| -------------------- | --------------------------------------------------------------- | ------------- |
-| Recortar             | Conserva la parte de la imagen dentro de cuatro esquinas        | `crop`        |
-| Enderezar            | Convierte una foto hecha en ángulo en una página plana          | `perspective` |
-| Girar a la izquierda | Gira la imagen un cuarto de vuelta a la izquierda               | `rotate`      |
-| Voltear              | Voltea la imagen de izquierda a derecha                         | `flip`        |
-| Ajustar              | Cambia el brillo y el contraste                                 | `adjust`      |
-| Limpiar              | Convierte el documento en un blanco y negro nítido, sin sombras | `threshold`   |
+| Herramienta                                     | Qué hace                                                        | Id            |
+| ----------------------------------------------- | --------------------------------------------------------------- | ------------- |
+| [Recortar](./tools/crop)                        | Conserva la parte de la imagen dentro de cuatro esquinas        | `crop`        |
+| [Enderezar](./tools/straighten)                 | Convierte una foto hecha en ángulo en una página plana          | `perspective` |
+| [Girar a la izquierda](./tools/rotate-and-flip) | Gira la imagen un cuarto de vuelta a la izquierda               | `rotate`      |
+| [Voltear](./tools/rotate-and-flip)              | Voltea la imagen de izquierda a derecha                         | `flip`        |
+| [Ajustar](./tools/adjust)                       | Cambia el brillo y el contraste                                 | `adjust`      |
+| [Limpiar](./tools/clean-up)                     | Convierte el documento en un blanco y negro nítido, sin sombras | `threshold`   |
 
 La opción [`tools`](../reference/options#tools) elige cuáles ofrece la barra de edición:
 

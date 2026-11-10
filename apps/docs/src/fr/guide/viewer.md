@@ -18,7 +18,7 @@ Les petits caractères et les longs tickets de caisse sont difficiles à lire d�
 | Basculer entre l’ajustement et 100 % | Double-clic                               | Double toucher |            |
 | Ajuster l’image entière              |                                           |                | `0`        |
 
-Le clavier fonctionne quand la visionneuse a le focus. Un pincement zoome autour du point entre les doigts.
+Le clavier fonctionne quand la visionneuse a le focus. Un pincement zoome autour du point entre les doigts. Sur un écran tactile, un doigt fait défiler la page tant que l’image est ajustée, et déplace l’image une fois zoomée.
 
 Le zoom va de l’ajustement de l’image entière, ou 100 % pour une petite image, jusqu’à 800 %. Une image qui tient reste centrée, et une image qui dépasse se déplace jusqu’à ses bords.
 
@@ -40,7 +40,7 @@ La barre d’outils se trouve à droite de la visionneuse, et défile quand la v
 
 Avec `toolbar: false`, la barre d’outils et la barre de modification sont masquées, et vous pouvez créer vos propres commandes avec les [méthodes](../reference/methods).
 
-## Visionneuse en lecture seule
+## Visionneuse en lecture seule {#read-only}
 
 Avec `editable: false`, le bouton Modifier disparaît, et la barre d’outils gagne deux boutons qui font pivoter l’image. Cette rotation ne change que l’affichage, et rien n’est enregistré. Utilisez-la pour des documents à lire mais pas à modifier, comme les pièces jointes d’un dossier.
 

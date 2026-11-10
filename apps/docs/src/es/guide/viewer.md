@@ -18,7 +18,7 @@ La letra pequeña y los tiques largos cuestan de leer de un vistazo en una panta
 | Alternar entre el ajuste y el 100 % | Doble clic                        | Doble toque |           |
 | Ajustar la imagen entera            |                                   |             | `0`       |
 
-El teclado funciona con el foco en el visor. Al pellizcar, el zoom se centra en el punto entre los dedos.
+El teclado funciona con el foco en el visor. Al pellizcar, el zoom se centra en el punto entre los dedos. En una pantalla táctil, un dedo desplaza la página mientras la imagen está ajustada, y desplaza la imagen cuando tiene zoom.
 
 El zoom va desde el ajuste de la imagen entera, o el 100 % para una imagen pequeña, hasta el 800 %. Una imagen que cabe se queda centrada, y una que se sale se desplaza hasta sus bordes.
 
@@ -40,7 +40,7 @@ La barra de herramientas está a la derecha del visor, y se desplaza cuando el v
 
 Con `toolbar: false`, la barra de herramientas y la barra de edición se ocultan, y puedes crear tus propios controles con los [métodos](../reference/methods).
 
-## Visor de solo lectura
+## Visor de solo lectura {#read-only}
 
 Con `editable: false`, el botón Editar desaparece y la barra de herramientas gana dos botones que giran la imagen. Ese giro solo cambia lo que se ve, y no se guarda nada. Úsalo para documentos que se deben leer pero no cambiar, como los adjuntos de un expediente.
 

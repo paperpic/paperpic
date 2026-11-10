@@ -17,14 +17,14 @@ Niente cambia l’immagine prima di Applica. Fino ad allora, i cambiamenti sono 
 
 ## Strumenti
 
-| Strumento        | Cosa fa                                                        | Id            |
-| ---------------- | -------------------------------------------------------------- | ------------- |
-| Ritaglia         | Tiene la parte dell’immagine dentro quattro angoli             | `crop`        |
-| Raddrizza        | Trasforma una foto scattata di sbieco in una pagina piatta     | `perspective` |
-| Ruota a sinistra | Ruota l’immagine di un quarto di giro a sinistra               | `rotate`      |
-| Capovolgi        | Capovolge l’immagine da sinistra a destra                      | `flip`        |
-| Regola           | Cambia la luminosità e il contrasto                            | `adjust`      |
-| Pulisci          | Trasforma il documento in un bianco e nero nitido, senza ombre | `threshold`   |
+| Strumento                                   | Cosa fa                                                        | Id            |
+| ------------------------------------------- | -------------------------------------------------------------- | ------------- |
+| [Ritaglia](./tools/crop)                    | Tiene la parte dell’immagine dentro quattro angoli             | `crop`        |
+| [Raddrizza](./tools/straighten)             | Trasforma una foto scattata di sbieco in una pagina piatta     | `perspective` |
+| [Ruota a sinistra](./tools/rotate-and-flip) | Ruota l’immagine di un quarto di giro a sinistra               | `rotate`      |
+| [Capovolgi](./tools/rotate-and-flip)        | Capovolge l’immagine da sinistra a destra                      | `flip`        |
+| [Regola](./tools/adjust)                    | Cambia la luminosità e il contrasto                            | `adjust`      |
+| [Pulisci](./tools/clean-up)                 | Trasforma il documento in un bianco e nero nitido, senza ombre | `threshold`   |
 
 L’opzione [`tools`](../reference/options#tools) sceglie quali offre la barra di modifica:
 

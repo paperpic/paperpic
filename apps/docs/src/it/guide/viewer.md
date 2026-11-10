@@ -18,7 +18,7 @@ I caratteri piccoli e gli scontrini lunghi sono difficili da leggere a colpo d�
 | Passare dall’adattamento al 100 % e viceversa | Doppio clic                       | Doppio tocco |           |
 | Adattare l’immagine intera                    |                                   |              | `0`       |
 
-La tastiera funziona con il focus sul visualizzatore. Un pizzico zooma attorno al punto tra le dita.
+La tastiera funziona con il focus sul visualizzatore. Un pizzico zooma attorno al punto tra le dita. Su uno schermo touch, un dito scorre la pagina finché l’immagine è adattata, e sposta l’immagine quando è ingrandita.
 
 Lo zoom va dall’adattamento dell’immagine intera, o dal 100 % per un’immagine piccola, fino all’800 %. Un’immagine che ci sta resta centrata, e una che sborda si sposta fino ai suoi bordi.
 
@@ -40,7 +40,7 @@ La barra degli strumenti sta a destra del visualizzatore, e scorre quando il vis
 
 Con `toolbar: false`, la barra degli strumenti e la barra di modifica sono nascoste, e puoi creare i tuoi controlli con i [metodi](../reference/methods).
 
-## Visualizzatore di sola lettura
+## Visualizzatore di sola lettura {#read-only}
 
 Con `editable: false`, il pulsante Modifica sparisce, e la barra degli strumenti riceve due pulsanti che ruotano l’immagine. Quella rotazione cambia solo la visualizzazione, e non si salva nulla. Usalo per documenti da leggere ma non da modificare, come gli allegati di una pratica.
 
