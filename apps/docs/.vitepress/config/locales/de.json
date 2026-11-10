@@ -5,6 +5,7 @@
   "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
   "guide": "Anleitung",
   "reference": "Referenz",
+  "examples": "Beispiele",
   "playground": "Playground",
   "groups": {
     "introduction": "Einführung",
@@ -13,7 +14,8 @@
     "production": "Im Einsatz",
     "api": "API",
     "customization": "Anpassung",
-    "frameworks": "Frameworks"
+    "frameworks": "Frameworks",
+    "examples": "Beispiele"
   },
   "pages": {
     "guide/introduction": "Was ist PaperPic?",
@@ -37,7 +39,11 @@
     "reference/labels": "Beschriftungen",
     "reference/css-tokens": "CSS-Token",
     "reference/vue": "Vue",
-    "reference/react": "React"
+    "reference/react": "React",
+    "examples/upload": "Auf einen Server hochladen",
+    "examples/read-only": "Schreibgeschützter Viewer",
+    "examples/custom-toolbar": "Eigene Werkzeugleiste",
+    "examples/fixed-proportions": "Feste Seitenverhältnisse"
   },
   "search": {
     "button": {

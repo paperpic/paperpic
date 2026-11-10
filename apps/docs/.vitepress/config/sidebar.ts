@@ -54,6 +54,16 @@ export const sidebar = [
     group: 'frameworks',
     pages: ['reference/vue', 'reference/react'],
   },
+  {
+    section: 'examples',
+    group: 'examples',
+    pages: [
+      'examples/upload',
+      'examples/read-only',
+      'examples/custom-toolbar',
+      'examples/fixed-proportions',
+    ],
+  },
 ] as const
 
 export type SidebarGroup = typeof sidebar[number]['group']
