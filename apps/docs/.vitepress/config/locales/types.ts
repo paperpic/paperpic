@@ -3,7 +3,6 @@ import type { SidebarGroup, SidebarPage } from '../sidebar'
 
 type ThemeStrings = Pick<
   DefaultTheme.Config,
-  | 'outline'
   | 'docFooter'
   | 'lastUpdated'
   | 'langMenuLabel'
@@ -14,7 +13,10 @@ type ThemeStrings = Pick<
   | 'darkModeSwitchTitle'
   | 'skipToContentLabel'
   | 'notFound'
->
+> & {
+  /** Only the title of the outline: its levels are the same in every language. */
+  outline?: { label: string }
+}
 
 export interface Translation {
   description: string
@@ -27,6 +29,7 @@ export interface Translation {
   /** The titles of the pages in the sidebar. */
   pages: Record<SidebarPage, string>
   playground: string
+  reference: string
   search: NonNullable<DefaultTheme.LocalSearchOptions['translations']>
   theme: ThemeStrings
 }

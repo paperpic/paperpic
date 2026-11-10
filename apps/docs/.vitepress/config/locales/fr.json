@@ -4,12 +4,35 @@
   "ogLocale": "fr_FR",
   "description": "Visionneuse et éditeur d’images de documents : zoom, rotation, correction de perspective, luminosité et contraste, noir et blanc et suppression des ombres.",
   "guide": "Guide",
+  "reference": "Référence",
   "playground": "Playground",
   "groups": {
-    "introduction": "Introduction"
+    "introduction": "Introduction",
+    "essentials": "L’essentiel",
+    "tools": "Outils",
+    "api": "API",
+    "customization": "Personnalisation",
+    "frameworks": "Frameworks"
   },
   "pages": {
-    "guide/getting-started": "Bien démarrer"
+    "guide/introduction": "Qu’est-ce que PaperPic ?",
+    "guide/getting-started": "Bien démarrer",
+    "guide/viewer": "Visionneuse",
+    "guide/editing": "Modification",
+    "guide/saving": "Enregistrer le résultat",
+    "guide/tools/crop": "Recadrer",
+    "guide/tools/straighten": "Redresser",
+    "guide/tools/rotate-and-flip": "Pivoter et retourner",
+    "guide/tools/adjust": "Ajuster",
+    "guide/tools/clean-up": "Nettoyer",
+    "reference/options": "Options",
+    "reference/methods": "Méthodes",
+    "reference/events": "Événements",
+    "reference/state": "État",
+    "reference/labels": "Libellés",
+    "reference/css-tokens": "Jetons CSS",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {

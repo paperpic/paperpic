@@ -4,12 +4,35 @@
   "ogLocale": "de_DE",
   "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
   "guide": "Anleitung",
+  "reference": "Referenz",
   "playground": "Playground",
   "groups": {
-    "introduction": "Einführung"
+    "introduction": "Einführung",
+    "essentials": "Grundlagen",
+    "tools": "Werkzeuge",
+    "api": "API",
+    "customization": "Anpassung",
+    "frameworks": "Frameworks"
   },
   "pages": {
-    "guide/getting-started": "Erste Schritte"
+    "guide/introduction": "Was ist PaperPic?",
+    "guide/getting-started": "Erste Schritte",
+    "guide/viewer": "Viewer",
+    "guide/editing": "Bearbeitung",
+    "guide/saving": "Das Ergebnis speichern",
+    "guide/tools/crop": "Zuschneiden",
+    "guide/tools/straighten": "Begradigen",
+    "guide/tools/rotate-and-flip": "Drehen und spiegeln",
+    "guide/tools/adjust": "Anpassen",
+    "guide/tools/clean-up": "Bereinigen",
+    "reference/options": "Optionen",
+    "reference/methods": "Methoden",
+    "reference/events": "Ereignisse",
+    "reference/state": "Zustand",
+    "reference/labels": "Beschriftungen",
+    "reference/css-tokens": "CSS-Token",
+    "reference/vue": "Vue",
+    "reference/react": "React"
   },
   "search": {
     "button": {
