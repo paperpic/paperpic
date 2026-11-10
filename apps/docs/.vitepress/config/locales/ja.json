@@ -5,6 +5,33 @@
   "description": "文書画像のビューアー兼エディター：ズーム、回転、遠近補正、明るさとコントラストの調整、白黒変換、影の除去。",
   "guide": "ガイド",
   "playground": "プレイグラウンド",
+  "groups": {
+    "introduction": "入門"
+  },
+  "pages": {
+    "guide/getting-started": "はじめに"
+  },
+  "search": {
+    "button": {
+      "buttonText": "検索",
+      "buttonAriaLabel": "検索"
+    },
+    "modal": {
+      "displayDetails": "詳細なリストを表示",
+      "resetButtonTitle": "検索をリセット",
+      "backButtonTitle": "検索を閉じる",
+      "noResultsText": "一致する結果がありません:",
+      "footer": {
+        "selectText": "選択",
+        "selectKeyAriaLabel": "Enter キー",
+        "navigateText": "移動",
+        "navigateUpKeyAriaLabel": "上矢印キー",
+        "navigateDownKeyAriaLabel": "下矢印キー",
+        "closeText": "閉じる",
+        "closeKeyAriaLabel": "Esc キー"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "このページの内容"

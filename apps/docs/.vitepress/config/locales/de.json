@@ -5,6 +5,33 @@
   "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
   "guide": "Anleitung",
   "playground": "Playground",
+  "groups": {
+    "introduction": "Einführung"
+  },
+  "pages": {
+    "guide/getting-started": "Erste Schritte"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Suchen",
+      "buttonAriaLabel": "Suchen"
+    },
+    "modal": {
+      "displayDetails": "Detaillierte Liste anzeigen",
+      "resetButtonTitle": "Suche zurücksetzen",
+      "backButtonTitle": "Suche schließen",
+      "noResultsText": "Keine Ergebnisse für",
+      "footer": {
+        "selectText": "zum Auswählen",
+        "selectKeyAriaLabel": "Eingabetaste",
+        "navigateText": "zum Navigieren",
+        "navigateUpKeyAriaLabel": "Pfeil nach oben",
+        "navigateDownKeyAriaLabel": "Pfeil nach unten",
+        "closeText": "zum Schließen",
+        "closeKeyAriaLabel": "Escape"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "Auf dieser Seite"

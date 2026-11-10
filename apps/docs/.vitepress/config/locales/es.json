@@ -5,6 +5,33 @@
   "description": "Visor y editor de imágenes de documentos: zoom, rotación, corrección de perspectiva, brillo y contraste, blanco y negro y eliminación de sombras.",
   "guide": "Guía",
   "playground": "Playground",
+  "groups": {
+    "introduction": "Introducción"
+  },
+  "pages": {
+    "guide/getting-started": "Primeros pasos"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Buscar",
+      "buttonAriaLabel": "Buscar"
+    },
+    "modal": {
+      "displayDetails": "Mostrar la lista detallada",
+      "resetButtonTitle": "Borrar la búsqueda",
+      "backButtonTitle": "Cerrar la búsqueda",
+      "noResultsText": "Sin resultados para",
+      "footer": {
+        "selectText": "para seleccionar",
+        "selectKeyAriaLabel": "Intro",
+        "navigateText": "para navegar",
+        "navigateUpKeyAriaLabel": "flecha arriba",
+        "navigateDownKeyAriaLabel": "flecha abajo",
+        "closeText": "para cerrar",
+        "closeKeyAriaLabel": "Esc"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "En esta página"

@@ -5,6 +5,33 @@
   "description": "문서 이미지 뷰어 및 편집기: 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 흑백 변환, 그림자 제거.",
   "guide": "가이드",
   "playground": "플레이그라운드",
+  "groups": {
+    "introduction": "소개"
+  },
+  "pages": {
+    "guide/getting-started": "시작하기"
+  },
+  "search": {
+    "button": {
+      "buttonText": "검색",
+      "buttonAriaLabel": "검색"
+    },
+    "modal": {
+      "displayDetails": "상세 목록 표시",
+      "resetButtonTitle": "검색 초기화",
+      "backButtonTitle": "검색 닫기",
+      "noResultsText": "다음에 대한 결과 없음:",
+      "footer": {
+        "selectText": "선택",
+        "selectKeyAriaLabel": "Enter 키",
+        "navigateText": "이동",
+        "navigateUpKeyAriaLabel": "위쪽 화살표",
+        "navigateDownKeyAriaLabel": "아래쪽 화살표",
+        "closeText": "닫기",
+        "closeKeyAriaLabel": "Esc 키"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "이 페이지에서"

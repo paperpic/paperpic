@@ -5,5 +5,32 @@
   "description": "Document image viewer & editor: zoom, rotate, perspective correction, brightness/contrast, black & white and shadow removal.",
   "guide": "Guide",
   "playground": "Playground",
+  "groups": {
+    "introduction": "Introduction"
+  },
+  "pages": {
+    "guide/getting-started": "Getting started"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Search",
+      "buttonAriaLabel": "Search"
+    },
+    "modal": {
+      "displayDetails": "Display detailed list",
+      "resetButtonTitle": "Reset search",
+      "backButtonTitle": "Close search",
+      "noResultsText": "No results for",
+      "footer": {
+        "selectText": "to select",
+        "selectKeyAriaLabel": "enter",
+        "navigateText": "to navigate",
+        "navigateUpKeyAriaLabel": "up arrow",
+        "navigateDownKeyAriaLabel": "down arrow",
+        "closeText": "to close",
+        "closeKeyAriaLabel": "escape"
+      }
+    }
+  },
   "theme": {}
 }
