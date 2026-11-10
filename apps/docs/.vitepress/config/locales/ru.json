@@ -4,7 +4,57 @@
   "ogLocale": "ru_RU",
   "description": "Просмотр и редактирование изображений документов: масштабирование, поворот, коррекция перспективы, яркость и контраст, чёрно-белый режим и удаление теней.",
   "guide": "Руководство",
+  "reference": "Справочник",
   "playground": "Песочница",
+  "groups": {
+    "introduction": "Введение",
+    "essentials": "Основы",
+    "tools": "Инструменты",
+    "api": "API",
+    "customization": "Настройка",
+    "frameworks": "Фреймворки"
+  },
+  "pages": {
+    "guide/introduction": "Что такое PaperPic?",
+    "guide/getting-started": "Начало работы",
+    "guide/viewer": "Просмотрщик",
+    "guide/editing": "Редактирование",
+    "guide/saving": "Сохранение результата",
+    "guide/tools/crop": "Обрезать",
+    "guide/tools/straighten": "Выровнять",
+    "guide/tools/rotate-and-flip": "Поворот и отражение",
+    "guide/tools/adjust": "Настроить",
+    "guide/tools/clean-up": "Очистить",
+    "reference/options": "Опции",
+    "reference/methods": "Методы",
+    "reference/events": "События",
+    "reference/state": "Состояние",
+    "reference/labels": "Подписи",
+    "reference/css-tokens": "CSS-токены",
+    "reference/vue": "Vue",
+    "reference/react": "React"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Поиск",
+      "buttonAriaLabel": "Поиск"
+    },
+    "modal": {
+      "displayDetails": "Показать подробный список",
+      "resetButtonTitle": "Сбросить поиск",
+      "backButtonTitle": "Закрыть поиск",
+      "noResultsText": "Нет результатов для",
+      "footer": {
+        "selectText": "выбрать",
+        "selectKeyAriaLabel": "Enter",
+        "navigateText": "перейти",
+        "navigateUpKeyAriaLabel": "стрелка вверх",
+        "navigateDownKeyAriaLabel": "стрелка вниз",
+        "closeText": "закрыть",
+        "closeKeyAriaLabel": "Esc"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "На этой странице"

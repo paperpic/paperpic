@@ -4,7 +4,57 @@
   "ogLocale": "de_DE",
   "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
   "guide": "Anleitung",
+  "reference": "Referenz",
   "playground": "Playground",
+  "groups": {
+    "introduction": "Einführung",
+    "essentials": "Grundlagen",
+    "tools": "Werkzeuge",
+    "api": "API",
+    "customization": "Anpassung",
+    "frameworks": "Frameworks"
+  },
+  "pages": {
+    "guide/introduction": "Was ist PaperPic?",
+    "guide/getting-started": "Erste Schritte",
+    "guide/viewer": "Viewer",
+    "guide/editing": "Bearbeitung",
+    "guide/saving": "Das Ergebnis speichern",
+    "guide/tools/crop": "Zuschneiden",
+    "guide/tools/straighten": "Begradigen",
+    "guide/tools/rotate-and-flip": "Drehen und spiegeln",
+    "guide/tools/adjust": "Anpassen",
+    "guide/tools/clean-up": "Bereinigen",
+    "reference/options": "Optionen",
+    "reference/methods": "Methoden",
+    "reference/events": "Ereignisse",
+    "reference/state": "Zustand",
+    "reference/labels": "Beschriftungen",
+    "reference/css-tokens": "CSS-Token",
+    "reference/vue": "Vue",
+    "reference/react": "React"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Suchen",
+      "buttonAriaLabel": "Suchen"
+    },
+    "modal": {
+      "displayDetails": "Detaillierte Liste anzeigen",
+      "resetButtonTitle": "Suche zurücksetzen",
+      "backButtonTitle": "Suche schließen",
+      "noResultsText": "Keine Ergebnisse für",
+      "footer": {
+        "selectText": "zum Auswählen",
+        "selectKeyAriaLabel": "Eingabetaste",
+        "navigateText": "zum Navigieren",
+        "navigateUpKeyAriaLabel": "Pfeil nach oben",
+        "navigateDownKeyAriaLabel": "Pfeil nach unten",
+        "closeText": "zum Schließen",
+        "closeKeyAriaLabel": "Escape"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "Auf dieser Seite"

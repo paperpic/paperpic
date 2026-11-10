@@ -4,7 +4,57 @@
   "ogLocale": "ko_KR",
   "description": "문서 이미지 뷰어 및 편집기: 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 흑백 변환, 그림자 제거.",
   "guide": "가이드",
+  "reference": "레퍼런스",
   "playground": "플레이그라운드",
+  "groups": {
+    "introduction": "소개",
+    "essentials": "기본",
+    "tools": "도구",
+    "api": "API",
+    "customization": "사용자 지정",
+    "frameworks": "프레임워크"
+  },
+  "pages": {
+    "guide/introduction": "PaperPic이란?",
+    "guide/getting-started": "시작하기",
+    "guide/viewer": "뷰어",
+    "guide/editing": "편집",
+    "guide/saving": "결과 저장",
+    "guide/tools/crop": "자르기",
+    "guide/tools/straighten": "기울기 보정",
+    "guide/tools/rotate-and-flip": "회전과 뒤집기",
+    "guide/tools/adjust": "조정",
+    "guide/tools/clean-up": "정리",
+    "reference/options": "옵션",
+    "reference/methods": "메서드",
+    "reference/events": "이벤트",
+    "reference/state": "상태",
+    "reference/labels": "레이블",
+    "reference/css-tokens": "CSS 토큰",
+    "reference/vue": "Vue",
+    "reference/react": "React"
+  },
+  "search": {
+    "button": {
+      "buttonText": "검색",
+      "buttonAriaLabel": "검색"
+    },
+    "modal": {
+      "displayDetails": "상세 목록 표시",
+      "resetButtonTitle": "검색 초기화",
+      "backButtonTitle": "검색 닫기",
+      "noResultsText": "다음에 대한 결과 없음:",
+      "footer": {
+        "selectText": "선택",
+        "selectKeyAriaLabel": "Enter 키",
+        "navigateText": "이동",
+        "navigateUpKeyAriaLabel": "위쪽 화살표",
+        "navigateDownKeyAriaLabel": "아래쪽 화살표",
+        "closeText": "닫기",
+        "closeKeyAriaLabel": "Esc 키"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "이 페이지에서"

@@ -104,9 +104,21 @@ The CSS that the packages ship lives in `packages/core/src/styles` and follows t
 
 ## Translating the docs
 
-The docs site is available in several languages. English, in `apps/docs/src/en`, is the source of truth. Each other language has its own folder with the same file names, such as `apps/docs/src/es`, and a file with its interface texts, such as `apps/docs/.vitepress/config/locales/es.json`.
+The docs site is available in 10 languages, and the [docs spec](../docs/spec/docs-site.md) describes its pages and style. English, in `apps/docs/src/en`, is the source of truth. Each other language has:
 
-A page does not have to exist in every language. A missing translation does not break the build, and search engines are only pointed to the languages where the page exists.
+- a folder with the same file names, such as `apps/docs/src/es`;
+- a file with its interface texts and sidebar titles, such as `apps/docs/.vitepress/config/locales/es.json`;
+- a glossary, such as `apps/docs/glossary/es.md`.
+
+Every page exists in every language. A pull request that adds a page, or changes what one says, updates every language, and `pnpm test` fails when a language misses a page. Machine translation followed by a quick review is fine.
+
+To add a page to a sidebar, list it in `apps/docs/.vitepress/config/sidebar.ts` and give it a title in the `pages` of each language file.
+
+When you translate:
+
+- Use the words of the glossary, and name each control exactly as the component labels it in that language, in `apps/docs/.vitepress/theme/components/paperpic-labels.ts`.
+- Keep code in English: option, method, event and prop names, CSS classes and custom properties, and package and file names.
+- When another page links to a heading, give the heading a fixed id, such as `## Saving the result {#saving}`, so the link works in every language.
 
 ## Pull requests
 

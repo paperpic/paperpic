@@ -4,7 +4,57 @@
   "ogLocale": "it_IT",
   "description": "Visualizzatore ed editor di immagini di documenti: zoom, rotazione, correzione della prospettiva, luminosità e contrasto, bianco e nero e rimozione delle ombre.",
   "guide": "Guida",
+  "reference": "Riferimento",
   "playground": "Playground",
+  "groups": {
+    "introduction": "Introduzione",
+    "essentials": "Nozioni di base",
+    "tools": "Strumenti",
+    "api": "API",
+    "customization": "Personalizzazione",
+    "frameworks": "Framework"
+  },
+  "pages": {
+    "guide/introduction": "Che cos’è PaperPic?",
+    "guide/getting-started": "Primi passi",
+    "guide/viewer": "Visualizzatore",
+    "guide/editing": "Modifica",
+    "guide/saving": "Salvare il risultato",
+    "guide/tools/crop": "Ritaglia",
+    "guide/tools/straighten": "Raddrizza",
+    "guide/tools/rotate-and-flip": "Ruota e capovolgi",
+    "guide/tools/adjust": "Regola",
+    "guide/tools/clean-up": "Pulisci",
+    "reference/options": "Opzioni",
+    "reference/methods": "Metodi",
+    "reference/events": "Eventi",
+    "reference/state": "Stato",
+    "reference/labels": "Etichette",
+    "reference/css-tokens": "Token CSS",
+    "reference/vue": "Vue",
+    "reference/react": "React"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Cerca",
+      "buttonAriaLabel": "Cerca"
+    },
+    "modal": {
+      "displayDetails": "Mostra l’elenco dettagliato",
+      "resetButtonTitle": "Reimposta la ricerca",
+      "backButtonTitle": "Chiudi la ricerca",
+      "noResultsText": "Nessun risultato per",
+      "footer": {
+        "selectText": "per selezionare",
+        "selectKeyAriaLabel": "Invio",
+        "navigateText": "per navigare",
+        "navigateUpKeyAriaLabel": "freccia su",
+        "navigateDownKeyAriaLabel": "freccia giù",
+        "closeText": "per chiudere",
+        "closeKeyAriaLabel": "Esc"
+      }
+    }
+  },
   "theme": {
     "outline": {
       "label": "In questa pagina"
