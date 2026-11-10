@@ -10,7 +10,7 @@ export default defineConfig({
     Vue({ isProduction: true }),
   ],
   dts: {
-    vue: true,
+    tsc: { vue: true },
   },
   clean: true,
   publint: { level: 'error' },
