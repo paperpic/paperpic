@@ -1,9 +1,12 @@
+import type { UserConfig } from 'vitepress'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import llmstxt from 'vitepress-plugin-llms'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import { locales, searchLocales } from './locales'
 import { hostname, transformHead } from './seo'
+
+type VitePlugins = NonNullable<NonNullable<UserConfig['vite']>['plugins']>
 
 const source = (path: string) => fileURLToPath(new URL(path, import.meta.url))
 
@@ -72,15 +75,14 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [
-      llmstxt({
-        // The name on the home has HTML for its colors
-        title: 'PaperPic',
-        // Coding agents read English, and one language keeps the files small
-        workDir: 'en',
-        ignoreFiles: ['playground.md'],
-      }),
-    ],
+    // The plugin takes its Vite types from whichever Vite pnpm hoists, which can be newer than the one of VitePress
+    plugins: llmstxt({
+      // The name on the home has HTML for its colors
+      title: 'PaperPic',
+      // Coding agents read English, and one language keeps the files small
+      workDir: 'en',
+      ignoreFiles: ['playground.md'],
+    }) as unknown as VitePlugins,
     resolve: {
       alias: {
         '@paperpic/vue': source('../../../../packages/vue/src/index.ts'),
