@@ -27,6 +27,8 @@ Turn photos of paper into clean, readable documents, right in the browser.
 > [!WARNING]
 > Work in progress. Not ready for production.
 
+![The PaperPic viewer showing a photo of a receipt, with its toolbar to edit, zoom, fit and download](.github/assets/viewer.jpg)
+
 ## Features
 
 - 🎪 [**Interactive docs & demos**](https://paperpic.dev)
@@ -37,19 +39,41 @@ Turn photos of paper into clean, readable documents, right in the browser.
 - ☀️ **Brightness and contrast** with live sliders
 - 🧼 **Clean up** into crisp black & white, removing shadows, with an adjustable sensitivity
 - ↩️ **Undo and redo** every edit until you apply, then get the result as a `Blob`
+- 💾 **Download** the image on display with an optional button
 - ⚡ **Off the main thread**: image processing runs in a Web Worker
+- ⌨️ **Keyboard and screen readers**: shortcuts to zoom, pan, undo and apply, corner handles that move with the arrow keys, and announcements of what changes
 - 🌗 **Dark mode** that follows the system, and CSS tokens for your own theme
 - 🏷️ **Custom labels**: replace any text in the interface
-- 🪶 **No runtime dependencies** in the core
+- 📦 **No runtime dependencies** in the core
 - 🧩 **Framework agnostic**, with thin wrappers for Vue and React
+
+## Quick start
+
+```sh
+pnpm add @paperpic/core
+```
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector('#viewer'), {
+  src: '/receipt.jpg',
+  alt: 'A receipt',
+})
+
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+The viewer fills its container, so give `#viewer` a height. With Vue or React, use [`@paperpic/vue`](packages/vue) or [`@paperpic/react`](packages/react) instead. The [`@paperpic/core` README](packages/core) lists every option, method and event.
 
 ## Packages
 
-| Package                             | Status         |
-| ----------------------------------- | -------------- |
-| [`@paperpic/core`](packages/core)   | In development |
-| [`@paperpic/vue`](packages/vue)     | In development |
-| [`@paperpic/react`](packages/react) | In development |
+| Package                             | Description                                                  | Status         |
+| ----------------------------------- | ------------------------------------------------------------ | -------------- |
+| [`@paperpic/core`](packages/core)   | The viewer and editor, for plain JavaScript or any framework | In development |
+| [`@paperpic/vue`](packages/vue)     | Component for Vue 3.5 or newer                               | In development |
+| [`@paperpic/react`](packages/react) | Component for React 19 or newer                              | In development |
 
 ## Roadmap
 
@@ -67,9 +91,13 @@ pnpm dev         # vanilla playground with hot reload
 pnpm dev:vue     # Vue playground with hot reload
 pnpm dev:react   # React playground with hot reload
 pnpm dev:docs    # docs site
+pnpm lint
+pnpm typecheck
 pnpm test
 pnpm build
 ```
+
+The [contributing guide](.github/CONTRIBUTING.md#scripts) lists every script.
 
 ## Contributing
 

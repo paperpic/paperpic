@@ -1,6 +1,6 @@
 # @paperpic/core
 
-Framework-agnostic document image viewer and editor, for use with plain JavaScript or through a PaperPic wrapper such as [`@paperpic/vue`](https://www.npmjs.com/package/@paperpic/vue).
+Framework-agnostic document image viewer and editor, for use with plain JavaScript or through a PaperPic wrapper such as [`@paperpic/vue`](https://www.npmjs.com/package/@paperpic/vue) or [`@paperpic/react`](https://www.npmjs.com/package/@paperpic/react).
 
 ## Installation
 
@@ -49,6 +49,22 @@ Methods: `zoomIn()`, `zoomOut()`, `zoomTo(zoom, point?)`, `fit('image' | 'width'
 Events: `load`, `error`, `change`, `apply` and `download`. `change` reports user actions, and `setOptions()` never emits it. `download` comes before saving the file, and `preventDefault()` on it lets you save the image another way.
 
 Passing the same `src` again does not reload the image, so it keeps the result of an edit. To bring back the original, call `reload()`.
+
+## Keyboard
+
+With the focus on the viewer:
+
+| Key                        | Action                                           |
+| -------------------------- | ------------------------------------------------ |
+| `+` and `-`                | Zoom in and out                                  |
+| Arrow keys                 | Pan                                              |
+| `0`                        | Fit the whole image                              |
+| `Ctrl+Z`                   | Undo                                             |
+| `Ctrl+Shift+Z` or `Ctrl+Y` | Redo                                             |
+| `Enter`                    | Confirm the open tool, or else apply the changes |
+| `Esc`                      | Close the open tool, or else cancel the changes  |
+
+On macOS, `Cmd` works like `Ctrl`. Before cancelling changes, `Esc` asks for confirmation, and with `toolbar: false` it leaves them to your interface. With Crop or Straighten open, Tab reaches the corner handles, and the arrow keys move them 1 pixel, or 10 with Shift.
 
 ## Processing
 
