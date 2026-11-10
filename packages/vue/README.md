@@ -10,16 +10,19 @@ pnpm add @paperpic/vue
 
 Documentation: [paperpic.dev](https://paperpic.dev)
 
+`@paperpic/vue` requires Vue 3.5 or newer.
+
 ## Usage
 
 The viewer fills its parent element, so give the parent a height:
 
 ```vue
 <script setup lang="ts">
+import type { ExportedImage } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 import '@paperpic/vue/style.css'
 
-function save({ blob }: { blob: Blob }) {
+function save({ blob }: ExportedImage) {
   // Upload the edited image
 }
 </script>
@@ -49,9 +52,33 @@ The pencil opens the edit mode. When the user applies the changes, the result re
 | `softness`      | `number`                  | `0.25`               | How much gray cleaning up keeps, from 0 to 1. Use 0 for strict black and white                     |
 | `labels`        | `Partial<PaperPicLabels>` |                      | Replaces any of the texts, which are in English by default                                         |
 
-It emits `load`, `error`, `change`, `apply` and `download`, and exposes the viewer as `instance`, with the methods of [`@paperpic/core`](https://www.npmjs.com/package/@paperpic/core).
+It emits `load`, `error`, `change`, `apply` and `download`, and exposes the viewer as `instance`, with the methods of [`@paperpic/core`](https://www.npmjs.com/package/@paperpic/core). `instance` is `null` until the component mounts:
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+defineProps<{ src: string }>()
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    Zoom in
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" :src="src" :toolbar="false" />
+  </div>
+</template>
+```
 
 Passing the same `src` again does not reload the image, so it keeps the result of an edit. To bring back the original, call `instance.reload()`.
+
+Objects and arrays that the template builds from your data, such as `:labels="{ apply: t('apply') }"`, are new on every render of the parent, and the viewer receives them again each time. Build them with `computed` instead.
+
+With server-side rendering, such as in Nuxt, the component renders an empty element on the server and creates the viewer in the browser.
 
 Editing runs in a web worker, which bundlers such as Vite and webpack pick up on their own. If the worker cannot start, the processing runs on the main thread, so it still works but the page can freeze for a moment with large images.
 
