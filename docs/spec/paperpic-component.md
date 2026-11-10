@@ -55,6 +55,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D41 | The browser's context menu never opens over the viewer.                                                                                                                                                                                                                                                        | It only offers to save the canvas, which holds the view on screen at screen size, and never the image. Nothing can stop a screenshot, so this is no protection.                              |
 | D42 | Brightness and contrast share one Adjust button, which shows both sliders. They go from -1 to 1, with 0 as no change. Like threshold, they are a setting that runs after geometry, and releasing a slider leaves one edit. While threshold is on they are left out and their button is disabled.               | Photo galleries group these behind one button, and two sliders fit at once. Threshold compares each pixel with its surroundings, so tones set before it barely change its result.            |
 | D43 | Flip is one button that mirrors the image left to right, as it is on display. It is an edit with new pixels, like crop, and flips and rotations next to each other merge or cancel out.                                                                                                                        | A vertical flip is a flip and a half turn, so one button covers both. The view matrix only turns, which keeps the view and its coordinates simple, at the cost of a preview after each flip. |
+| D44 | The React wrapper needs React 19. Its props are the options plus `onApply`, `onChange`, `onDownload`, `onError` and `onLoad`, and `ref` receives the viewer. A new handler does not recreate the viewer, and only a changed option reaches `setOptions()`.                                                     | React 19 takes `ref` as a prop. Inline handlers are the norm in React, and the viewer holds the edit, so it must outlive a render.                                                           |
 
 ## Public API
 
@@ -224,7 +225,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 2. **Viewer.** Renderer, gestures, view mode with its rotate buttons for `editable: false`, and the Vue wrapper. The placeholder `rotation` option goes away, and docs and playgrounds follow.
 3. **Edit base.** Done. Edit bar, operation list, Undo, Redo and Apply, with Rotate as the first tool and processing in a packaged worker.
 4. **Tools.** Done. Crop, with the shared corner handles, magnifier and preview, Perspective and Threshold. Brightness and contrast, and Flip, came after.
-5. **Other frameworks.** React and, if feasible, Angular.
+5. **Other frameworks.** React is done. Angular, if feasible.
 6. **Automatic detection.** Only if it proves worth it.
 
 ## Open decisions

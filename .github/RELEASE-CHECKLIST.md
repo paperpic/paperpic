@@ -1,6 +1,6 @@
 # Release checklist
 
-What is left before `@paperpic/core` and `@paperpic/vue` can be published. Delete this file once the first release from CI has worked. The process itself is described in [WORKFLOW.md](WORKFLOW.md).
+What is left before `@paperpic/core`, `@paperpic/vue` and `@paperpic/react` can be published. Delete this file once the first release from CI has worked. The process itself is described in [WORKFLOW.md](WORKFLOW.md).
 
 ## Already done
 
@@ -23,7 +23,7 @@ Its only run so far ended in `startup_failure`, before the actions allowlist was
 
 npm sets up trusted publishing from a package's own settings page, so each package must exist before CI can publish it. The first version is therefore published from a maintainer's machine.
 
-- [ ] **Changeset.** If none is pending, create one: run `pnpm changeset`, select both packages, choose `minor` (0.0.0 → 0.1.0) and write "Initial release". Merge it into `development` through a normal PR.
+- [ ] **Changeset.** If none is pending, create one: run `pnpm changeset`, select every package, choose `minor` (0.0.0 → 0.1.0) and write "Initial release". Merge it into `development` through a normal PR.
 - [ ] **Version PR.** Review the changelog in `chore: version packages` and merge it.
 - [ ] **Release PR.** Open a PR from `development` into `main` and merge it. The Release workflow publishes nothing, because `NPM_PUBLISH` is not set.
 - [ ] **Publish** from an up-to-date `main`:
@@ -34,7 +34,7 @@ npm sets up trusted publishing from a package's own settings page, so each packa
   pnpm --filter "./packages/*" build
   npm login
   pnpm changeset publish
-  git push origin "@paperpic/core@0.1.0" "@paperpic/vue@0.1.0"
+  git push origin "@paperpic/core@0.1.0" "@paperpic/vue@0.1.0" "@paperpic/react@0.1.0"
   npm logout
   ```
 
@@ -47,6 +47,7 @@ npm sets up trusted publishing from a package's own settings page, so each packa
   ```sh
   gh release create "@paperpic/core@0.1.0" --title "@paperpic/core@0.1.0" --notes-file packages/core/CHANGELOG.md
   gh release create "@paperpic/vue@0.1.0" --title "@paperpic/vue@0.1.0" --notes-file packages/vue/CHANGELOG.md
+  gh release create "@paperpic/react@0.1.0" --title "@paperpic/react@0.1.0" --notes-file packages/react/CHANGELOG.md
   ```
 
 - [ ] **Lock down publishing.** For each package on npmjs.com: **Settings → Publishing access → Require two-factor authentication and disallow tokens**.
@@ -71,6 +72,6 @@ An unvalidated trusted publisher configuration expires 48 hours after it is crea
   ```
 
 - [ ] **Release.** Merge the version PR, then `development` into `main`. Approve the `publish` job under **Review deployments** in the workflow run.
-- [ ] **Check the result:** both versions on npm with provenance, both tags pushed, both GitHub Releases created.
+- [ ] **Check the result:** every version on npm with provenance, every tag pushed, every GitHub Release created.
 
 pnpm combined with npm trusted publishing has not been tested in this repository yet. If the `publish` job fails, its log shows why.

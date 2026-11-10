@@ -13,6 +13,7 @@ Turn photos of paper into clean, readable documents, right in the browser.
 <br>
 <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white" alt="TypeScript"></a>
 <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vuedotjs&logoColor=white" alt="Vue"></a>
+<a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React"></a>
 <a href="https://vite.dev/"><img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white" alt="Vite"></a>
 <a href="https://vitest.dev/"><img src="https://img.shields.io/badge/Vitest-5-6E9F18?logo=vitest&logoColor=white" alt="Vitest"></a>
 <a href="https://vitepress.dev/"><img src="https://img.shields.io/badge/VitePress-1-5C73E7?logo=vitepress&logoColor=white" alt="VitePress"></a>
@@ -40,18 +41,19 @@ Turn photos of paper into clean, readable documents, right in the browser.
 - 🌗 **Dark mode** that follows the system, and CSS tokens for your own theme
 - 🏷️ **Custom labels**: replace any text in the interface
 - 🪶 **No runtime dependencies** in the core
-- 🧩 **Framework agnostic**, with a thin wrapper for Vue
+- 🧩 **Framework agnostic**, with thin wrappers for Vue and React
 
 ## Packages
 
-| Package                           | Status         |
-| --------------------------------- | -------------- |
-| [`@paperpic/core`](packages/core) | In development |
-| [`@paperpic/vue`](packages/vue)   | In development |
+| Package                             | Status         |
+| ----------------------------------- | -------------- |
+| [`@paperpic/core`](packages/core)   | In development |
+| [`@paperpic/vue`](packages/vue)     | In development |
+| [`@paperpic/react`](packages/react) | In development |
 
 ## Roadmap
 
-- Wrappers for React and, if feasible, Angular
+- A wrapper for Angular, if feasible
 - More tools: free-angle straightening
 - Automatic detection of the document corners
 
@@ -63,6 +65,7 @@ Requires Node.js 26 and pnpm 12.
 pnpm install
 pnpm dev         # vanilla playground with hot reload
 pnpm dev:vue     # Vue playground with hot reload
+pnpm dev:react   # React playground with hot reload
 pnpm dev:docs    # docs site
 pnpm test
 pnpm build

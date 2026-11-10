@@ -2,6 +2,10 @@ import antfu from '@antfu/eslint-config'
 
 export default antfu({
   vue: true,
+  // Only where React lives, so its rules leave the Vue and vanilla code alone
+  react: {
+    files: ['packages/react/**/*.?([cm])[jt]s?(x)', 'playgrounds/react/**/*.?([cm])[jt]s?(x)'],
+  },
   typescript: true,
   formatters: true,
   pnpm: { catalogs: false },
