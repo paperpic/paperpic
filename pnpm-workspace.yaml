@@ -38,3 +38,14 @@ auditConfig:
   ignoreGhsas:
     # vite 5 dev server, only through vitepress 1 in apps/docs; drop with VitePress 2
     - GHSA-587h-7wmj-h5pm
+
+# What dependencies may do beyond installing: tsdown links its agent skill
+permissions:
+  tsdown:
+    skills: true
+
+# Where pnpm links skills from dependencies: .claude for Claude Code, .agents for Codex and other agents
+skills:
+  dirs:
+    - .agents/skills
+    - .claude/skills

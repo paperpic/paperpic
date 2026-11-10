@@ -42,10 +42,10 @@
   },
   "devDependencies": {
     "@arethetypeswrong/core": "0.18.5",
-    "@tsdown/css": "0.23.4",
+    "@tsdown/css": "0.23.7",
     "happy-dom": "21.0.4",
     "publint": "0.3.25",
-    "tsdown": "0.23.4",
+    "tsdown": "0.23.7",
     "typescript": "6.0.3"
   }
 }
