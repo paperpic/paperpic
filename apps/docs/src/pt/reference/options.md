@@ -31,7 +31,7 @@ Passar o mesmo valor de novo não recarrega a imagem, então o resultado de uma 
 - **Tipo:** `string`
 - **Padrão:** `''`
 
-Descreve a imagem para leitores de tela.
+Descreve a imagem para leitores de tela. Sem `alt`, os leitores de tela ignoram a imagem, como fazem com um `<img>` de `alt` vazio.
 
 ## Interface
 

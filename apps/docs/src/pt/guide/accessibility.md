@@ -36,7 +36,7 @@ No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` p
 
 ## Leitores de tela
 
-- A imagem tem o papel de imagem, com `alt` como nome.
+- A imagem tem o papel de imagem, com `alt` como nome. Sem `alt`, os leitores de tela a ignoram.
 - A barra de ferramentas e a barra de edição têm nome próprio, como "Controles da imagem" e "Controles de edição".
 - Um anúncio informa cada mudança que o usuário não percebe só pelo foco: o nível de zoom, o início do modo de edição, a posição de um canto movido, o valor de um controle deslizante e o resultado do Aplicar.
 

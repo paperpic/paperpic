@@ -31,7 +31,7 @@ Derselbe Wert ein zweites Mal lädt das Bild nicht neu, das Ergebnis einer Bearb
 - **Typ:** `string`
 - **Standard:** `''`
 
-Beschreibt das Bild für Screenreader.
+Beschreibt das Bild für Screenreader. Ohne `alt` überspringen Screenreader das Bild, wie bei einem `<img>` mit leerem `alt`.
 
 ## Oberfläche
 

@@ -1,7 +1,7 @@
 import type { PaperPicIcons, PaperPicLabels, PaperPicOutput, ToolId } from '@paperpic/core'
 
 export interface PaperPicProps {
-  /** Describes the image for screen readers. */
+  /** Describes the image for screen readers. Without it, they skip the image, as they skip an `<img>` with an empty `alt`. */
   alt?: string
   /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
   aspectRatio?: number

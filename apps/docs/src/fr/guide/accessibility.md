@@ -36,7 +36,7 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Avant d’annuler les changements, `É
 
 ## Lecteurs d’écran
 
-- L’image a le rôle d’une image, nommée par `alt`.
+- L’image a le rôle d’une image, nommée par `alt`. Sans `alt`, les lecteurs d’écran l’ignorent.
 - La barre d’outils et la barre de modification ont leur propre nom, comme « Commandes de l’image » et « Commandes de modification ».
 - Une annonce signale chaque changement que l’utilisateur ne peut pas voir avec le seul focus : le niveau de zoom, le début du mode d’édition, la position d’un coin déplacé, la valeur d’un curseur et le résultat d’Appliquer.
 

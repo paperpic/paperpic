@@ -36,7 +36,7 @@ En macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar los cambios, `Esc` pide 
 
 ## Lectores de pantalla
 
-- La imagen tiene el rol de imagen, con `alt` como nombre.
+- La imagen tiene el rol de imagen, con `alt` como nombre. Sin `alt`, los lectores de pantalla la omiten.
 - La barra de herramientas y la barra de edición tienen nombre propio, como «Controles de la imagen» y «Controles de edición».
 - Un anuncio informa de cada cambio que el usuario no puede ver solo con el foco: el nivel de zoom, el inicio del modo de edición, la posición de una esquina movida, el valor de un control deslizante y el resultado de Aplicar.
 
