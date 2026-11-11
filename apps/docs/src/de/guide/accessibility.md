@@ -50,4 +50,4 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fra
 
 - **Weniger Bewegung.** Mit `prefers-reduced-motion: reduce` wechseln Schaltflächen ihren Zustand ohne Übergänge.
 - **Erzwungene Farben.** Im Kontrastmodus von Windows und anderen Modi mit erzwungenen Farben behalten gedrückte Schaltflächen und die Hauptaktionen einen sichtbaren Rahmen.
-- **Dunkelmodus.** Die Farben folgen `prefers-color-scheme`. Siehe [Gestaltung](./styling#dark-mode).
+- **Dunkelmodus.** Die Farben folgen dem `color-scheme` deiner Seite, das dem System folgen kann. Siehe [Gestaltung](./styling#dark-mode).

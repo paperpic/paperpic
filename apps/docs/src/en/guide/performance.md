@@ -36,4 +36,4 @@ PaperPic needs a browser. The Vue and React components render an empty element o
 
 ## Browser support
 
-PaperPic supports the browsers of [Baseline Widely Available](https://web.dev/baseline): the features that have worked in all the major browsers for at least 30 months. The packages are built for that target, so you do not need to transpile them.
+PaperPic supports the browsers of [Baseline Widely Available](https://web.dev/baseline): the features that have worked in all the major browsers for at least 30 months. The packages are built for that target, which means Chrome and Edge 124, Firefox 125 and Safari 17.5 or newer, so you do not need to transpile them.

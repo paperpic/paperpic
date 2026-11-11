@@ -1,6 +1,6 @@
 ---
 title: Token CSS
-description: Le proprietà personalizzate CSS che danno stile a PaperPic, con i loro valori chiari e scuri, più il suo foglio di stile, il suo livello di cascata e i suoi nomi di classe.
+description: Le proprietà personalizzate CSS che danno stile a PaperPic, con i loro valori chiari e scuri, più il suo foglio di stile, il suo livello di cascata, le sue classi pubbliche e i nomi dei suoi controlli.
 ---
 
 # Token CSS
@@ -14,29 +14,23 @@ I token sono proprietà personalizzate CSS che cambiano l’aspetto del componen
 }
 ```
 
-| Token                            | Predefinito | Scuro     | Descrizione                               |
-| -------------------------------- | ----------- | --------- | ----------------------------------------- |
-| `--paperpic-color-accent`        | `#0a84ff`   | `#5cb5ff` | Colore d’accento dell’interfaccia         |
-| `--paperpic-color-surface`       | `#fff`      | `#151e2e` | Sfondo dell’interfaccia                   |
-| `--paperpic-color-text`          | `#1a263c`   | `#f2f5f9` | Testo dell’interfaccia                    |
-| `--paperpic-radius`              | `6px`       | `6px`     | Raggio degli angoli dell’interfaccia      |
-| `--paperpic-transition-duration` | `0.2s`      | `0.2s`    | Durata delle transizioni dell’interfaccia |
+| Token                            | Chiaro    | Scuro     | Descrizione                               |
+| -------------------------------- | --------- | --------- | ----------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Colore d’accento dell’interfaccia         |
+| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Sfondo dell’interfaccia                   |
+| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Testo dell’interfaccia                    |
+| `--paperpic-radius`              | `6px`     | `6px`     | Raggio degli angoli dell’interfaccia      |
+| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Durata delle transizioni dell’interfaccia |
 
 ## Modalità scura
 
-I valori scuri si applicano quando il sistema dell’utente preferisce uno schema di colori scuro. Se il tuo sito cambia tema in un altro modo, ad esempio con una classe su `<html>`, imposta tu i colori di ogni tema:
+I token di colore prendono il loro valore chiaro o scuro con `light-dark()`, secondo il `color-scheme` della pagina. Senza `color-scheme` sono chiari. Con `color-scheme: dark` sono scuri, e con `color-scheme: light dark` sono scuri quando il sistema preferisce uno schema di colori scuro. [Stili](../guide/styling#dark-mode) mostra come impostarlo.
+
+Per scegliere entrambi i valori di un token, usa anche tu `light-dark()`:
 
 ```css
 :root {
-  --paperpic-color-surface: #fff;
-  --paperpic-color-text: #1a263c;
-  --paperpic-color-accent: #0a84ff;
-}
-
-:root.dark {
-  --paperpic-color-surface: #151e2e;
-  --paperpic-color-text: #f2f5f9;
-  --paperpic-color-accent: #5cb5ff;
+  --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
 
@@ -65,8 +59,55 @@ import '@paperpic/react/style.css'
 
 :::
 
-Le sue regole stanno nel livello di cascata `paperpic`, quindi qualsiasi tuo CSS fuori da un livello le sovrascrive, qualunque sia la sua specificità. Questo vale anche per i reset globali, come una regola su `button`.
+Le sue regole stanno nel livello di cascata `paperpic`, quindi qualsiasi tuo CSS fuori da un livello le sovrascrive, qualunque sia la sua specificità. Questo vale anche per i reset globali, come una regola su `button`. Con Tailwind CSS, nomina l’ordine dei livelli, come mostra [Stili](../guide/styling#tailwind).
 
-## Nomi di classe
+## Classi {#classes}
 
-`.paperpic` è la radice del visualizzatore, e `.paperpic-host` è l’elemento che i componenti Vue e React creano attorno a esso. Tutte le classi del componente iniziano con `paperpic`, e i loro nomi sono stabili. Preferisci i token quando coprono ciò che ti serve.
+Queste classi sono pubbliche: i loro nomi, e gli elementi che marcano, restano stabili tra una versione e l’altra. Le altre classi del componente tengono insieme la sua disposizione e possono cambiare in qualsiasi versione.
+
+| Classe                    | Elemento                                                                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | La radice del visualizzatore                                                                                                          |
+| `paperpic-button`         | Ogni pulsante della barra degli strumenti e della barra di modifica                                                                   |
+| `paperpic-button-danger`  | Elimina, nella domanda prima di eliminare le modifiche                                                                                |
+| `paperpic-button-primary` | Applica, e Fatto in Ritaglia e Raddrizza                                                                                              |
+| `paperpic-button-text`    | I pulsanti della domanda prima di eliminare le modifiche                                                                              |
+| `paperpic-edit-bar`       | La barra di modifica, in basso                                                                                                        |
+| `paperpic-editing`        | La radice, durante la modifica                                                                                                        |
+| `paperpic-handle`         | Una maniglia d’angolo di Ritaglia e Raddrizza                                                                                         |
+| `paperpic-host`           | L’elemento che i componenti Vue e React creano attorno al visualizzatore                                                              |
+| `paperpic-icon`           | L’icona di un pulsante                                                                                                                |
+| `paperpic-status`         | Il messaggio per i lettori di schermo, che si vede anche mentre l’immagine si carica o le modifiche si applicano, e in caso di errore |
+| `paperpic-status-visible` | Il messaggio, mentre si vede al centro del visualizzatore                                                                             |
+| `paperpic-toolbar`        | La barra degli strumenti, a destra                                                                                                    |
+| `paperpic-viewport`       | L’area che mostra l’immagine e riceve il focus della tastiera                                                                         |
+
+I pulsanti mostrano il loro stato con attributi ARIA, che puoi selezionare anche tu:
+
+| Attributo                | Stato                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------- |
+| `[aria-disabled='true']` | Il pulsante ora non può agire. Mantiene il focus della tastiera, quindi non è `disabled`          |
+| `[aria-expanded='true']` | Regola, mentre si vedono i suoi cursori                                                           |
+| `[aria-pressed='true']`  | Un pulsante attivo, come Pulisci, o Adatta alla larghezza e Adatta all’altezza mentre sono in uso |
+
+Il passaggio del puntatore e questi stati si disegnano con `box-shadow`, che i reset globali dei pulsanti non toccano. Per cambiarli, sovrascrivi anche `box-shadow`.
+
+## Controlli {#controls}
+
+Ogni pulsante, cursore e maniglia d’angolo porta `data-paperpic-control`, con la chiave della sua [etichetta](./labels). Selezionalo per dare stile a un solo controllo:
+
+```css
+.paperpic-button[data-paperpic-control='edit'] {
+  color: var(--paperpic-color-accent);
+}
+```
+
+| Posizione                  | Valori                                                                                                |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Barra degli strumenti      | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
+| Barra di modifica          | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
+| Cursori                    | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
+| Ritaglia e Raddrizza       | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
+| Domanda prima di eliminare | `keepEditing`, `discard`                                                                              |
+
+`rotateLeft` indica due pulsanti che non si vedono mai insieme: quello di un visualizzatore di sola lettura, che ruota la vista, e quello della barra di modifica, che ruota l’immagine.

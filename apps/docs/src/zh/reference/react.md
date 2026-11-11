@@ -77,7 +77,7 @@ export function Viewer({ src }: { src: string }) {
 
 ## 类型
 
-`@paperpic/react` 导出了你需要的类型，因此无需安装 `@paperpic/core`：`PaperPicProps`、`PaperPicInstance`、`PaperPicState`、`PaperPicEvents`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage` 和 `ToolId`。
+`@paperpic/react` 导出了你需要的类型，因此无需安装 `@paperpic/core`：`PaperPicProps`、`PaperPicInstance`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage` 和 `ToolId`。
 
 ## 服务端渲染
 

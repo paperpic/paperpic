@@ -36,4 +36,4 @@ PaperPic에는 브라우저가 필요합니다. Vue와 React 컴포넌트는 Nux
 
 ## 지원 브라우저
 
-PaperPic은 [Baseline Widely Available](https://web.dev/baseline) 브라우저를 지원합니다. 모든 주요 브라우저에서 30개월 이상 동작해 온 기능들입니다. 패키지는 이 대상에 맞춰 빌드되므로 트랜스파일할 필요가 없습니다.
+PaperPic은 [Baseline Widely Available](https://web.dev/baseline) 브라우저를 지원합니다. 모든 주요 브라우저에서 30개월 이상 동작해 온 기능들입니다. 패키지는 이 대상, 즉 Chrome과 Edge 124, Firefox 125, Safari 17.5 이상에 맞춰 빌드되므로 트랜스파일할 필요가 없습니다.

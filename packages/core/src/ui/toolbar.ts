@@ -1,7 +1,8 @@
 import type { Fit } from '../state/view'
+import type { PaperPicIcons } from './icons'
 import type { PaperPicLabels } from './labels'
-import { attachRovingFocus, createButton, nameButton } from './button'
-import { ICONS } from './icons'
+import { attachRovingFocus, createButton, nameButton, setIcon } from './button'
+import { DEFAULT_ICONS } from './icons'
 
 /** What the toolbar can ask for. It only reaches the viewer through these. */
 export interface ToolbarCommands {
@@ -31,21 +32,21 @@ export class Toolbar {
   private readonly buttons: Record<ButtonName, HTMLButtonElement>
   private readonly fixTabOrder: () => void
 
-  constructor(commands: ToolbarCommands, labels: PaperPicLabels) {
+  constructor(commands: ToolbarCommands, labels: PaperPicLabels, icons: PaperPicIcons = DEFAULT_ICONS) {
     this.element = document.createElement('div')
     this.element.className = 'paperpic-toolbar'
     this.element.setAttribute('role', 'toolbar')
     this.element.setAttribute('aria-orientation', 'vertical')
 
     this.buttons = {
-      edit: createButton(ICONS.edit, commands.edit),
-      zoomIn: createButton(ICONS.zoomIn, commands.zoomIn),
-      zoomOut: createButton(ICONS.zoomOut, commands.zoomOut),
-      fitWidth: createButton(ICONS.fitWidth, () => commands.fit('width')),
-      fitHeight: createButton(ICONS.fitHeight, () => commands.fit('height')),
-      rotateLeft: createButton(ICONS.rotateLeft, () => commands.rotate(-1)),
-      rotateRight: createButton(ICONS.rotateRight, () => commands.rotate(1)),
-      download: createButton(ICONS.download, commands.download),
+      edit: createButton('edit', commands.edit),
+      zoomIn: createButton('zoomIn', commands.zoomIn),
+      zoomOut: createButton('zoomOut', commands.zoomOut),
+      fitWidth: createButton('fitWidth', () => commands.fit('width')),
+      fitHeight: createButton('fitHeight', () => commands.fit('height')),
+      rotateLeft: createButton('rotateLeft', () => commands.rotate(-1)),
+      rotateRight: createButton('rotateRight', () => commands.rotate(1)),
+      download: createButton('download', commands.download),
     }
     this.element.append(...Object.values(this.buttons))
 
@@ -56,6 +57,7 @@ export class Toolbar {
         : -1
     }
     this.setLabels(labels)
+    this.setIcons(icons)
   }
 
   /** Updates the texts. */
@@ -63,6 +65,13 @@ export class Toolbar {
     this.element.setAttribute('aria-label', labels.toolbar)
     for (const [name, button] of Object.entries(this.buttons)) {
       nameButton(button, labels[name as ButtonName])
+    }
+  }
+
+  /** Updates the icons. Each button has the icon of the same name. */
+  setIcons(icons: PaperPicIcons): void {
+    for (const [name, button] of Object.entries(this.buttons)) {
+      setIcon(button, icons[name as ButtonName])
     }
   }
 

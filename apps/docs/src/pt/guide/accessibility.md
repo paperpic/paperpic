@@ -50,4 +50,4 @@ No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` p
 
 - **Movimento reduzido.** Com `prefers-reduced-motion: reduce`, os botões mudam de estado sem transições.
 - **Cores forçadas.** No alto contraste do Windows e em outros modos de cores forçadas, botões pressionados e as ações principais mantêm um contorno visível.
-- **Modo escuro.** As cores seguem `prefers-color-scheme`. Veja [Estilos](./styling#dark-mode).
+- **Modo escuro.** As cores seguem o `color-scheme` da sua página, que pode seguir o sistema. Veja [Estilos](./styling#dark-mode).

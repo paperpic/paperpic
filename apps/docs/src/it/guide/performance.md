@@ -36,4 +36,4 @@ PaperPic ha bisogno di un browser. I componenti Vue e React renderizzano un elem
 
 ## Browser supportati
 
-PaperPic supporta i browser di [Baseline Widely Available](https://web.dev/baseline): le funzionalità che funzionano in tutti i browser principali da almeno 30 mesi. I pacchetti sono compilati per questo obiettivo, quindi non serve transpilarli.
+PaperPic supporta i browser di [Baseline Widely Available](https://web.dev/baseline): le funzionalità che funzionano in tutti i browser principali da almeno 30 mesi. I pacchetti sono compilati per questo obiettivo, cioè Chrome ed Edge 124, Firefox 125 e Safari 17.5 o successivi, quindi non serve transpilarli.

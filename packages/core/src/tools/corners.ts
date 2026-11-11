@@ -198,6 +198,7 @@ export class CornerEditor {
     const handle = document.createElement('button')
     handle.type = 'button'
     handle.className = 'paperpic-handle'
+    handle.dataset.paperpicControl = label
     handle.setAttribute('aria-label', this.host.labels()[label])
 
     let grab: ViewPoint | null = null

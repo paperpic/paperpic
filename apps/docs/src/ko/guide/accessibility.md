@@ -50,4 +50,4 @@ macOS에서는 `Cmd`가 `Ctrl`처럼 동작합니다. 변경을 취소하기 전
 
 - **동작 줄이기.** `prefers-reduced-motion: reduce`에서는 버튼 상태가 전환 효과 없이 바뀝니다.
 - **강제 색상.** Windows 고대비 같은 강제 색상 모드에서도 눌린 버튼과 주요 동작에 보이는 윤곽선이 남습니다.
-- **다크 모드.** 색은 `prefers-color-scheme`을 따릅니다. [스타일](./styling#dark-mode)을 참고하세요.
+- **다크 모드.** 색은 페이지의 `color-scheme`을 따르며, 이 값은 시스템을 따르게 할 수도 있습니다. [스타일](./styling#dark-mode)을 참고하세요.

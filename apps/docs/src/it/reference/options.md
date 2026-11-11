@@ -86,6 +86,36 @@ Se la barra degli strumenti ha un pulsante che salva l’immagine visualizzata: 
 
 Sostituisce qualsiasi testo che il componente mostra o annuncia. [Etichette](./labels) elenca tutte le chiavi.
 
+### `icons`
+
+- **Tipo:** `Partial<PaperPicIcons>`
+- **Valore predefinito:** le icone incluse
+
+Sostituisce qualsiasi icona con il tuo markup di un solo elemento, come un `<svg>`. Il markup entra nella pagina come HTML, quindi passa solo markup di cui ti fidi. Una stringa vuota lascia senza icona i pulsanti di quell’icona. [Stili](../guide/styling#icons) mostra un esempio.
+
+Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
+
+| Chiave           | Pulsante                                                                           |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| `adjust`         | Regola                                                                             |
+| `apply`          | Applica, e Fatto in Ritaglia e Raddrizza                                           |
+| `cancel`         | Annulla, e Annulla questo strumento                                                |
+| `crop`           | Ritaglia                                                                           |
+| `download`       | Scarica                                                                            |
+| `edit`           | Modifica                                                                           |
+| `fitHeight`      | Adatta all’altezza                                                                 |
+| `fitWidth`       | Adatta alla larghezza                                                              |
+| `flip`           | Capovolgi                                                                          |
+| `perspective`    | Raddrizza                                                                          |
+| `redo`           | Ripeti                                                                             |
+| `rotateDocument` | Ruota a sinistra, nella barra di modifica                                          |
+| `rotateLeft`     | Ruota a sinistra, nella barra degli strumenti di un visualizzatore di sola lettura |
+| `rotateRight`    | Ruota a destra, nella barra degli strumenti di un visualizzatore di sola lettura   |
+| `threshold`      | Pulisci                                                                            |
+| `undo`           | Annulla l’ultima azione                                                            |
+| `zoomIn`         | Ingrandisci                                                                        |
+| `zoomOut`        | Riduci                                                                             |
+
 ## Risultato
 
 ### `output`

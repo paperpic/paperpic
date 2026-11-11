@@ -36,4 +36,4 @@ PaperPic にはブラウザーが必要です。Vue と React のコンポーネ
 
 ## 対応ブラウザー
 
-PaperPic は [Baseline Widely Available](https://web.dev/baseline) のブラウザーに対応しています。主要なすべてのブラウザーで 30 か月以上動いている機能の範囲です。パッケージはこの対象向けにビルドされているため、トランスパイルは不要です。
+PaperPic は [Baseline Widely Available](https://web.dev/baseline) のブラウザーに対応しています。主要なすべてのブラウザーで 30 か月以上動いている機能の範囲です。パッケージはこの対象、つまり Chrome と Edge 124、Firefox 125、Safari 17.5 以降向けにビルドされているため、トランスパイルは不要です。

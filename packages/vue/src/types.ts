@@ -1,4 +1,4 @@
-import type { PaperPicLabels, PaperPicOutput, ToolId } from '@paperpic/core'
+import type { PaperPicIcons, PaperPicLabels, PaperPicOutput, ToolId } from '@paperpic/core'
 
 export interface PaperPicProps {
   /** Describes the image for screen readers. */
@@ -11,6 +11,11 @@ export interface PaperPicProps {
   editable?: boolean
   /** The name of the saved file. By default, the name of the source. The extension follows the format of the image. */
   filename?: string
+  /**
+   * Replaces any of the icons with the markup of one element, such as an `<svg>`. The markup is inserted as HTML, so
+   * pass only markup you trust. An empty string leaves the buttons of that icon without one.
+   */
+  icons?: Partial<PaperPicIcons>
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
   /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */

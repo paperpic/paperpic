@@ -71,7 +71,7 @@ const pic = useTemplateRef('pic')
 
 ## 类型
 
-`@paperpic/vue` 导出了你需要的类型，因此无需安装 `@paperpic/core`：`PaperPicProps`、`PaperPicState`、`PaperPicEvents`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage` 和 `ToolId`。
+`@paperpic/vue` 导出了你需要的类型，因此无需安装 `@paperpic/core`：`PaperPicProps`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage` 和 `ToolId`。
 
 ## 服务端渲染
 

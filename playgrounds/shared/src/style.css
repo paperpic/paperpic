@@ -17,23 +17,12 @@
   line-height: 1.5;
 }
 
-/*
- * A theme chosen with the button. The component follows only the system, so the page sets its tokens,
- * as the README tells sites with their own theme switch to do.
- */
+/* A theme chosen with the button. The component follows the color-scheme of the page, so it needs nothing else */
 :root[data-theme='light'] {
-  --paperpic-color-surface: #fff;
-  --paperpic-color-text: #1a263c;
-  --paperpic-color-accent: #0a84ff;
-
   color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-  --paperpic-color-surface: #151e2e;
-  --paperpic-color-text: #f2f5f9;
-  --paperpic-color-accent: #5cb5ff;
-
   color-scheme: dark;
 }
 

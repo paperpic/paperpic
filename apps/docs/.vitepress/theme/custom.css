@@ -14,7 +14,10 @@
   --vp-home-hero-image-background-image: linear-gradient(-45deg, #0a84ff 50%, #14c8b4 50%);
   --vp-home-hero-image-filter: blur(44px);
 
-  /* VitePress switches themes with a class, which the component's dark defaults do not follow */
+  /*
+   * The demos take the colors of the site. VitePress sets color-scheme with its dark class, so the component would
+   * follow the theme without these, but in its own blue and navy
+   */
   --paperpic-color-surface: var(--vp-c-bg);
   --paperpic-color-text: var(--vp-c-text-1);
   --paperpic-color-accent: var(--vp-c-brand-1);

@@ -77,7 +77,7 @@ export function Viewer({ src }: { src: string }) {
 
 ## Типы
 
-`@paperpic/react` экспортирует нужные типы, так что устанавливать `@paperpic/core` не нужно: `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` и `ToolId`.
+`@paperpic/react` экспортирует нужные типы, так что устанавливать `@paperpic/core` не нужно: `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` и `ToolId`.
 
 ## Рендеринг на сервере
 

@@ -71,7 +71,7 @@ const pic = useTemplateRef('pic')
 
 ## Типы
 
-`@paperpic/vue` экспортирует нужные типы, так что устанавливать `@paperpic/core` не нужно: `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` и `ToolId`.
+`@paperpic/vue` экспортирует нужные типы, так что устанавливать `@paperpic/core` не нужно: `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` и `ToolId`.
 
 ## Рендеринг на сервере
 

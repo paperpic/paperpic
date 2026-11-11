@@ -86,6 +86,36 @@ Ob die Werkzeugleiste eine Schaltfläche hat, die das angezeigte Bild speichert:
 
 Ersetzt beliebige Texte, die die Komponente anzeigt oder ansagt. [Beschriftungen](./labels) listet alle Schlüssel.
 
+### `icons`
+
+- **Typ:** `Partial<PaperPicIcons>`
+- **Standard:** die eingebauten Icons
+
+Ersetzt beliebige Icons durch dein eigenes Markup aus einem einzigen Element, etwa ein `<svg>`. Das Markup kommt als HTML in die Seite, übergib also nur Markup, dem du vertraust. Ein leerer String lässt die Schaltflächen dieses Icons ohne Icon. [Gestaltung](../guide/styling#icons) zeigt ein Beispiel.
+
+Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltflächen:
+
+| Schlüssel        | Schaltfläche                                                               |
+| ---------------- | -------------------------------------------------------------------------- |
+| `adjust`         | Anpassen                                                                   |
+| `apply`          | Übernehmen, und Fertig in Zuschneiden und Begradigen                       |
+| `cancel`         | Abbrechen, und Dieses Werkzeug abbrechen                                   |
+| `crop`           | Zuschneiden                                                                |
+| `download`       | Herunterladen                                                              |
+| `edit`           | Bearbeiten                                                                 |
+| `fitHeight`      | An Höhe anpassen                                                           |
+| `fitWidth`       | An Breite anpassen                                                         |
+| `flip`           | Spiegeln                                                                   |
+| `perspective`    | Begradigen                                                                 |
+| `redo`           | Wiederholen                                                                |
+| `rotateDocument` | Nach links drehen, in der Bearbeitungsleiste                               |
+| `rotateLeft`     | Nach links drehen, in der Werkzeugleiste eines schreibgeschützten Viewers  |
+| `rotateRight`    | Nach rechts drehen, in der Werkzeugleiste eines schreibgeschützten Viewers |
+| `threshold`      | Bereinigen                                                                 |
+| `undo`           | Rückgängig                                                                 |
+| `zoomIn`         | Vergrößern                                                                 |
+| `zoomOut`        | Verkleinern                                                                |
+
 ## Ergebnis
 
 ### `output`

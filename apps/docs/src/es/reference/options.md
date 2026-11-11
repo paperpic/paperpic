@@ -86,6 +86,36 @@ Si la barra de herramientas tiene un botón que guarda la imagen en pantalla: el
 
 Sustituye cualquiera de los textos que el componente muestra o anuncia. [Textos de la interfaz](./labels) recoge todas las claves.
 
+### `icons`
+
+- **Tipo:** `Partial<PaperPicIcons>`
+- **Valor por defecto:** los iconos incluidos
+
+Sustituye cualquiera de los iconos por tu propio marcado de un solo elemento, como un `<svg>`. El marcado entra en la página como HTML, así que pasa solo marcado de confianza. Una cadena vacía deja sin icono los botones de ese icono. [Estilos](../guide/styling#icons) muestra un ejemplo.
+
+Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
+
+| Clave            | Botón                                                                         |
+| ---------------- | ----------------------------------------------------------------------------- |
+| `adjust`         | Ajustar                                                                       |
+| `apply`          | Aplicar, y Hecho en Recortar y Enderezar                                      |
+| `cancel`         | Cancelar, y Cancelar esta herramienta                                         |
+| `crop`           | Recortar                                                                      |
+| `download`       | Descargar                                                                     |
+| `edit`           | Editar                                                                        |
+| `fitHeight`      | Ajustar al alto                                                               |
+| `fitWidth`       | Ajustar al ancho                                                              |
+| `flip`           | Voltear                                                                       |
+| `perspective`    | Enderezar                                                                     |
+| `redo`           | Rehacer                                                                       |
+| `rotateDocument` | Girar a la izquierda, en la barra de edición                                  |
+| `rotateLeft`     | Girar a la izquierda, en la barra de herramientas de un visor de solo lectura |
+| `rotateRight`    | Girar a la derecha, en la barra de herramientas de un visor de solo lectura   |
+| `threshold`      | Limpiar                                                                       |
+| `undo`           | Deshacer                                                                      |
+| `zoomIn`         | Acercar                                                                       |
+| `zoomOut`        | Alejar                                                                        |
+
 ## Resultado
 
 ### `output`

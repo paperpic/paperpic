@@ -86,6 +86,36 @@ Indique si la barre d’outils a un bouton qui enregistre l’image affichée : 
 
 Remplace n’importe quel texte que le composant affiche ou annonce. [Libellés](./labels) liste toutes les clés.
 
+### `icons`
+
+- **Type :** `Partial<PaperPicIcons>`
+- **Valeur par défaut :** les icônes intégrées
+
+Remplace n’importe quelle icône par votre propre balisage d’un seul élément, comme un `<svg>`. Le balisage entre dans la page en HTML, donc ne passez que du balisage de confiance. Une chaîne vide laisse sans icône les boutons de cette icône. [Styles](../guide/styling#icons) montre un exemple.
+
+Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons :
+
+| Clé              | Bouton                                                                      |
+| ---------------- | --------------------------------------------------------------------------- |
+| `adjust`         | Ajuster                                                                     |
+| `apply`          | Appliquer, et Terminé dans Recadrer et Redresser                            |
+| `cancel`         | Annuler, et Annuler cet outil                                               |
+| `crop`           | Recadrer                                                                    |
+| `download`       | Télécharger                                                                 |
+| `edit`           | Modifier                                                                    |
+| `fitHeight`      | Ajuster à la hauteur                                                        |
+| `fitWidth`       | Ajuster à la largeur                                                        |
+| `flip`           | Retourner                                                                   |
+| `perspective`    | Redresser                                                                   |
+| `redo`           | Rétablir                                                                    |
+| `rotateDocument` | Pivoter à gauche, dans la barre de modification                             |
+| `rotateLeft`     | Pivoter à gauche, dans la barre d’outils d’une visionneuse en lecture seule |
+| `rotateRight`    | Pivoter à droite, dans la barre d’outils d’une visionneuse en lecture seule |
+| `threshold`      | Nettoyer                                                                    |
+| `undo`           | Annuler la dernière action                                                  |
+| `zoomIn`         | Zoom avant                                                                  |
+| `zoomOut`        | Zoom arrière                                                                |
+
 ## Résultat
 
 ### `output`

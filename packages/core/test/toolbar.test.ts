@@ -1,5 +1,6 @@
 import type { ToolbarState } from '../src/ui/toolbar'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { DEFAULT_ICONS } from '../src/ui/icons'
 import { DEFAULT_LABELS } from '../src/ui/labels'
 import { Toolbar } from '../src/ui/toolbar'
 
@@ -147,5 +148,49 @@ describe('toolbar', () => {
   it('updates its texts', () => {
     toolbar.setLabels({ ...DEFAULT_LABELS, zoomIn: 'Acercar' })
     expect(button('Acercar')).not.toBeNull()
+  })
+
+  it('names each button in data-paperpic-control with the key of its label', () => {
+    const buttons = [
+      ...toolbar.element.querySelectorAll('button'),
+    ]
+    expect(buttons.map(element => element.dataset.paperpicControl)).toEqual([
+      'edit',
+      'zoomIn',
+      'zoomOut',
+      'fitWidth',
+      'fitHeight',
+      'rotateLeft',
+      'rotateRight',
+      'download',
+    ])
+    for (const element of buttons) {
+      expect(element.getAttribute('aria-label')).toBe(DEFAULT_LABELS[element.dataset.paperpicControl as keyof typeof DEFAULT_LABELS])
+    }
+  })
+
+  it('shows one icon on each button, hidden from screen readers', () => {
+    for (const element of toolbar.element.querySelectorAll('button')) {
+      const icons = element.querySelectorAll('.paperpic-icon')
+      expect(icons).toHaveLength(1)
+      expect(icons[0]!.getAttribute('aria-hidden')).toBe('true')
+    }
+  })
+
+  it('replaces an icon, and leaves the others as they are', () => {
+    const zoomOut = button('Zoom out').firstElementChild
+    toolbar.setIcons({ ...DEFAULT_ICONS, zoomIn: '<svg data-icon="custom"></svg>' })
+
+    const icon = button('Zoom in').firstElementChild!
+    expect(icon.getAttribute('data-icon')).toBe('custom')
+    expect(icon.classList.contains('paperpic-icon')).toBe(true)
+    expect(icon.getAttribute('aria-hidden')).toBe('true')
+    expect(button('Zoom in').querySelectorAll('.paperpic-icon')).toHaveLength(1)
+    expect(button('Zoom out').firstElementChild).toBe(zoomOut)
+  })
+
+  it('leaves a button without an icon for markup without an element', () => {
+    toolbar.setIcons({ ...DEFAULT_ICONS, zoomIn: '' })
+    expect(button('Zoom in').querySelector('.paperpic-icon')).toBeNull()
   })
 })

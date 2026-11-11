@@ -71,7 +71,7 @@ const pic = useTemplateRef('pic')
 
 ## 타입
 
-`@paperpic/vue`는 필요한 타입을 내보내므로 `@paperpic/core`를 설치할 필요가 없습니다. `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage`, `ToolId`입니다.
+`@paperpic/vue`는 필요한 타입을 내보내므로 `@paperpic/core`를 설치할 필요가 없습니다. `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage`, `ToolId`입니다.
 
 ## 서버 사이드 렌더링
 

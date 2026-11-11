@@ -34,35 +34,35 @@ The top navigation has Guide, Reference, Examples and Playground, and a version 
 
 ### Guide
 
-| Page                    | Path                           | Covers                                                                                                                 |
-| ----------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF or automatic detection, and how the packages fit together.             |
-| Getting started         | `/guide/getting-started`       | Installing, importing the styles, giving the container a height and showing the first image.                           |
-| Viewer                  | `/guide/viewer`                | Zoom, pan, fit, wheel zoom, the toolbar, and read-only use with `editable: false`. With a demo.                        |
-| Editing                 | `/guide/editing`               | Edit mode, the edit bar, Undo and Redo, Apply and Cancel, choosing tools with `tools`, and what discards an edit.      |
-| Crop                    | `/guide/tools/crop`            | Corner handles, the magnifier, `Enter` and `Esc`.                                                                      |
-| Straighten              | `/guide/tools/straighten`      | The `perspective` tool: estimated proportions, `aspectRatio` and corners cut off by the photo. With a demo.            |
-| Rotate and flip         | `/guide/tools/rotate-and-flip` | Quarter turns, mirroring, and turns that cancel out.                                                                   |
-| Adjust                  | `/guide/tools/adjust`          | Brightness and contrast.                                                                                               |
-| Clean up                | `/guide/tools/clean-up`        | The `threshold` tool: black and white, sensitivity and `softness`. With a demo.                                        |
-| Saving the result       | `/guide/saving`                | The `apply` event, `output`, `maxOutputSize`, `filename`, the download button and its event, and uploading the `Blob`. |
-| Styling                 | `/guide/styling`               | `style.css`, the `--paperpic-*` tokens, dark mode and the `paperpic` layer.                                            |
-| Labels                  | `/guide/labels`                | Replacing or translating any text of the interface.                                                                    |
-| Accessibility           | `/guide/accessibility`         | Keyboard shortcuts, screen readers, `alt`, reduced motion and forced colors.                                           |
-| Performance and support | `/guide/performance`           | The worker, bundlers and Content Security Policy, preview and full resolution, and supported browsers.                 |
+| Page                    | Path                           | Covers                                                                                                                                                                          |
+| ----------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF or automatic detection, and how the packages fit together.                                                                      |
+| Getting started         | `/guide/getting-started`       | Installing, importing the styles, giving the container a height and showing the first image.                                                                                    |
+| Viewer                  | `/guide/viewer`                | Zoom, pan, fit, wheel zoom, the toolbar, and read-only use with `editable: false`. With a demo.                                                                                 |
+| Editing                 | `/guide/editing`               | Edit mode, the edit bar, Undo and Redo, Apply and Cancel, choosing tools with `tools`, and what discards an edit.                                                               |
+| Crop                    | `/guide/tools/crop`            | Corner handles, the magnifier, `Enter` and `Esc`.                                                                                                                               |
+| Straighten              | `/guide/tools/straighten`      | The `perspective` tool: estimated proportions, `aspectRatio` and corners cut off by the photo. With a demo.                                                                     |
+| Rotate and flip         | `/guide/tools/rotate-and-flip` | Quarter turns, mirroring, and turns that cancel out.                                                                                                                            |
+| Adjust                  | `/guide/tools/adjust`          | Brightness and contrast.                                                                                                                                                        |
+| Clean up                | `/guide/tools/clean-up`        | The `threshold` tool: black and white, sensitivity and `softness`. With a demo.                                                                                                 |
+| Saving the result       | `/guide/saving`                | The `apply` event, `output`, `maxOutputSize`, `filename`, the download button and its event, and uploading the `Blob`.                                                          |
+| Styling                 | `/guide/styling`               | `style.css`, the `--paperpic-*` tokens and how to point them at a design system, dark mode with `color-scheme`, the `paperpic` layer with Tailwind CSS, icons, and class names. |
+| Labels                  | `/guide/labels`                | Replacing or translating any text of the interface.                                                                                                                             |
+| Accessibility           | `/guide/accessibility`         | Keyboard shortcuts, screen readers, `alt`, reduced motion and forced colors.                                                                                                    |
+| Performance and support | `/guide/performance`           | The worker, bundlers and Content Security Policy, preview and full resolution, and supported browsers.                                                                          |
 
 ### Reference
 
-| Page       | Path                    | Covers                                                                     |
-| ---------- | ----------------------- | -------------------------------------------------------------------------- |
-| Options    | `/reference/options`    | Every option of the constructor and `setOptions()`.                        |
-| Methods    | `/reference/methods`    | Every public method of `PaperPic`.                                         |
-| Events     | `/reference/events`     | Every event and its payload.                                               |
-| State      | `/reference/state`      | Every field that `getState()` returns.                                     |
-| Labels     | `/reference/labels`     | Every label key with its English text.                                     |
-| CSS tokens | `/reference/css-tokens` | Every `--paperpic-*` custom property with its light and dark value.        |
-| Vue        | `/reference/vue`        | How options, events and methods map to props, emits and the component ref. |
-| React      | `/reference/react`      | How options, events and methods map to props, callbacks and the ref.       |
+| Page       | Path                    | Covers                                                                                                                            |
+| ---------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Options    | `/reference/options`    | Every option of the constructor and `setOptions()`.                                                                               |
+| Methods    | `/reference/methods`    | Every public method of `PaperPic`.                                                                                                |
+| Events     | `/reference/events`     | Every event and its payload.                                                                                                      |
+| State      | `/reference/state`      | Every field that `getState()` returns.                                                                                            |
+| Labels     | `/reference/labels`     | Every label key with its English text.                                                                                            |
+| CSS tokens | `/reference/css-tokens` | Every `--paperpic-*` custom property with its light and dark value, the public classes and the values of `data-paperpic-control`. |
+| Vue        | `/reference/vue`        | How options, events and methods map to props, emits and the component ref.                                                        |
+| React      | `/reference/react`      | How options, events and methods map to props, callbacks and the ref.                                                              |
 
 ### Examples
 
