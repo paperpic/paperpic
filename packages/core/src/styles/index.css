@@ -1,5 +1,9 @@
 @import url('./tokens.css');
 
+/*
+ * The classes that the CSS reference of the docs lists are public: renaming or removing one is a breaking change.
+ * The others hold the layout together and can change in any release.
+ */
 @layer paperpic {
   .paperpic-host {
     display: block;

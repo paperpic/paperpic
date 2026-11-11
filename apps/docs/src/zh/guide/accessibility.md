@@ -50,4 +50,4 @@ description: PaperPic 如何配合键盘、屏幕阅读器和触摸屏工作，�
 
 - **减少动态效果。** 在 `prefers-reduced-motion: reduce` 下，按钮切换状态时没有过渡。
 - **强制颜色。** 在 Windows 高对比度等强制颜色模式下，按下的按钮和主要操作仍保留可见的轮廓。
-- **深色模式。** 颜色跟随 `prefers-color-scheme`。参见[样式](./styling#dark-mode)。
+- **深色模式。** 颜色跟随页面的 `color-scheme`，而它也可以跟随系统。参见[样式](./styling#dark-mode)。

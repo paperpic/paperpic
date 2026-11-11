@@ -8,7 +8,16 @@ export default defineConfig({
   },
   format: 'esm',
   platform: 'neutral',
-  target: 'baseline-widely-available',
+  // Baseline Widely Available on 2026-11-14, as browserslist resolves it: the first such browsers with light-dark(),
+  // which the tokens use. tsdown's 'baseline-widely-available' is an older list (Chrome 111, Safari 16.4), for which
+  // Lightning CSS rewrites light-dark() into variables that only work with a color-scheme of its own
+  target: [
+    'chrome124',
+    'edge124',
+    'firefox125',
+    'safari17.5',
+    'ios17.5',
+  ],
   dts: true,
   clean: true,
   plugins: [

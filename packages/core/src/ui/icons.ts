@@ -17,24 +17,55 @@ import undo from '../assets/icons/undo.svg?raw'
 import zoomIn from '../assets/icons/zoom-in.svg?raw'
 import zoomOut from '../assets/icons/zoom-out.svg?raw'
 
-/** The markup of each icon, inlined in the bundle so consumers serve no files. */
-export const ICONS = {
+/** Every icon of the interface, as the markup of one element, such as an `<svg>`. One icon can appear on several buttons. */
+export interface PaperPicIcons {
+  /** Adjust, which shows the sliders of brightness and contrast. */
+  adjust: string
+  /** Apply, and Done in Crop and Straighten. */
+  apply: string
+  /** Cancel, and the button that closes Crop and Straighten. */
+  cancel: string
+  crop: string
+  download: string
+  /** The Edit pencil. */
+  edit: string
+  fitHeight: string
+  fitWidth: string
+  flip: string
+  /** Straighten. */
+  perspective: string
+  redo: string
+  /** Rotate left in the edit bar, which turns the image itself. */
+  rotateDocument: string
+  /** Rotate left in the toolbar of a read-only viewer, which only turns the display. */
+  rotateLeft: string
+  /** Rotate right in the toolbar of a read-only viewer. */
+  rotateRight: string
+  /** Clean up. */
+  threshold: string
+  undo: string
+  zoomIn: string
+  zoomOut: string
+}
+
+/** The built-in icons, inlined in the bundle so consumers serve no files. */
+export const DEFAULT_ICONS: PaperPicIcons = {
+  adjust,
+  apply,
+  cancel,
+  crop,
+  download,
   edit,
-  zoomIn,
-  zoomOut,
-  fitWidth,
   fitHeight,
+  fitWidth,
+  flip,
+  perspective,
+  redo,
+  rotateDocument,
   rotateLeft,
   rotateRight,
-  download,
-  rotateDocument,
-  crop,
-  perspective,
-  flip,
-  adjust,
   threshold,
-  cancel,
   undo,
-  redo,
-  apply,
+  zoomIn,
+  zoomOut,
 }

@@ -10,6 +10,7 @@ import type { History } from './state/history'
 import type { Fit, Size, View, ViewPoint } from './state/view'
 import type { Lens } from './tools/magnifier'
 import type { Tool, ToolContext, ToolHost, ToolId, ToolSession } from './tools/types'
+import type { PaperPicIcons } from './ui/icons'
 import type { PaperPicLabels } from './ui/labels'
 import { downloadName, saveFile } from './download'
 import { attachGestures } from './input/gestures'
@@ -26,6 +27,7 @@ import { addToHistory, createHistory, redoHistory, undoHistory } from './state/h
 import { createView, displayedSize, fitView, frameToViewport, overflows, panBy, resizeView, rotateView, setRotation, viewportToFrame, zoomLimits, zoomTo } from './state/view'
 import { ALL_TOOL_IDS, TOOLS } from './tools'
 import { EditBar } from './ui/edit-bar'
+import { DEFAULT_ICONS } from './ui/icons'
 import { DEFAULT_LABELS } from './ui/labels'
 import { Toolbar } from './ui/toolbar'
 
@@ -54,6 +56,11 @@ export interface PaperPicOptions {
   editable?: boolean
   /** The name of the saved file. By default, the name of the source. The extension follows the format of the image. */
   filename?: string
+  /**
+   * Replaces any of the icons with the markup of one element, such as an `<svg>`. The markup is inserted as HTML, so
+   * pass only markup you trust. An empty string leaves the buttons of that icon without one.
+   */
+  icons?: Partial<PaperPicIcons>
   /** Replaces any of the texts, which are in English by default. */
   labels?: Partial<PaperPicLabels>
   /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
@@ -116,7 +123,7 @@ export interface PaperPicEvents {
 
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
 type Listeners = { [Name in keyof PaperPicEvents]: Set<Listener<Name>> }
-type OptionalOption = 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio' | 'softness' | 'filename'
+type OptionalOption = 'icons' | 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio' | 'softness' | 'filename'
 type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | OptionalOption>> & Pick<PaperPicOptions, OptionalOption>
 
 const DEFAULT_OPTIONS: ResolvedOptions = {
@@ -125,6 +132,7 @@ const DEFAULT_OPTIONS: ResolvedOptions = {
   download: false,
   editable: true,
   filename: undefined,
+  icons: undefined,
   labels: undefined,
   maxOutputSize: undefined,
   output: undefined,
@@ -328,6 +336,13 @@ export class PaperPic {
     }
     this.toolbar.setLabels(this.labels)
     this.editBar.setLabels(this.labels)
+    // An icon that keeps its markup is not parsed again, so wrappers can pass the same icons on every change
+    const icons = {
+      ...DEFAULT_ICONS,
+      ...next.icons,
+    }
+    this.toolbar.setIcons(icons)
+    this.editBar.setIcons(icons)
     this.editBar.setTools(next.tools)
     this.viewportElement.setAttribute('aria-label', this.labels.viewer)
     this.canvas.setAttribute('aria-label', next.alt)

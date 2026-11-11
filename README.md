@@ -42,8 +42,8 @@ Turn photos of paper into clean, readable documents, right in the browser.
 - 💾 **Download** the image on display with an optional button
 - ⚡ **Off the main thread**: image processing runs in a Web Worker
 - ⌨️ **Keyboard and screen readers**: shortcuts to zoom, pan, undo and apply, corner handles that move with the arrow keys, and announcements of what changes
-- 🌗 **Dark mode** that follows the system, and CSS tokens for your own theme
-- 🏷️ **Custom labels**: replace any text in the interface
+- 🌗 **Dark mode** that follows the `color-scheme` of your page, and CSS tokens for your own theme
+- 🏷️ **Custom labels and icons**: replace any text or icon in the interface
 - 📦 **No runtime dependencies** in the core
 - 🧩 **Framework agnostic**, with thin wrappers for Vue and React
 

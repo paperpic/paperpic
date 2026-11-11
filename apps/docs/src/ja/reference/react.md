@@ -77,7 +77,7 @@ export function Viewer({ src }: { src: string }) {
 
 ## 型
 
-`@paperpic/react` は必要な型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。`PaperPicProps`、`PaperPicInstance`、`PaperPicState`、`PaperPicEvents`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage`、`ToolId` です。
+`@paperpic/react` は必要な型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。`PaperPicProps`、`PaperPicInstance`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage`、`ToolId` です。
 
 ## サーバーサイドレンダリング
 

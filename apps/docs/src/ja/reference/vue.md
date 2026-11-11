@@ -71,7 +71,7 @@ const pic = useTemplateRef('pic')
 
 ## 型
 
-`@paperpic/vue` は必要な型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。`PaperPicProps`、`PaperPicState`、`PaperPicEvents`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage`、`ToolId` です。
+`@paperpic/vue` は必要な型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。`PaperPicProps`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage`、`ToolId` です。
 
 ## サーバーサイドレンダリング
 

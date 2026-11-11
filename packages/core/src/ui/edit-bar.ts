@@ -1,7 +1,8 @@
 import type { Tool, ToolId } from '../tools/types'
+import type { PaperPicIcons } from './icons'
 import type { PaperPicLabels } from './labels'
-import { attachRovingFocus, createButton, nameButton } from './button'
-import { ICONS } from './icons'
+import { attachRovingFocus, createButton, nameButton, setIcon } from './button'
+import { DEFAULT_ICONS } from './icons'
 
 /** A tone that a slider of the adjustments changes. */
 export type AdjustmentName = 'brightness' | 'contrast'
@@ -69,6 +70,8 @@ export class EditBar {
   private readonly applyText: HTMLElement
   private readonly keepButton: HTMLButtonElement
   private readonly discardButton: HTMLButtonElement
+  /** The buttons with an icon, and the name of their icon. */
+  private readonly iconButtons: [HTMLButtonElement, keyof PaperPicIcons][]
   private readonly fixTabOrder: () => void
   private labels: PaperPicLabels
   private activeTool: Tool | null = null
@@ -79,7 +82,7 @@ export class EditBar {
   private canApply = false
   private busy = false
 
-  constructor(commands: EditBarCommands, tools: readonly Tool[], labels: PaperPicLabels) {
+  constructor(commands: EditBarCommands, tools: readonly Tool[], labels: PaperPicLabels, icons: PaperPicIcons = DEFAULT_ICONS) {
     this.labels = labels
     this.element = document.createElement('div')
     this.element.className = 'paperpic-edit-bar'
@@ -89,20 +92,22 @@ export class EditBar {
     this.controls.className = 'paperpic-edit-controls'
     this.controls.setAttribute('role', 'toolbar')
 
-    this.cancelButton = createButton(ICONS.cancel, () => this.requestCancel(commands))
-    this.undoButton = createButton(ICONS.undo, commands.undo)
-    this.redoButton = createButton(ICONS.redo, commands.redo)
-    this.applyButton = createButton(ICONS.apply, commands.apply, 'paperpic-button paperpic-button-primary')
+    this.cancelButton = createButton('cancel', () => this.requestCancel(commands))
+    this.undoButton = createButton('undo', commands.undo)
+    this.redoButton = createButton('redo', commands.redo)
+    this.applyButton = createButton('apply', commands.apply, 'paperpic-button paperpic-button-primary')
     this.applyText = document.createElement('span')
     this.applyButton.append(this.applyText)
 
     this.offered = new Set(tools.map(({ id }) => id))
     const toolGroup = document.createElement('div')
     toolGroup.className = 'paperpic-edit-tools'
+    const toolIcons: [HTMLButtonElement, keyof PaperPicIcons][] = []
     for (const tool of tools) {
       for (const action of tool.actions) {
-        const button = createButton(ICONS[action.icon ?? action.id], () => commands.runTool(action.run))
+        const button = createButton(action.id, () => commands.runTool(action.run))
         this.toolButtons.push({ tool, id: action.id, button })
+        toolIcons.push([button, action.icon ?? action.id])
         toolGroup.append(button)
       }
     }
@@ -116,13 +121,23 @@ export class EditBar {
     this.toolControls = document.createElement('div')
     this.toolControls.className = 'paperpic-edit-tool'
     this.toolControls.hidden = true
-    this.cancelToolButton = createButton(ICONS.cancel, commands.cancelTool)
+    this.cancelToolButton = createButton('cancelTool', commands.cancelTool)
     this.hint = document.createElement('span')
     this.hint.className = 'paperpic-edit-message'
-    this.confirmToolButton = createButton(ICONS.apply, commands.confirmTool, 'paperpic-button paperpic-button-primary')
+    this.confirmToolButton = createButton('confirm', commands.confirmTool, 'paperpic-button paperpic-button-primary')
     this.confirmToolText = document.createElement('span')
     this.confirmToolButton.append(this.confirmToolText)
     this.toolControls.append(this.cancelToolButton, this.hint, this.confirmToolButton)
+
+    this.iconButtons = [
+      [this.cancelButton, 'cancel'],
+      ...toolIcons,
+      [this.undoButton, 'undo'],
+      [this.redoButton, 'redo'],
+      [this.applyButton, 'apply'],
+      [this.cancelToolButton, 'cancel'],
+      [this.confirmToolButton, 'apply'],
+    ]
 
     this.confirmation = document.createElement('div')
     this.confirmation.className = 'paperpic-edit-confirmation'
@@ -130,8 +145,8 @@ export class EditBar {
     this.confirmation.hidden = true
     this.message = document.createElement('span')
     this.message.className = 'paperpic-edit-message'
-    this.keepButton = createButton('', () => this.closeConfirmation(), 'paperpic-button paperpic-button-text')
-    this.discardButton = createButton('', () => {
+    this.keepButton = createButton('keepEditing', () => this.closeConfirmation(), 'paperpic-button paperpic-button-text')
+    this.discardButton = createButton('discard', () => {
       this.closeConfirmation()
       commands.cancel()
     }, 'paperpic-button paperpic-button-text paperpic-button-danger')
@@ -145,7 +160,7 @@ export class EditBar {
       }
     })
 
-    this.threshold = this.createSlider('paperpic-edit-threshold', 0, commands.previewThreshold, commands.setThreshold)
+    this.threshold = this.createSlider('thresholdSensitivity', 'paperpic-edit-threshold', 0, commands.previewThreshold, commands.setThreshold)
     this.threshold.row.hidden = true
 
     this.adjustRow = document.createElement('div')
@@ -154,6 +169,7 @@ export class EditBar {
     const sliders: Partial<Record<AdjustmentName, Slider>> = {}
     for (const name of ADJUSTMENTS) {
       const slider = this.createSlider(
+        name,
         'paperpic-edit-slider',
         -1,
         value => commands.previewAdjustment(name, value),
@@ -175,6 +191,14 @@ export class EditBar {
     ])
     this.fixTabOrder()
     this.setLabels(labels)
+    this.setIcons(icons)
+  }
+
+  /** Updates the icons. */
+  setIcons(icons: PaperPicIcons): void {
+    for (const [button, name] of this.iconButtons) {
+      setIcon(button, icons[name])
+    }
   }
 
   /** Updates the texts. */
@@ -288,12 +312,22 @@ export class EditBar {
     button?.focus()
   }
 
-  /** Creates a slider that reports each value while it moves, and the one the user chooses when it is released. */
-  private createSlider(className: string, min: number, onInput: (value: number) => void, onChange: (value: number) => void): Slider {
+  /**
+   * Creates a slider that reports each value while it moves, and the one the user chooses when it is released.
+   * `data-paperpic-control` holds the key of its name in the labels.
+   */
+  private createSlider(
+    control: keyof PaperPicLabels,
+    className: string,
+    min: number,
+    onInput: (value: number) => void,
+    onChange: (value: number) => void,
+  ): Slider {
     const row = document.createElement('label')
     row.className = className
     const name = document.createElement('span')
     const input = document.createElement('input')
+    input.dataset.paperpicControl = control
     input.type = 'range'
     input.min = String(min)
     input.max = '1'

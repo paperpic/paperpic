@@ -5,7 +5,14 @@ export default defineConfig({
   entry: ['src/index.ts'],
   format: 'esm',
   platform: 'neutral',
-  target: 'baseline-widely-available',
+  // The browsers of @paperpic/core, whose styles this package bundles. Its tsdown.config.ts says why
+  target: [
+    'chrome124',
+    'edge124',
+    'firefox125',
+    'safari17.5',
+    'ios17.5',
+  ],
   plugins: [
     Vue({ isProduction: true }),
   ],

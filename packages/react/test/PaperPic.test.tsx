@@ -69,6 +69,13 @@ describe('paperPic', () => {
     expect(core.instances[0]!.setOptions).toHaveBeenLastCalledWith(expect.objectContaining({ editable: false, src: '/doc.png' }))
   })
 
+  it('passes the icons to the viewer', () => {
+    const icons = { zoomIn: '<svg></svg>' }
+    render(<PaperPic src="/doc.png" icons={icons} />)
+
+    expect(core.instances[0]!.setOptions).toHaveBeenCalledWith(expect.objectContaining({ icons }))
+  })
+
   it('passes a removed prop as undefined, so the viewer goes back to its default', () => {
     const { rerender } = render(<PaperPic src="/doc.png" editable={false} />)
 

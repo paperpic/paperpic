@@ -2,19 +2,14 @@
 @layer paperpic {
   /* On :root, so a consumer can override a token on :root, on any ancestor or on .paperpic */
   :root {
-    --paperpic-color-surface: #fff;
-    --paperpic-color-text: #1a263c;
-    --paperpic-color-accent: #0a84ff;
+    /*
+     * light-dark() picks a color from the color-scheme of the page, as native controls do, so a light page keeps a
+     * light viewer whatever the system prefers. Inside a custom property it resolves where the token is used.
+     */
+    --paperpic-color-surface: light-dark(#fff, #151e2e);
+    --paperpic-color-text: light-dark(#1a263c, #f2f5f9);
+    --paperpic-color-accent: light-dark(#0a84ff, #5cb5ff);
     --paperpic-radius: 6px;
     --paperpic-transition-duration: 0.2s;
-  }
-
-  /* A page that switches themes with a class, and not with this query, sets the tokens itself */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --paperpic-color-surface: #151e2e;
-      --paperpic-color-text: #f2f5f9;
-      --paperpic-color-accent: #5cb5ff;
-    }
   }
 }

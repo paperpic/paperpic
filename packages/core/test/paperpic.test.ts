@@ -275,6 +275,19 @@ describe('paperPic', () => {
       expect(button('Acercar')).not.toBeNull()
       expect(button('Zoom out')).not.toBeNull()
     })
+
+    it('replaces icons, keeps the rest, and brings them back without the option', () => {
+      const zoomOut = button('Zoom out').firstElementChild
+      pic.setOptions({
+        icons: { zoomIn: '<svg data-icon="custom"></svg>' },
+      })
+      expect(button('Zoom in').firstElementChild!.getAttribute('data-icon')).toBe('custom')
+      expect(button('Zoom out').firstElementChild).toBe(zoomOut)
+
+      pic.setOptions({ icons: undefined })
+      expect(button('Zoom in').querySelector('[data-icon="custom"]')).toBeNull()
+      expect(button('Zoom in').querySelector('.paperpic-icon')).not.toBeNull()
+    })
   })
 
   describe('rotation and editing', () => {

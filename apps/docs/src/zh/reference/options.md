@@ -86,6 +86,36 @@ pic.setOptions({ editable: false })
 
 替换组件显示或朗读的任意文本。所有键都列在[标签](./labels)中。
 
+### `icons`
+
+- **类型：** `Partial<PaperPicIcons>`
+- **默认值：** 内置图标
+
+用你自己的单个元素标记（例如 `<svg>`）替换任意图标。标记会作为 HTML 插入页面，因此只传入你信任的标记。空字符串会让使用该图标的按钮不显示图标。[样式](../guide/styling#icons)中有示例。
+
+每个键对应一个图标，有些图标会出现在两个按钮上：
+
+| 键               | 按钮                         |
+| ---------------- | ---------------------------- |
+| `adjust`         | 调整                         |
+| `apply`          | 应用，以及裁剪和矫正中的完成 |
+| `cancel`         | 取消，以及取消此工具         |
+| `crop`           | 裁剪                         |
+| `download`       | 下载                         |
+| `edit`           | 编辑                         |
+| `fitHeight`      | 适合高度                     |
+| `fitWidth`       | 适合宽度                     |
+| `flip`           | 翻转                         |
+| `perspective`    | 矫正                         |
+| `redo`           | 重做                         |
+| `rotateDocument` | 编辑栏中的向左旋转           |
+| `rotateLeft`     | 只读查看器工具栏中的向左旋转 |
+| `rotateRight`    | 只读查看器工具栏中的向右旋转 |
+| `threshold`      | 清理                         |
+| `undo`           | 撤销                         |
+| `zoomIn`         | 放大                         |
+| `zoomOut`        | 缩小                         |
+
 ## 结果
 
 ### `output`

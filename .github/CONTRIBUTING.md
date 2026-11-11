@@ -94,11 +94,14 @@ CI runs lint, typecheck, test and build on every pull request.
 
 The CSS that the packages ship lives in `packages/core/src/styles` and follows these rules:
 
-- Plain CSS, without preprocessors or CSS Modules, because class names are public and must stay stable.
+- Plain CSS, without preprocessors or CSS Modules, because some class names are public and must stay stable.
 - Every rule goes inside `@layer paperpic`, so a consumer's CSS wins without specificity fights.
 - Customization goes through `--paperpic-*` custom properties, declared in `tokens.css`. Renaming or removing one is a breaking change.
+- Color tokens take their light and dark values from `light-dark()`, so they follow the `color-scheme` of the page.
+- A token that derives from another goes as a fallback where it is used, such as `var(--paperpic-color-border, var(--paperpic-color-text))`. Declared on `:root` with `var()`, it would resolve there and miss an override on an ancestor.
+- The classes in the [CSS reference](../apps/docs/src/en/reference/css-tokens.md) are public, and so are the values of `data-paperpic-control`, which are keys of the labels. Renaming or removing one is a breaking change. The other classes can change.
 - Classes are `paperpic` or start with `paperpic-`. Stylelint enforces this and the custom property names in `packages/core` and `packages/vue`.
-- Features must work in [Baseline Widely Available](https://web.dev/baseline) browsers, the build target of the published packages.
+- Features must work in [Baseline Widely Available](https://web.dev/baseline) browsers. Each `tsdown.config.ts` lists their versions as its `target`, because tsdown's own `baseline-widely-available` is older and lacks `light-dark()`.
 
 `pnpm dev`, `pnpm dev:vue` and `pnpm dev:react` inject the styles directly. Use `pnpm dev:dist`, `pnpm dev:vue:dist` or `pnpm dev:react:dist` to check the `style.css` that consumers import.
 

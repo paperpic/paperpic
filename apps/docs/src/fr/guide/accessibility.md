@@ -50,4 +50,4 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Avant d’annuler les changements, `É
 
 - **Mouvement réduit.** Avec `prefers-reduced-motion: reduce`, les boutons changent d’état sans transitions.
 - **Couleurs forcées.** Dans le contraste élevé de Windows et les autres modes de couleurs forcées, les boutons enfoncés et les actions principales gardent un contour visible.
-- **Mode sombre.** Les couleurs suivent `prefers-color-scheme`. Voir [Styles](./styling#dark-mode).
+- **Mode sombre.** Les couleurs suivent le `color-scheme` de votre page, qui peut suivre le système. Voir [Styles](./styling#dark-mode).

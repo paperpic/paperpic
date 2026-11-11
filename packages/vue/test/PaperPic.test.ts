@@ -66,6 +66,15 @@ describe('paperPic', () => {
     expect(core.instances[0]!.setOptions).toHaveBeenCalledWith(expect.objectContaining({ editable: false, src: '/doc.png' }))
   })
 
+  it('passes the icons to the viewer', () => {
+    const icons = { zoomIn: '<svg></svg>' }
+    mount(PaperPic, {
+      props: { src: '/doc.png', icons },
+    })
+
+    expect(core.instances[0]!.options).toMatchObject({ icons })
+  })
+
   it.each([
     'apply',
     'change',

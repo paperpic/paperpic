@@ -73,6 +73,7 @@ describe('the English reference', () => {
   it.each([
     ['state', 'PaperPicState'],
     ['labels', 'PaperPicLabels'],
+    ['options', 'PaperPicIcons'],
   ])('names every member of the type in %s', (page, type) => {
     const spans = codeSpansOf(page)
     expect(namesOf(type).filter(name => !spans.has(name))).toEqual([])

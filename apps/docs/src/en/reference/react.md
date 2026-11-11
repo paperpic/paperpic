@@ -77,7 +77,7 @@ Passing the same `src` again does not reload the image, so it keeps the result o
 
 ## Types
 
-`@paperpic/react` exports the types you need, so you do not need to install `@paperpic/core`: `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` and `ToolId`.
+`@paperpic/react` exports the types you need, so you do not need to install `@paperpic/core`: `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` and `ToolId`.
 
 ## Server-side rendering
 

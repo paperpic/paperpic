@@ -71,7 +71,7 @@ Passar o mesmo `src` de novo não recarrega a imagem, então ela mantém o resul
 
 ## Tipos
 
-`@paperpic/vue` exporta os tipos de que você precisa, então não é preciso instalar `@paperpic/core`: `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` e `ToolId`.
+`@paperpic/vue` exporta os tipos de que você precisa, então não é preciso instalar `@paperpic/core`: `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` e `ToolId`.
 
 ## Renderização no servidor
 

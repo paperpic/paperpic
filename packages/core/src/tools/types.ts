@@ -21,7 +21,7 @@ export interface ToolContext {
 export interface ToolAction {
   /** Its icon, when it is not the one named by `id`. */
   icon?: 'rotateDocument'
-  /** Its key in `PaperPicLabels` and in the icons. */
+  /** Its key in `PaperPicLabels`, which its `data-paperpic-control` also holds, and in `PaperPicIcons`. */
   id: 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotateLeft' | 'threshold'
   run: (context: ToolContext) => void
 }

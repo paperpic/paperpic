@@ -50,4 +50,4 @@ On macOS, `Cmd` works like `Ctrl`. Before cancelling changes, `Esc` asks for con
 
 - **Reduced motion.** With `prefers-reduced-motion: reduce`, the buttons change state without transitions.
 - **Forced colors.** In Windows high contrast and other forced color modes, pressed buttons and the main actions keep a visible outline.
-- **Dark mode.** The colors follow `prefers-color-scheme`. See [Styling](./styling#dark-mode).
+- **Dark mode.** The colors follow the `color-scheme` of your page, which can follow the system. See [Styling](./styling#dark-mode).

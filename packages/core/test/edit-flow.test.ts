@@ -2,6 +2,7 @@ import type { Mock } from 'vitest'
 import type { PaperPicState } from '../src'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PaperPic } from '../src'
+import { DEFAULT_LABELS } from '../src/ui/labels'
 
 const mocks = vi.hoisted(() => ({
   exportImage: vi.fn(),
@@ -1223,5 +1224,49 @@ describe('editing', () => {
     const event = new MouseEvent('contextmenu', { bubbles: true, cancelable: true })
     container.querySelector('.paperpic-canvas')!.dispatchEvent(event)
     expect(event.defaultPrevented).toBe(true)
+  })
+
+  describe('controls and icons', () => {
+    /** The text that names a control: its accessible name, its text, or the name next to a slider. */
+    const nameOf = (control: HTMLElement) => control instanceof HTMLInputElement
+      ? control.closest('label')!.querySelector('span')!.textContent
+      : control.getAttribute('aria-label') ?? control.textContent
+
+    it('names every control in data-paperpic-control with the key of its label', () => {
+      pic.edit()
+      pic.openTool('crop')
+      const controls = [
+        ...container.querySelectorAll<HTMLElement>('button, input'),
+      ]
+      expect(controls.length).toBeGreaterThan(20)
+
+      for (const control of controls) {
+        const key = control.dataset.paperpicControl as keyof typeof DEFAULT_LABELS
+        expect(DEFAULT_LABELS).toHaveProperty(key)
+        expect(nameOf(control)).toBe(DEFAULT_LABELS[key])
+      }
+    })
+
+    it('puts each icon on its buttons, before their text', () => {
+      pic.setOptions({
+        icons: {
+          apply: '<svg data-icon="check"></svg>',
+          rotateDocument: '<svg data-icon="turn"></svg>',
+        },
+      })
+
+      const apply = button('Apply')
+      expect(apply.firstElementChild!.getAttribute('data-icon')).toBe('check')
+      expect(apply.textContent).toBe('Apply')
+      expect(button('Done').querySelector('[data-icon="check"]')).not.toBeNull()
+      expect(bar().querySelector('[data-paperpic-control="rotateLeft"] [data-icon="turn"]')).not.toBeNull()
+      expect(container.querySelector('.paperpic-toolbar [data-icon="turn"]')).toBeNull()
+
+      pic.setOptions({
+        icons: { apply: '' },
+      })
+      expect(apply.querySelector('.paperpic-icon')).toBeNull()
+      expect(apply.textContent).toBe('Apply')
+    })
   })
 })

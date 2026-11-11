@@ -36,4 +36,4 @@ PaperPic 需要浏览器。在 Nuxt 或 Next.js 等服务端渲染中，Vue 和 
 
 ## 浏览器支持
 
-PaperPic 支持 [Baseline Widely Available](https://web.dev/baseline) 的浏览器：即在所有主流浏览器中可用至少 30 个月的功能。各个包都是针对这个目标构建的，因此无需再转译。
+PaperPic 支持 [Baseline Widely Available](https://web.dev/baseline) 的浏览器：即在所有主流浏览器中可用至少 30 个月的功能。各个包都是针对这个目标构建的，即 Chrome 和 Edge 124、Firefox 125 以及 Safari 17.5 或更新版本，因此无需再转译。

@@ -86,6 +86,36 @@ Se a barra de ferramentas tem um botão que salva a imagem na tela: o resultado 
 
 Substitui qualquer texto que o componente mostra ou anuncia. [Rótulos](./labels) lista todas as chaves.
 
+### `icons`
+
+- **Tipo:** `Partial<PaperPicIcons>`
+- **Padrão:** os ícones incluídos
+
+Substitui qualquer ícone pela sua própria marcação de um único elemento, como um `<svg>`. A marcação entra na página como HTML, então passe apenas marcação confiável. Uma string vazia deixa sem ícone os botões desse ícone. [Estilos](../guide/styling#icons) mostra um exemplo.
+
+Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
+
+| Chave            | Botão                                                                             |
+| ---------------- | --------------------------------------------------------------------------------- |
+| `adjust`         | Ajustar                                                                           |
+| `apply`          | Aplicar, e Concluído em Recortar e Endireitar                                     |
+| `cancel`         | Cancelar, e Cancelar esta ferramenta                                              |
+| `crop`           | Recortar                                                                          |
+| `download`       | Baixar                                                                            |
+| `edit`           | Editar                                                                            |
+| `fitHeight`      | Ajustar à altura                                                                  |
+| `fitWidth`       | Ajustar à largura                                                                 |
+| `flip`           | Espelhar                                                                          |
+| `perspective`    | Endireitar                                                                        |
+| `redo`           | Refazer                                                                           |
+| `rotateDocument` | Girar para a esquerda, na barra de edição                                         |
+| `rotateLeft`     | Girar para a esquerda, na barra de ferramentas de um visualizador somente leitura |
+| `rotateRight`    | Girar para a direita, na barra de ferramentas de um visualizador somente leitura  |
+| `threshold`      | Limpar                                                                            |
+| `undo`           | Desfazer                                                                          |
+| `zoomIn`         | Ampliar                                                                           |
+| `zoomOut`        | Reduzir                                                                           |
+
 ## Resultado
 
 ### `output`
