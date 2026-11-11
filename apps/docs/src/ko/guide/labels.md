@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## 값이 들어간 텍스트
 
-레이블 4개는 텍스트에 값이 들어가므로 함수입니다. 확대/축소 배율, ‘정리’의 민감도, 모서리와 그 위치, ‘조정’의 슬라이더입니다. 스크린 리더가 이를 읽어 줍니다. 숫자는 여러분 언어의 방식대로 형식을 맞추세요.
+레이블 5개는 텍스트에 값이 들어가므로 함수입니다. 확대/축소 배율, ‘정리’의 민감도, 모서리와 그 위치, 선택한 모서리, ‘조정’의 슬라이더입니다. 스크린 리더가 이를 읽어 줍니다. 숫자는 여러분 언어의 방식대로 형식을 맞추세요.
 
 ```ts
 const signed = new Intl.NumberFormat('ko', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `확대/축소 ${percent}%`,
   thresholdLevel: percent => `민감도 ${percent}%`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
+  cornerSelected: corner => `${corner}: 옮길 위치를 탭하세요`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

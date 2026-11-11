@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## 带数值的文本
 
-有四个标签是函数，因为它们的文本包含一个值：缩放、“清理”的灵敏度、一个角及其位置，以及“调整”的滑块。屏幕阅读器会朗读它们。请按照你的语言习惯格式化数字：
+有五个标签是函数，因为它们的文本包含一个值：缩放、“清理”的灵敏度、一个角及其位置、一个选中的角，以及“调整”的滑块。屏幕阅读器会朗读它们。请按照你的语言习惯格式化数字：
 
 ```ts
 const signed = new Intl.NumberFormat('zh', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `缩放 ${percent}%`,
   thresholdLevel: percent => `灵敏度 ${percent}%`,
   cornerMoved: (corner, x, y) => `${corner}：${x}, ${y}`,
+  cornerSelected: corner => `${corner}：点按新位置`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

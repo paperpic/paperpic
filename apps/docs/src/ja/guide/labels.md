@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## 値を含むテキスト
 
-4 つのラベルは、テキストに値を含むため関数です。ズーム、「クリーンアップ」の感度、角とその位置、「調整」のスライダーです。スクリーンリーダーが読み上げます。数値は使う言語の書き方に合わせてください。
+5 つのラベルは、テキストに値を含むため関数です。ズーム、「クリーンアップ」の感度、角とその位置、選択した角、「調整」のスライダーです。スクリーンリーダーが読み上げます。数値は使う言語の書き方に合わせてください。
 
 ```ts
 const signed = new Intl.NumberFormat('ja', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `ズーム ${percent}%`,
   thresholdLevel: percent => `感度 ${percent}%`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
+  cornerSelected: corner => `${corner}: 移動先をタップします`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

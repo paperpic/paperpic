@@ -15,7 +15,7 @@ Um documento fotografado em ângulo parece um trapézio: a borda mais distante f
 2. Arraste cada alça até um canto do documento. Dê zoom para posicioná-las com precisão.
 3. Toque em Concluído, ou `Enter`. O visualizador mostra a página plana, recortada nos quatro cantos.
 
-As alças funcionam como em [Recortar](./crop): uma lupa em telas sensíveis ao toque, e Tab e as setas no teclado. Os quatro cantos sempre formam uma figura convexa, então a página sempre pode ficar plana.
+As alças funcionam como em [Recortar](./crop): uma lupa em telas sensíveis ao toque, pressionar e tocar em vez de arrastar, e Tab e as setas no teclado. Os quatro cantos sempre formam uma figura convexa, então a página sempre pode ficar plana.
 
 ## Proporções
 

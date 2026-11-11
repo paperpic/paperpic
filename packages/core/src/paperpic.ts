@@ -288,6 +288,7 @@ export class PaperPic {
     this.cleanups.push(attachGestures(this.viewportElement, {
       onPan: (deltaX, deltaY) => this.pan(deltaX, deltaY),
       onZoom: (factor, point) => this.zoomAround(this.view.zoom * factor, point),
+      onTap: point => this.session?.handle.tap?.(point) ?? false,
       onDoubleTap: point => this.toggleZoom(point),
       wheelZoom: () => this.options.wheelZoom,
     }))
@@ -758,6 +759,7 @@ export class PaperPic {
         this.pan(distance(x, this.viewport.width), distance(y, this.viewport.height))
       },
       requestPaint: () => this.renderer.requestPaint(),
+      setHint: text => this.editBar.setHint(text),
       announce: (text) => {
         this.status.textContent = text
       },
@@ -1181,7 +1183,10 @@ export class PaperPic {
         return editing
       case 'cancel':
         if (this.session) {
-          this.cancelTool()
+          // A selected corner lets go first, and the next Esc closes the tool
+          if (!this.session.handle.escape?.()) {
+            this.cancelTool()
+          }
           return true
         }
         // Without the built-in bar there is nowhere to ask, and a custom interface decides what Esc does

@@ -2,6 +2,7 @@ import type { Point, Quad } from '../processing/types'
 import type { Size, ViewPoint } from '../state/view'
 import type { Lens } from './magnifier'
 import type { ToolHost } from './types'
+import { TAP_MOVEMENT } from '../input/gestures'
 import { placeLens } from './magnifier'
 
 /** Decides where the corners end up when the user moves one of them towards a point. */
@@ -132,13 +133,18 @@ function drawSelection(context: CanvasRenderingContext2D, frame: readonly ViewPo
   context.stroke()
 }
 
-/** The corner handles of a selection: elements that take the focus and work with a pointer and with the keyboard. */
+/**
+ * The corner handles of a selection: elements that take the focus and work with a pointer and with the keyboard.
+ * A corner moves by dragging its handle, or by pressing the handle and then tapping the new place, which needs no drag.
+ */
 export class CornerEditor {
   private readonly host: ToolHost
   private readonly constrain: ConstrainCorner
   private readonly handles: HTMLButtonElement[]
   private corners: Quad
   private lens: Lens | null = null
+  /** The corner that the next tap on the image moves. */
+  private selected: number | null = null
 
   constructor(host: ToolHost, corners: Quad, constrain: ConstrainCorner) {
     this.host = host
@@ -176,10 +182,47 @@ export class CornerEditor {
     }
   }
 
+  /** Moves the selected corner to a point of the viewport. Returns whether a corner was selected. */
+  place(point: ViewPoint): boolean {
+    const index = this.selected
+    if (index === null) {
+      return false
+    }
+    this.select(null)
+    this.move(index, this.host.viewportToFrame(point))
+    this.announce(index)
+    return true
+  }
+
+  /** Lets go of the selected corner. Returns whether a corner was selected. */
+  deselect(): boolean {
+    const wasSelected = this.selected !== null
+    this.select(null)
+    return wasSelected
+  }
+
   deactivate(): void {
+    this.select(null)
     for (const handle of this.handles) {
       handle.remove()
     }
+  }
+
+  /** Selects a corner, or none with `null`, and tells the user what to do next. */
+  private select(index: number | null): void {
+    if (index === this.selected) {
+      return
+    }
+    this.selected = index
+    this.handles.forEach((handle, position) => handle.setAttribute('aria-pressed', String(position === index)))
+    if (index === null) {
+      this.host.setHint(null)
+      return
+    }
+    const labels = this.host.labels()
+    const text = labels.cornerSelected(labels[CORNER_LABELS[index]!])
+    this.host.setHint(text)
+    this.host.announce(text)
   }
 
   private move(index: number, point: Point): void {
@@ -200,8 +243,15 @@ export class CornerEditor {
     handle.className = 'paperpic-handle'
     handle.dataset.paperpicControl = label
     handle.setAttribute('aria-label', this.host.labels()[label])
+    handle.setAttribute('aria-pressed', 'false')
 
     let grab: ViewPoint | null = null
+    let last: ViewPoint = { x: 0, y: 0 }
+    let before: Quad = this.corners
+    let travelled = 0
+    // Whether a pointer tapped this handle. The click that ends a drag must not select the corner, and neither must
+    // the click of a tap on the image, which lands on this handle once the tap has moved it there
+    let tapped = false
 
     const localPoint = (event: PointerEvent): ViewPoint => {
       const { left, top } = this.host.layer.getBoundingClientRect()
@@ -215,6 +265,10 @@ export class CornerEditor {
       const { x, y } = this.host.frameToViewport(this.corners[index]!)
       const point = localPoint(event)
       grab = { x: point.x - x, y: point.y - y }
+      last = point
+      before = this.corners
+      travelled = 0
+      tapped = false
       if (event.pointerType !== 'mouse') {
         // The other handles would cover the lens
         this.setOthersHidden(handle, true)
@@ -227,23 +281,47 @@ export class CornerEditor {
         return
       }
       const point = localPoint(event)
+      travelled += Math.hypot(point.x - last.x, point.y - last.y)
+      last = point
       this.move(index, this.host.viewportToFrame({ x: point.x - grab.x, y: point.y - grab.y }))
       if (event.pointerType !== 'mouse') {
         this.showLens(index, point)
       }
     })
 
-    const release = () => {
-      if (grab) {
-        grab = null
-        this.lens = null
-        this.setOthersHidden(handle, false)
-        this.host.requestPaint()
+    const release = (event: PointerEvent) => {
+      if (!grab) {
+        return
+      }
+      grab = null
+      this.lens = null
+      this.setOthersHidden(handle, false)
+      if (travelled < TAP_MOVEMENT) {
+        // A tap selects the corner, so the small shake of a finger must not move it
+        tapped = event.type === 'pointerup'
+        this.corners = before
+        this.update()
+      }
+      else {
+        this.select(null)
         this.announce(index)
       }
+      this.host.requestPaint()
     }
     handle.addEventListener('pointerup', release)
     handle.addEventListener('pointercancel', release)
+
+    // The keyboard and screen readers click with a `detail` of 0, and pointers with the number of clicks
+    handle.addEventListener('click', (event) => {
+      const fromPointer = event.detail > 0
+      if (fromPointer && !tapped) {
+        return
+      }
+      tapped = false
+      this.select(this.selected === index
+        ? null
+        : index)
+    })
 
     handle.addEventListener('focus', () => this.host.reveal(this.corners[index]!))
 

@@ -25,6 +25,7 @@ describe('attachGestures', () => {
     onPan: vi.fn(),
     onZoom: vi.fn(),
     onDoubleTap: vi.fn(),
+    onTap: vi.fn<(point: { x: number, y: number }) => boolean>(() => false),
     wheelZoom: () => wheelZoom,
   }
 
@@ -81,6 +82,18 @@ describe('attachGestures', () => {
     element.dispatchEvent(pointer('pointerdown', 1, 50, 0, 50))
     element.dispatchEvent(pointer('pointerup', 1, 50, 0, 60))
     expect(handlers.onDoubleTap).not.toHaveBeenCalled()
+    expect(handlers.onTap).toHaveBeenCalledOnce()
+  })
+
+  it('reports each tap, and leaves out of a double tap one that was used', () => {
+    handlers.onTap.mockReturnValueOnce(true)
+    element.dispatchEvent(pointer('pointerdown', 1, 50, 50, 0))
+    element.dispatchEvent(pointer('pointerup', 1, 50, 50, 10))
+    expect(handlers.onTap).toHaveBeenLastCalledWith({ x: 50, y: 50 })
+    element.dispatchEvent(pointer('pointerdown', 1, 50, 50, 100))
+    element.dispatchEvent(pointer('pointerup', 1, 50, 50, 110))
+    expect(handlers.onDoubleTap).not.toHaveBeenCalled()
+    expect(handlers.onTap).toHaveBeenCalledTimes(2)
   })
 
   it('forgets a pointer when the browser takes it over to scroll', () => {

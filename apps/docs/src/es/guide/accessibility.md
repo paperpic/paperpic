@@ -18,15 +18,15 @@ La gente lee y arregla documentos con ratón, con el dedo, con el teclado o con 
 
 Con el foco en el visor:
 
-| Tecla                     | Acción                                                         |
-| ------------------------- | -------------------------------------------------------------- |
-| `+` y `-`                 | Acercar y alejar                                               |
-| Flechas                   | Desplazar                                                      |
-| `0`                       | Ajustar la imagen entera                                       |
-| `Ctrl+Z`                  | Deshacer                                                       |
-| `Ctrl+Shift+Z` o `Ctrl+Y` | Rehacer                                                        |
-| `Enter`                   | Confirmar la herramienta abierta, o si no, aplicar los cambios |
-| `Esc`                     | Cerrar la herramienta abierta, o si no, cancelar los cambios   |
+| Tecla                     | Acción                                                                                        |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| `+` y `-`                 | Acercar y alejar                                                                              |
+| Flechas                   | Desplazar                                                                                     |
+| `0`                       | Ajustar la imagen entera                                                                      |
+| `Ctrl+Z`                  | Deshacer                                                                                      |
+| `Ctrl+Shift+Z` o `Ctrl+Y` | Rehacer                                                                                       |
+| `Enter`                   | Confirmar la herramienta abierta, o si no, aplicar los cambios                                |
+| `Esc`                     | Soltar una esquina seleccionada, cerrar la herramienta abierta, o si no, cancelar los cambios |
 
 En macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar los cambios, `Esc` pide confirmación. Con `toolbar: false`, se los deja a tu interfaz.
 
@@ -44,6 +44,7 @@ En macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar los cambios, `Esc` pide 
 
 - Con `pointer: coarse`, los botones y los tiradores de esquina miden al menos 44 píxeles.
 - Mientras un dedo arrastra una esquina, una lupa muestra la zona que tapa.
+- Una esquina también se mueve sin arrastrar: pulsa su tirador y luego toca donde va. También funciona con ratón.
 - Mientras la imagen está ajustada, un dedo desplaza la página, así que el visor no deja a nadie atrapado dentro. Con zoom, desplaza la imagen.
 
 ## Preferencias

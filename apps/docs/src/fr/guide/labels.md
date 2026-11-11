@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Textes avec une valeur
 
-Quatre libellés sont des fonctions, car leur texte contient une valeur : le zoom, la sensibilité de Nettoyer, un coin et sa position, et un curseur d’Ajuster. Les lecteurs d’écran les annoncent. Formatez les nombres comme le fait votre langue :
+Cinq libellés sont des fonctions, car leur texte contient une valeur : le zoom, la sensibilité de Nettoyer, un coin et sa position, un coin sélectionné, et un curseur d’Ajuster. Les lecteurs d’écran les annoncent. Formatez les nombres comme le fait votre langue :
 
 ```ts
 const signed = new Intl.NumberFormat('fr', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `Zoom ${percent} %`,
   thresholdLevel: percent => `Sensibilité ${percent} %`,
   cornerMoved: (corner, x, y) => `${corner} : ${x}, ${y}`,
+  cornerSelected: corner => `${corner} : touchez son nouvel emplacement`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

@@ -67,7 +67,12 @@ describe('placeLens', () => {
 })
 
 describe('cornerEditor', () => {
-  let host: ToolHost & { announce: Mock<ToolHost['announce']>, paintLens: Mock<ToolHost['paintLens']>, reveal: Mock<ToolHost['reveal']> }
+  let host: ToolHost & {
+    announce: Mock<ToolHost['announce']>
+    paintLens: Mock<ToolHost['paintLens']>
+    reveal: Mock<ToolHost['reveal']>
+    setHint: Mock<ToolHost['setHint']>
+  }
   let layer: HTMLElement
 
   const press = (handle: Element, key: string, options = {}) => {
@@ -99,6 +104,7 @@ describe('cornerEditor', () => {
       toolbarCorner: () => null,
       reveal: vi.fn(),
       requestPaint: vi.fn(),
+      setHint: vi.fn(),
       announce: vi.fn(),
       labels: () => DEFAULT_LABELS,
       photoFrame: () => ({
@@ -218,6 +224,112 @@ describe('cornerEditor', () => {
       corners.drawOverlay(context)
       expect(host.paintLens).toHaveBeenCalledOnce()
       expect(handles().map(({ hidden }) => hidden)).toEqual([false, false, false, false])
+    })
+  })
+
+  describe('placing without dragging', () => {
+    const pressed = () => handles().map(handle => handle.getAttribute('aria-pressed'))
+    const hint = 'Bottom right corner: tap where it goes'
+    // A pointer clicks with the number of clicks, and the keyboard with 0, like `click()`
+    const pointerClick = (handle: Element) => handle.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1 }))
+
+    beforeEach(() => {
+      HTMLElement.prototype.setPointerCapture = vi.fn()
+    })
+
+    it('selects a pressed corner, and says what comes next', () => {
+      editor()
+      expect(pressed()).toEqual(['false', 'false', 'false', 'false'])
+
+      handles()[2]!.click()
+      expect(pressed()).toEqual(['false', 'false', 'true', 'false'])
+      expect(host.setHint).toHaveBeenLastCalledWith(hint)
+      expect(host.announce).toHaveBeenLastCalledWith(hint)
+    })
+
+    it('moves the selected corner to the next tap, announces it and lets it go', () => {
+      const corners = editor()
+      expect(corners.place({ x: 10, y: 10 })).toBe(false)
+
+      handles()[2]!.click()
+      // 200, 210 in the viewport is 400, 420 in the image
+      expect(corners.place({ x: 200, y: 210 })).toBe(true)
+      expect(corners.points[2]).toEqual({ x: 400, y: 420 })
+      expect(handles()[2]!.style.left).toBe('200px')
+      expect(host.announce).toHaveBeenLastCalledWith('Bottom right corner: 400, 420')
+      expect(pressed()).toEqual(['false', 'false', 'false', 'false'])
+      expect(host.setHint).toHaveBeenLastCalledWith(null)
+      expect(corners.place({ x: 10, y: 10 })).toBe(false)
+    })
+
+    it('keeps the rules of the tool for a placed corner', () => {
+      const corners = editor()
+      handles()[0]!.click()
+      corners.place({ x: 500, y: 500 })
+      expect(corners.points).toEqual(rectangleCorners(284, 284, 300, 300))
+    })
+
+    it('lets go of a corner pressed again, and switches to another corner', () => {
+      editor()
+      handles()[2]!.click()
+      handles()[2]!.click()
+      expect(pressed()).toEqual(['false', 'false', 'false', 'false'])
+      expect(host.setHint).toHaveBeenLastCalledWith(null)
+
+      handles()[2]!.click()
+      handles()[0]!.click()
+      expect(pressed()).toEqual(['true', 'false', 'false', 'false'])
+    })
+
+    it('lets go with deselect, which says whether a corner was selected', () => {
+      const corners = editor()
+      expect(corners.deselect()).toBe(false)
+      handles()[1]!.click()
+      expect(corners.deselect()).toBe(true)
+      expect(pressed()).toEqual(['false', 'false', 'false', 'false'])
+    })
+
+    it('takes a short movement for a tap, which selects without moving the corner', () => {
+      const corners = editor()
+      const handle = handles()[2]!
+      handle.dispatchEvent(pointer('pointerdown', 160, 170, 'touch'))
+      handle.dispatchEvent(pointer('pointermove', 163, 172, 'touch'))
+      handle.dispatchEvent(pointer('pointerup', 163, 172, 'touch'))
+      pointerClick(handle)
+
+      expect(corners.points[2]).toEqual({ x: 300, y: 300 })
+      expect(handle.style.left).toBe('150px')
+      expect(pressed()[2]).toBe('true')
+      expect(host.announce).toHaveBeenLastCalledWith(hint)
+    })
+
+    it('does not select a corner at the end of a drag, and a drag lets go of the selection', () => {
+      editor()
+      handles()[0]!.click()
+      const handle = handles()[2]!
+      handle.dispatchEvent(pointer('pointerdown', 165, 170))
+      handle.dispatchEvent(pointer('pointermove', 185, 190))
+      handle.dispatchEvent(pointer('pointerup', 185, 190))
+      pointerClick(handle)
+      expect(pressed()).toEqual(['false', 'false', 'false', 'false'])
+
+      handle.click()
+      expect(pressed()[2]).toBe('true')
+    })
+
+    it('ignores the click of a tap on the image, which lands on the corner the tap moved there', () => {
+      const corners = editor()
+      handles()[2]!.click()
+      corners.place({ x: 200, y: 210 })
+      pointerClick(handles()[2]!)
+      expect(pressed()).toEqual(['false', 'false', 'false', 'false'])
+    })
+
+    it('lets go of the selection when it closes', () => {
+      const corners = editor()
+      handles()[3]!.click()
+      corners.deactivate()
+      expect(host.setHint).toHaveBeenLastCalledWith(null)
     })
   })
 

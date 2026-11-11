@@ -19,6 +19,7 @@ El recorte es un cambio como cualquier otro: Deshacer lo quita y Aplicar lo hace
 
 - Los tiradores se quedan dentro de la imagen, y el rectángulo nunca se da la vuelta.
 - En una pantalla táctil, una lupa muestra la zona bajo el dedo mientras arrastra una esquina, para que el dedo no tape dónde cae.
+- Sin arrastrar, pulsa un tirador y luego toca donde va su esquina. Hasta entonces el tirador queda resaltado, y `Esc` lo suelta.
 - Con el teclado, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús. Los lectores de pantalla anuncian cada movimiento.
 
 ## ¿Recortar o Enderezar?

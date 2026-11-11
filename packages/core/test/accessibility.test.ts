@@ -124,6 +124,15 @@ describe('accessibility', () => {
     expect(await audit()).toEqual([])
   })
 
+  it('has no violations with a selected corner', async () => {
+    await finishLoading()
+    pic.edit()
+    pic.openTool('crop')
+    container.querySelector<HTMLButtonElement>('.paperpic-handle')!.click()
+    expect(container.querySelector('[aria-pressed="true"].paperpic-handle')).not.toBeNull()
+    expect(await audit()).toEqual([])
+  })
+
   it('has no violations with the slider of Clean up', async () => {
     await finishLoading()
     pic.edit()

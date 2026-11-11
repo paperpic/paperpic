@@ -18,15 +18,15 @@ Le persone leggono e sistemano documenti con il mouse, con un dito, con la tasti
 
 Con il focus sul visualizzatore:
 
-| Tasto                      | Azione                                                        |
-| -------------------------- | ------------------------------------------------------------- |
-| `+` e `-`                  | Ingrandire e ridurre                                          |
-| Frecce                     | Spostare                                                      |
-| `0`                        | Adattare l’immagine intera                                    |
-| `Ctrl+Z`                   | Annulla l’ultima azione                                       |
-| `Ctrl+Maiusc+Z` o `Ctrl+Y` | Ripeti                                                        |
-| `Invio`                    | Conferma lo strumento aperto, altrimenti applica le modifiche |
-| `Esc`                      | Chiude lo strumento aperto, altrimenti annulla le modifiche   |
+| Tasto                      | Azione                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------- |
+| `+` e `-`                  | Ingrandire e ridurre                                                                        |
+| Frecce                     | Spostare                                                                                    |
+| `0`                        | Adattare l’immagine intera                                                                  |
+| `Ctrl+Z`                   | Annulla l’ultima azione                                                                     |
+| `Ctrl+Maiusc+Z` o `Ctrl+Y` | Ripeti                                                                                      |
+| `Invio`                    | Conferma lo strumento aperto, altrimenti applica le modifiche                               |
+| `Esc`                      | Rilascia un angolo selezionato, chiude lo strumento aperto, altrimenti annulla le modifiche |
 
 Su macOS, `Cmd` funziona come `Ctrl`. Prima di annullare le modifiche, `Esc` chiede conferma. Con `toolbar: false`, le lascia alla tua interfaccia.
 
@@ -44,6 +44,7 @@ Su macOS, `Cmd` funziona come `Ctrl`. Prima di annullare le modifiche, `Esc` chi
 
 - Con `pointer: coarse`, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel.
 - Mentre un dito trascina un angolo, una lente d’ingrandimento mostra la zona sotto il dito.
+- Un angolo si sposta anche senza trascinare: premi la sua maniglia e poi tocca il punto in cui va. Funziona anche con il mouse.
 - Finché l’immagine è adattata, un dito scorre la pagina, così il visualizzatore non intrappola nessuno. Con lo zoom, sposta l’immagine.
 
 ## Preferenze

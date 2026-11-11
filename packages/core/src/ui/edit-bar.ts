@@ -75,6 +75,8 @@ export class EditBar {
   private readonly fixTabOrder: () => void
   private labels: PaperPicLabels
   private activeTool: Tool | null = null
+  /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
+  private hintOverride: string | null = null
   private thresholdEnabled = false
   private adjusting = false
   private offered: ReadonlySet<ToolId>
@@ -240,10 +242,17 @@ export class EditBar {
   /** Shows the controls of an open tool, or the usual ones with `null`. */
   setActiveTool(tool: Tool | null): void {
     this.activeTool = tool
+    this.hintOverride = null
     this.toolControls.hidden = tool === null
     this.controls.hidden = tool !== null
     this.showHint()
     this.showSliders()
+  }
+
+  /** Replaces the hint of the open tool, or brings it back with `null`. Closing the tool brings it back too. */
+  setHint(text: string | null): void {
+    this.hintOverride = text
+    this.showHint()
   }
 
   /** Shows or hides the bar. Hiding it closes any open question. */
@@ -366,9 +375,9 @@ export class EditBar {
 
   private showHint(): void {
     const hint = this.activeTool?.hint
-    this.hint.textContent = hint
+    this.hint.textContent = this.hintOverride ?? (hint
       ? this.labels[hint]
-      : ''
+      : '')
   }
 
   private closeConfirmation(restoreFocus = true): void {

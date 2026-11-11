@@ -15,7 +15,7 @@ Ein schräg fotografiertes Dokument sieht wie ein Trapez aus: Die hintere Kante 
 2. Ziehe jeden Griff auf eine Ecke des Dokuments. Zoome hinein, um sie genau zu platzieren.
 3. Drücke Fertig oder `Enter`. Der Viewer zeigt die Seite flach, auf die vier Ecken zugeschnitten.
 
-Die Griffe funktionieren wie bei [Zuschneiden](./crop): eine Lupe auf Touchscreens, Tab und Pfeiltasten auf der Tastatur. Die vier Ecken bilden immer eine konvexe Form, damit sich die Seite immer flach machen lässt.
+Die Griffe funktionieren wie bei [Zuschneiden](./crop): eine Lupe auf Touchscreens, Drücken und Tippen statt Ziehen, Tab und Pfeiltasten auf der Tastatur. Die vier Ecken bilden immer eine konvexe Form, damit sich die Seite immer flach machen lässt.
 
 ## Seitenverhältnis
 

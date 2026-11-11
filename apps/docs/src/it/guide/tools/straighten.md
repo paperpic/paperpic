@@ -15,7 +15,7 @@ Un documento fotografato di sbieco sembra un trapezio: il bordo lontano è più 
 2. Trascina ogni maniglia su un angolo del documento. Ingrandisci per posizionarle con precisione.
 3. Premi Fatto, o `Invio`. Il visualizzatore mostra la pagina piatta, ritagliata sui quattro angoli.
 
-Le maniglie funzionano come in [Ritaglia](./crop): una lente d’ingrandimento sugli schermi touch, e Tab e le frecce con la tastiera. I quattro angoli formano sempre una figura convessa, così la pagina si può sempre rendere piatta.
+Le maniglie funzionano come in [Ritaglia](./crop): una lente d’ingrandimento sugli schermi touch, premere e toccare invece di trascinare, e Tab e le frecce con la tastiera. I quattro angoli formano sempre una figura convessa, così la pagina si può sempre rendere piatta.
 
 ## Proporzioni
 

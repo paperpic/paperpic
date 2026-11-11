@@ -18,15 +18,15 @@ As pessoas leem e corrigem documentos com o mouse, o dedo, o teclado ou um leito
 
 Com o foco no visualizador:
 
-| Tecla                      | Ação                                                          |
-| -------------------------- | ------------------------------------------------------------- |
-| `+` e `-`                  | Ampliar e reduzir                                             |
-| Setas                      | Mover                                                         |
-| `0`                        | Ajustar a imagem inteira                                      |
-| `Ctrl+Z`                   | Desfazer                                                      |
-| `Ctrl+Shift+Z` ou `Ctrl+Y` | Refazer                                                       |
-| `Enter`                    | Confirmar a ferramenta aberta, ou então aplicar as alterações |
-| `Esc`                      | Fechar a ferramenta aberta, ou então cancelar as alterações   |
+| Tecla                      | Ação                                                                                     |
+| -------------------------- | ---------------------------------------------------------------------------------------- |
+| `+` e `-`                  | Ampliar e reduzir                                                                        |
+| Setas                      | Mover                                                                                    |
+| `0`                        | Ajustar a imagem inteira                                                                 |
+| `Ctrl+Z`                   | Desfazer                                                                                 |
+| `Ctrl+Shift+Z` ou `Ctrl+Y` | Refazer                                                                                  |
+| `Enter`                    | Confirmar a ferramenta aberta, ou então aplicar as alterações                            |
+| `Esc`                      | Soltar um canto selecionado, fechar a ferramenta aberta, ou então cancelar as alterações |
 
 No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` pede confirmação. Com `toolbar: false`, ele as deixa para a sua interface.
 
@@ -44,6 +44,7 @@ No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` p
 
 - Com `pointer: coarse`, botões e alças de canto medem pelo menos 44 pixels.
 - Enquanto um dedo arrasta um canto, uma lupa mostra a área embaixo dele.
+- Um canto também se move sem arrastar: pressione a alça dele e depois toque onde ele vai. Também funciona com mouse.
 - Enquanto a imagem está ajustada, um dedo rola a página, então o visualizador não prende ninguém. Com zoom, ele move a imagem.
 
 ## Preferências

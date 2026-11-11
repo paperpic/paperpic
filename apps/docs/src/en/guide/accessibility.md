@@ -18,15 +18,15 @@ People read and fix documents with a mouse, a finger, the keyboard or a screen r
 
 With the focus on the viewer:
 
-| Key                        | Action                                           |
-| -------------------------- | ------------------------------------------------ |
-| `+` and `-`                | Zoom in and out                                  |
-| Arrow keys                 | Pan                                              |
-| `0`                        | Fit the whole image                              |
-| `Ctrl+Z`                   | Undo                                             |
-| `Ctrl+Shift+Z` or `Ctrl+Y` | Redo                                             |
-| `Enter`                    | Confirm the open tool, or else apply the changes |
-| `Esc`                      | Close the open tool, or else cancel the changes  |
+| Key                        | Action                                                                       |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| `+` and `-`                | Zoom in and out                                                              |
+| Arrow keys                 | Pan                                                                          |
+| `0`                        | Fit the whole image                                                          |
+| `Ctrl+Z`                   | Undo                                                                         |
+| `Ctrl+Shift+Z` or `Ctrl+Y` | Redo                                                                         |
+| `Enter`                    | Confirm the open tool, or else apply the changes                             |
+| `Esc`                      | Let go of a selected corner, close the open tool, or else cancel the changes |
 
 On macOS, `Cmd` works like `Ctrl`. Before cancelling changes, `Esc` asks for confirmation. With `toolbar: false`, it leaves them to your interface.
 
@@ -44,6 +44,7 @@ On macOS, `Cmd` works like `Ctrl`. Before cancelling changes, `Esc` asks for con
 
 - With `pointer: coarse`, buttons and corner handles measure at least 44 pixels.
 - While a finger drags a corner, a magnifier shows the area under it.
+- A corner also moves without dragging: press its handle, and then tap where it goes. This works with a mouse too.
 - While the image is fitted, one finger scrolls the page, so the viewer does not trap people inside it. Once zoomed, it pans the image.
 
 ## Preferences

@@ -262,6 +262,7 @@ describe('perspective tool', () => {
     toolbarCorner: () => null,
     reveal: () => {},
     requestPaint: () => {},
+    setHint: () => {},
     announce: () => {},
     labels: () => DEFAULT_LABELS,
     photoFrame: () => ({

@@ -18,15 +18,15 @@ On lit et on corrige des documents à la souris, au doigt, au clavier ou avec un
 
 Quand la visionneuse a le focus :
 
-| Touche                   | Action                                                  |
-| ------------------------ | ------------------------------------------------------- |
-| `+` et `-`               | Zoom avant et arrière                                   |
-| Flèches                  | Déplacer                                                |
-| `0`                      | Ajuster l’image entière                                 |
-| `Ctrl+Z`                 | Annuler la dernière action                              |
-| `Ctrl+Maj+Z` ou `Ctrl+Y` | Rétablir                                                |
-| `Entrée`                 | Valider l’outil ouvert, sinon appliquer les changements |
-| `Échap`                  | Fermer l’outil ouvert, sinon annuler les changements    |
+| Touche                   | Action                                                                             |
+| ------------------------ | ---------------------------------------------------------------------------------- |
+| `+` et `-`               | Zoom avant et arrière                                                              |
+| Flèches                  | Déplacer                                                                           |
+| `0`                      | Ajuster l’image entière                                                            |
+| `Ctrl+Z`                 | Annuler la dernière action                                                         |
+| `Ctrl+Maj+Z` ou `Ctrl+Y` | Rétablir                                                                           |
+| `Entrée`                 | Valider l’outil ouvert, sinon appliquer les changements                            |
+| `Échap`                  | Relâcher un coin sélectionné, fermer l’outil ouvert, sinon annuler les changements |
 
 Sur macOS, `Cmd` fonctionne comme `Ctrl`. Avant d’annuler les changements, `Échap` demande confirmation. Avec `toolbar: false`, il les laisse à votre interface.
 
@@ -44,6 +44,7 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Avant d’annuler les changements, `É
 
 - Avec `pointer: coarse`, les boutons et les poignées d’angle mesurent au moins 44 pixels.
 - Pendant qu’un doigt fait glisser un coin, une loupe montre la zone sous le doigt.
+- Un coin se déplace aussi sans faire glisser : appuyez sur sa poignée, puis touchez l’endroit où il va. Cela fonctionne aussi à la souris.
 - Tant que l’image est ajustée, un doigt fait défiler la page, donc la visionneuse ne retient personne prisonnier. Une fois zoomée, il déplace l’image.
 
 ## Préférences
