@@ -37,11 +37,11 @@ function upload({ blob }: ExportedImage) {
 
 | 事件       | 载荷                                   |
 | ---------- | -------------------------------------- |
-| `load`     | `{ width, height }`                    |
-| `error`    | `{ error }`                            |
-| `change`   | [`PaperPicState`](./state)             |
 | `apply`    | `{ blob, width, height, type }`        |
+| `change`   | [`PaperPicState`](./state)             |
 | `download` | `{ source, filename, preventDefault }` |
+| `error`    | `{ error }`                            |
+| `load`     | `{ width, height }`                    |
 
 每个事件见[事件](./events)。prop 的变化从不触发 `change`。
 

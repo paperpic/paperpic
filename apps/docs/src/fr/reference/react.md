@@ -42,11 +42,11 @@ Les objets et tableaux, comme `labels` ou `tools`, parviennent de nouveau à la 
 
 | Prop         | Données                                |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 [Événements](./events) décrit chacun d’eux. Une nouvelle fonction ne recrée pas la visionneuse, donc les fonctions en ligne conviennent. Un changement de props n’appelle jamais `onChange`.
 

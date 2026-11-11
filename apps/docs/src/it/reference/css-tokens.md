@@ -16,9 +16,9 @@ I token sono proprietà personalizzate CSS che cambiano l’aspetto del componen
 
 | Token                            | Predefinito | Scuro     | Descrizione                               |
 | -------------------------------- | ----------- | --------- | ----------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`   | `#5cb5ff` | Colore d’accento dell’interfaccia         |
 | `--paperpic-color-surface`       | `#fff`      | `#151e2e` | Sfondo dell’interfaccia                   |
 | `--paperpic-color-text`          | `#1a263c`   | `#f2f5f9` | Testo dell’interfaccia                    |
-| `--paperpic-color-accent`        | `#0a84ff`   | `#5cb5ff` | Colore d’accento dell’interfaccia         |
 | `--paperpic-radius`              | `6px`       | `6px`     | Raggio degli angoli dell’interfaccia      |
 | `--paperpic-transition-duration` | `0.2s`      | `0.2s`    | Durata delle transizioni dell’interfaccia |
 

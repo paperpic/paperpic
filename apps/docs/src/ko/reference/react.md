@@ -42,11 +42,11 @@ export function Receipt() {
 
 | Prop         | 페이로드                               |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 각 이벤트는 [이벤트](./events)에서 설명합니다. 새 함수를 전달해도 뷰어를 다시 만들지 않으므로 인라인 함수를 써도 됩니다. props가 바뀌어도 `onChange`는 호출되지 않습니다.
 

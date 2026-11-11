@@ -80,8 +80,8 @@ Während der Bearbeitung zeigt der Viewer die Änderungen als Vorschau auf einer
 
 | Ereignis | Wann                                                                 |
 | -------- | -------------------------------------------------------------------- |
-| `change` | Nach jeder Aktion des Nutzers, mit dem [Zustand](../reference/state) |
 | `apply`  | Wenn das Ergebnis fertig ist, mit `{ blob, width, height, type }`    |
+| `change` | Nach jeder Aktion des Nutzers, mit dem [Zustand](../reference/state) |
 | `error`  | Wenn Übernehmen fehlschlägt oder das Bild nicht geladen werden kann  |
 
 :::tabs key:framework

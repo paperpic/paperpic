@@ -42,11 +42,11 @@ export function Receipt() {
 
 | Prop         | データ                                 |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 各イベントは[イベント](./events)で説明しています。新しい関数を渡してもビューアーは作り直されないため、インライン関数で問題ありません。props の変更で `onChange` が呼ばれることはありません。
 

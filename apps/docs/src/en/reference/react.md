@@ -42,11 +42,11 @@ Objects and arrays, such as `labels` or `tools`, reach the viewer again whenever
 
 | Prop         | Payload                                |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 [Events](./events) describes each one. A new function does not recreate the viewer, so inline functions are fine. A change of props never calls `onChange`.
 

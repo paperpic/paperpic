@@ -14,8 +14,8 @@ Aplicar calcula o resultado e emite [`apply`](../reference/events#apply) com:
 | Campo             | Tipo     | Descrição                          |
 | ----------------- | -------- | ---------------------------------- |
 | `blob`            | `Blob`   | A imagem editada                   |
-| `width`, `height` | `number` | O tamanho dela em pixels           |
 | `type`            | `string` | O formato dela, como `'image/png'` |
+| `width`, `height` | `number` | O tamanho dela em pixels           |
 
 :::tabs key:framework
 == JavaScript

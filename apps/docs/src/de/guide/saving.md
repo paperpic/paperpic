@@ -14,8 +14,8 @@ PaperPic lädt nie etwas hoch und speichert nichts. Wenn der Nutzer die Änderun
 | Feld              | Typ      | Beschreibung                    |
 | ----------------- | -------- | ------------------------------- |
 | `blob`            | `Blob`   | Das bearbeitete Bild            |
-| `width`, `height` | `number` | Seine Größe in Pixeln           |
 | `type`            | `string` | Sein Format, etwa `'image/png'` |
+| `width`, `height` | `number` | Seine Größe in Pixeln           |
 
 :::tabs key:framework
 == JavaScript

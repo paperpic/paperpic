@@ -14,8 +14,8 @@ PaperPic 从不上传或存储任何东西。用户应用修改后，它把结�
 | 字段              | 类型     | 说明                     |
 | ----------------- | -------- | ------------------------ |
 | `blob`            | `Blob`   | 编辑后的图片             |
-| `width`、`height` | `number` | 像素尺寸                 |
 | `type`            | `string` | 格式，例如 `'image/png'` |
+| `width`、`height` | `number` | 像素尺寸                 |
 
 :::tabs key:framework
 == JavaScript

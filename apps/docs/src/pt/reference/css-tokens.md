@@ -16,9 +16,9 @@ Os tokens são propriedades personalizadas CSS que mudam a aparência do compone
 
 | Token                            | Padrão    | Escuro    | Descrição                           |
 | -------------------------------- | --------- | --------- | ----------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Cor de destaque da interface        |
 | `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Fundo da interface                  |
 | `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Texto da interface                  |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Cor de destaque da interface        |
 | `--paperpic-radius`              | `6px`     | `6px`     | Raio dos cantos da interface        |
 | `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Duração das transições da interface |
 

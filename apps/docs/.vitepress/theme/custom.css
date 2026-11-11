@@ -48,6 +48,11 @@
 
 /* stylelint-disable selector-class-pattern -- the classes of the VitePress hero are PascalCase */
 
+/* The title in the nav bar takes the colors of the name on the home */
+.VPNavBar .VPNavBarTitle .title {
+  color: var(--vp-home-hero-name-color);
+}
+
 /* The home has no hero image, since the comparison below the hero shows the component: the hero text takes the middle */
 .VPHome .VPHero .main {
   max-width: 820px;

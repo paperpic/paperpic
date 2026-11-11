@@ -80,8 +80,8 @@ Appliquer ne peut pas être interrompu. Il bloque les commandes et affiche un me
 
 | Événement | Quand                                                                   |
 | --------- | ----------------------------------------------------------------------- |
-| `change`  | Après chaque action de l’utilisateur, avec l’[état](../reference/state) |
 | `apply`   | Quand le résultat est prêt, avec `{ blob, width, height, type }`        |
+| `change`  | Après chaque action de l’utilisateur, avec l’[état](../reference/state) |
 | `error`   | Quand Appliquer échoue, ou quand l’image ne peut pas être chargée       |
 
 :::tabs key:framework

@@ -37,11 +37,11 @@ function upload({ blob }: ExportedImage) {
 
 | イベント   | データ                                 |
 | ---------- | -------------------------------------- |
-| `load`     | `{ width, height }`                    |
-| `error`    | `{ error }`                            |
-| `change`   | [`PaperPicState`](./state)             |
 | `apply`    | `{ blob, width, height, type }`        |
+| `change`   | [`PaperPicState`](./state)             |
 | `download` | `{ source, filename, preventDefault }` |
+| `error`    | `{ error }`                            |
+| `load`     | `{ width, height }`                    |
 
 各イベントは[イベント](./events)で説明しています。prop の変更で `change` は発生しません。
 

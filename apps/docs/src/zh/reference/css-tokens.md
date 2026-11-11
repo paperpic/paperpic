@@ -16,9 +16,9 @@ description: 为 PaperPic 设置样式的 CSS 自定义属性及其浅色和深�
 
 | 令牌                             | 默认值    | 深色      | 说明           |
 | -------------------------------- | --------- | --------- | -------------- |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 界面的强调色   |
 | `--paperpic-color-surface`       | `#fff`    | `#151e2e` | 界面的背景     |
 | `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | 界面的文字     |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 界面的强调色   |
 | `--paperpic-radius`              | `6px`     | `6px`     | 界面的圆角半径 |
 | `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | 界面过渡的时长 |
 

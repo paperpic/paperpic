@@ -80,8 +80,8 @@ export function Receipt() {
 
 | イベント | タイミング                                                   |
 | -------- | ------------------------------------------------------------ |
-| `change` | ユーザーの操作のたびに、[状態](../reference/state)とともに   |
 | `apply`  | 結果ができたときに、`{ blob, width, height, type }` とともに |
+| `change` | ユーザーの操作のたびに、[状態](../reference/state)とともに   |
 | `error`  | 適用に失敗したとき、または画像を読み込めないとき             |
 
 :::tabs key:framework

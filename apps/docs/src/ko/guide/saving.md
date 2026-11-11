@@ -14,8 +14,8 @@ PaperPic은 아무것도 업로드하거나 저장하지 않습니다. 사용자
 | 필드              | 타입     | 설명                    |
 | ----------------- | -------- | ----------------------- |
 | `blob`            | `Blob`   | 편집한 이미지           |
-| `width`, `height` | `number` | 픽셀 단위 크기          |
 | `type`            | `string` | 형식, 예: `'image/png'` |
+| `width`, `height` | `number` | 픽셀 단위 크기          |
 
 :::tabs key:framework
 == JavaScript

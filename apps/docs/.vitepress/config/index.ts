@@ -49,6 +49,8 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    // The same colors as the name on the home
+    siteTitle: 'Paper<span class="name-accent">Pic</span>',
     logo: {
       src: '/logo-mark.svg',
       width: 24,

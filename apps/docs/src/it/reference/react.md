@@ -42,11 +42,11 @@ Gli oggetti e gli array, come `labels` o `tools`, arrivano di nuovo al visualizz
 
 | Prop         | Dati                                   |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 [Eventi](./events) descrive ciascuno. Una funzione nuova non ricrea il visualizzatore, quindi le funzioni in linea vanno bene. Un cambio di props non chiama mai `onChange`.
 
