@@ -18,15 +18,15 @@ Menschen lesen und korrigieren Dokumente mit der Maus, dem Finger, der Tastatur 
 
 Wenn der Viewer den Fokus hat:
 
-| Taste                           | Aktion                                                          |
-| ------------------------------- | --------------------------------------------------------------- |
-| `+` und `-`                     | Vergrößern und verkleinern                                      |
-| Pfeiltasten                     | Verschieben                                                     |
-| `0`                             | Das ganze Bild einpassen                                        |
-| `Strg+Z`                        | Rückgängig                                                      |
-| `Strg+Umschalt+Z` oder `Strg+Y` | Wiederholen                                                     |
-| `Enter`                         | Das offene Werkzeug bestätigen, sonst die Änderungen übernehmen |
-| `Esc`                           | Das offene Werkzeug schließen, sonst die Änderungen abbrechen   |
+| Taste                           | Aktion                                                                                         |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `+` und `-`                     | Vergrößern und verkleinern                                                                     |
+| Pfeiltasten                     | Verschieben                                                                                    |
+| `0`                             | Das ganze Bild einpassen                                                                       |
+| `Strg+Z`                        | Rückgängig                                                                                     |
+| `Strg+Umschalt+Z` oder `Strg+Y` | Wiederholen                                                                                    |
+| `Enter`                         | Das offene Werkzeug bestätigen, sonst die Änderungen übernehmen                                |
+| `Esc`                           | Eine ausgewählte Ecke loslassen, das offene Werkzeug schließen, sonst die Änderungen abbrechen |
 
 Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fragt es nach. Mit `toolbar: false` überlässt es sie deiner Oberfläche.
 
@@ -44,6 +44,7 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fra
 
 - Mit `pointer: coarse` sind Schaltflächen und Eckgriffe mindestens 44 Pixel groß.
 - Während ein Finger eine Ecke zieht, zeigt eine Lupe den Bereich darunter.
+- Eine Ecke lässt sich auch ohne Ziehen verschieben: Drücke ihren Griff und tippe dann auf die neue Stelle. Das geht auch mit der Maus.
 - Solange das Bild eingepasst ist, scrollt ein Finger die Seite, der Viewer hält also niemanden gefangen. Ist es vergrößert, verschiebt er das Bild.
 
 ## Einstellungen

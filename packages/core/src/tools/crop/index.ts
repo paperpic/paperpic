@@ -24,6 +24,8 @@ export const cropTool: Tool = {
       update: () => editor.update(),
       drawOverlay: context => editor.drawOverlay(context),
       deactivate: () => editor.deactivate(),
+      tap: point => editor.place(point),
+      escape: () => editor.deselect(),
       confirm() {
         const [topLeft, , bottomRight] = editor.points
         const rect = {

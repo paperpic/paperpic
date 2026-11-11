@@ -22,6 +22,8 @@ export interface PaperPicLabels {
   cornerBottomRight: string
   /** Announced after moving a corner, with its position in image pixels. */
   cornerMoved: (corner: string, x: number, y: number) => string
+  /** Shown and announced after pressing a corner, which the next tap on the image moves, with the name of the corner. */
+  cornerSelected: (corner: string) => string
   cornerTopLeft: string
   cornerTopRight: string
   crop: string
@@ -85,6 +87,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   cornerBottomLeft: 'Bottom left corner',
   cornerBottomRight: 'Bottom right corner',
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
+  cornerSelected: corner => `${corner}: tap where it goes`,
   cornerTopLeft: 'Top left corner',
   cornerTopRight: 'Top right corner',
   crop: 'Crop',

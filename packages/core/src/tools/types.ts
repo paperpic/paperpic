@@ -45,6 +45,8 @@ export interface ToolHost {
   requestPaint: () => void
   /** Moves the image, if it can, until a point of the frame is on screen. */
   reveal: (point: Point) => void
+  /** Replaces the hint of the tool in the edit bar, or brings it back with `null`. */
+  setHint: (text: string | null) => void
   /** The bottom left corner of the toolbar over the image, or `null` if there is none. */
   toolbarCorner: () => ViewPoint | null
   viewportToFrame: (point: ViewPoint) => Point
@@ -57,8 +59,12 @@ export interface ToolSession {
   deactivate: () => void
   /** Paints over the image, in CSS pixels of the viewport. */
   drawOverlay: (context: CanvasRenderingContext2D) => void
+  /** Runs on `Esc` before the tool closes. Returns whether it used the key, which then leaves the tool open. */
+  escape?: () => boolean
   /** Takes the keyboard focus. */
   focus: () => void
+  /** Runs on a tap on the image, at a point of the viewport. Returns whether it used the tap. */
+  tap?: (point: ViewPoint) => boolean
   /** Adapts to a new zoom or position of the image. */
   update: () => void
 }

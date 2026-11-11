@@ -19,6 +19,7 @@ Le recadrage est un changement comme un autre : Annuler la dernière action le r
 
 - Les poignées restent dans l’image, et le rectangle ne se retourne jamais.
 - Sur un écran tactile, une loupe montre la zone sous le doigt pendant qu’il fait glisser un coin, pour que le doigt ne cache pas où il se pose.
+- Sans faire glisser, appuyez sur une poignée, puis touchez l’endroit où va son coin. La poignée reste mise en évidence jusque-là, et `Échap` la relâche.
 - Au clavier, Tab passe d’une poignée à l’autre, et les flèches déplacent la poignée qui a le focus de 1 pixel d’écran, ou de 10 avec Maj. Les lecteurs d’écran annoncent chaque déplacement.
 
 ## Recadrer ou Redresser ?

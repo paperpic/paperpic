@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Texte mit einem Wert
 
-Vier Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält: den Zoom, die Empfindlichkeit von Bereinigen, eine Ecke mit ihrer Position und einen Regler von Anpassen. Screenreader sagen sie an. Formatiere die Zahlen so, wie es deine Sprache tut:
+Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält: den Zoom, die Empfindlichkeit von Bereinigen, eine Ecke mit ihrer Position, eine ausgewählte Ecke und einen Regler von Anpassen. Screenreader sagen sie an. Formatiere die Zahlen so, wie es deine Sprache tut:
 
 ```ts
 const signed = new Intl.NumberFormat('de', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `Zoom ${percent} %`,
   thresholdLevel: percent => `Empfindlichkeit ${percent} %`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
+  cornerSelected: corner => `${corner}: tippe auf die neue Stelle`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

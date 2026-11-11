@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-4 つのラベルは、テキストに値を含むため関数です。オブジェクトはレンダーのたびではなく 1 回だけ作成してください。そうしないと、ビューアーが毎回受け取り直します。
+5 つのラベルは、テキストに値を含むため関数です。オブジェクトはレンダーのたびではなく 1 回だけ作成してください。そうしないと、ビューアーが毎回受け取り直します。
 
 | キー                   | 英語                                         | 用途                                                                          |
 | ---------------------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
@@ -35,6 +35,7 @@ const pic = new PaperPic(container, {
 | `cornerBottomLeft`     | Bottom left corner                           | 角のハンドルの名前                                                            |
 | `cornerBottomRight`    | Bottom right corner                          | 角のハンドルの名前                                                            |
 | `cornerMoved`          | Top left corner: 120, 80                     | 角と画像のピクセル単位の位置の関数。角を動かしたあとに読み上げ                |
+| `cornerSelected`       | Top left corner: tap where it goes           | 角の関数。角のハンドルを押したあと、画像のタップで移動するまで表示し読み上げ  |
 | `cornerTopLeft`        | Top left corner                              | 角のハンドルの名前                                                            |
 | `cornerTopRight`       | Top right corner                             | 角のハンドルの名前                                                            |
 | `crop`                 | Crop                                         | 「切り抜き」ボタン                                                            |

@@ -19,6 +19,7 @@ O recorte é uma alteração como qualquer outra: Desfazer a remove, e Aplicar a
 
 - As alças ficam dentro da imagem, e o retângulo nunca se inverte.
 - Numa tela sensível ao toque, uma lupa mostra a área sob o dedo enquanto ele arrasta um canto, para que o dedo não esconda onde o canto vai parar.
+- Sem arrastar, pressione uma alça e depois toque onde o canto dela vai. Até lá a alça fica destacada, e `Esc` a solta.
 - Pelo teclado, Tab passa de uma alça para outra, e as setas movem a alça com foco 1 pixel da tela, ou 10 com Shift. Os leitores de tela anunciam cada movimento.
 
 ## Recortar ou Endireitar?

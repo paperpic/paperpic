@@ -217,6 +217,15 @@
     border-radius: 50%;
   }
 
+  /* The corner that the next tap on the image moves */
+  .paperpic-handle[aria-pressed='true']::before {
+    border-color: #fff;
+    background: var(--paperpic-color-accent);
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 60%),
+      0 0 0 4px color-mix(in srgb, var(--paperpic-color-accent) 50%, transparent);
+  }
+
   .paperpic-toolbar {
     position: absolute;
     inset-block-start: 0.5rem;
@@ -382,6 +391,13 @@
     .paperpic-button-text {
       outline: 1px solid ButtonText;
       outline-offset: -1px;
+    }
+
+    /* Forced colors would paint the selected corner like the others */
+    .paperpic-handle[aria-pressed='true']::before {
+      border-color: Canvas;
+      background: Highlight;
+      forced-color-adjust: none;
     }
   }
 }

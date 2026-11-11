@@ -660,6 +660,59 @@ describe('editing', () => {
       expect(container.querySelector('.paperpic-edit-confirmation')!.hasAttribute('hidden')).toBe(true)
     })
 
+    describe('placing a corner without dragging', () => {
+      const viewport = () => container.querySelector<HTMLElement>('.paperpic-viewport')!
+      const hint = () => button('Done').parentElement!.textContent
+      const status = () => container.querySelector('[role="status"]')!.textContent
+      const tap = (x: number, y: number, time: number) => {
+        for (const type of ['pointerdown', 'pointerup']) {
+          const event = new MouseEvent(type, { bubbles: true, clientX: x, clientY: y })
+          Object.defineProperties(event, {
+            pointerId: { value: 1 },
+            pointerType: { value: 'touch' },
+            timeStamp: { value: time },
+          })
+          viewport().dispatchEvent(event)
+        }
+      }
+
+      beforeEach(() => {
+        HTMLElement.prototype.setPointerCapture = vi.fn()
+        crop().click()
+      })
+
+      it('moves the selected corner to a tap on the image, and the tap does not zoom', () => {
+        const before = handles()[0]!.getAttribute('style')
+        ;(handles()[0] as HTMLElement).click()
+        expect(hint()).toContain('Top left corner: tap where it goes')
+
+        tap(40, 40, 0)
+        tap(40, 40, 100)
+        expect(handles()[0]!.getAttribute('style')).not.toBe(before)
+        expect(handles()[0]!.getAttribute('aria-pressed')).toBe('false')
+        expect(status()).toMatch(/^Top left corner: \d+, \d+$/)
+        expect(hint()).toContain('Drag the corners')
+        expect(pic.getState()).toMatchObject({ activeTool: 'crop', fit: 'image' })
+      })
+
+      it('leaves a tap alone when no corner is selected', () => {
+        const before = handles().map(handle => handle.getAttribute('style'))
+        tap(40, 40, 0)
+        expect(handles().map(handle => handle.getAttribute('style'))).toEqual(before)
+      })
+
+      it('lets go of the corner with the first Esc, and closes the tool with the second', () => {
+        ;(handles()[1] as HTMLElement).click()
+        press('Escape', {}, handles()[1]!)
+        expect(pic.getState().activeTool).toBe('crop')
+        expect(handles()[1]!.getAttribute('aria-pressed')).toBe('false')
+        expect(hint()).toContain('Drag the corners')
+
+        press('Escape', {}, handles()[1]!)
+        expect(pic.getState().activeTool).toBeNull()
+      })
+    })
+
     it('confirms with Enter on a corner or the viewer', () => {
       crop().click()
       press('Enter', {}, handles()[1]!)

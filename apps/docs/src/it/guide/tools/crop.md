@@ -19,6 +19,7 @@ Il ritaglio è un cambiamento come gli altri: Annulla l’ultima azione lo togli
 
 - Le maniglie restano dentro l’immagine, e il rettangolo non si capovolge mai.
 - Su uno schermo touch, una lente d’ingrandimento mostra la zona sotto il dito mentre trascina un angolo, così il dito non nasconde dove finisce.
+- Senza trascinare, premi una maniglia e poi tocca il punto in cui va il suo angolo. Fino ad allora la maniglia resta evidenziata, e `Esc` la rilascia.
 - Con la tastiera, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc. I lettori di schermo annunciano ogni spostamento.
 
 ## Ritaglia o Raddrizza?

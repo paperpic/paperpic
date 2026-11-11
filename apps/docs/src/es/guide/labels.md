@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Textos con un valor
 
-Cuatro textos son funciones, porque incluyen un valor: el zoom, la sensibilidad de Limpiar, una esquina y su posición, y un control de Ajustar. Los lectores de pantalla los anuncian. Formatea los números como lo hace tu idioma:
+Cinco textos son funciones, porque incluyen un valor: el zoom, la sensibilidad de Limpiar, una esquina y su posición, una esquina seleccionada, y un control de Ajustar. Los lectores de pantalla los anuncian. Formatea los números como lo hace tu idioma:
 
 ```ts
 const signed = new Intl.NumberFormat('es', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `Zoom ${percent} %`,
   thresholdLevel: percent => `Sensibilidad ${percent} %`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
+  cornerSelected: corner => `${corner}: toca donde va`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

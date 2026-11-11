@@ -4,6 +4,8 @@ import type { ViewPoint } from '../state/view'
 export interface GestureHandlers {
   onDoubleTap: (point: ViewPoint) => void
   onPan: (deltaX: number, deltaY: number) => void
+  /** Runs on every tap. Returns whether it used it, so that it does not count towards a double tap. */
+  onTap: (point: ViewPoint) => boolean
   /** `factor` multiplies the current zoom, around `point`. */
   onZoom: (factor: number, point: ViewPoint) => void
   /** Whether the wheel zooms. If it does not, the page scrolls as usual. */
@@ -12,14 +14,15 @@ export interface GestureHandlers {
 
 const DOUBLE_TAP_TIME = 300
 const DOUBLE_TAP_DISTANCE = 30
-const TAP_MOVEMENT = 10
+/** How far a pointer can move, in CSS pixels, and still make a tap rather than a drag. */
+export const TAP_MOVEMENT = 10
 /** Zoom per wheel unit. Trackpad pinches arrive as a wheel with Ctrl, in much smaller steps. */
 const WHEEL_SPEED = 0.002
 const PINCH_WHEEL_SPEED = 0.01
 const LINE_HEIGHT = 16
 
 /**
- * Turns Pointer Events and the wheel into pan, zoom and double tap.
+ * Turns Pointer Events and the wheel into pan, zoom, tap and double tap.
  *
  * @returns The function that removes every listener.
  */
@@ -74,6 +77,10 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
       return
     }
     const point = localPoint(event)
+    if (handlers.onTap(point)) {
+      lastTap = null
+      return
+    }
     const isDouble = lastTap
       && event.timeStamp - lastTap.time < DOUBLE_TAP_TIME
       && Math.hypot(point.x - lastTap.point.x, point.y - lastTap.point.y) < DOUBLE_TAP_DISTANCE

@@ -15,7 +15,7 @@ Un documento fotografiado en ángulo parece un trapecio: el borde lejano es más
 2. Arrastra cada tirador a una esquina del documento. Acércate con el zoom para colocarlos con precisión.
 3. Pulsa Hecho, o `Enter`. El visor muestra la página plana, recortada a las cuatro esquinas.
 
-Los tiradores funcionan como en [Recortar](./crop): una lupa en pantallas táctiles, y Tab y las flechas con el teclado. Las cuatro esquinas siempre forman una figura convexa, así que la página siempre se puede aplanar.
+Los tiradores funcionan como en [Recortar](./crop): una lupa en pantallas táctiles, pulsar y tocar en lugar de arrastrar, y Tab y las flechas con el teclado. Las cuatro esquinas siempre forman una figura convexa, así que la página siempre se puede aplanar.
 
 ## Proporciones
 

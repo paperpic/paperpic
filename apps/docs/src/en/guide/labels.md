@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Texts with a value
 
-Four labels are functions, because their text includes a value: the zoom, the sensitivity of Clean up, a corner and its position, and a slider of Adjust. Screen readers announce them. Format the numbers as your language does:
+Five labels are functions, because their text includes a value: the zoom, the sensitivity of Clean up, a corner and its position, a selected corner, and a slider of Adjust. Screen readers announce them. Format the numbers as your language does:
 
 ```ts
 const signed = new Intl.NumberFormat('es', { signDisplay: 'exceptZero' })
@@ -64,6 +64,7 @@ const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `Zoom ${percent} %`,
   thresholdLevel: percent => `Sensibilidad ${percent} %`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
+  cornerSelected: corner => `${corner}: toca donde va`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
 }
 ```

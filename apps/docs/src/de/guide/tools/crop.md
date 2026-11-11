@@ -19,6 +19,7 @@ Der Zuschnitt ist eine Änderung wie jede andere: Rückgängig entfernt ihn, und
 
 - Die Griffe bleiben im Bild, und das Rechteck stülpt sich nie um.
 - Auf einem Touchscreen zeigt eine Lupe den Bereich unter dem Finger, während er eine Ecke zieht, damit der Finger nicht verdeckt, wo die Ecke landet.
+- Ohne Ziehen: Drücke einen Griff und tippe dann auf die Stelle, an die seine Ecke soll. Bis dahin bleibt der Griff hervorgehoben, und `Esc` lässt ihn los.
 - Mit der Tastatur wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten Griff um 1 Bildschirmpixel, mit Umschalt um 10. Screenreader sagen jede Bewegung an.
 
 ## Zuschneiden oder Begradigen?
