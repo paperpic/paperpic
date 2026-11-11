@@ -43,7 +43,7 @@ const REVEAL_MARGIN = 24
 export type PaperPicSource = string | Blob
 
 export interface PaperPicOptions {
-  /** Describes the image for screen readers. */
+  /** Describes the image for screen readers. Without it, they skip the image, as they skip an `<img>` with an empty `alt`. */
   alt?: string
   /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
   aspectRatio?: number
@@ -215,7 +215,6 @@ export class PaperPic {
 
     this.canvas = document.createElement('canvas')
     this.canvas.className = 'paperpic-canvas'
-    this.canvas.setAttribute('role', 'img')
     const overlay = document.createElement('canvas')
     overlay.className = 'paperpic-overlay'
     overlay.setAttribute('aria-hidden', 'true')
@@ -345,7 +344,7 @@ export class PaperPic {
     this.editBar.setIcons(icons)
     this.editBar.setTools(next.tools)
     this.viewportElement.setAttribute('aria-label', this.labels.viewer)
-    this.canvas.setAttribute('aria-label', next.alt)
+    this.describeImage(next.alt)
     this.toolbar.element.hidden = !next.toolbar
 
     if (next.editable !== wasEditable) {
@@ -708,6 +707,23 @@ export class PaperPic {
     this.root.remove()
     for (const listeners of Object.values(this.listeners)) {
       listeners.clear()
+    }
+  }
+
+  /**
+   * Names the image with `alt`. Without one, the image leaves the accessibility tree, as an `<img>` with an empty `alt`
+   * does, because an image with no name breaks WCAG and the viewer around it already has a name.
+   */
+  private describeImage(alt: string): void {
+    if (alt.trim()) {
+      this.canvas.setAttribute('role', 'img')
+      this.canvas.setAttribute('aria-label', alt)
+      this.canvas.removeAttribute('aria-hidden')
+    }
+    else {
+      this.canvas.removeAttribute('role')
+      this.canvas.removeAttribute('aria-label')
+      this.canvas.setAttribute('aria-hidden', 'true')
     }
   }
 

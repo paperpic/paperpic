@@ -36,7 +36,7 @@ On macOS, `Cmd` works like `Ctrl`. Before cancelling changes, `Esc` asks for con
 
 ## Screen readers
 
-- The image has the role of an image, named by `alt`.
+- The image has the role of an image, named by `alt`. Without `alt`, screen readers skip it.
 - The toolbar and the edit bar have their own names, such as "Image controls" and "Editing controls".
 - An announcement reports each change that the user cannot see by the focus alone: the zoom level, the start of the edit mode, the position of a moved corner, the value of a slider, and the result of Apply.
 

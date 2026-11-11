@@ -82,9 +82,24 @@ describe('paperPic', () => {
 
     expect(container.querySelector('canvas')!.getAttribute('role')).toBe('img')
     expect(container.querySelector('canvas')!.getAttribute('aria-label')).toBe('A receipt')
+    expect(container.querySelector('canvas')!.hasAttribute('aria-hidden')).toBe(false)
     expect(viewportOf().tabIndex).toBe(0)
     expect(viewportOf().getAttribute('aria-label')).toBe('Image viewer')
     expect(container.querySelector('[role="status"]')).not.toBeNull()
+  })
+
+  it.each(['', '  '])('hides an image without a description from screen readers, with alt %j', (alt) => {
+    pic = new PaperPic(container, { alt: 'A receipt' })
+    pic.setOptions({ alt })
+
+    const canvas = container.querySelector('canvas')!
+    expect(canvas.hasAttribute('role')).toBe(false)
+    expect(canvas.hasAttribute('aria-label')).toBe(false)
+    expect(canvas.getAttribute('aria-hidden')).toBe('true')
+
+    pic.setOptions({ alt: 'A receipt' })
+    expect(canvas.getAttribute('role')).toBe('img')
+    expect(canvas.hasAttribute('aria-hidden')).toBe(false)
   })
 
   it('starts empty without a source', () => {

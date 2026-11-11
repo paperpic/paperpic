@@ -31,7 +31,7 @@ Passer la même valeur une nouvelle fois ne recharge pas l’image, donc le rés
 - **Type :** `string`
 - **Valeur par défaut :** `''`
 
-Décrit l’image pour les lecteurs d’écran.
+Décrit l’image pour les lecteurs d’écran. Sans `alt`, les lecteurs d’écran ignorent l’image, comme une `<img>` dont l’`alt` est vide.
 
 ## Interface
 

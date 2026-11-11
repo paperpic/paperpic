@@ -201,10 +201,12 @@ The [spike results](spike-results.md) track the status of each one. One top Andr
 
 The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors`.
 
-- The canvas has `role="img"` and uses the `alt` the consumer passes.
+- The canvas has `role="img"` and uses the `alt` the consumer passes. Without `alt`, it has `aria-hidden="true"` instead, as an `<img>` with an empty `alt`, because an image with no name breaks WCAG and the viewer around it already has a name.
 - The toolbar has `role="toolbar"` and arrow key navigation.
 - Corner handles take focus with Tab and move with the arrow keys: 1 screen pixel, or 10 with Shift. Each move is announced to screen readers.
 - An `aria-live` region announces processing, the active tool and results.
+- On the surface, the accent has a contrast of 3.65:1 in light mode and 7.56:1 in dark mode, above the 3:1 that controls and focus outlines need. It is never the color of text, which needs 4.5:1. The text has 15:1 in both modes.
+- `packages/core/test/accessibility.test.ts` runs axe on each state of the interface. It skips contrast, which needs a real browser, so a change to a color token needs these figures checked again.
 
 | Key                                      | Action                                    |
 | ---------------------------------------- | ----------------------------------------- |

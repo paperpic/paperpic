@@ -36,7 +36,7 @@ Su macOS, `Cmd` funziona come `Ctrl`. Prima di annullare le modifiche, `Esc` chi
 
 ## Lettori di schermo
 
-- L’immagine ha il ruolo di immagine, con `alt` come nome.
+- L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
 - Un annuncio segnala ogni cambiamento che l’utente non vede dal solo focus: il livello di zoom, l’inizio della modalità di modifica, la posizione di un angolo spostato, il valore di un cursore e il risultato di Applica.
 

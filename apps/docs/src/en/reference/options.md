@@ -31,7 +31,7 @@ Passing the same value again does not reload the image, so the result of an edit
 - **Type:** `string`
 - **Default:** `''`
 
-Describes the image for screen readers.
+Describes the image for screen readers. Without it, screen readers skip the image, as they skip an `<img>` with an empty `alt`.
 
 ## Interface
 

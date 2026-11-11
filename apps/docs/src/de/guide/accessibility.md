@@ -36,7 +36,7 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fra
 
 ## Screenreader
 
-- Das Bild hat die Rolle eines Bildes, mit `alt` als Namen.
+- Das Bild hat die Rolle eines Bildes, mit `alt` als Namen. Ohne `alt` überspringen Screenreader es.
 - Werkzeugleiste und Bearbeitungsleiste haben eigene Namen, etwa „Bildsteuerung“ und „Bearbeitungssteuerung“.
 - Eine Ansage meldet jede Änderung, die der Nutzer nicht allein am Fokus erkennt: die Zoomstufe, den Beginn des Bearbeitungsmodus, die Position einer verschobenen Ecke, den Wert eines Reglers und das Ergebnis von Übernehmen.
 

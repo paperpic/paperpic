@@ -31,7 +31,7 @@ Passare di nuovo lo stesso valore non ricarica l’immagine, quindi il risultato
 - **Tipo:** `string`
 - **Valore predefinito:** `''`
 
-Descrive l’immagine per i lettori di schermo.
+Descrive l’immagine per i lettori di schermo. Senza `alt`, i lettori di schermo saltano l’immagine, come fanno con un `<img>` con `alt` vuoto.
 
 ## Interfaccia
 
