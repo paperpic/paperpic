@@ -16,9 +16,9 @@ Les jetons sont des propriétés personnalisées CSS qui changent l’apparence 
 
 | Jeton                            | Par défaut | En sombre | Description                          |
 | -------------------------------- | ---------- | --------- | ------------------------------------ |
+| `--paperpic-color-accent`        | `#0a84ff`  | `#5cb5ff` | Couleur d’accent de l’interface      |
 | `--paperpic-color-surface`       | `#fff`     | `#151e2e` | Fond de l’interface                  |
 | `--paperpic-color-text`          | `#1a263c`  | `#f2f5f9` | Texte de l’interface                 |
-| `--paperpic-color-accent`        | `#0a84ff`  | `#5cb5ff` | Couleur d’accent de l’interface      |
 | `--paperpic-radius`              | `6px`      | `6px`     | Rayon des coins de l’interface       |
 | `--paperpic-transition-duration` | `0.2s`     | `0.2s`    | Durée des transitions de l’interface |
 

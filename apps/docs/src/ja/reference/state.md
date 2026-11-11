@@ -15,16 +15,16 @@ pic.on('change', ({ canApply, busy }) => {
 
 | フィールド    | 型                                           | 説明                                                                       |
 | ------------- | -------------------------------------------- | -------------------------------------------------------------------------- |
-| `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | 画像があるか、読み込めたか                                                 |
-| `mode`        | `'view' \| 'edit'`                           | ユーザーが画像を見ているか、編集しているか                                 |
-| `image`       | `{ width, height } \| null`                  | これまでの変更を含む表示中の画像のピクセルサイズ。画像がなければ `null`    |
-| `zoom`        | `number`                                     | 画像の 1 ピクセルあたりの画面のピクセル数                                  |
-| `fit`         | `'image' \| 'width' \| 'height' \| null`     | 現在のフィット。ユーザーが手動でズームすると `null`                        |
-| `rotation`    | `0 \| 90 \| 180 \| 270`                      | 表示中の画像の回転角度（時計回り、度単位）                                 |
-| `canUndo`     | `boolean`                                    | 元に戻せる変更があるか                                                     |
-| `canRedo`     | `boolean`                                    | やり直せる変更があるか                                                     |
-| `canApply`    | `boolean`                                    | 適用できる変更があるか。打ち消し合う回転と反転は変更に数えません           |
-| `busy`        | `boolean`                                    | 適用の実行中か                                                             |
 | `activeTool`  | `ToolId \| null`                             | 開いているツール（`'crop'` か `'perspective'`）、または `null`             |
-| `threshold`   | `{ enabled, sensitivity }`                   | クリーンアップがオンか、と 0 から 1 の感度                                 |
 | `adjustments` | `{ brightness, contrast }`                   | 明るさとコントラスト（それぞれ -1 から 1）。クリーンアップ時は使われません |
+| `busy`        | `boolean`                                    | 適用の実行中か                                                             |
+| `canApply`    | `boolean`                                    | 適用できる変更があるか。打ち消し合う回転と反転は変更に数えません           |
+| `canRedo`     | `boolean`                                    | やり直せる変更があるか                                                     |
+| `canUndo`     | `boolean`                                    | 元に戻せる変更があるか                                                     |
+| `fit`         | `'image' \| 'width' \| 'height' \| null`     | 現在のフィット。ユーザーが手動でズームすると `null`                        |
+| `image`       | `{ width, height } \| null`                  | これまでの変更を含む表示中の画像のピクセルサイズ。画像がなければ `null`    |
+| `mode`        | `'view' \| 'edit'`                           | ユーザーが画像を見ているか、編集しているか                                 |
+| `rotation`    | `0 \| 90 \| 180 \| 270`                      | 表示中の画像の回転角度（時計回り、度単位）                                 |
+| `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | 画像があるか、読み込めたか                                                 |
+| `threshold`   | `{ enabled, sensitivity }`                   | クリーンアップがオンか、と 0 から 1 の感度                                 |
+| `zoom`        | `number`                                     | 画像の 1 ピクセルあたりの画面のピクセル数                                  |

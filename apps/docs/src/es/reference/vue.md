@@ -37,11 +37,11 @@ Los objetos y arrays que crea la plantilla, como `:labels="{ apply: t('apply') }
 
 | Evento     | Datos                                  |
 | ---------- | -------------------------------------- |
-| `load`     | `{ width, height }`                    |
-| `error`    | `{ error }`                            |
-| `change`   | [`PaperPicState`](./state)             |
 | `apply`    | `{ blob, width, height, type }`        |
+| `change`   | [`PaperPicState`](./state)             |
 | `download` | `{ source, filename, preventDefault }` |
+| `error`    | `{ error }`                            |
+| `load`     | `{ width, height }`                    |
 
 [Eventos](./events) describe cada uno. Un cambio en una prop nunca emite `change`.
 

@@ -16,9 +16,9 @@ The tokens are CSS custom properties that change the look of the component witho
 
 | Token                            | Default   | Dark default | Description                           |
 | -------------------------------- | --------- | ------------ | ------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff`    | Accent of the interface               |
 | `--paperpic-color-surface`       | `#fff`    | `#151e2e`    | Background of the interface           |
 | `--paperpic-color-text`          | `#1a263c` | `#f2f5f9`    | Text of the interface                 |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff`    | Accent of the interface               |
 | `--paperpic-radius`              | `6px`     | `6px`        | Corner radius of the interface        |
 | `--paperpic-transition-duration` | `0.2s`    | `0.2s`       | Duration of the interface transitions |
 

@@ -80,8 +80,8 @@ Aplicar não pode ser interrompido. Ele bloqueia os controles e mostra uma mensa
 
 | Evento   | Quando                                                              |
 | -------- | ------------------------------------------------------------------- |
-| `change` | Depois de cada ação do usuário, com o [estado](../reference/state)  |
 | `apply`  | Quando o resultado está pronto, com `{ blob, width, height, type }` |
+| `change` | Depois de cada ação do usuário, com o [estado](../reference/state)  |
 | `error`  | Quando Aplicar falha, ou quando a imagem não carrega                |
 
 :::tabs key:framework

@@ -42,11 +42,11 @@ export function Receipt() {
 
 | Prop         | 载荷                                   |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 每个事件见[事件](./events)。传入新函数不会重新创建查看器，因此可以使用内联函数。props 的变化从不调用 `onChange`。
 

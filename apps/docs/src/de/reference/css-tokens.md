@@ -16,9 +16,9 @@ Die Token sind CSS-Custom-Properties, die das Aussehen der Komponente ändern, o
 
 | Token                            | Standard  | Dunkel    | Beschreibung                       |
 | -------------------------------- | --------- | --------- | ---------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Akzentfarbe der Oberfläche         |
 | `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Hintergrund der Oberfläche         |
 | `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Text der Oberfläche                |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Akzentfarbe der Oberfläche         |
 | `--paperpic-radius`              | `6px`     | `6px`     | Eckenradius der Oberfläche         |
 | `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Dauer der Übergänge der Oberfläche |
 

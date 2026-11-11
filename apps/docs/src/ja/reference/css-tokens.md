@@ -16,9 +16,9 @@ description: PaperPic の見た目を変える CSS カスタムプロパティ�
 
 | トークン                         | デフォルト | ダーク    | 説明                                 |
 | -------------------------------- | ---------- | --------- | ------------------------------------ |
+| `--paperpic-color-accent`        | `#0a84ff`  | `#5cb5ff` | インターフェースのアクセントカラー   |
 | `--paperpic-color-surface`       | `#fff`     | `#151e2e` | インターフェースの背景               |
 | `--paperpic-color-text`          | `#1a263c`  | `#f2f5f9` | インターフェースのテキスト           |
-| `--paperpic-color-accent`        | `#0a84ff`  | `#5cb5ff` | インターフェースのアクセントカラー   |
 | `--paperpic-radius`              | `6px`      | `6px`     | インターフェースの角の半径           |
 | `--paperpic-transition-duration` | `0.2s`     | `0.2s`    | インターフェースのトランジション時間 |
 

@@ -42,11 +42,11 @@ Objetos e arrays, como `labels` ou `tools`, chegam de novo ao visualizador sempr
 
 | Prop         | Dados                                  |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 [Eventos](./events) descreve cada um. Uma função nova não recria o visualizador, então funções inline não são problema. Uma mudança de props nunca chama `onChange`.
 

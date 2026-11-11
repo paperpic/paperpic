@@ -37,11 +37,11 @@ Objetos e arrays que o template monta, como `:labels="{ apply: t('apply') }"`, s
 
 | Evento     | Dados                                  |
 | ---------- | -------------------------------------- |
-| `load`     | `{ width, height }`                    |
-| `error`    | `{ error }`                            |
-| `change`   | [`PaperPicState`](./state)             |
 | `apply`    | `{ blob, width, height, type }`        |
+| `change`   | [`PaperPicState`](./state)             |
 | `download` | `{ source, filename, preventDefault }` |
+| `error`    | `{ error }`                            |
+| `load`     | `{ width, height }`                    |
 
 [Eventos](./events) descreve cada um. Uma prop alterada nunca emite `change`.
 

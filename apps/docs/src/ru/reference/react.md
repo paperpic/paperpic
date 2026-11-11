@@ -42,11 +42,11 @@ export function Receipt() {
 
 | Prop         | Данные                                 |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 [События](./events) описывают каждое. Новая функция не пересоздаёт просмотрщик, поэтому встроенные функции подходят. Изменение props никогда не вызывает `onChange`.
 

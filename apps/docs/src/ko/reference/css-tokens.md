@@ -16,9 +16,9 @@ description: PaperPic의 모양을 바꾸는 CSS 사용자 지정 속성과 라�
 
 | 토큰                             | 기본값    | 다크      | 설명                   |
 | -------------------------------- | --------- | --------- | ---------------------- |
+| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 인터페이스 강조 색     |
 | `--paperpic-color-surface`       | `#fff`    | `#151e2e` | 인터페이스 배경        |
 | `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | 인터페이스 텍스트      |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 인터페이스 강조 색     |
 | `--paperpic-radius`              | `6px`     | `6px`     | 인터페이스 모서리 반경 |
 | `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | 인터페이스 전환 시간   |
 

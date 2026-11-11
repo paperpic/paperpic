@@ -42,11 +42,11 @@ Los objetos y arrays, como `labels` o `tools`, llegan otra vez al visor cada vez
 
 | Prop         | Datos                                  |
 | ------------ | -------------------------------------- |
-| `onLoad`     | `{ width, height }`                    |
-| `onError`    | `{ error }`                            |
-| `onChange`   | [`PaperPicState`](./state)             |
 | `onApply`    | `{ blob, width, height, type }`        |
+| `onChange`   | [`PaperPicState`](./state)             |
 | `onDownload` | `{ source, filename, preventDefault }` |
+| `onError`    | `{ error }`                            |
+| `onLoad`     | `{ width, height }`                    |
 
 [Eventos](./events) describe cada uno. Una función nueva no vuelve a crear el visor, así que las funciones en línea están bien. Un cambio de props nunca llama a `onChange`.
 

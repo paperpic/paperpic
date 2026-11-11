@@ -14,8 +14,8 @@ PaperPic は何もアップロードせず、何も保存しません。ユー�
 | フィールド        | 型       | 説明                       |
 | ----------------- | -------- | -------------------------- |
 | `blob`            | `Blob`   | 編集後の画像               |
-| `width`、`height` | `number` | ピクセル単位のサイズ       |
 | `type`            | `string` | 形式（`'image/png'` など） |
+| `width`、`height` | `number` | ピクセル単位のサイズ       |
 
 :::tabs key:framework
 == JavaScript
