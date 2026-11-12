@@ -4,7 +4,7 @@ description: "Experimente ao vivo o componente Vue do PaperPic: amplie, mova, re
 layout: page
 ---
 
-<Playground alt="Recibo de exemplo" sample-label="Exemplo" receipt-label="Recibo" cut-corner-label="Recibo com um canto cortado" attach-label="Anexar uma imagem" ai-notice="As imagens de exemplo são geradas por IA e não mostram nenhuma compra real." result-label="Resultado" download-label="Baixar">
+<Playground alt="Recibo de exemplo" sample-label="Exemplo" receipt-label="Recibo" cut-corner-label="Recibo com um canto cortado" attach-label="Anexar uma imagem" photo-label="Tirar uma foto" ai-notice="As imagens de exemplo são geradas por IA e não mostram nenhuma compra real." options-label="Opções" estimated-label="Estimada" letter-label="Carta (EUA)" result-label="Resultado" download-label="Baixar">
 
 # Playground
 

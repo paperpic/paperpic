@@ -133,18 +133,19 @@ body {
 .workspace {
   display: grid;
   flex: 1;
-  grid-template-columns: 16rem minmax(0, 1fr);
+  grid-template-columns: 18rem minmax(0, 1fr);
   min-height: 0;
 }
 
 .panel {
+  overflow-y: auto;
   padding: 1rem;
   border-inline-end: 1px solid var(--color-border);
   background: var(--color-surface);
 }
 
 .panel-heading {
-  margin: 0 0 0.75rem;
+  margin: 0;
   color: var(--color-muted);
   font-size: 0.75rem;
   font-weight: 600;
@@ -152,17 +153,60 @@ body {
   text-transform: uppercase;
 }
 
-.field {
+.panel-header {
   display: flex;
   gap: 0.75rem;
   align-items: center;
   justify-content: space-between;
   margin-block-end: 0.75rem;
+}
+
+.group {
+  margin: 0;
+  padding: 0.75rem 0 0.25rem;
+  border: 0;
+  border-block-start: 1px solid var(--color-border);
+}
+
+/* Floating takes the legend out of the border of the fieldset, so it sits inside it like any heading */
+.group-heading {
+  float: inline-start;
+  width: 100%;
+  margin-block-end: 0.5rem;
+  padding: 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.group-heading + * {
+  clear: both;
+}
+
+.group-heading code {
+  font-size: inherit;
+}
+
+.field {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: 0.5rem;
   font-size: 0.875rem;
 }
 
+/* A field that refines the one above it */
+.field-nested {
+  margin-block-start: -0.25rem;
+  padding-inline-start: 0.75rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
 .select,
-.number {
+.number,
+.text {
   min-width: 0;
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--color-border);
@@ -172,6 +216,65 @@ body {
 
 .select {
   max-width: 9rem;
+}
+
+.number,
+.text {
+  width: 6.5rem;
+}
+
+.range {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.range input {
+  width: 5.5rem;
+  margin: 0;
+  accent-color: var(--color-link);
+}
+
+.range-value {
+  min-width: 2.25rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.range input:disabled + .range-value {
+  opacity: 0.5;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-block-end: 0.5rem;
+}
+
+.chip {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.125rem 0.5rem 0.125rem 0.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.chip:has(:checked) {
+  border-color: var(--color-link);
+  color: var(--color-link);
+}
+
+.chip input {
+  margin: 0;
+  accent-color: var(--color-link);
 }
 
 .attach {
@@ -195,11 +298,17 @@ body {
   cursor: pointer;
 }
 
+.button-small {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+}
+
 .button:hover {
   border-color: var(--color-link);
   color: var(--color-link);
 }
 
+.button:focus-visible,
 .button:has(:focus-visible) {
   outline: 2px solid var(--color-link);
   outline-offset: 2px;

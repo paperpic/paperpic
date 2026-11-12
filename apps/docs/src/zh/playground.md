@@ -4,7 +4,7 @@ description: "在线试用 PaperPic 的 Vue 组件：在浏览器中缩放、移
 layout: page
 ---
 
-<Playground alt="示例小票" sample-label="示例" receipt-label="小票" cut-corner-label="缺一角的小票" attach-label="添加图片" ai-notice="示例图片由 AI 生成，不代表任何真实购买。" result-label="结果" download-label="下载">
+<Playground alt="示例小票" sample-label="示例" receipt-label="小票" cut-corner-label="缺一角的小票" attach-label="添加图片" photo-label="拍照" ai-notice="示例图片由 AI 生成，不代表任何真实购买。" options-label="选项" estimated-label="自动估算" letter-label="美国信纸" result-label="结果" download-label="下载">
 
 # 演练场
 

@@ -4,7 +4,7 @@ description: "Попробуйте Vue-компонент PaperPic онлайн:
 layout: page
 ---
 
-<Playground alt="Пример чека" sample-label="Пример" receipt-label="Чек" cut-corner-label="Чек с обрезанным углом" attach-label="Прикрепить изображение" ai-notice="Примеры изображений созданы ИИ и не показывают реальных покупок." result-label="Результат" download-label="Скачать">
+<Playground alt="Пример чека" sample-label="Пример" receipt-label="Чек" cut-corner-label="Чек с обрезанным углом" attach-label="Прикрепить изображение" photo-label="Сделать фото" ai-notice="Примеры изображений созданы ИИ и не показывают реальных покупок." options-label="Параметры" estimated-label="Автоматически" letter-label="US Letter" result-label="Результат" download-label="Скачать">
 
 # Песочница
 
