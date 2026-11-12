@@ -4,7 +4,7 @@ description: "Probiere die Vue-Komponente von PaperPic live aus: Zoome, verschie
 layout: page
 ---
 
-<Playground alt="Beispielbeleg" sample-label="Beispiel" receipt-label="Beleg" cut-corner-label="Beleg mit abgeschnittener Ecke" attach-label="Bild hinzufügen" ai-notice="Die Beispielbilder sind KI-generiert und zeigen keinen echten Einkauf." result-label="Ergebnis" download-label="Herunterladen">
+<Playground alt="Beispielbeleg" sample-label="Beispiel" receipt-label="Beleg" cut-corner-label="Beleg mit abgeschnittener Ecke" attach-label="Bild hinzufügen" photo-label="Foto aufnehmen" ai-notice="Die Beispielbilder sind KI-generiert und zeigen keinen echten Einkauf." options-label="Optionen" estimated-label="Geschätzt" letter-label="US-Letter" result-label="Ergebnis" download-label="Herunterladen">
 
 # Playground
 

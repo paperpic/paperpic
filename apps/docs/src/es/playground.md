@@ -4,7 +4,7 @@ description: "Prueba en vivo el componente de Vue de PaperPic: haz zoom, desplaz
 layout: page
 ---
 
-<Playground alt="Ticket de ejemplo" sample-label="Ejemplo" receipt-label="Ticket" cut-corner-label="Ticket con una esquina cortada" attach-label="Adjuntar una imagen" photo-label="Hacer una foto" ai-notice="Las imágenes de ejemplo están generadas por IA y no muestran ninguna compra real." result-label="Resultado" download-label="Descargar">
+<Playground alt="Ticket de ejemplo" sample-label="Ejemplo" receipt-label="Ticket" cut-corner-label="Ticket con una esquina cortada" attach-label="Adjuntar una imagen" photo-label="Hacer una foto" ai-notice="Las imágenes de ejemplo están generadas por IA y no muestran ninguna compra real." options-label="Opciones" estimated-label="Estimada" letter-label="Carta (EE. UU.)" result-label="Resultado" download-label="Descargar">
 
 # Playground
 

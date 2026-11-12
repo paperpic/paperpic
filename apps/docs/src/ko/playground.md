@@ -4,7 +4,7 @@ description: "PaperPic Vue 컴포넌트를 바로 사용해 보세요. 브라우
 layout: page
 ---
 
-<Playground alt="샘플 영수증" sample-label="샘플" receipt-label="영수증" cut-corner-label="모서리가 잘린 영수증" attach-label="이미지 첨부" ai-notice="샘플 이미지는 AI로 생성되었으며 실제 구매 내역이 아닙니다." result-label="결과" download-label="다운로드">
+<Playground alt="샘플 영수증" sample-label="샘플" receipt-label="영수증" cut-corner-label="모서리가 잘린 영수증" attach-label="이미지 첨부" photo-label="사진 찍기" ai-notice="샘플 이미지는 AI로 생성되었으며 실제 구매 내역이 아닙니다." options-label="옵션" estimated-label="자동 추정" letter-label="US 레터" result-label="결과" download-label="다운로드">
 
 # 플레이그라운드
 

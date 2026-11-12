@@ -10,11 +10,38 @@ const props = defineProps<{
   attachLabel: string
   cutCornerLabel: string
   downloadLabel: string
+  estimatedLabel: string
+  letterLabel: string
+  optionsLabel: string
   photoLabel: string
   receiptLabel: string
   resultLabel: string
   sampleLabel: string
 }>()
+
+// The options start at the defaults of the component
+const editable = shallowRef(true)
+const download = shallowRef(false)
+const softness = shallowRef(0.25)
+// The slider shows its value while it moves, and changes the option when it stops
+const softnessPreview = shallowRef(softness.value)
+
+/** Common document proportions, as width divided by height. An empty value lets straightening estimate them. */
+const aspectRatios = computed(() => [
+  { name: props.estimatedLabel, value: '' },
+  {
+    name: 'A4',
+    value: String(210 / 297),
+  },
+  {
+    name: props.letterLabel,
+    value: String(8.5 / 11),
+  },
+])
+const aspectRatio = shallowRef('')
+const aspectRatioValue = computed(() => aspectRatio.value === ''
+  ? undefined
+  : Number(aspectRatio.value))
 
 interface Result {
   fileName: string
@@ -111,6 +138,35 @@ onBeforeUnmount(() => setResult(null))
         {{ aiNotice }}
       </p>
 
+      <fieldset class="options">
+        <legend class="options-heading">
+          {{ optionsLabel }}
+        </legend>
+        <label class="field">
+          <code>editable</code>
+          <input v-model="editable" class="checkbox" type="checkbox">
+        </label>
+        <label class="field">
+          <code>download</code>
+          <input v-model="download" class="checkbox" type="checkbox">
+        </label>
+        <label class="field">
+          <code>aspectRatio</code>
+          <select v-model="aspectRatio" class="select">
+            <option v-for="ratio in aspectRatios" :key="ratio.value" :value="ratio.value">
+              {{ ratio.name }}
+            </option>
+          </select>
+        </label>
+        <label class="field">
+          <code>softness</code>
+          <span class="range">
+            <input v-model.lazy.number="softness" type="range" min="0" max="1" step="0.05" @input="softnessPreview = ($event.target as HTMLInputElement).valueAsNumber">
+            <output class="range-value">{{ softnessPreview.toFixed(2) }}</output>
+          </span>
+        </label>
+      </fieldset>
+
       <p class="result" role="status">
         <template v-if="result">
           {{ resultLabel }}: {{ result.summary }}.
@@ -120,7 +176,11 @@ onBeforeUnmount(() => setResult(null))
     </div>
 
     <div class="stage">
-      <PaperPic :src :alt :labels @change="onChange" @apply="showResult" />
+      <PaperPic
+        :src :alt :labels :editable :download :softness
+        :aspect-ratio="aspectRatioValue"
+        @change="onChange" @apply="showResult"
+      />
     </div>
   </main>
 </template>
@@ -213,6 +273,57 @@ onBeforeUnmount(() => setResult(null))
   margin-block-start: 1.5rem;
   color: var(--vp-c-text-3);
   font-size: 0.75rem;
+}
+
+.options {
+  margin: 1.5rem 0 0;
+  padding: 1rem 0 0;
+  border: 0;
+  border-block-start: 1px solid var(--vp-c-divider);
+}
+
+/* Floating takes the legend out of the border of the fieldset, so it sits inside it like any heading */
+.options-heading {
+  float: inline-start;
+  width: 100%;
+  margin-block-end: 0.5rem;
+  padding: 0;
+  color: var(--vp-c-text-1);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.options .field {
+  clear: both;
+  flex-wrap: nowrap;
+  margin-block-start: 0.5rem;
+}
+
+.options code {
+  font-size: 0.8125rem;
+}
+
+.checkbox,
+.range input {
+  accent-color: var(--vp-c-brand-1);
+}
+
+.range {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.range input {
+  width: 7rem;
+}
+
+.range-value {
+  min-width: 2.25rem;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
 }
 
 .result {

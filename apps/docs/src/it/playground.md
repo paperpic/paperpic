@@ -4,7 +4,7 @@ description: "Prova dal vivo il componente Vue di PaperPic: ingrandisci, sposta,
 layout: page
 ---
 
-<Playground alt="Scontrino di esempio" sample-label="Esempio" receipt-label="Scontrino" cut-corner-label="Scontrino con un angolo tagliato" attach-label="Allega un’immagine" ai-notice="Le immagini di esempio sono generate dall’IA e non mostrano acquisti reali." result-label="Risultato" download-label="Scarica">
+<Playground alt="Scontrino di esempio" sample-label="Esempio" receipt-label="Scontrino" cut-corner-label="Scontrino con un angolo tagliato" attach-label="Allega un’immagine" photo-label="Scatta una foto" ai-notice="Le immagini di esempio sono generate dall’IA e non mostrano acquisti reali." options-label="Opzioni" estimated-label="Stimato" letter-label="Lettera USA" result-label="Risultato" download-label="Scarica">
 
 # Playground
 

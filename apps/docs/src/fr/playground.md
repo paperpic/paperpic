@@ -4,7 +4,7 @@ description: "Essayez en direct le composant Vue de PaperPic : zoomez, déplacez
 layout: page
 ---
 
-<Playground alt="Ticket d’exemple" sample-label="Exemple" receipt-label="Ticket" cut-corner-label="Ticket avec un coin coupé" attach-label="Joindre une image" ai-notice="Les images d’exemple sont générées par IA et ne montrent aucun achat réel." result-label="Résultat" download-label="Télécharger">
+<Playground alt="Ticket d’exemple" sample-label="Exemple" receipt-label="Ticket" cut-corner-label="Ticket avec un coin coupé" attach-label="Joindre une image" photo-label="Prendre une photo" ai-notice="Les images d’exemple sont générées par IA et ne montrent aucun achat réel." options-label="Options" estimated-label="Estimé" letter-label="Lettre US" result-label="Résultat" download-label="Télécharger">
 
 # Playground
 
