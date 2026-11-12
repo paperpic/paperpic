@@ -247,6 +247,18 @@
     display: none;
   }
 
+  /* Between the buttons that change the view and Edit or download, which act on the image */
+  .paperpic-toolbar-separator {
+    flex: none;
+    block-size: 1px;
+    margin: 0.125rem 0.25rem;
+    background: color-mix(in srgb, var(--paperpic-color-text) 20%, transparent);
+  }
+
+  .paperpic-toolbar-separator[hidden] {
+    display: none;
+  }
+
   /*
    * Global button resets often sit outside any layer, so they override these rules for background, border and color.
    * The toolbar carries those, and the states of a button use box-shadow, which resets leave alone.

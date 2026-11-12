@@ -25,6 +25,9 @@ describe('toolbar', () => {
   let toolbar: Toolbar
 
   const button = (label: string) => toolbar.element.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`)!
+  const separators = () => [
+    ...toolbar.element.querySelectorAll<HTMLElement>('[role="separator"]'),
+  ]
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -70,6 +73,22 @@ describe('toolbar', () => {
 
     button('Edit').click()
     expect(commands.edit).toHaveBeenCalledOnce()
+  })
+
+  it('separates Edit and download from the view controls, each line only with its button', () => {
+    const [belowEdit, aboveDownload] = separators()
+    expect(belowEdit!.previousElementSibling).toBe(button('Edit'))
+    expect(aboveDownload!.nextElementSibling).toBe(button('Download'))
+    expect(belowEdit!.hidden).toBe(true)
+    expect(aboveDownload!.hidden).toBe(true)
+
+    toolbar.update({ ...state, canEdit: true })
+    expect(belowEdit!.hidden).toBe(false)
+    expect(aboveDownload!.hidden).toBe(true)
+
+    toolbar.update({ ...state, canDownload: true })
+    expect(belowEdit!.hidden).toBe(true)
+    expect(aboveDownload!.hidden).toBe(false)
   })
 
   it('moves the focus to the pencil, or to zoom when the pencil is hidden', () => {

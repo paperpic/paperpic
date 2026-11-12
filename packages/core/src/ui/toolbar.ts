@@ -26,10 +26,28 @@ export interface ToolbarState {
 
 type ButtonName = 'download' | 'edit' | 'fitHeight' | 'fitWidth' | 'rotateLeft' | 'rotateRight' | 'zoomIn' | 'zoomOut'
 
-/** The controls that stay at the right: the Edit pencil, zoom, fit, rotation in a read-only viewer and, when chosen, download. */
+/** A line across the vertical toolbar, so its orientation is horizontal, which is the default of a separator. */
+function createSeparator(): HTMLElement {
+  const separator = document.createElement('div')
+  separator.className = 'paperpic-toolbar-separator'
+  separator.setAttribute('role', 'separator')
+  return separator
+}
+
+/**
+ * The controls that stay at the right: the Edit pencil, then zoom, fit and rotation in a read-only viewer, which change
+ * the view, and, when chosen, download. A line separates the view controls from each of the other two.
+ */
 export class Toolbar {
   readonly element: HTMLElement
+  /** In the order they show, which is also the order of the arrow keys. */
   private readonly buttons: Record<ButtonName, HTMLButtonElement>
+  /** The lines below Edit and above download, each shown with its button. */
+  private readonly separators = {
+    edit: createSeparator(),
+    download: createSeparator(),
+  }
+
   private readonly fixTabOrder: () => void
 
   constructor(commands: ToolbarCommands, labels: PaperPicLabels, icons: PaperPicIcons = DEFAULT_ICONS) {
@@ -48,7 +66,9 @@ export class Toolbar {
       rotateRight: createButton('rotateRight', () => commands.rotate(1)),
       download: createButton('download', commands.download),
     }
-    this.element.append(...Object.values(this.buttons))
+
+    const { edit, download, ...view } = this.buttons
+    this.element.append(edit, this.separators.edit, ...Object.values(view), this.separators.download, download)
 
     this.fixTabOrder = attachRovingFocus(this.element, () => Object.values(this.buttons))
     for (const button of Object.values(this.buttons)) {
@@ -86,6 +106,8 @@ export class Toolbar {
     this.buttons.rotateLeft.hidden = !canRotate
     this.buttons.rotateRight.hidden = !canRotate
     this.buttons.download.hidden = !canDownload
+    this.separators.edit.hidden = !canEdit
+    this.separators.download.hidden = !canDownload
 
     // A hidden button cannot keep its place in the tab order
     for (const button of Object.values(this.buttons)) {
