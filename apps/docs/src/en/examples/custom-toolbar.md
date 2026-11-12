@@ -206,5 +206,6 @@ export function Receipt() {
 ## Notes
 
 - With `toolbar: false`, the built-in edit bar is hidden too, so Crop and Straighten show their handles but no Done button. Your interface confirms them with [`confirmTool()`](../reference/methods#confirmtool), as `Enter` does.
+- Sliders of your own can call [`setThreshold()`](../reference/methods#setthreshold) and [`setAdjustments()`](../reference/methods#setadjustments) directly, which adds one edit for each call. To leave one edit for a whole drag, open the tool with [`openTool()`](../reference/methods#opentool) first: the same methods then change what it shows, and `confirmTool()` keeps it.
 - [`cancel()`](../reference/methods#cancel) does not ask before discarding the edits. Ask the user first if there are some, such as when `canApply` is true.
 - The keyboard shortcuts keep working with the focus on the viewer. See [Accessibility](../guide/accessibility).

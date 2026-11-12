@@ -13,11 +13,13 @@ Endireite o recibo primeiro e depois limpe-o.
 
 ## Como usar
 
-1. Toque em Editar e depois em Limpar. A pré-visualização fica em preto e branco, e aparece um controle deslizante de Sensibilidade.
-2. Arraste o controle. Mais sensibilidade escurece mais pixels, o que recupera texto fraco ou gasto. Menos sensibilidade deixa a página mais limpa, sem o que aparece do verso. Soltar o controle deixa uma alteração.
-3. Toque em Limpar de novo para desligá-lo.
+1. Toque em Editar e depois em Limpar. O painel dele ocupa o lugar das ferramentas, a pré-visualização fica em preto e branco, e aparece uma régua de Sensibilidade.
+2. Arraste a régua. Mais sensibilidade escurece mais pixels, o que recupera texto fraco ou gasto. Menos sensibilidade deixa a página mais limpa, sem o que aparece do verso.
+3. Toque em Concluído para mantê-lo como uma única alteração, ou em Cancelar esta ferramenta para deixar a imagem como estava.
 
-Limpar sempre vem depois das outras alterações. Recortar e Endireitar mostram a imagem sem ele, porque numa página limpa é difícil encontrar as bordas do papel.
+Para desligar um Limpar que já é uma alteração, abra-o de novo: um interruptor ao lado da régua o desliga, e as alterações que vieram depois continuam. Desfazer tiraria essas alterações primeiro.
+
+Limpar sempre vem depois das outras alterações. Recortar mostra a imagem limpa, como ela vai ficar. Endireitar a mostra sem Limpar, porque numa página limpa é difícil encontrar as bordas do papel.
 
 ## Suavidade
 
@@ -35,3 +37,5 @@ Uma imagem limpa sai em PNG, porque o JPEG adicionaria artefatos em volta das bo
 pic.edit()
 pic.setThreshold({ enabled: true, sensitivity: 0.6 })
 ```
+
+Enquanto Limpar está aberto, `setThreshold()` muda o que o painel dele mostra, e [`confirmTool()`](../../reference/methods#confirmtool) o mantém como uma única alteração.

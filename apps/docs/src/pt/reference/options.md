@@ -98,8 +98,10 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 | Chave            | Botão                                                                             |
 | ---------------- | --------------------------------------------------------------------------------- |
 | `adjust`         | Ajustar                                                                           |
-| `apply`          | Aplicar, e Concluído em Recortar e Endireitar                                     |
+| `apply`          | Aplicar, e Concluído em cada ferramenta                                           |
+| `brightness`     | Brilho, no painel de Ajustar                                                      |
 | `cancel`         | Cancelar, e Cancelar esta ferramenta                                              |
+| `contrast`       | Contraste, no painel de Ajustar                                                   |
 | `crop`           | Recortar                                                                          |
 | `download`       | Baixar                                                                            |
 | `edit`           | Editar                                                                            |

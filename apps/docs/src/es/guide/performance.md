@@ -22,7 +22,7 @@ Con una Content Security Policy, permite:
 
 ## Fotos grandes
 
-- **Durante la edición**, la vista previa trabaja sobre una copia de unos 2 megapíxeles, así que los controles y las herramientas van fluidos con cualquier foto.
+- **Durante la edición**, la vista previa trabaja sobre una copia de unos 2 megapíxeles, así que las reglas y las herramientas van fluidas con cualquier foto.
 - **Al aplicar**, cada cambio se calcula a resolución completa. Las fotos grandes tardan unos segundos, así que el visor muestra un mensaje y bloquea los controles mientras tanto.
 - **Para ahorrar tiempo y memoria**, usa [`maxOutputSize`](../reference/options#maxoutputsize). Un límite como 2000 o 3000 píxeles mantiene legibles los documentos, y hace Aplicar más rápido y los archivos más pequeños.
 

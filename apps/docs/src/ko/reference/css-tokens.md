@@ -70,31 +70,30 @@ import '@paperpic/react/style.css'
 | `paperpic`                | 뷰어의 루트                                                                                        |
 | `paperpic-button`         | 도구 모음과 편집 바의 모든 버튼                                                                    |
 | `paperpic-button-danger`  | 변경 사항을 버리기 전 질문에 있는 삭제                                                             |
-| `paperpic-button-primary` | 적용, 그리고 자르기와 기울기 보정의 완료                                                           |
+| `paperpic-button-primary` | 적용, 그리고 각 도구의 완료                                                                        |
 | `paperpic-button-text`    | 변경 사항을 버리기 전 질문에 있는 버튼                                                             |
-| `paperpic-edit-bar`       | 아래쪽의 편집 바                                                                                   |
+| `paperpic-edit-bar`       | 편집하는 동안 아래쪽에 나오는 카드 형태의 편집 바                                                  |
 | `paperpic-editing`        | 편집 중인 루트                                                                                     |
 | `paperpic-handle`         | 자르기와 기울기 보정의 모서리 핸들                                                                 |
 | `paperpic-host`           | Vue와 React 컴포넌트가 뷰어 바깥에 만드는 요소                                                     |
 | `paperpic-icon`           | 버튼의 아이콘                                                                                      |
 | `paperpic-status`         | 스크린 리더용 메시지. 이미지를 불러오거나 변경 사항을 적용하는 동안, 그리고 실패했을 때도 보입니다 |
 | `paperpic-status-visible` | 뷰어 가운데에 보이는 동안의 메시지                                                                 |
-| `paperpic-toolbar`        | 오른쪽의 도구 모음                                                                                 |
+| `paperpic-toolbar`        | 오른쪽의 도구 모음. 편집하는 동안 숨겨짐                                                           |
 | `paperpic-viewport`       | 이미지를 보여 주고 키보드 포커스를 받는 영역                                                       |
 
 버튼은 ARIA 속성으로 상태를 나타내며, 이것도 선택할 수 있습니다.
 
-| 속성                     | 상태                                                                         |
-| ------------------------ | ---------------------------------------------------------------------------- |
-| `[aria-disabled='true']` | 지금은 동작할 수 없는 버튼. 키보드 포커스는 유지하므로 `disabled`가 아닙니다 |
-| `[aria-expanded='true']` | 슬라이더가 보이는 동안의 조정                                                |
-| `[aria-pressed='true']`  | 켜진 버튼. 예를 들어 정리, 또는 적용 중인 너비에 맞추기와 높이에 맞추기      |
+| 속성                     | 상태                                                                               |
+| ------------------------ | ---------------------------------------------------------------------------------- |
+| `[aria-disabled='true']` | 지금은 동작할 수 없는 버튼. 키보드 포커스는 유지하므로 `disabled`가 아닙니다       |
+| `[aria-pressed='true']`  | 적용 중인 맞춤(너비에 맞추기, 높이에 맞추기), 또는 눈금자가 바꾸는 ‘조정’의 선택지 |
 
 호버와 이 상태들은 `box-shadow`로 그려지며, 버튼의 전역 리셋은 이를 건드리지 않습니다. 바꾸려면 `box-shadow`도 덮어쓰세요.
 
 ## 컨트롤 {#controls}
 
-버튼, 슬라이더, 모서리 핸들에는 각각 `data-paperpic-control`이 있으며, 그 [레이블](./labels)의 키가 들어 있습니다. 컨트롤 하나만 꾸밀 때 선택하세요.
+버튼, 눈금자, 모서리 핸들에는 각각 `data-paperpic-control`이 있으며, 그 [레이블](./labels)의 키가 들어 있습니다. 컨트롤 하나만 꾸밀 때 선택하세요.
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -106,8 +105,9 @@ import '@paperpic/react/style.css'
 | -------------------- | ----------------------------------------------------------------------------------------------------- |
 | 도구 모음            | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
 | 편집 바              | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| 슬라이더             | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
-| 자르기와 기울기 보정 | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
+| 조정과 정리          | `brightness`와 `contrast`(선택지와 그 눈금자), `threshold`(스위치), `thresholdSensitivity`(그 눈금자) |
+| 각 도구              | `cancelTool`, `confirm`                                                                               |
+| 자르기와 기울기 보정 | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`       |
 | 버리기 전 질문       | `keepEditing`, `discard`                                                                              |
 
-`rotateLeft`는 동시에 보이지 않는 두 버튼을 가리킵니다. 화면 표시만 돌리는 읽기 전용 뷰어의 버튼과, 이미지 자체를 돌리는 편집 바의 버튼입니다.
+`rotateLeft`는 동시에 보이지 않는 두 버튼을 가리킵니다. 화면 표시만 돌리는 읽기 전용 뷰어의 버튼과, 이미지 자체를 돌리는 편집 바의 버튼입니다. `zoomIn`과 `zoomOut`(도구 모음과 패널), `threshold`(‘정리’ 버튼과 그 스위치)도 마찬가지입니다. `brightness`와 `contrast`는 선택지와 그 눈금자를 가리키며, 둘이 함께 보입니다. 구분하려면 선택자에 `button`이나 `input`을 더하세요.

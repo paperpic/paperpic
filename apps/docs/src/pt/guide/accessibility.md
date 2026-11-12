@@ -32,13 +32,14 @@ No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` p
 
 - **Barra de ferramentas e barra de edição.** Tab chega a cada barra, e dentro dela as setas passam de um botão para outro, com `Home` e `End` para o primeiro e o último.
 - **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift.
-- **Controles deslizantes.** As setas movem os controles do Ajustar e do Limpar.
+- **Réguas.** As réguas do Ajustar e do Limpar são controles deslizantes nativos: as setas, `Page Up`, `Page Down`, `Home` e `End` as movem. `Enter` mantém o valor, como Concluído, e `Esc` fecha a ferramenta sem ele.
 
 ## Leitores de tela
 
 - A imagem tem o papel de imagem, com `alt` como nome. Sem `alt`, os leitores de tela a ignoram.
 - A barra de ferramentas e a barra de edição têm nome próprio, como "Controles da imagem" e "Controles de edição".
-- Um anúncio informa cada mudança que o usuário não percebe só pelo foco: o nível de zoom, o início do modo de edição, a posição de um canto movido, o valor de um controle deslizante e o resultado do Aplicar.
+- Um anúncio informa cada mudança que o usuário não percebe só pelo foco: o nível de zoom, o início do modo de edição, a posição de um canto movido, o valor de uma régua e o resultado do Aplicar.
+- O interruptor do Limpar tem o papel de interruptor. Uma ferramenta em uso, que um ponto marca na tela, é descrita como "Em uso".
 
 ## Telas sensíveis ao toque
 

@@ -98,8 +98,10 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 | Clave            | Botón                                                                         |
 | ---------------- | ----------------------------------------------------------------------------- |
 | `adjust`         | Ajustar                                                                       |
-| `apply`          | Aplicar, y Hecho en Recortar y Enderezar                                      |
+| `apply`          | Aplicar, y Hecho en cada herramienta                                          |
+| `brightness`     | Brillo, en el panel de Ajustar                                                |
 | `cancel`         | Cancelar, y Cancelar esta herramienta                                         |
+| `contrast`       | Contraste, en el panel de Ajustar                                             |
 | `crop`           | Recortar                                                                      |
 | `download`       | Descargar                                                                     |
 | `edit`           | Editar                                                                        |

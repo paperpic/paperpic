@@ -22,7 +22,7 @@ With a Content Security Policy, allow:
 
 ## Large photos
 
-- **While editing**, the preview works on a copy of about 2 megapixels, so sliders and tools stay fluid with any photo.
+- **While editing**, the preview works on a copy of about 2 megapixels, so rulers and tools stay fluid with any photo.
 - **On Apply**, every edit runs at full resolution. Large photos take a few seconds, so the viewer shows a message and blocks the controls meanwhile.
 - **To save time and memory**, set [`maxOutputSize`](../reference/options#maxoutputsize). A limit such as 2000 or 3000 pixels keeps documents readable, and makes Apply faster and the files smaller.
 

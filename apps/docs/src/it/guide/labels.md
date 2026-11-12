@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Testi con un valore
 
-Cinque etichette sono funzioni, perché il loro testo include un valore: lo zoom, la sensibilità di Pulisci, un angolo e la sua posizione, un angolo selezionato, e un cursore di Regola. I lettori di schermo le annunciano. Formatta i numeri come fa la tua lingua:
+Cinque etichette sono funzioni, perché il loro testo include un valore: lo zoom, la sensibilità di Pulisci, un angolo e la sua posizione, un angolo selezionato, e il righello di Regola. I lettori di schermo le annunciano. Formatta i numeri come fa la tua lingua:
 
 ```ts
 const signed = new Intl.NumberFormat('it', { signDisplay: 'exceptZero' })

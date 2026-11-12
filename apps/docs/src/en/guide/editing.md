@@ -9,11 +9,13 @@ A photo of a document usually needs a few fixes before it is worth keeping. The 
 
 ## The edit flow
 
-1. The user presses Edit, the pencil in the toolbar. The edit bar appears at the bottom of the viewer.
-2. Each tool in the edit bar adds an edit, which the viewer shows at once. Undo and Redo move through the edits.
+1. The user presses Edit, the pencil in the toolbar. The toolbar hides, so nothing covers the image, and the edit bar appears at the bottom of the viewer.
+2. Rotate left and Flip add an edit at once. The other tools open a panel in the edit bar, and Done adds what the user chose there as one edit. Undo and Redo move through the edits.
 3. Apply computes the result and goes back to viewing. Cancel discards the edits, and asks first when there are some.
 
 Nothing changes the image until Apply. Before that, the edits are a list that the viewer previews.
+
+The edit bar has two rows of the same height in every state: the tools, or the panel of the open tool, above, and below, Cancel at the left and Apply, or Done, at the right. So the image keeps its place when a tool opens. In a viewer at least 28rem wide, the bar fits on one row. A dot marks Adjust and Clean up while their setting is in effect.
 
 ## Tools
 
@@ -68,7 +70,9 @@ export function Receipt() {
 
 :::
 
-Crop and Straighten have a selection of their own, so the rest of the edit bar waits while one of them is open. Done, or `Enter`, adds the selection to the edits, and Cancel this tool, or `Esc`, discards it.
+Crop, Straighten, Adjust and Clean up open a panel in place of the tools, so the rest of the edit bar waits while one of them is open. Done, or `Enter`, adds what the tool chose to the edits, and Cancel this tool, or `Esc`, discards it.
+
+Inside a panel, the image looks as the result will, Clean up included. Straighten is the exception: it shows the photo without Clean up, so the edges of the paper stay visible.
 
 ## Preview and Apply
 

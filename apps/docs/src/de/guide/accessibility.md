@@ -32,13 +32,14 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fra
 
 - **Werkzeugleiste und Bearbeitungsleiste.** Tab erreicht jede Leiste, und darin wechseln die Pfeiltasten zwischen den Schaltflächen, mit `Pos1` und `Ende` für die erste und die letzte.
 - **Eckgriffe.** Bei offenem Zuschneiden oder Begradigen wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten um 1 Bildschirmpixel, mit Umschalt um 10.
-- **Regler.** Die Pfeiltasten bewegen die Regler von Anpassen und Bereinigen.
+- **Skalen.** Die Skalen von Anpassen und Bereinigen sind native Schieberegler: Die Pfeiltasten, `Bild auf`, `Bild ab`, `Pos1` und `Ende` bewegen sie. `Enter` behält den Wert, wie Fertig, und `Esc` schließt das Werkzeug ohne ihn.
 
 ## Screenreader
 
 - Das Bild hat die Rolle eines Bildes, mit `alt` als Namen. Ohne `alt` überspringen Screenreader es.
 - Werkzeugleiste und Bearbeitungsleiste haben eigene Namen, etwa „Bildsteuerung“ und „Bearbeitungssteuerung“.
-- Eine Ansage meldet jede Änderung, die der Nutzer nicht allein am Fokus erkennt: die Zoomstufe, den Beginn des Bearbeitungsmodus, die Position einer verschobenen Ecke, den Wert eines Reglers und das Ergebnis von Übernehmen.
+- Eine Ansage meldet jede Änderung, die der Nutzer nicht allein am Fokus erkennt: die Zoomstufe, den Beginn des Bearbeitungsmodus, die Position einer verschobenen Ecke, den Wert einer Skala und das Ergebnis von Übernehmen.
+- Der Schalter von Bereinigen hat die Rolle eines Schalters. Ein Werkzeug in Verwendung, das auf dem Bildschirm ein Punkt markiert, wird als „Aktiv“ beschrieben.
 
 ## Touchscreens
 

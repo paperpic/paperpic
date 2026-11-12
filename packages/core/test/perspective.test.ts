@@ -259,7 +259,6 @@ describe('perspective tool', () => {
     frameSize: () => frame,
     frameToViewport: point => point,
     viewportToFrame: point => point,
-    toolbarCorner: () => null,
     reveal: () => {},
     requestPaint: () => {},
     setHint: () => {},

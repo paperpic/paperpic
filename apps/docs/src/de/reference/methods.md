@@ -137,7 +137,7 @@ Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vi
 function openTool(id: ToolId): void
 ```
 
-Öffnet Zuschneiden mit `'crop'` oder Begradigen mit `'perspective'`: die Werkzeuge mit eigener Auswahl. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool), und solange tun die übrigen Änderungen, Rückgängig, Wiederholen und Übernehmen nichts. Tut nichts außerhalb des Bearbeitungsmodus.
+Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden mit `'crop'`, Begradigen mit `'perspective'`, Anpassen mit `'adjust'` oder Bereinigen mit `'threshold'`, das sich beim Öffnen einschaltet. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool), und solange tun die übrigen Änderungen, Rückgängig, Wiederholen und Übernehmen nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen bei eingeschaltetem Bereinigen und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-Schließt das offene Werkzeug und fügt seine Auswahl zu den Änderungen hinzu, wie `Enter`.
+Schließt das offene Werkzeug und fügt das, was es gewählt hat, zu den Änderungen hinzu, wie `Enter`: die Auswahl von Zuschneiden oder Begradigen, oder die Einstellungen von Anpassen oder Bereinigen, als eine Änderung.
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ Schließt das offene Werkzeug und fügt seine Auswahl zu den Änderungen hinzu, 
 function cancelTool(): void
 ```
 
-Schließt das offene Werkzeug und verwirft seine Auswahl, wie `Esc`.
+Schließt das offene Werkzeug und verwirft seine Änderungen, wie `Esc`.
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ Schließt das offene Werkzeug und verwirft seine Auswahl, wie `Esc`.
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-Schaltet Bereinigen ein oder aus, oder ändert seine Empfindlichkeit, von 0 bis 1. Bereinigen läuft immer nach den übrigen Änderungen. Tut nichts außerhalb des Bearbeitungsmodus oder bei offenem Werkzeug.
+Schaltet Bereinigen ein oder aus, oder ändert seine Empfindlichkeit, von 0 bis 1. Bereinigen läuft immer nach den übrigen Änderungen. Solange Bereinigen offen ist, ändert es, was Bereinigen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus oder bei einem anderen offenen Werkzeug.
 
 Wirft einen `RangeError`, wenn `sensitivity` nicht zwischen 0 und 1 liegt.
 
@@ -171,7 +171,7 @@ Wirft einen `RangeError`, wenn `sensitivity` nicht zwischen 0 und 1 liegt.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen. Tut nichts außerhalb des Bearbeitungsmodus, bei offenem Werkzeug oder wenn Bereinigen eingeschaltet ist, weil ein bereinigtes Dokument eigene Töne hat.
+Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder wenn Bereinigen eingeschaltet ist, weil ein bereinigtes Dokument eigene Töne hat.
 
 Wirft einen `RangeError`, wenn ein Wert nicht zwischen -1 und 1 liegt.
 

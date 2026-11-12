@@ -70,16 +70,16 @@ import '@paperpic/react/style.css'
 | `paperpic`                | ビューアーのルート                                                                               |
 | `paperpic-button`         | ツールバーと編集バーのすべてのボタン                                                             |
 | `paperpic-button-danger`  | 変更を破棄する前の確認にある破棄                                                                 |
-| `paperpic-button-primary` | 適用、および切り抜きと傾き補正の完了                                                             |
+| `paperpic-button-primary` | 適用、および各ツールの完了                                                                       |
 | `paperpic-button-text`    | 変更を破棄する前の確認にあるボタン                                                               |
-| `paperpic-edit-bar`       | 下部の編集バー                                                                                   |
+| `paperpic-edit-bar`       | 編集中に下部に表示されるカード型の編集バー                                                       |
 | `paperpic-editing`        | 編集中のルート                                                                                   |
 | `paperpic-handle`         | 切り抜きと傾き補正の角のハンドル                                                                 |
 | `paperpic-host`           | Vue と React のコンポーネントがビューアーの周りに作る要素                                        |
 | `paperpic-icon`           | ボタンのアイコン                                                                                 |
 | `paperpic-status`         | スクリーンリーダー向けのメッセージ。画像の読み込み中や変更の適用中、失敗したときにも表示されます |
 | `paperpic-status-visible` | ビューアーの中央に表示されている間のメッセージ                                                   |
-| `paperpic-toolbar`        | 右側のツールバー                                                                                 |
+| `paperpic-toolbar`        | 右側のツールバー。編集中は非表示                                                                 |
 | `paperpic-viewport`       | 画像を表示し、キーボードフォーカスを受ける領域                                                   |
 
 ボタンは ARIA 属性で状態を示し、これも選択できます。
@@ -87,14 +87,13 @@ import '@paperpic/react/style.css'
 | 属性                     | 状態                                                                                    |
 | ------------------------ | --------------------------------------------------------------------------------------- |
 | `[aria-disabled='true']` | ボタンが今は動作できない状態。キーボードフォーカスは保つため、`disabled` ではありません |
-| `[aria-expanded='true']` | スライダーを表示している間の調整                                                        |
-| `[aria-pressed='true']`  | オンのボタン。たとえばクリーンアップや、使用中の幅に合わせると高さに合わせる            |
+| `[aria-pressed='true']`  | 使用中の合わせ方（幅に合わせる、高さに合わせる）、または目盛りが変える「調整」の選択肢  |
 
 ホバーとこれらの状態は `box-shadow` で描かれ、ボタンのグローバルなリセットの影響を受けません。変更するときは `box-shadow` も上書きしてください。
 
 ## コントロール {#controls}
 
-ボタン、スライダー、角のハンドルにはそれぞれ `data-paperpic-control` があり、その[ラベル](./labels)のキーが入っています。1 つのコントロールだけにスタイルを当てるときに選択してください。
+ボタン、目盛り、角のハンドルにはそれぞれ `data-paperpic-control` があり、その[ラベル](./labels)のキーが入っています。1 つのコントロールだけにスタイルを当てるときに選択してください。
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ import '@paperpic/react/style.css'
 }
 ```
 
-| 場所               | 値                                                                                                    |
-| ------------------ | ----------------------------------------------------------------------------------------------------- |
-| ツールバー         | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`         |
-| 編集バー           | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`threshold`、`undo`、`redo`、`apply` |
-| スライダー         | `thresholdSensitivity`、`brightness`、`contrast`                                                      |
-| 切り抜きと傾き補正 | `cancelTool`、`confirm`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`   |
-| 破棄する前の確認   | `keepEditing`、`discard`                                                                              |
+| 場所                 | 値                                                                                                              |
+| -------------------- | --------------------------------------------------------------------------------------------------------------- |
+| ツールバー           | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`                   |
+| 編集バー             | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`threshold`、`undo`、`redo`、`apply`           |
+| 調整とクリーンアップ | `brightness` と `contrast`（選択肢とその目盛り）、`threshold`（スイッチ）、`thresholdSensitivity`（その目盛り） |
+| 各ツール             | `cancelTool`、`confirm`                                                                                         |
+| 切り抜きと傾き補正   | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                 |
+| 破棄する前の確認     | `keepEditing`、`discard`                                                                                        |
 
-`rotateLeft` は、同時には表示されない 2 つのボタンを指します。表示だけを回す読み取り専用のビューアーのボタンと、画像そのものを回す編集バーのボタンです。
+`rotateLeft` は、同時には表示されない 2 つのボタンを指します。表示だけを回す読み取り専用のビューアーのボタンと、画像そのものを回す編集バーのボタンです。`zoomIn` と `zoomOut`（ツールバーとパネル）、`threshold`（「クリーンアップ」のボタンとそのスイッチ）も同じです。`brightness` と `contrast` は選択肢とその目盛りを指し、両方が同時に表示されます。区別するには、セレクターに `button` か `input` を加えてください。

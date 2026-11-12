@@ -1,6 +1,6 @@
 ---
 title: Anpassen
-description: Wie das Werkzeug Anpassen von PaperPic Helligkeit und Kontrast eines Dokumentbilds mit zwei Live-Reglern ändert und wie du sie aus dem Code setzt.
+description: Wie das Werkzeug Anpassen von PaperPic Helligkeit und Kontrast eines Dokumentbilds mit einer Live-Skala ändert und wie du sie aus dem Code setzt.
 ---
 
 # Anpassen
@@ -9,11 +9,11 @@ Fotos bei schlechtem Licht werden dunkel oder grau. Anpassen ändert Helligkeit 
 
 ## So geht’s
 
-1. Drücke Bearbeiten, dann Anpassen. In der Bearbeitungsleiste erscheinen zwei Regler: Helligkeit und Kontrast.
-2. Ziehe einen Regler. Die Vorschau ändert sich beim Ziehen, und das Loslassen hinterlässt eine Änderung, die Rückgängig entfernt.
-3. Drücke erneut Anpassen, um die Regler auszublenden.
+1. Drücke Bearbeiten, dann Anpassen. Sein Bedienfeld nimmt den Platz der Werkzeuge ein: eine Skala, dazu Helligkeit und Kontrast, um den Ton zu wählen, den sie ändert.
+2. Ziehe die Skala. Die Vorschau ändert sich beim Ziehen. Wähle Kontrast, um den anderen Ton mit derselben Skala zu ändern.
+3. Drücke Fertig, um beide Töne als eine Änderung zu behalten, die Rückgängig entfernt. Dieses Werkzeug abbrechen lässt das Bild, wie es war.
 
-Die Mitte jedes Reglers lässt das Bild, wie es ist, und ein Regler, der zur Mitte zurückkehrt, zählt nicht als Änderung. Screenreader sagen den Wert von -100 bis 100 an, etwa „Helligkeit +30“.
+Die Mitte der Skala lässt das Bild, wie es ist, und die Nadel rastet dort ein, damit du leicht zu keiner Änderung zurückfindest. Screenreader sagen den Wert von -100 bis 100 an, etwa „Helligkeit +30“. Ein Punkt auf Anpassen und auf jedem Ton in seinem Bedienfeld markiert einen Wert, der nicht 0 ist.
 
 Anpassen läuft nach den übrigen Änderungen, deshalb zeigen Zuschneiden und Begradigen das Bild mit ihm.
 
@@ -35,5 +35,7 @@ Solange Bereinigen eingeschaltet ist, ist Anpassen deaktiviert, weil ein bereini
 pic.edit()
 pic.setAdjustments({ brightness: 0.2, contrast: 0.3 })
 ```
+
+Solange Anpassen offen ist, ändert `setAdjustments()`, was sein Bedienfeld zeigt, und [`confirmTool()`](../../reference/methods#confirmtool) behält es als eine Änderung.
 
 In der Option [`tools`](../../reference/options#tools) ist Anpassen `'adjust'`.

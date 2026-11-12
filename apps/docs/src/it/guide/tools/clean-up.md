@@ -13,11 +13,13 @@ Raddrizza prima lo scontrino, poi puliscilo.
 
 ## Come si usa
 
-1. Premi Modifica, poi Pulisci. L’anteprima diventa in bianco e nero, e compare un cursore Sensibilità.
-2. Trascina il cursore. Una sensibilità più alta scurisce più pixel, il che recupera il testo tenue o consumato. Una sensibilità più bassa dà una pagina più pulita, senza ciò che traspare dal retro. Rilasciare il cursore lascia un cambiamento.
-3. Premi di nuovo Pulisci per disattivarlo.
+1. Premi Modifica, poi Pulisci. Il suo pannello prende il posto degli strumenti, l’anteprima diventa in bianco e nero, e compare un righello Sensibilità.
+2. Trascina il righello. Una sensibilità più alta scurisce più pixel, il che recupera il testo tenue o consumato. Una sensibilità più bassa dà una pagina più pulita, senza ciò che traspare dal retro.
+3. Premi Fatto per conservarlo come un solo cambiamento, o Annulla questo strumento per lasciare l’immagine com’era.
 
-Pulisci viene sempre dopo gli altri cambiamenti. Ritaglia e Raddrizza mostrano l’immagine senza di esso, perché su una pagina pulita è difficile trovare i bordi della carta.
+Per disattivare un Pulisci che è già un cambiamento, riaprilo: un interruttore accanto al righello lo disattiva, e i cambiamenti venuti dopo restano. Annulla l’ultima azione toglierebbe prima quei cambiamenti.
+
+Pulisci viene sempre dopo gli altri cambiamenti. Ritaglia mostra l’immagine pulita, come sarà. Raddrizza la mostra senza Pulisci, perché su una pagina pulita è difficile trovare i bordi della carta.
 
 ## Morbidezza
 
@@ -35,3 +37,5 @@ Un’immagine pulita esce in PNG, perché il JPEG aggiungerebbe artefatti intorn
 pic.edit()
 pic.setThreshold({ enabled: true, sensitivity: 0.6 })
 ```
+
+Mentre Pulisci è aperto, `setThreshold()` cambia ciò che mostra il suo pannello, e [`confirmTool()`](../../reference/methods#confirmtool) lo conserva come un solo cambiamento.

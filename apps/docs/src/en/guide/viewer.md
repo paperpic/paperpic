@@ -28,7 +28,7 @@ In a long page, the wheel would zoom the image instead of scrolling the page. Se
 
 ## The toolbar
 
-The toolbar sits at the right of the viewer, and scrolls when the viewer is too short for its buttons.
+The toolbar sits at the right of the viewer, and scrolls when the viewer is too short for its buttons. It hides while editing, so it never covers a corner of Crop or Straighten.
 
 | Button                      | What it does                                                     |
 | --------------------------- | ---------------------------------------------------------------- |

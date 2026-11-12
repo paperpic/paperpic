@@ -137,7 +137,7 @@ Mirrors the image left to right as it is on display, so after a quarter turn it 
 function openTool(id: ToolId): void
 ```
 
-Opens Crop, with `'crop'`, or Straighten, with `'perspective'`: the tools with a selection of their own. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool), and meanwhile the other edits, Undo, Redo and Apply do nothing. It does nothing outside the edit mode.
+Opens a tool with a panel: Crop, with `'crop'`, Straighten, with `'perspective'`, Adjust, with `'adjust'`, or Clean up, with `'threshold'`, which turns on as it opens. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool), and meanwhile the other edits, Undo, Redo and Apply do nothing. It does nothing outside the edit mode, while another tool is open, for Adjust while Clean up is on, and for Crop and Straighten while a preview is on its way.
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ Opens Crop, with `'crop'`, or Straighten, with `'perspective'`: the tools with a
 function confirmTool(): void
 ```
 
-Closes the open tool and adds its selection to the edits, as `Enter` does.
+Closes the open tool and adds what it chose to the edits, as `Enter` does: the selection of Crop or Straighten, or the settings of Adjust or Clean up, as one edit.
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ Closes the open tool and adds its selection to the edits, as `Enter` does.
 function cancelTool(): void
 ```
 
-Closes the open tool and discards its selection, as `Esc` does.
+Closes the open tool and discards its changes, as `Esc` does.
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ Closes the open tool and discards its selection, as `Esc` does.
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-Turns Clean up on or off, or changes its sensitivity, from 0 to 1. Clean up always runs after the other edits. It does nothing outside the edit mode or while a tool is open.
+Turns Clean up on or off, or changes its sensitivity, from 0 to 1. Clean up always runs after the other edits. While Clean up is open, it changes what Clean up shows, and [`confirmTool()`](#confirmtool) keeps it as one edit. It does nothing outside the edit mode or while another tool is open.
 
 It throws a `RangeError` if `sensitivity` is not between 0 and 1.
 
@@ -171,7 +171,7 @@ It throws a `RangeError` if `sensitivity` is not between 0 and 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits. It does nothing outside the edit mode, while a tool is open or while Clean up is on, because a cleaned up document has tones of its own.
+Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits. While Adjust is open, it changes what Adjust shows, and [`confirmTool()`](#confirmtool) keeps it as one edit. It does nothing outside the edit mode, while another tool is open or while Clean up is on, because a cleaned up document has tones of its own.
 
 It throws a `RangeError` if a value is not between -1 and 1.
 

@@ -1,6 +1,6 @@
 ---
 title: Ajuster
-description: Comment l’outil Ajuster de PaperPic change la luminosité et le contraste de l’image d’un document avec deux curseurs en direct, et comment les régler depuis le code.
+description: Comment l’outil Ajuster de PaperPic change la luminosité et le contraste de l’image d’un document avec une règle en direct, et comment les régler depuis le code.
 ---
 
 # Ajuster
@@ -9,11 +9,11 @@ Les photos prises avec peu de lumière sortent sombres ou grises. Ajuster change
 
 ## Utilisation
 
-1. Appuyez sur Modifier, puis sur Ajuster. Deux curseurs apparaissent dans la barre de modification : Luminosité et Contraste.
-2. Faites glisser un curseur. L’aperçu change pendant le glissement, et relâcher le curseur laisse un changement, qu’Annuler la dernière action retire.
-3. Appuyez de nouveau sur Ajuster pour masquer les curseurs.
+1. Appuyez sur Modifier, puis sur Ajuster. Son panneau prend la place des outils : une règle, avec Luminosité et Contraste pour choisir le ton qu’elle change.
+2. Faites glisser la règle. L’aperçu change pendant le glissement. Choisissez Contraste pour changer l’autre ton avec la même règle.
+3. Appuyez sur Terminé pour garder les deux tons comme un seul changement, qu’Annuler la dernière action retire. Annuler cet outil laisse l’image telle qu’elle était.
 
-Le milieu de chaque curseur laisse l’image telle quelle, et un curseur ramené au milieu ne compte pas comme un changement. Les lecteurs d’écran annoncent la valeur de -100 à 100, comme « Luminosité +30 ».
+Le milieu de la règle laisse l’image telle quelle, et l’aiguille s’y arrête, donc il est facile de revenir à aucun changement. Les lecteurs d’écran annoncent la valeur de -100 à 100, comme « Luminosité +30 ». Un point sur Ajuster, et sur chaque ton dans son panneau, marque une valeur différente de 0.
 
 Ajuster s’applique après les autres changements, donc Recadrer et Redresser montrent l’image avec lui.
 
@@ -35,5 +35,7 @@ Tant que Nettoyer est activé, Ajuster est désactivé, car un document nettoyé
 pic.edit()
 pic.setAdjustments({ brightness: 0.2, contrast: 0.3 })
 ```
+
+Tant qu’Ajuster est ouvert, `setAdjustments()` change ce que montre son panneau, et [`confirmTool()`](../../reference/methods#confirmtool) le garde comme un seul changement.
 
 Dans l’option [`tools`](../../reference/options#tools), Ajuster est `'adjust'`.

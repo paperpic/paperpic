@@ -8,6 +8,7 @@ Use these words in the German docs, so that each idea has one name on every page
 | corner handle                                 | Eckgriff           |
 | CSS token                                     | CSS-Token          |
 | dark mode                                     | Dunkelmodus        |
+| dot, the mark of a tool in use                | Punkt              |
 | edit bar, the bar at the bottom while editing | Bearbeitungsleiste |
 | edit mode                                     | Bearbeitungsmodus  |
 | editor                                        | Editor             |
@@ -19,17 +20,20 @@ Use these words in the German docs, so that each idea has one name on every page
 | method                                        | Methode            |
 | option                                        | Option             |
 | pan, move a zoomed image                      | verschieben        |
+| panel, the controls of an open tool           | Bedienfeld         |
 | parent element                                | Elternelement      |
 | playground                                    | Playground         |
 | preview                                       | Vorschau           |
 | proportions, width to height                  | Seitenverhältnis   |
 | read-only                                     | schreibgeschützt   |
 | result                                        | Ergebnis           |
+| ruler, the slider of Adjust and Clean up      | Skala              |
 | sample image                                  | Beispielbild       |
 | screen reader                                 | Screenreader       |
 | softness, of the cleaned edges                | Weichheit          |
 | source image                                  | Quellbild          |
 | state                                         | Zustand            |
+| switch, of Clean up                           | Schalter           |
 | tool                                          | Werkzeug           |
 | toolbar, the bar of buttons at the right      | Werkzeugleiste     |
 | view mode                                     | Ansichtsmodus      |

@@ -137,7 +137,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-자체 선택 영역이 있는 도구를 엽니다. `'crop'`은 자르기, `'perspective'`는 기울기 보정입니다. 도구는 [`confirmTool()`](#confirmtool)이나 [`cancelTool()`](#canceltool)까지 열려 있고, 그동안 다른 변경, 실행 취소, 다시 실행, 적용은 아무것도 하지 않습니다. 편집 모드가 아니면 아무것도 하지 않습니다.
+패널이 있는 도구를 엽니다. `'crop'`은 자르기, `'perspective'`는 기울기 보정, `'adjust'`는 조정, `'threshold'`는 정리이며, 정리는 열리면서 켜집니다. 도구는 [`confirmTool()`](#confirmtool)이나 [`cancelTool()`](#canceltool)까지 열려 있고, 그동안 다른 변경, 실행 취소, 다시 실행, 적용은 아무것도 하지 않습니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있을 때의 조정, 미리보기를 준비하는 동안의 자르기와 기울기 보정에서는 아무것도 하지 않습니다.
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-열린 도구를 닫고 그 선택 영역을 변경에 더합니다. `Enter`와 같습니다.
+열린 도구를 닫고 거기서 고른 내용을 변경에 더합니다. `Enter`와 같습니다. 자르기와 기울기 보정의 선택 영역, 또는 조정과 정리의 설정이 변경 하나가 됩니다.
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ function confirmTool(): void
 function cancelTool(): void
 ```
 
-열린 도구를 닫고 그 선택 영역을 버립니다. `Esc`와 같습니다.
+열린 도구를 닫고 그 변경을 버립니다. `Esc`와 같습니다.
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ function cancelTool(): void
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-정리를 켜거나 끄고, 민감도를 0부터 1까지로 바꿉니다. 정리는 항상 다른 변경 다음에 적용됩니다. 편집 모드가 아니거나 도구가 열려 있으면 아무것도 하지 않습니다.
+정리를 켜거나 끄고, 민감도를 0부터 1까지로 바꿉니다. 정리는 항상 다른 변경 다음에 적용됩니다. 정리가 열려 있는 동안에는 그 패널에 보이는 내용을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나 다른 도구가 열려 있으면 아무것도 하지 않습니다.
 
 `sensitivity`가 0부터 1 사이가 아니면 `RangeError`를 던집니다.
 
@@ -171,7 +171,7 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음에 적용됩니다. 편집 모드가 아니거나, 도구가 열려 있거나, 정리가 켜져 있으면 아무것도 하지 않습니다. 정리한 문서에는 고유한 색조가 있기 때문입니다.
+밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음에 적용됩니다. 조정이 열려 있는 동안에는 그 패널에 보이는 값을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있으면 아무것도 하지 않습니다. 정리한 문서에는 고유한 색조가 있기 때문입니다.
 
 값이 -1부터 1 사이가 아니면 `RangeError`를 던집니다.
 

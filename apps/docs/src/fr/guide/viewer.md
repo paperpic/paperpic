@@ -28,7 +28,7 @@ Dans une longue page, la molette zoomerait sur l’image au lieu de faire défil
 
 ## La barre d’outils
 
-La barre d’outils se trouve à droite de la visionneuse, et défile quand la visionneuse est trop basse pour ses boutons.
+La barre d’outils se trouve à droite de la visionneuse, et défile quand la visionneuse est trop basse pour ses boutons. Elle se masque pendant la modification, donc elle ne cache jamais un coin de Recadrer ou de Redresser.
 
 | Bouton                                     | Ce qu’il fait                                                                   |
 | ------------------------------------------ | ------------------------------------------------------------------------------- |

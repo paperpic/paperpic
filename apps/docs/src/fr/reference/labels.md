@@ -22,16 +22,16 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l�
 
 | Clé                    | Anglais                                      | Usage                                                                                                                                 |
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `adjust`               | Adjust                                       | Le bouton qui affiche les curseurs de luminosité et de contraste                                                                      |
-| `adjustmentLevel`      | Brightness +30                               | Fonction du nom et de la valeur de -100 à 100, annoncée après avoir déplacé un curseur d’Ajuster                                      |
+| `adjust`               | Adjust                                       | Le bouton qui ouvre la règle de luminosité et de contraste                                                                            |
+| `adjustmentLevel`      | Brightness +30                               | Fonction du nom et de la valeur de -100 à 100, annoncée après avoir déplacé la règle d’Ajuster                                        |
 | `applied`              | Changes applied                              | Annoncé quand les changements sont appliqués                                                                                          |
 | `apply`                | Apply                                        | Le bouton qui applique les changements                                                                                                |
 | `applyError`           | The changes could not be applied             | Affiché quand Appliquer échoue                                                                                                        |
-| `brightness`           | Brightness                                   | Le nom du curseur de luminosité                                                                                                       |
+| `brightness`           | Brightness                                   | Le choix de la luminosité dans Ajuster, et le nom de sa règle                                                                         |
 | `cancel`               | Cancel                                       | Le bouton qui quitte le mode d’édition                                                                                                |
-| `cancelTool`           | Cancel this tool                             | Le bouton qui ferme un outil et abandonne sa sélection                                                                                |
-| `confirm`              | Done                                         | Le bouton qui ferme un outil et garde sa sélection                                                                                    |
-| `contrast`             | Contrast                                     | Le nom du curseur de contraste                                                                                                        |
+| `cancelTool`           | Cancel this tool                             | Le bouton qui ferme un outil et abandonne ses changements                                                                             |
+| `confirm`              | Done                                         | Le bouton qui ferme un outil et garde ses changements                                                                                 |
+| `contrast`             | Contrast                                     | Le choix du contraste dans Ajuster, et le nom de sa règle                                                                             |
 | `cornerBottomLeft`     | Bottom left corner                           | Le nom d’une poignée d’angle                                                                                                          |
 | `cornerBottomRight`    | Bottom right corner                          | Le nom d’une poignée d’angle                                                                                                          |
 | `cornerMoved`          | Top left corner: 120, 80                     | Fonction de l’angle et de sa position en pixels de l’image, annoncée après avoir déplacé un angle                                     |
@@ -49,6 +49,7 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l�
 | `fitHeight`            | Fit to height                                | Le bouton qui ajuste la hauteur de l’image                                                                                            |
 | `fitWidth`             | Fit to width                                 | Le bouton qui ajuste la largeur de l’image                                                                                            |
 | `flip`                 | Flip                                         | Le bouton Retourner                                                                                                                   |
+| `inUse`                | In use                                       | La description d’Ajuster, de Nettoyer ou d’un choix d’Ajuster tant que son réglage s’applique, ce que montre un point                 |
 | `keepEditing`          | Keep editing                                 | Le bouton qui revient à la modification au lieu de perdre les changements                                                             |
 | `loadError`            | The image could not be loaded                | Affiché quand l’image ne se charge pas                                                                                                |
 | `loading`              | Loading image                                | Affiché pendant le chargement de l’image                                                                                              |
@@ -58,12 +59,12 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l�
 | `redo`                 | Redo                                         | Le bouton Rétablir                                                                                                                    |
 | `rotateLeft`           | Rotate left                                  | Le bouton de rotation de la barre de modification, et l’un des deux d’une visionneuse en lecture seule                                |
 | `rotateRight`          | Rotate right                                 | L’autre bouton de rotation d’une visionneuse en lecture seule                                                                         |
-| `threshold`            | Clean up                                     | Le bouton Nettoyer                                                                                                                    |
-| `thresholdLevel`       | Sensitivity 50%                              | Fonction du pourcentage, annoncée après avoir déplacé le curseur de sensibilité                                                       |
-| `thresholdSensitivity` | Sensitivity                                  | Le nom du curseur de sensibilité                                                                                                      |
+| `threshold`            | Clean up                                     | Le bouton Nettoyer, et l’interrupteur qui l’active et le désactive                                                                    |
+| `thresholdLevel`       | Sensitivity 50%                              | Fonction du pourcentage, annoncée après avoir déplacé la règle de Nettoyer                                                            |
+| `thresholdSensitivity` | Sensitivity                                  | Le nom de la règle de Nettoyer                                                                                                        |
 | `toolbar`              | Image controls                               | Le nom de la barre d’outils, pour les lecteurs d’écran                                                                                |
 | `undo`                 | Undo                                         | Le bouton Annuler la dernière action                                                                                                  |
 | `viewer`               | Image viewer                                 | Le nom de la zone qui affiche l’image, pour les lecteurs d’écran                                                                      |
-| `zoomIn`               | Zoom in                                      | Le bouton Zoom avant                                                                                                                  |
+| `zoomIn`               | Zoom in                                      | Le bouton Zoom avant, dans la barre d’outils et dans les panneaux de Recadrer et de Redresser                                         |
 | `zoomLevel`            | Zoom 150%                                    | Fonction du pourcentage, annoncée après un zoom depuis la barre d’outils ou le clavier                                                |
-| `zoomOut`              | Zoom out                                     | Le bouton Zoom arrière                                                                                                                |
+| `zoomOut`              | Zoom out                                     | Le bouton Zoom arrière, dans la barre d’outils et dans les panneaux de Recadrer et de Redresser                                       |

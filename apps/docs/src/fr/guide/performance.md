@@ -22,7 +22,7 @@ Avec une Content Security Policy, autorisez :
 
 ## Grandes photos
 
-- **Pendant la modification**, l’aperçu travaille sur une copie d’environ 2 mégapixels, donc les curseurs et les outils restent fluides avec n’importe quelle photo.
+- **Pendant la modification**, l’aperçu travaille sur une copie d’environ 2 mégapixels, donc les règles et les outils restent fluides avec n’importe quelle photo.
 - **À l’application**, chaque changement est calculé en pleine résolution. Les grandes photos prennent quelques secondes, donc la visionneuse affiche un message et bloque les commandes pendant ce temps.
 - **Pour gagner du temps et de la mémoire**, utilisez [`maxOutputSize`](../reference/options#maxoutputsize). Une limite comme 2000 ou 3000 pixels garde les documents lisibles, accélère Appliquer et réduit la taille des fichiers.
 

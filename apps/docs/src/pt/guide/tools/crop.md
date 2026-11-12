@@ -10,17 +10,17 @@ A foto de um documento costuma mostrar a mesa, uma mão ou outros papéis em vol
 ## Como usar
 
 1. Toque em Editar e depois em Recortar. Um retângulo aparece dentro da imagem, com uma alça em cada canto.
-2. Arraste os cantos até o retângulo enquadrar o documento. Os botões de zoom continuam disponíveis, então você pode ampliar para posicioná-los com precisão.
+2. Arraste os cantos até o retângulo enquadrar o documento. O painel de Recortar tem botões de zoom, então você pode ampliar para posicioná-los com precisão.
 3. Toque em Concluído, ou `Enter`, para adicionar o recorte às alterações. Cancelar esta ferramenta, ou `Esc`, fecha Recortar sem mudar nada.
 
-O recorte é uma alteração como qualquer outra: Desfazer a remove, e Aplicar a torna permanente.
+Enquanto Recortar está aberto, a imagem aparece como o resultado vai ficar, com Ajustar e Limpar incluídos. O recorte é uma alteração como qualquer outra: Desfazer a remove, e Aplicar a torna permanente.
 
 ## Alças de canto
 
 - As alças ficam dentro da imagem, e o retângulo nunca se inverte.
 - Numa tela sensível ao toque, uma lupa mostra a área sob o dedo enquanto ele arrasta um canto, para que o dedo não esconda onde o canto vai parar.
-- Sem arrastar, pressione uma alça e depois toque onde o canto dela vai. Até lá a alça fica destacada, e `Esc` a solta.
-- Pelo teclado, Tab passa de uma alça para outra, e as setas movem a alça com foco 1 pixel da tela, ou 10 com Shift. Os leitores de tela anunciam cada movimento.
+- Sem arrastar, pressione uma alça e depois toque onde o canto dela vai. Até lá a alça fica destacada, os botões de zoom ampliam em direção ao canto dela, e `Esc` a solta.
+- Pelo teclado, Tab passa de uma alça para outra, e as setas movem a alça com foco 1 pixel da tela, ou 10 com Shift. `+` e `-` dão zoom em direção à alça com foco. Os leitores de tela anunciam cada movimento.
 
 ## Recortar ou Endireitar?
 

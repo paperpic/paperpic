@@ -98,8 +98,10 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 | Clé              | Bouton                                                                      |
 | ---------------- | --------------------------------------------------------------------------- |
 | `adjust`         | Ajuster                                                                     |
-| `apply`          | Appliquer, et Terminé dans Recadrer et Redresser                            |
+| `apply`          | Appliquer, et Terminé dans chaque outil                                     |
+| `brightness`     | Luminosité, dans le panneau d’Ajuster                                       |
 | `cancel`         | Annuler, et Annuler cet outil                                               |
+| `contrast`       | Contraste, dans le panneau d’Ajuster                                        |
 | `crop`           | Recadrer                                                                    |
 | `download`       | Télécharger                                                                 |
 | `edit`           | Modifier                                                                    |

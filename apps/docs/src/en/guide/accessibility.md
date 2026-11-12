@@ -32,13 +32,14 @@ On macOS, `Cmd` works like `Ctrl`. Before cancelling changes, `Esc` asks for con
 
 - **Toolbar and edit bar.** Tab reaches each bar, and inside it the arrow keys move between the buttons, with `Home` and `End` for the first and the last.
 - **Corner handles.** With Crop or Straighten open, Tab moves between the handles, and the arrow keys move the focused one 1 screen pixel, or 10 with Shift.
-- **Sliders.** The arrow keys move the sliders of Adjust and Clean up.
+- **Rulers.** The rulers of Adjust and Clean up are native ranges: the arrow keys, `Page Up`, `Page Down`, `Home` and `End` move them. `Enter` keeps the value, as Done does, and `Esc` closes the tool without it.
 
 ## Screen readers
 
 - The image has the role of an image, named by `alt`. Without `alt`, screen readers skip it.
 - The toolbar and the edit bar have their own names, such as "Image controls" and "Editing controls".
-- An announcement reports each change that the user cannot see by the focus alone: the zoom level, the start of the edit mode, the position of a moved corner, the value of a slider, and the result of Apply.
+- An announcement reports each change that the user cannot see by the focus alone: the zoom level, the start of the edit mode, the position of a moved corner, the value of a ruler, and the result of Apply.
+- The switch of Clean up has the role of a switch. A tool in use, which a dot marks on screen, is described as "In use".
 
 ## Touch screens
 

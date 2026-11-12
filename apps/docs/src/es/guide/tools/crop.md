@@ -10,17 +10,17 @@ La foto de un documento suele mostrar la mesa, una mano u otros papeles alrededo
 ## Cómo se usa
 
 1. Pulsa Editar y luego Recortar. Aparece un rectángulo dentro de la imagen, con un tirador en cada esquina.
-2. Arrastra las esquinas hasta que el rectángulo enmarque el documento. Los botones de zoom siguen disponibles, así que puedes acercarte para colocarlas con precisión.
+2. Arrastra las esquinas hasta que el rectángulo enmarque el documento. El panel de Recortar tiene botones de zoom, así que puedes acercarte para colocarlas con precisión.
 3. Pulsa Hecho, o `Enter`, para añadir el recorte a los cambios. Cancelar esta herramienta, o `Esc`, cierra Recortar sin cambiar nada.
 
-El recorte es un cambio como cualquier otro: Deshacer lo quita y Aplicar lo hace permanente.
+Mientras Recortar está abierta, la imagen se ve como quedará el resultado, con Ajustar y Limpiar incluidos. El recorte es un cambio como cualquier otro: Deshacer lo quita y Aplicar lo hace permanente.
 
 ## Tiradores de esquina
 
 - Los tiradores se quedan dentro de la imagen, y el rectángulo nunca se da la vuelta.
 - En una pantalla táctil, una lupa muestra la zona bajo el dedo mientras arrastra una esquina, para que el dedo no tape dónde cae.
-- Sin arrastrar, pulsa un tirador y luego toca donde va su esquina. Hasta entonces el tirador queda resaltado, y `Esc` lo suelta.
-- Con el teclado, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús. Los lectores de pantalla anuncian cada movimiento.
+- Sin arrastrar, pulsa un tirador y luego toca donde va su esquina. Hasta entonces el tirador queda resaltado, los botones de zoom acercan hacia su esquina, y `Esc` lo suelta.
+- Con el teclado, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús. `+` y `-` acercan y alejan hacia el tirador con el foco. Los lectores de pantalla anuncian cada movimiento.
 
 ## ¿Recortar o Enderezar?
 

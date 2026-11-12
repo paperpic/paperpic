@@ -70,31 +70,30 @@ Estas classes são públicas: os nomes delas, e os elementos que marcam, ficam e
 | `paperpic`                | A raiz do visualizador                                                                                                             |
 | `paperpic-button`         | Cada botão da barra de ferramentas e da barra de edição                                                                            |
 | `paperpic-button-danger`  | Descartar, na pergunta antes de descartar as alterações                                                                            |
-| `paperpic-button-primary` | Aplicar, e Concluído em Recortar e Endireitar                                                                                      |
+| `paperpic-button-primary` | Aplicar, e Concluído em cada ferramenta                                                                                            |
 | `paperpic-button-text`    | Os botões da pergunta antes de descartar as alterações                                                                             |
-| `paperpic-edit-bar`       | A barra de edição, embaixo                                                                                                         |
+| `paperpic-edit-bar`       | A barra de edição, um cartão embaixo durante a edição                                                                              |
 | `paperpic-editing`        | A raiz, durante a edição                                                                                                           |
 | `paperpic-handle`         | Uma alça de canto de Recortar e Endireitar                                                                                         |
 | `paperpic-host`           | O elemento que os componentes Vue e React criam em volta do visualizador                                                           |
 | `paperpic-icon`           | O ícone de um botão                                                                                                                |
 | `paperpic-status`         | A mensagem para leitores de tela, que também aparece enquanto a imagem carrega ou as alterações são aplicadas, e quando algo falha |
 | `paperpic-status-visible` | A mensagem, enquanto aparece no centro do visualizador                                                                             |
-| `paperpic-toolbar`        | A barra de ferramentas, à direita                                                                                                  |
+| `paperpic-toolbar`        | A barra de ferramentas, à direita, escondida durante a edição                                                                      |
 | `paperpic-viewport`       | A área que mostra a imagem e recebe o foco do teclado                                                                              |
 
 Os botões mostram o estado com atributos ARIA, que você também pode selecionar:
 
-| Atributo                 | Estado                                                                                      |
-| ------------------------ | ------------------------------------------------------------------------------------------- |
-| `[aria-disabled='true']` | O botão não pode agir agora. Ele mantém o foco do teclado, então não é `disabled`           |
-| `[aria-expanded='true']` | Ajustar, enquanto os controles deslizantes dele aparecem                                    |
-| `[aria-pressed='true']`  | Um botão ligado, como Limpar, ou Ajustar à largura e Ajustar à altura enquanto estão em uso |
+| Atributo                 | Estado                                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| `[aria-disabled='true']` | O botão não pode agir agora. Ele mantém o foco do teclado, então não é `disabled`                |
+| `[aria-pressed='true']`  | O ajuste em uso, Ajustar à largura ou Ajustar à altura, ou a escolha de Ajustar que a régua muda |
 
 O estado ao passar o ponteiro e esses estados são pintados com `box-shadow`, que os resets globais de botões não tocam. Para mudá-los, sobrescreva também `box-shadow`.
 
 ## Controles {#controls}
 
-Cada botão, controle deslizante e alça de canto leva `data-paperpic-control`, com a chave do seu [rótulo](./labels). Selecione-o para estilizar um único controle:
+Cada botão, régua e alça de canto leva `data-paperpic-control`, com a chave do seu [rótulo](./labels). Selecione-o para estilizar um único controle:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ Cada botão, controle deslizante e alça de canto leva `data-paperpic-control`, 
 }
 ```
 
-| Lugar                       | Valores                                                                                               |
-| --------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Barra de ferramentas        | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
-| Barra de edição             | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| Controles deslizantes       | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
-| Recortar e Endireitar       | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
-| Pergunta antes de descartar | `keepEditing`, `discard`                                                                              |
+| Lugar                       | Valores                                                                                                                      |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Barra de ferramentas        | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                |
+| Barra de edição             | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                        |
+| Ajustar e Limpar            | `brightness` e `contrast`, as escolhas e as réguas delas, `threshold`, o interruptor, e `thresholdSensitivity`, a régua dele |
+| Cada ferramenta             | `cancelTool`, `confirm`                                                                                                      |
+| Recortar e Endireitar       | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                              |
+| Pergunta antes de descartar | `keepEditing`, `discard`                                                                                                     |
 
-`rotateLeft` nomeia dois botões que nunca aparecem ao mesmo tempo: o de um visualizador somente leitura, que gira a exibição, e o da barra de edição, que gira a imagem.
+`rotateLeft` nomeia dois botões que nunca aparecem ao mesmo tempo: o de um visualizador somente leitura, que gira a exibição, e o da barra de edição, que gira a imagem. O mesmo vale para `zoomIn` e `zoomOut`, na barra de ferramentas e num painel, e para `threshold`, o botão de Limpar e o interruptor dele. `brightness` e `contrast` nomeiam uma escolha e a régua dela, que aparecem juntas: adicione `button` ou `input` ao seletor para distingui-las.

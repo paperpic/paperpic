@@ -10,17 +10,17 @@ La photo d’un document montre souvent la table, une main ou d’autres papiers
 ## Utilisation
 
 1. Appuyez sur Modifier, puis sur Recadrer. Un rectangle apparaît dans l’image, avec une poignée à chaque coin.
-2. Faites glisser les coins jusqu’à ce que le rectangle encadre le document. Les boutons de zoom restent disponibles pour placer les coins avec précision.
+2. Faites glisser les coins jusqu’à ce que le rectangle encadre le document. Le panneau de Recadrer a des boutons de zoom pour placer les coins avec précision.
 3. Appuyez sur Terminé, ou `Entrée`, pour ajouter le recadrage aux changements. Annuler cet outil, ou `Échap`, ferme Recadrer sans rien changer.
 
-Le recadrage est un changement comme un autre : Annuler la dernière action le retire, et Appliquer le rend définitif.
+Tant que Recadrer est ouvert, l’image apparaît telle que sera le résultat, Ajuster et Nettoyer compris. Le recadrage est un changement comme un autre : Annuler la dernière action le retire, et Appliquer le rend définitif.
 
 ## Poignées d’angle
 
 - Les poignées restent dans l’image, et le rectangle ne se retourne jamais.
 - Sur un écran tactile, une loupe montre la zone sous le doigt pendant qu’il fait glisser un coin, pour que le doigt ne cache pas où il se pose.
-- Sans faire glisser, appuyez sur une poignée, puis touchez l’endroit où va son coin. La poignée reste mise en évidence jusque-là, et `Échap` la relâche.
-- Au clavier, Tab passe d’une poignée à l’autre, et les flèches déplacent la poignée qui a le focus de 1 pixel d’écran, ou de 10 avec Maj. Les lecteurs d’écran annoncent chaque déplacement.
+- Sans faire glisser, appuyez sur une poignée, puis touchez l’endroit où va son coin. La poignée reste mise en évidence jusque-là, les boutons de zoom zooment vers son coin, et `Échap` la relâche.
+- Au clavier, Tab passe d’une poignée à l’autre, et les flèches déplacent la poignée qui a le focus de 1 pixel d’écran, ou de 10 avec Maj. `+` et `-` zooment vers la poignée qui a le focus. Les lecteurs d’écran annoncent chaque déplacement.
 
 ## Recadrer ou Redresser ?
 

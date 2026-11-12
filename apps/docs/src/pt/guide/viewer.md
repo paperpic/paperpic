@@ -28,7 +28,7 @@ Numa página longa, a roda daria zoom na imagem em vez de rolar a página. Use a
 
 ## A barra de ferramentas
 
-A barra de ferramentas fica à direita do visualizador, e rola quando o visualizador é baixo demais para os botões dela.
+A barra de ferramentas fica à direita do visualizador, e rola quando o visualizador é baixo demais para os botões dela. Ela se esconde durante a edição, então nunca cobre um canto de Recortar ou de Endireitar.
 
 | Botão                                       | O que faz                                                             |
 | ------------------------------------------- | --------------------------------------------------------------------- |

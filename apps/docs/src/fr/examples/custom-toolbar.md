@@ -206,5 +206,6 @@ export function Receipt() {
 ## Remarques
 
 - Avec `toolbar: false`, la barre de modification intégrée est aussi masquée, donc Recadrer et Redresser affichent leurs poignées mais pas de bouton Terminé. Votre interface les valide avec [`confirmTool()`](../reference/methods#confirmtool), comme `Entrée`.
+- Vos propres curseurs peuvent appeler directement [`setThreshold()`](../reference/methods#setthreshold) et [`setAdjustments()`](../reference/methods#setadjustments), ce qui ajoute un changement à chaque appel. Pour laisser un seul changement pour tout un glissement, ouvrez d’abord l’outil avec [`openTool()`](../reference/methods#opentool) : les mêmes méthodes changent alors ce qu’il montre, et `confirmTool()` le garde.
 - [`cancel()`](../reference/methods#cancel) ne demande rien avant d’abandonner les changements. Demandez à l’utilisateur s’il y en a, par exemple quand `canApply` est vrai.
 - Les raccourcis clavier fonctionnent toujours quand la visionneuse a le focus. Voir [Accessibilité](../guide/accessibility).

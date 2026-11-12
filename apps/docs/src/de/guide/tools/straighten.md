@@ -12,10 +12,12 @@ Ein schräg fotografiertes Dokument sieht wie ein Trapez aus: Die hintere Kante 
 ## So geht’s
 
 1. Drücke Bearbeiten, dann Begradigen. Für jede Ecke erscheint ein Griff.
-2. Ziehe jeden Griff auf eine Ecke des Dokuments. Zoome hinein, um sie genau zu platzieren.
+2. Ziehe jeden Griff auf eine Ecke des Dokuments. Zoome mit den Schaltflächen seines Bedienfelds hinein, um sie genau zu platzieren.
 3. Drücke Fertig oder `Enter`. Der Viewer zeigt die Seite flach, auf die vier Ecken zugeschnitten.
 
 Die Griffe funktionieren wie bei [Zuschneiden](./crop): eine Lupe auf Touchscreens, Drücken und Tippen statt Ziehen, Tab und Pfeiltasten auf der Tastatur. Die vier Ecken bilden immer eine konvexe Form, damit sich die Seite immer flach machen lässt.
+
+Begradigen zeigt das Foto ohne [Bereinigen](./clean-up), weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind. Bereinigen kommt nach Fertig zurück.
 
 ## Seitenverhältnis
 

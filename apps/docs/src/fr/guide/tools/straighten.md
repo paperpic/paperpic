@@ -12,10 +12,12 @@ Un document photographié de biais ressemble à un trapèze : le bord éloigné 
 ## Utilisation
 
 1. Appuyez sur Modifier, puis sur Redresser. Une poignée apparaît pour chaque coin.
-2. Faites glisser chaque poignée sur un coin du document. Zoomez pour les placer avec précision.
+2. Faites glisser chaque poignée sur un coin du document. Zoomez avec les boutons de son panneau pour les placer avec précision.
 3. Appuyez sur Terminé, ou `Entrée`. La visionneuse montre la page à plat, découpée aux quatre coins.
 
 Les poignées fonctionnent comme dans [Recadrer](./crop) : une loupe sur les écrans tactiles, appuyer puis toucher au lieu de faire glisser, et Tab et les flèches au clavier. Les quatre coins gardent toujours une forme convexe, donc la page peut toujours être mise à plat.
+
+Redresser montre la photo sans [Nettoyer](./clean-up), car les bords du papier sont difficiles à trouver sur une page nettoyée. Nettoyer revient après Terminé.
 
 ## Proportions
 

@@ -1,6 +1,6 @@
 /** Every text the component shows or announces. */
 export interface PaperPicLabels {
-  /** Shows the sliders of brightness and contrast. */
+  /** Opens the ruler of brightness and contrast. */
   adjust: string
   /** Announced after changing a slider of brightness or contrast, with its name and its value from -100 to 100. */
   adjustmentLevel: (name: string, value: number) => string
@@ -9,14 +9,14 @@ export interface PaperPicLabels {
   apply: string
   /** Shown when the changes cannot be applied. */
   applyError: string
-  /** Name of the slider of brightness. */
+  /** Chooses brightness in Adjust, and names its ruler. */
   brightness: string
   cancel: string
-  /** Closes a tool, discarding its selection. */
+  /** Closes a tool, discarding its changes. */
   cancelTool: string
-  /** Closes a tool, keeping its selection. */
+  /** Closes a tool, keeping its changes. */
   confirm: string
-  /** Name of the slider of contrast. */
+  /** Chooses contrast in Adjust, and names its ruler. */
   contrast: string
   cornerBottomLeft: string
   cornerBottomRight: string
@@ -42,6 +42,8 @@ export interface PaperPicLabels {
   fitWidth: string
   /** Mirrors the image left to right. */
   flip: string
+  /** Describes Adjust or Clean up, or a choice of Adjust, while its setting is in effect. Their dot shows it. */
+  inUse: string
   keepEditing: string
   /** Shown when the image cannot be loaded. */
   loadError: string
@@ -54,10 +56,11 @@ export interface PaperPicLabels {
   redo: string
   rotateLeft: string
   rotateRight: string
+  /** Opens Clean up, and names its switch. */
   threshold: string
-  /** Announced after changing the slider of the threshold. */
+  /** Announced after changing the ruler of Clean up. */
   thresholdLevel: (percent: number) => string
-  /** Name of the slider of the threshold. */
+  /** Name of the ruler of Clean up. */
   thresholdSensitivity: string
   /** Name of the toolbar, for screen readers. */
   toolbar: string
@@ -101,6 +104,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   fitHeight: 'Fit to height',
   fitWidth: 'Fit to width',
   flip: 'Flip',
+  inUse: 'In use',
   keepEditing: 'Keep editing',
   loadError: 'The image could not be loaded',
   loading: 'Loading image',

@@ -98,8 +98,10 @@ Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltfläch
 | Schlüssel        | Schaltfläche                                                               |
 | ---------------- | -------------------------------------------------------------------------- |
 | `adjust`         | Anpassen                                                                   |
-| `apply`          | Übernehmen, und Fertig in Zuschneiden und Begradigen                       |
+| `apply`          | Übernehmen, und Fertig in jedem Werkzeug                                   |
+| `brightness`     | Helligkeit, im Bedienfeld von Anpassen                                     |
 | `cancel`         | Abbrechen, und Dieses Werkzeug abbrechen                                   |
+| `contrast`       | Kontrast, im Bedienfeld von Anpassen                                       |
 | `crop`           | Zuschneiden                                                                |
 | `download`       | Herunterladen                                                              |
 | `edit`           | Bearbeiten                                                                 |

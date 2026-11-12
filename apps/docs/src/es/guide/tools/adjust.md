@@ -1,6 +1,6 @@
 ---
 title: Ajustar
-description: Cómo la herramienta Ajustar de PaperPic cambia el brillo y el contraste de la imagen de un documento con dos controles deslizantes en vivo, y cómo fijarlos desde el código.
+description: Cómo la herramienta Ajustar de PaperPic cambia el brillo y el contraste de la imagen de un documento con una regla en vivo, y cómo fijarlos desde el código.
 ---
 
 # Ajustar
@@ -9,11 +9,11 @@ Las fotos hechas con poca luz salen oscuras o grises. Ajustar cambia el brillo y
 
 ## Cómo se usa
 
-1. Pulsa Editar y luego Ajustar. En la barra de edición aparecen dos controles deslizantes: Brillo y Contraste.
-2. Arrastra un control. La vista previa cambia mientras arrastras, y al soltarlo queda un cambio, que Deshacer quita.
-3. Pulsa Ajustar otra vez para ocultar los controles.
+1. Pulsa Editar y luego Ajustar. Su panel ocupa el lugar de las herramientas: una regla, y Brillo y Contraste para elegir qué tono cambia.
+2. Arrastra la regla. La vista previa cambia mientras arrastras. Elige Contraste para cambiar el otro tono con la misma regla.
+3. Pulsa Hecho para conservar ambos tonos como un solo cambio, que Deshacer quita. Cancelar esta herramienta deja la imagen como estaba.
 
-El centro de cada control deja la imagen como está, y un control que vuelve al centro no cuenta como cambio. Los lectores de pantalla anuncian el valor de -100 a 100, como «Brillo +30».
+El centro de la regla deja la imagen como está, y la aguja se engancha ahí, así que volver a no cambiar nada es fácil. Los lectores de pantalla anuncian el valor de -100 a 100, como «Brillo +30». Un punto en Ajustar, y en cada tono dentro de su panel, marca un valor distinto de 0.
 
 Ajustar se aplica después de los demás cambios, así que Recortar y Enderezar muestran la imagen con él.
 
@@ -35,5 +35,7 @@ Mientras Limpiar está activado, Ajustar está desactivado, porque un documento 
 pic.edit()
 pic.setAdjustments({ brightness: 0.2, contrast: 0.3 })
 ```
+
+Mientras Ajustar está abierta, `setAdjustments()` cambia lo que muestra su panel, y [`confirmTool()`](../../reference/methods#confirmtool) lo conserva como un solo cambio.
 
 En la opción [`tools`](../../reference/options#tools), Ajustar es `'adjust'`.

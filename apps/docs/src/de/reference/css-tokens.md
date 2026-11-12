@@ -70,31 +70,30 @@ Diese Klassen sind öffentlich: Ihre Namen, und die Elemente, die sie markieren,
 | `paperpic`                | Die Wurzel des Viewers                                                                                                              |
 | `paperpic-button`         | Jede Schaltfläche der Werkzeugleiste und der Bearbeitungsleiste                                                                     |
 | `paperpic-button-danger`  | Verwerfen, in der Frage vor dem Verwerfen der Änderungen                                                                            |
-| `paperpic-button-primary` | Übernehmen, und Fertig in Zuschneiden und Begradigen                                                                                |
+| `paperpic-button-primary` | Übernehmen, und Fertig in jedem Werkzeug                                                                                            |
 | `paperpic-button-text`    | Die Schaltflächen der Frage vor dem Verwerfen der Änderungen                                                                        |
-| `paperpic-edit-bar`       | Die Bearbeitungsleiste unten                                                                                                        |
+| `paperpic-edit-bar`       | Die Bearbeitungsleiste, eine Karte unten beim Bearbeiten                                                                            |
 | `paperpic-editing`        | Die Wurzel, während der Bearbeitung                                                                                                 |
 | `paperpic-handle`         | Ein Eckgriff von Zuschneiden und Begradigen                                                                                         |
 | `paperpic-host`           | Das Element, das die Vue- und React-Komponenten um den Viewer herum erzeugen                                                        |
 | `paperpic-icon`           | Das Icon einer Schaltfläche                                                                                                         |
 | `paperpic-status`         | Die Meldung für Screenreader, die auch erscheint, während das Bild lädt oder die Änderungen übernommen werden, und bei einem Fehler |
 | `paperpic-status-visible` | Die Meldung, solange sie in der Mitte des Viewers erscheint                                                                         |
-| `paperpic-toolbar`        | Die Werkzeugleiste rechts                                                                                                           |
+| `paperpic-toolbar`        | Die Werkzeugleiste rechts, beim Bearbeiten ausgeblendet                                                                             |
 | `paperpic-viewport`       | Der Bereich, der das Bild zeigt und den Tastaturfokus erhält                                                                        |
 
 Schaltflächen zeigen ihren Zustand mit ARIA-Attributen, die du ebenfalls auswählen kannst:
 
-| Attribut                 | Zustand                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `[aria-disabled='true']` | Die Schaltfläche kann gerade nicht handeln. Sie behält den Tastaturfokus, deshalb ist sie nicht `disabled`          |
-| `[aria-expanded='true']` | Anpassen, solange seine Regler zu sehen sind                                                                        |
-| `[aria-pressed='true']`  | Eine eingeschaltete Schaltfläche, etwa Bereinigen, oder An Breite anpassen und An Höhe anpassen, solange sie gelten |
+| Attribut                 | Zustand                                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `[aria-disabled='true']` | Die Schaltfläche kann gerade nicht handeln. Sie behält den Tastaturfokus, deshalb ist sie nicht `disabled`        |
+| `[aria-pressed='true']`  | Die geltende Anpassung, An Breite anpassen oder An Höhe anpassen, oder die Wahl in Anpassen, die die Skala ändert |
 
 Hover und diese Zustände werden mit `box-shadow` gezeichnet, das globale Resets von Schaltflächen nicht anfassen. Um sie umzugestalten, überschreibe auch `box-shadow`.
 
 ## Bedienelemente {#controls}
 
-Jede Schaltfläche, jeder Regler und jeder Eckgriff trägt `data-paperpic-control`, mit dem Schlüssel seiner [Beschriftung](./labels). Wähle ihn aus, um ein einzelnes Bedienelement zu gestalten:
+Jede Schaltfläche, jede Skala und jeder Eckgriff trägt `data-paperpic-control`, mit dem Schlüssel seiner [Beschriftung](./labels). Wähle ihn aus, um ein einzelnes Bedienelement zu gestalten:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ Jede Schaltfläche, jeder Regler und jeder Eckgriff trägt `data-paperpic-contro
 }
 ```
 
-| Ort                        | Werte                                                                                                 |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Werkzeugleiste             | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
-| Bearbeitungsleiste         | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| Regler                     | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
-| Zuschneiden und Begradigen | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
-| Frage vor dem Verwerfen    | `keepEditing`, `discard`                                                                              |
+| Ort                        | Werte                                                                                                                       |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Werkzeugleiste             | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                               |
+| Bearbeitungsleiste         | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                       |
+| Anpassen und Bereinigen    | `brightness` und `contrast`, die Wahlen und ihre Skalen, `threshold`, der Schalter, und `thresholdSensitivity`, seine Skala |
+| Jedes Werkzeug             | `cancelTool`, `confirm`                                                                                                     |
+| Zuschneiden und Begradigen | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                             |
+| Frage vor dem Verwerfen    | `keepEditing`, `discard`                                                                                                    |
 
-`rotateLeft` benennt zwei Schaltflächen, die nie gleichzeitig erscheinen: die eines schreibgeschützten Viewers, die die Anzeige dreht, und die der Bearbeitungsleiste, die das Bild dreht.
+`rotateLeft` benennt zwei Schaltflächen, die nie gleichzeitig erscheinen: die eines schreibgeschützten Viewers, die die Anzeige dreht, und die der Bearbeitungsleiste, die das Bild dreht. Ebenso `zoomIn` und `zoomOut`, in der Werkzeugleiste und in einem Bedienfeld, und `threshold`, die Schaltfläche von Bereinigen und sein Schalter. `brightness` und `contrast` benennen eine Wahl und ihre Skala, die gleichzeitig zu sehen sind: Ergänze `button` oder `input` im Selektor, um sie zu unterscheiden.

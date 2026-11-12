@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Texts with a value
 
-Five labels are functions, because their text includes a value: the zoom, the sensitivity of Clean up, a corner and its position, a selected corner, and a slider of Adjust. Screen readers announce them. Format the numbers as your language does:
+Five labels are functions, because their text includes a value: the zoom, the sensitivity of Clean up, a corner and its position, a selected corner, and the ruler of Adjust. Screen readers announce them. Format the numbers as your language does:
 
 ```ts
 const signed = new Intl.NumberFormat('es', { signDisplay: 'exceptZero' })

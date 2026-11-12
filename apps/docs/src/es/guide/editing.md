@@ -9,11 +9,13 @@ La foto de un documento suele necesitar unos cuantos arreglos antes de merecer l
 
 ## El flujo de edición
 
-1. El usuario pulsa Editar, el lápiz de la barra de herramientas. La barra de edición aparece en la parte inferior del visor.
-2. Cada herramienta de la barra de edición añade un cambio, que el visor muestra al momento. Deshacer y Rehacer recorren los cambios.
+1. El usuario pulsa Editar, el lápiz de la barra de herramientas. La barra de herramientas se oculta, para que nada tape la imagen, y la barra de edición aparece en la parte inferior del visor.
+2. Girar a la izquierda y Voltear añaden un cambio al momento. Las demás herramientas abren un panel en la barra de edición, y Hecho añade lo que el usuario eligió en él como un solo cambio. Deshacer y Rehacer recorren los cambios.
 3. Aplicar calcula el resultado y vuelve a la visualización. Cancelar descarta los cambios, y pregunta antes si los hay.
 
 Nada cambia la imagen hasta Aplicar. Antes, los cambios son una lista de la que el visor muestra una vista previa.
+
+La barra de edición tiene dos filas de la misma altura en todos sus estados: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Hecho, a la derecha. Así la imagen no se mueve al abrir una herramienta. En un visor de al menos 28rem de ancho, la barra cabe en una fila. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
 
 ## Herramientas
 
@@ -68,7 +70,9 @@ export function Receipt() {
 
 :::
 
-Recortar y Enderezar tienen una selección propia, así que el resto de la barra de edición espera mientras una de ellas está abierta. Hecho, o `Enter`, añade la selección a los cambios, y Cancelar esta herramienta, o `Esc`, la descarta.
+Recortar, Enderezar, Ajustar y Limpiar abren un panel en lugar de las herramientas, así que el resto de la barra de edición espera mientras una de ellas está abierta. Hecho, o `Enter`, añade a los cambios lo que eligió la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
+
+Dentro de un panel, la imagen se ve como quedará el resultado, con Limpiar incluido. Enderezar es la excepción: muestra la foto sin Limpiar, para que los bordes del papel se sigan viendo.
 
 ## Vista previa y Aplicar
 

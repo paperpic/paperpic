@@ -8,6 +8,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | corner handle                                 | tirador de esquina    |
 | CSS token                                     | token CSS             |
 | dark mode                                     | modo oscuro           |
+| dot, the mark of a tool in use                | punto                 |
 | edit bar, the bar at the bottom while editing | barra de edición      |
 | edit mode                                     | modo de edición       |
 | editor                                        | editor                |
@@ -19,17 +20,20 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | method                                        | método                |
 | option                                        | opción                |
 | pan, move a zoomed image                      | desplazar             |
+| panel, the controls of an open tool           | panel                 |
 | parent element                                | elemento padre        |
 | playground                                    | Playground            |
 | preview                                       | vista previa          |
 | proportions, width to height                  | proporciones          |
 | read-only                                     | de solo lectura       |
 | result                                        | resultado             |
+| ruler, the slider of Adjust and Clean up      | regla                 |
 | sample image                                  | imagen de ejemplo     |
 | screen reader                                 | lector de pantalla    |
 | softness, of the cleaned edges                | suavidad              |
 | source image                                  | imagen original       |
 | state                                         | estado                |
+| switch, of Clean up                           | interruptor           |
 | tool                                          | herramienta           |
 | toolbar, the bar of buttons at the right      | barra de herramientas |
 | view mode                                     | modo de visualización |

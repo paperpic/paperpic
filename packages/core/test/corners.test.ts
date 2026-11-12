@@ -10,17 +10,7 @@ const frame = { width: 1000, height: 500 }
 
 describe('initialCorners', () => {
   it('starts inside the image', () => {
-    expect(initialCorners(frame, null)).toEqual(rectangleCorners(100, 50, 900, 450))
-  })
-
-  it('stays clear of the toolbar', () => {
-    expect(initialCorners(frame, { x: 800, y: 300 })).toEqual(rectangleCorners(100, 50, 800, 450))
-  })
-
-  it('ignores a toolbar that covers no corner', () => {
-    expect(initialCorners(frame, { x: 950, y: 300 })).toEqual(rectangleCorners(100, 50, 900, 450))
-    expect(initialCorners(frame, { x: 800, y: 20 })).toEqual(rectangleCorners(100, 50, 900, 450))
-    expect(initialCorners(frame, { x: 50, y: 300 })).toEqual(rectangleCorners(100, 50, 900, 450))
+    expect(initialCorners(frame)).toEqual(rectangleCorners(100, 50, 900, 450))
   })
 })
 
@@ -101,7 +91,6 @@ describe('cornerEditor', () => {
       frameSize: () => frame,
       frameToViewport: ({ x, y }) => ({ x: x / 2, y: y / 2 }),
       viewportToFrame: ({ x, y }) => ({ x: x * 2, y: y * 2 }),
-      toolbarCorner: () => null,
       reveal: vi.fn(),
       requestPaint: vi.fn(),
       setHint: vi.fn(),

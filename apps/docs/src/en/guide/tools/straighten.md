@@ -12,10 +12,12 @@ A document photographed at an angle looks like a trapezoid: the far edge is shor
 ## Use it
 
 1. Press Edit, then Straighten. A handle appears for each corner.
-2. Drag each handle onto a corner of the document. Zoom in to place them precisely.
+2. Drag each handle onto a corner of the document. Zoom in with the buttons of its panel to place them precisely.
 3. Press Done, or `Enter`. The viewer shows the page flat, cut to the four corners.
 
 The handles work as in [Crop](./crop): a magnifier on touch screens, press and tap instead of dragging, and Tab and the arrow keys on the keyboard. The four corners always keep a convex shape, so the page can always be flattened.
+
+Straighten shows the photo without [Clean up](./clean-up), because the edges of the paper are hard to find on a cleaned up page. Clean up comes back after Done.
 
 ## Proportions
 

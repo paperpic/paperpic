@@ -35,8 +35,9 @@ function createSeparator(): HTMLElement {
 }
 
 /**
- * The controls that stay at the right: the Edit pencil, then zoom, fit and rotation in a read-only viewer, which change
- * the view, and, when chosen, download. A line separates the view controls from each of the other two.
+ * The controls at the right, while viewing: the Edit pencil, then zoom, fit and rotation in a read-only viewer, which
+ * change the view, and, when chosen, download. A line separates the view controls from each of the other two.
+ * Fit to width and Fit to height stay pressed while their fit holds.
  */
 export class Toolbar {
   readonly element: HTMLElement

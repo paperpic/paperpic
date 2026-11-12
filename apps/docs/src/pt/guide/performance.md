@@ -22,7 +22,7 @@ Com uma Content Security Policy, permita:
 
 ## Fotos grandes
 
-- **Durante a edição**, a pré-visualização trabalha numa cópia de cerca de 2 megapixels, então controles e ferramentas continuam fluidos com qualquer foto.
+- **Durante a edição**, a pré-visualização trabalha numa cópia de cerca de 2 megapixels, então réguas e ferramentas continuam fluidas com qualquer foto.
 - **No Aplicar**, cada alteração é calculada na resolução completa. Fotos grandes levam alguns segundos, então o visualizador mostra uma mensagem e bloqueia os controles nesse tempo.
 - **Para economizar tempo e memória**, defina [`maxOutputSize`](../reference/options#maxoutputsize). Um limite como 2000 ou 3000 pixels mantém os documentos legíveis, deixa o Aplicar mais rápido e os arquivos menores.
 

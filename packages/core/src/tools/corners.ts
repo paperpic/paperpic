@@ -39,14 +39,11 @@ export function rectangleCorners(left: number, top: number, right: number, botto
   ]
 }
 
-/** Where the corners start: inside the image, and clear of the toolbar, which would cover the top right one. */
-export function initialCorners(frame: Size, toolbarCorner: Point | null): Quad {
+/** Where the corners start: inside the image, a little in from its edges. Nothing covers them, because the toolbar hides while editing. */
+export function initialCorners(frame: Size): Quad {
   const left = frame.width * INITIAL_INSET
   const top = frame.height * INITIAL_INSET
-  const right = frame.width - left
-  const bottom = frame.height - top
-  const underToolbar = toolbarCorner !== null && top < toolbarCorner.y && right > toolbarCorner.x && toolbarCorner.x > left
-  return rectangleCorners(left, top, underToolbar ? toolbarCorner.x : right, bottom)
+  return rectangleCorners(left, top, frame.width - left, frame.height - top)
 }
 
 /** Keeps the corners a rectangle inside the frame, which never turns inside out. */
@@ -192,6 +189,17 @@ export class CornerEditor {
     this.move(index, this.host.viewportToFrame(point))
     this.announce(index)
     return true
+  }
+
+  /** Where zoom keeps its place: the selected corner, or else the focused one, in the viewport. `null` for neither. */
+  anchor(): ViewPoint | null {
+    const focused = this.handles.findIndex(handle => handle === document.activeElement)
+    const index = this.selected ?? (focused >= 0
+      ? focused
+      : null)
+    return index === null
+      ? null
+      : this.host.frameToViewport(this.corners[index]!)
   }
 
   /** Lets go of the selected corner. Returns whether a corner was selected. */
@@ -354,9 +362,7 @@ export class CornerEditor {
 
   private showLens(index: number, finger: ViewPoint): void {
     const { width, height } = this.host.layer.getBoundingClientRect()
-    // The toolbar sits above the lens, so the lens stays out of its column
-    const available = this.host.toolbarCorner()?.x ?? width
-    this.lens = placeLens(this.corners[index]!, finger, { width: available, height })
+    this.lens = placeLens(this.corners[index]!, finger, { width, height })
     this.host.requestPaint()
   }
 }

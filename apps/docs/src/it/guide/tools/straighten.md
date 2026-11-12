@@ -12,10 +12,12 @@ Un documento fotografato di sbieco sembra un trapezio: il bordo lontano è più 
 ## Come si usa
 
 1. Premi Modifica, poi Raddrizza. Compare una maniglia per ogni angolo.
-2. Trascina ogni maniglia su un angolo del documento. Ingrandisci per posizionarle con precisione.
+2. Trascina ogni maniglia su un angolo del documento. Ingrandisci con i pulsanti del suo pannello per posizionarle con precisione.
 3. Premi Fatto, o `Invio`. Il visualizzatore mostra la pagina piatta, ritagliata sui quattro angoli.
 
 Le maniglie funzionano come in [Ritaglia](./crop): una lente d’ingrandimento sugli schermi touch, premere e toccare invece di trascinare, e Tab e le frecce con la tastiera. I quattro angoli formano sempre una figura convessa, così la pagina si può sempre rendere piatta.
+
+Raddrizza mostra la foto senza [Pulisci](./clean-up), perché su una pagina pulita è difficile trovare i bordi della carta. Pulisci torna dopo Fatto.
 
 ## Proporzioni
 

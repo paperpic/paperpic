@@ -98,8 +98,10 @@ Each key names an icon, and some icons appear on two buttons:
 | Key              | Button                                             |
 | ---------------- | -------------------------------------------------- |
 | `adjust`         | Adjust                                             |
-| `apply`          | Apply, and Done in Crop and Straighten             |
+| `apply`          | Apply, and Done in every tool                      |
+| `brightness`     | Brightness, in the panel of Adjust                 |
 | `cancel`         | Cancel, and Cancel this tool                       |
+| `contrast`       | Contrast, in the panel of Adjust                   |
 | `crop`           | Crop                                               |
 | `download`       | Download                                           |
 | `edit`           | Edit                                               |

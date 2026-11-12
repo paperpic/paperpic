@@ -9,11 +9,13 @@ Das Foto eines Dokuments braucht meist ein paar Korrekturen, bevor es sich lohnt
 
 ## Der Ablauf
 
-1. Der Nutzer drückt Bearbeiten, den Stift in der Werkzeugleiste. Die Bearbeitungsleiste erscheint unten im Viewer.
-2. Jedes Werkzeug der Bearbeitungsleiste fügt eine Änderung hinzu, die der Viewer sofort zeigt. Rückgängig und Wiederholen gehen durch die Änderungen.
+1. Der Nutzer drückt Bearbeiten, den Stift in der Werkzeugleiste. Die Werkzeugleiste blendet sich aus, damit nichts das Bild verdeckt, und die Bearbeitungsleiste erscheint unten im Viewer.
+2. Nach links drehen und Spiegeln fügen sofort eine Änderung hinzu. Die übrigen Werkzeuge öffnen ein Bedienfeld in der Bearbeitungsleiste, und Fertig fügt das, was der Nutzer dort gewählt hat, als eine Änderung hinzu. Rückgängig und Wiederholen gehen durch die Änderungen.
 3. Übernehmen berechnet das Ergebnis und kehrt zur Ansicht zurück. Abbrechen verwirft die Änderungen und fragt vorher nach, wenn es welche gibt.
 
 Nichts verändert das Bild vor dem Übernehmen. Bis dahin sind die Änderungen eine Liste, die der Viewer als Vorschau zeigt.
+
+Die Bearbeitungsleiste hat in jedem Zustand zwei gleich hohe Zeilen: oben die Werkzeuge oder das Bedienfeld des offenen Werkzeugs, unten links Abbrechen und rechts Übernehmen oder Fertig. So bleibt das Bild an seinem Platz, wenn sich ein Werkzeug öffnet. In einem Viewer ab 28rem Breite passt die Leiste in eine Zeile. Ein Punkt markiert Anpassen und Bereinigen, solange ihre Einstellung gilt.
 
 ## Werkzeuge
 
@@ -68,7 +70,9 @@ export function Receipt() {
 
 :::
 
-Zuschneiden und Begradigen haben eine eigene Auswahl, deshalb wartet der Rest der Bearbeitungsleiste, solange eines von beiden offen ist. Fertig, oder `Enter`, fügt die Auswahl zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft sie.
+Zuschneiden, Begradigen, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge, deshalb wartet der Rest der Bearbeitungsleiste, solange eines davon offen ist. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
+
+In einem Bedienfeld sieht das Bild so aus, wie das Ergebnis wird, mit Bereinigen. Begradigen ist die Ausnahme: Es zeigt das Foto ohne Bereinigen, damit die Ränder des Papiers sichtbar bleiben.
 
 ## Vorschau und Übernehmen
 

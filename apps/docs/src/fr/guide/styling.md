@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons : `apply` est aussi sur Terminé, et `cancel` ferme aussi Recadrer et Redresser. [Options](../reference/options#icons) liste toutes les clés.
+- Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons : `apply` est aussi sur Terminé, et `cancel` ferme aussi un outil. [Options](../reference/options#icons) liste toutes les clés.
 - PaperPic donne à l’icône la classe `paperpic-icon`, qui fixe sa taille, et la cache aux lecteurs d’écran, car le bouton a déjà un nom.
 - Dessinez l’icône avec `currentColor`, pour qu’elle prenne la couleur du bouton dans chaque thème.
 - Le balisage entre dans la page en HTML, donc ne passez que du balisage de confiance.
@@ -245,7 +245,7 @@ Importez ici la feuille de style de PaperPic, dans votre CSS, et non depuis Java
 
 La [référence CSS](../reference/css-tokens#classes) liste les classes que vous pouvez cibler, comme `paperpic-toolbar` et `paperpic-button`, et leurs noms sont stables. Les autres classes tiennent la disposition et peuvent changer dans n’importe quelle version. Préférez les jetons quand ils couvrent votre besoin.
 
-Chaque bouton, curseur et poignée d’angle porte aussi `data-paperpic-control`, avec la clé de son [libellé](../reference/labels). Sélectionnez-le pour styler un seul contrôle :
+Chaque bouton, règle et poignée d’angle porte aussi `data-paperpic-control`, avec la clé de son [libellé](../reference/labels). Sélectionnez-le pour styler un seul contrôle :
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Chaque bouton, curseur et poignée d’angle porte aussi `data-paperpic-control`
 
 L’interface s’adapte seule à son conteneur :
 
-- La barre d’outils se trouve à droite et défile quand la visionneuse est trop basse pour ses boutons.
-- La barre de modification se trouve en bas, sur une ligne, ou sur deux dans une visionneuse de moins de 28rem de large.
+- La barre d’outils se trouve à droite et défile quand la visionneuse est trop basse pour ses boutons. Elle se masque pendant la modification.
+- La barre de modification est une carte en bas avec deux lignes de hauteur fixe, ou une ligne dans une visionneuse d’au moins 28rem de large, donc l’image garde sa place quand un outil s’ouvre.
 - Sur les écrans tactiles, les boutons et les poignées d’angle mesurent au moins 44 pixels.
 
 ## Vos propres contrôles

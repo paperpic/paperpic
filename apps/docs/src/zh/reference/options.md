@@ -98,8 +98,10 @@ pic.setOptions({ editable: false })
 | 键               | 按钮                         |
 | ---------------- | ---------------------------- |
 | `adjust`         | 调整                         |
-| `apply`          | 应用，以及裁剪和矫正中的完成 |
+| `apply`          | 应用，以及每个工具中的完成   |
+| `brightness`     | “调整”面板中的亮度           |
 | `cancel`         | 取消，以及取消此工具         |
+| `contrast`       | “调整”面板中的对比度         |
 | `crop`           | 裁剪                         |
 | `download`       | 下载                         |
 | `edit`           | 编辑                         |

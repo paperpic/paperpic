@@ -9,11 +9,13 @@ A foto de um documento costuma precisar de alguns ajustes antes de valer a pena 
 
 ## O fluxo de edição
 
-1. O usuário toca em Editar, o lápis na barra de ferramentas. A barra de edição aparece na parte de baixo do visualizador.
-2. Cada ferramenta da barra de edição adiciona uma alteração, que o visualizador mostra na hora. Desfazer e Refazer percorrem as alterações.
+1. O usuário toca em Editar, o lápis na barra de ferramentas. A barra de ferramentas se esconde, para que nada cubra a imagem, e a barra de edição aparece na parte de baixo do visualizador.
+2. Girar para a esquerda e Espelhar adicionam uma alteração na hora. As outras ferramentas abrem um painel na barra de edição, e Concluído adiciona o que o usuário escolheu nele como uma única alteração. Desfazer e Refazer percorrem as alterações.
 3. Aplicar calcula o resultado e volta à visualização. Cancelar descarta as alterações, e pergunta antes se houver alguma.
 
 Nada muda a imagem antes do Aplicar. Até lá, as alterações são uma lista que o visualizador mostra em pré-visualização.
+
+A barra de edição tem duas linhas da mesma altura em todos os estados: em cima, as ferramentas ou o painel da ferramenta aberta, e embaixo, Cancelar à esquerda e Aplicar, ou Concluído, à direita. Assim a imagem fica no lugar quando uma ferramenta abre. Num visualizador com pelo menos 28rem de largura, a barra cabe numa linha. Um ponto marca Ajustar e Limpar enquanto o ajuste deles está em uso.
 
 ## Ferramentas
 
@@ -68,7 +70,9 @@ export function Receipt() {
 
 :::
 
-Recortar e Endireitar têm seleção própria, então o resto da barra de edição espera enquanto uma delas está aberta. Concluído, ou `Enter`, adiciona a seleção às alterações, e Cancelar esta ferramenta, ou `Esc`, a descarta.
+Recortar, Endireitar, Ajustar e Limpar abrem um painel no lugar das ferramentas, então o resto da barra de edição espera enquanto uma delas está aberta. Concluído, ou `Enter`, adiciona às alterações o que a ferramenta escolheu, e Cancelar esta ferramenta, ou `Esc`, o descarta.
+
+Dentro de um painel, a imagem aparece como o resultado vai ficar, com Limpar incluído. Endireitar é a exceção: mostra a foto sem Limpar, para que as bordas do papel continuem visíveis.
 
 ## Pré-visualização e Aplicar
 

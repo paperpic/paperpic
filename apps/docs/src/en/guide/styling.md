@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- Each key names an icon, and some icons appear on two buttons: `apply` is also on Done, and `cancel` also closes Crop and Straighten. [Options](../reference/options#icons) lists every key.
+- Each key names an icon, and some icons appear on two buttons: `apply` is also on Done, and `cancel` also closes a tool. [Options](../reference/options#icons) lists every key.
 - PaperPic gives the icon the class `paperpic-icon`, which sets its size, and hides it from screen readers, because the button already has a name.
 - Draw the icon with `currentColor`, so it takes the color of the button in every theme.
 - The markup goes into the page as HTML, so pass only markup you trust.
@@ -245,7 +245,7 @@ Import the stylesheet of PaperPic here, in your CSS, and not from JavaScript. In
 
 The [CSS reference](../reference/css-tokens#classes) lists the classes you can target, such as `paperpic-toolbar` and `paperpic-button`, and their names stay stable. Other classes hold the layout together and can change in any release. Prefer the tokens when they cover what you need.
 
-Every button, slider and corner handle also carries `data-paperpic-control`, with the key of its [label](../reference/labels). Select it to style one control:
+Every button, ruler and corner handle also carries `data-paperpic-control`, with the key of its [label](../reference/labels). Select it to style one control:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Every button, slider and corner handle also carries `data-paperpic-control`, wit
 
 The interface adapts to its container on its own:
 
-- The toolbar sits at the right and scrolls when the viewer is too short for its buttons.
-- The edit bar sits at the bottom, on one row, or on two in a viewer narrower than 28rem.
+- The toolbar sits at the right and scrolls when the viewer is too short for its buttons. It hides while editing.
+- The edit bar is a card at the bottom with two rows of fixed height, or one row in a viewer at least 28rem wide, so the image keeps its place when a tool opens.
 - On touch screens, buttons and corner handles grow to at least 44 pixels.
 
 ## Your own controls

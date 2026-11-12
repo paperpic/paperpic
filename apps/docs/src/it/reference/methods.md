@@ -137,7 +137,7 @@ Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un qu
 function openTool(id: ToolId): void
 ```
 
-Apre Ritaglia, con `'crop'`, o Raddrizza, con `'perspective'`: gli strumenti con una selezione propria. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool), e nel frattempo gli altri cambiamenti, Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica.
+Apre uno strumento con un pannello: Ritaglia, con `'crop'`, Raddrizza, con `'perspective'`, Regola, con `'adjust'`, o Pulisci, con `'threshold'`, che si attiva quando si apre. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool), e nel frattempo gli altri cambiamenti, Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola con Pulisci attivo, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo.
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ Apre Ritaglia, con `'crop'`, o Raddrizza, con `'perspective'`: gli strumenti con
 function confirmTool(): void
 ```
 
-Chiude lo strumento aperto e aggiunge la sua selezione ai cambiamenti, come `Invio`.
+Chiude lo strumento aperto e aggiunge ai cambiamenti ciò che ha scelto, come `Invio`: la selezione di Ritaglia o di Raddrizza, o le impostazioni di Regola o di Pulisci, come un solo cambiamento.
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ Chiude lo strumento aperto e aggiunge la sua selezione ai cambiamenti, come `Inv
 function cancelTool(): void
 ```
 
-Chiude lo strumento aperto e scarta la sua selezione, come `Esc`.
+Chiude lo strumento aperto e scarta i suoi cambiamenti, come `Esc`.
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ Chiude lo strumento aperto e scarta la sua selezione, come `Esc`.
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-Attiva o disattiva Pulisci, o ne cambia la sensibilità, da 0 a 1. Pulisci viene sempre dopo gli altri cambiamenti. Non fa nulla fuori dalla modalità di modifica o con uno strumento aperto.
+Attiva o disattiva Pulisci, o ne cambia la sensibilità, da 0 a 1. Pulisci viene sempre dopo gli altri cambiamenti. Mentre Pulisci è aperto, cambia ciò che mostra Pulisci, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica o con un altro strumento aperto.
 
 Lancia un `RangeError` se `sensitivity` non è tra 0 e 1.
 
@@ -171,7 +171,7 @@ Lancia un `RangeError` se `sensitivity` non è tra 0 e 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o con Pulisci attivo, perché un documento pulito ha toni suoi.
+Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti. Mentre Regola è aperto, cambia ciò che mostra Regola, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto o con Pulisci attivo, perché un documento pulito ha toni suoi.
 
 Lancia un `RangeError` se un valore non è tra -1 e 1.
 

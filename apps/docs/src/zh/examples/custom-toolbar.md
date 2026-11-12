@@ -206,5 +206,6 @@ export function Receipt() {
 ## 说明
 
 - 设置 `toolbar: false` 时内置编辑栏也会隐藏，因此“裁剪”和“矫正”会显示手柄，但没有“完成”按钮。你的界面用 [`confirmTool()`](../reference/methods#confirmtool) 确认它们，与 `Enter` 相同。
+- 你自己的滑块可以直接调用 [`setThreshold()`](../reference/methods#setthreshold) 和 [`setAdjustments()`](../reference/methods#setadjustments)，每次调用都会添加一项修改。若要让整次拖动只留下一项修改，请先用 [`openTool()`](../reference/methods#opentool) 打开工具：这样同样的方法会改变工具显示的内容，`confirmTool()` 再把它保留下来。
 - [`cancel()`](../reference/methods#cancel) 在放弃修改前不会询问。如果有修改，请先询问用户，例如在 `canApply` 为 true 时。
 - 焦点在查看器上时，键盘快捷键依然有效。参见[无障碍](../guide/accessibility)。

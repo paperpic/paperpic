@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti: `apply` è anche su Fatto, e `cancel` chiude anche Ritaglia e Raddrizza. [Opzioni](../reference/options#icons) elenca tutte le chiavi.
+- Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti: `apply` è anche su Fatto, e `cancel` chiude anche uno strumento. [Opzioni](../reference/options#icons) elenca tutte le chiavi.
 - PaperPic dà all’icona la classe `paperpic-icon`, che ne fissa la dimensione, e la nasconde ai lettori di schermo, perché il pulsante ha già un nome.
 - Disegna l’icona con `currentColor`, così prende il colore del pulsante in ogni tema.
 - Il markup entra nella pagina come HTML, quindi passa solo markup di cui ti fidi.
@@ -245,7 +245,7 @@ Importa qui il foglio di stile di PaperPic, nel tuo CSS, e non da JavaScript. In
 
 Il [riferimento CSS](../reference/css-tokens#classes) elenca le classi che puoi usare nei tuoi selettori, come `paperpic-toolbar` e `paperpic-button`, e i loro nomi sono stabili. Le altre classi tengono insieme la disposizione e possono cambiare in qualsiasi versione. Preferisci i token quando coprono ciò che ti serve.
 
-Ogni pulsante, cursore e maniglia d’angolo porta anche `data-paperpic-control`, con la chiave della sua [etichetta](../reference/labels). Selezionalo per dare stile a un solo controllo:
+Ogni pulsante, righello e maniglia d’angolo porta anche `data-paperpic-control`, con la chiave della sua [etichetta](../reference/labels). Selezionalo per dare stile a un solo controllo:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Ogni pulsante, cursore e maniglia d’angolo porta anche `data-paperpic-control`
 
 L’interfaccia si adatta da sola al suo contenitore:
 
-- La barra degli strumenti sta a destra e scorre quando il visualizzatore è troppo basso per i suoi pulsanti.
-- La barra di modifica sta in basso, su una riga, o su due in un visualizzatore più stretto di 28rem.
+- La barra degli strumenti sta a destra e scorre quando il visualizzatore è troppo basso per i suoi pulsanti. Si nasconde durante la modifica.
+- La barra di modifica è una scheda in basso con due righe di altezza fissa, o una riga in un visualizzatore largo almeno 28rem, così l’immagine resta al suo posto quando si apre uno strumento.
 - Sugli schermi touch, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel.
 
 ## I tuoi controlli

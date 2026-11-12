@@ -28,7 +28,7 @@ En una página larga, la rueda haría zoom en la imagen en vez de desplazar la p
 
 ## La barra de herramientas
 
-La barra de herramientas está a la derecha del visor, y se desplaza cuando el visor es demasiado bajo para sus botones.
+La barra de herramientas está a la derecha del visor, y se desplaza cuando el visor es demasiado bajo para sus botones. Se oculta durante la edición, así que nunca tapa una esquina de Recortar o Enderezar.
 
 | Botón                                    | Qué hace                                                              |
 | ---------------------------------------- | --------------------------------------------------------------------- |

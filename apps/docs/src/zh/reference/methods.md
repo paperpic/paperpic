@@ -137,7 +137,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-打开带有自己选区的工具：`'crop'` 打开裁剪，`'perspective'` 打开矫正。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)；在此期间，其他修改、撤销、重做和应用都不起作用。在编辑模式之外什么也不做。
+打开带面板的工具：`'crop'` 打开裁剪，`'perspective'` 打开矫正，`'adjust'` 打开调整，`'threshold'` 打开清理，清理在打开时开启。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)；在此期间，其他修改、撤销、重做和应用都不起作用。在编辑模式之外、有其他工具打开时、开启清理时的调整，以及预览准备期间的裁剪和矫正，什么也不做。
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-关闭打开的工具，并把它的选区加入修改，与 `Enter` 相同。
+关闭打开的工具，并把其中的选择加入修改，与 `Enter` 相同：裁剪或矫正的选区，或者调整或清理的设置，作为一项修改。
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ function confirmTool(): void
 function cancelTool(): void
 ```
 
-关闭打开的工具，并放弃它的选区，与 `Esc` 相同。
+关闭打开的工具，并放弃它的修改，与 `Esc` 相同。
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ function cancelTool(): void
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-开启或关闭清理，或修改它的灵敏度，范围 0 到 1。清理总是在其他修改之后进行。在编辑模式之外或有工具打开时什么也不做。
+开启或关闭清理，或修改它的灵敏度，范围 0 到 1。清理总是在其他修改之后进行。清理打开时，它会改变清理显示的内容，[`confirmTool()`](#confirmtool) 会把它作为一项修改保留。在编辑模式之外或有其他工具打开时什么也不做。
 
 如果 `sensitivity` 不在 0 到 1 之间，会抛出 `RangeError`。
 
@@ -171,7 +171,7 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-修改亮度或对比度，各自范围为 -1 到 1，0 表示保持原样。它们在其他修改之后进行。在编辑模式之外、有工具打开时或开启清理时什么也不做，因为清理后的文档有自己的色调。
+修改亮度或对比度，各自范围为 -1 到 1，0 表示保持原样。它们在其他修改之后进行。调整打开时，它会改变调整显示的值，[`confirmTool()`](#confirmtool) 会把它作为一项修改保留。在编辑模式之外、有其他工具打开时或开启清理时什么也不做，因为清理后的文档有自己的色调。
 
 如果某个值不在 -1 到 1 之间，会抛出 `RangeError`。
 

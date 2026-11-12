@@ -206,5 +206,6 @@ export function Receipt() {
 ## 참고
 
 - `toolbar: false`에서는 기본 편집 바도 숨겨지므로, ‘자르기’와 ‘기울기 보정’은 핸들은 보여 주지만 ‘완료’ 버튼은 없습니다. 여러분의 인터페이스에서 `Enter`처럼 [`confirmTool()`](../reference/methods#confirmtool)로 확정하세요.
+- 여러분의 슬라이더는 [`setThreshold()`](../reference/methods#setthreshold)와 [`setAdjustments()`](../reference/methods#setadjustments)를 직접 호출할 수 있으며, 호출할 때마다 변경이 하나 더해집니다. 끌기 전체를 변경 하나로 남기려면 먼저 [`openTool()`](../reference/methods#opentool)로 도구를 여세요. 그러면 같은 메서드가 도구에 보이는 내용을 바꾸고, `confirmTool()`이 이를 남깁니다.
 - [`cancel()`](../reference/methods#cancel)은 변경을 버리기 전에 묻지 않습니다. `canApply`가 true일 때처럼 변경이 있으면 사용자에게 먼저 물어보세요.
 - 뷰어에 포커스가 있으면 키보드 단축키는 계속 동작합니다. [접근성](../guide/accessibility)을 참고하세요.
