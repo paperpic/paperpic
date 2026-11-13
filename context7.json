@@ -1,5 +1,7 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
+  "url": "https://context7.com/paperpic/paperpic",
+  "public_key": "pk_jY4aHJ3BdnyuS5RSlvshn",
   "projectTitle": "PaperPic",
   "description": "Turn photos of paper into clean, readable documents in the browser: a document viewer and editor for plain JavaScript, Vue and React.",
   "folders": ["apps/docs/src/en"],
