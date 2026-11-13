@@ -122,7 +122,7 @@ The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `
 For the installed version, read the package itself, where `<package>` is `core`, `vue` or `react`:
 
 - The docs in `node_modules/@paperpic/<package>/dist/docs`: the guide, the reference and the examples, in Markdown.
-- The types in `node_modules/@paperpic/<package>/dist/index.d.ts`, which document every option, method and event, with examples.
+- The types in `node_modules/@paperpic/<package>/dist/index.d.ts`, with a description and examples.
 
 Online, for the latest version:
 
