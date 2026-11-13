@@ -49,7 +49,7 @@ Five labels are functions, because their text includes a value. Create the objec
 | `fitHeight`            | Fit to height                                | The button that fits the height of the image                                                                  |
 | `fitWidth`             | Fit to width                                 | The button that fits the width of the image                                                                   |
 | `flip`                 | Flip                                         | The Flip button                                                                                               |
-| `inUse`                | In use                                       | The description of Adjust, Clean up or a choice of Adjust while its setting is in effect, which a dot shows   |
+| `inUse`                | In use                                       | The description of Adjust or Clean up while its setting is in effect, which a dot shows                       |
 | `keepEditing`          | Keep editing                                 | The button that goes back to editing instead of losing the changes                                            |
 | `loadError`            | The image could not be loaded                | Shown when the image fails to load                                                                            |
 | `loading`              | Loading image                                | Shown while the image loads                                                                                   |

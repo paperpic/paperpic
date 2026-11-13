@@ -13,7 +13,7 @@ Las fotos hechas con poca luz salen oscuras o grises. Ajustar cambia el brillo y
 2. Arrastra la regla. La vista previa cambia mientras arrastras. Elige Contraste para cambiar el otro tono con la misma regla.
 3. Pulsa Hecho para conservar ambos tonos como un solo cambio, que Deshacer quita. Cancelar esta herramienta deja la imagen como estaba.
 
-El centro de la regla deja la imagen como está, y la aguja se engancha ahí, así que volver a no cambiar nada es fácil. Los lectores de pantalla anuncian el valor de -100 a 100, como «Brillo +30». Un punto en Ajustar, y en cada tono dentro de su panel, marca un valor distinto de 0.
+El centro de la regla deja la imagen como está, y la aguja se engancha ahí, así que volver a no cambiar nada es fácil. Los lectores de pantalla anuncian el valor de -100 a 100, como «Brillo +30». Un punto en Ajustar marca valores distintos de 0.
 
 Ajustar se aplica después de los demás cambios, así que Recortar y Enderezar muestran la imagen con él.
 

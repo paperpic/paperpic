@@ -49,7 +49,7 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l�
 | `fitHeight`            | Fit to height                                | Le bouton qui ajuste la hauteur de l’image                                                                                            |
 | `fitWidth`             | Fit to width                                 | Le bouton qui ajuste la largeur de l’image                                                                                            |
 | `flip`                 | Flip                                         | Le bouton Retourner                                                                                                                   |
-| `inUse`                | In use                                       | La description d’Ajuster, de Nettoyer ou d’un choix d’Ajuster tant que son réglage s’applique, ce que montre un point                 |
+| `inUse`                | In use                                       | La description d’Ajuster ou de Nettoyer tant que son réglage s’applique, ce que montre un point                                       |
 | `keepEditing`          | Keep editing                                 | Le bouton qui revient à la modification au lieu de perdre les changements                                                             |
 | `loadError`            | The image could not be loaded                | Affiché quand l’image ne se charge pas                                                                                                |
 | `loading`              | Loading image                                | Affiché pendant le chargement de l’image                                                                                              |

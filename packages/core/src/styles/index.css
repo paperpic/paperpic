@@ -426,11 +426,6 @@
     background: var(--paperpic-color-accent);
   }
 
-  /* Under the icon of a choice of Adjust, because its name has descenders that the dot would touch */
-  .paperpic-edit-option .paperpic-edit-dot {
-    inset-inline-start: 1rem;
-  }
-
   .paperpic-edit-options {
     display: flex;
     gap: 0.125rem;
