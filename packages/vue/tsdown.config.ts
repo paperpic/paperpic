@@ -1,5 +1,6 @@
 import { defineConfig } from 'tsdown'
 import Vue from 'unplugin-vue/rolldown'
+import { copyDocs } from '../../scripts/copy-docs.ts'
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -20,6 +21,9 @@ export default defineConfig({
     tsc: { vue: true },
   },
   clean: true,
+  hooks: {
+    'build:done': ({ options }) => copyDocs(options.outDir),
+  },
   publint: { level: 'error' },
   // style.css has no types to resolve
   attw: {

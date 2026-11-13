@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { defineConfig } from 'tsdown'
+import { copyDocs } from '../../scripts/copy-docs.ts'
 
 export default defineConfig({
   entry: {
@@ -20,6 +21,9 @@ export default defineConfig({
   ],
   dts: true,
   clean: true,
+  hooks: {
+    'build:done': ({ options }) => copyDocs(options.outDir),
+  },
   plugins: [
     {
       // The source points at worker.ts, so Vite finds it in the playgrounds. The package has dist/worker.js

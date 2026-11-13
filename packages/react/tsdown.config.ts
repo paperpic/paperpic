@@ -1,4 +1,5 @@
 import { defineConfig } from 'tsdown'
+import { copyDocs } from '../../scripts/copy-docs.ts'
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -14,6 +15,9 @@ export default defineConfig({
   ],
   dts: true,
   clean: true,
+  hooks: {
+    'build:done': ({ options }) => copyDocs(options.outDir),
+  },
   // 'use client' stays at the top of the only chunk, which is all React Server Components need
   checks: { moduleLevelDirective: false },
   publint: { level: 'error' },
