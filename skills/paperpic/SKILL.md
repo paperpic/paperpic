@@ -19,7 +19,7 @@ PaperPic shows an image of a document and lets the user crop, straighten, rotate
 
    PaperPic runs in the browsers of Baseline Widely Available.
 
-2. **Import the stylesheet once**, from the same package: `@paperpic/core/style.css`, `@paperpic/vue/style.css` or `@paperpic/react/style.css`.
+2. **Import the stylesheet once**, from the same package: `@paperpic/core/style.css`, `@paperpic/vue/style.css` or `@paperpic/react/style.css`. Without it, the console warns `PaperPic: the stylesheet is missing`.
 3. **Give the container a height.** The viewer fills its container, and otherwise stays at its minimum height.
 4. **Pass `src` and `alt`.** `src` is a URL from the same origin as the page, or a `File` or `Blob` that the user attached. `alt` describes the image for screen readers.
 5. **Read the result from the `apply` event.** Its payload is `{ blob, width, height, type }`.
