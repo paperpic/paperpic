@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- 每个键对应一个图标，有些图标会出现在两个按钮上：`apply` 也用于完成，`cancel` 也用于关闭裁剪和矫正。所有键都列在[选项](../reference/options#icons)中。
+- 每个键对应一个图标，有些图标会出现在两个按钮上：`apply` 也用于完成，`cancel` 也用于关闭工具。所有键都列在[选项](../reference/options#icons)中。
 - PaperPic 会给图标加上设置尺寸的 `paperpic-icon` 类，并对屏幕阅读器隐藏它，因为按钮已经有名称。
 - 用 `currentColor` 绘制图标，这样它在任何主题下都会取按钮的颜色。
 - 标记会作为 HTML 插入页面，因此只传入你信任的标记。
@@ -245,7 +245,7 @@ Tailwind CSS 4 也把规则放在层叠层中。在导入 Tailwind 和 PaperPic 
 
 可以在选择器中使用的类列在 [CSS 参考](../reference/css-tokens#classes)中，例如 `paperpic-toolbar` 和 `paperpic-button`，它们的名称保持稳定。其他类用于支撑布局，可能在任何版本中改变。如果令牌能满足需要，请优先使用令牌。
 
-每个按钮、滑块和角点手柄还带有 `data-paperpic-control`，值是它的[标签](../reference/labels)的键。要只为一个控件设置样式，就选择它：
+每个按钮、刻度尺和角点手柄还带有 `data-paperpic-control`，值是它的[标签](../reference/labels)的键。要只为一个控件设置样式，就选择它：
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Tailwind CSS 4 也把规则放在层叠层中。在导入 Tailwind 和 PaperPic 
 
 界面会自动适应它的容器：
 
-- 工具栏位于右侧，当查看器太矮放不下所有按钮时可以滚动。
-- 编辑栏位于底部，通常是一行；查看器宽度小于 28rem 时变成两行。
+- 工具栏位于右侧，当查看器太矮放不下所有按钮时可以滚动。编辑时它会隐藏。
+- 编辑栏是底部的一张卡片，有两行固定高度的内容；查看器宽度至少为 28rem 时只有一行。因此打开工具时图片不会移动。
 - 在触摸屏上，按钮和角点手柄至少为 44 像素。
 
 ## 你自己的控件

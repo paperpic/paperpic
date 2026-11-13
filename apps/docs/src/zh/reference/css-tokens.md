@@ -70,31 +70,30 @@ import '@paperpic/react/style.css'
 | `paperpic`                | 查看器的根元素                                             |
 | `paperpic-button`         | 工具栏和编辑栏中的每个按钮                                 |
 | `paperpic-button-danger`  | 放弃更改前的提问中的放弃                                   |
-| `paperpic-button-primary` | 应用，以及裁剪和矫正中的完成                               |
+| `paperpic-button-primary` | 应用，以及每个工具中的完成                                 |
 | `paperpic-button-text`    | 放弃更改前的提问中的按钮                                   |
-| `paperpic-edit-bar`       | 底部的编辑栏                                               |
+| `paperpic-edit-bar`       | 编辑时位于底部的卡片式编辑栏                               |
 | `paperpic-editing`        | 编辑时的根元素                                             |
 | `paperpic-handle`         | 裁剪和矫正中的角点手柄                                     |
 | `paperpic-host`           | Vue 和 React 组件在查看器外面创建的元素                    |
 | `paperpic-icon`           | 按钮的图标                                                 |
 | `paperpic-status`         | 给屏幕阅读器的消息，在图片加载、应用更改以及失败时也会显示 |
 | `paperpic-status-visible` | 显示在查看器中央时的消息                                   |
-| `paperpic-toolbar`        | 右侧的工具栏                                               |
+| `paperpic-toolbar`        | 右侧的工具栏，编辑时隐藏                                   |
 | `paperpic-viewport`       | 显示图片并接收键盘焦点的区域                               |
 
 按钮用 ARIA 属性表示状态，你也可以选择这些属性：
 
-| 属性                     | 状态                                                         |
-| ------------------------ | ------------------------------------------------------------ |
-| `[aria-disabled='true']` | 按钮暂时无法操作。它会保留键盘焦点，因此不是 `disabled`      |
-| `[aria-expanded='true']` | 显示滑块时的调整                                             |
-| `[aria-pressed='true']`  | 处于开启状态的按钮，例如清理，或正在生效的适合宽度和适合高度 |
+| 属性                     | 状态                                                                 |
+| ------------------------ | -------------------------------------------------------------------- |
+| `[aria-disabled='true']` | 按钮暂时无法操作。它会保留键盘焦点，因此不是 `disabled`              |
+| `[aria-pressed='true']`  | 正在生效的适合方式（适合宽度或适合高度），或刻度尺所修改的“调整”选项 |
 
 悬停和这些状态都用 `box-shadow` 绘制，按钮的全局重置不会影响它。要修改它们，也请覆盖 `box-shadow`。
 
 ## 控件 {#controls}
 
-每个按钮、滑块和角点手柄都带有 `data-paperpic-control`，值是它的[标签](./labels)的键。要只为一个控件设置样式，就选择它：
+每个按钮、刻度尺和角点手柄都带有 `data-paperpic-control`，值是它的[标签](./labels)的键。要只为一个控件设置样式，就选择它：
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ import '@paperpic/react/style.css'
 }
 ```
 
-| 位置         | 值                                                                                                    |
-| ------------ | ----------------------------------------------------------------------------------------------------- |
-| 工具栏       | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`         |
-| 编辑栏       | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`threshold`、`undo`、`redo`、`apply` |
-| 滑块         | `thresholdSensitivity`、`brightness`、`contrast`                                                      |
-| 裁剪和矫正   | `cancelTool`、`confirm`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`   |
-| 放弃前的提问 | `keepEditing`、`discard`                                                                              |
+| 位置         | 值                                                                                                      |
+| ------------ | ------------------------------------------------------------------------------------------------------- |
+| 工具栏       | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`           |
+| 编辑栏       | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`threshold`、`undo`、`redo`、`apply`   |
+| 调整和清理   | `brightness` 和 `contrast`（选项及其刻度尺）、`threshold`（开关）、`thresholdSensitivity`（它的刻度尺） |
+| 每个工具     | `cancelTool`、`confirm`                                                                                 |
+| 裁剪和矫正   | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`         |
+| 放弃前的提问 | `keepEditing`、`discard`                                                                                |
 
-`rotateLeft` 对应两个不会同时显示的按钮：只旋转显示的只读查看器的按钮，以及旋转图片本身的编辑栏按钮。
+`rotateLeft` 对应两个不会同时显示的按钮：只旋转显示的只读查看器的按钮，以及旋转图片本身的编辑栏按钮。`zoomIn` 和 `zoomOut`（工具栏和面板中）以及 `threshold`（“清理”按钮和它的开关）也是如此。`brightness` 和 `contrast` 对应一个选项及其刻度尺，两者同时显示：在选择器中加上 `button` 或 `input` 即可区分。

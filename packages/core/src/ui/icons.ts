@@ -1,6 +1,8 @@
 import adjust from '../assets/icons/adjust.svg?raw'
 import apply from '../assets/icons/apply.svg?raw'
+import brightness from '../assets/icons/brightness.svg?raw'
 import cancel from '../assets/icons/cancel.svg?raw'
+import contrast from '../assets/icons/contrast.svg?raw'
 import crop from '../assets/icons/crop.svg?raw'
 import download from '../assets/icons/download.svg?raw'
 import edit from '../assets/icons/edit.svg?raw'
@@ -19,12 +21,16 @@ import zoomOut from '../assets/icons/zoom-out.svg?raw'
 
 /** Every icon of the interface, as the markup of one element, such as an `<svg>`. One icon can appear on several buttons. */
 export interface PaperPicIcons {
-  /** Adjust, which shows the sliders of brightness and contrast. */
+  /** Adjust, which opens the ruler of brightness and contrast. */
   adjust: string
-  /** Apply, and Done in Crop and Straighten. */
+  /** Apply, and Done in every tool. */
   apply: string
-  /** Cancel, and the button that closes Crop and Straighten. */
+  /** The choice of brightness in Adjust. */
+  brightness: string
+  /** Cancel, and the button that closes a tool without its changes. */
   cancel: string
+  /** The choice of contrast in Adjust. */
+  contrast: string
   crop: string
   download: string
   /** The Edit pencil. */
@@ -52,7 +58,9 @@ export interface PaperPicIcons {
 export const DEFAULT_ICONS: PaperPicIcons = {
   adjust,
   apply,
+  brightness,
   cancel,
+  contrast,
   crop,
   download,
   edit,

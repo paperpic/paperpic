@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltflächen: `apply` auch auf Fertig, und `cancel` schließt auch Zuschneiden und Begradigen. [Optionen](../reference/options#icons) listet alle Schlüssel.
+- Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltflächen: `apply` auch auf Fertig, und `cancel` schließt auch ein Werkzeug. [Optionen](../reference/options#icons) listet alle Schlüssel.
 - PaperPic gibt dem Icon die Klasse `paperpic-icon`, die seine Größe festlegt, und verbirgt es vor Screenreadern, weil die Schaltfläche schon einen Namen hat.
 - Zeichne das Icon mit `currentColor`, damit es in jedem Design die Farbe der Schaltfläche annimmt.
 - Das Markup kommt als HTML in die Seite, übergib also nur Markup, dem du vertraust.
@@ -245,7 +245,7 @@ Importiere das Stylesheet von PaperPic hier, in deinem CSS, und nicht aus JavaSc
 
 Die [CSS-Referenz](../reference/css-tokens#classes) listet die Klassen, die du in Selektoren nutzen kannst, etwa `paperpic-toolbar` und `paperpic-button`, und ihre Namen sind stabil. Andere Klassen halten das Layout zusammen und können sich in jeder Version ändern. Nimm lieber die Token, wenn sie abdecken, was du brauchst.
 
-Jede Schaltfläche, jeder Regler und jeder Eckgriff trägt außerdem `data-paperpic-control`, mit dem Schlüssel seiner [Beschriftung](../reference/labels). Wähle ihn aus, um ein einzelnes Bedienelement zu gestalten:
+Jede Schaltfläche, jede Skala und jeder Eckgriff trägt außerdem `data-paperpic-control`, mit dem Schlüssel seiner [Beschriftung](../reference/labels). Wähle ihn aus, um ein einzelnes Bedienelement zu gestalten:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Jede Schaltfläche, jeder Regler und jeder Eckgriff trägt außerdem `data-paper
 
 Die Oberfläche passt sich ihrem Container von selbst an:
 
-- Die Werkzeugleiste sitzt rechts und scrollt, wenn der Viewer zu niedrig für ihre Schaltflächen ist.
-- Die Bearbeitungsleiste sitzt unten, in einer Zeile, oder in zwei, wenn der Viewer schmaler als 28rem ist.
+- Die Werkzeugleiste sitzt rechts und scrollt, wenn der Viewer zu niedrig für ihre Schaltflächen ist. Beim Bearbeiten blendet sie sich aus.
+- Die Bearbeitungsleiste ist eine Karte unten mit zwei Zeilen fester Höhe, oder einer Zeile in einem Viewer ab 28rem Breite, damit das Bild an seinem Platz bleibt, wenn sich ein Werkzeug öffnet.
 - Auf Touchscreens sind Schaltflächen und Eckgriffe mindestens 44 Pixel groß.
 
 ## Eigene Bedienelemente

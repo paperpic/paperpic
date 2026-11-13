@@ -36,7 +36,7 @@ Turn photos of paper into clean, readable documents, right in the browser.
 - ✂️ **Crop** with draggable corners and a magnifier for touch screens
 - 📐 **Straighten** photos taken at an angle: drag four corners and get a flat page with its proportions estimated
 - 🔄 **Rotate** in 90° steps, and **flip**
-- ☀️ **Brightness and contrast** with live sliders
+- ☀️ **Brightness and contrast** with a live ruler
 - 🧼 **Clean up** into crisp black & white, removing shadows, with an adjustable sensitivity
 - ↩️ **Undo and redo** every edit until you apply, then get the result as a `Blob`
 - 💾 **Download** the image on display with an optional button

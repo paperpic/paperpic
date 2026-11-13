@@ -28,7 +28,7 @@ In una pagina lunga, la rotellina zoomerebbe l’immagine invece di scorrere la 
 
 ## La barra degli strumenti
 
-La barra degli strumenti sta a destra del visualizzatore, e scorre quando il visualizzatore è troppo basso per i suoi pulsanti.
+La barra degli strumenti sta a destra del visualizzatore, e scorre quando il visualizzatore è troppo basso per i suoi pulsanti. Si nasconde durante la modifica, così non copre mai un angolo di Ritaglia o di Raddrizza.
 
 | Pulsante                                  | Cosa fa                                                                    |
 | ----------------------------------------- | -------------------------------------------------------------------------- |

@@ -9,11 +9,13 @@ La photo d’un document a souvent besoin de quelques corrections avant de valoi
 
 ## Le déroulé
 
-1. L’utilisateur appuie sur Modifier, le crayon de la barre d’outils. La barre de modification apparaît en bas de la visionneuse.
-2. Chaque outil de la barre de modification ajoute un changement, que la visionneuse affiche aussitôt. Annuler la dernière action et Rétablir parcourent les changements.
+1. L’utilisateur appuie sur Modifier, le crayon de la barre d’outils. La barre d’outils se masque, pour que rien ne cache l’image, et la barre de modification apparaît en bas de la visionneuse.
+2. Pivoter à gauche et Retourner ajoutent aussitôt un changement. Les autres outils ouvrent un panneau dans la barre de modification, et Terminé ajoute ce que l’utilisateur y a choisi comme un seul changement. Annuler la dernière action et Rétablir parcourent les changements.
 3. Appliquer calcule le résultat et revient à l’affichage. Annuler abandonne les changements, et demande d’abord s’il y en a.
 
 Rien ne modifie l’image avant Appliquer. Jusque-là, les changements sont une liste dont la visionneuse montre un aperçu.
+
+La barre de modification a deux lignes de même hauteur dans tous ses états : en haut, les outils ou le panneau de l’outil ouvert, et en bas, Annuler à gauche et Appliquer, ou Terminé, à droite. Ainsi l’image garde sa place quand un outil s’ouvre. Dans une visionneuse d’au moins 28rem de large, la barre tient sur une ligne. Un point marque Ajuster et Nettoyer tant que leur réglage s’applique.
 
 ## Outils
 
@@ -68,7 +70,9 @@ export function Receipt() {
 
 :::
 
-Recadrer et Redresser ont leur propre sélection, donc le reste de la barre de modification attend tant que l’un d’eux est ouvert. Terminé, ou `Entrée`, ajoute la sélection aux changements, et Annuler cet outil, ou `Échap`, l’abandonne.
+Recadrer, Redresser, Ajuster et Nettoyer ouvrent un panneau à la place des outils, donc le reste de la barre de modification attend tant que l’un d’eux est ouvert. Terminé, ou `Entrée`, ajoute aux changements ce que l’outil a choisi, et Annuler cet outil, ou `Échap`, l’abandonne.
+
+Dans un panneau, l’image apparaît telle que sera le résultat, Nettoyer compris. Redresser fait exception : il montre la photo sans Nettoyer, pour que les bords du papier restent visibles.
 
 ## Aperçu et Appliquer
 

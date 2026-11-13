@@ -32,13 +32,14 @@ Su macOS, `Cmd` funziona come `Ctrl`. Prima di annullare le modifiche, `Esc` chi
 
 - **Barra degli strumenti e barra di modifica.** Tab raggiunge ogni barra, e al suo interno le frecce passano da un pulsante all’altro, con `Home` e `Fine` per il primo e l’ultimo.
 - **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc.
-- **Cursori.** Le frecce spostano i cursori di Regola e di Pulisci.
+- **Righelli.** I righelli di Regola e di Pulisci sono cursori nativi: le frecce, `Pag su`, `Pag giù`, `Home` e `Fine` li spostano. `Invio` conserva il valore, come Fatto, e `Esc` chiude lo strumento senza di esso.
 
 ## Lettori di schermo
 
 - L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
-- Un annuncio segnala ogni cambiamento che l’utente non vede dal solo focus: il livello di zoom, l’inizio della modalità di modifica, la posizione di un angolo spostato, il valore di un cursore e il risultato di Applica.
+- Un annuncio segnala ogni cambiamento che l’utente non vede dal solo focus: il livello di zoom, l’inizio della modalità di modifica, la posizione di un angolo spostato, il valore di un righello e il risultato di Applica.
+- L’interruttore di Pulisci ha il ruolo di un interruttore. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo».
 
 ## Schermi touch
 

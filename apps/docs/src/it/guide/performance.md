@@ -22,7 +22,7 @@ Con una Content Security Policy, consenti:
 
 ## Foto grandi
 
-- **Durante la modifica**, l’anteprima lavora su una copia di circa 2 megapixel, così cursori e strumenti restano fluidi con qualsiasi foto.
+- **Durante la modifica**, l’anteprima lavora su una copia di circa 2 megapixel, così righelli e strumenti restano fluidi con qualsiasi foto.
 - **Ad Applica**, ogni cambiamento viene calcolato alla risoluzione piena. Le foto grandi richiedono qualche secondo, quindi il visualizzatore mostra un messaggio e blocca i controlli nel frattempo.
 - **Per risparmiare tempo e memoria**, imposta [`maxOutputSize`](../reference/options#maxoutputsize). Un limite come 2000 o 3000 pixel mantiene leggibili i documenti, rende Applica più veloce e i file più piccoli.
 

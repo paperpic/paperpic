@@ -58,10 +58,14 @@
     touch-action: none;
   }
 
+  /* A card like the toolbar, outside the image, so it never covers a corner */
   .paperpic-edit-bar {
     flex: none;
+    box-sizing: border-box;
+    margin: 0.5rem;
     padding: 0.25rem;
-    border-block-start: 1px solid color-mix(in srgb, var(--paperpic-color-text) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--paperpic-color-text) 20%, transparent);
+    border-radius: var(--paperpic-radius);
     background: var(--paperpic-color-surface);
     color: var(--paperpic-color-text);
   }
@@ -69,91 +73,143 @@
   .paperpic-edit-bar[hidden],
   .paperpic-edit-controls[hidden],
   .paperpic-edit-tool[hidden],
-  .paperpic-edit-threshold[hidden],
-  .paperpic-edit-adjust[hidden],
-  .paperpic-edit-confirmation[hidden] {
+  .paperpic-edit-confirmation[hidden],
+  .paperpic-edit-corners[hidden],
+  .paperpic-edit-options[hidden],
+  .paperpic-ruler[hidden] {
     display: none;
   }
 
-  .paperpic-edit-threshold {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    padding: 0.25rem 0.5rem;
-  }
-
-  /* The sliders sit side by side, and on a narrow viewer one under the other, with their names in one column */
-  .paperpic-edit-adjust {
+  /*
+   * Every state of the bar has the same two rows, so the image keeps its place when a tool opens. The content goes
+   * above, and the way out below: Cancel at the left, and Apply or Done at the right.
+   */
+  .paperpic-edit-controls,
+  .paperpic-edit-tool,
+  .paperpic-edit-confirmation {
     display: grid;
-    grid-template-columns: auto 1fr auto 1fr;
-    gap: 0 0.75rem;
-    align-items: center;
-    padding: 0.25rem 0.5rem;
-  }
-
-  .paperpic-edit-slider {
-    display: grid;
-    grid-column: span 2;
-    grid-template-columns: subgrid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-auto-rows: minmax(2.25rem, auto);
+    gap: 0.25rem;
     align-items: center;
   }
 
-  .paperpic-edit-threshold input,
-  .paperpic-edit-slider input {
-    flex: 1;
-    min-inline-size: 0;
-    block-size: 2rem;
-    margin: 0;
-    accent-color: var(--paperpic-color-accent);
+  .paperpic-edit-controls {
+    grid-template-areas:
+      'tools tools tools'
+      'start middle end';
   }
 
   .paperpic-edit-tool {
-    display: flex;
-    gap: 0.25rem;
-    align-items: center;
+    grid-template-areas:
+      'panel panel panel'
+      'start middle end';
   }
 
-  .paperpic-edit-controls,
   .paperpic-edit-confirmation {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    align-items: center;
+    grid-template-areas:
+      'message message message'
+      'start . end';
   }
 
-  .paperpic-edit-tools,
-  .paperpic-edit-history {
-    display: flex;
-    gap: 0.125rem;
+  .paperpic-edit-controls > :first-child,
+  .paperpic-edit-tool > :first-child,
+  .paperpic-edit-confirmation > :nth-child(2) {
+    grid-area: start;
+  }
+
+  .paperpic-edit-controls > :last-child,
+  .paperpic-edit-tool > :last-child,
+  .paperpic-edit-confirmation > :last-child {
+    grid-area: end;
   }
 
   .paperpic-edit-tools {
-    flex: 1;
-    justify-content: center;
+    display: flex;
+    grid-area: tools;
+    gap: 0.125rem;
+    justify-content: space-around;
   }
 
-  .paperpic-edit-confirmation {
-    justify-content: flex-end;
+  .paperpic-edit-history,
+  .paperpic-edit-choice {
+    display: flex;
+    grid-area: middle;
+    gap: 0.125rem;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 0;
+  }
+
+  .paperpic-edit-panel {
+    display: grid;
+    grid-area: panel;
+    align-items: center;
+    min-inline-size: 0;
   }
 
   .paperpic-edit-message {
     flex: 1;
+    min-inline-size: 0;
     padding-inline: 0.5rem;
   }
 
-  /* On a narrow viewer the tools take their own row, under the actions */
-  @container (width < 28rem) {
+  .paperpic-edit-confirmation > .paperpic-edit-message {
+    grid-area: message;
+    text-align: center;
+  }
+
+  .paperpic-edit-corners {
+    display: flex;
+    gap: 0.125rem;
+    align-items: center;
+  }
+
+  .paperpic-edit-corners .paperpic-edit-message {
+    font-size: 0.875em;
+    line-height: 1.25;
+  }
+
+  .paperpic-edit-title {
+    font-weight: 600;
+  }
+
+  /* From this width, each state of the bar fits on one row: Cancel, the content, the middle and Apply or Done */
+  @container (width >= 28rem) {
+    .paperpic-edit-bar {
+      align-self: center;
+      inline-size: min(100% - 1rem, 38rem);
+    }
+
+    .paperpic-edit-controls,
+    .paperpic-edit-tool {
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+    }
+
+    .paperpic-edit-controls {
+      grid-template-areas: 'start tools middle end';
+    }
+
+    .paperpic-edit-tool {
+      grid-template-areas: 'start panel middle end';
+    }
+
+    .paperpic-edit-confirmation {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      grid-template-areas: 'message start end';
+    }
+
+    .paperpic-edit-confirmation > .paperpic-edit-message {
+      text-align: start;
+    }
+
     .paperpic-edit-tools {
-      flex-basis: 100%;
-      order: 1;
+      justify-content: center;
     }
 
-    .paperpic-edit-history {
-      margin-inline-start: auto;
-    }
-
-    .paperpic-edit-adjust {
-      grid-template-columns: auto 1fr;
+    /* The hint already says which tool is open */
+    .paperpic-edit-title {
+      display: none;
     }
   }
 
@@ -264,6 +320,7 @@
    * The toolbar carries those, and the states of a button use box-shadow, which resets leave alone.
    */
   .paperpic-button {
+    position: relative;
     display: grid;
     flex: none;
     place-items: center;
@@ -283,7 +340,14 @@
     display: none;
   }
 
-  .paperpic-button:hover {
+  /* Only a pointer that hovers lights a button, so a tap on a phone leaves nothing lit. A press lights any button */
+  @media (hover: hover) {
+    .paperpic-button:hover {
+      box-shadow: inset 0 0 0 3rem color-mix(in srgb, var(--paperpic-color-accent) 15%, transparent);
+    }
+  }
+
+  .paperpic-button:active {
     box-shadow: inset 0 0 0 3rem color-mix(in srgb, var(--paperpic-color-accent) 15%, transparent);
   }
 
@@ -292,8 +356,8 @@
     outline-offset: -2px;
   }
 
-  .paperpic-button[aria-pressed='true'],
-  .paperpic-button[aria-expanded='true'] {
+  /* The fit in effect, or the choice of Adjust that the ruler changes */
+  .paperpic-button[aria-pressed='true'] {
     box-shadow:
       inset 0 0 0 2px var(--paperpic-color-accent),
       inset 0 0 0 3rem color-mix(in srgb, var(--paperpic-color-accent) 15%, transparent);
@@ -350,6 +414,225 @@
     block-size: 1.25rem;
   }
 
+  /* Marks a tool whose setting is in effect, such as Clean up while it is on, under its icon */
+  .paperpic-edit-dot {
+    position: absolute;
+    inset-block-end: 0.125rem;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: 0.25rem;
+    block-size: 0.25rem;
+    border-radius: 50%;
+    background: var(--paperpic-color-accent);
+  }
+
+  /* Under the icon of a choice of Adjust, because its name has descenders that the dot would touch */
+  .paperpic-edit-option .paperpic-edit-dot {
+    inset-inline-start: 1rem;
+  }
+
+  .paperpic-edit-options {
+    display: flex;
+    gap: 0.125rem;
+  }
+
+  .paperpic-edit-option,
+  .paperpic-edit-switch {
+    display: inline-flex;
+    gap: 0.375rem;
+    align-items: center;
+    inline-size: auto;
+    font: inherit;
+    white-space: nowrap;
+  }
+
+  /* The space at the sides, which a global reset of padding cannot remove */
+  .paperpic-edit-option::before,
+  .paperpic-edit-option::after,
+  .paperpic-edit-switch::before,
+  .paperpic-edit-switch::after {
+    content: '';
+    flex: none;
+    inline-size: 0.125rem;
+  }
+
+  .paperpic-edit-option .paperpic-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .paperpic-edit-switch {
+    font-weight: 600;
+  }
+
+  .paperpic-edit-switch-track {
+    position: relative;
+    flex: none;
+    inline-size: 1.875rem;
+    block-size: 1.125rem;
+    border-radius: 0.5625rem;
+    background: color-mix(in srgb, var(--paperpic-color-text) 55%, transparent);
+    transition: background-color var(--paperpic-transition-duration) ease;
+  }
+
+  .paperpic-edit-switch-thumb {
+    position: absolute;
+    inset-block-start: 0.125rem;
+    inset-inline-start: 0.125rem;
+    inline-size: 0.875rem;
+    block-size: 0.875rem;
+    border-radius: 50%;
+    background: var(--paperpic-color-surface);
+    transition: translate var(--paperpic-transition-duration) ease;
+  }
+
+  .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-track {
+    background: var(--paperpic-color-accent);
+  }
+
+  .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-thumb {
+    translate: 0.75rem 0;
+  }
+
+  /*
+   * A ruler: a native range over tick marks, with its value above the needle. The needle keeps half its 1.5rem grip
+   * in from each end, as the range places it, so the marks start and end there too.
+   */
+  .paperpic-ruler {
+    position: relative;
+    block-size: 2.25rem;
+    min-inline-size: 0;
+    margin-inline: 0.25rem;
+    direction: ltr;
+  }
+
+  .paperpic-ruler-ticks {
+    position: absolute;
+    inset-block-end: 0.125rem;
+    inset-inline: 0;
+    block-size: 0.875rem;
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--paperpic-color-text) 60%, transparent) 0 1px, transparent 1px),
+      linear-gradient(to right, color-mix(in srgb, var(--paperpic-color-text) 30%, transparent) 0 1px, transparent 1px);
+    background-position: calc(0.75rem - 0.5px) 100%;
+    background-repeat: repeat-x;
+    background-size:
+      calc((100% - 1.5rem) / 4) 0.875rem,
+      calc((100% - 1.5rem) / 20) 0.5rem;
+    pointer-events: none;
+  }
+
+  .paperpic-ruler-centered .paperpic-ruler-ticks {
+    background-size:
+      calc((100% - 1.5rem) / 8) 0.875rem,
+      calc((100% - 1.5rem) / 40) 0.5rem;
+  }
+
+  /* The marks between the start, or the middle, and the needle */
+  .paperpic-ruler-fill {
+    background-image:
+      linear-gradient(to right, var(--paperpic-color-accent) 0 1px, transparent 1px),
+      linear-gradient(to right, var(--paperpic-color-accent) 0 1px, transparent 1px);
+  }
+
+  .paperpic-ruler-middle {
+    position: absolute;
+    inset-block-end: 0.125rem;
+    inset-inline-start: calc(50% - 0.5px);
+    inline-size: 1px;
+    block-size: 1.125rem;
+    background: color-mix(in srgb, var(--paperpic-color-text) 60%, transparent);
+    pointer-events: none;
+  }
+
+  /* The digits center on the needle, and the sign hangs at their left, so +30 does not lean to the right */
+  .paperpic-ruler-value {
+    position: absolute;
+    inset-block-start: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    translate: -50% 0;
+    pointer-events: none;
+  }
+
+  .paperpic-ruler-sign {
+    position: absolute;
+    inset-inline-end: 100%;
+  }
+
+  .paperpic-ruler-input {
+    position: absolute;
+    inset-block-start: 0.75rem;
+    inset-inline-start: 0;
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .paperpic-ruler-input:disabled {
+    cursor: not-allowed;
+  }
+
+  .paperpic-ruler:has(.paperpic-ruler-input:disabled) {
+    opacity: 0.4;
+  }
+
+  .paperpic-ruler-input:focus {
+    outline: none;
+  }
+
+  .paperpic-ruler:has(.paperpic-ruler-input:focus-visible) {
+    border-radius: var(--paperpic-radius);
+    outline: 2px solid var(--paperpic-color-accent);
+    outline-offset: 2px;
+  }
+
+  .paperpic-ruler-input::-webkit-slider-runnable-track {
+    block-size: 1.5rem;
+    border: 0;
+    background: transparent;
+  }
+
+  .paperpic-ruler-input::-webkit-slider-thumb {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border: 0;
+    appearance: none;
+    background: linear-gradient(
+      to right,
+      transparent calc(50% - 1.5px),
+      var(--paperpic-color-accent) 0 calc(50% + 1.5px),
+      transparent 0
+    );
+  }
+
+  .paperpic-ruler-input::-moz-range-track {
+    block-size: 1.5rem;
+    border: 0;
+    background: transparent;
+  }
+
+  .paperpic-ruler-input::-moz-range-thumb {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(
+      to right,
+      transparent calc(50% - 1.5px),
+      var(--paperpic-color-accent) 0 calc(50% + 1.5px),
+      transparent 0
+    );
+  }
+
   /* Announces to screen readers without taking space, and shows only what the user must see */
   .paperpic-status {
     position: absolute;
@@ -383,20 +666,115 @@
       inline-size: 2.75rem;
       block-size: 2.75rem;
     }
+
+    .paperpic-edit-controls,
+    .paperpic-edit-tool,
+    .paperpic-edit-confirmation {
+      grid-auto-rows: minmax(2.75rem, auto);
+    }
+
+    .paperpic-ruler {
+      block-size: 2.75rem;
+    }
+
+    .paperpic-ruler-input {
+      block-size: 2rem;
+    }
+
+    .paperpic-ruler-input::-webkit-slider-runnable-track,
+    .paperpic-ruler-input::-webkit-slider-thumb {
+      block-size: 2rem;
+    }
+
+    .paperpic-ruler-input::-moz-range-track {
+      block-size: 2rem;
+    }
+
+    .paperpic-ruler-input::-moz-range-thumb {
+      block-size: 2rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .paperpic-button {
+    .paperpic-button,
+    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-track,
+    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-thumb {
       transition: none;
     }
   }
 
   @media (forced-colors: active) {
     /* Forced colors remove box-shadow, so the pressed state needs an outline */
-    .paperpic-button[aria-pressed='true'],
-    .paperpic-button[aria-expanded='true'] {
+    .paperpic-button[aria-pressed='true'] {
       outline: 2px solid Highlight;
       outline-offset: -2px;
+    }
+
+    /* The marks and the needle of a ruler, the dot of a tool in use and the switch paint with backgrounds */
+    .paperpic-ruler {
+      forced-color-adjust: none;
+    }
+
+    .paperpic-ruler .paperpic-ruler-ticks {
+      background-image:
+        linear-gradient(to right, CanvasText 0 1px, transparent 1px),
+        linear-gradient(to right, GrayText 0 1px, transparent 1px);
+    }
+
+    .paperpic-ruler .paperpic-ruler-fill {
+      background-image:
+        linear-gradient(to right, Highlight 0 1px, transparent 1px),
+        linear-gradient(to right, Highlight 0 1px, transparent 1px);
+    }
+
+    .paperpic-ruler .paperpic-ruler-middle {
+      background: CanvasText;
+    }
+
+    .paperpic-ruler .paperpic-ruler-value {
+      color: CanvasText;
+    }
+
+    .paperpic-ruler-input::-webkit-slider-thumb {
+      background: linear-gradient(
+        to right,
+        transparent calc(50% - 1.5px),
+        Highlight 0 calc(50% + 1.5px),
+        transparent 0
+      );
+    }
+
+    .paperpic-ruler-input::-moz-range-thumb {
+      background: linear-gradient(
+        to right,
+        transparent calc(50% - 1.5px),
+        Highlight 0 calc(50% + 1.5px),
+        transparent 0
+      );
+    }
+
+    .paperpic-button .paperpic-edit-dot {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+
+    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-track {
+      outline: 1px solid ButtonText;
+      background: Canvas;
+      forced-color-adjust: none;
+    }
+
+    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-thumb {
+      background: ButtonText;
+      forced-color-adjust: none;
+    }
+
+    .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-track {
+      background: Highlight;
+    }
+
+    .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-thumb {
+      background: HighlightText;
     }
 
     .paperpic-button-primary,

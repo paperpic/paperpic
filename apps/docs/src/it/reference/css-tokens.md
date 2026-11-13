@@ -70,31 +70,30 @@ Queste classi sono pubbliche: i loro nomi, e gli elementi che marcano, restano s
 | `paperpic`                | La radice del visualizzatore                                                                                                          |
 | `paperpic-button`         | Ogni pulsante della barra degli strumenti e della barra di modifica                                                                   |
 | `paperpic-button-danger`  | Elimina, nella domanda prima di eliminare le modifiche                                                                                |
-| `paperpic-button-primary` | Applica, e Fatto in Ritaglia e Raddrizza                                                                                              |
+| `paperpic-button-primary` | Applica, e Fatto in ogni strumento                                                                                                    |
 | `paperpic-button-text`    | I pulsanti della domanda prima di eliminare le modifiche                                                                              |
-| `paperpic-edit-bar`       | La barra di modifica, in basso                                                                                                        |
+| `paperpic-edit-bar`       | La barra di modifica, una scheda in basso durante la modifica                                                                         |
 | `paperpic-editing`        | La radice, durante la modifica                                                                                                        |
 | `paperpic-handle`         | Una maniglia d’angolo di Ritaglia e Raddrizza                                                                                         |
 | `paperpic-host`           | L’elemento che i componenti Vue e React creano attorno al visualizzatore                                                              |
 | `paperpic-icon`           | L’icona di un pulsante                                                                                                                |
 | `paperpic-status`         | Il messaggio per i lettori di schermo, che si vede anche mentre l’immagine si carica o le modifiche si applicano, e in caso di errore |
 | `paperpic-status-visible` | Il messaggio, mentre si vede al centro del visualizzatore                                                                             |
-| `paperpic-toolbar`        | La barra degli strumenti, a destra                                                                                                    |
+| `paperpic-toolbar`        | La barra degli strumenti, a destra, nascosta durante la modifica                                                                      |
 | `paperpic-viewport`       | L’area che mostra l’immagine e riceve il focus della tastiera                                                                         |
 
 I pulsanti mostrano il loro stato con attributi ARIA, che puoi selezionare anche tu:
 
-| Attributo                | Stato                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------- |
-| `[aria-disabled='true']` | Il pulsante ora non può agire. Mantiene il focus della tastiera, quindi non è `disabled`          |
-| `[aria-expanded='true']` | Regola, mentre si vedono i suoi cursori                                                           |
-| `[aria-pressed='true']`  | Un pulsante attivo, come Pulisci, o Adatta alla larghezza e Adatta all’altezza mentre sono in uso |
+| Attributo                | Stato                                                                                                          |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `[aria-disabled='true']` | Il pulsante ora non può agire. Mantiene il focus della tastiera, quindi non è `disabled`                       |
+| `[aria-pressed='true']`  | L’adattamento in uso, Adatta alla larghezza o Adatta all’altezza, o la scelta di Regola che il righello cambia |
 
 Il passaggio del puntatore e questi stati si disegnano con `box-shadow`, che i reset globali dei pulsanti non toccano. Per cambiarli, sovrascrivi anche `box-shadow`.
 
 ## Controlli {#controls}
 
-Ogni pulsante, cursore e maniglia d’angolo porta `data-paperpic-control`, con la chiave della sua [etichetta](./labels). Selezionalo per dare stile a un solo controllo:
+Ogni pulsante, righello e maniglia d’angolo porta `data-paperpic-control`, con la chiave della sua [etichetta](./labels). Selezionalo per dare stile a un solo controllo:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ Ogni pulsante, cursore e maniglia d’angolo porta `data-paperpic-control`, con 
 }
 ```
 
-| Posizione                  | Valori                                                                                                |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Barra degli strumenti      | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
-| Barra di modifica          | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| Cursori                    | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
-| Ritaglia e Raddrizza       | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
-| Domanda prima di eliminare | `keepEditing`, `discard`                                                                              |
+| Posizione                  | Valori                                                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Barra degli strumenti      | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                  |
+| Barra di modifica          | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                          |
+| Regola e Pulisci           | `brightness` e `contrast`, le scelte e i loro righelli, `threshold`, l’interruttore, e `thresholdSensitivity`, il suo righello |
+| Ogni strumento             | `cancelTool`, `confirm`                                                                                                        |
+| Ritaglia e Raddrizza       | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                |
+| Domanda prima di eliminare | `keepEditing`, `discard`                                                                                                       |
 
-`rotateLeft` indica due pulsanti che non si vedono mai insieme: quello di un visualizzatore di sola lettura, che ruota la vista, e quello della barra di modifica, che ruota l’immagine.
+`rotateLeft` indica due pulsanti che non si vedono mai insieme: quello di un visualizzatore di sola lettura, che ruota la vista, e quello della barra di modifica, che ruota l’immagine. Lo stesso vale per `zoomIn` e `zoomOut`, nella barra degli strumenti e in un pannello, e per `threshold`, il pulsante di Pulisci e il suo interruttore. `brightness` e `contrast` indicano una scelta e il suo righello, che si vedono insieme: aggiungi `button` o `input` al selettore per distinguerli.

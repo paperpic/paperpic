@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões: `apply` também está em Concluído, e `cancel` também fecha Recortar e Endireitar. [Opções](../reference/options#icons) lista todas as chaves.
+- Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões: `apply` também está em Concluído, e `cancel` também fecha uma ferramenta. [Opções](../reference/options#icons) lista todas as chaves.
 - O PaperPic dá ao ícone a classe `paperpic-icon`, que define o tamanho dele, e o esconde dos leitores de tela, porque o botão já tem nome.
 - Desenhe o ícone com `currentColor`, para que ele pegue a cor do botão em qualquer tema.
 - A marcação entra na página como HTML, então passe apenas marcação confiável.
@@ -245,7 +245,7 @@ Importe a folha de estilo do PaperPic aqui, no seu CSS, e não pelo JavaScript. 
 
 A [referência de CSS](../reference/css-tokens#classes) lista as classes que você pode usar nos seus seletores, como `paperpic-toolbar` e `paperpic-button`, e os nomes delas são estáveis. As outras classes sustentam a disposição e podem mudar em qualquer versão. Prefira os tokens quando eles cobrirem o que você precisa.
 
-Cada botão, controle deslizante e alça de canto também leva `data-paperpic-control`, com a chave do seu [rótulo](../reference/labels). Selecione-o para estilizar um único controle:
+Cada botão, régua e alça de canto também leva `data-paperpic-control`, com a chave do seu [rótulo](../reference/labels). Selecione-o para estilizar um único controle:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Cada botão, controle deslizante e alça de canto também leva `data-paperpic-co
 
 A interface se adapta sozinha ao contêiner:
 
-- A barra de ferramentas fica à direita e rola quando o visualizador é baixo demais para os botões dela.
-- A barra de edição fica embaixo, numa linha, ou em duas num visualizador mais estreito que 28rem.
+- A barra de ferramentas fica à direita e rola quando o visualizador é baixo demais para os botões dela. Ela se esconde durante a edição.
+- A barra de edição é um cartão embaixo com duas linhas de altura fixa, ou uma linha num visualizador com pelo menos 28rem de largura, então a imagem fica no lugar quando uma ferramenta abre.
 - Em telas sensíveis ao toque, botões e alças de canto medem pelo menos 44 pixels.
 
 ## Os seus próprios controles

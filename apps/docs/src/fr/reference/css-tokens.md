@@ -70,31 +70,30 @@ Ces classes sont publiques : leurs noms, et les éléments qu’elles marquent, 
 | `paperpic`                | La racine de la visionneuse                                                                                                                      |
 | `paperpic-button`         | Chaque bouton de la barre d’outils et de la barre de modification                                                                                |
 | `paperpic-button-danger`  | Abandonner, dans la question avant d’abandonner les modifications                                                                                |
-| `paperpic-button-primary` | Appliquer, et Terminé dans Recadrer et Redresser                                                                                                 |
+| `paperpic-button-primary` | Appliquer, et Terminé dans chaque outil                                                                                                          |
 | `paperpic-button-text`    | Les boutons de la question avant d’abandonner les modifications                                                                                  |
-| `paperpic-edit-bar`       | La barre de modification, en bas                                                                                                                 |
+| `paperpic-edit-bar`       | La barre de modification, une carte en bas pendant la modification                                                                               |
 | `paperpic-editing`        | La racine, pendant la modification                                                                                                               |
 | `paperpic-handle`         | Une poignée d’angle de Recadrer et Redresser                                                                                                     |
 | `paperpic-host`           | L’élément que les composants Vue et React créent autour de la visionneuse                                                                        |
 | `paperpic-icon`           | L’icône d’un bouton                                                                                                                              |
 | `paperpic-status`         | Le message pour les lecteurs d’écran, qui s’affiche aussi pendant le chargement de l’image ou l’application des modifications, et en cas d’échec |
 | `paperpic-status-visible` | Le message, quand il s’affiche au centre de la visionneuse                                                                                       |
-| `paperpic-toolbar`        | La barre d’outils, à droite                                                                                                                      |
+| `paperpic-toolbar`        | La barre d’outils, à droite, masquée pendant la modification                                                                                     |
 | `paperpic-viewport`       | La zone qui affiche l’image et reçoit le focus du clavier                                                                                        |
 
 Les boutons montrent leur état avec des attributs ARIA, que vous pouvez aussi sélectionner :
 
-| Attribut                 | État                                                                                                     |
-| ------------------------ | -------------------------------------------------------------------------------------------------------- |
-| `[aria-disabled='true']` | Le bouton ne peut pas agir pour l’instant. Il garde le focus du clavier, donc il n’est pas `disabled`    |
-| `[aria-expanded='true']` | Ajuster, pendant que ses curseurs s’affichent                                                            |
-| `[aria-pressed='true']`  | Un bouton activé, comme Nettoyer, ou Ajuster à la largeur et Ajuster à la hauteur quand ils s’appliquent |
+| Attribut                 | État                                                                                                             |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `[aria-disabled='true']` | Le bouton ne peut pas agir pour l’instant. Il garde le focus du clavier, donc il n’est pas `disabled`            |
+| `[aria-pressed='true']`  | L’ajustement en vigueur, Ajuster à la largeur ou Ajuster à la hauteur, ou le choix d’Ajuster que la règle change |
 
 Le survol et ces états se peignent avec `box-shadow`, que les réinitialisations globales des boutons laissent intact. Pour les modifier, écrasez aussi `box-shadow`.
 
 ## Contrôles {#controls}
 
-Chaque bouton, curseur et poignée d’angle porte `data-paperpic-control`, avec la clé de son [libellé](./labels). Sélectionnez-le pour styler un seul contrôle :
+Chaque bouton, règle et poignée d’angle porte `data-paperpic-control`, avec la clé de son [libellé](./labels). Sélectionnez-le pour styler un seul contrôle :
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ Chaque bouton, curseur et poignée d’angle porte `data-paperpic-control`, avec
 }
 ```
 
-| Emplacement                 | Valeurs                                                                                               |
-| --------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Barre d’outils              | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
-| Barre de modification       | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| Curseurs                    | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
-| Recadrer et Redresser       | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
-| Question avant d’abandonner | `keepEditing`, `discard`                                                                              |
+| Emplacement                 | Valeurs                                                                                                                 |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Barre d’outils              | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                           |
+| Barre de modification       | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                   |
+| Ajuster et Nettoyer         | `brightness` et `contrast`, les choix et leurs règles, `threshold`, l’interrupteur, et `thresholdSensitivity`, sa règle |
+| Chaque outil                | `cancelTool`, `confirm`                                                                                                 |
+| Recadrer et Redresser       | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                         |
+| Question avant d’abandonner | `keepEditing`, `discard`                                                                                                |
 
-`rotateLeft` nomme deux boutons qui ne s’affichent jamais en même temps : celui d’une visionneuse en lecture seule, qui fait pivoter l’affichage, et celui de la barre de modification, qui fait pivoter l’image.
+`rotateLeft` nomme deux boutons qui ne s’affichent jamais en même temps : celui d’une visionneuse en lecture seule, qui fait pivoter l’affichage, et celui de la barre de modification, qui fait pivoter l’image. De même pour `zoomIn` et `zoomOut`, dans la barre d’outils et dans un panneau, et pour `threshold`, le bouton de Nettoyer et son interrupteur. `brightness` et `contrast` nomment un choix et sa règle, qui s’affichent ensemble : ajoutez `button` ou `input` au sélecteur pour les distinguer.

@@ -11,10 +11,8 @@ export type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'th
 /** What a button of a tool can do to the edit in progress. */
 export interface ToolContext {
   addOperation: (operation: Operation) => void
+  /** Opens a tool with a selection or a panel of its own, which closes with Done or Cancel. */
   openTool: (id: ToolId) => void
-  /** Opens or closes the sliders of brightness and contrast. */
-  toggleAdjustments: () => void
-  toggleThreshold: () => void
 }
 
 /** A button in the edit bar. */
@@ -47,13 +45,13 @@ export interface ToolHost {
   reveal: (point: Point) => void
   /** Replaces the hint of the tool in the edit bar, or brings it back with `null`. */
   setHint: (text: string | null) => void
-  /** The bottom left corner of the toolbar over the image, or `null` if there is none. */
-  toolbarCorner: () => ViewPoint | null
   viewportToFrame: (point: ViewPoint) => Point
 }
 
 /** A tool while it is open. */
 export interface ToolSession {
+  /** The point of the viewport that the zoom buttons keep in place, such as the corner the user is placing, or `null` for the center. */
+  anchor?: () => ViewPoint | null
   /** The edit the user chose, or `null` if it changes nothing. */
   confirm: () => Operation | null
   deactivate: () => void
@@ -72,7 +70,7 @@ export interface ToolSession {
 /** A tool. Adding one means creating its folder and registering it in `tools/index.ts`. */
 export interface Tool {
   actions: readonly ToolAction[]
-  /** Only for a tool with its own selection and confirmation. */
+  /** Only for a tool with a selection of its own, such as corners. */
   activate?: (host: ToolHost) => ToolSession
   /** Tells the user what to do in the tool. */
   hint?: 'cropHint' | 'perspectiveHint'

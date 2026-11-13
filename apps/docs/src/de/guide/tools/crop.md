@@ -10,17 +10,17 @@ Das Foto eines Dokuments zeigt oft den Tisch, eine Hand oder andere Papiere drum
 ## So geht’s
 
 1. Drücke Bearbeiten, dann Zuschneiden. Im Bild erscheint ein Rechteck mit einem Griff an jeder Ecke.
-2. Ziehe die Ecken, bis das Rechteck das Dokument einrahmt. Die Zoom-Schaltflächen bleiben verfügbar, damit du zum genauen Platzieren hineinzoomen kannst.
+2. Ziehe die Ecken, bis das Rechteck das Dokument einrahmt. Das Bedienfeld von Zuschneiden hat Zoom-Schaltflächen, damit du zum genauen Platzieren hineinzoomen kannst.
 3. Drücke Fertig oder `Enter`, um den Zuschnitt zu den Änderungen hinzuzufügen. Dieses Werkzeug abbrechen oder `Esc` schließt Zuschneiden, ohne etwas zu ändern.
 
-Der Zuschnitt ist eine Änderung wie jede andere: Rückgängig entfernt ihn, und Übernehmen macht ihn dauerhaft.
+Solange Zuschneiden offen ist, sieht das Bild so aus, wie das Ergebnis wird, mit Anpassen und Bereinigen. Der Zuschnitt ist eine Änderung wie jede andere: Rückgängig entfernt ihn, und Übernehmen macht ihn dauerhaft.
 
 ## Eckgriffe
 
 - Die Griffe bleiben im Bild, und das Rechteck stülpt sich nie um.
 - Auf einem Touchscreen zeigt eine Lupe den Bereich unter dem Finger, während er eine Ecke zieht, damit der Finger nicht verdeckt, wo die Ecke landet.
-- Ohne Ziehen: Drücke einen Griff und tippe dann auf die Stelle, an die seine Ecke soll. Bis dahin bleibt der Griff hervorgehoben, und `Esc` lässt ihn los.
-- Mit der Tastatur wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten Griff um 1 Bildschirmpixel, mit Umschalt um 10. Screenreader sagen jede Bewegung an.
+- Ohne Ziehen: Drücke einen Griff und tippe dann auf die Stelle, an die seine Ecke soll. Bis dahin bleibt der Griff hervorgehoben, die Zoom-Schaltflächen zoomen zu seiner Ecke, und `Esc` lässt ihn los.
+- Mit der Tastatur wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten Griff um 1 Bildschirmpixel, mit Umschalt um 10. `+` und `-` zoomen zum fokussierten Griff. Screenreader sagen jede Bewegung an.
 
 ## Zuschneiden oder Begradigen?
 

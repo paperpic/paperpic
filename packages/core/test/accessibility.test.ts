@@ -133,7 +133,7 @@ describe('accessibility', () => {
     expect(await audit()).toEqual([])
   })
 
-  it('has no violations with the slider of Clean up', async () => {
+  it('has no violations with the ruler of Clean up', async () => {
     await finishLoading()
     pic.edit()
     button('Clean up').click()
@@ -141,11 +141,30 @@ describe('accessibility', () => {
     expect(await audit()).toEqual([])
   })
 
-  it('has no violations with the sliders of Adjust', async () => {
+  it('has no violations with the switch of Clean up, which shows once it is an edit', async () => {
+    await finishLoading()
+    pic.edit()
+    pic.setThreshold({ enabled: true })
+    await flush()
+    button('Clean up').click()
+    expect(container.querySelector<HTMLElement>('[role="switch"]')!.hidden).toBe(false)
+    expect(await audit()).toEqual([])
+  })
+
+  it('has no violations with the ruler and the choice of Adjust', async () => {
     await finishLoading()
     pic.edit()
     button('Adjust').click()
     await flush()
+    expect(await audit()).toEqual([])
+  })
+
+  it('has no violations with a tool in use, whose dot has a description', async () => {
+    await finishLoading()
+    pic.edit()
+    pic.setThreshold({ enabled: true })
+    await flush()
+    expect(button('Clean up').getAttribute('aria-describedby')).not.toBeNull()
     expect(await audit()).toEqual([])
   })
 

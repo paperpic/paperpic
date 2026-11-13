@@ -1,7 +1,7 @@
 import type { PaperPicDownload } from './download'
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
-import type { Operation, PipelineStep, ToneStep } from './pipeline/operations'
+import type { AdjustSetting, Operation, PipelineStep, ToneStep } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
 import type { LoadedImage } from './render/load-image'
 import type { Scene } from './render/renderer'
@@ -84,9 +84,12 @@ export interface PaperPicOptions {
 
 /** What the viewer is showing. */
 export interface PaperPicState {
-  /** The tool with an open selection, or `null`. */
+  /** The open tool, such as Crop or Adjust, or `null`. Done or Cancel closes it. */
   activeTool: ToolId | null
-  /** The brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. Cleaning up the document leaves them out. */
+  /**
+   * The brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. Cleaning up the document leaves them out.
+   * While Adjust is open, the values it shows, which Done would keep.
+   */
   adjustments: { brightness: number, contrast: number }
   /** Whether the changes are being applied. */
   busy: boolean
@@ -102,7 +105,7 @@ export interface PaperPicState {
   mode: 'view' | 'edit'
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
-  /** Whether the document gets cleaned up, and how much. */
+  /** Whether the document gets cleaned up, and how much. While Clean up is open, what it shows, which Done would keep. */
   threshold: { enabled: boolean, sensitivity: number }
   /** Screen pixels per image pixel. */
   zoom: number
@@ -120,6 +123,11 @@ export interface PaperPicEvents {
   /** The image is ready. */
   load: { height: number, width: number }
 }
+
+/** What an open Adjust or Clean up shows, before Done turns it into one edit. */
+type Draft
+  = | { setting: AdjustSetting, tool: 'adjust' }
+    | { setting: { enabled: boolean, sensitivity: number }, tool: 'threshold' }
 
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
 type Listeners = { [Name in keyof PaperPicEvents]: Set<Listener<Name>> }
@@ -180,9 +188,10 @@ export class PaperPic {
   private previewKey = NO_PREVIEW
   private previewId = 0
   private previewing = false
-  /** Whether the sliders of brightness and contrast are open, so the preview keeps the pixels they change. */
-  private adjusting = false
+  /** The open tool with a selection of its own, such as Crop. */
   private session: { handle: ToolSession, tool: Tool } | null = null
+  /** The open Adjust or Clean up. */
+  private draft: Draft | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
   private view: View = createView()
@@ -241,8 +250,6 @@ export class PaperPic {
     const toolContext: ToolContext = {
       addOperation: operation => this.addOperation(operation),
       openTool: id => this.openTool(id),
-      toggleAdjustments: () => this.toggleAdjustments(),
-      toggleThreshold: () => this.setThreshold({ enabled: !thresholdSetting(this.history.done).enabled }),
     }
     this.editBar = new EditBar(
       {
@@ -253,26 +260,19 @@ export class PaperPic {
         runTool: run => run(toolContext),
         confirmTool: () => this.confirmTool(),
         cancelTool: () => this.cancelTool(),
-        previewThreshold: (sensitivity) => {
-          const { softness } = thresholdSetting(this.history.done)
-          this.preview?.tint?.({ type: 'threshold', sensitivity, softness })
-          this.renderer.requestPaint()
+        zoomIn: () => this.stepZoom(ZOOM_STEP, true),
+        zoomOut: () => this.stepZoom(1 / ZOOM_STEP, true),
+        setThreshold: (setting, released) => {
+          this.setThreshold(setting)
+          if (released && setting.sensitivity !== undefined) {
+            this.status.textContent = this.labels.thresholdLevel(Math.round(setting.sensitivity * 100))
+          }
         },
-        setThreshold: (sensitivity) => {
-          this.setThreshold({ sensitivity })
-          this.status.textContent = this.labels.thresholdLevel(Math.round(sensitivity * 100))
-        },
-        previewAdjustment: (name, value) => {
-          this.preview?.tint?.({
-            type: 'adjust',
-            ...adjustSetting(this.history.done),
-            [name]: value,
-          })
-          this.renderer.requestPaint()
-        },
-        setAdjustment: (name, value) => {
+        setAdjustment: (name, value, released) => {
           this.setAdjustments({ [name]: value })
-          this.status.textContent = this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100))
+          if (released) {
+            this.status.textContent = this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100))
+          }
         },
       },
       TOOLS,
@@ -346,7 +346,6 @@ export class PaperPic {
     this.editBar.setTools(next.tools)
     this.viewportElement.setAttribute('aria-label', this.labels.viewer)
     this.describeImage(next.alt)
-    this.toolbar.element.hidden = !next.toolbar
 
     if (next.editable !== wasEditable) {
       this.leaveEdit()
@@ -365,8 +364,14 @@ export class PaperPic {
   /** Returns what the viewer is showing. */
   getState(): PaperPicState {
     const shown = this.preview ?? this.image
-    const { enabled, sensitivity } = thresholdSetting(this.history.done)
-    const { brightness, contrast } = adjustSetting(this.history.done)
+    const draft = this.draft
+    // An open Adjust or Clean up reports what it shows, which Done would keep
+    const { enabled, sensitivity } = draft?.tool === 'threshold'
+      ? draft.setting
+      : thresholdSetting(this.history.done)
+    const { brightness, contrast } = draft?.tool === 'adjust'
+      ? draft.setting
+      : adjustSetting(this.history.done)
     return {
       status: this.loadStatus,
       mode: this.mode,
@@ -378,7 +383,7 @@ export class PaperPic {
       canRedo: this.history.undone.length > 0,
       canApply: toPipelineSteps(this.history.done).length > 0,
       busy: this.busy,
-      activeTool: this.session?.tool.id ?? null,
+      activeTool: this.openToolId(),
       threshold: { enabled, sensitivity },
       adjustments: { brightness, contrast },
     }
@@ -429,7 +434,7 @@ export class PaperPic {
    * @param direction 1 for clockwise, -1 for counterclockwise.
    */
   rotate(direction: 1 | -1 = 1): void {
-    if (this.session) {
+    if (this.openToolId()) {
       return
     }
     if (this.mode === 'edit') {
@@ -469,60 +474,90 @@ export class PaperPic {
 
   /** Undoes the last edit. */
   undo(): void {
-    if (this.mode === 'edit' && !this.busy && !this.session && this.history.done.length > 0) {
+    if (this.mode === 'edit' && !this.busy && !this.openToolId() && this.history.done.length > 0) {
       this.setHistory(undoHistory(this.history))
     }
   }
 
   /** Brings back the last edit undone. */
   redo(): void {
-    if (this.mode === 'edit' && !this.busy && !this.session && this.history.undone.length > 0) {
+    if (this.mode === 'edit' && !this.busy && !this.openToolId() && this.history.undone.length > 0) {
       this.setHistory(redoHistory(this.history))
     }
   }
 
   /**
-   * Opens a tool with its own selection, such as `crop`. It stays open until `confirmTool()` or `cancelTool()`.
-   * It does nothing outside the edit mode, or while a preview is on its way.
+   * Opens a tool: `crop` or `perspective`, with their corners, or `adjust` or `threshold`, with their ruler. It stays open
+   * until `confirmTool()` or `cancelTool()`. Opening `threshold` turns it on, so the preview shows what it does.
+   * It does nothing outside the edit mode, while another tool is open, or for Crop and Straighten while a preview is on its way.
    */
   openTool(id: ToolId): void {
     const tool = TOOLS.find(candidate => candidate.id === id)
-    if (this.mode !== 'edit' || this.busy || this.previewing || this.session || !tool?.activate || !this.options.tools.includes(id)) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId() || !tool || !this.options.tools.includes(id)) {
       return
     }
     const hadFocus = this.hasFocus()
-    this.session = {
-      tool,
-      handle: tool.activate(this.toolHost()),
+    if (id === 'adjust' || id === 'threshold') {
+      const threshold = thresholdSetting(this.history.done)
+      // A cleaned document has tones of its own
+      if (id === 'adjust' && threshold.enabled) {
+        return
+      }
+      this.draft = id === 'adjust'
+        ? {
+            tool: 'adjust',
+            setting: adjustSetting(this.history.done),
+          }
+        : {
+            tool: 'threshold',
+            setting: { enabled: true, sensitivity: threshold.sensitivity },
+          }
+    }
+    else if (tool.activate && !this.previewing) {
+      this.session = {
+        tool,
+        handle: tool.activate(this.toolHost()),
+      }
+    }
+    else {
+      return
     }
     this.editBar.setActiveTool(tool)
     this.updatePreview()
     this.refresh()
     if (hadFocus) {
-      this.session.handle.focus()
+      if (this.session) {
+        this.session.handle.focus()
+      }
+      else if (this.options.toolbar) {
+        this.editBar.focusRuler()
+      }
     }
     this.emit('change', this.getState())
   }
 
-  /** Closes the open tool and adds its selection to the edits. */
+  /** Closes the open tool and adds what it chose to the edits: a selection, or the settings of Adjust or Clean up. */
   confirmTool(): void {
-    if (this.session) {
-      const operation = this.session.handle.confirm()
-      this.closeTool()
-      if (operation) {
-        this.addOperation(operation)
-      }
-      else {
-        this.updatePreview()
-        this.refresh()
-        this.emit('change', this.getState())
-      }
+    if (!this.openToolId()) {
+      return
+    }
+    const operation = this.session
+      ? this.session.handle.confirm()
+      : this.draftEdit()
+    this.closeTool()
+    if (operation) {
+      this.addOperation(operation)
+    }
+    else {
+      this.updatePreview()
+      this.refresh()
+      this.emit('change', this.getState())
     }
   }
 
   /** Closes the open tool without adding anything to the edits. */
   cancelTool(): void {
-    if (this.session) {
+    if (this.openToolId()) {
       this.closeTool()
       this.updatePreview()
       this.refresh()
@@ -532,7 +567,8 @@ export class PaperPic {
 
   /**
    * Turns the clean up of the document on or off, or changes its sensitivity. It always runs after the other edits.
-   * It does nothing outside the edit mode, or while a tool is open.
+   * While Clean up is open, it changes what Clean up shows, which `confirmTool()` keeps as one edit.
+   * It does nothing outside the edit mode, or while another tool is open.
    *
    * @throws {RangeError} If `sensitivity` is not between 0 and 1.
    */
@@ -540,7 +576,18 @@ export class PaperPic {
     if (sensitivity !== undefined && !(sensitivity >= 0 && sensitivity <= 1)) {
       throw new RangeError(`sensitivity must be between 0 and 1, got ${sensitivity}`)
     }
-    if (this.mode !== 'edit' || this.busy || this.session || !this.options.tools.includes('threshold')) {
+    const draft = this.draft
+    if (draft?.tool === 'threshold') {
+      this.changeDraft({
+        tool: 'threshold',
+        setting: {
+          enabled: enabled ?? draft.setting.enabled,
+          sensitivity: sensitivity ?? draft.setting.sensitivity,
+        },
+      })
+      return
+    }
+    if (this.mode !== 'edit' || this.busy || this.openToolId() || !this.options.tools.includes('threshold')) {
       return
     }
     const current = thresholdSetting(this.history.done)
@@ -559,7 +606,8 @@ export class PaperPic {
 
   /**
    * Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits.
-   * It does nothing outside the edit mode, while a tool is open, or while the document is cleaned up, which has tones of its own.
+   * While Adjust is open, it changes what Adjust shows, which `confirmTool()` keeps as one edit.
+   * It does nothing outside the edit mode, while another tool is open, or while the document is cleaned up, which has tones of its own.
    *
    * @throws {RangeError} If a value is not between -1 and 1.
    */
@@ -568,6 +616,17 @@ export class PaperPic {
       if (value !== undefined && !(value >= -1 && value <= 1)) {
         throw new RangeError(`${name} must be between -1 and 1, got ${value}`)
       }
+    }
+    const draft = this.draft
+    if (draft?.tool === 'adjust') {
+      this.changeDraft({
+        tool: 'adjust',
+        setting: {
+          brightness: brightness ?? draft.setting.brightness,
+          contrast: contrast ?? draft.setting.contrast,
+        },
+      })
+      return
     }
     if (!this.canAdjust()) {
       return
@@ -601,7 +660,7 @@ export class PaperPic {
   async apply(): Promise<void> {
     const image = this.image
     const steps = toPipelineSteps(this.history.done)
-    if (this.mode !== 'edit' || this.busy || this.session || !image || steps.length === 0) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId() || !image || steps.length === 0) {
       return
     }
 
@@ -631,7 +690,6 @@ export class PaperPic {
       const hadFocus = this.hasFocus()
       this.busy = false
       this.mode = 'view'
-      this.adjusting = false
       this.history = createHistory()
       this.setPreview(null)
       this.setImage(loaded, 'ready')
@@ -746,13 +804,6 @@ export class PaperPic {
       frameSize: () => displayedSize(shown(), this.view.rotation),
       frameToViewport: point => frameToViewport(this.view, shown(), this.viewport, point),
       viewportToFrame: point => viewportToFrame(this.view, shown(), this.viewport, point),
-      toolbarCorner: () => {
-        if (!this.options.toolbar) {
-          return null
-        }
-        const { offsetLeft, offsetTop, offsetHeight } = this.toolbar.element
-        return { x: offsetLeft, y: offsetTop + offsetHeight }
-      },
       reveal: (point) => {
         const { x, y } = frameToViewport(this.view, shown(), this.viewport, point)
         const distance = (position: number, size: number) => Math.max(0, REVEAL_MARGIN - position) - Math.max(0, position - size + REVEAL_MARGIN)
@@ -806,31 +857,64 @@ export class PaperPic {
   private canAdjust(): boolean {
     return this.mode === 'edit'
       && !this.busy
-      && !this.session
+      && !this.openToolId()
       && this.options.tools.includes('adjust')
       && !thresholdSetting(this.history.done).enabled
   }
 
-  /** Opens or closes the sliders of brightness and contrast. */
-  private toggleAdjustments(): void {
-    if (this.canAdjust()) {
-      this.adjusting = !this.adjusting
-      this.updatePreview()
-      this.refresh()
+  /** The open tool, with a selection or a panel of settings of its own. */
+  private openToolId(): ToolId | null {
+    return this.session?.tool.id ?? this.draft?.tool ?? null
+  }
+
+  /** Shows other settings in the open Adjust or Clean up, without any edit. */
+  private changeDraft(draft: Draft): void {
+    if (JSON.stringify(draft) === JSON.stringify(this.draft)) {
+      return
     }
+    this.draft = draft
+    this.updatePreview()
+    this.refresh()
+    this.emit('change', this.getState())
+  }
+
+  /** The edit that the open Adjust or Clean up would leave, or `null` if it changes nothing. */
+  private draftEdit(): Operation | null {
+    const draft = this.draft
+    if (draft?.tool === 'adjust') {
+      const { brightness, contrast } = adjustSetting(this.history.done)
+      return draft.setting.brightness !== brightness || draft.setting.contrast !== contrast
+        ? { type: 'adjust', ...draft.setting }
+        : null
+    }
+    if (draft?.tool === 'threshold') {
+      const current = thresholdSetting(this.history.done)
+      const { enabled, sensitivity } = draft.setting
+      // A sensitivity that changes while the clean up stays off changes nothing on display
+      return enabled !== current.enabled || (enabled && sensitivity !== current.sensitivity)
+        ? {
+            type: 'threshold',
+            enabled,
+            sensitivity,
+            softness: this.options.softness ?? current.softness,
+          }
+        : null
+    }
+    return null
   }
 
   private closeTool(): void {
-    if (!this.session) {
+    const id = this.openToolId()
+    if (!id) {
       return
     }
     const hadFocus = this.hasFocus()
-    const { tool, handle } = this.session
-    handle.deactivate()
+    this.session?.handle.deactivate()
     this.session = null
+    this.draft = null
     this.editBar.setActiveTool(null)
     if (hadFocus && this.options.toolbar) {
-      this.editBar.focus(tool.id)
+      this.editBar.focus(id)
     }
   }
 
@@ -908,14 +992,13 @@ export class PaperPic {
     this.mode = 'view'
     this.busy = false
     this.applyFailed = false
-    this.adjusting = false
     this.history = createHistory()
     this.setPreview(null)
     this.syncRotation()
   }
 
   private addOperation(operation: Operation): void {
-    if (this.mode === 'edit' && !this.busy && !this.session) {
+    if (this.mode === 'edit' && !this.busy && !this.openToolId()) {
       this.setHistory(addToHistory(this.history, operation))
     }
   }
@@ -923,8 +1006,6 @@ export class PaperPic {
   private setHistory(history: History<Operation>): void {
     this.history = history
     this.applyFailed = false
-    // The sliders of brightness and contrast close when the clean up leaves them out
-    this.adjusting &&= !thresholdSetting(history.done).enabled
     this.updatePreview()
     this.showStatus()
     this.refresh()
@@ -940,21 +1021,25 @@ export class PaperPic {
   }
 
   /**
-   * The tones that the preview paints. An open tool sees the image without the threshold, because the edges of the paper
-   * are hard to find on a cleaned image. Open sliders of brightness and contrast need tones to change, even when they are at 0.
+   * The tones that the preview paints: those of the edits, with what an open Adjust or Clean up shows instead of its own.
+   * Straighten sees the image without the threshold, because the edges of the paper are hard to find on a cleaned image.
+   * An open Adjust needs tones to change, even when they are at 0.
    */
   private previewTone(): ToneStep | null {
-    const tone = toneStep(this.history.done)
-    if (tone?.type === 'threshold') {
-      return this.session
-        ? null
-        : tone
+    const draft = this.draft
+    const operations = [...this.history.done]
+    if (draft?.tool === 'adjust') {
+      operations.push({ type: 'adjust', ...draft.setting })
     }
-    return tone ?? (this.adjusting
-      ? {
-          type: 'adjust',
-          ...adjustSetting(this.history.done),
-        }
+    if (draft?.tool === 'threshold') {
+      operations.push({ type: 'threshold', ...draft.setting, softness: this.options.softness ?? thresholdSetting(operations).softness })
+    }
+    const tone = toneStep(operations)
+    if (tone?.type === 'threshold' && this.session?.tool.id === 'perspective') {
+      return null
+    }
+    return tone ?? (draft?.tool === 'adjust'
+      ? { type: 'adjust', ...draft.setting }
       : null)
   }
 
@@ -1052,11 +1137,11 @@ export class PaperPic {
     this.root.setAttribute('aria-busy', String(this.busy || this.previewing || this.loadStatus === 'loading'))
   }
 
-  /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. */
+  /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
   private toolbarClearance(): number {
-    return this.options.toolbar
-      ? this.toolbar.element.offsetWidth + TOOLBAR_GAP
-      : 0
+    return this.toolbar.element.hidden
+      ? 0
+      : this.toolbar.element.offsetWidth + TOOLBAR_GAP
   }
 
   private measure(): void {
@@ -1088,16 +1173,27 @@ export class PaperPic {
     const limits = image && zoomLimits(image, this.viewport, this.view.rotation)
     const state = this.getState()
 
+    const canZoomIn = limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE
+    const canZoomOut = limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE
+
     this.toolbar.update({
       fit: this.view.fit,
       canEdit: this.options.editable && this.mode === 'view' && this.loadStatus === 'ready',
-      canZoomIn: limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE,
-      canZoomOut: limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE,
+      canZoomIn,
+      canZoomOut,
       canRotate: !this.options.editable,
       canDownload: this.options.download && this.mode === 'view' && this.loadStatus === 'ready',
     })
+    // Nothing covers the image while editing, so no corner ends up under a button
+    this.toolbar.element.hidden = !this.options.toolbar || this.mode === 'edit'
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
-    this.editBar.update({ ...state, canOpenTool: !this.previewing, adjusting: this.adjusting })
+    this.editBar.update({
+      ...state,
+      canOpenTool: !this.previewing,
+      canZoomIn,
+      canZoomOut,
+      cleanedUp: thresholdSetting(this.history.done).enabled,
+    })
     this.session?.handle.update()
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
     this.viewportElement.classList.toggle(
@@ -1141,8 +1237,15 @@ export class PaperPic {
     }
   }
 
-  private stepZoom(factor: number): void {
-    this.zoomTo(this.view.zoom * factor)
+  /**
+   * Zooms one step around the center. With `anchored`, an open tool can keep a point in place instead, such as the corner
+   * the user is placing, so the zoom of its panel and the keys never push that corner off screen.
+   */
+  private stepZoom(factor: number, anchored = false): void {
+    const anchor = anchored
+      ? this.session?.handle.anchor?.() ?? undefined
+      : undefined
+    this.zoomTo(this.view.zoom * factor, anchor)
     if (this.measuredImage()) {
       this.status.textContent = this.labels.zoomLevel(Math.round(this.view.zoom * 100))
     }
@@ -1164,10 +1267,10 @@ export class PaperPic {
     const editing = this.mode === 'edit'
     switch (command.type) {
       case 'zoomIn':
-        this.stepZoom(ZOOM_STEP)
+        this.stepZoom(ZOOM_STEP, true)
         return true
       case 'zoomOut':
-        this.stepZoom(1 / ZOOM_STEP)
+        this.stepZoom(1 / ZOOM_STEP, true)
         return true
       case 'fit':
         this.fit('image')
@@ -1182,9 +1285,9 @@ export class PaperPic {
         this.redo()
         return editing
       case 'cancel':
-        if (this.session) {
+        if (this.openToolId()) {
           // A selected corner lets go first, and the next Esc closes the tool
-          if (!this.session.handle.escape?.()) {
+          if (!this.session?.handle.escape?.()) {
             this.cancelTool()
           }
           return true
@@ -1198,7 +1301,8 @@ export class PaperPic {
         }
         return false
       case 'apply':
-        if (this.session && this.viewportElement.contains(target as Node)) {
+        // Enter on a button must press that button, but a corner handle and a ruler confirm the tool
+        if (this.openToolId() && (this.viewportElement.contains(target as Node) || target instanceof HTMLInputElement)) {
           this.confirmTool()
           return true
         }

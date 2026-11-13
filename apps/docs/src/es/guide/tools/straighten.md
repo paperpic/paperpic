@@ -12,10 +12,12 @@ Un documento fotografiado en ángulo parece un trapecio: el borde lejano es más
 ## Cómo se usa
 
 1. Pulsa Editar y luego Enderezar. Aparece un tirador para cada esquina.
-2. Arrastra cada tirador a una esquina del documento. Acércate con el zoom para colocarlos con precisión.
+2. Arrastra cada tirador a una esquina del documento. Acércate con los botones de zoom de su panel para colocarlos con precisión.
 3. Pulsa Hecho, o `Enter`. El visor muestra la página plana, recortada a las cuatro esquinas.
 
 Los tiradores funcionan como en [Recortar](./crop): una lupa en pantallas táctiles, pulsar y tocar en lugar de arrastrar, y Tab y las flechas con el teclado. Las cuatro esquinas siempre forman una figura convexa, así que la página siempre se puede aplanar.
+
+Enderezar muestra la foto sin [Limpiar](./clean-up), porque en una página limpiada cuesta encontrar los bordes del papel. Limpiar vuelve después de Hecho.
 
 ## Proporciones
 

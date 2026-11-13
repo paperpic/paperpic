@@ -3,11 +3,15 @@ import type { PaperPicIcons } from './icons'
 import type { PaperPicLabels } from './labels'
 import { attachRovingFocus, createButton, nameButton, setIcon } from './button'
 import { DEFAULT_ICONS } from './icons'
+import { Ruler } from './ruler'
 
-/** A tone that a slider of the adjustments changes. */
+/** A tone that the ruler of Adjust changes. */
 export type AdjustmentName = 'brightness' | 'contrast'
 
 const ADJUSTMENTS: readonly AdjustmentName[] = ['brightness', 'contrast']
+
+/** Numbers the description of a tool in use, so each viewer of a page has its own id. */
+let descriptions = 0
 
 /** What the edit bar can ask for. It only reaches the viewer through these. */
 export interface EditBarCommands {
@@ -15,23 +19,20 @@ export interface EditBarCommands {
   cancel: () => void
   cancelTool: () => void
   confirmTool: () => void
-  /** Shows a value while the user drags a slider of the adjustments, without any edit. */
-  previewAdjustment: (name: AdjustmentName, value: number) => void
-  /** Shows a sensitivity while the user drags the slider, without any edit. */
-  previewThreshold: (sensitivity: number) => void
   redo: () => void
   runTool: (run: Tool['actions'][number]['run']) => void
-  /** The user chose a value for a slider of the adjustments. */
-  setAdjustment: (name: AdjustmentName, value: number) => void
-  /** The user chose a sensitivity. */
-  setThreshold: (sensitivity: number) => void
+  /** Changes the brightness or the contrast that Adjust shows. `released` once the user lets go of the ruler. */
+  setAdjustment: (name: AdjustmentName, value: number, released: boolean) => void
+  /** Changes what Clean up shows. `released` once the user lets go of the ruler. */
+  setThreshold: (setting: { enabled?: boolean, sensitivity?: number }, released: boolean) => void
   undo: () => void
+  zoomIn: () => void
+  zoomOut: () => void
 }
 
 /** What the edit bar shows. */
 export interface EditBarState {
-  /** Whether the sliders of the adjustments are open. */
-  adjusting: boolean
+  /** The brightness and contrast on display, which an open Adjust may still change. */
   adjustments: Record<AdjustmentName, number>
   busy: boolean
   canApply: boolean
@@ -39,30 +40,48 @@ export interface EditBarState {
   canOpenTool: boolean
   canRedo: boolean
   canUndo: boolean
+  canZoomIn: boolean
+  canZoomOut: boolean
+  /** Whether the edits already clean up the document, so an open Clean up offers its switch to turn it off. */
+  cleanedUp: boolean
+  /** The clean up on display, which an open Clean up may still change. */
   threshold: { enabled: boolean, sensitivity: number }
 }
 
-interface Slider {
-  input: HTMLInputElement
-  name: HTMLElement
-  row: HTMLLabelElement
+/** Creates a dot that marks a button whose setting is in effect. */
+function createDot(): HTMLElement {
+  const dot = document.createElement('span')
+  dot.className = 'paperpic-edit-dot'
+  dot.hidden = true
+  return dot
 }
 
-/** The controls of the edit mode: Cancel, the tools, Undo, Redo and Apply. An open tool replaces them with its own. */
+/**
+ * The controls of the edit mode, in a card at the bottom with two rows of fixed height, or one on a wide viewer.
+ * Above, the tools, and below, Cancel, Undo, Redo and Apply. An open tool replaces them with its panel: its controls
+ * above, and below its own Cancel, what it chooses and Done.
+ */
 export class EditBar {
   readonly element: HTMLElement
   private readonly controls: HTMLElement
   private readonly toolControls: HTMLElement
-  private readonly threshold: Slider
-  private readonly adjustRow: HTMLElement
-  private readonly adjustSliders: Record<AdjustmentName, Slider>
+  private readonly corners: HTMLElement
   private readonly hint: HTMLElement
+  private readonly title: HTMLElement
+  private readonly rulers: Record<AdjustmentName | 'sensitivity', Ruler>
+  private readonly switchButton: HTMLButtonElement
+  private readonly switchText: HTMLElement
+  private readonly options: HTMLElement
+  private readonly optionButtons: Record<AdjustmentName, HTMLButtonElement>
+  private readonly optionTexts: Record<AdjustmentName, HTMLElement>
+  private readonly inUse: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
   private readonly toolButtons: { button: HTMLButtonElement, id: Tool['actions'][number]['id'], tool: Tool }[] = []
   private readonly cancelToolButton: HTMLButtonElement
   private readonly confirmToolButton: HTMLButtonElement
-  private readonly confirmToolText: HTMLElement
+  private readonly zoomInButton: HTMLButtonElement
+  private readonly zoomOutButton: HTMLButtonElement
   private readonly cancelButton: HTMLButtonElement
   private readonly undoButton: HTMLButtonElement
   private readonly redoButton: HTMLButtonElement
@@ -75,12 +94,12 @@ export class EditBar {
   private readonly fixTabOrder: () => void
   private labels: PaperPicLabels
   private activeTool: Tool | null = null
+  /** The tone that the ruler of Adjust changes. */
+  private adjustment: AdjustmentName = 'brightness'
   /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
   private hintOverride: string | null = null
-  private thresholdEnabled = false
-  private adjusting = false
-  private offered: ReadonlySet<ToolId>
-  private dragging = false
+  private adjustments: Record<AdjustmentName, number> = { brightness: 0, contrast: 0 }
+  private cleanedUp = false
   private canApply = false
   private busy = false
 
@@ -101,13 +120,15 @@ export class EditBar {
     this.applyText = document.createElement('span')
     this.applyButton.append(this.applyText)
 
-    this.offered = new Set(tools.map(({ id }) => id))
     const toolGroup = document.createElement('div')
     toolGroup.className = 'paperpic-edit-tools'
     const toolIcons: [HTMLButtonElement, keyof PaperPicIcons][] = []
     for (const tool of tools) {
       for (const action of tool.actions) {
         const button = createButton(action.id, () => commands.runTool(action.run))
+        if (tool.id === 'adjust' || tool.id === 'threshold') {
+          button.append(createDot())
+        }
         this.toolButtons.push({ tool, id: action.id, button })
         toolIcons.push([button, action.icon ?? action.id])
         toolGroup.append(button)
@@ -120,16 +141,65 @@ export class EditBar {
 
     this.controls.append(this.cancelButton, toolGroup, history, this.applyButton)
 
+    // The panel of an open tool
     this.toolControls = document.createElement('div')
     this.toolControls.className = 'paperpic-edit-tool'
+    this.toolControls.setAttribute('role', 'group')
     this.toolControls.hidden = true
     this.cancelToolButton = createButton('cancelTool', commands.cancelTool)
+    this.confirmToolButton = createButton('confirm', commands.confirmTool, 'paperpic-button paperpic-button-primary')
+
+    const panel = document.createElement('div')
+    panel.className = 'paperpic-edit-panel'
+    this.corners = document.createElement('div')
+    this.corners.className = 'paperpic-edit-corners'
     this.hint = document.createElement('span')
     this.hint.className = 'paperpic-edit-message'
-    this.confirmToolButton = createButton('confirm', commands.confirmTool, 'paperpic-button paperpic-button-primary')
-    this.confirmToolText = document.createElement('span')
-    this.confirmToolButton.append(this.confirmToolText)
-    this.toolControls.append(this.cancelToolButton, this.hint, this.confirmToolButton)
+    this.zoomOutButton = createButton('zoomOut', commands.zoomOut)
+    this.zoomInButton = createButton('zoomIn', commands.zoomIn)
+    this.corners.append(this.hint, this.zoomOutButton, this.zoomInButton)
+    this.rulers = {
+      sensitivity: new Ruler('thresholdSensitivity', false, (value, released) => commands.setThreshold({ sensitivity: value }, released)),
+      brightness: new Ruler('brightness', true, (value, released) => commands.setAdjustment('brightness', value, released)),
+      contrast: new Ruler('contrast', true, (value, released) => commands.setAdjustment('contrast', value, released)),
+    }
+    panel.append(this.corners, ...Object.values(this.rulers).map(ruler => ruler.element))
+
+    const choice = document.createElement('div')
+    choice.className = 'paperpic-edit-choice'
+    this.title = document.createElement('span')
+    this.title.className = 'paperpic-edit-title'
+    // Clean up turns on when it opens, so Cancel undoes it. Once it is an edit, its switch turns it off without undoing what came after
+    this.switchButton = createButton('threshold', () => commands.setThreshold({
+      enabled: this.switchButton.getAttribute('aria-checked') !== 'true',
+    }, true), 'paperpic-button paperpic-edit-switch')
+    this.switchButton.setAttribute('role', 'switch')
+    this.switchText = document.createElement('span')
+    const track = document.createElement('span')
+    track.className = 'paperpic-edit-switch-track'
+    const thumb = document.createElement('span')
+    thumb.className = 'paperpic-edit-switch-thumb'
+    track.append(thumb)
+    this.switchButton.append(this.switchText, track)
+
+    this.options = document.createElement('div')
+    this.options.className = 'paperpic-edit-options'
+    this.options.setAttribute('role', 'group')
+    const optionButtons: Partial<Record<AdjustmentName, HTMLButtonElement>> = {}
+    const optionTexts: Partial<Record<AdjustmentName, HTMLElement>> = {}
+    for (const name of ADJUSTMENTS) {
+      const button = createButton(name, () => this.chooseAdjustment(name), 'paperpic-button paperpic-edit-option')
+      const text = document.createElement('span')
+      button.append(text, createDot())
+      this.options.append(button)
+      optionButtons[name] = button
+      optionTexts[name] = text
+    }
+    this.optionButtons = optionButtons as Record<AdjustmentName, HTMLButtonElement>
+    this.optionTexts = optionTexts as Record<AdjustmentName, HTMLElement>
+    choice.append(this.title, this.switchButton, this.options)
+
+    this.toolControls.append(this.cancelToolButton, panel, choice, this.confirmToolButton)
 
     this.iconButtons = [
       [this.cancelButton, 'cancel'],
@@ -139,6 +209,10 @@ export class EditBar {
       [this.applyButton, 'apply'],
       [this.cancelToolButton, 'cancel'],
       [this.confirmToolButton, 'apply'],
+      [this.zoomOutButton, 'zoomOut'],
+      [this.zoomInButton, 'zoomIn'],
+      [this.optionButtons.brightness, 'brightness'],
+      [this.optionButtons.contrast, 'contrast'],
     ]
 
     this.confirmation = document.createElement('div')
@@ -162,27 +236,12 @@ export class EditBar {
       }
     })
 
-    this.threshold = this.createSlider('thresholdSensitivity', 'paperpic-edit-threshold', 0, commands.previewThreshold, commands.setThreshold)
-    this.threshold.row.hidden = true
+    // Screen readers hear the dot of a tool in use as its description
+    this.inUse = document.createElement('span')
+    this.inUse.id = `paperpic-in-use-${++descriptions}`
+    this.inUse.hidden = true
 
-    this.adjustRow = document.createElement('div')
-    this.adjustRow.className = 'paperpic-edit-adjust'
-    this.adjustRow.hidden = true
-    const sliders: Partial<Record<AdjustmentName, Slider>> = {}
-    for (const name of ADJUSTMENTS) {
-      const slider = this.createSlider(
-        name,
-        'paperpic-edit-slider',
-        -1,
-        value => commands.previewAdjustment(name, value),
-        value => commands.setAdjustment(name, value),
-      )
-      this.adjustRow.append(slider.row)
-      sliders[name] = slider
-    }
-    this.adjustSliders = sliders as Record<AdjustmentName, Slider>
-
-    this.element.append(this.controls, this.toolControls, this.threshold.row, this.adjustRow, this.confirmation)
+    this.element.append(this.controls, this.toolControls, this.confirmation, this.inUse)
 
     this.fixTabOrder = attachRovingFocus(this.controls, () => [
       this.cancelButton,
@@ -194,6 +253,7 @@ export class EditBar {
     this.fixTabOrder()
     this.setLabels(labels)
     this.setIcons(icons)
+    this.showPanel()
   }
 
   /** Updates the icons. */
@@ -209,12 +269,18 @@ export class EditBar {
     this.controls.setAttribute('aria-label', labels.editBar)
     nameButton(this.cancelToolButton, labels.cancelTool)
     nameButton(this.confirmToolButton, labels.confirm)
-    this.threshold.name.textContent = labels.thresholdSensitivity
+    nameButton(this.zoomInButton, labels.zoomIn)
+    nameButton(this.zoomOutButton, labels.zoomOut)
+    this.rulers.sensitivity.setName(labels.thresholdSensitivity)
+    this.switchText.textContent = labels.threshold
+    this.options.setAttribute('aria-label', labels.adjust)
     for (const name of ADJUSTMENTS) {
-      this.adjustSliders[name].name.textContent = labels[name]
+      this.rulers[name].setName(labels[name])
+      this.optionTexts[name].textContent = labels[name]
     }
-    this.confirmToolText.textContent = labels.confirm
+    this.inUse.textContent = labels.inUse
     this.showHint()
+    this.showPanel()
     nameButton(this.cancelButton, labels.cancel)
     nameButton(this.undoButton, labels.undo)
     nameButton(this.redoButton, labels.redo)
@@ -231,22 +297,23 @@ export class EditBar {
 
   /** Chooses which tools appear. */
   setTools(ids: readonly ToolId[]): void {
-    this.offered = new Set(ids)
     for (const { tool, button } of this.toolButtons) {
       button.hidden = !ids.includes(tool.id)
     }
-    this.showSliders()
     this.fixTabOrder()
   }
 
-  /** Shows the controls of an open tool, or the usual ones with `null`. */
+  /** Shows the panel of an open tool, or the usual controls with `null`. */
   setActiveTool(tool: Tool | null): void {
     this.activeTool = tool
     this.hintOverride = null
+    if (tool?.id === 'adjust') {
+      this.adjustment = 'brightness'
+    }
     this.toolControls.hidden = tool === null
-    this.controls.hidden = tool !== null
+    this.controls.hidden = tool !== null || !this.confirmation.hidden
     this.showHint()
-    this.showSliders()
+    this.showPanel()
   }
 
   /** Replaces the hint of the open tool, or brings it back with `null`. Closing the tool brings it back too. */
@@ -263,39 +330,39 @@ export class EditBar {
     }
   }
 
-  /** Updates what the buttons allow. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool, threshold, adjusting, adjustments }: EditBarState): void {
+  /** Updates what the buttons allow, and what the panel of an open tool shows. */
+  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, cleanedUp, threshold, adjustments }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
+    this.adjustments = adjustments
+    this.cleanedUp = cleanedUp
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
+    this.zoomInButton.setAttribute('aria-disabled', String(!canZoomIn))
+    this.zoomOutButton.setAttribute('aria-disabled', String(!canZoomOut))
+    // A cleaned document has tones of its own, so brightness and contrast are not in effect
+    const adjusted = !threshold.enabled && (adjustments.brightness !== 0 || adjustments.contrast !== 0)
     for (const { tool, button } of this.toolButtons) {
       button.setAttribute('aria-disabled', String(busy
         || (tool.activate !== undefined && !canOpenTool)
-        // A cleaned document has tones of its own
         || (tool.id === 'adjust' && threshold.enabled)))
-      if (tool.id === 'threshold') {
-        button.setAttribute('aria-pressed', String(threshold.enabled))
-      }
       if (tool.id === 'adjust') {
-        button.setAttribute('aria-expanded', String(adjusting))
+        this.markInUse(button, adjusted)
+      }
+      if (tool.id === 'threshold') {
+        this.markInUse(button, threshold.enabled)
       }
     }
-    this.thresholdEnabled = threshold.enabled
-    this.adjusting = adjusting
-    this.threshold.input.disabled = busy
+    this.switchButton.setAttribute('aria-checked', String(threshold.enabled))
+    this.rulers.sensitivity.set(threshold.sensitivity)
+    this.rulers.sensitivity.setDisabled(busy || !threshold.enabled)
     for (const name of ADJUSTMENTS) {
-      this.adjustSliders[name].input.disabled = busy
+      this.rulers[name].set(adjustments[name])
+      this.rulers[name].setDisabled(busy)
     }
-    if (!this.dragging) {
-      this.threshold.input.value = String(threshold.sensitivity)
-      for (const name of ADJUSTMENTS) {
-        this.adjustSliders[name].input.value = String(adjustments[name])
-      }
-    }
-    this.showSliders()
+    this.showPanel()
   }
 
   /** Cancels, asking first if there are changes to lose. */
@@ -309,7 +376,6 @@ export class EditBar {
     }
     this.controls.hidden = true
     this.confirmation.hidden = false
-    this.showSliders()
     // The safe choice takes the focus, so pressing Enter again does not lose the work
     this.keepButton.focus()
   }
@@ -321,56 +387,57 @@ export class EditBar {
     button?.focus()
   }
 
-  /**
-   * Creates a slider that reports each value while it moves, and the one the user chooses when it is released.
-   * `data-paperpic-control` holds the key of its name in the labels.
-   */
-  private createSlider(
-    control: keyof PaperPicLabels,
-    className: string,
-    min: number,
-    onInput: (value: number) => void,
-    onChange: (value: number) => void,
-  ): Slider {
-    const row = document.createElement('label')
-    row.className = className
-    const name = document.createElement('span')
-    const input = document.createElement('input')
-    input.dataset.paperpicControl = control
-    input.type = 'range'
-    input.min = String(min)
-    input.max = '1'
-    input.step = '0.01'
-    input.addEventListener('input', () => {
-      this.dragging = true
-      onInput(input.valueAsNumber)
-    })
-    input.addEventListener('change', () => {
-      this.dragging = false
-      onChange(input.valueAsNumber)
-    })
-    // The arrow keys move the slider here, instead of panning the image
-    input.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') {
-        event.stopPropagation()
-      }
-    })
-    row.append(name, input)
-    return { row, name, input }
+  /** Moves the keyboard focus to the ruler of the open tool, if it has one. */
+  focusRuler(): void {
+    Object.values(this.rulers).find(ruler => !ruler.element.hidden)?.input.focus()
   }
 
-  private showSliders(): void {
-    const free = this.activeTool === null && this.confirmation.hidden
-    this.showRow(this.threshold.row, 'threshold', free && this.thresholdEnabled && this.offered.has('threshold'))
-    this.showRow(this.adjustRow, 'adjust', free && this.adjusting && this.offered.has('adjust'))
+  private chooseAdjustment(name: AdjustmentName): void {
+    this.adjustment = name
+    this.showPanel()
   }
 
-  private showRow(row: HTMLElement, toolId: ToolId, visible: boolean): void {
-    // A control that disappears must not take the keyboard focus with it
-    if (!visible && row.contains(document.activeElement)) {
-      this.focus(toolId)
+  /** Shows the controls of the open tool: its corners or its ruler, and its name, its switch or its choice. */
+  private showPanel(): void {
+    const id = this.activeTool?.id
+    const name = this.activeTool
+      ? this.labels[this.activeTool.actions[0]!.id]
+      : ''
+    const hasCorners = id === 'crop' || id === 'perspective'
+    const hasSwitch = id === 'threshold' && this.cleanedUp
+    this.toolControls.setAttribute('aria-label', name)
+    this.corners.hidden = !hasCorners
+    // A tool without a switch or a choice shows its name in their place
+    this.title.hidden = !hasCorners && !(id === 'threshold' && !hasSwitch)
+    this.title.textContent = name
+    this.rulers.sensitivity.element.hidden = id !== 'threshold'
+    this.switchButton.hidden = !hasSwitch
+    this.options.hidden = id !== 'adjust'
+    for (const name of ADJUSTMENTS) {
+      this.rulers[name].element.hidden = id !== 'adjust' || name !== this.adjustment
     }
-    row.hidden = !visible
+    this.showOptions()
+  }
+
+  private showOptions(): void {
+    for (const name of ADJUSTMENTS) {
+      this.optionButtons[name].setAttribute('aria-pressed', String(name === this.adjustment))
+      this.markInUse(this.optionButtons[name], this.adjustments[name] !== 0)
+    }
+  }
+
+  /** Shows the dot of a button whose setting is in effect, and describes it so to screen readers. */
+  private markInUse(button: HTMLButtonElement, inUse: boolean): void {
+    const dot = button.querySelector<HTMLElement>('.paperpic-edit-dot')
+    if (dot) {
+      dot.hidden = !inUse
+    }
+    if (inUse) {
+      button.setAttribute('aria-describedby', this.inUse.id)
+    }
+    else {
+      button.removeAttribute('aria-describedby')
+    }
   }
 
   private showHint(): void {
@@ -384,7 +451,6 @@ export class EditBar {
     const wasOpen = !this.confirmation.hidden
     this.confirmation.hidden = true
     this.controls.hidden = this.activeTool !== null
-    this.showSliders()
     if (wasOpen && restoreFocus) {
       this.cancelButton.focus()
     }

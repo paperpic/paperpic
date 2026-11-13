@@ -32,13 +32,14 @@ En macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar los cambios, `Esc` pide 
 
 - **Barra de herramientas y barra de edición.** Tab llega a cada barra, y dentro de ella las flechas pasan de un botón a otro, con `Inicio` y `Fin` para el primero y el último.
 - **Tiradores de esquina.** Con Recortar o Enderezar abierta, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús.
-- **Controles deslizantes.** Las flechas mueven los controles de Ajustar y de Limpiar.
+- **Reglas.** Las reglas de Ajustar y Limpiar son controles de rango nativos: las flechas, `Re Pág`, `Av Pág`, `Inicio` y `Fin` las mueven. `Enter` conserva el valor, como Hecho, y `Esc` cierra la herramienta sin él.
 
 ## Lectores de pantalla
 
 - La imagen tiene el rol de imagen, con `alt` como nombre. Sin `alt`, los lectores de pantalla la omiten.
 - La barra de herramientas y la barra de edición tienen nombre propio, como «Controles de la imagen» y «Controles de edición».
-- Un anuncio informa de cada cambio que el usuario no puede ver solo con el foco: el nivel de zoom, el inicio del modo de edición, la posición de una esquina movida, el valor de un control deslizante y el resultado de Aplicar.
+- Un anuncio informa de cada cambio que el usuario no puede ver solo con el foco: el nivel de zoom, el inicio del modo de edición, la posición de una esquina movida, el valor de una regla y el resultado de Aplicar.
+- El interruptor de Limpiar tiene el rol de interruptor. Una herramienta en uso, que un punto marca en pantalla, se describe como «En uso».
 
 ## Pantallas táctiles
 

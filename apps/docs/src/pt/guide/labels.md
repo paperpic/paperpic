@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Textos com um valor
 
-Cinco rótulos são funções, porque o texto deles inclui um valor: o zoom, a sensibilidade do Limpar, um canto e a posição dele, um canto selecionado, e um controle do Ajustar. Os leitores de tela os anunciam. Formate os números como o seu idioma faz:
+Cinco rótulos são funções, porque o texto deles inclui um valor: o zoom, a sensibilidade do Limpar, um canto e a posição dele, um canto selecionado, e a régua do Ajustar. Os leitores de tela os anunciam. Formate os números como o seu idioma faz:
 
 ```ts
 const signed = new Intl.NumberFormat('pt', { signDisplay: 'exceptZero' })

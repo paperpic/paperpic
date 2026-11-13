@@ -13,18 +13,18 @@ pic.on('change', ({ canApply, busy }) => {
 })
 ```
 
-| Campo         | Tipo                                         | Descrição                                                                             |
-| ------------- | -------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `activeTool`  | `ToolId \| null`                             | A ferramenta aberta, `'crop'` ou `'perspective'`, ou `null`                           |
-| `adjustments` | `{ brightness, contrast }`                   | O brilho e o contraste, cada um de -1 a 1. Limpar os deixa de fora                    |
-| `busy`        | `boolean`                                    | Se o Aplicar está em andamento                                                        |
-| `canApply`    | `boolean`                                    | Se há alterações para aplicar. Giros e espelhamentos que se anulam não contam         |
-| `canRedo`     | `boolean`                                    | Se há uma alteração para trazer de volta                                              |
-| `canUndo`     | `boolean`                                    | Se há uma alteração para desfazer                                                     |
-| `fit`         | `'image' \| 'width' \| 'height' \| null`     | O ajuste em vigor, ou `null` assim que o usuário dá zoom manualmente                  |
-| `image`       | `{ width, height } \| null`                  | O tamanho da imagem na tela em pixels, com as alterações feitas, ou `null` sem imagem |
-| `mode`        | `'view' \| 'edit'`                           | Se o usuário está vendo ou editando a imagem                                          |
-| `rotation`    | `0 \| 90 \| 180 \| 270`                      | Quanto a imagem na tela está girada, em graus no sentido horário                      |
-| `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | Se há uma imagem, e se ela carregou                                                   |
-| `threshold`   | `{ enabled, sensitivity }`                   | Se Limpar está ligado, e a sensibilidade de 0 a 1                                     |
-| `zoom`        | `number`                                     | Pixels da tela por pixel da imagem                                                    |
+| Campo         | Tipo                                         | Descrição                                                                                                                   |
+| ------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `activeTool`  | `ToolId \| null`                             | A ferramenta aberta, como `'crop'` ou `'adjust'`, ou `null`                                                                 |
+| `adjustments` | `{ brightness, contrast }`                   | O brilho e o contraste, cada um de -1 a 1. Limpar os deixa de fora. Enquanto Ajustar está aberto, os valores que ele mostra |
+| `busy`        | `boolean`                                    | Se o Aplicar está em andamento                                                                                              |
+| `canApply`    | `boolean`                                    | Se há alterações para aplicar. Giros e espelhamentos que se anulam não contam                                               |
+| `canRedo`     | `boolean`                                    | Se há uma alteração para trazer de volta                                                                                    |
+| `canUndo`     | `boolean`                                    | Se há uma alteração para desfazer                                                                                           |
+| `fit`         | `'image' \| 'width' \| 'height' \| null`     | O ajuste em vigor, ou `null` assim que o usuário dá zoom manualmente                                                        |
+| `image`       | `{ width, height } \| null`                  | O tamanho da imagem na tela em pixels, com as alterações feitas, ou `null` sem imagem                                       |
+| `mode`        | `'view' \| 'edit'`                           | Se o usuário está vendo ou editando a imagem                                                                                |
+| `rotation`    | `0 \| 90 \| 180 \| 270`                      | Quanto a imagem na tela está girada, em graus no sentido horário                                                            |
+| `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | Se há uma imagem, e se ela carregou                                                                                         |
+| `threshold`   | `{ enabled, sensitivity }`                   | Se Limpar está ligado, e a sensibilidade de 0 a 1. Enquanto Limpar está aberto, o que ele mostra                            |
+| `zoom`        | `number`                                     | Pixels da tela por pixel da imagem                                                                                          |

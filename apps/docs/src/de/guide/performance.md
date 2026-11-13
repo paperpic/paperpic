@@ -22,7 +22,7 @@ Erlaube mit einer Content Security Policy:
 
 ## Große Fotos
 
-- **Beim Bearbeiten** arbeitet die Vorschau auf einer Kopie mit etwa 2 Megapixeln, damit Regler und Werkzeuge mit jedem Foto flüssig bleiben.
+- **Beim Bearbeiten** arbeitet die Vorschau auf einer Kopie mit etwa 2 Megapixeln, damit Skalen und Werkzeuge mit jedem Foto flüssig bleiben.
 - **Beim Übernehmen** läuft jede Änderung in voller Auflösung. Große Fotos brauchen ein paar Sekunden, deshalb zeigt der Viewer eine Meldung und sperrt währenddessen die Bedienelemente.
 - **Um Zeit und Speicher zu sparen**, setze [`maxOutputSize`](../reference/options#maxoutputsize). Eine Grenze wie 2000 oder 3000 Pixel hält Dokumente lesbar, macht Übernehmen schneller und die Dateien kleiner.
 

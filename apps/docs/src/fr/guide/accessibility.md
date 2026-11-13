@@ -32,13 +32,14 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Avant d’annuler les changements, `É
 
 - **Barre d’outils et barre de modification.** Tab atteint chaque barre, et dans la barre les flèches passent d’un bouton à l’autre, avec `Début` et `Fin` pour le premier et le dernier.
 - **Poignées d’angle.** Avec Recadrer ou Redresser ouvert, Tab passe d’une poignée à l’autre, et les flèches déplacent celle qui a le focus de 1 pixel d’écran, ou de 10 avec Maj.
-- **Curseurs.** Les flèches déplacent les curseurs d’Ajuster et de Nettoyer.
+- **Règles.** Les règles d’Ajuster et de Nettoyer sont des curseurs natifs : les flèches, `Pg préc`, `Pg suiv`, `Début` et `Fin` les déplacent. `Entrée` garde la valeur, comme Terminé, et `Échap` ferme l’outil sans elle.
 
 ## Lecteurs d’écran
 
 - L’image a le rôle d’une image, nommée par `alt`. Sans `alt`, les lecteurs d’écran l’ignorent.
 - La barre d’outils et la barre de modification ont leur propre nom, comme « Commandes de l’image » et « Commandes de modification ».
-- Une annonce signale chaque changement que l’utilisateur ne peut pas voir avec le seul focus : le niveau de zoom, le début du mode d’édition, la position d’un coin déplacé, la valeur d’un curseur et le résultat d’Appliquer.
+- Une annonce signale chaque changement que l’utilisateur ne peut pas voir avec le seul focus : le niveau de zoom, le début du mode d’édition, la position d’un coin déplacé, la valeur d’une règle et le résultat d’Appliquer.
+- L’interrupteur de Nettoyer a le rôle d’un interrupteur. Un outil en usage, qu’un point marque à l’écran, est décrit comme « Actif ».
 
 ## Écrans tactiles
 

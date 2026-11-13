@@ -13,11 +13,13 @@ Straighten the receipt first, then clean it up.
 
 ## Use it
 
-1. Press Edit, then Clean up. The preview turns black and white, and a Sensitivity slider appears.
-2. Drag the slider. Higher sensitivity darkens more pixels, which recovers faint or worn text. Lower sensitivity gives a cleaner page, without the print that shows through from the back. Releasing the slider leaves one edit.
-3. Press Clean up again to turn it off.
+1. Press Edit, then Clean up. Its panel takes the place of the tools, the preview turns black and white, and a Sensitivity ruler appears.
+2. Drag the ruler. Higher sensitivity darkens more pixels, which recovers faint or worn text. Lower sensitivity gives a cleaner page, without the print that shows through from the back.
+3. Press Done to keep it as one edit, or Cancel this tool to leave the image as it was.
 
-Clean up always runs after the other edits. Crop and Straighten show the image without it, because the edges of the paper are hard to find on a cleaned up page.
+To turn off a Clean up that is already an edit, open it again: a switch next to the ruler turns it off, and the edits that came after it stay. Undo would take those edits away first.
+
+Clean up always runs after the other edits. Crop shows the image cleaned up, as it will be. Straighten shows it without Clean up, because the edges of the paper are hard to find on a cleaned up page.
 
 ## Softness
 
@@ -35,3 +37,5 @@ A cleaned up image is PNG, because JPEG would add artifacts around its sharp edg
 pic.edit()
 pic.setThreshold({ enabled: true, sensitivity: 0.6 })
 ```
+
+While Clean up is open, `setThreshold()` changes what its panel shows, and [`confirmTool()`](../../reference/methods#confirmtool) keeps it as one edit.

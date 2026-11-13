@@ -119,6 +119,14 @@ describe('editing', () => {
     expect(container.querySelector('[role="status"]')!.textContent).toBe('Editing')
   })
 
+  it('hides the toolbar while editing, so nothing covers the image', () => {
+    const toolbar = () => container.querySelector<HTMLElement>('.paperpic-toolbar')!
+    pic.edit()
+    expect(toolbar().hidden).toBe(true)
+    pic.cancel()
+    expect(toolbar().hidden).toBe(false)
+  })
+
   it('has no pencil in a read-only viewer, and cannot start editing', () => {
     pic.setOptions({ editable: false })
     expect(button('Edit').hidden).toBe(true)
@@ -622,6 +630,31 @@ describe('editing', () => {
       expect(button('Done').parentElement!.textContent).toContain('Drag each corner to a corner of the document')
     })
 
+    it('zooms from its panel, where the corners are placed', () => {
+      crop().click()
+      const zoom = pic.getState().zoom
+      bar().querySelector<HTMLButtonElement>('.paperpic-edit-tool [aria-label="Zoom in"]')!.click()
+      expect(pic.getState().zoom).toBeGreaterThan(zoom)
+      bar().querySelector<HTMLButtonElement>('.paperpic-edit-tool [aria-label="Zoom out"]')!.click()
+      expect(pic.getState().zoom).toBeCloseTo(zoom)
+    })
+
+    it('zooms toward the selected corner, so it stays on screen, and toward the center without one', () => {
+      const zoomIn = () => bar().querySelector<HTMLButtonElement>('.paperpic-edit-tool [aria-label="Zoom in"]')!.click()
+      const topLeft = () => (handles()[0] as HTMLElement).style.left
+      crop().click()
+      const before = topLeft()
+
+      ;(handles()[0] as HTMLElement).click()
+      zoomIn()
+      expect(topLeft()).toBe(before)
+
+      press('Escape', {}, handles()[0]!)
+      pic.fit('image')
+      zoomIn()
+      expect(topLeft()).not.toBe(before)
+    })
+
     it('ignores other edits while it is open', async () => {
       crop().click()
       pic.rotate(1)
@@ -764,186 +797,13 @@ describe('editing', () => {
   })
 
   describe('cleaning up the document', () => {
-    const cleanUp = () => bar().querySelector<HTMLButtonElement>('[aria-label="Clean up"]')!
-    const slider = () => bar().querySelector<HTMLInputElement>('input[type="range"]')!
-    const row = () => bar().querySelector<HTMLElement>('.paperpic-edit-threshold')!
+    const cleanUp = () => bar().querySelector<HTMLButtonElement>('.paperpic-edit-tools [aria-label="Clean up"]')!
+    const ruler = () => bar().querySelector<HTMLInputElement>('input[aria-label="Sensitivity"]')!
+    const toggle = () => bar().querySelector<HTMLButtonElement>('[role="switch"]')!
+    const dot = () => cleanUp().querySelector<HTMLElement>('.paperpic-edit-dot')!
     const move = (value: number, type: 'input' | 'change') => {
-      slider().value = String(value)
-      slider().dispatchEvent(new Event(type, { bubbles: true }))
-    }
-
-    beforeEach(() => {
-      tint.mockClear()
-      releasePreview.mockClear()
-      mocks.renderPreview.mockImplementation(async () => ({
-        ...preview(),
-        width: 600,
-        height: 250,
-      }))
-      pic.edit()
-    })
-
-    it('turns on from its button, with a preview and a slider', async () => {
-      expect(cleanUp().getAttribute('aria-pressed')).toBe('false')
-      expect(row().hidden).toBe(true)
-
-      cleanUp().click()
-
-      expect(pic.getState()).toMatchObject({
-        threshold: { enabled: true, sensitivity: 0.5 },
-        canUndo: true,
-        canApply: true,
-      })
-      expect(cleanUp().getAttribute('aria-pressed')).toBe('true')
-      expect(row().hidden).toBe(false)
-      expect(slider().value).toBe('0.5')
-      expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
-        [],
-        expect.objectContaining({ sensitivity: 0.5, softness: 0.25 }),
-      ])
-    })
-
-    it('goes back to the image when it turns off', async () => {
-      cleanUp().click()
-      await flush()
-      cleanUp().click()
-      expect(pic.getState()).toMatchObject({
-        threshold: { enabled: false },
-        canUndo: true,
-        canApply: false,
-      })
-      expect(row().hidden).toBe(true)
-      expect(releasePreview).toHaveBeenCalledOnce()
-    })
-
-    it('shows the slider live, and leaves one edit when it is released', async () => {
-      cleanUp().click()
-      await flush()
-      onChange.mockClear()
-
-      move(0.6, 'input')
-      move(0.7, 'input')
-      expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.7, softness: 0.25 })
-      expect(pic.getState().threshold.sensitivity).toBe(0.5)
-      expect(onChange).not.toHaveBeenCalled()
-
-      move(0.7, 'change')
-      expect(pic.getState().threshold.sensitivity).toBe(0.7)
-      expect(onChange).toHaveBeenCalledOnce()
-      expect(container.querySelector('[role="status"]')!.textContent).toBe('Sensitivity 70%')
-      expect(mocks.renderPreview).toHaveBeenCalledOnce()
-
-      pic.undo()
-      expect(pic.getState().threshold).toEqual({ enabled: true, sensitivity: 0.5 })
-      expect(slider().value).toBe('0.5')
-      expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.5, softness: 0.25 })
-      expect(mocks.renderPreview).toHaveBeenCalledOnce()
-    })
-
-    it('keeps the arrow keys of the slider from panning the image', () => {
-      cleanUp().click()
-      const onKey = vi.fn()
-      container.addEventListener('keydown', onKey)
-      slider().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))
-      expect(onKey).not.toHaveBeenCalled()
-      slider().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
-      expect(onKey).toHaveBeenCalledOnce()
-    })
-
-    it('does not take the focus away when the slider disappears', () => {
-      cleanUp().click()
-      slider().focus()
-      pic.undo()
-      expect(row().hidden).toBe(true)
-      expect(document.activeElement).toBe(cleanUp())
-    })
-
-    it('keeps the zoom when it changes', async () => {
-      pic.zoomTo(2)
-      cleanUp().click()
-      await flush()
-      expect(pic.getState().zoom).toBe(2)
-    })
-
-    it('does not compute anything for a rotation', async () => {
-      cleanUp().click()
-      await flush()
-      pic.rotate(1)
-      expect(pic.getState().rotation).toBe(90)
-      expect(mocks.renderPreview).toHaveBeenCalledOnce()
-    })
-
-    it('uses the softness of the option', async () => {
-      pic.setOptions({ softness: 0 })
-      cleanUp().click()
-      expect(mocks.renderPreview.mock.calls[0]![2]).toMatchObject({ softness: 0 })
-    })
-
-    it('exports with the threshold last', async () => {
-      cleanUp().click()
-      await flush()
-      pic.rotate(1)
-      const applying = pic.apply()
-      await flush()
-      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
-        { type: 'rotate', rotation: 90 },
-        { type: 'threshold', sensitivity: 0.5, softness: 0.25 },
-      ])
-      await finishLoading()
-      await applying
-      expect(pic.getState().threshold.enabled).toBe(false)
-    })
-
-    it('shows the image without it while a tool is open, and brings it back', async () => {
-      cleanUp().click()
-      await flush()
-      pic.openTool('crop')
-      expect(pic.getState().activeTool).toBe('crop')
-      expect(row().hidden).toBe(true)
-      expect(pic.getState().image).toEqual({ width: 600, height: 250 })
-      expect(releasePreview).toHaveBeenCalledOnce()
-
-      pic.cancelTool()
-      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
-      expect(mocks.renderPreview.mock.calls[1]![2]).toMatchObject({ sensitivity: 0.5 })
-      await flush()
-      expect(row().hidden).toBe(false)
-    })
-
-    it('does nothing outside the edit mode or while a tool is open', () => {
-      pic.openTool('crop')
-      pic.setThreshold({ enabled: true })
-      expect(pic.getState().threshold.enabled).toBe(false)
-      pic.cancel()
-      pic.setThreshold({ enabled: true })
-      expect(pic.getState().threshold.enabled).toBe(false)
-    })
-
-    it('does nothing when it is not one of the chosen tools', () => {
-      pic.setOptions({
-        tools: ['crop'],
-      })
-      pic.setThreshold({ enabled: true })
-      expect(pic.getState().threshold.enabled).toBe(false)
-    })
-
-    it('explains a sensitivity out of range', () => {
-      expect(() => pic.setThreshold({ sensitivity: 2 })).toThrow('between 0 and 1')
-    })
-  })
-
-  describe('adjusting brightness and contrast', () => {
-    const adjust = () => bar().querySelector<HTMLButtonElement>('[aria-label="Adjust"]')!
-    const cleanUp = () => bar().querySelector<HTMLButtonElement>('[aria-label="Clean up"]')!
-    const row = () => bar().querySelector<HTMLElement>('.paperpic-edit-adjust')!
-    const slider = (name: string) => [
-      ...row().querySelectorAll('label'),
-    ]
-      .find(label => label.textContent === name)!
-      .querySelector('input')!
-    const move = (name: string, value: number, type: 'input' | 'change') => {
-      slider(name).value = String(value)
-      slider(name).dispatchEvent(new Event(type, { bubbles: true }))
+      ruler().value = String(value)
+      ruler().dispatchEvent(new Event(type, { bubbles: true }))
     }
     const status = () => container.querySelector('[role="status"]')!.textContent
 
@@ -958,112 +818,396 @@ describe('editing', () => {
       pic.edit()
     })
 
-    it('opens its sliders from its button, with a preview they can repaint', async () => {
-      expect(adjust().getAttribute('aria-expanded')).toBe('false')
-      expect(row().hidden).toBe(true)
+    it('opens a panel that turns it on, with a preview and a ruler, and no edit yet', () => {
+      expect(dot().hidden).toBe(true)
 
-      adjust().click()
+      cleanUp().click()
 
-      expect(adjust().getAttribute('aria-expanded')).toBe('true')
-      expect(row().hidden).toBe(false)
-      expect(slider('Brightness').value).toBe('0')
-      expect(slider('Contrast').value).toBe('0')
       expect(pic.getState()).toMatchObject({
-        adjustments: { brightness: 0, contrast: 0 },
+        activeTool: 'threshold',
+        threshold: { enabled: true, sensitivity: 0.5 },
         canUndo: false,
         canApply: false,
       })
+      expect(ruler().closest<HTMLElement>('.paperpic-ruler')!.hidden).toBe(false)
+      expect(ruler().value).toBe('50')
+      // Cancel this tool already undoes a Clean up that was off, so there is no switch, and its name takes the place
+      expect(toggle().hidden).toBe(true)
+      expect(bar().querySelector<HTMLElement>('.paperpic-edit-title')).toMatchObject({ hidden: false, textContent: 'Clean up' })
+      expect(button('Apply').parentElement!.hidden).toBe(true)
+      expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
+        [],
+        expect.objectContaining({ sensitivity: 0.5, softness: 0.25 }),
+      ])
+    })
+
+    it('leaves one edit with Done, which its dot marks for everyone', async () => {
+      cleanUp().click()
+      await flush()
+      button('Done').click()
+
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        threshold: { enabled: true, sensitivity: 0.5 },
+        canUndo: true,
+        canApply: true,
+      })
+      expect(dot().hidden).toBe(false)
+      expect(document.getElementById(cleanUp().getAttribute('aria-describedby')!)!.textContent).toBe('In use')
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+
+      pic.undo()
+      expect(pic.getState().threshold.enabled).toBe(false)
+      expect(dot().hidden).toBe(true)
+      expect(cleanUp().hasAttribute('aria-describedby')).toBe(false)
+    })
+
+    it('leaves the image as it was with Cancel', async () => {
+      cleanUp().click()
+      await flush()
+      button('Cancel this tool').click()
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        threshold: { enabled: false },
+        canUndo: false,
+      })
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('shows the ruler live, and keeps its last value as one edit', async () => {
+      cleanUp().click()
+      await flush()
+      onChange.mockClear()
+
+      move(60, 'input')
+      move(70, 'input')
+      expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.7, softness: 0.25 })
+      expect(pic.getState()).toMatchObject({
+        threshold: { enabled: true, sensitivity: 0.7 },
+        canUndo: false,
+      })
+      expect(onChange).toHaveBeenCalledTimes(2)
+
+      move(70, 'change')
+      expect(status()).toBe('Sensitivity 70%')
+      button('Done').click()
+      expect(pic.getState()).toMatchObject({
+        threshold: { enabled: true, sensitivity: 0.7 },
+        canUndo: true,
+      })
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+
+      pic.undo()
+      expect(pic.getState().threshold).toEqual({ enabled: false, sensitivity: 0.5 })
+    })
+
+    it('turns off with its switch once it is an edit, which keeps the edits after it', async () => {
+      pic.setThreshold({ enabled: true })
+      pic.rotate(1)
+      await flush()
+      cleanUp().click()
+      expect(toggle().hidden).toBe(false)
+      expect(toggle().getAttribute('aria-checked')).toBe('true')
+
+      toggle().click()
+      expect(toggle().getAttribute('aria-checked')).toBe('false')
+      expect(ruler().disabled).toBe(true)
+      expect(pic.getState().threshold.enabled).toBe(false)
+      expect(releasePreview).toHaveBeenCalledOnce()
+
+      button('Done').click()
+      expect(pic.getState()).toMatchObject({
+        threshold: { enabled: false },
+        rotation: 90,
+        canUndo: true,
+        canApply: true,
+      })
+    })
+
+    it('keeps the arrow keys of the ruler from panning the image, and lets Enter and Esc close the tool', () => {
+      cleanUp().click()
+      const onKey = vi.fn()
+      container.addEventListener('keydown', onKey)
+      ruler().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }))
+      expect(onKey).not.toHaveBeenCalled()
+
+      press('Enter', {}, ruler())
+      expect(pic.getState()).toMatchObject({ activeTool: null, canUndo: true })
+
+      cleanUp().click()
+      press('Escape', {}, ruler())
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        threshold: { enabled: true },
+      })
+      expect(onKey).toHaveBeenCalledTimes(2)
+    })
+
+    it('moves the focus to its ruler, and back to its button', () => {
+      cleanUp().focus()
+      cleanUp().click()
+      expect(document.activeElement).toBe(ruler())
+      button('Cancel this tool').click()
+      expect(document.activeElement).toBe(cleanUp())
+    })
+
+    it('keeps the zoom when it changes', async () => {
+      pic.zoomTo(2)
+      cleanUp().click()
+      await flush()
+      expect(pic.getState().zoom).toBe(2)
+    })
+
+    it('does not compute anything for a rotation', async () => {
+      cleanUp().click()
+      await flush()
+      button('Done').click()
+      pic.rotate(1)
+      expect(pic.getState().rotation).toBe(90)
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+    })
+
+    it('uses the softness of the option', () => {
+      pic.setOptions({ softness: 0 })
+      cleanUp().click()
+      expect(mocks.renderPreview.mock.calls[0]![2]).toMatchObject({ softness: 0 })
+    })
+
+    it('exports with the threshold last', async () => {
+      cleanUp().click()
+      await flush()
+      button('Done').click()
+      pic.rotate(1)
+      const applying = pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        { type: 'rotate', rotation: 90 },
+        { type: 'threshold', sensitivity: 0.5, softness: 0.25 },
+      ])
+      await finishLoading()
+      await applying
+      expect(pic.getState().threshold.enabled).toBe(false)
+    })
+
+    it('shows in Crop, so the image keeps its look, but not in Straighten, which needs the edges of the paper', async () => {
+      pic.setThreshold({ enabled: true })
+      await flush()
+
+      pic.openTool('crop')
+      expect(pic.getState().activeTool).toBe('crop')
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+      expect(releasePreview).not.toHaveBeenCalled()
+      pic.cancelTool()
+
+      pic.openTool('perspective')
+      expect(pic.getState().activeTool).toBe('perspective')
+      expect(releasePreview).toHaveBeenCalledOnce()
+
+      pic.cancelTool()
+      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
+      expect(mocks.renderPreview.mock.calls[1]![2]).toMatchObject({ sensitivity: 0.5 })
+    })
+
+    it('changes what its open panel shows from setThreshold, which confirmTool keeps', () => {
+      pic.openTool('threshold')
+      pic.setThreshold({ sensitivity: 0.8 })
+      expect(pic.getState()).toMatchObject({
+        activeTool: 'threshold',
+        threshold: { enabled: true, sensitivity: 0.8 },
+        canUndo: false,
+      })
+      expect(ruler().value).toBe('80')
+
+      pic.confirmTool()
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        threshold: { enabled: true, sensitivity: 0.8 },
+        canUndo: true,
+      })
+    })
+
+    it('does nothing outside the edit mode or while another tool is open', () => {
+      pic.openTool('crop')
+      pic.setThreshold({ enabled: true })
+      pic.openTool('threshold')
+      expect(pic.getState()).toMatchObject({
+        activeTool: 'crop',
+        threshold: { enabled: false },
+      })
+      pic.cancel()
+      pic.setThreshold({ enabled: true })
+      pic.openTool('threshold')
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        threshold: { enabled: false },
+      })
+    })
+
+    it('does nothing when it is not one of the chosen tools', () => {
+      pic.setOptions({
+        tools: ['crop'],
+      })
+      pic.setThreshold({ enabled: true })
+      pic.openTool('threshold')
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        threshold: { enabled: false },
+      })
+    })
+
+    it('explains a sensitivity out of range', () => {
+      expect(() => pic.setThreshold({ sensitivity: 2 })).toThrow('between 0 and 1')
+    })
+  })
+
+  describe('adjusting brightness and contrast', () => {
+    const adjust = () => bar().querySelector<HTMLButtonElement>('.paperpic-edit-tools [aria-label="Adjust"]')!
+    const option = (name: string) => [
+      ...bar().querySelectorAll<HTMLButtonElement>('.paperpic-edit-option'),
+    ].find(element => element.textContent === name)!
+    const ruler = (name: string) => bar().querySelector<HTMLInputElement>(`input[aria-label="${name}"]`)!
+    const shown = (name: string) => !ruler(name).closest<HTMLElement>('.paperpic-ruler')!.hidden
+    const dot = (element: HTMLElement) => element.querySelector<HTMLElement>('.paperpic-edit-dot')!
+    const move = (name: string, value: number, type: 'input' | 'change') => {
+      ruler(name).value = String(value)
+      ruler(name).dispatchEvent(new Event(type, { bubbles: true }))
+    }
+    const status = () => container.querySelector('[role="status"]')!.textContent
+
+    beforeEach(() => {
+      tint.mockClear()
+      releasePreview.mockClear()
+      mocks.renderPreview.mockImplementation(async () => ({
+        ...preview(),
+        width: 600,
+        height: 250,
+      }))
+      pic.edit()
+    })
+
+    it('opens a panel with the ruler of brightness, and a preview it can repaint', () => {
+      adjust().click()
+
+      expect(pic.getState()).toMatchObject({
+        activeTool: 'adjust',
+        adjustments: { brightness: 0, contrast: 0 },
+        canUndo: false,
+      })
+      expect(shown('Brightness')).toBe(true)
+      expect(shown('Contrast')).toBe(false)
+      expect(option('Brightness').getAttribute('aria-pressed')).toBe('true')
+      expect(ruler('Brightness').value).toBe('0')
       expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
         [],
         { type: 'adjust', brightness: 0, contrast: 0 },
       ])
-
-      await flush()
-      adjust().click()
-      expect(row().hidden).toBe(true)
-      expect(releasePreview).toHaveBeenCalledOnce()
     })
 
-    it('shows a slider live, and leaves one edit when it is released', async () => {
+    it('chooses which tone its ruler changes', () => {
+      adjust().click()
+      option('Contrast').click()
+      expect(shown('Contrast')).toBe(true)
+      expect(shown('Brightness')).toBe(false)
+      expect(option('Contrast').getAttribute('aria-pressed')).toBe('true')
+      expect(option('Brightness').getAttribute('aria-pressed')).toBe('false')
+    })
+
+    it('shows the ruler live, and leaves one edit with both tones on Done', async () => {
       adjust().click()
       await flush()
       onChange.mockClear()
 
-      move('Brightness', 0.2, 'input')
-      move('Brightness', 0.3, 'input')
+      move('Brightness', 20, 'input')
+      move('Brightness', 30, 'input')
       expect(tint).toHaveBeenLastCalledWith({ type: 'adjust', brightness: 0.3, contrast: 0 })
-      expect(pic.getState().adjustments.brightness).toBe(0)
-      expect(onChange).not.toHaveBeenCalled()
-
-      move('Brightness', 0.3, 'change')
       expect(pic.getState()).toMatchObject({
         adjustments: { brightness: 0.3, contrast: 0 },
-        canApply: true,
+        canUndo: false,
       })
-      expect(onChange).toHaveBeenCalledOnce()
+      expect(onChange).toHaveBeenCalledTimes(2)
+      move('Brightness', 30, 'change')
       expect(status()).toBe('Brightness +30')
 
-      move('Contrast', -0.2, 'change')
-      expect(pic.getState().adjustments).toEqual({ brightness: 0.3, contrast: -0.2 })
+      option('Contrast').click()
+      move('Contrast', -20, 'change')
       expect(status()).toBe('Contrast -20')
+      expect(dot(option('Brightness')).hidden).toBe(false)
+      expect(dot(option('Contrast')).hidden).toBe(false)
+
+      button('Done').click()
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        adjustments: { brightness: 0.3, contrast: -0.2 },
+        canUndo: true,
+        canApply: true,
+      })
+      expect(dot(adjust()).hidden).toBe(false)
       expect(mocks.renderPreview).toHaveBeenCalledOnce()
 
       pic.undo()
-      expect(pic.getState().adjustments).toEqual({ brightness: 0.3, contrast: 0 })
-      expect(slider('Contrast').value).toBe('0')
-      expect(tint).toHaveBeenLastCalledWith({ type: 'adjust', brightness: 0.3, contrast: 0 })
-      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+      expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0 })
+      expect(dot(adjust()).hidden).toBe(true)
     })
 
-    it('is no change when the sliders go back to 0', () => {
+    it('catches the ruler at 0', () => {
+      adjust().click()
+      move('Brightness', 2, 'input')
+      expect(ruler('Brightness').value).toBe('0')
+      expect(pic.getState().adjustments.brightness).toBe(0)
+    })
+
+    it('leaves the image as it was with Cancel', async () => {
+      adjust().click()
+      await flush()
+      move('Brightness', 40, 'input')
+      button('Cancel this tool').click()
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        adjustments: { brightness: 0, contrast: 0 },
+        canUndo: false,
+      })
+      expect(releasePreview).toHaveBeenCalledOnce()
+    })
+
+    it('is no change when the values go back to 0', () => {
       pic.setAdjustments({ brightness: 0.4 })
       pic.setAdjustments({ brightness: 0 })
       expect(pic.getState()).toMatchObject({ canUndo: true, canApply: false })
     })
 
-    it('closes and turns off while the document is cleaned up, and comes back after', async () => {
-      adjust().click()
-      move('Contrast', 0.5, 'change')
-      cleanUp().click()
+    it('cannot open while the document is cleaned up, which leaves its tones out', async () => {
+      pic.setAdjustments({ contrast: 0.5 })
+      expect(dot(adjust()).hidden).toBe(false)
+      pic.setThreshold({ enabled: true })
 
-      expect(row().hidden).toBe(true)
-      expect(adjust().getAttribute('aria-expanded')).toBe('false')
       expect(adjust().getAttribute('aria-disabled')).toBe('true')
+      expect(dot(adjust()).hidden).toBe(true)
       adjust().click()
-      expect(row().hidden).toBe(true)
+      pic.openTool('adjust')
+      expect(pic.getState().activeTool).toBeNull()
       pic.setAdjustments({ brightness: 0.5 })
       expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0.5 })
       expect(mocks.renderPreview.mock.calls.at(-1)![2]).toMatchObject({ type: 'threshold' })
 
-      cleanUp().click()
+      pic.setThreshold({ enabled: false })
       expect(adjust().getAttribute('aria-disabled')).toBe('false')
       expect(mocks.renderPreview.mock.calls.at(-1)![2]).toEqual({ type: 'adjust', brightness: 0, contrast: 0.5 })
     })
 
-    it('keeps its sliders through a tool, without computing the preview again', async () => {
-      adjust().click()
+    it('shows its tones while Crop is open, without computing the preview again', async () => {
+      pic.setAdjustments({ brightness: 0.2 })
       await flush()
       pic.openTool('crop')
-      expect(row().hidden).toBe(true)
       pic.cancelTool()
-      expect(row().hidden).toBe(false)
       expect(mocks.renderPreview).toHaveBeenCalledOnce()
     })
 
-    it('does not take the focus away when the sliders close', () => {
-      adjust().click()
-      slider('Contrast').focus()
-      adjust().click()
-      expect(row().hidden).toBe(true)
-      expect(document.activeElement).toBe(adjust())
-    })
-
-    it('closes its sliders when the edit ends', () => {
+    it('closes when the edit ends', () => {
       adjust().click()
       pic.cancel()
+      expect(pic.getState().activeTool).toBeNull()
       pic.edit()
-      expect(row().hidden).toBe(true)
-      expect(adjust().getAttribute('aria-expanded')).toBe('false')
+      expect(bar().querySelector<HTMLElement>('.paperpic-edit-tool')!.hidden).toBe(true)
     })
 
     it('exports with the adjustments last', async () => {
@@ -1080,17 +1224,25 @@ describe('editing', () => {
       expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0 })
     })
 
-    it('does nothing outside the edit mode, while a tool is open, or when it is not one of the chosen tools', () => {
+    it('does nothing outside the edit mode, while another tool is open, or when it is not one of the chosen tools', () => {
       pic.openTool('crop')
       pic.setAdjustments({ brightness: 0.5 })
-      expect(pic.getState().adjustments.brightness).toBe(0)
+      pic.openTool('adjust')
+      expect(pic.getState()).toMatchObject({
+        activeTool: 'crop',
+        adjustments: { brightness: 0 },
+      })
       pic.cancelTool()
 
       pic.setOptions({
         tools: ['crop'],
       })
       pic.setAdjustments({ brightness: 0.5 })
-      expect(pic.getState().adjustments.brightness).toBe(0)
+      pic.openTool('adjust')
+      expect(pic.getState()).toMatchObject({
+        activeTool: null,
+        adjustments: { brightness: 0 },
+      })
       pic.setOptions({ tools: undefined })
 
       pic.cancel()
@@ -1280,10 +1432,8 @@ describe('editing', () => {
   })
 
   describe('controls and icons', () => {
-    /** The text that names a control: its accessible name, its text, or the name next to a slider. */
-    const nameOf = (control: HTMLElement) => control instanceof HTMLInputElement
-      ? control.closest('label')!.querySelector('span')!.textContent
-      : control.getAttribute('aria-label') ?? control.textContent
+    /** The text that names a control: its accessible name, or its text. */
+    const nameOf = (control: HTMLElement) => control.getAttribute('aria-label') ?? control.textContent
 
     it('names every control in data-paperpic-control with the key of its label', () => {
       pic.edit()

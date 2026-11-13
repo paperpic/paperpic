@@ -13,11 +13,13 @@ Redressez d’abord le ticket, puis nettoyez-le.
 
 ## Utilisation
 
-1. Appuyez sur Modifier, puis sur Nettoyer. L’aperçu passe en noir et blanc, et un curseur Sensibilité apparaît.
-2. Faites glisser le curseur. Une sensibilité plus haute fonce plus de pixels, ce qui récupère le texte pâle ou usé. Une sensibilité plus basse donne une page plus propre, sans ce qui transparaît du verso. Relâcher le curseur laisse un changement.
-3. Appuyez de nouveau sur Nettoyer pour le désactiver.
+1. Appuyez sur Modifier, puis sur Nettoyer. Son panneau prend la place des outils, l’aperçu passe en noir et blanc, et une règle Sensibilité apparaît.
+2. Faites glisser la règle. Une sensibilité plus haute fonce plus de pixels, ce qui récupère le texte pâle ou usé. Une sensibilité plus basse donne une page plus propre, sans ce qui transparaît du verso.
+3. Appuyez sur Terminé pour le garder comme un seul changement, ou sur Annuler cet outil pour laisser l’image telle qu’elle était.
 
-Nettoyer s’applique toujours après les autres changements. Recadrer et Redresser montrent l’image sans lui, car les bords du papier sont difficiles à trouver sur une page nettoyée.
+Pour désactiver un Nettoyer qui est déjà un changement, rouvrez-le : un interrupteur à côté de la règle le désactive, et les changements qui ont suivi restent. Annuler la dernière action retirerait d’abord ces changements.
+
+Nettoyer s’applique toujours après les autres changements. Recadrer montre l’image nettoyée, telle qu’elle sera. Redresser la montre sans Nettoyer, car les bords du papier sont difficiles à trouver sur une page nettoyée.
 
 ## Douceur
 
@@ -35,3 +37,5 @@ Une image nettoyée est en PNG, car le JPEG ajouterait des artefacts autour de s
 pic.edit()
 pic.setThreshold({ enabled: true, sensitivity: 0.6 })
 ```
+
+Tant que Nettoyer est ouvert, `setThreshold()` change ce que montre son panneau, et [`confirmTool()`](../../reference/methods#confirmtool) le garde comme un seul changement.

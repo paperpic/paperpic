@@ -22,16 +22,16 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Crea l�
 
 | Chiave                 | Inglese                                      | Uso                                                                                                                              |
 | ---------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `adjust`               | Adjust                                       | Il pulsante che mostra i cursori di luminosità e contrasto                                                                       |
-| `adjustmentLevel`      | Brightness +30                               | Funzione del nome e del valore da -100 a 100, annunciata dopo aver spostato un cursore di Regola                                 |
+| `adjust`               | Adjust                                       | Il pulsante che apre il righello di luminosità e contrasto                                                                       |
+| `adjustmentLevel`      | Brightness +30                               | Funzione del nome e del valore da -100 a 100, annunciata dopo aver spostato il righello di Regola                                |
 | `applied`              | Changes applied                              | Annunciata quando i cambiamenti sono applicati                                                                                   |
 | `apply`                | Apply                                        | Il pulsante che applica i cambiamenti                                                                                            |
 | `applyError`           | The changes could not be applied             | Mostrata quando Applica fallisce                                                                                                 |
-| `brightness`           | Brightness                                   | Il nome del cursore della luminosità                                                                                             |
+| `brightness`           | Brightness                                   | La scelta della luminosità in Regola, e il nome del suo righello                                                                 |
 | `cancel`               | Cancel                                       | Il pulsante che esce dalla modalità di modifica                                                                                  |
-| `cancelTool`           | Cancel this tool                             | Il pulsante che chiude uno strumento e scarta la sua selezione                                                                   |
-| `confirm`              | Done                                         | Il pulsante che chiude uno strumento e conserva la sua selezione                                                                 |
-| `contrast`             | Contrast                                     | Il nome del cursore del contrasto                                                                                                |
+| `cancelTool`           | Cancel this tool                             | Il pulsante che chiude uno strumento e scarta i suoi cambiamenti                                                                 |
+| `confirm`              | Done                                         | Il pulsante che chiude uno strumento e conserva i suoi cambiamenti                                                               |
+| `contrast`             | Contrast                                     | La scelta del contrasto in Regola, e il nome del suo righello                                                                    |
 | `cornerBottomLeft`     | Bottom left corner                           | Il nome di una maniglia d’angolo                                                                                                 |
 | `cornerBottomRight`    | Bottom right corner                          | Il nome di una maniglia d’angolo                                                                                                 |
 | `cornerMoved`          | Top left corner: 120, 80                     | Funzione dell’angolo e della sua posizione in pixel dell’immagine, annunciata dopo averlo spostato                               |
@@ -49,6 +49,7 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Crea l�
 | `fitHeight`            | Fit to height                                | Il pulsante che adatta l’altezza dell’immagine                                                                                   |
 | `fitWidth`             | Fit to width                                 | Il pulsante che adatta la larghezza dell’immagine                                                                                |
 | `flip`                 | Flip                                         | Il pulsante Capovolgi                                                                                                            |
+| `inUse`                | In use                                       | La descrizione di Regola, di Pulisci o di una scelta di Regola mentre la sua impostazione è in uso, che un punto mostra          |
 | `keepEditing`          | Keep editing                                 | Il pulsante che torna alla modifica invece di perdere i cambiamenti                                                              |
 | `loadError`            | The image could not be loaded                | Mostrata quando l’immagine non si carica                                                                                         |
 | `loading`              | Loading image                                | Mostrata mentre l’immagine si carica                                                                                             |
@@ -58,12 +59,12 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Crea l�
 | `redo`                 | Redo                                         | Il pulsante Ripeti                                                                                                               |
 | `rotateLeft`           | Rotate left                                  | Il pulsante di rotazione della barra di modifica, e uno dei due di un visualizzatore di sola lettura                             |
 | `rotateRight`          | Rotate right                                 | L’altro pulsante di rotazione di un visualizzatore di sola lettura                                                               |
-| `threshold`            | Clean up                                     | Il pulsante Pulisci                                                                                                              |
-| `thresholdLevel`       | Sensitivity 50%                              | Funzione della percentuale, annunciata dopo aver spostato il cursore della sensibilità                                           |
-| `thresholdSensitivity` | Sensitivity                                  | Il nome del cursore della sensibilità                                                                                            |
+| `threshold`            | Clean up                                     | Il pulsante Pulisci, e l’interruttore che lo attiva e lo disattiva                                                               |
+| `thresholdLevel`       | Sensitivity 50%                              | Funzione della percentuale, annunciata dopo aver spostato il righello di Pulisci                                                 |
+| `thresholdSensitivity` | Sensitivity                                  | Il nome del righello di Pulisci                                                                                                  |
 | `toolbar`              | Image controls                               | Il nome della barra degli strumenti, per i lettori di schermo                                                                    |
 | `undo`                 | Undo                                         | Il pulsante Annulla l’ultima azione                                                                                              |
 | `viewer`               | Image viewer                                 | Il nome dell’area che mostra l’immagine, per i lettori di schermo                                                                |
-| `zoomIn`               | Zoom in                                      | Il pulsante Ingrandisci                                                                                                          |
+| `zoomIn`               | Zoom in                                      | Il pulsante Ingrandisci, nella barra degli strumenti e nei pannelli di Ritaglia e Raddrizza                                      |
 | `zoomLevel`            | Zoom 150%                                    | Funzione della percentuale, annunciata dopo uno zoom dalla barra degli strumenti o dalla tastiera                                |
-| `zoomOut`              | Zoom out                                     | Il pulsante Riduci                                                                                                               |
+| `zoomOut`              | Zoom out                                     | Il pulsante Riduci, nella barra degli strumenti e nei pannelli di Ritaglia e Raddrizza                                           |

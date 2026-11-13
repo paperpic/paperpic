@@ -137,7 +137,7 @@ Retourne l’image de gauche à droite telle qu’elle est affichée, donc aprè
 function openTool(id: ToolId): void
 ```
 
-Ouvre Recadrer, avec `'crop'`, ou Redresser, avec `'perspective'` : les outils qui ont leur propre sélection. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool), et pendant ce temps les autres changements, Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition.
+Ouvre un outil avec un panneau : Recadrer, avec `'crop'`, Redresser, avec `'perspective'`, Ajuster, avec `'adjust'`, ou Nettoyer, avec `'threshold'`, qui s’active en s’ouvrant. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool), et pendant ce temps les autres changements, Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition, avec un autre outil ouvert, pour Ajuster quand Nettoyer est activé, ni pour Recadrer et Redresser pendant qu’un aperçu est en route.
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ Ouvre Recadrer, avec `'crop'`, ou Redresser, avec `'perspective'` : les outils q
 function confirmTool(): void
 ```
 
-Ferme l’outil ouvert et ajoute sa sélection aux changements, comme `Entrée`.
+Ferme l’outil ouvert et ajoute ce qu’il a choisi aux changements, comme `Entrée` : la sélection de Recadrer ou de Redresser, ou les réglages d’Ajuster ou de Nettoyer, comme un seul changement.
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ Ferme l’outil ouvert et ajoute sa sélection aux changements, comme `Entrée`.
 function cancelTool(): void
 ```
 
-Ferme l’outil ouvert et abandonne sa sélection, comme `Échap`.
+Ferme l’outil ouvert et abandonne ses changements, comme `Échap`.
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ Ferme l’outil ouvert et abandonne sa sélection, comme `Échap`.
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-Active ou désactive Nettoyer, ou change sa sensibilité, de 0 à 1. Nettoyer s’applique toujours après les autres changements. Ne fait rien hors du mode d’édition ou avec un outil ouvert.
+Active ou désactive Nettoyer, ou change sa sensibilité, de 0 à 1. Nettoyer s’applique toujours après les autres changements. Tant que Nettoyer est ouvert, change ce que montre Nettoyer, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition ou avec un autre outil ouvert.
 
 Elle lève une `RangeError` si `sensitivity` n’est pas entre 0 et 1.
 
@@ -171,7 +171,7 @@ Elle lève une `RangeError` si `sensitivity` n’est pas entre 0 et 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Change la luminosité ou le contraste, chacun de -1 à 1, où 0 laisse l’image telle quelle. Ils s’appliquent après les autres changements. Ne fait rien hors du mode d’édition, avec un outil ouvert ou quand Nettoyer est activé, car un document nettoyé a ses propres tons.
+Change la luminosité ou le contraste, chacun de -1 à 1, où 0 laisse l’image telle quelle. Ils s’appliquent après les autres changements. Tant qu’Ajuster est ouvert, change ce que montre Ajuster, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition, avec un autre outil ouvert ou quand Nettoyer est activé, car un document nettoyé a ses propres tons.
 
 Elle lève une `RangeError` si une valeur n’est pas entre -1 et 1.
 

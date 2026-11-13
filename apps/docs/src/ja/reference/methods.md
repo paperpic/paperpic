@@ -137,7 +137,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-独自の選択範囲を持つツールを開きます。`'crop'` で切り抜き、`'perspective'` で傾き補正です。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままで、その間はほかの変更、元に戻す、やり直す、適用は何もしません。編集モード以外では何もしません。
+パネルを持つツールを開きます。`'crop'` で切り抜き、`'perspective'` で傾き補正、`'adjust'` で調整、`'threshold'` でクリーンアップが開き、クリーンアップは開くとオンになります。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままで、その間はほかの変更、元に戻す、やり直す、適用は何もしません。編集モード以外、ほかのツールが開いている間、クリーンアップがオンのときの調整、プレビューの準備中の切り抜きと傾き補正では何もしません。
 
 ### `confirmTool()`
 
@@ -145,7 +145,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-開いているツールを閉じ、その選択範囲を変更に加えます。`Enter` と同じです。
+開いているツールを閉じ、そこで選んだ内容を変更に加えます。`Enter` と同じです。切り抜きと傾き補正の選択範囲、または調整とクリーンアップの設定が 1 つの変更になります。
 
 ### `cancelTool()`
 
@@ -153,7 +153,7 @@ function confirmTool(): void
 function cancelTool(): void
 ```
 
-開いているツールを閉じ、その選択範囲を破棄します。`Esc` と同じです。
+開いているツールを閉じ、その変更を破棄します。`Esc` と同じです。
 
 ### `setThreshold()`
 
@@ -161,7 +161,7 @@ function cancelTool(): void
 function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
 ```
 
-クリーンアップのオンとオフを切り替えるか、感度を 0 から 1 で変更します。クリーンアップは常にほかの変更のあとに適用されます。編集モード以外やツールが開いている間は何もしません。
+クリーンアップのオンとオフを切り替えるか、感度を 0 から 1 で変更します。クリーンアップは常にほかの変更のあとに適用されます。クリーンアップが開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外やほかのツールが開いている間は何もしません。
 
 `sensitivity` が 0 から 1 の範囲外なら `RangeError` を投げます。
 
@@ -171,7 +171,7 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあとに適用されます。編集モード以外、ツールが開いている間、クリーンアップがオンの間は何もしません。クリーンアップした文書には独自の階調があるためです。
+明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあとに適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、クリーンアップがオンの間は何もしません。クリーンアップした文書には独自の階調があるためです。
 
 値が -1 から 1 の範囲外なら `RangeError` を投げます。
 

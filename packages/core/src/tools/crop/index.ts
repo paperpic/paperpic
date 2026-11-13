@@ -13,13 +13,9 @@ export const cropTool: Tool = {
   ],
   activate(host) {
     const frame = host.frameSize()
-    const toolbarCorner = host.toolbarCorner()
-    const editor = new CornerEditor(
-      host,
-      initialCorners(frame, toolbarCorner && host.viewportToFrame(toolbarCorner)),
-      constrainToRectangle,
-    )
+    const editor = new CornerEditor(host, initialCorners(frame), constrainToRectangle)
     return {
+      anchor: () => editor.anchor(),
       focus: () => editor.focus(),
       update: () => editor.update(),
       drawOverlay: context => editor.drawOverlay(context),

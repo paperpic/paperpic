@@ -98,8 +98,10 @@ Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
 | Chiave           | Pulsante                                                                           |
 | ---------------- | ---------------------------------------------------------------------------------- |
 | `adjust`         | Regola                                                                             |
-| `apply`          | Applica, e Fatto in Ritaglia e Raddrizza                                           |
+| `apply`          | Applica, e Fatto in ogni strumento                                                 |
+| `brightness`     | Luminosità, nel pannello di Regola                                                 |
 | `cancel`         | Annulla, e Annulla questo strumento                                                |
+| `contrast`       | Contrasto, nel pannello di Regola                                                  |
 | `crop`           | Ritaglia                                                                           |
 | `download`       | Scarica                                                                            |
 | `edit`           | Modifica                                                                           |

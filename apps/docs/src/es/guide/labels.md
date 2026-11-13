@@ -55,7 +55,7 @@ export function Receipt() {
 
 ## Textos con un valor
 
-Cinco textos son funciones, porque incluyen un valor: el zoom, la sensibilidad de Limpiar, una esquina y su posición, una esquina seleccionada, y un control de Ajustar. Los lectores de pantalla los anuncian. Formatea los números como lo hace tu idioma:
+Cinco textos son funciones, porque incluyen un valor: el zoom, la sensibilidad de Limpiar, una esquina y su posición, una esquina seleccionada, y la regla de Ajustar. Los lectores de pantalla los anuncian. Formatea los números como lo hace tu idioma:
 
 ```ts
 const signed = new Intl.NumberFormat('es', { signDisplay: 'exceptZero' })

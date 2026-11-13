@@ -8,6 +8,7 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | corner handle                                 | 角のハンドル             |
 | CSS token                                     | CSS トークン             |
 | dark mode                                     | ダークモード             |
+| dot, the mark of a tool in use                | ドット                   |
 | edit bar, the bar at the bottom while editing | 編集バー                 |
 | edit mode                                     | 編集モード               |
 | editor                                        | エディター               |
@@ -19,17 +20,20 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | method                                        | メソッド                 |
 | option                                        | オプション               |
 | pan, move a zoomed image                      | 移動                     |
+| panel, the controls of an open tool           | パネル                   |
 | parent element                                | 親要素                   |
 | playground                                    | プレイグラウンド         |
 | preview                                       | プレビュー               |
 | proportions, width to height                  | 縦横比                   |
 | read-only                                     | 読み取り専用             |
 | result                                        | 結果                     |
+| ruler, the slider of Adjust and Clean up      | 目盛り                   |
 | sample image                                  | サンプル画像             |
 | screen reader                                 | スクリーンリーダー       |
 | softness, of the cleaned edges                | 柔らかさ                 |
 | source image                                  | 元画像                   |
 | state                                         | 状態                     |
+| switch, of Clean up                           | スイッチ                 |
 | tool                                          | ツール                   |
 | toolbar, the bar of buttons at the right      | ツールバー               |
 | view mode                                     | 表示モード               |

@@ -10,17 +10,17 @@ A photo of a document often shows the table, a hand or other papers around it. C
 ## Use it
 
 1. Press Edit, then Crop. A rectangle appears inside the image, with a handle at each corner.
-2. Drag the corners until the rectangle frames the document. The zoom buttons stay available, so you can zoom in to place them precisely.
+2. Drag the corners until the rectangle frames the document. The panel of Crop has zoom buttons, so you can zoom in to place them precisely.
 3. Press Done, or `Enter`, to add the crop to the edits. Cancel this tool, or `Esc`, closes Crop without changing anything.
 
-The crop is an edit like any other: Undo removes it, and Apply makes it permanent.
+While Crop is open, the image looks as the result will, with Adjust and Clean up included. The crop is an edit like any other: Undo removes it, and Apply makes it permanent.
 
 ## Corner handles
 
 - The handles stay inside the image, and the rectangle never turns inside out.
 - On a touch screen, a magnifier shows the area under the finger while it drags a corner, so the finger does not hide where the corner lands.
-- Without dragging, press a handle and then tap where its corner goes. The handle stays highlighted until then, and `Esc` lets go of it.
-- With the keyboard, Tab moves between the handles, and the arrow keys move the focused handle 1 screen pixel, or 10 with Shift. Screen readers announce each move.
+- Without dragging, press a handle and then tap where its corner goes. The handle stays highlighted until then, the zoom buttons zoom toward its corner, and `Esc` lets go of it.
+- With the keyboard, Tab moves between the handles, and the arrow keys move the focused handle 1 screen pixel, or 10 with Shift. `+` and `-` zoom toward the focused handle. Screen readers announce each move.
 
 ## Crop or Straighten?
 

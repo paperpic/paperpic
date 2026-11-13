@@ -28,7 +28,7 @@ In einer langen Seite würde das Mausrad das Bild zoomen, statt die Seite zu scr
 
 ## Die Werkzeugleiste
 
-Die Werkzeugleiste sitzt rechts im Viewer und scrollt, wenn der Viewer zu niedrig für ihre Schaltflächen ist.
+Die Werkzeugleiste sitzt rechts im Viewer und scrollt, wenn der Viewer zu niedrig für ihre Schaltflächen ist. Beim Bearbeiten blendet sie sich aus, damit sie nie eine Ecke von Zuschneiden oder Begradigen verdeckt.
 
 | Schaltfläche                          | Was sie tut                                                                    |
 | ------------------------------------- | ------------------------------------------------------------------------------ |

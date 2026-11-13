@@ -70,31 +70,30 @@ These classes are public: their names, and the elements they mark, stay stable b
 | `paperpic`                | The root of the viewer                                                                                      |
 | `paperpic-button`         | Every button of the toolbar and the edit bar                                                                |
 | `paperpic-button-danger`  | Discard, in the question before discarding the changes                                                      |
-| `paperpic-button-primary` | Apply, and Done in Crop and Straighten                                                                      |
+| `paperpic-button-primary` | Apply, and Done in every tool                                                                               |
 | `paperpic-button-text`    | The buttons of the question before discarding the changes                                                   |
-| `paperpic-edit-bar`       | The edit bar at the bottom                                                                                  |
+| `paperpic-edit-bar`       | The edit bar, a card at the bottom while editing                                                            |
 | `paperpic-editing`        | The root, while editing                                                                                     |
 | `paperpic-handle`         | A corner handle of Crop and Straighten                                                                      |
 | `paperpic-host`           | The element that the Vue and React components render around the viewer                                      |
 | `paperpic-icon`           | The icon of a button                                                                                        |
 | `paperpic-status`         | The message for screen readers, which also shows while the image loads or the changes apply, and on failure |
 | `paperpic-status-visible` | The message, while it shows in the middle of the viewer                                                     |
-| `paperpic-toolbar`        | The toolbar at the right                                                                                    |
+| `paperpic-toolbar`        | The toolbar at the right, hidden while editing                                                              |
 | `paperpic-viewport`       | The area that shows the image and takes the keyboard focus                                                  |
 
 Buttons show their state with ARIA attributes, which you can select too:
 
-| Attribute                | State                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------- |
-| `[aria-disabled='true']` | The button cannot act now. It keeps the keyboard focus, so it is not `disabled` |
-| `[aria-expanded='true']` | Adjust, while its sliders show                                                  |
-| `[aria-pressed='true']`  | A button that is on, such as Clean up or the fit in effect                      |
+| Attribute                | State                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| `[aria-disabled='true']` | The button cannot act now. It keeps the keyboard focus, so it is not `disabled`                  |
+| `[aria-pressed='true']`  | The fit in effect, Fit to width or Fit to height, or the choice of Adjust that the ruler changes |
 
 The hover and these states paint with `box-shadow`, which global resets of buttons leave alone. To restyle them, override `box-shadow` too.
 
 ## Controls {#controls}
 
-Every button, slider and corner handle carries `data-paperpic-control`, with the key of its [label](./labels). Select it to style one control:
+Every button, ruler and corner handle carries `data-paperpic-control`, with the key of its [label](./labels). Select it to style one control:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -102,12 +101,13 @@ Every button, slider and corner handle carries `data-paperpic-control`, with the
 }
 ```
 
-| Place                      | Values                                                                                                |
-| -------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Toolbar                    | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
-| Edit bar                   | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| Sliders                    | `thresholdSensitivity`, `brightness`, `contrast`                                                      |
-| Crop and Straighten        | `cancelTool`, `confirm`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`   |
-| Question before discarding | `keepEditing`, `discard`                                                                              |
+| Place                      | Values                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Toolbar                    | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                             |
+| Edit bar                   | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                     |
+| Adjust and Clean up        | `brightness` and `contrast`, the choices and their rulers, `threshold`, the switch, and `thresholdSensitivity`, its ruler |
+| Every tool                 | `cancelTool`, `confirm`                                                                                                   |
+| Crop and Straighten        | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                           |
+| Question before discarding | `keepEditing`, `discard`                                                                                                  |
 
-`rotateLeft` names two buttons that never show at the same time: the one of a read-only viewer, which turns the display, and the one of the edit bar, which turns the image.
+`rotateLeft` names two buttons that never show at the same time: the one of a read-only viewer, which turns the display, and the one of the edit bar, which turns the image. So do `zoomIn` and `zoomOut`, in the toolbar and in a panel, and `threshold`, the button of Clean up and its switch. `brightness` and `contrast` name a choice and its ruler, which show together: add `button` or `input` to the selector to tell them apart.

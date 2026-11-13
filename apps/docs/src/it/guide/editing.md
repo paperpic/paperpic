@@ -9,11 +9,13 @@ La foto di un documento di solito ha bisogno di qualche ritocco prima di valere 
 
 ## Il flusso
 
-1. L’utente preme Modifica, la matita nella barra degli strumenti. La barra di modifica compare in basso nel visualizzatore.
-2. Ogni strumento della barra di modifica aggiunge un cambiamento, che il visualizzatore mostra subito. Annulla l’ultima azione e Ripeti scorrono i cambiamenti.
+1. L’utente preme Modifica, la matita nella barra degli strumenti. La barra degli strumenti si nasconde, così niente copre l’immagine, e la barra di modifica compare in basso nel visualizzatore.
+2. Ruota a sinistra e Capovolgi aggiungono subito un cambiamento. Gli altri strumenti aprono un pannello nella barra di modifica, e Fatto aggiunge ciò che l’utente ha scelto lì come un solo cambiamento. Annulla l’ultima azione e Ripeti scorrono i cambiamenti.
 3. Applica calcola il risultato e torna alla visualizzazione. Annulla scarta i cambiamenti, e prima chiede conferma se ce ne sono.
 
 Niente cambia l’immagine prima di Applica. Fino ad allora, i cambiamenti sono un elenco di cui il visualizzatore mostra l’anteprima.
+
+La barra di modifica ha due righe della stessa altezza in ogni stato: in alto gli strumenti, o il pannello dello strumento aperto, e in basso Annulla a sinistra e Applica, o Fatto, a destra. Così l’immagine resta al suo posto quando si apre uno strumento. In un visualizzatore largo almeno 28rem, la barra sta su una riga. Un punto segna Regola e Pulisci mentre la loro impostazione è in uso.
 
 ## Strumenti
 
@@ -68,7 +70,9 @@ export function Receipt() {
 
 :::
 
-Ritaglia e Raddrizza hanno una selezione propria, quindi il resto della barra di modifica aspetta mentre uno dei due è aperto. Fatto, o `Invio`, aggiunge la selezione ai cambiamenti, e Annulla questo strumento, o `Esc`, la scarta.
+Ritaglia, Raddrizza, Regola e Pulisci aprono un pannello al posto degli strumenti, quindi il resto della barra di modifica aspetta mentre uno di loro è aperto. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
+
+Dentro un pannello, l’immagine appare come sarà il risultato, Pulisci compreso. Raddrizza è l’eccezione: mostra la foto senza Pulisci, così i bordi della carta restano visibili.
 
 ## Anteprima e Applica
 

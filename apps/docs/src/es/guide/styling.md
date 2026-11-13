@@ -173,7 +173,7 @@ export function Receipt() {
 
 :::
 
-- Cada clave nombra un icono, y algunos iconos aparecen en dos botones: `apply` también está en Hecho, y `cancel` también cierra Recortar y Enderezar. [Opciones](../reference/options#icons) recoge todas las claves.
+- Cada clave nombra un icono, y algunos iconos aparecen en dos botones: `apply` también está en Hecho, y `cancel` también cierra una herramienta. [Opciones](../reference/options#icons) recoge todas las claves.
 - PaperPic da al icono la clase `paperpic-icon`, que fija su tamaño, y lo oculta a los lectores de pantalla, porque el botón ya tiene nombre.
 - Dibuja el icono con `currentColor`, para que tome el color del botón en cualquier tema.
 - El marcado entra en la página como HTML, así que pasa solo marcado de confianza.
@@ -245,7 +245,7 @@ Importa aquí la hoja de estilos de PaperPic, en tu CSS, y no desde JavaScript. 
 
 La [referencia de CSS](../reference/css-tokens#classes) recoge las clases que puedes usar en tus selectores, como `paperpic-toolbar` y `paperpic-button`, y sus nombres son estables. Las demás clases sostienen la disposición y pueden cambiar en cualquier versión. Usa los tokens cuando cubran lo que necesitas.
 
-Cada botón, control deslizante y tirador de esquina lleva además `data-paperpic-control`, con la clave de su [texto de la interfaz](../reference/labels). Selecciónalo para dar estilo a un solo control:
+Cada botón, regla y tirador de esquina lleva además `data-paperpic-control`, con la clave de su [texto de la interfaz](../reference/labels). Selecciónalo para dar estilo a un solo control:
 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
@@ -257,8 +257,8 @@ Cada botón, control deslizante y tirador de esquina lleva además `data-paperpi
 
 La interfaz se adapta sola a su contenedor:
 
-- La barra de herramientas está a la derecha y se desplaza cuando el visor es demasiado bajo para sus botones.
-- La barra de edición está abajo, en una fila, o en dos en un visor de menos de 28rem de ancho.
+- La barra de herramientas está a la derecha y se desplaza cuando el visor es demasiado bajo para sus botones. Se oculta durante la edición.
+- La barra de edición es una tarjeta abajo con dos filas de altura fija, o una fila en un visor de al menos 28rem de ancho, así que la imagen no se mueve al abrir una herramienta.
 - En pantallas táctiles, los botones y los tiradores de esquina miden al menos 44 píxeles.
 
 ## Tus propios controles
