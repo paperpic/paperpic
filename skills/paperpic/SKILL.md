@@ -119,6 +119,12 @@ The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `
 
 ## Full reference
 
-- The types in `node_modules/@paperpic/core/dist/index.d.ts` document every option, method and event, and match the installed version.
+For the installed version, read the package itself, where `<package>` is `core`, `vue` or `react`:
+
+- The docs in `node_modules/@paperpic/<package>/dist/docs`: the guide, the reference and the examples, in Markdown.
+- The types in `node_modules/@paperpic/<package>/dist/index.d.ts`, with a description and examples.
+
+Online, for the latest version:
+
 - The docs: https://paperpic.dev/reference/options, `/reference/methods`, `/reference/events`, `/reference/vue` and `/reference/react`.
 - All the docs in one file for agents: https://paperpic.dev/llms-full.txt
