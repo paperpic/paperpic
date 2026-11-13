@@ -37,3 +37,5 @@ The pencil opens the edit mode. When the user applies the changes, the result re
 ## Documentation
 
 [paperpic.dev](https://paperpic.dev) has the [guide](https://paperpic.dev/guide/introduction), the [props, callbacks and methods of the component](https://paperpic.dev/reference/react), and a [playground](https://paperpic.dev/playground).
+
+The package also ships these docs in English, for the version you install, in `dist/docs`. AI coding tools can read them in `node_modules` without the network.

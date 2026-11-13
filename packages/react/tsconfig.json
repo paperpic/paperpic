@@ -5,6 +5,8 @@
     "paths": {
       "@paperpic/core": ["../core/src/index.ts"]
     },
+    // tsdown.config.ts imports scripts/copy-docs.ts, which the config loader needs with its extension
+    "allowImportingTsExtensions": true,
     "noEmit": true
   },
   "include": ["src", "test", "vitest.config.ts", "tsdown.config.ts"]
