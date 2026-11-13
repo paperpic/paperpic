@@ -1,0 +1,77 @@
+name: Promote
+
+# Moves main forward to the tip of development by fast-forward, so main only points at commits of development and
+# nothing has to be merged back. The push to main then runs the Release and Docs workflows.
+# Run it from Actions → Promote → Run workflow, on development, and approve it in the promote environment.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      sha: ${{ steps.check.outputs.sha }}
+    permissions:
+      contents: read # compare main with development
+      checks: read # read the ci check of the commit
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the history of main and development
+          persist-credentials: false
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ "$GITHUB_REF_NAME" != development ]; then
+            echo "::error::Run Promote on development."
+            exit 1
+          fi
+          if [ "$(git rev-parse origin/main)" = "$SHA" ]; then
+            echo "::notice::main already points at $SHA."
+            exit 0
+          fi
+          if ! git merge-base --is-ancestor origin/main "$SHA"; then
+            echo "::error::main has commits that development lacks, so it cannot move forward to $SHA."
+            exit 1
+          fi
+          if find .changeset -maxdepth 1 -name '*.md' ! -name README.md | grep -q .; then
+            echo "::error::development has changesets that were never versioned. Merge the 'chore: version packages' PR first."
+            exit 1
+          fi
+          passed=$(gh api "repos/$REPO/commits/$SHA/check-runs?check_name=ci" --jq '[.check_runs[] | select(.conclusion == "success")] | length')
+          if [ "${passed:-0}" -eq 0 ]; then
+            echo "::error::The ci check has not passed on $SHA. Wait for it, or fix it first."
+            exit 1
+          fi
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
+  promote:
+    needs: check
+    if: needs.check.outputs.sha != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: promote
+    permissions: {}
+    steps:
+      # The app bypasses the ruleset of main, and a push made with its token starts the Release and Docs workflows
+      - id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+      # force=false refuses anything but a fast-forward
+      - env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ needs.check.outputs.sha }}
+        run: gh api --method PATCH "repos/$REPO/git/refs/heads/main" -f sha="$SHA" -F force=false --jq '"main is now at " + .object.sha'

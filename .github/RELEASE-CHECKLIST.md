@@ -71,7 +71,7 @@ An unvalidated trusted publisher configuration expires 48 hours after it is crea
   gh variable set NPM_PUBLISH --repo paperpic/paperpic --body true
   ```
 
-- [ ] **Release.** Merge the version PR, then `development` into `main`. Approve the `publish` job under **Review deployments** in the workflow run.
+- [ ] **Release.** Merge the version PR, then run **Actions → Promote** on `development` and approve it. Approve the `publish` job under **Review deployments** in the Release run that follows.
 - [ ] **Check the result:** every version on npm with provenance, every tag pushed, every GitHub Release created.
 
 pnpm combined with npm trusted publishing has not been tested in this repository yet. If the `publish` job fails, its log shows why.

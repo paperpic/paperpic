@@ -4,13 +4,13 @@ How a change travels from a branch to npm in this repository: branches, pull req
 
 ## Branches
 
-| Branch                          | Purpose                                     | How it changes                                               |
-| ------------------------------- | ------------------------------------------- | ------------------------------------------------------------ |
-| `development`                   | Default branch. All work lands here.        | Pull requests, squash merged                                 |
-| `main`                          | Released code only.                         | Pull requests from `development`, merged with a merge commit |
-| `<type>/<slug>`                 | Your work, for example `feat/zoom-controls` | You push to it                                               |
-| `changeset-release/development` | The version PR, owned by automation         | The Release workflow rewrites it                             |
-| `dependabot/*`                  | Dependency updates                          | Dependabot                                                   |
+| Branch                          | Purpose                                     | How it changes                                         |
+| ------------------------------- | ------------------------------------------- | ------------------------------------------------------ |
+| `development`                   | Default branch. All work lands here.        | Pull requests, squash merged                           |
+| `main`                          | Released code only.                         | The Promote workflow moves it forward to `development` |
+| `<type>/<slug>`                 | Your work, for example `feat/zoom-controls` | You push to it                                         |
+| `changeset-release/development` | The version PR, owned by automation         | The Release workflow rewrites it                       |
+| `dependabot/*`                  | Dependency updates                          | Dependabot                                             |
 
 A ruleset rejects other branch names. Allowed prefixes: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `ci`, `build`, `perf`, `style`, `revert`, `feature`, `bugfix`, `hotfix`, `bug`, `changeset-release` and `dependabot`. Branches in forks can have any name.
 
@@ -94,7 +94,7 @@ flowchart LR
   B -->|"push with pending changesets"| C[["Release workflow: version"]]
   C -->|"opens or updates"| D["PR: chore: version packages"]
   D -->|"squash"| B
-  B -->|"PR, merge commit"| E("main")
+  B -->|"Promote workflow, fast-forward"| E("main")
   E --> F[["Release workflow: pack and publish"]]
   F -->|"approval in the npm environment"| G[("npm, git tags, GitHub Releases")]
 ```
@@ -116,12 +116,14 @@ Leaving the version PR open is fine: it keeps collecting changes until the next 
 ### 2. Release
 
 1. Review the changelog in the version PR and merge it (squash) into `development`.
-2. Open a pull request from `development` into `main`. `main` requires the `ci` check and a code owner approval, and only accepts **merge commits**, which keeps the history of `development` intact.
-3. Merge it. The Release workflow runs on `main`:
+2. Run **Actions → Promote → Run workflow** on `development`. Its `check` job confirms that `main` can move forward to the tip of `development` by fast-forward, that `ci` passed on that commit and that no changesets are pending. Then `promote` waits in the `promote` environment until a required reviewer (`@Unlooper`) approves it in the workflow run (**Review deployments**), and moves `main` to that commit.
+3. The push to `main` starts the Release workflow:
    - `pack` builds the packages and packs the tarballs;
    - `publish` waits in the `npm` environment until a required reviewer (`@Unlooper`) approves it in the workflow run (**Review deployments**). Then it publishes to npm with trusted publishing and provenance, pushes one git tag per package (`@paperpic/core@x.y.z`, `@paperpic/vue@x.y.z`, `@paperpic/react@x.y.z`) and creates a GitHub Release for each.
 
-Nothing has to be merged back into `development`: the versions were bumped there in step 1.
+The same push deploys the docs site. Promote refuses while changesets are pending, so the site never describes code that is not on npm yet. Use it for changes to the docs alone too.
+
+`main` only points at commits of `development`, so nothing has to be merged back and the history stays one line. Do not open pull requests into `main`: GitHub cannot merge them by fast-forward.
 
 ### Safety nets
 
@@ -129,6 +131,7 @@ Nothing has to be merged back into `development`: the versions were bumped there
 - Publishing runs only when the repository variable `NPM_PUBLISH` is `true`. It is not set yet; see [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
 - The **Release tags** ruleset blocks deleting, moving or force-pushing any `@paperpic/*` tag, so a tag always points at the code that was published.
 - The `npm` environment can only deploy from `main`, and administrators cannot skip its approval.
+- Nobody can push to `main`. Only the release GitHub App bypasses its ruleset, through Promote, which refuses anything but a fast-forward. The `promote` environment can only deploy from `development`, and administrators cannot skip its approval.
 
 ## Automation reference
 
@@ -137,6 +140,7 @@ Nothing has to be merged back into `development`: the versions were bumped there
 | `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`; coverage in the run summary |
 | `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji    |
 | `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                  |
+| `promote.yml`          | By hand, on `development`                   | Moves `main` forward to `development` after its checks and an approval          |
 | `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included |
 | `changeset-status.yml` | PRs into `development` from this repository | Comments whether the PR has a changeset and which packages it releases          |
 | CodeQL                 | PRs and pushes                              | GitHub code scanning                                                            |
