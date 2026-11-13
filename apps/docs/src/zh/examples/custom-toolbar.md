@@ -89,7 +89,7 @@ import { PaperPic } from '@paperpic/vue'
 import { computed, shallowRef, useTemplateRef } from 'vue'
 import '@paperpic/vue/style.css'
 
-const pic = useTemplateRef('pic')
+const pic = useTemplateRef<InstanceType<typeof PaperPic>>('pic')
 const viewer = computed(() => pic.value?.instance)
 const state = shallowRef<PaperPicState>()
 
