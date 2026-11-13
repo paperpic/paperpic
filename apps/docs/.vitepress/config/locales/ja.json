@@ -1,0 +1,94 @@
+{
+  "label": "日本語",
+  "lang": "ja",
+  "ogLocale": "ja_JP",
+  "description": "文書画像のビューアー兼エディター：ズーム、回転、遠近補正、明るさとコントラストの調整、白黒変換、影の除去。",
+  "guide": "ガイド",
+  "reference": "リファレンス",
+  "examples": "例",
+  "playground": "プレイグラウンド",
+  "groups": {
+    "introduction": "入門",
+    "essentials": "基本",
+    "tools": "ツール",
+    "production": "本番運用",
+    "api": "API",
+    "customization": "カスタマイズ",
+    "frameworks": "フレームワーク",
+    "examples": "例"
+  },
+  "pages": {
+    "guide/introduction": "PaperPic とは",
+    "guide/getting-started": "はじめに",
+    "guide/viewer": "ビューアー",
+    "guide/editing": "編集",
+    "guide/saving": "結果の保存",
+    "guide/tools/crop": "切り抜き",
+    "guide/tools/straighten": "傾き補正",
+    "guide/tools/rotate-and-flip": "回転と反転",
+    "guide/tools/adjust": "調整",
+    "guide/tools/clean-up": "クリーンアップ",
+    "guide/styling": "スタイル",
+    "guide/labels": "インターフェースの翻訳",
+    "guide/accessibility": "アクセシビリティ",
+    "guide/performance": "パフォーマンスと対応環境",
+    "reference/options": "オプション",
+    "reference/methods": "メソッド",
+    "reference/events": "イベント",
+    "reference/state": "状態",
+    "reference/labels": "ラベル",
+    "reference/css-tokens": "CSS トークン",
+    "reference/vue": "Vue",
+    "reference/react": "React",
+    "examples/upload": "サーバーへのアップロード",
+    "examples/read-only": "読み取り専用のビューアー",
+    "examples/custom-toolbar": "独自のツールバー",
+    "examples/fixed-proportions": "固定の縦横比"
+  },
+  "search": {
+    "button": {
+      "buttonText": "検索",
+      "buttonAriaLabel": "検索"
+    },
+    "modal": {
+      "displayDetails": "詳細なリストを表示",
+      "resetButtonTitle": "検索をリセット",
+      "backButtonTitle": "検索を閉じる",
+      "noResultsText": "一致する結果がありません:",
+      "footer": {
+        "selectText": "選択",
+        "selectKeyAriaLabel": "Enter キー",
+        "navigateText": "移動",
+        "navigateUpKeyAriaLabel": "上矢印キー",
+        "navigateDownKeyAriaLabel": "下矢印キー",
+        "closeText": "閉じる",
+        "closeKeyAriaLabel": "Esc キー"
+      }
+    }
+  },
+  "theme": {
+    "outline": {
+      "label": "このページの内容"
+    },
+    "docFooter": {
+      "prev": "前のページ",
+      "next": "次のページ"
+    },
+    "lastUpdated": {
+      "text": "最終更新"
+    },
+    "langMenuLabel": "言語を変更",
+    "returnToTopLabel": "ページの先頭へ",
+    "sidebarMenuLabel": "メニュー",
+    "darkModeSwitchLabel": "外観",
+    "lightModeSwitchTitle": "ライトモードに切り替え",
+    "darkModeSwitchTitle": "ダークモードに切り替え",
+    "skipToContentLabel": "本文へ移動",
+    "notFound": {
+      "title": "ページが見つかりません",
+      "quote": "お探しのページは存在しないか、移動した可能性があります。",
+      "linkLabel": "ホームページへ移動",
+      "linkText": "ホームに戻る"
+    }
+  }
+}

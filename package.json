@@ -1,0 +1,50 @@
+{
+  "name": "paperpic-monorepo",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": "26"
+  },
+  "scripts": {
+    "dev": "pnpm --filter playground-vanilla dev",
+    "dev:vue": "pnpm --filter playground-vue dev",
+    "dev:react": "pnpm --filter playground-react dev",
+    "dev:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vanilla dev:dist",
+    "dev:vue:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vue dev:dist",
+    "dev:react:dist": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-react dev:dist",
+    "dev:docs": "pnpm --filter docs dev",
+    "dev:bench": "pnpm --filter playground-bench dev",
+    "dev:bench:host": "pnpm --filter playground-bench dev:host",
+    "build": "pnpm -r build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint . --cache && stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --cache",
+    "lint:fix": "stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --cache --fix && eslint . --cache --fix",
+    "changeset": "changeset",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "10.0.0",
+    "@changesets/changelog-github": "1.0.1",
+    "@changesets/cli": "3.0.3",
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "@eslint-react/eslint-plugin": "5.30.2",
+    "@vitest/coverage-v8": "5.1.0",
+    "eslint": "10.14.0",
+    "eslint-plugin-format": "2.0.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "husky": "9.1.7",
+    "lint-staged": "17.6.0",
+    "postcss-html": "2.0.0",
+    "stylelint": "18.0.0",
+    "stylelint-config-recommended-vue": "2.0.0",
+    "stylelint-config-standard": "41.0.0",
+    "stylelint-config-standard-vue": "2.0.0",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

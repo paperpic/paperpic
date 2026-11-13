@@ -1,0 +1,94 @@
+{
+  "label": "Русский",
+  "lang": "ru",
+  "ogLocale": "ru_RU",
+  "description": "Просмотр и редактирование изображений документов: масштабирование, поворот, коррекция перспективы, яркость и контраст, чёрно-белый режим и удаление теней.",
+  "guide": "Руководство",
+  "reference": "Справочник",
+  "examples": "Примеры",
+  "playground": "Песочница",
+  "groups": {
+    "introduction": "Введение",
+    "essentials": "Основы",
+    "tools": "Инструменты",
+    "production": "В продакшене",
+    "api": "API",
+    "customization": "Настройка",
+    "frameworks": "Фреймворки",
+    "examples": "Примеры"
+  },
+  "pages": {
+    "guide/introduction": "Что такое PaperPic?",
+    "guide/getting-started": "Начало работы",
+    "guide/viewer": "Просмотрщик",
+    "guide/editing": "Редактирование",
+    "guide/saving": "Сохранение результата",
+    "guide/tools/crop": "Обрезать",
+    "guide/tools/straighten": "Выровнять",
+    "guide/tools/rotate-and-flip": "Поворот и отражение",
+    "guide/tools/adjust": "Настроить",
+    "guide/tools/clean-up": "Очистить",
+    "guide/styling": "Оформление",
+    "guide/labels": "Перевод интерфейса",
+    "guide/accessibility": "Доступность",
+    "guide/performance": "Производительность и поддержка",
+    "reference/options": "Опции",
+    "reference/methods": "Методы",
+    "reference/events": "События",
+    "reference/state": "Состояние",
+    "reference/labels": "Подписи",
+    "reference/css-tokens": "CSS-токены",
+    "reference/vue": "Vue",
+    "reference/react": "React",
+    "examples/upload": "Загрузка на сервер",
+    "examples/read-only": "Просмотрщик только для чтения",
+    "examples/custom-toolbar": "Своя панель инструментов",
+    "examples/fixed-proportions": "Фиксированные пропорции"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Поиск",
+      "buttonAriaLabel": "Поиск"
+    },
+    "modal": {
+      "displayDetails": "Показать подробный список",
+      "resetButtonTitle": "Сбросить поиск",
+      "backButtonTitle": "Закрыть поиск",
+      "noResultsText": "Нет результатов для",
+      "footer": {
+        "selectText": "выбрать",
+        "selectKeyAriaLabel": "Enter",
+        "navigateText": "перейти",
+        "navigateUpKeyAriaLabel": "стрелка вверх",
+        "navigateDownKeyAriaLabel": "стрелка вниз",
+        "closeText": "закрыть",
+        "closeKeyAriaLabel": "Esc"
+      }
+    }
+  },
+  "theme": {
+    "outline": {
+      "label": "На этой странице"
+    },
+    "docFooter": {
+      "prev": "Предыдущая страница",
+      "next": "Следующая страница"
+    },
+    "lastUpdated": {
+      "text": "Последнее обновление"
+    },
+    "langMenuLabel": "Сменить язык",
+    "returnToTopLabel": "Наверх",
+    "sidebarMenuLabel": "Меню",
+    "darkModeSwitchLabel": "Оформление",
+    "lightModeSwitchTitle": "Включить светлую тему",
+    "darkModeSwitchTitle": "Включить тёмную тему",
+    "skipToContentLabel": "Перейти к содержимому",
+    "notFound": {
+      "title": "Страница не найдена",
+      "quote": "Страница, которую вы ищете, не существует или была перемещена.",
+      "linkLabel": "Перейти на главную страницу",
+      "linkText": "На главную"
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "label": "简体中文",
+  "lang": "zh-Hans",
+  "ogLocale": "zh_CN",
+  "description": "文档图像查看与编辑工具：缩放、旋转、透视校正、亮度和对比度调整、黑白转换以及阴影去除。",
+  "guide": "指南",
+  "reference": "参考",
+  "examples": "示例",
+  "playground": "演练场",
+  "groups": {
+    "introduction": "简介",
+    "essentials": "基础",
+    "tools": "工具",
+    "production": "生产环境",
+    "api": "API",
+    "customization": "自定义",
+    "frameworks": "框架",
+    "examples": "示例"
+  },
+  "pages": {
+    "guide/introduction": "什么是 PaperPic？",
+    "guide/getting-started": "快速开始",
+    "guide/viewer": "查看器",
+    "guide/editing": "编辑",
+    "guide/saving": "保存结果",
+    "guide/tools/crop": "裁剪",
+    "guide/tools/straighten": "矫正",
+    "guide/tools/rotate-and-flip": "旋转和翻转",
+    "guide/tools/adjust": "调整",
+    "guide/tools/clean-up": "清理",
+    "guide/styling": "样式",
+    "guide/labels": "翻译界面",
+    "guide/accessibility": "无障碍",
+    "guide/performance": "性能与兼容性",
+    "reference/options": "选项",
+    "reference/methods": "方法",
+    "reference/events": "事件",
+    "reference/state": "状态",
+    "reference/labels": "标签",
+    "reference/css-tokens": "CSS 令牌",
+    "reference/vue": "Vue",
+    "reference/react": "React",
+    "examples/upload": "上传到服务器",
+    "examples/read-only": "只读查看器",
+    "examples/custom-toolbar": "自定义工具栏",
+    "examples/fixed-proportions": "固定宽高比"
+  },
+  "search": {
+    "button": {
+      "buttonText": "搜索",
+      "buttonAriaLabel": "搜索"
+    },
+    "modal": {
+      "displayDetails": "显示详细列表",
+      "resetButtonTitle": "清除搜索",
+      "backButtonTitle": "关闭搜索",
+      "noResultsText": "没有相关结果",
+      "footer": {
+        "selectText": "选择",
+        "selectKeyAriaLabel": "回车键",
+        "navigateText": "切换",
+        "navigateUpKeyAriaLabel": "向上箭头",
+        "navigateDownKeyAriaLabel": "向下箭头",
+        "closeText": "关闭",
+        "closeKeyAriaLabel": "Esc 键"
+      }
+    }
+  },
+  "theme": {
+    "outline": {
+      "label": "本页内容"
+    },
+    "docFooter": {
+      "prev": "上一页",
+      "next": "下一页"
+    },
+    "lastUpdated": {
+      "text": "最后更新"
+    },
+    "langMenuLabel": "切换语言",
+    "returnToTopLabel": "返回顶部",
+    "sidebarMenuLabel": "菜单",
+    "darkModeSwitchLabel": "外观",
+    "lightModeSwitchTitle": "切换到浅色模式",
+    "darkModeSwitchTitle": "切换到深色模式",
+    "skipToContentLabel": "跳到正文",
+    "notFound": {
+      "title": "页面未找到",
+      "quote": "你要找的页面不存在或已被移动。",
+      "linkLabel": "前往首页",
+      "linkText": "返回首页"
+    }
+  }
+}

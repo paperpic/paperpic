@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "paperpic/paperpic" }],
+  "commit": false,
+  "fixed": [["@paperpic/core", "@paperpic/vue", "@paperpic/react"]],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "development",
+  "updateInternalDependencies": "patch",
+  "ignore": [],
+  "privatePackages": { "version": false, "tag": false }
+}

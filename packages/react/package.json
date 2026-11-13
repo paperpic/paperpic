@@ -1,0 +1,65 @@
+{
+  "name": "@paperpic/react",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "React components to view and edit document images with PaperPic.",
+  "author": "Marco Caparrós <hello@paperpic.dev>",
+  "license": "MIT",
+  "homepage": "https://paperpic.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paperpic/paperpic.git",
+    "directory": "packages/react"
+  },
+  "bugs": "https://github.com/paperpic/paperpic/issues",
+  "keywords": [
+    "document",
+    "image",
+    "perspective-correction",
+    "threshold",
+    "image-processing",
+    "react",
+    "react-component"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "dependencies": {
+    "@paperpic/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/core": "0.18.5",
+    "@tsdown/css": "0.23.7",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "happy-dom": "21.0.4",
+    "publint": "0.3.25",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tsdown": "0.23.7",
+    "typescript": "6.0.3",
+    "vite": "8.3.8"
+  }
+}

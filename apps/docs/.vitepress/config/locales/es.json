@@ -1,0 +1,94 @@
+{
+  "label": "Español",
+  "lang": "es",
+  "ogLocale": "es_ES",
+  "description": "Visor y editor de imágenes de documentos: zoom, rotación, corrección de perspectiva, brillo y contraste, blanco y negro y eliminación de sombras.",
+  "guide": "Guía",
+  "reference": "Referencia",
+  "examples": "Ejemplos",
+  "playground": "Playground",
+  "groups": {
+    "introduction": "Introducción",
+    "essentials": "Lo esencial",
+    "tools": "Herramientas",
+    "production": "En producción",
+    "api": "API",
+    "customization": "Personalización",
+    "frameworks": "Frameworks",
+    "examples": "Ejemplos"
+  },
+  "pages": {
+    "guide/introduction": "¿Qué es PaperPic?",
+    "guide/getting-started": "Primeros pasos",
+    "guide/viewer": "Visor",
+    "guide/editing": "Edición",
+    "guide/saving": "Guardar el resultado",
+    "guide/tools/crop": "Recortar",
+    "guide/tools/straighten": "Enderezar",
+    "guide/tools/rotate-and-flip": "Girar y voltear",
+    "guide/tools/adjust": "Ajustar",
+    "guide/tools/clean-up": "Limpiar",
+    "guide/styling": "Estilos",
+    "guide/labels": "Traducir la interfaz",
+    "guide/accessibility": "Accesibilidad",
+    "guide/performance": "Rendimiento y compatibilidad",
+    "reference/options": "Opciones",
+    "reference/methods": "Métodos",
+    "reference/events": "Eventos",
+    "reference/state": "Estado",
+    "reference/labels": "Textos de la interfaz",
+    "reference/css-tokens": "Tokens CSS",
+    "reference/vue": "Vue",
+    "reference/react": "React",
+    "examples/upload": "Subir a un servidor",
+    "examples/read-only": "Visor de solo lectura",
+    "examples/custom-toolbar": "Barra de herramientas propia",
+    "examples/fixed-proportions": "Proporciones fijas"
+  },
+  "search": {
+    "button": {
+      "buttonText": "Buscar",
+      "buttonAriaLabel": "Buscar"
+    },
+    "modal": {
+      "displayDetails": "Mostrar la lista detallada",
+      "resetButtonTitle": "Borrar la búsqueda",
+      "backButtonTitle": "Cerrar la búsqueda",
+      "noResultsText": "Sin resultados para",
+      "footer": {
+        "selectText": "para seleccionar",
+        "selectKeyAriaLabel": "Intro",
+        "navigateText": "para navegar",
+        "navigateUpKeyAriaLabel": "flecha arriba",
+        "navigateDownKeyAriaLabel": "flecha abajo",
+        "closeText": "para cerrar",
+        "closeKeyAriaLabel": "Esc"
+      }
+    }
+  },
+  "theme": {
+    "outline": {
+      "label": "En esta página"
+    },
+    "docFooter": {
+      "prev": "Página anterior",
+      "next": "Página siguiente"
+    },
+    "lastUpdated": {
+      "text": "Última actualización"
+    },
+    "langMenuLabel": "Cambiar idioma",
+    "returnToTopLabel": "Volver arriba",
+    "sidebarMenuLabel": "Menú",
+    "darkModeSwitchLabel": "Apariencia",
+    "lightModeSwitchTitle": "Cambiar a modo claro",
+    "darkModeSwitchTitle": "Cambiar a modo oscuro",
+    "skipToContentLabel": "Saltar al contenido",
+    "notFound": {
+      "title": "Página no encontrada",
+      "quote": "La página que buscas no existe o se ha movido.",
+      "linkLabel": "Ir a la página de inicio",
+      "linkText": "Volver al inicio"
+    }
+  }
+}

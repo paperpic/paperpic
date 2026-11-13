@@ -1,0 +1,43 @@
+name: Bug report
+description: Report something that does not work as expected
+labels: [bug]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - '@paperpic/core'
+        - '@paperpic/vue'
+        - '@paperpic/react'
+        - Docs
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and OS
+      placeholder: Chrome 140 on Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: A minimal code snippet or a link to a reproduction. If the bug depends on a specific image, attach it.
+    validations:
+      required: true

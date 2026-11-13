@@ -1,0 +1,51 @@
+# Only install versions published at least 24h ago (in minutes)
+minimumReleaseAge: 1440
+
+# Fall back to a newer version when no version meets minimumReleaseAge
+minimumReleaseAgeStrict: false
+
+# Drop minimumReleaseAgeExclude entries the lockfile no longer resolves
+minimumReleaseAgeExcludePrune: true
+
+# Fail if a package's trust level drops compared to previous releases
+trustPolicy: no-downgrade
+
+# Run scripts with pnpm's cross-platform bash-like shell
+shellEmulator: true
+
+# Refuse dependencies whose engines field excludes the current Node version
+engineStrict: true
+
+# Save exact versions, without ^
+savePrefix: ''
+
+packages:
+  - packages/*
+  - apps/*
+  - playgrounds/*
+
+# Force patched versions of vulnerable transitive dependencies
+overrides:
+  # oxfmt 0.35 pins 2.1.0 (GHSA-5gmw-xhrv-c9v3, GHSA-85c8-ppgw-ccpr)
+  tinypool: 2.2.0
+
+# Packages allowed (true) or denied (false) to run install scripts
+allowBuilds:
+  esbuild: false
+
+# Advisories accepted after review, each with the condition to drop it
+auditConfig:
+  ignoreGhsas:
+    # vite 5 dev server, only through vitepress 1 in apps/docs; drop with VitePress 2
+    - GHSA-587h-7wmj-h5pm
+
+# What dependencies may do beyond installing: tsdown links its agent skill
+permissions:
+  tsdown:
+    skills: true
+
+# Where pnpm links skills from dependencies: .claude for Claude Code, .agents for Codex and other agents
+skills:
+  dirs:
+    - .agents/skills
+    - .claude/skills

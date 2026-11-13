@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@paperpic/vue": ["../../packages/vue/src/index.ts"],
+      "@paperpic/react": ["../../packages/react/src/index.ts"],
+      "@paperpic/core": ["../../packages/core/src/index.ts"]
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": ["src", "vite.ts"]
+}

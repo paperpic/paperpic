@@ -1,0 +1,34 @@
+name: Feature request
+description: Suggest a new feature or an improvement
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - '@paperpic/core'
+        - '@paperpic/vue'
+        - '@paperpic/react'
+        - Docs
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem would this solve? Describe your use case.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How should it work? Include an API sketch if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other solutions or workarounds you have considered.
