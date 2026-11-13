@@ -1,0 +1,17 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "PaperPic",
+  "description": "Turn photos of paper into clean, readable documents in the browser: a document viewer and editor for plain JavaScript, Vue and React.",
+  "folders": ["apps/docs/src/en"],
+  "excludeFiles": ["playground.md"],
+  "rules": [
+    "Install @paperpic/core for plain JavaScript, @paperpic/vue for Vue 3.5 or newer, or @paperpic/react for React 19 or newer.",
+    "Import the package stylesheet once in your app, such as @paperpic/core/style.css, @paperpic/vue/style.css or @paperpic/react/style.css.",
+    "Give the container of the viewer a height. The viewer fills its container and otherwise stays at its minimum height.",
+    "Pass src as a URL from the same origin as the page, or as a File the user picks. Always pass alt to describe the image.",
+    "Read the edited image from the blob of the apply event: pic.on('apply', ...) in JavaScript, @apply in Vue, onApply in React.",
+    "Set editable: false to show a document without editing.",
+    "With @paperpic/core, create the viewer in the browser once its element exists, and call destroy() when you remove it.",
+    "With a Content Security Policy, allow worker-src 'self' and img-src blob:."
+  ]
+}
