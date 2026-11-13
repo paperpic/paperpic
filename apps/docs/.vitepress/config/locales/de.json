@@ -7,6 +7,8 @@
   "reference": "Referenz",
   "examples": "Beispiele",
   "playground": "Playground",
+  "changelog": "Änderungsprotokoll",
+  "contributing": "Mitwirken",
   "groups": {
     "introduction": "Einführung",
     "essentials": "Grundlagen",

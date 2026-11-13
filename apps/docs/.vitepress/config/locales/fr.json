@@ -7,6 +7,8 @@
   "reference": "Référence",
   "examples": "Exemples",
   "playground": "Playground",
+  "changelog": "Journal des modifications",
+  "contributing": "Contribuer",
   "groups": {
     "introduction": "Introduction",
     "essentials": "L’essentiel",
