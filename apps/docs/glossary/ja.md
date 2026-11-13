@@ -36,6 +36,7 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | switch, of Clean up                           | スイッチ                 |
 | tool                                          | ツール                   |
 | toolbar, the bar of buttons at the right      | ツールバー               |
+| type, of TypeScript                           | 型                       |
 | view mode                                     | 表示モード               |
 | viewer                                        | ビューアー               |
 | wrapper, such as `@paperpic/vue`              | ラッパー                 |

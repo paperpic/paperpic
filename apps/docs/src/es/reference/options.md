@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Tipo:** `string | Blob`
+- **Tipo:** [`PaperPicSource`](./types#paperpicsource)
 - **Valor por defecto:** ninguno
 
 La imagen que se muestra: una URL del mismo origen, o un `File` o `Blob` adjuntado en el cliente.
@@ -51,7 +51,7 @@ Si se muestran la barra de herramientas y la barra de edición integradas. Sin e
 
 ### `tools`
 
-- **Tipo:** `readonly ToolId[]`
+- **Tipo:** [`readonly ToolId[]`](./types#toolid)
 - **Valor por defecto:** todas las herramientas
 
 Las herramientas que ofrece la barra de edición. Mantienen el orden de esta tabla, sea cual sea el orden del array.
@@ -81,14 +81,14 @@ Si la barra de herramientas tiene un botón que guarda la imagen en pantalla: el
 
 ### `labels`
 
-- **Tipo:** `Partial<PaperPicLabels>`
+- **Tipo:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **Valor por defecto:** los textos en inglés
 
 Sustituye cualquiera de los textos que el componente muestra o anuncia. [Textos de la interfaz](./labels) recoge todas las claves.
 
 ### `icons`
 
-- **Tipo:** `Partial<PaperPicIcons>`
+- **Tipo:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **Valor por defecto:** los iconos incluidos
 
 Sustituye cualquiera de los iconos por tu propio marcado de un solo elemento, como un `<svg>`. El marcado entra en la página como HTML, así que pasa solo marcado de confianza. Una cadena vacía deja sin icono los botones de ese icono. [Estilos](../guide/styling#icons) muestra un ejemplo.
@@ -122,7 +122,7 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 
 ### `output`
 
-- **Tipo:** `{ type?: string, quality?: number }`
+- **Tipo:** [`PaperPicOutput`](./types#paperpicoutput)
 - **Valor por defecto:** el formato de la imagen original
 
 El formato de la imagen editada. `type` es `'image/jpeg'`, `'image/png'` o `'image/webp'`, y `quality` va de 0 a 1 para JPEG y WebP, con `0.92` por defecto.

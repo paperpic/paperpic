@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Tipo:** `string | Blob`
+- **Tipo:** [`PaperPicSource`](./types#paperpicsource)
 - **Padrão:** nenhum
 
 A imagem a mostrar: uma URL da mesma origem, ou um `File` ou `Blob` anexado no cliente.
@@ -51,7 +51,7 @@ Se a barra de ferramentas e a barra de edição integradas aparecem. Sem elas, c
 
 ### `tools`
 
-- **Tipo:** `readonly ToolId[]`
+- **Tipo:** [`readonly ToolId[]`](./types#toolid)
 - **Padrão:** todas as ferramentas
 
 As ferramentas que a barra de edição oferece. Elas mantêm a ordem desta tabela, seja qual for a ordem do array.
@@ -81,14 +81,14 @@ Se a barra de ferramentas tem um botão que salva a imagem na tela: o resultado 
 
 ### `labels`
 
-- **Tipo:** `Partial<PaperPicLabels>`
+- **Tipo:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **Padrão:** os textos em inglês
 
 Substitui qualquer texto que o componente mostra ou anuncia. [Rótulos](./labels) lista todas as chaves.
 
 ### `icons`
 
-- **Tipo:** `Partial<PaperPicIcons>`
+- **Tipo:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **Padrão:** os ícones incluídos
 
 Substitui qualquer ícone pela sua própria marcação de um único elemento, como um `<svg>`. A marcação entra na página como HTML, então passe apenas marcação confiável. Uma string vazia deixa sem ícone os botões desse ícone. [Estilos](../guide/styling#icons) mostra um exemplo.
@@ -122,7 +122,7 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 
 ### `output`
 
-- **Tipo:** `{ type?: string, quality?: number }`
+- **Tipo:** [`PaperPicOutput`](./types#paperpicoutput)
 - **Padrão:** o formato da imagem original
 
 O formato da imagem editada. `type` é `'image/jpeg'`, `'image/png'` ou `'image/webp'`, e `quality` vai de 0 a 1 para JPEG e WebP, com `0.92` como padrão.

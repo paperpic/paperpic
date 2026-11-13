@@ -58,7 +58,7 @@ Renvoie ce que montre la visionneuse, comme le zoom, le mode et s’il y a des c
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 Écoute un événement et renvoie une fonction qui arrête l’écoute. [Événements](./events) décrit chaque événement.
@@ -90,20 +90,20 @@ Dézoome d’un cran, autour du centre de la visionneuse.
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-Fixe le zoom, où `1` affiche un pixel de l’image par pixel d’écran. `point` reste en place : il est en pixels CSS depuis le coin supérieur gauche de la visionneuse, et c’est son centre par défaut.
+Fixe le zoom, où `1` affiche un pixel de l’image par pixel d’écran. [`point`](./types#viewpoint) reste en place : il est en pixels CSS depuis le coin supérieur gauche de la visionneuse, et c’est son centre par défaut.
 
 Le zoom va de l’ajustement de l’image entière, ou `1` s’il est plus petit, jusqu’à `8`. Une valeur hors de cette plage est ramenée à la limite.
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-Ajuste à la visionneuse l’image entière, sa largeur ou sa hauteur.
+Ajuste à la visionneuse l’image entière, sa largeur ou sa hauteur. `fit` est un [`Fit`](./types#fit) : `'image'`, `'width'` ou `'height'`.
 
 ## Modification
 

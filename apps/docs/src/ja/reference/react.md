@@ -40,19 +40,19 @@ export function Receipt() {
 
 ## イベント
 
-| Prop         | データ                                 |
-| ------------ | -------------------------------------- |
-| `onApply`    | `{ blob, width, height, type }`        |
-| `onChange`   | [`PaperPicState`](./state)             |
-| `onDownload` | `{ source, filename, preventDefault }` |
-| `onError`    | `{ error }`                            |
-| `onLoad`     | `{ width, height }`                    |
+| Prop         | データ                                         |
+| ------------ | ---------------------------------------------- |
+| `onApply`    | [`ExportedImage`](./types#exportedimage)       |
+| `onChange`   | [`PaperPicState`](./state)                     |
+| `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `onError`    | `{ error }`                                    |
+| `onLoad`     | [`Size`](./types#size)                         |
 
 各イベントは[イベント](./events)で説明しています。新しい関数を渡してもビューアーは作り直されないため、インライン関数で問題ありません。props の変更で `onChange` が呼ばれることはありません。
 
 ## メソッド
 
-`ref` は、すべての[メソッド](./methods)を持つ `PaperPicInstance` 型のビューアーを受け取ります。コンポーネントがマウントされるまでは `null` です。
+`ref` は、すべての[メソッド](./methods)を持つ [`PaperPicInstance`](./types#paperpicinstance) 型のビューアーを受け取ります。コンポーネントがマウントされるまでは `null` です。
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -75,9 +75,9 @@ export function Viewer({ src }: { src: string }) {
 
 同じ `src` をもう一度渡しても画像は再読み込みされないため、編集の結果が残ります。元画像に戻すには `picRef.current.reload()` を呼び出します。
 
-## 型
+## 型 {#types}
 
-`@paperpic/react` は必要な型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。`PaperPicProps`、`PaperPicInstance`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage`、`ToolId` です。
+`@paperpic/react` は `@paperpic/core` のすべての型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。各型は[型](./types)で確認できます。コンポーネントの型もエクスポートしています。props を表す [`PaperPicProps`](./types#paperpicprops) と、`ref` が受け取るビューアーを表す [`PaperPicInstance`](./types#paperpicinstance) です。
 
 ## サーバーサイドレンダリング
 

@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Type :** `string | Blob`
+- **Type :** [`PaperPicSource`](./types#paperpicsource)
 - **Valeur par défaut :** aucune
 
 L’image à afficher : une URL de la même origine, ou un `File` ou un `Blob` joint côté client.
@@ -51,7 +51,7 @@ Indique s’il faut afficher la barre d’outils et la barre de modification int
 
 ### `tools`
 
-- **Type :** `readonly ToolId[]`
+- **Type :** [`readonly ToolId[]`](./types#toolid)
 - **Valeur par défaut :** tous les outils
 
 Les outils que propose la barre de modification. Ils gardent l’ordre de ce tableau, quel que soit l’ordre du tableau passé.
@@ -81,14 +81,14 @@ Indique si la barre d’outils a un bouton qui enregistre l’image affichée : 
 
 ### `labels`
 
-- **Type :** `Partial<PaperPicLabels>`
+- **Type :** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **Valeur par défaut :** les textes en anglais
 
 Remplace n’importe quel texte que le composant affiche ou annonce. [Libellés](./labels) liste toutes les clés.
 
 ### `icons`
 
-- **Type :** `Partial<PaperPicIcons>`
+- **Type :** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **Valeur par défaut :** les icônes intégrées
 
 Remplace n’importe quelle icône par votre propre balisage d’un seul élément, comme un `<svg>`. Le balisage entre dans la page en HTML, donc ne passez que du balisage de confiance. Une chaîne vide laisse sans icône les boutons de cette icône. [Styles](../guide/styling#icons) montre un exemple.
@@ -122,7 +122,7 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 
 ### `output`
 
-- **Type :** `{ type?: string, quality?: number }`
+- **Type :** [`PaperPicOutput`](./types#paperpicoutput)
 - **Valeur par défaut :** le format de l’image source
 
 Le format de l’image modifiée. `type` vaut `'image/jpeg'`, `'image/png'` ou `'image/webp'`, et `quality` va de 0 à 1 pour JPEG et WebP, avec `0.92` par défaut.

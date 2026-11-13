@@ -30,7 +30,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `load`
 
-- **データ:** `{ width: number, height: number }`
+- **データ:** [`Size`](./types#size)
 
 画像が読み込まれ、表示されました。`width` と `height` はピクセル単位のサイズです。
 
@@ -48,13 +48,13 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `apply`
 
-- **データ:** `{ blob: Blob, width: number, height: number, type: string }`
+- **データ:** [`ExportedImage`](./types#exportedimage)
 
 ユーザーが変更を適用し、結果はすでに表示されています。`blob` は [`output`](./options#output) が決める形式 `type` の画像です。
 
 ## `download`
 
-- **データ:** `{ source: string | Blob, filename: string, preventDefault: () => void }`
+- **データ:** [`PaperPicDownload`](./types#paperpicdownload)
 
 ダウンロードボタンまたは [`download()`](./methods#download) から、画像がこれから保存されます。`source` は表示中の画像で、最後の適用の結果、なければ `src` です。`filename` はファイル名です。
 

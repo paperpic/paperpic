@@ -58,7 +58,7 @@ function getState(): PaperPicState
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 Подписывается на событие и возвращает функцию, которая отменяет подписку. [События](./events) описывают каждое событие.
@@ -90,20 +90,20 @@ function zoomOut(): void
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-Задаёт масштаб, где `1` показывает один пиксель изображения на пиксель экрана. `point` остаётся на месте: он задаётся в CSS-пикселях от верхнего левого угла просмотрщика и по умолчанию равен его центру.
+Задаёт масштаб, где `1` показывает один пиксель изображения на пиксель экрана. [`point`](./types#viewpoint) остаётся на месте: он задаётся в CSS-пикселях от верхнего левого угла просмотрщика и по умолчанию равен его центру.
 
 Масштаб идёт от подгонки всего изображения, или `1`, если это меньше, до `8`. Значение вне диапазона ограничивается.
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-Подгоняет под просмотрщик всё изображение, его ширину или его высоту.
+Подгоняет под просмотрщик всё изображение, его ширину или его высоту. `fit` — это [`Fit`](./types#fit): `'image'`, `'width'` или `'height'`.
 
 ## Редактирование
 

@@ -36,6 +36,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | switch, of Clean up                           | interruptor           |
 | tool                                          | herramienta           |
 | toolbar, the bar of buttons at the right      | barra de herramientas |
+| type, of TypeScript                           | tipo                  |
 | view mode                                     | modo de visualización |
 | viewer                                        | visor                 |
 | wrapper, such as `@paperpic/vue`              | wrapper               |

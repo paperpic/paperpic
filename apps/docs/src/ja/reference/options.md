@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **型:** `string | Blob`
+- **型:** [`PaperPicSource`](./types#paperpicsource)
 - **デフォルト:** なし
 
 表示する画像です。同一オリジンの URL か、クライアントで添付された `File` または `Blob` を指定します。
@@ -51,7 +51,7 @@ pic.setOptions({ editable: false })
 
 ### `tools`
 
-- **型:** `readonly ToolId[]`
+- **型:** [`readonly ToolId[]`](./types#toolid)
 - **デフォルト:** すべてのツール
 
 編集バーに表示するツールです。配列の順序にかかわらず、この表の順に並びます。
@@ -81,14 +81,14 @@ pic.setOptions({ editable: false })
 
 ### `labels`
 
-- **型:** `Partial<PaperPicLabels>`
+- **型:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **デフォルト:** 英語のテキスト
 
 コンポーネントが表示または読み上げるテキストを置き換えます。すべてのキーは[ラベル](./labels)にあります。
 
 ### `icons`
 
-- **型:** `Partial<PaperPicIcons>`
+- **型:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **デフォルト:** 組み込みのアイコン
 
 任意のアイコンを、`<svg>` などの 1 つの要素からなる独自のマークアップに置き換えます。マークアップは HTML としてページに入るため、信頼できるマークアップだけを渡してください。空文字列を渡すと、そのアイコンのボタンはアイコンなしになります。例は[スタイル](../guide/styling#icons)にあります。
@@ -122,7 +122,7 @@ pic.setOptions({ editable: false })
 
 ### `output`
 
-- **型:** `{ type?: string, quality?: number }`
+- **型:** [`PaperPicOutput`](./types#paperpicoutput)
 - **デフォルト:** 元画像の形式
 
 編集後の画像の形式です。`type` は `'image/jpeg'`、`'image/png'`、`'image/webp'` のいずれかで、`quality` は JPEG と WebP で 0 から 1、デフォルトは `0.92` です。

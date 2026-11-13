@@ -40,9 +40,18 @@ const LENS_ZOOM = 3
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
 
-/** The image to show: a URL from the same origin, or a file attached on the client. */
+/**
+ * The image to show: a URL from the same origin, or a file attached on the client.
+ *
+ * @see https://paperpic.dev/reference/options#src
+ */
 export type PaperPicSource = string | Blob
 
+/**
+ * What the constructor and `setOptions()` take.
+ *
+ * @see https://paperpic.dev/reference/options
+ */
 export interface PaperPicOptions {
   /** Describes the image for screen readers. Without it, they skip the image, as they skip an `<img>` with an empty `alt`. */
   alt?: string
@@ -83,7 +92,11 @@ export interface PaperPicOptions {
   wheelZoom?: boolean
 }
 
-/** What the viewer is showing. */
+/**
+ * What the viewer is showing, which `getState()` returns and the `change` event carries.
+ *
+ * @see https://paperpic.dev/reference/state
+ */
 export interface PaperPicState {
   /** The open tool, such as Crop or Adjust, or `null`. Done or Cancel closes it. */
   activeTool: ToolId | null
@@ -96,7 +109,9 @@ export interface PaperPicState {
   busy: boolean
   /** Whether there are changes to apply. Rotations that cancel out are no change. */
   canApply: boolean
+  /** Whether there is an edit to bring back. */
   canRedo: boolean
+  /** Whether there is an edit to undo. */
   canUndo: boolean
   /** The fit in effect, or `null` once the user has zoomed by hand. */
   fit: Fit | null
@@ -104,7 +119,9 @@ export interface PaperPicState {
   image: Size | null
   /** Whether the user is viewing or editing the image. */
   mode: 'view' | 'edit'
+  /** How far the image on display is turned, in degrees clockwise. */
   rotation: Rotation
+  /** Whether there is an image, and whether it loaded. */
   status: 'empty' | 'loading' | 'ready' | 'error'
   /** Whether the document gets cleaned up, and how much. While Clean up is open, what it shows, which Done would keep. */
   threshold: { enabled: boolean, sensitivity: number }
@@ -112,6 +129,11 @@ export interface PaperPicState {
   zoom: number
 }
 
+/**
+ * Each event of `on()`, with what it carries.
+ *
+ * @see https://paperpic.dev/reference/events
+ */
 export interface PaperPicEvents {
   /** The user applied the changes. The result is already on display. */
   apply: ExportedImage
@@ -122,7 +144,7 @@ export interface PaperPicEvents {
   /** The image could not be loaded, or the changes could not be applied. */
   error: { error: Error }
   /** The image is ready. */
-  load: { height: number, width: number }
+  load: Size
 }
 
 /** What an open Adjust or Clean up shows, before Done turns it into one edit. */

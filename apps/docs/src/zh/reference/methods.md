@@ -58,7 +58,7 @@ function getState(): PaperPicState
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 监听一个事件，并返回一个停止监听的函数。每个事件见[事件](./events)。
@@ -90,20 +90,20 @@ function zoomOut(): void
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-设置缩放，`1` 表示一个图片像素对应一个屏幕像素。`point` 保持在原位：它以 CSS 像素表示，从查看器左上角算起，默认是查看器中心。
+设置缩放，`1` 表示一个图片像素对应一个屏幕像素。[`point`](./types#viewpoint) 保持在原位：它以 CSS 像素表示，从查看器左上角算起，默认是查看器中心。
 
 缩放范围从适合整张图片的缩放（若它大于 `1` 则为 `1`）到 `8`。超出范围的值会被限制在范围内。
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-让整张图片、图片宽度或图片高度适合查看器。
+让整张图片、图片宽度或图片高度适合查看器。`fit` 的类型是 [`Fit`](./types#fit)，取值为 `'image'`、`'width'` 或 `'height'`。
 
 ## 编辑
 

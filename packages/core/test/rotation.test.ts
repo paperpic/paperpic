@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeRotation } from '../src'
+import { normalizeRotation } from '../src/rotation'
 
 describe('normalizeRotation', () => {
   it.each([

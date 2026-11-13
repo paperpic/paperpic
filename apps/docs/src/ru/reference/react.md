@@ -40,19 +40,19 @@ export function Receipt() {
 
 ## События
 
-| Prop         | Данные                                 |
-| ------------ | -------------------------------------- |
-| `onApply`    | `{ blob, width, height, type }`        |
-| `onChange`   | [`PaperPicState`](./state)             |
-| `onDownload` | `{ source, filename, preventDefault }` |
-| `onError`    | `{ error }`                            |
-| `onLoad`     | `{ width, height }`                    |
+| Prop         | Данные                                         |
+| ------------ | ---------------------------------------------- |
+| `onApply`    | [`ExportedImage`](./types#exportedimage)       |
+| `onChange`   | [`PaperPicState`](./state)                     |
+| `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `onError`    | `{ error }`                                    |
+| `onLoad`     | [`Size`](./types#size)                         |
 
 [События](./events) описывают каждое. Новая функция не пересоздаёт просмотрщик, поэтому встроенные функции подходят. Изменение props никогда не вызывает `onChange`.
 
 ## Методы
 
-`ref` получает просмотрщик типа `PaperPicInstance` со всеми [методами](./methods). До монтирования компонента он равен `null`:
+`ref` получает просмотрщик типа [`PaperPicInstance`](./types#paperpicinstance) со всеми [методами](./methods). До монтирования компонента он равен `null`:
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -75,9 +75,9 @@ export function Viewer({ src }: { src: string }) {
 
 Повторная передача того же `src` не перезагружает изображение, поэтому результат редактирования сохраняется. Чтобы вернуть оригинал, вызовите `picRef.current.reload()`.
 
-## Типы
+## Типы {#types}
 
-`@paperpic/react` экспортирует нужные типы, так что устанавливать `@paperpic/core` не нужно: `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` и `ToolId`.
+`@paperpic/react` экспортирует все типы `@paperpic/core`, так что устанавливать его не нужно: каждый из них показан в разделе [Типы](./types). Кроме того, он экспортирует типы компонента: [`PaperPicProps`](./types#paperpicprops) с его пропсами и [`PaperPicInstance`](./types#paperpicinstance) — просмотрщик, который получает `ref`.
 
 ## Рендеринг на сервере
 

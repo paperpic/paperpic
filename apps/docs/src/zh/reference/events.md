@@ -30,7 +30,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `load`
 
-- **载荷：** `{ width: number, height: number }`
+- **载荷：** [`Size`](./types#size)
 
 图片已加载并显示。`width` 和 `height` 是它的像素尺寸。
 
@@ -48,13 +48,13 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `apply`
 
-- **载荷：** `{ blob: Blob, width: number, height: number, type: string }`
+- **载荷：** [`ExportedImage`](./types#exportedimage)
 
 用户应用了修改，结果已经显示。`blob` 是格式为 `type` 的图片，格式由 [`output`](./options#output) 决定。
 
 ## `download`
 
-- **载荷：** `{ source: string | Blob, filename: string, preventDefault: () => void }`
+- **载荷：** [`PaperPicDownload`](./types#paperpicdownload)
 
 图片即将通过下载按钮或 [`download()`](./methods#download) 保存。`source` 是显示的图片：上一次应用的结果，没有则是 `src`。`filename` 是文件名。
 

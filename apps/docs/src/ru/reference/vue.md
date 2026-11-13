@@ -35,13 +35,13 @@ function upload({ blob }: ExportedImage) {
 
 ## События
 
-| Событие    | Данные                                 |
-| ---------- | -------------------------------------- |
-| `apply`    | `{ blob, width, height, type }`        |
-| `change`   | [`PaperPicState`](./state)             |
-| `download` | `{ source, filename, preventDefault }` |
-| `error`    | `{ error }`                            |
-| `load`     | `{ width, height }`                    |
+| Событие    | Данные                                         |
+| ---------- | ---------------------------------------------- |
+| `apply`    | [`ExportedImage`](./types#exportedimage)       |
+| `change`   | [`PaperPicState`](./state)                     |
+| `download` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `error`    | `{ error }`                                    |
+| `load`     | [`Size`](./types#size)                         |
 
 [События](./events) описывают каждое. Изменённый prop никогда не вызывает `change`.
 
@@ -69,9 +69,9 @@ const pic = useTemplateRef('pic')
 
 Повторная передача того же `src` не перезагружает изображение, поэтому результат редактирования сохраняется. Чтобы вернуть оригинал, вызовите `instance.reload()`.
 
-## Типы
+## Типы {#types}
 
-`@paperpic/vue` экспортирует нужные типы, так что устанавливать `@paperpic/core` не нужно: `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` и `ToolId`.
+`@paperpic/vue` экспортирует все типы `@paperpic/core`, так что устанавливать его не нужно: каждый из них показан в разделе [Типы](./types). Кроме того, он экспортирует типы компонента: [`PaperPicProps`](./types#paperpicprops) с его пропсами и [`PaperPicInstance`](./types#paperpicinstance) — просмотрщик в `instance`.
 
 ## Рендеринг на сервере
 

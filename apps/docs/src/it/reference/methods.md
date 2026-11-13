@@ -58,7 +58,7 @@ Restituisce ciò che mostra il visualizzatore, come lo zoom, la modalità e se c
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 Ascolta un evento e restituisce una funzione che smette di ascoltarlo. [Eventi](./events) descrive ogni evento.
@@ -90,20 +90,20 @@ Riduce di un passo, attorno al centro del visualizzatore.
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-Imposta lo zoom, dove `1` mostra un pixel dell’immagine per pixel dello schermo. `point` resta al suo posto: è in pixel CSS dall’angolo in alto a sinistra del visualizzatore, e per impostazione predefinita è il suo centro.
+Imposta lo zoom, dove `1` mostra un pixel dell’immagine per pixel dello schermo. [`point`](./types#viewpoint) resta al suo posto: è in pixel CSS dall’angolo in alto a sinistra del visualizzatore, e per impostazione predefinita è il suo centro.
 
 Lo zoom va dall’adattamento dell’immagine intera, o `1` se è più piccolo, fino a `8`. Un valore fuori da questo intervallo viene limitato.
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-Adatta al visualizzatore l’immagine intera, la sua larghezza o la sua altezza.
+Adatta al visualizzatore l’immagine intera, la sua larghezza o la sua altezza. `fit` è un [`Fit`](./types#fit): `'image'`, `'width'` o `'height'`.
 
 ## Modifica
 
