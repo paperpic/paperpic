@@ -49,7 +49,7 @@ The viewer fills its container, so give the container a height. Import the style
 import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
-const pic = new PaperPic(document.querySelector('#viewer'), {
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/receipt.jpg',
   alt: 'A receipt',
 })

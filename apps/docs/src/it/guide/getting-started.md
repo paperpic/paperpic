@@ -49,7 +49,7 @@ Il visualizzatore riempie il suo contenitore, quindi dai un’altezza al conteni
 import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
-const pic = new PaperPic(document.querySelector('#viewer'), {
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/receipt.jpg',
   alt: 'Uno scontrino',
 })

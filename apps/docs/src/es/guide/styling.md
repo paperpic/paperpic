@@ -125,7 +125,7 @@ La opción [`icons`](../reference/options#icons) sustituye cualquier icono por t
 import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
-const pic = new PaperPic(document.querySelector('#viewer'), {
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/receipt.jpg',
   icons: {
     zoomIn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7" /><path d="M11 8v6M8 11h6M20 20l-4-4" /></svg>',

@@ -90,6 +90,7 @@ The top navigation has Guide, Reference, Examples and Playground, and a version 
 - The labels of the component in each language live in `apps/docs/.vitepress/theme/components/paperpic-labels.ts`.
 - The glossaries live in `apps/docs/glossary/<locale>.md`, outside `src`, so they are not published.
 - The reference test lives in `apps/docs` and runs with `pnpm test`. It reads the members of `PaperPicOptions`, the public methods of `PaperPic` and the event names with the TypeScript compiler API.
+- The examples test lives next to it. It compiles with `vue-tsc` every code block that imports something, which makes it a complete example (S12), in the English pages, the READMEs and `skills/*/SKILL.md`. `upload`, `translations` and `container` stand for the code of the reader, and the test declares them.
 
 ## Work plan
 
