@@ -6,10 +6,16 @@ import { useImperativeHandle, useLayoutEffect, useRef } from 'react'
 type Handlers = Pick<PaperPicProps, 'onApply' | 'onChange' | 'onDownload' | 'onError' | 'onLoad'>
 
 /**
- * A document image viewer and editor. It fills its parent element, which needs a height.
+ * A document image viewer and editor. It fills its parent element, which needs a height. Import the stylesheet once,
+ * from `@paperpic/react/style.css`.
  *
  * @example
- * <PaperPic src="/receipt.jpg" alt="A receipt" onApply={({ blob }) => upload(blob)} />
+ * import { PaperPic } from '@paperpic/react'
+ * import '@paperpic/react/style.css'
+ *
+ * <div style={{ height: 480 }}>
+ *   <PaperPic src="/receipt.jpg" alt="A receipt" onApply={({ blob }) => upload(blob)} />
+ * </div>
  */
 export function PaperPic({
   ref,

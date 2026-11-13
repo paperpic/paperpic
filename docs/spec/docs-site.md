@@ -28,6 +28,7 @@ The [component spec](paperpic-component.md) stays the source of truth for behavi
 | S14 | The site goes live with the first release on npm, when the `DOCS_DEPLOY` repository variable is set to `true`.                                                                                                                                                    | Before that release, the install commands fail.                                                              |
 | S15 | Examples show their code in the page, without links to open them in StackBlitz or another online editor.                                                                                                                                                          | The code in the page and the playground are enough for now.                                                  |
 | S16 | `context7.json` at the root of the repository points Context7 to the English pages in `apps/docs/src/en`, without the playground, and gives it rules for setting PaperPic up.                                                                                     | Coding agents also read docs through Context7. The other languages and the specs would only add noise.       |
+| S17 | `skills/paperpic/SKILL.md` is an agent skill for the developers who use PaperPic, installed with `npx skills add paperpic/paperpic`. It covers the setup, common tasks and behavior to plan for, and points to the reference for the rest.                        | The agent loads it only when a task touches PaperPic, and sets PaperPic up without reading the site.         |
 | S18 | Each package ships the English pages in `dist/docs`, copied by its build without the home and the playground.                                                                                                                                                     | Agents read `node_modules` first. They find the docs of the installed version there, without the network.    |
 
 ## Pages
@@ -90,6 +91,7 @@ The top navigation has Guide, Reference, Examples and Playground, and a version 
 - The labels of the component in each language live in `apps/docs/.vitepress/theme/components/paperpic-labels.ts`.
 - The glossaries live in `apps/docs/glossary/<locale>.md`, outside `src`, so they are not published.
 - The reference test lives in `apps/docs` and runs with `pnpm test`. It reads the members of `PaperPicOptions`, the public methods of `PaperPic` and the event names with the TypeScript compiler API.
+- The examples test lives next to it. It compiles with `vue-tsc` every code block that imports something, which makes it a complete example (S12), in the English pages, the READMEs and `skills/*/SKILL.md`. `upload`, `translations` and `container` stand for the code of the reader, and the test declares them.
 
 ## Work plan
 
