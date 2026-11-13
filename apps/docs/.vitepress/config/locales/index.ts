@@ -1,5 +1,6 @@
 import type { DefaultTheme, LocaleConfig } from 'vitepress'
 import type { Translation } from './types'
+import core from '../../../../../packages/core/package.json'
 import { sidebar } from '../sidebar'
 import de from './de.json'
 import en from './en.json'
@@ -43,7 +44,7 @@ function sidebarOf(prefix: string, { groups, pages }: Translation): DefaultTheme
 
 export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
   Object.entries(translations).map(([key, translation]) => {
-    const { label, lang, description, examples, guide, reference, playground, theme } = translation
+    const { label, lang, description, examples, guide, reference, playground, changelog, contributing, theme } = translation
     const prefix = key === 'root'
       ? ''
       : `/${key}`
@@ -66,6 +67,14 @@ export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
             { text: reference, link: `${prefix}/reference/options`, activeMatch: `^${prefix}/reference/` },
             { text: examples, link: `${prefix}/examples/upload`, activeMatch: `^${prefix}/examples/` },
             { text: playground, link: `${prefix}/playground` },
+            // The packages share one version, as a fixed group in .changeset/config.json
+            {
+              text: core.version,
+              items: [
+                { text: changelog, link: 'https://github.com/paperpic/paperpic/releases' },
+                { text: contributing, link: 'https://github.com/paperpic/paperpic/blob/development/.github/CONTRIBUTING.md' },
+              ],
+            },
           ],
           sidebar: sidebarOf(prefix, translation),
         },

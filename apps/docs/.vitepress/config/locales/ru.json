@@ -7,6 +7,8 @@
   "reference": "Справочник",
   "examples": "Примеры",
   "playground": "Песочница",
+  "changelog": "История изменений",
+  "contributing": "Участие в разработке",
   "groups": {
     "introduction": "Введение",
     "essentials": "Основы",
