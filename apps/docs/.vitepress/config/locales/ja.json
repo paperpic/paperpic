@@ -7,6 +7,8 @@
   "reference": "リファレンス",
   "examples": "例",
   "playground": "プレイグラウンド",
+  "changelog": "変更履歴",
+  "contributing": "コントリビュート",
   "groups": {
     "introduction": "入門",
     "essentials": "基本",

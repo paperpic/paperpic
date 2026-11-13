@@ -19,6 +19,10 @@ type ThemeStrings = Pick<
 }
 
 export interface Translation {
+  /** The link to the GitHub Releases, in the version menu. */
+  changelog: string
+  /** The link to the contribution guide on GitHub, in the version menu. */
+  contributing: string
   description: string
   examples: string
   /** The titles of the sidebar groups. */

@@ -7,6 +7,8 @@
   "reference": "参考",
   "examples": "示例",
   "playground": "演练场",
+  "changelog": "更新日志",
+  "contributing": "贡献指南",
   "groups": {
     "introduction": "简介",
     "essentials": "基础",

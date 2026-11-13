@@ -1,6 +1,6 @@
 # Docs site spec
 
-**Status:** agreed on 2026-11-10, not built yet. This file grows as decisions are made. Anything not listed under [Decisions](#decisions) is still open.
+**Status:** agreed on 2026-11-10, and live at `paperpic.dev` since the 0.1.0 release on 2026-11-13. This file grows as decisions are made. Anything not listed under [Decisions](#decisions) is still open.
 
 ## Goal
 
@@ -21,7 +21,7 @@ The [component spec](paperpic-component.md) stays the source of truth for behavi
 | S7  | A few pages embed a live demo: a `Demo` component that mounts `@paperpic/vue` with the options the page passes, only in the browser and only when it scrolls into view. The playground stays as the full demo.                                                    | Seeing the behavior beats reading about it, but each demo loads the component, its worker and an image.      |
 | S8  | VitePress local search, with its interface translated in each language.                                                                                                                                                                                           | No external service or account.                                                                              |
 | S9  | The site publishes `llms.txt` and `llms-full.txt`, built from the English pages.                                                                                                                                                                                  | Coding agents read docs this way, and English is enough for them.                                            |
-| S10 | One changelog page includes the `CHANGELOG.md` that changesets writes for each package. Every language has the page, with the notes in English.                                                                                                                   | Release notes are written once, at release time.                                                             |
+| S10 | The changelog is the list of GitHub Releases, linked from the version menu. The site has no changelog page.                                                                                                                                                       | Each release carries the changesets notes of its package, and one list covers the three packages.            |
 | S11 | One version of the docs, for the latest release, until 1.0.                                                                                                                                                                                                       | Versions before 1.0 are not supported side by side.                                                          |
 | S12 | Plain English with short sentences, active voice and "you", without marketing language. Each page opens with the problem it solves. Code examples are complete and run as copied.                                                                                 | The same voice as the component spec and the READMEs, and easier to translate well.                          |
 | S13 | The home shows a before and after comparison that the reader drags: a photo of a document taken at an angle with a shadow, and the result PaperPic makes from it. Below it come six features from the README and links to Getting started, Playground and GitHub. | It shows what PaperPic does in a second, with two static images instead of the whole component.              |
@@ -33,7 +33,7 @@ The [component spec](paperpic-component.md) stays the source of truth for behavi
 
 ## Pages
 
-The top navigation has Guide, Reference, Examples and Playground, and a version menu that links to the changelog. Each section has its own sidebar.
+The top navigation has Guide, Reference, Examples and Playground, and a menu named after the current version. The menu links to the GitHub Releases as the changelog (S10) and to the contribution guide on GitHub, as the VitePress site does. Once an earlier major version keeps its own docs, the menu links to them too. Each section has its own sidebar.
 
 ### Guide
 
@@ -82,7 +82,6 @@ The top navigation has Guide, Reference, Examples and Playground, and a version 
 | ---------- | ------------- | ------------------------------------ |
 | Home       | `/`           | See S13.                             |
 | Playground | `/playground` | The full demo, which already exists. |
-| Changelog  | `/changelog`  | See S10.                             |
 
 ## Where things live
 
@@ -102,7 +101,7 @@ One pull request for each step, each with all 10 languages:
 3. **Guide, part 1.** Introduction, Getting started, Viewer and Editing. The package READMEs are trimmed (S4).
 4. **Guide, part 2.** The tool pages and Saving the result.
 5. **Guide, part 3.** Styling, Labels, Accessibility, and Performance and support.
-6. **Examples and changelog.** The changelog page waits until the first release has written the changelogs.
+6. **Examples and changelog.** After the first release, the changelog became a link to the GitHub Releases in the version menu (S10).
 7. **Home.**
 
-The site then goes live with the first release on npm (S14).
+Every step is done. The site went live with the first release on npm, 0.1.0, on 2026-11-13 (S14).
