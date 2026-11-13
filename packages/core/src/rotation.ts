@@ -1,3 +1,8 @@
+/**
+ * How far the image is turned, in degrees clockwise.
+ *
+ * @see https://paperpic.dev/reference/state
+ */
 export type Rotation = 0 | 90 | 180 | 270
 
 /**

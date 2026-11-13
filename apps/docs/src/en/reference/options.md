@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Type:** `string | Blob`
+- **Type:** [`PaperPicSource`](./types#paperpicsource)
 - **Default:** none
 
 The image to show: a URL from the same origin, or a `File` or `Blob` attached on the client.
@@ -51,7 +51,7 @@ Whether to show the built-in toolbar and edit bar. Without them, build your own 
 
 ### `tools`
 
-- **Type:** `readonly ToolId[]`
+- **Type:** [`readonly ToolId[]`](./types#toolid)
 - **Default:** every tool
 
 The tools the edit bar offers. They keep the order of this table, whatever the order of the array.
@@ -81,14 +81,14 @@ Whether the toolbar has a button that saves the image on display: the result of 
 
 ### `labels`
 
-- **Type:** `Partial<PaperPicLabels>`
+- **Type:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **Default:** the English texts
 
 Replaces any of the texts that the component shows or announces. [Labels](./labels) lists every key.
 
 ### `icons`
 
-- **Type:** `Partial<PaperPicIcons>`
+- **Type:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **Default:** the built-in icons
 
 Replaces any of the icons with your own markup of one element, such as an `<svg>`. The markup goes into the page as HTML, so pass only markup you trust. An empty string leaves the buttons of that icon without one. [Styling](../guide/styling#icons) shows an example.
@@ -122,7 +122,7 @@ Each key names an icon, and some icons appear on two buttons:
 
 ### `output`
 
-- **Type:** `{ type?: string, quality?: number }`
+- **Type:** [`PaperPicOutput`](./types#paperpicoutput)
 - **Default:** the format of the source
 
 The format of the edited image. `type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`, and `quality` goes from 0 to 1 for JPEG and WebP, with `0.92` by default.

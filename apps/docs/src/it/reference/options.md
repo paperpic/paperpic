@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Tipo:** `string | Blob`
+- **Tipo:** [`PaperPicSource`](./types#paperpicsource)
 - **Valore predefinito:** nessuno
 
 L’immagine da mostrare: un URL della stessa origine, oppure un `File` o un `Blob` allegato nel client.
@@ -51,7 +51,7 @@ Se mostrare la barra degli strumenti e la barra di modifica integrate. Senza di 
 
 ### `tools`
 
-- **Tipo:** `readonly ToolId[]`
+- **Tipo:** [`readonly ToolId[]`](./types#toolid)
 - **Valore predefinito:** tutti gli strumenti
 
 Gli strumenti che offre la barra di modifica. Mantengono l’ordine di questa tabella, qualunque sia l’ordine dell’array.
@@ -81,14 +81,14 @@ Se la barra degli strumenti ha un pulsante che salva l’immagine visualizzata: 
 
 ### `labels`
 
-- **Tipo:** `Partial<PaperPicLabels>`
+- **Tipo:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **Valore predefinito:** i testi in inglese
 
 Sostituisce qualsiasi testo che il componente mostra o annuncia. [Etichette](./labels) elenca tutte le chiavi.
 
 ### `icons`
 
-- **Tipo:** `Partial<PaperPicIcons>`
+- **Tipo:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **Valore predefinito:** le icone incluse
 
 Sostituisce qualsiasi icona con il tuo markup di un solo elemento, come un `<svg>`. Il markup entra nella pagina come HTML, quindi passa solo markup di cui ti fidi. Una stringa vuota lascia senza icona i pulsanti di quell’icona. [Stili](../guide/styling#icons) mostra un esempio.
@@ -122,7 +122,7 @@ Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
 
 ### `output`
 
-- **Tipo:** `{ type?: string, quality?: number }`
+- **Tipo:** [`PaperPicOutput`](./types#paperpicoutput)
 - **Valore predefinito:** il formato dell’immagine originale
 
 Il formato dell’immagine modificata. `type` è `'image/jpeg'`, `'image/png'` o `'image/webp'`, e `quality` va da 0 a 1 per JPEG e WebP, con `0.92` come valore predefinito.

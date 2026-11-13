@@ -5,7 +5,11 @@ import type { Size, ViewPoint } from '../state/view'
 import type { PaperPicLabels } from '../ui/labels'
 import type { Lens } from './magnifier'
 
-/** The tools the edit bar can offer. */
+/**
+ * The tools the edit bar can offer. `perspective` is Straighten, and `threshold` is Clean up.
+ *
+ * @see https://paperpic.dev/reference/options#tools
+ */
 export type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'threshold'
 
 /** What a button of a tool can do to the edit in progress. */

@@ -36,6 +36,7 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 | switch, of Clean up                           | 开关       |
 | tool                                          | 工具       |
 | toolbar, the bar of buttons at the right      | 工具栏     |
+| type, of TypeScript                           | 类型       |
 | view mode                                     | 查看模式   |
 | viewer                                        | 查看器     |
 | wrapper, such as `@paperpic/vue`              | 封装组件   |

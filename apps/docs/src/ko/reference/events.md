@@ -30,7 +30,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `load`
 
-- **페이로드:** `{ width: number, height: number }`
+- **페이로드:** [`Size`](./types#size)
 
 이미지를 불러와 화면에 표시했습니다. `width`와 `height`는 픽셀 단위 크기입니다.
 
@@ -48,13 +48,13 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `apply`
 
-- **페이로드:** `{ blob: Blob, width: number, height: number, type: string }`
+- **페이로드:** [`ExportedImage`](./types#exportedimage)
 
 사용자가 변경을 적용했고, 결과가 이미 화면에 있습니다. `blob`에는 [`output`](./options#output)이 정하는 형식 `type`의 이미지가 들어 있습니다.
 
 ## `download`
 
-- **페이로드:** `{ source: string | Blob, filename: string, preventDefault: () => void }`
+- **페이로드:** [`PaperPicDownload`](./types#paperpicdownload)
 
 다운로드 버튼이나 [`download()`](./methods#download)로 이미지가 곧 저장됩니다. `source`는 화면의 이미지로, 마지막 적용의 결과이고 없으면 `src`입니다. `filename`은 파일 이름입니다.
 

@@ -36,6 +36,7 @@ Use these words in the Korean docs, so that each idea has one name on every page
 | switch, of Clean up                           | 스위치         |
 | tool                                          | 도구           |
 | toolbar, the bar of buttons at the right      | 도구 모음      |
+| type, of TypeScript                           | 타입           |
 | view mode                                     | 보기 모드      |
 | viewer                                        | 뷰어           |
 | wrapper, such as `@paperpic/vue`              | 래퍼           |

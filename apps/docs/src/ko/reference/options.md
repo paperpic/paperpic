@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **타입:** `string | Blob`
+- **타입:** [`PaperPicSource`](./types#paperpicsource)
 - **기본값:** 없음
 
 보여 줄 이미지입니다. 같은 출처의 URL이나, 클라이언트에서 첨부한 `File` 또는 `Blob`을 지정합니다.
@@ -51,7 +51,7 @@ pic.setOptions({ editable: false })
 
 ### `tools`
 
-- **타입:** `readonly ToolId[]`
+- **타입:** [`readonly ToolId[]`](./types#toolid)
 - **기본값:** 모든 도구
 
 편집 바에 표시할 도구입니다. 배열의 순서와 관계없이 이 표의 순서대로 나옵니다.
@@ -81,14 +81,14 @@ pic.setOptions({ editable: false })
 
 ### `labels`
 
-- **타입:** `Partial<PaperPicLabels>`
+- **타입:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **기본값:** 영어 텍스트
 
 컴포넌트가 표시하거나 읽어 주는 텍스트를 바꿉니다. 모든 키는 [레이블](./labels)에 있습니다.
 
 ### `icons`
 
-- **타입:** `Partial<PaperPicIcons>`
+- **타입:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **기본값:** 내장 아이콘
 
 어떤 아이콘이든 `<svg>` 같은 요소 하나로 된 직접 만든 마크업으로 바꿉니다. 마크업은 HTML로 페이지에 들어가므로, 신뢰할 수 있는 마크업만 전달하세요. 빈 문자열을 주면 그 아이콘의 버튼은 아이콘 없이 표시됩니다. 예시는 [스타일](../guide/styling#icons)에 있습니다.
@@ -122,7 +122,7 @@ pic.setOptions({ editable: false })
 
 ### `output`
 
-- **타입:** `{ type?: string, quality?: number }`
+- **타입:** [`PaperPicOutput`](./types#paperpicoutput)
 - **기본값:** 원본 이미지의 형식
 
 편집한 이미지의 형식입니다. `type`은 `'image/jpeg'`, `'image/png'`, `'image/webp'` 중 하나이고, `quality`는 JPEG와 WebP에서 0부터 1까지이며 기본값은 `0.92`입니다.

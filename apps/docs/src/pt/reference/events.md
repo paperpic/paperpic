@@ -30,7 +30,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `load`
 
-- **Dados:** `{ width: number, height: number }`
+- **Dados:** [`Size`](./types#size)
 
 A imagem foi carregada e está na tela. `width` e `height` são o tamanho dela em pixels.
 
@@ -48,13 +48,13 @@ O usuário mudou a visualização ou a edição, por exemplo ao dar zoom, abrir 
 
 ## `apply`
 
-- **Dados:** `{ blob: Blob, width: number, height: number, type: string }`
+- **Dados:** [`ExportedImage`](./types#exportedimage)
 
 O usuário aplicou as alterações, e o resultado já está na tela. `blob` contém a imagem no formato `type`, que [`output`](./options#output) escolhe.
 
 ## `download`
 
-- **Dados:** `{ source: string | Blob, filename: string, preventDefault: () => void }`
+- **Dados:** [`PaperPicDownload`](./types#paperpicdownload)
 
 A imagem está prestes a ser salva, pelo botão de download ou por [`download()`](./methods#download). `source` é a imagem na tela: o resultado do último Aplicar, ou então o `src`. `filename` é o nome do arquivo.
 

@@ -1,4 +1,7 @@
-import type { PaperPicIcons, PaperPicLabels, PaperPicOutput, ToolId } from '@paperpic/core'
+import type { PaperPic, PaperPicIcons, PaperPicLabels, PaperPicOutput, PaperPicSource, ToolId } from '@paperpic/core'
+
+/** The viewer that the component exposes as `instance`, with the methods of `@paperpic/core`, such as `zoomIn()` or `reload()`. */
+export type PaperPicInstance = PaperPic
 
 /**
  * The props of `PaperPic`, which fills its parent element. Give the parent a height, and import the stylesheet once,
@@ -44,7 +47,7 @@ export interface PaperPicProps {
    */
   softness?: number
   /** The image to show: a URL from the same origin, or a file attached on the client. */
-  src?: string | Blob
+  src?: PaperPicSource
   /** Whether to show the built-in toolbar and edit bar. Without them, build your own with the methods of `instance`. */
   toolbar?: boolean
   /** Which tools the edit bar offers. By default, all of them. */

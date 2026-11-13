@@ -40,19 +40,19 @@ export function Receipt() {
 
 ## 이벤트
 
-| Prop         | 페이로드                               |
-| ------------ | -------------------------------------- |
-| `onApply`    | `{ blob, width, height, type }`        |
-| `onChange`   | [`PaperPicState`](./state)             |
-| `onDownload` | `{ source, filename, preventDefault }` |
-| `onError`    | `{ error }`                            |
-| `onLoad`     | `{ width, height }`                    |
+| Prop         | 페이로드                                       |
+| ------------ | ---------------------------------------------- |
+| `onApply`    | [`ExportedImage`](./types#exportedimage)       |
+| `onChange`   | [`PaperPicState`](./state)                     |
+| `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `onError`    | `{ error }`                                    |
+| `onLoad`     | [`Size`](./types#size)                         |
 
 각 이벤트는 [이벤트](./events)에서 설명합니다. 새 함수를 전달해도 뷰어를 다시 만들지 않으므로 인라인 함수를 써도 됩니다. props가 바뀌어도 `onChange`는 호출되지 않습니다.
 
 ## 메서드
 
-`ref`는 모든 [메서드](./methods)를 가진 `PaperPicInstance` 타입의 뷰어를 받습니다. 컴포넌트가 마운트되기 전에는 `null`입니다.
+`ref`는 모든 [메서드](./methods)를 가진 [`PaperPicInstance`](./types#paperpicinstance) 타입의 뷰어를 받습니다. 컴포넌트가 마운트되기 전에는 `null`입니다.
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -75,9 +75,9 @@ export function Viewer({ src }: { src: string }) {
 
 같은 `src`를 다시 전달해도 이미지를 다시 불러오지 않으므로 편집 결과가 유지됩니다. 원본으로 돌아가려면 `picRef.current.reload()`를 호출하세요.
 
-## 타입
+## 타입 {#types}
 
-`@paperpic/react`는 필요한 타입을 내보내므로 `@paperpic/core`를 설치할 필요가 없습니다. `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage`, `ToolId`입니다.
+`@paperpic/react`는 `@paperpic/core`의 모든 타입을 내보내므로 `@paperpic/core`를 설치할 필요가 없습니다. 각 타입은 [타입](./types)에서 볼 수 있습니다. 컴포넌트의 타입도 내보냅니다. props를 나타내는 [`PaperPicProps`](./types#paperpicprops)와 `ref`가 받는 뷰어를 나타내는 [`PaperPicInstance`](./types#paperpicinstance)입니다.
 
 ## 서버 사이드 렌더링
 

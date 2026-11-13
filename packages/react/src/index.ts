@@ -5,5 +5,20 @@ import '../../core/src/styles/index.css'
 
 export { PaperPic } from './components/PaperPic'
 export type { PaperPicInstance, PaperPicProps } from './types'
-// With strict installs, consumers cannot reach the types of @paperpic/core
-export type { ExportedImage, PaperPicDownload, PaperPicEvents, PaperPicIcons, PaperPicLabels, PaperPicOutput, PaperPicState, ToolId } from '@paperpic/core'
+// With strict installs, consumers cannot reach the types of @paperpic/core, so every one of them is here
+export type {
+  ExportedImage,
+  Fit,
+  PaperPicDownload,
+  PaperPicEvents,
+  PaperPicIcons,
+  PaperPicLabels,
+  PaperPicOptions,
+  PaperPicOutput,
+  PaperPicSource,
+  PaperPicState,
+  Rotation,
+  Size,
+  ToolId,
+  ViewPoint,
+} from '@paperpic/core'

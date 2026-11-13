@@ -35,13 +35,13 @@ function upload({ blob }: ExportedImage) {
 
 ## 事件
 
-| 事件       | 载荷                                   |
-| ---------- | -------------------------------------- |
-| `apply`    | `{ blob, width, height, type }`        |
-| `change`   | [`PaperPicState`](./state)             |
-| `download` | `{ source, filename, preventDefault }` |
-| `error`    | `{ error }`                            |
-| `load`     | `{ width, height }`                    |
+| 事件       | 载荷                                           |
+| ---------- | ---------------------------------------------- |
+| `apply`    | [`ExportedImage`](./types#exportedimage)       |
+| `change`   | [`PaperPicState`](./state)                     |
+| `download` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `error`    | `{ error }`                                    |
+| `load`     | [`Size`](./types#size)                         |
 
 每个事件见[事件](./events)。prop 的变化从不触发 `change`。
 
@@ -69,9 +69,9 @@ const pic = useTemplateRef('pic')
 
 再次传入相同的 `src` 不会重新加载图片，因此会保留编辑结果。要恢复原图，调用 `instance.reload()`。
 
-## 类型
+## 类型 {#types}
 
-`@paperpic/vue` 导出了你需要的类型，因此无需安装 `@paperpic/core`：`PaperPicProps`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage` 和 `ToolId`。
+`@paperpic/vue` 导出了 `@paperpic/core` 的所有类型，因此无需安装 `@paperpic/core`。[类型](./types)逐一列出了这些类型。它还导出了组件的类型：表示 props 的 [`PaperPicProps`](./types#paperpicprops)，以及表示 `instance` 中查看器的 [`PaperPicInstance`](./types#paperpicinstance)。
 
 ## 服务端渲染
 

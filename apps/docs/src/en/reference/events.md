@@ -30,7 +30,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `load`
 
-- **Payload:** `{ width: number, height: number }`
+- **Payload:** [`Size`](./types#size)
 
 The image is loaded and on display. `width` and `height` are its size in pixels.
 
@@ -48,13 +48,13 @@ The user changed the view or the edit, such as by zooming, opening a tool or und
 
 ## `apply`
 
-- **Payload:** `{ blob: Blob, width: number, height: number, type: string }`
+- **Payload:** [`ExportedImage`](./types#exportedimage)
 
 The user applied the edits, and the result is already on display. `blob` holds the image in the format `type`, which [`output`](./options#output) chooses.
 
 ## `download`
 
-- **Payload:** `{ source: string | Blob, filename: string, preventDefault: () => void }`
+- **Payload:** [`PaperPicDownload`](./types#paperpicdownload)
 
 The image is about to be saved, from the download button or from [`download()`](./methods#download). `source` is the image on display: the result of the last Apply, or else the `src`. `filename` is the name of the file.
 

@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **类型：** `string | Blob`
+- **类型：** [`PaperPicSource`](./types#paperpicsource)
 - **默认值：** 无
 
 要显示的图片：同源的 URL，或在客户端添加的 `File` 或 `Blob`。
@@ -51,7 +51,7 @@ pic.setOptions({ editable: false })
 
 ### `tools`
 
-- **类型：** `readonly ToolId[]`
+- **类型：** [`readonly ToolId[]`](./types#toolid)
 - **默认值：** 所有工具
 
 编辑栏提供的工具。无论数组的顺序如何，它们都按此表的顺序排列。
@@ -81,14 +81,14 @@ pic.setOptions({ editable: false })
 
 ### `labels`
 
-- **类型：** `Partial<PaperPicLabels>`
+- **类型：** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **默认值：** 英文文本
 
 替换组件显示或朗读的任意文本。所有键都列在[标签](./labels)中。
 
 ### `icons`
 
-- **类型：** `Partial<PaperPicIcons>`
+- **类型：** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **默认值：** 内置图标
 
 用你自己的单个元素标记（例如 `<svg>`）替换任意图标。标记会作为 HTML 插入页面，因此只传入你信任的标记。空字符串会让使用该图标的按钮不显示图标。[样式](../guide/styling#icons)中有示例。
@@ -122,7 +122,7 @@ pic.setOptions({ editable: false })
 
 ### `output`
 
-- **类型：** `{ type?: string, quality?: number }`
+- **类型：** [`PaperPicOutput`](./types#paperpicoutput)
 - **默认值：** 原图的格式
 
 编辑后图片的格式。`type` 为 `'image/jpeg'`、`'image/png'` 或 `'image/webp'`，`quality` 对 JPEG 和 WebP 取 0 到 1，默认为 `0.92`。

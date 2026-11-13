@@ -3,7 +3,11 @@ import type { PipelineStep } from './operations'
 import { pixelsToCanvas, readPixels } from './pixels'
 import { planRead } from './read-plan'
 
-/** The format of the image that editing produces. */
+/**
+ * The format of the image that editing produces.
+ *
+ * @see https://paperpic.dev/reference/options#output
+ */
 export interface PaperPicOutput {
   /** From 0 to 1, for JPEG and WebP. */
   quality?: number
@@ -11,12 +15,19 @@ export interface PaperPicOutput {
   type?: string
 }
 
-/** The image that editing produces. */
+/**
+ * The image that editing produces, which the `apply` event carries.
+ *
+ * @see https://paperpic.dev/reference/events#apply
+ */
 export interface ExportedImage {
+  /** The edited image, ready to upload. */
   blob: Blob
+  /** In pixels. */
   height: number
   /** The format of `blob`. A browser that cannot encode the requested one gives PNG. */
   type: string
+  /** In pixels. */
   width: number
 }
 

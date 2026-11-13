@@ -36,6 +36,7 @@ Use these words in the German docs, so that each idea has one name on every page
 | switch, of Clean up                           | Schalter           |
 | tool                                          | Werkzeug           |
 | toolbar, the bar of buttons at the right      | Werkzeugleiste     |
+| type, of TypeScript                           | Typ                |
 | view mode                                     | Ansichtsmodus      |
 | viewer                                        | Viewer             |
 | wrapper, such as `@paperpic/vue`              | Wrapper            |

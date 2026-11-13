@@ -36,6 +36,7 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 | switch, of Clean up                           | interruttore                |
 | tool                                          | strumento                   |
 | toolbar, the bar of buttons at the right      | barra degli strumenti       |
+| type, of TypeScript                           | tipo                        |
 | view mode                                     | modalità di visualizzazione |
 | viewer                                        | visualizzatore              |
 | wrapper, such as `@paperpic/vue`              | wrapper                     |

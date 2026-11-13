@@ -36,6 +36,7 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 | switch, of Clean up                           | переключатель                   |
 | tool                                          | инструмент                      |
 | toolbar, the bar of buttons at the right      | панель инструментов             |
+| type, of TypeScript                           | тип                             |
 | view mode                                     | режим просмотра                 |
 | viewer                                        | просмотрщик                     |
 | wrapper, such as `@paperpic/vue`              | обёртка                         |
