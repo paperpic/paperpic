@@ -109,6 +109,7 @@ pic.destroy()
 ```
 
 - The component fills its container, which needs a height.
+- Without its stylesheet, the component warns once per page in the console, naming the file to import.
 - `change` reports user actions, and `setOptions()` never emits it. `load` reports a loaded image, and `error` a failed load or a failed Apply. `apply` carries the result.
 - Rotate is one button in the edit bar that turns a quarter turn to the left, as in photo galleries. `rotate(1)` still turns right.
 - Flip is one button in the edit bar. It mirrors the image as it is on display, so after a turn it still mirrors left to right.
