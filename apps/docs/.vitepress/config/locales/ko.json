@@ -7,6 +7,8 @@
   "reference": "레퍼런스",
   "examples": "예제",
   "playground": "플레이그라운드",
+  "changelog": "변경 내역",
+  "contributing": "기여하기",
   "groups": {
     "introduction": "소개",
     "essentials": "기본",
