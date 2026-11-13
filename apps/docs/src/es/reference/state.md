@@ -15,16 +15,16 @@ pic.on('change', ({ canApply, busy }) => {
 
 | Campo         | Tipo                                         | Descripción                                                                                                        |
 | ------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `activeTool`  | `ToolId \| null`                             | La herramienta abierta, como `'crop'` o `'adjust'`, o `null`                                                       |
+| `activeTool`  | [`ToolId \| null`](./types#toolid)           | La herramienta abierta, como `'crop'` o `'adjust'`, o `null`                                                       |
 | `adjustments` | `{ brightness, contrast }`                   | El brillo y el contraste, cada uno de -1 a 1. Limpiar los deja fuera. Con Ajustar abierta, los valores que muestra |
 | `busy`        | `boolean`                                    | Si Aplicar está en marcha                                                                                          |
 | `canApply`    | `boolean`                                    | Si hay cambios para aplicar. Los giros y volteos que se anulan entre sí no cuentan como cambio                     |
 | `canRedo`     | `boolean`                                    | Si hay un cambio para recuperar                                                                                    |
 | `canUndo`     | `boolean`                                    | Si hay un cambio para deshacer                                                                                     |
-| `fit`         | `'image' \| 'width' \| 'height' \| null`     | El ajuste vigente, o `null` en cuanto el usuario hace zoom a mano                                                  |
-| `image`       | `{ width, height } \| null`                  | El tamaño de la imagen en pantalla en píxeles, con los cambios hechos, o `null` si no hay imagen                   |
+| `fit`         | [`Fit \| null`](./types#fit)                 | El ajuste vigente, o `null` en cuanto el usuario hace zoom a mano                                                  |
+| `image`       | [`Size \| null`](./types#size)               | El tamaño de la imagen en pantalla en píxeles, con los cambios hechos, o `null` si no hay imagen                   |
 | `mode`        | `'view' \| 'edit'`                           | Si el usuario está viendo o editando la imagen                                                                     |
-| `rotation`    | `0 \| 90 \| 180 \| 270`                      | Cuánto está girada la imagen en pantalla, en grados en el sentido de las agujas del reloj                          |
+| `rotation`    | [`Rotation`](./types#rotation)               | Cuánto está girada la imagen en pantalla, en grados en el sentido de las agujas del reloj                          |
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | Si hay una imagen, y si se cargó                                                                                   |
 | `threshold`   | `{ enabled, sensitivity }`                   | Si Limpiar está activado, y su sensibilidad de 0 a 1. Con Limpiar abierta, lo que muestra                          |
 | `zoom`        | `number`                                     | Píxeles de pantalla por cada píxel de la imagen                                                                    |

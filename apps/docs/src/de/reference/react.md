@@ -40,19 +40,19 @@ Objekte und Arrays wie `labels` oder `tools` erreichen den Viewer erneut, wann i
 
 ## Ereignisse
 
-| Prop         | Daten                                  |
-| ------------ | -------------------------------------- |
-| `onApply`    | `{ blob, width, height, type }`        |
-| `onChange`   | [`PaperPicState`](./state)             |
-| `onDownload` | `{ source, filename, preventDefault }` |
-| `onError`    | `{ error }`                            |
-| `onLoad`     | `{ width, height }`                    |
+| Prop         | Daten                                          |
+| ------------ | ---------------------------------------------- |
+| `onApply`    | [`ExportedImage`](./types#exportedimage)       |
+| `onChange`   | [`PaperPicState`](./state)                     |
+| `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `onError`    | `{ error }`                                    |
+| `onLoad`     | [`Size`](./types#size)                         |
 
 [Ereignisse](./events) beschreibt jedes davon. Eine neue Funktion erstellt den Viewer nicht neu, Inline-Funktionen sind also in Ordnung. Geänderte Props rufen nie `onChange` auf.
 
 ## Methoden
 
-`ref` bekommt den Viewer, vom Typ `PaperPicInstance`, mit allen [Methoden](./methods). Bis die Komponente gemountet ist, ist er `null`:
+`ref` bekommt den Viewer, vom Typ [`PaperPicInstance`](./types#paperpicinstance), mit allen [Methoden](./methods). Bis die Komponente gemountet ist, ist er `null`:
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -75,9 +75,9 @@ export function Viewer({ src }: { src: string }) {
 
 Derselbe `src` ein zweites Mal lädt das Bild nicht neu, es behält also das Ergebnis einer Bearbeitung. Um das Original zurückzuholen, rufe `picRef.current.reload()` auf.
 
-## Typen
+## Typen {#types}
 
-`@paperpic/react` exportiert die Typen, die du brauchst, du musst `@paperpic/core` also nicht installieren: `PaperPicProps`, `PaperPicInstance`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` und `ToolId`.
+`@paperpic/react` exportiert alle Typen von `@paperpic/core`, du musst es also nicht installieren: [Typen](./types) zeigt jeden einzelnen. Außerdem exportiert es die Typen der Komponente: [`PaperPicProps`](./types#paperpicprops) mit ihren Props und [`PaperPicInstance`](./types#paperpicinstance), den Viewer, den `ref` erhält.
 
 ## Serverseitiges Rendern
 

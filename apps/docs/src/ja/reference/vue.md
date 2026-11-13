@@ -35,13 +35,13 @@ function upload({ blob }: ExportedImage) {
 
 ## イベント
 
-| イベント   | データ                                 |
-| ---------- | -------------------------------------- |
-| `apply`    | `{ blob, width, height, type }`        |
-| `change`   | [`PaperPicState`](./state)             |
-| `download` | `{ source, filename, preventDefault }` |
-| `error`    | `{ error }`                            |
-| `load`     | `{ width, height }`                    |
+| イベント   | データ                                         |
+| ---------- | ---------------------------------------------- |
+| `apply`    | [`ExportedImage`](./types#exportedimage)       |
+| `change`   | [`PaperPicState`](./state)                     |
+| `download` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `error`    | `{ error }`                                    |
+| `load`     | [`Size`](./types#size)                         |
 
 各イベントは[イベント](./events)で説明しています。prop の変更で `change` は発生しません。
 
@@ -69,9 +69,9 @@ const pic = useTemplateRef('pic')
 
 同じ `src` をもう一度渡しても画像は再読み込みされないため、編集の結果が残ります。元画像に戻すには `instance.reload()` を呼び出します。
 
-## 型
+## 型 {#types}
 
-`@paperpic/vue` は必要な型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。`PaperPicProps`、`PaperPicState`、`PaperPicEvents`、`PaperPicIcons`、`PaperPicLabels`、`PaperPicOutput`、`PaperPicDownload`、`ExportedImage`、`ToolId` です。
+`@paperpic/vue` は `@paperpic/core` のすべての型をエクスポートしているため、`@paperpic/core` をインストールする必要はありません。各型は[型](./types)で確認できます。コンポーネントの型もエクスポートしています。props を表す [`PaperPicProps`](./types#paperpicprops) と、`instance` のビューアーを表す [`PaperPicInstance`](./types#paperpicinstance) です。
 
 ## サーバーサイドレンダリング
 

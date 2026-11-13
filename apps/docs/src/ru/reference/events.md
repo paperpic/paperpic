@@ -30,7 +30,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `load`
 
-- **Данные:** `{ width: number, height: number }`
+- **Данные:** [`Size`](./types#size)
 
 Изображение загружено и показано. `width` и `height` — его размер в пикселях.
 
@@ -48,13 +48,13 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `apply`
 
-- **Данные:** `{ blob: Blob, width: number, height: number, type: string }`
+- **Данные:** [`ExportedImage`](./types#exportedimage)
 
 Пользователь применил изменения, и результат уже на экране. `blob` содержит изображение в формате `type`, который выбирает [`output`](./options#output).
 
 ## `download`
 
-- **Данные:** `{ source: string | Blob, filename: string, preventDefault: () => void }`
+- **Данные:** [`PaperPicDownload`](./types#paperpicdownload)
 
 Изображение вот-вот будет сохранено кнопкой скачивания или через [`download()`](./methods#download). `source` — изображение на экране: результат последнего применения или, если его нет, `src`. `filename` — имя файла.
 

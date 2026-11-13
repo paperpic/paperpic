@@ -22,7 +22,7 @@ PaperPic shows an image of a document and lets the user crop, straighten, rotate
 2. **Import the stylesheet once**, from the same package: `@paperpic/core/style.css`, `@paperpic/vue/style.css` or `@paperpic/react/style.css`. Without it, the console warns `PaperPic: the stylesheet is missing`.
 3. **Give the container a height.** The viewer fills its container, and otherwise stays at its minimum height.
 4. **Pass `src` and `alt`.** `src` is a URL from the same origin as the page, or a `File` or `Blob` that the user attached. `alt` describes the image for screen readers.
-5. **Read the result from the `apply` event.** Its payload is `{ blob, width, height, type }`.
+5. **Read the result from the `apply` event.** Its payload is an `ExportedImage`: `{ blob, width, height, type }`.
 
 Done when the image shows at the container's height, and `apply` hands a `Blob` to your code.
 
@@ -126,5 +126,5 @@ For the installed version, read the package itself, where `<package>` is `core`,
 
 Online, for the latest version:
 
-- The docs: https://paperpic.dev/reference/options, `/reference/methods`, `/reference/events`, `/reference/vue` and `/reference/react`.
+- The docs: https://paperpic.dev/reference/options, `/reference/methods`, `/reference/events`, `/reference/types`, `/reference/vue` and `/reference/react`.
 - All the docs in one file for agents: https://paperpic.dev/llms-full.txt

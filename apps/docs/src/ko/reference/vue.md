@@ -35,13 +35,13 @@ function upload({ blob }: ExportedImage) {
 
 ## 이벤트
 
-| 이벤트     | 페이로드                               |
-| ---------- | -------------------------------------- |
-| `apply`    | `{ blob, width, height, type }`        |
-| `change`   | [`PaperPicState`](./state)             |
-| `download` | `{ source, filename, preventDefault }` |
-| `error`    | `{ error }`                            |
-| `load`     | `{ width, height }`                    |
+| 이벤트     | 페이로드                                       |
+| ---------- | ---------------------------------------------- |
+| `apply`    | [`ExportedImage`](./types#exportedimage)       |
+| `change`   | [`PaperPicState`](./state)                     |
+| `download` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `error`    | `{ error }`                                    |
+| `load`     | [`Size`](./types#size)                         |
 
 각 이벤트는 [이벤트](./events)에서 설명합니다. prop이 바뀌어도 `change`는 발생하지 않습니다.
 
@@ -69,9 +69,9 @@ const pic = useTemplateRef('pic')
 
 같은 `src`를 다시 전달해도 이미지를 다시 불러오지 않으므로 편집 결과가 유지됩니다. 원본으로 돌아가려면 `instance.reload()`를 호출하세요.
 
-## 타입
+## 타입 {#types}
 
-`@paperpic/vue`는 필요한 타입을 내보내므로 `@paperpic/core`를 설치할 필요가 없습니다. `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage`, `ToolId`입니다.
+`@paperpic/vue`는 `@paperpic/core`의 모든 타입을 내보내므로 `@paperpic/core`를 설치할 필요가 없습니다. 각 타입은 [타입](./types)에서 볼 수 있습니다. 컴포넌트의 타입도 내보냅니다. props를 나타내는 [`PaperPicProps`](./types#paperpicprops)와 `instance`의 뷰어를 나타내는 [`PaperPicInstance`](./types#paperpicinstance)입니다.
 
 ## 서버 사이드 렌더링
 

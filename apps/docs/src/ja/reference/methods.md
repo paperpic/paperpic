@@ -58,7 +58,7 @@ function getState(): PaperPicState
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 イベントを購読し、購読をやめる関数を返します。各イベントは[イベント](./events)で説明しています。
@@ -90,20 +90,20 @@ function zoomOut(): void
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-ズームを設定します。`1` で画像の 1 ピクセルを画面の 1 ピクセルで表示します。`point` の位置は動きません。`point` はビューアーの左上からの CSS ピクセルで指定し、デフォルトはビューアーの中心です。
+ズームを設定します。`1` で画像の 1 ピクセルを画面の 1 ピクセルで表示します。[`point`](./types#viewpoint) の位置は動きません。`point` はビューアーの左上からの CSS ピクセルで指定し、デフォルトはビューアーの中心です。
 
 ズームの範囲は、画像全体を収める倍率（それが `1` より大きい場合は `1`）から `8` までです。範囲外の値は範囲内に収められます。
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-画像全体、幅、または高さをビューアーに合わせます。
+画像全体、幅、または高さをビューアーに合わせます。`fit` は [`Fit`](./types#fit) 型で、`'image'`、`'width'`、`'height'` のいずれかです。
 
 ## 編集
 

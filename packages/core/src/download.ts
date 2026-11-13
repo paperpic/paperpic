@@ -1,13 +1,18 @@
+import type { PaperPicSource } from './paperpic'
 import { typeFromUrl } from './pipeline/export'
 
-/** What the `download` event carries. */
+/**
+ * What the `download` event carries.
+ *
+ * @see https://paperpic.dev/reference/events#download
+ */
 export interface PaperPicDownload {
   /** The name of the file, with the extension of its format. */
   filename: string
   /** Stops the browser from saving the file, so you can save it another way. */
   preventDefault: () => void
   /** The image to save: the result of the last Apply, or else the `src`. */
-  source: string | Blob
+  source: PaperPicSource
 }
 
 const DEFAULT_NAME = 'image'
@@ -36,7 +41,7 @@ function nameInUrl(url: string): string {
  * @param source What was loaded, which gives the name.
  * @param filename The name the consumer chose.
  */
-export function downloadName(image: string | Blob, source: string | Blob | undefined, filename?: string): string {
+export function downloadName(image: PaperPicSource, source: PaperPicSource | undefined, filename?: string): string {
   const original = source instanceof File
     ? source.name
     : typeof source === 'string'

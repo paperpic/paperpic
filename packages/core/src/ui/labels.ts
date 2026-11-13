@@ -1,4 +1,8 @@
-/** Every text the component shows or announces. */
+/**
+ * Every text the component shows or announces. The texts with values are functions.
+ *
+ * @see https://paperpic.dev/reference/labels
+ */
 export interface PaperPicLabels {
   /** Opens the ruler of brightness and contrast. */
   adjust: string

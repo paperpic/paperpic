@@ -58,7 +58,7 @@ Gibt zurück, was der Viewer zeigt, etwa den Zoom, den Modus und ob es Änderung
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 Hört auf ein Ereignis und gibt eine Funktion zurück, die das Zuhören beendet. [Ereignisse](./events) beschreibt jedes Ereignis.
@@ -90,20 +90,20 @@ Zoomt eine Stufe heraus, um die Mitte des Viewers.
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-Setzt den Zoom, wobei `1` ein Bildpixel pro Bildschirmpixel zeigt. `point` bleibt an seiner Stelle: Er ist in CSS-Pixeln von der oberen linken Ecke des Viewers angegeben und standardmäßig dessen Mitte.
+Setzt den Zoom, wobei `1` ein Bildpixel pro Bildschirmpixel zeigt. [`point`](./types#viewpoint) bleibt an seiner Stelle: Er ist in CSS-Pixeln von der oberen linken Ecke des Viewers angegeben und standardmäßig dessen Mitte.
 
 Der Zoom reicht von der Einpassung des ganzen Bildes, oder `1`, falls das kleiner ist, bis `8`. Ein Wert außerhalb wird begrenzt.
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-Passt das ganze Bild, seine Breite oder seine Höhe in den Viewer ein.
+Passt das ganze Bild, seine Breite oder seine Höhe in den Viewer ein. `fit` ist ein [`Fit`](./types#fit): `'image'`, `'width'` oder `'height'`.
 
 ## Bearbeitung
 

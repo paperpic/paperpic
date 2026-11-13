@@ -58,7 +58,7 @@ function getState(): PaperPicState
 ### `on()`
 
 ```ts
-function on(name: keyof PaperPicEvents, listener: (payload) => void): () => void
+function on<Name extends keyof PaperPicEvents>(name: Name, listener: (payload: PaperPicEvents[Name]) => void): () => void
 ```
 
 이벤트를 구독하고, 구독을 끝내는 함수를 반환합니다. 각 이벤트는 [이벤트](./events)에서 설명합니다.
@@ -90,20 +90,20 @@ function zoomOut(): void
 ### `zoomTo()`
 
 ```ts
-function zoomTo(zoom: number, point?: { x: number, y: number }): void
+function zoomTo(zoom: number, point?: ViewPoint): void
 ```
 
-배율을 설정합니다. `1`은 이미지 1픽셀을 화면 1픽셀로 보여 줍니다. `point`는 제자리에 머뭅니다. `point`는 뷰어 왼쪽 위에서부터의 CSS 픽셀이며, 기본값은 뷰어 중앙입니다.
+배율을 설정합니다. `1`은 이미지 1픽셀을 화면 1픽셀로 보여 줍니다. [`point`](./types#viewpoint)는 제자리에 머뭅니다. `point`는 뷰어 왼쪽 위에서부터의 CSS 픽셀이며, 기본값은 뷰어 중앙입니다.
 
 배율은 이미지 전체를 맞춘 배율(그 값이 `1`보다 크면 `1`)부터 `8`까지입니다. 범위를 벗어난 값은 범위 안으로 맞춰집니다.
 
 ### `fit()`
 
 ```ts
-function fit(fit: 'image' | 'width' | 'height'): void
+function fit(fit: Fit): void
 ```
 
-이미지 전체, 너비, 또는 높이를 뷰어에 맞춥니다.
+이미지 전체, 너비, 또는 높이를 뷰어에 맞춥니다. `fit`은 [`Fit`](./types#fit) 타입으로, `'image'`, `'width'`, `'height'` 중 하나입니다.
 
 ## 편집
 

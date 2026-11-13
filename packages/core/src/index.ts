@@ -1,9 +1,10 @@
 import './styles/index.css'
 
 export type { PaperPicDownload } from './download'
-export * from './paperpic'
+export { PaperPic } from './paperpic'
+export type { PaperPicEvents, PaperPicOptions, PaperPicSource, PaperPicState } from './paperpic'
 export type { ExportedImage, PaperPicOutput } from './pipeline/export'
-export * from './rotation'
+export type { Rotation } from './rotation'
 export type { Fit, Size, ViewPoint } from './state/view'
 export type { ToolId } from './tools/types'
 export type { PaperPicIcons } from './ui/icons'

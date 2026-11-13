@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Typ:** `string | Blob`
+- **Typ:** [`PaperPicSource`](./types#paperpicsource)
 - **Standard:** keiner
 
 Das anzuzeigende Bild: eine URL vom selben Ursprung, oder ein `File` oder `Blob`, das im Client angehängt wurde.
@@ -51,7 +51,7 @@ Ob die eingebaute Werkzeugleiste und Bearbeitungsleiste angezeigt werden. Ohne s
 
 ### `tools`
 
-- **Typ:** `readonly ToolId[]`
+- **Typ:** [`readonly ToolId[]`](./types#toolid)
 - **Standard:** alle Werkzeuge
 
 Die Werkzeuge, die die Bearbeitungsleiste anbietet. Sie behalten die Reihenfolge dieser Tabelle, egal in welcher Reihenfolge das Array sie nennt.
@@ -81,14 +81,14 @@ Ob die Werkzeugleiste eine Schaltfläche hat, die das angezeigte Bild speichert:
 
 ### `labels`
 
-- **Typ:** `Partial<PaperPicLabels>`
+- **Typ:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **Standard:** die englischen Texte
 
 Ersetzt beliebige Texte, die die Komponente anzeigt oder ansagt. [Beschriftungen](./labels) listet alle Schlüssel.
 
 ### `icons`
 
-- **Typ:** `Partial<PaperPicIcons>`
+- **Typ:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **Standard:** die eingebauten Icons
 
 Ersetzt beliebige Icons durch dein eigenes Markup aus einem einzigen Element, etwa ein `<svg>`. Das Markup kommt als HTML in die Seite, übergib also nur Markup, dem du vertraust. Ein leerer String lässt die Schaltflächen dieses Icons ohne Icon. [Gestaltung](../guide/styling#icons) zeigt ein Beispiel.
@@ -122,7 +122,7 @@ Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltfläch
 
 ### `output`
 
-- **Typ:** `{ type?: string, quality?: number }`
+- **Typ:** [`PaperPicOutput`](./types#paperpicoutput)
 - **Standard:** das Format des Quellbilds
 
 Das Format des bearbeiteten Bildes. `type` ist `'image/jpeg'`, `'image/png'` oder `'image/webp'`, und `quality` reicht von 0 bis 1 für JPEG und WebP, standardmäßig `0.92`.

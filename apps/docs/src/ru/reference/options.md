@@ -19,7 +19,7 @@ pic.setOptions({ editable: false })
 
 ### `src`
 
-- **Тип:** `string | Blob`
+- **Тип:** [`PaperPicSource`](./types#paperpicsource)
 - **По умолчанию:** нет
 
 Изображение для показа: URL того же источника или `File` либо `Blob`, прикреплённый на клиенте.
@@ -51,7 +51,7 @@ pic.setOptions({ editable: false })
 
 ### `tools`
 
-- **Тип:** `readonly ToolId[]`
+- **Тип:** [`readonly ToolId[]`](./types#toolid)
 - **По умолчанию:** все инструменты
 
 Инструменты, которые предлагает панель редактирования. Они идут в порядке этой таблицы, в каком бы порядке их ни перечислял массив.
@@ -81,14 +81,14 @@ pic.setOptions({ editable: false })
 
 ### `labels`
 
-- **Тип:** `Partial<PaperPicLabels>`
+- **Тип:** [`Partial<PaperPicLabels>`](./types#paperpiclabels)
 - **По умолчанию:** тексты на английском
 
 Заменяет любые тексты, которые компонент показывает или озвучивает. [Подписи](./labels) перечисляют все ключи.
 
 ### `icons`
 
-- **Тип:** `Partial<PaperPicIcons>`
+- **Тип:** [`Partial<PaperPicIcons>`](./types#paperpicicons)
 - **По умолчанию:** встроенные иконки
 
 Заменяет любые иконки вашей разметкой из одного элемента, например `<svg>`. Разметка попадает на страницу как HTML, поэтому передавайте только разметку, которой доверяете. Пустая строка оставляет кнопки этой иконки без неё. Пример показывает [Оформление](../guide/styling#icons).
@@ -122,7 +122,7 @@ pic.setOptions({ editable: false })
 
 ### `output`
 
-- **Тип:** `{ type?: string, quality?: number }`
+- **Тип:** [`PaperPicOutput`](./types#paperpicoutput)
 - **По умолчанию:** формат исходного изображения
 
 Формат отредактированного изображения. `type` — это `'image/jpeg'`, `'image/png'` или `'image/webp'`, а `quality` — от 0 до 1 для JPEG и WebP, по умолчанию `0.92`.

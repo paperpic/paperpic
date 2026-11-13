@@ -38,6 +38,7 @@
     "reference/methods": "메서드",
     "reference/events": "이벤트",
     "reference/state": "상태",
+    "reference/types": "타입",
     "reference/labels": "레이블",
     "reference/css-tokens": "CSS 토큰",
     "reference/vue": "Vue",

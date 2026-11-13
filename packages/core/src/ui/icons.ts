@@ -19,7 +19,11 @@ import undo from '../assets/icons/undo.svg?raw'
 import zoomIn from '../assets/icons/zoom-in.svg?raw'
 import zoomOut from '../assets/icons/zoom-out.svg?raw'
 
-/** Every icon of the interface, as the markup of one element, such as an `<svg>`. One icon can appear on several buttons. */
+/**
+ * Every icon of the interface, as the markup of one element, such as an `<svg>`. One icon can appear on several buttons.
+ *
+ * @see https://paperpic.dev/reference/options#icons
+ */
 export interface PaperPicIcons {
   /** Adjust, which opens the ruler of brightness and contrast. */
   adjust: string

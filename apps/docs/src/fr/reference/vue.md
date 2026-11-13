@@ -35,13 +35,13 @@ Les objets et tableaux que le template construit, comme `:labels="{ apply: t('ap
 
 ## Événements
 
-| Événement  | Données                                |
-| ---------- | -------------------------------------- |
-| `apply`    | `{ blob, width, height, type }`        |
-| `change`   | [`PaperPicState`](./state)             |
-| `download` | `{ source, filename, preventDefault }` |
-| `error`    | `{ error }`                            |
-| `load`     | `{ width, height }`                    |
+| Événement  | Données                                        |
+| ---------- | ---------------------------------------------- |
+| `apply`    | [`ExportedImage`](./types#exportedimage)       |
+| `change`   | [`PaperPicState`](./state)                     |
+| `download` | [`PaperPicDownload`](./types#paperpicdownload) |
+| `error`    | `{ error }`                                    |
+| `load`     | [`Size`](./types#size)                         |
 
 [Événements](./events) décrit chacun d’eux. Un changement de prop n’émet jamais `change`.
 
@@ -69,9 +69,9 @@ const pic = useTemplateRef('pic')
 
 Passer le même `src` une nouvelle fois ne recharge pas l’image, donc elle garde le résultat d’une modification. Pour retrouver l’original, appelez `instance.reload()`.
 
-## Types
+## Types {#types}
 
-`@paperpic/vue` exporte les types dont vous avez besoin, donc inutile d’installer `@paperpic/core` : `PaperPicProps`, `PaperPicState`, `PaperPicEvents`, `PaperPicIcons`, `PaperPicLabels`, `PaperPicOutput`, `PaperPicDownload`, `ExportedImage` et `ToolId`.
+`@paperpic/vue` exporte tous les types de `@paperpic/core`, donc inutile de l’installer : [Types](./types) les présente un par un. Il exporte aussi les types du composant : [`PaperPicProps`](./types#paperpicprops), avec ses props, et [`PaperPicInstance`](./types#paperpicinstance), la visionneuse de `instance`.
 
 ## Rendu côté serveur
 

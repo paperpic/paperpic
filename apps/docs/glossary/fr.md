@@ -36,6 +36,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | switch, of Clean up                           | interrupteur          |
 | tool                                          | outil                 |
 | toolbar, the bar of buttons at the right      | barre d’outils        |
+| type, of TypeScript                           | type                  |
 | view mode                                     | mode d’affichage      |
 | viewer                                        | visionneuse           |
 | wrapper, such as `@paperpic/vue`              | wrapper               |

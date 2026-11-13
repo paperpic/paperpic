@@ -1,19 +1,31 @@
 import type { Rotation } from '../rotation'
 import { normalizeRotation } from '../rotation'
 
-/** A size in CSS pixels. */
+/**
+ * A width and a height in pixels.
+ *
+ * @see https://paperpic.dev/reference/types#size
+ */
 export interface Size {
   height: number
   width: number
 }
 
-/** A position in CSS pixels, relative to the top left corner of the viewport. */
+/**
+ * A position in CSS pixels, relative to the top left corner of the viewer.
+ *
+ * @see https://paperpic.dev/reference/methods#zoomto
+ */
 export interface ViewPoint {
   x: number
   y: number
 }
 
-/** How the image adapts to the viewport: the whole image, its width or its height. */
+/**
+ * How the image adapts to the viewer: the whole image, its width or its height.
+ *
+ * @see https://paperpic.dev/reference/methods#fit
+ */
 export type Fit = 'image' | 'width' | 'height'
 
 /** What the viewport shows. */

@@ -42,6 +42,7 @@ export const sidebar = [
       'reference/methods',
       'reference/events',
       'reference/state',
+      'reference/types',
     ],
   },
   {
