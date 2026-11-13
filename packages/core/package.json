@@ -1,7 +1,7 @@
 {
   "name": "@paperpic/core",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Framework-agnostic document image viewer and editor, for use with plain JavaScript or through a PaperPic wrapper.",
   "author": "Marco Caparrós <hello@paperpic.dev>",
   "license": "MIT",
