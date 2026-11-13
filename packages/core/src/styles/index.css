@@ -564,11 +564,11 @@
 
   .paperpic-ruler-input {
     position: absolute;
-    inset-block-start: 0.75rem;
+    inset-block-start: 1rem;
     inset-inline-start: 0;
     box-sizing: border-box;
     inline-size: 100%;
-    block-size: 1.5rem;
+    block-size: 1.25rem;
     margin: 0;
     padding: 0;
     border: 0;
@@ -596,14 +596,14 @@
   }
 
   .paperpic-ruler-input::-webkit-slider-runnable-track {
-    block-size: 1.5rem;
+    block-size: 1.25rem;
     border: 0;
     background: transparent;
   }
 
   .paperpic-ruler-input::-webkit-slider-thumb {
     inline-size: 1.5rem;
-    block-size: 1.5rem;
+    block-size: 1.25rem;
     border: 0;
     appearance: none;
     background: linear-gradient(
@@ -615,14 +615,14 @@
   }
 
   .paperpic-ruler-input::-moz-range-track {
-    block-size: 1.5rem;
+    block-size: 1.25rem;
     border: 0;
     background: transparent;
   }
 
   .paperpic-ruler-input::-moz-range-thumb {
     inline-size: 1.5rem;
-    block-size: 1.5rem;
+    block-size: 1.25rem;
     border: 0;
     border-radius: 0;
     background: linear-gradient(
@@ -678,20 +678,20 @@
     }
 
     .paperpic-ruler-input {
-      block-size: 2rem;
+      block-size: 1.75rem;
     }
 
     .paperpic-ruler-input::-webkit-slider-runnable-track,
     .paperpic-ruler-input::-webkit-slider-thumb {
-      block-size: 2rem;
+      block-size: 1.75rem;
     }
 
     .paperpic-ruler-input::-moz-range-track {
-      block-size: 2rem;
+      block-size: 1.75rem;
     }
 
     .paperpic-ruler-input::-moz-range-thumb {
-      block-size: 2rem;
+      block-size: 1.75rem;
     }
   }
 
