@@ -67,6 +67,16 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 The viewer fills its container, so give `#viewer` a height. With Vue or React, use [`@paperpic/vue`](packages/vue) or [`@paperpic/react`](packages/react) instead. The [docs](https://paperpic.dev/reference/options) list every option, method and event.
 
+### With an AI coding agent
+
+Install the PaperPic skill, so that Claude Code, Cursor, Copilot and other agents set PaperPic up the right way:
+
+```sh
+npx skills add paperpic/paperpic
+```
+
+Agents can also read the docs from [`llms-full.txt`](https://paperpic.dev/llms-full.txt) or through [Context7](https://context7.com/paperpic/paperpic).
+
 ## Packages
 
 | Package                             | Description                                                  | Status         |
