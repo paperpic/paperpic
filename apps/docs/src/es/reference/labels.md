@@ -49,7 +49,7 @@ Cinco textos son funciones, porque incluyen un valor. Crea el objeto una sola ve
 | `fitHeight`            | Fit to height                                | El botón que ajusta el alto de la imagen                                                                                     |
 | `fitWidth`             | Fit to width                                 | El botón que ajusta el ancho de la imagen                                                                                    |
 | `flip`                 | Flip                                         | El botón Voltear                                                                                                             |
-| `inUse`                | In use                                       | La descripción de Ajustar, Limpiar o una opción de Ajustar mientras su valor está en uso, que muestra un punto               |
+| `inUse`                | In use                                       | La descripción de Ajustar o Limpiar mientras su valor está en uso, que muestra un punto                                      |
 | `keepEditing`          | Keep editing                                 | El botón que vuelve a la edición en vez de perder los cambios                                                                |
 | `loadError`            | The image could not be loaded                | Se muestra cuando la imagen no se puede cargar                                                                               |
 | `loading`              | Loading image                                | Se muestra mientras la imagen se carga                                                                                       |

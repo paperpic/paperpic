@@ -49,7 +49,7 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Crea l�
 | `fitHeight`            | Fit to height                                | Il pulsante che adatta l’altezza dell’immagine                                                                                   |
 | `fitWidth`             | Fit to width                                 | Il pulsante che adatta la larghezza dell’immagine                                                                                |
 | `flip`                 | Flip                                         | Il pulsante Capovolgi                                                                                                            |
-| `inUse`                | In use                                       | La descrizione di Regola, di Pulisci o di una scelta di Regola mentre la sua impostazione è in uso, che un punto mostra          |
+| `inUse`                | In use                                       | La descrizione di Regola o di Pulisci mentre la sua impostazione è in uso, che un punto mostra                                   |
 | `keepEditing`          | Keep editing                                 | Il pulsante che torna alla modifica invece di perdere i cambiamenti                                                              |
 | `loadError`            | The image could not be loaded                | Mostrata quando l’immagine non si carica                                                                                         |
 | `loading`              | Loading image                                | Mostrata mentre l’immagine si carica                                                                                             |

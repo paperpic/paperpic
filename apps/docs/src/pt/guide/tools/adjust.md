@@ -13,7 +13,7 @@ Fotos tiradas com pouca luz saem escuras ou acinzentadas. Ajustar muda o brilho 
 2. Arraste a régua. A pré-visualização muda enquanto você arrasta. Escolha Contraste para mudar o outro tom com a mesma régua.
 3. Toque em Concluído para manter os dois tons como uma única alteração, que Desfazer remove. Cancelar esta ferramenta deixa a imagem como estava.
 
-O meio da régua deixa a imagem como está, e a agulha se prende ali, então voltar a nenhuma alteração é fácil. Os leitores de tela anunciam o valor de -100 a 100, como "Brilho +30". Um ponto em Ajustar, e em cada tom dentro do painel dele, marca um valor diferente de 0.
+O meio da régua deixa a imagem como está, e a agulha se prende ali, então voltar a nenhuma alteração é fácil. Os leitores de tela anunciam o valor de -100 a 100, como "Brilho +30". Um ponto em Ajustar marca valores diferentes de 0.
 
 Ajustar vem depois das outras alterações, então Recortar e Endireitar mostram a imagem com ele.
 

@@ -98,7 +98,6 @@ export class EditBar {
   private adjustment: AdjustmentName = 'brightness'
   /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
   private hintOverride: string | null = null
-  private adjustments: Record<AdjustmentName, number> = { brightness: 0, contrast: 0 }
   private cleanedUp = false
   private canApply = false
   private busy = false
@@ -190,7 +189,7 @@ export class EditBar {
     for (const name of ADJUSTMENTS) {
       const button = createButton(name, () => this.chooseAdjustment(name), 'paperpic-button paperpic-edit-option')
       const text = document.createElement('span')
-      button.append(text, createDot())
+      button.append(text)
       this.options.append(button)
       optionButtons[name] = button
       optionTexts[name] = text
@@ -334,7 +333,6 @@ export class EditBar {
   update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, cleanedUp, threshold, adjustments }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
-    this.adjustments = adjustments
     this.cleanedUp = cleanedUp
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
@@ -422,7 +420,6 @@ export class EditBar {
   private showOptions(): void {
     for (const name of ADJUSTMENTS) {
       this.optionButtons[name].setAttribute('aria-pressed', String(name === this.adjustment))
-      this.markInUse(this.optionButtons[name], this.adjustments[name] !== 0)
     }
   }
 

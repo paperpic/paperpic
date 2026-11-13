@@ -1131,8 +1131,6 @@ describe('editing', () => {
       option('Contrast').click()
       move('Contrast', -20, 'change')
       expect(status()).toBe('Contrast -20')
-      expect(dot(option('Brightness')).hidden).toBe(false)
-      expect(dot(option('Contrast')).hidden).toBe(false)
 
       button('Done').click()
       expect(pic.getState()).toMatchObject({

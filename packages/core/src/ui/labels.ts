@@ -42,7 +42,7 @@ export interface PaperPicLabels {
   fitWidth: string
   /** Mirrors the image left to right. */
   flip: string
-  /** Describes Adjust or Clean up, or a choice of Adjust, while its setting is in effect. Their dot shows it. */
+  /** Describes Adjust or Clean up while its setting is in effect. Their dot shows it. */
   inUse: string
   keepEditing: string
   /** Shown when the image cannot be loaded. */
