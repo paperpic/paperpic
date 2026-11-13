@@ -29,6 +29,7 @@ import { ALL_TOOL_IDS, TOOLS } from './tools'
 import { EditBar } from './ui/edit-bar'
 import { DEFAULT_ICONS } from './ui/icons'
 import { DEFAULT_LABELS } from './ui/labels'
+import { warnWithoutStyles } from './ui/styles-check'
 import { Toolbar } from './ui/toolbar'
 
 const ZOOM_STEP = 1.25
@@ -307,7 +308,15 @@ export class PaperPic {
     this.viewportElement.addEventListener('contextmenu', onContextMenu)
     this.cleanups.push(() => this.viewportElement.removeEventListener('contextmenu', onContextMenu))
 
-    const observer = new ResizeObserver(() => this.measure())
+    // The first resize comes once the browser has laid the viewer out, so the stylesheet has had its chance to apply
+    let stylesChecked = false
+    const observer = new ResizeObserver(() => {
+      if (!stylesChecked) {
+        stylesChecked = true
+        warnWithoutStyles(this.root)
+      }
+      this.measure()
+    })
     observer.observe(this.viewportElement)
     this.cleanups.push(() => observer.disconnect())
 
