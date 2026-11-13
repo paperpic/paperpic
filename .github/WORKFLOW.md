@@ -134,7 +134,7 @@ Nothing has to be merged back into `development`: the versions were bumped there
 
 | What                   | When                                        | Does                                                                            |
 | ---------------------- | ------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test`, `build`                                       |
+| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`; coverage in the run summary |
 | `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji    |
 | `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                  |
 | `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included |

@@ -1,7 +1,7 @@
 import type { PerspectiveEdit, PipelineStep } from '../src/pipeline/operations'
 import type { Quad } from '../src/processing/types'
 import type { ToolHost } from '../src/tools/types'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { photoFrame } from '../src/pipeline/photo-frame'
 import { applySteps } from '../src/pipeline/pipeline'
 import { planRead, resultSize } from '../src/pipeline/read-plan'
@@ -293,6 +293,120 @@ describe('perspective tool', () => {
       aspectRatio: () => 0.7,
     })).confirm() as PerspectiveEdit
     expect(edit.aspectRatio).toBe(0.7)
+  })
+
+  /** Opens the tool and places each corner with a tap, `null` leaving one where it starts. */
+  const placed = (points: readonly ({ x: number, y: number } | null)[]) => {
+    const layer = document.createElement('div')
+    const session = perspectiveTool.activate!(host({ layer }))
+    const handles = [
+      ...layer.querySelectorAll<HTMLButtonElement>('.paperpic-handle'),
+    ]
+    points.forEach((point, index) => {
+      if (point) {
+        handles[index]!.click()
+        session.tap!(point)
+      }
+    })
+    return { session, layer, handles }
+  }
+
+  const wholeFrame = [
+    { x: 0, y: 0 },
+    { x: 1000, y: 0 },
+    { x: 1000, y: 500 },
+    { x: 0, y: 500 },
+  ]
+
+  it('gives nothing when the corners are the corners of the image', () => {
+    expect(placed(wholeFrame).session.confirm()).toBeNull()
+  })
+
+  it.each([
+    [
+      0,
+      { x: 10, y: 0 },
+    ],
+    [
+      0,
+      { x: 0, y: 10 },
+    ],
+    [
+      1,
+      { x: 990, y: 0 },
+    ],
+    [
+      1,
+      { x: 1000, y: 10 },
+    ],
+    [
+      2,
+      { x: 990, y: 500 },
+    ],
+    [
+      2,
+      { x: 1000, y: 490 },
+    ],
+    [
+      3,
+      { x: 10, y: 500 },
+    ],
+    [
+      3,
+      { x: 0, y: 490 },
+    ],
+  ])('gives an edit when corner %i is off the corner of the image, at %o', (index, point) => {
+    const points = wholeFrame.map((corner, position) => position === index
+      ? point
+      : corner)
+    const edit = placed(points).session.confirm() as PerspectiveEdit
+    expect(edit.type).toBe('perspective')
+    expect(edit.quad[index]).toEqual({ x: point.x / frame.width, y: point.y / frame.height })
+  })
+
+  it('opens from its button', () => {
+    const context = {
+      addOperation: vi.fn(),
+      openTool: vi.fn(),
+    }
+    perspectiveTool.actions[0]!.run(context)
+    expect(context.openTool).toHaveBeenCalledWith('perspective')
+    expect(context.addOperation).not.toHaveBeenCalled()
+  })
+
+  it('draws the image and its corners over it', () => {
+    const context = {
+      beginPath: vi.fn(),
+      moveTo: vi.fn(),
+      lineTo: vi.fn(),
+      closePath: vi.fn(),
+      fill: vi.fn(),
+      stroke: vi.fn(),
+    }
+    placed([]).session.drawOverlay(context as unknown as CanvasRenderingContext2D)
+    // The frame and the corners, which start inside it, for the shade outside, then the corners again for their outline
+    expect(context.moveTo.mock.calls).toEqual([
+      [0, 0],
+      [100, 50],
+      [100, 50],
+    ])
+  })
+
+  it('passes taps, Esc, zoom and closing to its corners', () => {
+    const { session, layer, handles } = placed([])
+    expect(session.tap!({ x: 10, y: 10 })).toBe(false)
+    expect(session.escape!()).toBe(false)
+    expect(session.anchor!()).toBeNull()
+
+    handles[1]!.click()
+    expect(session.anchor!()).toEqual({ x: 900, y: 50 })
+    expect(session.escape!()).toBe(true)
+    expect(handles[1]!.getAttribute('aria-pressed')).toBe('false')
+
+    session.update()
+    session.focus()
+    session.deactivate()
+    expect(layer.querySelectorAll('.paperpic-handle')).toHaveLength(0)
   })
 
   it('estimates with the place of the image in the photo', () => {
