@@ -152,10 +152,14 @@ const DEFAULT_OPTIONS: ResolvedOptions = {
 }
 
 /**
- * A document image viewer and editor. It fills its container, which needs a height.
+ * A document image viewer and editor. It fills its container, which needs a height. Import the stylesheet once, from
+ * `@paperpic/core/style.css`.
  *
  * @example
- * const pic = new PaperPic(element, { src: '/receipt.jpg', alt: 'Receipt' })
+ * import { PaperPic } from '@paperpic/core'
+ * import '@paperpic/core/style.css'
+ *
+ * const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: 'A receipt' })
  * pic.on('apply', ({ blob }) => upload(blob))
  */
 export class PaperPic {
@@ -206,6 +210,14 @@ export class PaperPic {
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
    * @throws {TypeError} If `container` is not an element. Create the instance once the element exists, such as on mount.
+   *
+   * @example
+   * const pic = new PaperPic(container, {
+   *   src: file, // a URL from the same origin, or a File the user picked
+   *   alt: 'An invoice',
+   *   aspectRatio: 210 / 297,
+   *   output: { type: 'image/jpeg', quality: 0.9 },
+   * })
    */
   constructor(container: HTMLElement, options: PaperPicOptions = {}) {
     if (!(container instanceof HTMLElement)) {
@@ -324,7 +336,13 @@ export class PaperPic {
     this.measure()
   }
 
-  /** Changes options. It does not emit `change`, so two-way bindings do not loop. */
+  /**
+   * Changes only the options you pass, and `undefined` brings one back to its default. It does not emit `change`, so
+   * two-way bindings do not loop.
+   *
+   * @example
+   * pic.setOptions({ editable: false })
+   */
   setOptions(options: PaperPicOptions): void {
     if (this.destroyed) {
       return
@@ -402,6 +420,14 @@ export class PaperPic {
    * Listens to an event.
    *
    * @returns The function that stops listening.
+   *
+   * @example
+   * const off = pic.on('apply', async ({ blob }) => {
+   *   const body = new FormData()
+   *   body.append('image', blob)
+   *   await fetch('/api/documents', { method: 'POST', body })
+   * })
+   * off()
    */
   on<Name extends keyof PaperPicEvents>(name: Name, listener: Listener<Name>): () => void {
     this.listeners[name].add(listener)
@@ -499,6 +525,10 @@ export class PaperPic {
    * Opens a tool: `crop` or `perspective`, with their corners, or `adjust` or `threshold`, with their ruler. It stays open
    * until `confirmTool()` or `cancelTool()`. Opening `threshold` turns it on, so the preview shows what it does.
    * It does nothing outside the edit mode, while another tool is open, or for Crop and Straighten while a preview is on its way.
+   *
+   * @example
+   * pic.edit()
+   * pic.openTool('crop')
    */
   openTool(id: ToolId): void {
     const tool = TOOLS.find(candidate => candidate.id === id)
@@ -665,6 +695,10 @@ export class PaperPic {
   /**
    * Applies the edits. The result becomes the image on display, and the `apply` event carries it.
    * If it fails, the `error` event reports it and the edit stays open.
+   *
+   * @example
+   * pic.on('apply', ({ blob, type }) => upload(blob, type))
+   * await pic.apply()
    */
   async apply(): Promise<void> {
     const image = this.image
@@ -723,6 +757,13 @@ export class PaperPic {
   /**
    * Saves the image on display as a file: the result of the last Apply, or else the source.
    * The `download` event comes first and can stop it. It does nothing while editing, because the edits are not applied yet.
+   *
+   * @example
+   * // Save it through your server instead
+   * pic.on('download', ({ preventDefault }) => {
+   *   preventDefault()
+   *   window.location.assign('/api/documents/42/file')
+   * })
    */
   download(): void {
     const saved = this.saved
@@ -753,7 +794,13 @@ export class PaperPic {
     }
   }
 
-  /** Removes the viewer and releases everything it holds. It is safe to call twice. */
+  /**
+   * Removes the viewer and releases everything it holds, such as its worker and the memory of its images. It is safe to
+   * call twice. The Vue and React components call it on unmount.
+   *
+   * @example
+   * pic.destroy()
+   */
   destroy(): void {
     if (this.destroyed) {
       return

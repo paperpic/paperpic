@@ -1,5 +1,21 @@
 import type { PaperPicIcons, PaperPicLabels, PaperPicOutput, ToolId } from '@paperpic/core'
 
+/**
+ * The props of `PaperPic`, which fills its parent element. Give the parent a height, and import the stylesheet once,
+ * from `@paperpic/vue/style.css`.
+ *
+ * @example
+ * <script setup lang="ts">
+ * import { PaperPic } from '@paperpic/vue'
+ * import '@paperpic/vue/style.css'
+ * </script>
+ *
+ * <template>
+ *   <div style="height: 480px">
+ *     <PaperPic src="/receipt.jpg" alt="A receipt" @apply="({ blob }) => upload(blob)" />
+ *   </div>
+ * </template>
+ */
 export interface PaperPicProps {
   /** Describes the image for screen readers. Without it, they skip the image, as they skip an `<img>` with an empty `alt`. */
   alt?: string
