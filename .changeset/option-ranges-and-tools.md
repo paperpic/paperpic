@@ -1,7 +1,7 @@
 ---
-"@paperpic/core": patch
-"@paperpic/vue": patch
-"@paperpic/react": patch
+"@paperpic/core": minor
+"@paperpic/vue": minor
+"@paperpic/react": minor
 ---
 
 Fix more problems found in the audit of the viewer.
