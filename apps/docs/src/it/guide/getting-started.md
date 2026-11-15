@@ -134,7 +134,7 @@ Per mostrare un documento che non si deve modificare, disattiva la modifica con 
 
 - PaperPic funziona nei browser di [Baseline Widely Available](https://web.dev/baseline).
 - La modifica gira in un Web Worker, che bundler come Vite e webpack riconoscono da soli. Se il worker non può partire, la modifica gira sul thread principale: funziona comunque, ma la pagina può bloccarsi per un attimo con immagini grandi.
-- Con una Content Security Policy, consenti il worker con `worker-src 'self'`, e consenti `img-src blob:`, perché il visualizzatore mostra i file allegati e i risultati tramite URL `blob:`.
+- Con una Content Security Policy, consenti il worker con `worker-src 'self'`, e consenti `img-src blob:`, perché il visualizzatore mostra i file allegati e i risultati tramite URL `blob:`. Se limita anche le policy di Trusted Types, aggiungi `paperpic` a `trusted-types`, perché le icone dei pulsanti passano da quella policy.
 - Con il rendering lato server, come in Nuxt o Next.js, i componenti Vue e React renderizzano un elemento vuoto sul server e creano il visualizzatore nel browser. Con il core, crea tu il visualizzatore nel browser.
 
 ## Prossimi passi

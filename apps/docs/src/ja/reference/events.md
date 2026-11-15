@@ -5,7 +5,7 @@ description: PaperPic のイベント load、error、change、apply、download �
 
 # イベント
 
-イベントは、ビューアーで起きたことをコードに伝えます。[`on()`](./methods#on) で購読します。Vue では `@apply` のようなコンポーネントのイベント、React では `onApply` のような props です。
+イベントは、ビューアーで起きたことをコードに伝えます。[`on()`](./methods#on) で購読します。Vue では `@apply` のようなコンポーネントのイベント、React では `onApply` のような props です。購読した関数がエラーを投げても、ビューアーは止まりません。ページはそのエラーを未処理のエラーとして受け取り、ほかの関数も実行されます。
 
 :::tabs key:framework
 == JavaScript
@@ -44,7 +44,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **データ:** [`PaperPicState`](./state)
 
-ユーザーが表示や編集を変更しました。たとえばズーム、ツールを開く、元に戻すなどです。適用の開始も `busy: true` で通知します。`setOptions()` とコンポーネントの props では発生しません。
+ユーザーが表示や編集を変更しました。たとえばズーム、ツールを開く、元に戻すなどです。適用の開始も `busy: true` で通知します。画像を移動しても発生しません。状態は画像の位置を持たないためです。`setOptions()` とコンポーネントの props では発生しません。
 
 ## `apply`
 

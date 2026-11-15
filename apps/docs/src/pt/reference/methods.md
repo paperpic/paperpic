@@ -129,7 +129,7 @@ Gira a imagem um quarto de volta: no sentido horário com `1`, o padrão, e no a
 function flip(): void
 ```
 
-Espelha a imagem da esquerda para a direita como ela aparece, então depois de um quarto de volta ainda espelha da esquerda para a direita. Para virar a imagem de cabeça para baixo, espelhe-a e gire-a duas vezes. É uma alteração, e não faz nada fora do modo de edição ou com uma ferramenta aberta.
+Espelha a imagem da esquerda para a direita como ela aparece, então depois de um quarto de volta ainda espelha da esquerda para a direita. Para espelhar a imagem de cima para baixo, espelhe-a e gire-a duas vezes. É uma alteração, e não faz nada fora do modo de edição ou com uma ferramenta aberta.
 
 ### `openTool()`
 

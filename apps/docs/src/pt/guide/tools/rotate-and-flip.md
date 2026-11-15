@@ -22,7 +22,7 @@ pic.rotate(-1)
 
 ## Espelhar
 
-Espelhar inverte a imagem da esquerda para a direita como ela aparece, então depois de um quarto de volta ela ainda é espelhada da esquerda para a direita na tela. Para virar uma imagem de cabeça para baixo, espelhe-a e gire-a duas vezes.
+Espelhar inverte a imagem da esquerda para a direita como ela aparece, então depois de um quarto de volta ela ainda é espelhada da esquerda para a direita na tela. Para espelhar uma imagem de cima para baixo, espelhe-a e gire-a duas vezes.
 
 Espelhamentos e giros que se anulam não deixam nada a aplicar. Pelo código, chame [`flip()`](../../reference/methods#flip).
 

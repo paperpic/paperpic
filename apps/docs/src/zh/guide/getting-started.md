@@ -134,7 +134,7 @@ async function upload(blob: Blob) {
 
 - PaperPic 可在 [Baseline Widely Available](https://web.dev/baseline) 的浏览器中运行。
 - 编辑在 Web Worker 中运行，Vite 和 webpack 等打包工具会自动处理它。如果 worker 无法启动，编辑会在主线程上运行：仍然可用，但处理大图片时页面可能短暂卡顿。
-- 使用 Content Security Policy 时，用 `worker-src 'self'` 允许 worker，并允许 `img-src blob:`，因为查看器通过 `blob:` URL 显示添加的文件和结果。
+- 使用 Content Security Policy 时，用 `worker-src 'self'` 允许 worker，并允许 `img-src blob:`，因为查看器通过 `blob:` URL 显示添加的文件和结果。如果它还限制 Trusted Types 策略，请把 `paperpic` 加入 `trusted-types`，因为按钮的图标会经过这个策略。
 - 在服务端渲染中，例如在 Nuxt 或 Next.js 里，Vue 和 React 组件在服务器上渲染一个空元素，并在浏览器中创建查看器。使用核心时，请自己在浏览器中创建查看器。
 
 ## 下一步

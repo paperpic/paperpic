@@ -5,7 +5,7 @@ description: Los eventos de PaperPic y lo que lleva cada uno, load, error, chang
 
 # Eventos
 
-Los eventos avisan a tu código de lo que pasa en el visor. Escúchalos con [`on()`](./methods#on). En Vue son eventos del componente, como `@apply`, y en React son props, como `onApply`.
+Los eventos avisan a tu código de lo que pasa en el visor. Escúchalos con [`on()`](./methods#on). En Vue son eventos del componente, como `@apply`, y en React son props, como `onApply`. Si una función que escucha lanza un error, el visor sigue adelante: la página recibe el error como cualquier otro no capturado, y las demás funciones se ejecutan igualmente.
 
 :::tabs key:framework
 == JavaScript
@@ -44,7 +44,7 @@ La imagen no se pudo cargar, o los cambios no se pudieron aplicar. Si Aplicar fa
 
 - **Datos:** [`PaperPicState`](./state)
 
-El usuario cambió la vista o la edición, por ejemplo al hacer zoom, abrir una herramienta o deshacer. También avisa del inicio de Aplicar, con `busy: true`. `setOptions()` y las props de los componentes nunca lo emiten.
+El usuario cambió la vista o la edición, por ejemplo al hacer zoom, abrir una herramienta o deshacer. También avisa del inicio de Aplicar, con `busy: true`. Desplazar la imagen no lo emite, porque el estado no guarda su posición. `setOptions()` y las props de los componentes nunca lo emiten.
 
 ## `apply`
 

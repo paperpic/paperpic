@@ -129,7 +129,7 @@ Gira la imagen un cuarto de vuelta: en el sentido de las agujas del reloj con `1
 function flip(): void
 ```
 
-Voltea la imagen de izquierda a derecha tal como se ve, así que después de un cuarto de vuelta sigue volteando de izquierda a derecha. Para ponerla boca abajo, voltéala y gírala dos veces. Es un cambio, y no hace nada fuera del modo de edición ni con una herramienta abierta.
+Voltea la imagen de izquierda a derecha tal como se ve, así que después de un cuarto de vuelta sigue volteando de izquierda a derecha. Para reflejarla de arriba abajo, voltéala y gírala dos veces. Es un cambio, y no hace nada fuera del modo de edición ni con una herramienta abierta.
 
 ### `openTool()`
 

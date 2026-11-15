@@ -19,6 +19,8 @@ Avec une Content Security Policy, autorisez :
 
 - `worker-src 'self'`, pour le worker.
 - `img-src blob:`, car la visionneuse affiche les fichiers joints et les résultats d’Appliquer par des URL `blob:`.
+- `paperpic` dans `trusted-types`, si votre politique limite les politiques Trusted Types, car les icônes des boutons passent par cette politique.
+- Une politique Trusted Types `default` dont `createScriptURL` accepte l’URL du worker, si votre politique exige Trusted Types. Les bundlers ne prennent en charge qu’un worker créé avec une URL simple, que Trusted Types bloque : sans cette politique, la modification s’exécute donc sur le thread principal.
 
 ## Grandes photos
 

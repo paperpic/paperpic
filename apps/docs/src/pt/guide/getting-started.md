@@ -134,7 +134,7 @@ Para mostrar um documento que não deve ser alterado, desative a edição com `e
 
 - O PaperPic funciona nos navegadores do [Baseline Widely Available](https://web.dev/baseline).
 - A edição roda num Web Worker, que bundlers como Vite e webpack reconhecem sozinhos. Se o worker não conseguir iniciar, a edição roda na thread principal: continua funcionando, mas a página pode travar por um instante com imagens grandes.
-- Com uma Content Security Policy, permita o worker com `worker-src 'self'`, e permita `img-src blob:`, porque o visualizador mostra arquivos anexados e resultados por URLs `blob:`.
+- Com uma Content Security Policy, permita o worker com `worker-src 'self'`, e permita `img-src blob:`, porque o visualizador mostra arquivos anexados e resultados por URLs `blob:`. Se ela também limita as políticas de Trusted Types, adicione `paperpic` a `trusted-types`, porque os ícones dos botões passam por essa política.
 - Com renderização no servidor, como no Nuxt ou no Next.js, os componentes Vue e React renderizam um elemento vazio no servidor e criam o visualizador no navegador. Com o core, crie você mesmo o visualizador no navegador.
 
 ## Próximos passos

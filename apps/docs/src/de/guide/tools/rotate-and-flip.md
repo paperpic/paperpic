@@ -22,7 +22,7 @@ pic.rotate(-1)
 
 ## Spiegeln
 
-Spiegeln spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vierteldrehung also weiterhin von links nach rechts auf dem Bildschirm. Um ein Bild auf den Kopf zu stellen, spiegle es und drehe es zweimal.
+Spiegeln spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vierteldrehung also weiterhin von links nach rechts auf dem Bildschirm. Um ein Bild von oben nach unten zu spiegeln, spiegle es und drehe es zweimal.
 
 Spiegelungen und Drehungen, die sich aufheben, lassen nichts zu übernehmen. Aus dem Code rufst du [`flip()`](../../reference/methods#flip) auf.
 

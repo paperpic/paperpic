@@ -5,7 +5,7 @@ description: The events of PaperPic and what each one carries, load, error, chan
 
 # Events
 
-Events tell your code what happens in the viewer. Listen to them with [`on()`](./methods#on). In Vue they are component events, such as `@apply`, and in React they are props, such as `onApply`.
+Events tell your code what happens in the viewer. Listen to them with [`on()`](./methods#on). In Vue they are component events, such as `@apply`, and in React they are props, such as `onApply`. A listener that throws does not stop the viewer: the page gets the error as any uncaught one, and the other listeners still run.
 
 :::tabs key:framework
 == JavaScript
@@ -44,7 +44,7 @@ The image could not be loaded, or the edits could not be applied. After a failed
 
 - **Payload:** [`PaperPicState`](./state)
 
-The user changed the view or the edit, such as by zooming, opening a tool or undoing. It also reports the start of Apply, with `busy: true`. `setOptions()` and the props of the components never emit it.
+The user changed the view or the edit, such as by zooming, opening a tool or undoing. It also reports the start of Apply, with `busy: true`. Panning the image does not emit it, because the state does not hold its position. `setOptions()` and the props of the components never emit it.
 
 ## `apply`
 

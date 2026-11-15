@@ -82,11 +82,11 @@ Aplicar não pode ser interrompido. Ele bloqueia os controles e mostra uma mensa
 
 ## O que o seu código recebe
 
-| Evento   | Quando                                                              |
-| -------- | ------------------------------------------------------------------- |
-| `apply`  | Quando o resultado está pronto, com `{ blob, width, height, type }` |
-| `change` | Depois de cada ação do usuário, com o [estado](../reference/state)  |
-| `error`  | Quando Aplicar falha, ou quando a imagem não carrega                |
+| Evento   | Quando                                                                 |
+| -------- | ---------------------------------------------------------------------- |
+| `apply`  | Quando o resultado está pronto, com `{ blob, width, height, type }`    |
+| `change` | Depois de cada ação do usuário que muda o [estado](../reference/state) |
+| `error`  | Quando Aplicar falha, ou quando a imagem não carrega                   |
 
 :::tabs key:framework
 == JavaScript

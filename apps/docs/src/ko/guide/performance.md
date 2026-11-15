@@ -19,6 +19,8 @@ Content Security Policy를 쓴다면 다음을 허용하세요.
 
 - worker를 위한 `worker-src 'self'`.
 - `img-src blob:`. 뷰어가 첨부 파일과 적용 결과를 `blob:` URL로 보여 주기 때문입니다.
+- Trusted Types 정책을 제한한다면 `trusted-types`에 `paperpic`. 버튼의 아이콘이 이 정책을 거치기 때문입니다.
+- Trusted Types를 요구한다면 `createScriptURL`이 worker의 URL을 받아들이는 `default` 정책. 번들러는 일반 URL로 만든 worker만 처리하는데, Trusted Types가 이를 막습니다. 이 정책이 없으면 편집이 메인 스레드에서 실행됩니다.
 
 ## 큰 사진
 

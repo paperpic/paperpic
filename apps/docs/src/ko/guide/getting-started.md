@@ -134,7 +134,7 @@ async function upload(blob: Blob) {
 
 - PaperPic은 [Baseline Widely Available](https://web.dev/baseline) 브라우저에서 동작합니다.
 - 편집은 Web Worker에서 실행되며, Vite와 webpack 같은 번들러가 알아서 처리합니다. worker를 시작할 수 없으면 편집이 메인 스레드에서 실행됩니다. 여전히 동작하지만, 큰 이미지에서는 페이지가 잠깐 멈출 수 있습니다.
-- Content Security Policy를 쓴다면 `worker-src 'self'`로 worker를, `img-src blob:`으로 이미지를 허용하세요. 뷰어는 첨부 파일과 결과를 `blob:` URL로 보여 주기 때문입니다.
+- Content Security Policy를 쓴다면 `worker-src 'self'`로 worker를, `img-src blob:`으로 이미지를 허용하세요. 뷰어는 첨부 파일과 결과를 `blob:` URL로 보여 주기 때문입니다. Trusted Types 정책도 제한한다면 `trusted-types`에 `paperpic`을 추가하세요. 버튼의 아이콘이 이 정책을 거치기 때문입니다.
 - Nuxt나 Next.js 같은 서버 사이드 렌더링에서는 Vue와 React 컴포넌트가 서버에서 빈 요소를 렌더링하고 브라우저에서 뷰어를 만듭니다. 코어를 쓴다면 브라우저에서 직접 뷰어를 만드세요.
 
 ## 다음 단계
