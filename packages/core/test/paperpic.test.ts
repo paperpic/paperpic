@@ -77,6 +77,65 @@ describe('paperPic', () => {
     expect(() => new PaperPic(null as unknown as HTMLElement)).toThrow(/once the element exists/)
   })
 
+  it.each([
+    [
+      { softness: 2 },
+      'softness must be between 0 and 1, got 2',
+    ],
+    [
+      { aspectRatio: 0 },
+      'aspectRatio must be width divided by height, such as 210 / 297 for A4, got 0',
+    ],
+    [
+      { aspectRatio: Number.POSITIVE_INFINITY },
+      'aspectRatio must be',
+    ],
+    [
+      { maxOutputSize: -1 },
+      'maxOutputSize must be a positive number of pixels, got -1',
+    ],
+    [
+      { maxOutputSize: Number.NaN },
+      'maxOutputSize must be a positive number of pixels, got NaN',
+    ],
+    [
+      {
+        output: { quality: 1.5 },
+      },
+      'output.quality must be between 0 and 1, got 1.5',
+    ],
+    [
+      {
+        output: { type: 'image/jpg' },
+      },
+      'output.type must be \'image/jpeg\', \'image/png\', \'image/webp\', got \'image/jpg\'',
+    ],
+  ])('explains an option out of its range: %o', (options, message) => {
+    expect(() => new PaperPic(container, options)).toThrow(RangeError)
+    expect(() => new PaperPic(container, options)).toThrow(message)
+    expect(container.children).toHaveLength(0)
+
+    pic = new PaperPic(container, { alt: 'A receipt' })
+    expect(() => pic.setOptions({ alt: 'Another', ...options })).toThrow(message)
+    expect(container.querySelector('canvas')!.getAttribute('aria-label')).toBe('A receipt')
+  })
+
+  it('takes every value in range, and undefined for the default', () => {
+    pic = new PaperPic(container, {
+      softness: 0,
+      aspectRatio: 210 / 297,
+      maxOutputSize: 2000,
+      output: { type: 'image/webp', quality: 1 },
+    })
+    expect(() => pic.setOptions({
+      softness: undefined,
+      aspectRatio: undefined,
+      maxOutputSize: undefined,
+      output: undefined,
+    })).not.toThrow()
+    expect(() => pic.setOptions({ output: {} })).not.toThrow()
+  })
+
   it('builds accessible markup', () => {
     pic = new PaperPic(container, { alt: 'A receipt' })
 
@@ -240,6 +299,32 @@ describe('paperPic', () => {
       const moved = !viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
       expect(moved).toBe(true)
       expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it('leaves an arrow key to the page when there is nothing to move, so it can scroll', () => {
+      const press = (key: string) => !viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
+
+      expect(press('ArrowDown')).toBe(false)
+
+      pic.zoomTo(2)
+      expect(press('ArrowDown')).toBe(true)
+      // The image reaches its edge after a few steps, and the arrow goes back to the page
+      const steps = Array.from({ length: 20 }, () => press('ArrowDown'))
+      expect(steps.at(-1)).toBe(false)
+    })
+
+    it('listens to the wheel only while it zooms', () => {
+      const wheel = () => {
+        const event = new WheelEvent('wheel', { deltaY: -100, cancelable: true })
+        viewportOf().dispatchEvent(event)
+        return event.defaultPrevented
+      }
+
+      expect(wheel()).toBe(true)
+      pic.setOptions({ wheelZoom: false })
+      expect(wheel()).toBe(false)
+      pic.setOptions({ wheelZoom: undefined })
+      expect(wheel()).toBe(true)
     })
 
     it('reports a listener that throws to the page, and goes on', () => {
@@ -420,6 +505,16 @@ describe('paperPic', () => {
 
       expect(onLoad).not.toHaveBeenCalled()
       expect(revoke).toHaveBeenCalledOnce()
+    })
+
+    it('does not load again afterwards, because nothing would release the image', async () => {
+      pic = new PaperPic(container, { src: '/receipt.jpg' })
+      await finishLoading()
+      pic.destroy()
+
+      pic.reload()
+
+      expect(images).toHaveLength(1)
     })
 
     it('leaves the container ready for a new instance', async () => {

@@ -1,3 +1,4 @@
+import type { Gestures } from '../src/input/gestures'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attachGestures } from '../src/input/gestures'
 import { keyToCommand } from '../src/input/keyboard'
@@ -19,25 +20,23 @@ function pointer(type: string, id: number, x: number, y: number, timeStamp = 0, 
 
 describe('attachGestures', () => {
   let element: HTMLElement
-  let detach: () => void
-  let wheelZoom: boolean
+  let gestures: Gestures
   const handlers = {
     onPan: vi.fn(),
     onZoom: vi.fn(),
     onDoubleTap: vi.fn(),
     onTap: vi.fn<(point: { x: number, y: number }) => boolean>(() => false),
-    wheelZoom: () => wheelZoom,
   }
 
   beforeEach(() => {
-    wheelZoom = true
     vi.clearAllMocks()
     element = document.createElement('div')
     element.setPointerCapture = vi.fn()
-    detach = attachGestures(element, handlers)
+    gestures = attachGestures(element, handlers)
+    gestures.setWheelZoom(true)
   })
 
-  afterEach(() => detach())
+  afterEach(() => gestures.detach())
 
   it('pans with one pointer', () => {
     element.dispatchEvent(pointer('pointerdown', 1, 10, 10))
@@ -115,16 +114,36 @@ describe('attachGestures', () => {
     expect(event.defaultPrevented).toBe(true)
   })
 
-  it('leaves the wheel to the page when wheelZoom is off', () => {
-    wheelZoom = false
+  it('leaves the wheel to the page when wheelZoom is off, with no listener to slow its scroll', () => {
+    const removeEventListener = vi.spyOn(element, 'removeEventListener')
+    gestures.setWheelZoom(false)
     const event = new WheelEvent('wheel', { deltaY: -100, cancelable: true })
     element.dispatchEvent(event)
     expect(handlers.onZoom).not.toHaveBeenCalled()
     expect(event.defaultPrevented).toBe(false)
+    expect(removeEventListener).toHaveBeenCalledWith('wheel', expect.any(Function))
+  })
+
+  it('listens to the wheel only once it is asked to', () => {
+    const fresh = document.createElement('div')
+    const addEventListener = vi.spyOn(fresh, 'addEventListener')
+    const { setWheelZoom, detach } = attachGestures(fresh, handlers)
+    expect(addEventListener).not.toHaveBeenCalledWith('wheel', expect.anything(), expect.anything())
+
+    setWheelZoom(true)
+    setWheelZoom(true)
+    expect(addEventListener.mock.calls.filter(([type]) => type === 'wheel')).toEqual([
+      [
+        'wheel',
+        expect.any(Function),
+        { passive: false },
+      ],
+    ])
+    detach()
   })
 
   it('stops listening once detached', () => {
-    detach()
+    gestures.detach()
     element.dispatchEvent(pointer('pointerdown', 1, 0, 0))
     element.dispatchEvent(pointer('pointermove', 1, 50, 50))
     element.dispatchEvent(new WheelEvent('wheel', { deltaY: 100 }))
