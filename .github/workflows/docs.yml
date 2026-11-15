@@ -1,7 +1,7 @@
 name: Docs
 
 # main: deploys the docs site to GitHub Pages (paperpic.dev).
-# Deploying stays off until Pages is set up: set the DOCS_DEPLOY repository variable to true
+# The DOCS_DEPLOY repository variable switches deploying: any value other than true stops it
 on:
   push:
     branches: [main]
