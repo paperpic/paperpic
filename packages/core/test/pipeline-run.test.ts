@@ -395,10 +395,40 @@ describe('exportImage', () => {
 
   it('explains what to do with an image from another origin', async () => {
     getImageData.mockImplementation(() => {
-      throw new Error('tainted')
+      throw Object.assign(new Error('tainted'), { name: 'SecurityError' })
     })
     await expect(exportImage(request)).rejects.toThrow('same origin')
     expect(run).not.toHaveBeenCalled()
+  })
+
+  it('explains what to do when the browser cannot hold the pixels, and does not blame the origin', async () => {
+    getImageData.mockImplementation(() => {
+      throw new RangeError('Out of memory')
+    })
+    await expect(exportImage(request)).rejects.toThrow('maxOutputSize')
+    expect(run).not.toHaveBeenCalled()
+  })
+
+  it('frees the canvases it used, whether it succeeds or fails', async () => {
+    const canvases: HTMLCanvasElement[] = []
+    const createElement = document.createElement.bind(document)
+    vi.spyOn(document, 'createElement').mockImplementation((name: string) => {
+      const element = createElement(name)
+      if (element instanceof HTMLCanvasElement) {
+        canvases.push(element)
+      }
+      return element
+    })
+
+    await exportImage(request)
+    expect(canvases).toHaveLength(2)
+
+    getImageData.mockImplementation(() => {
+      throw new RangeError('Out of memory')
+    })
+    await expect(exportImage(request)).rejects.toThrow()
+    expect(canvases).toHaveLength(3)
+    expect(canvases.map(({ width, height }) => [width, height])).toEqual(Array.from({ length: 3 }, () => [0, 0]))
   })
 
   it('explains what to do when the image does not fit in a canvas', async () => {
