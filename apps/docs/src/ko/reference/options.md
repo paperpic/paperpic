@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: '영수증' })
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()`는 전달한 옵션만 바꾸고, `undefined`를 전달하면 해당 옵션이 기본값으로 돌아갑니다. `change`는 발생하지 않습니다.
+`setOptions()`는 전달한 옵션만 바꾸고, `undefined`를 전달하면 해당 옵션이 기본값으로 돌아갑니다. `change`는 발생하지 않습니다. 범위를 벗어난 옵션은 그 이름을 담은 `RangeError`를 던집니다. 예를 들어 `softness`가 2인 경우입니다.
 
 ## 이미지
 
@@ -54,7 +54,7 @@ pic.setOptions({ editable: false })
 - **타입:** [`readonly ToolId[]`](./types#toolid)
 - **기본값:** 모든 도구
 
-편집 바에 표시할 도구입니다. 배열의 순서와 관계없이 이 표의 순서대로 나옵니다.
+편집 바에 표시할 도구입니다. 배열의 순서와 관계없이 이 표의 순서대로 나옵니다. 이 옵션은 버튼만 정하며, [메서드](./methods)는 모든 도구에서 동작합니다.
 
 | Id              | 버튼               |
 | --------------- | ------------------ |

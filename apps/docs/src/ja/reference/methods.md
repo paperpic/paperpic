@@ -27,7 +27,7 @@ class PaperPic {
 
 `container` の中にビューアーを作成し、コンテナーいっぱいに広げます。コンテナーに高さを指定してください。指定しないと最小の高さのままです。`options` に渡せるものは[オプション](./options)にあります。
 
-`container` が要素でない場合は `TypeError` を投げます。要素ができてから、たとえばマウント時にビューアーを作成してください。
+`container` が要素でない場合は `TypeError` を投げます。要素ができてから、たとえばマウント時にビューアーを作成してください。オプションが範囲外の場合は `RangeError` を投げます。
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ function destroy(): void
 function setOptions(options: PaperPicOptions): void
 ```
 
-渡したオプションを変更し、ほかはそのまま残します。`undefined` を渡すとデフォルト値に戻ります。`change` は発生しないため、双方向バインディングがループしません。
+渡したオプションを変更し、ほかはそのまま残します。`undefined` を渡すとデフォルト値に戻ります。`change` は発生しないため、双方向バインディングがループしません。オプションが範囲外の場合は `RangeError` を投げ、どのオプションも変更しません。
 
 ### `getState()`
 

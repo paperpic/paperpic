@@ -18,7 +18,7 @@ Small print and long receipts are hard to read at a glance on a screen. The view
 | Switch between the fit and 100% | Double click                  | Double tap |             |
 | Fit the whole image             |                               |            | `0`         |
 
-The keyboard works with the focus on the viewer. A pinch zooms around the point between the fingers. On a touch screen, one finger scrolls the page while the image is fitted, and pans the image once it is zoomed in.
+The keyboard works with the focus on the viewer. While there is nothing to move, the arrow keys scroll the page. A pinch zooms around the point between the fingers. On a touch screen, one finger scrolls the page while the image is fitted, and pans the image once it is zoomed in.
 
 The zoom goes from the fit of the whole image, or 100% for a small image, up to 800%. An image that fits stays centered, and one that overflows pans up to its edges.
 

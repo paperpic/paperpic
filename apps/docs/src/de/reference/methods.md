@@ -27,7 +27,7 @@ class PaperPic {
 
 Erstellt den Viewer in `container`, den er ausfüllt. Gib dem Container eine Höhe, sonst bleibt der Viewer bei seiner Mindesthöhe. [Optionen](./options) beschreibt, was `options` annimmt.
 
-Wirft einen `TypeError`, wenn `container` kein Element ist. Erstelle den Viewer, sobald das Element existiert, etwa beim Mounten.
+Wirft einen `TypeError`, wenn `container` kein Element ist. Erstelle den Viewer, sobald das Element existiert, etwa beim Mounten. Wirft einen `RangeError`, wenn eine Option außerhalb ihres Bereichs liegt.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ Entfernt den Viewer und gibt alles frei, was er hält, etwa seinen Worker und de
 function setOptions(options: PaperPicOptions): void
 ```
 
-Ändert die Optionen, die du übergibst, und behält die übrigen. `undefined` setzt eine Option auf ihren Standardwert zurück. Es löst nie `change` aus, damit Zwei-Wege-Bindungen keine Schleife bilden.
+Ändert die Optionen, die du übergibst, und behält die übrigen. `undefined` setzt eine Option auf ihren Standardwert zurück. Es löst nie `change` aus, damit Zwei-Wege-Bindungen keine Schleife bilden. Wirft einen `RangeError`, wenn eine Option außerhalb ihres Bereichs liegt, und ändert dann keine Option.
 
 ### `getState()`
 

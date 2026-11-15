@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: 'A receipt' })
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` changes only the options you pass, and `undefined` brings an option back to its default. It never emits `change`.
+`setOptions()` changes only the options you pass, and `undefined` brings an option back to its default. It never emits `change`. An option out of its range throws a `RangeError` that names it, such as a `softness` of 2.
 
 ## Image
 
@@ -54,7 +54,7 @@ Whether to show the built-in toolbar and edit bar. Without them, build your own 
 - **Type:** [`readonly ToolId[]`](./types#toolid)
 - **Default:** every tool
 
-The tools the edit bar offers. They keep the order of this table, whatever the order of the array.
+The tools the edit bar offers. They keep the order of this table, whatever the order of the array. It only chooses the buttons: the [methods](./methods) work with every tool.
 
 | Id              | Button                              |
 | --------------- | ----------------------------------- |
