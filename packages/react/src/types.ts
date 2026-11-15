@@ -9,7 +9,7 @@ export interface PaperPicProps extends PaperPicOptions {
   className?: string
   /** The user applied the changes. The result is already on display. */
   onApply?: (result: PaperPicEvents['apply']) => void
-  /** The user changed the view or the edit. A change of props never calls it. */
+  /** The user changed something in the state, such as the zoom or the edit. A pan and a change of props never call it. */
   onChange?: (state: PaperPicEvents['change']) => void
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
   onDownload?: (download: PaperPicEvents['download']) => void
