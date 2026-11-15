@@ -129,7 +129,7 @@ Fait pivoter l’image d’un quart de tour : dans le sens des aiguilles d’une
 function flip(): void
 ```
 
-Retourne l’image de gauche à droite telle qu’elle est affichée, donc après un quart de tour elle retourne toujours de gauche à droite. Pour mettre l’image à l’envers, retournez-la et faites-la pivoter deux fois. C’est un changement, et elle ne fait rien hors du mode d’édition ou avec un outil ouvert.
+Retourne l’image de gauche à droite telle qu’elle est affichée, donc après un quart de tour elle retourne toujours de gauche à droite. Pour la mettre en miroir de haut en bas, retournez-la et faites-la pivoter deux fois. C’est un changement, et elle ne fait rien hors du mode d’édition ou avec un outil ouvert.
 
 ### `openTool()`
 

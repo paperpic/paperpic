@@ -134,7 +134,7 @@ Para mostrar un documento que no se debe cambiar, desactiva la edición con `edi
 
 - PaperPic funciona en los navegadores de [Baseline Widely Available](https://web.dev/baseline).
 - La edición se hace en un Web Worker, que empaquetadores como Vite y webpack detectan solos. Si el worker no puede arrancar, la edición se hace en el hilo principal: sigue funcionando, pero la página puede congelarse un momento con imágenes grandes.
-- Con una Content Security Policy, permite el worker con `worker-src 'self'`, y permite `img-src blob:`, porque el visor muestra los archivos adjuntos y los resultados con URLs `blob:`.
+- Con una Content Security Policy, permite el worker con `worker-src 'self'`, y permite `img-src blob:`, porque el visor muestra los archivos adjuntos y los resultados con URLs `blob:`. Si además limita las políticas de Trusted Types, añade `paperpic` a `trusted-types`, porque los iconos de los botones pasan por esa política.
 - Con renderizado en el servidor, como en Nuxt o Next.js, los componentes de Vue y React renderizan un elemento vacío en el servidor y crean el visor en el navegador. Con el core, crea tú el visor en el navegador.
 
 ## Siguientes pasos

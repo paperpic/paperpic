@@ -134,7 +134,7 @@ Um ein Dokument anzuzeigen, das nicht verändert werden soll, schalte die Bearbe
 
 - PaperPic funktioniert in den Browsern von [Baseline Widely Available](https://web.dev/baseline).
 - Die Bearbeitung läuft in einem Web Worker, den Bundler wie Vite und webpack von selbst erkennen. Kann der Worker nicht starten, läuft die Bearbeitung im Hauptthread: Sie funktioniert weiter, aber die Seite kann bei großen Bildern kurz einfrieren.
-- Erlaube mit einer Content Security Policy den Worker mit `worker-src 'self'`, und erlaube `img-src blob:`, weil der Viewer angehängte Dateien und Ergebnisse über `blob:`-URLs anzeigt.
+- Erlaube mit einer Content Security Policy den Worker mit `worker-src 'self'`, und erlaube `img-src blob:`, weil der Viewer angehängte Dateien und Ergebnisse über `blob:`-URLs anzeigt. Wenn sie außerdem die Richtlinien von Trusted Types einschränkt, füge `paperpic` zu `trusted-types` hinzu, weil die Icons der Schaltflächen durch diese Richtlinie laufen.
 - Beim serverseitigen Rendern, etwa in Nuxt oder Next.js, rendern die Vue- und React-Komponenten auf dem Server ein leeres Element und erstellen den Viewer im Browser. Mit dem Kern erstellst du den Viewer selbst im Browser.
 
 ## Nächste Schritte

@@ -148,6 +148,23 @@ describe('paperPic', () => {
     expect(container.querySelector('.paperpic-status-visible')!.textContent).toBe('The image could not be loaded')
   })
 
+  it('keeps the image when a load listener throws, because the load did not fail', async () => {
+    const reportError = vi.fn()
+    vi.stubGlobal('reportError', reportError)
+    const failure = new Error('the app failed')
+    const onError = vi.fn()
+    pic = new PaperPic(container, { src: '/receipt.jpg' })
+    pic.on('error', onError)
+    pic.on('load', () => {
+      throw failure
+    })
+    await finishLoading()
+
+    expect(reportError).toHaveBeenCalledWith(failure)
+    expect(onError).not.toHaveBeenCalled()
+    expect(pic.getState().status).toBe('ready')
+  })
+
   it('ignores an older load when the source changes meanwhile', async () => {
     pic = new PaperPic(container, {
       src: new Blob(['first']),
@@ -214,6 +231,32 @@ describe('paperPic', () => {
       off()
       pic.zoomIn()
       expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it('does not emit change for a pan, which the state does not hold', () => {
+      pic.zoomTo(2)
+      const onChange = vi.fn()
+      pic.on('change', onChange)
+      const moved = !viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
+      expect(moved).toBe(true)
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it('reports a listener that throws to the page, and goes on', () => {
+      const reportError = vi.fn()
+      vi.stubGlobal('reportError', reportError)
+      const failure = new Error('the app failed')
+      const onChange = vi.fn()
+      pic.on('change', () => {
+        throw failure
+      })
+      pic.on('change', onChange)
+
+      pic.zoomIn()
+
+      expect(reportError).toHaveBeenCalledWith(failure)
+      expect(onChange).toHaveBeenCalledOnce()
+      expect(pic.getState().zoom).toBeCloseTo(0.625)
     })
 
     it('zooms with the public methods, within the limits', () => {

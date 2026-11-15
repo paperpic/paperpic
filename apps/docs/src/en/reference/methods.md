@@ -129,7 +129,7 @@ Turns the image a quarter turn: clockwise with `1`, the default, and countercloc
 function flip(): void
 ```
 
-Mirrors the image left to right as it is on display, so after a quarter turn it still mirrors left to right. To turn the image upside down, flip it and rotate it twice. It is an edit, and it does nothing outside the edit mode or while a tool is open.
+Mirrors the image left to right as it is on display, so after a quarter turn it still mirrors left to right. To mirror it top to bottom, flip it and rotate it twice. It is an edit, and it does nothing outside the edit mode or while a tool is open.
 
 ### `openTool()`
 

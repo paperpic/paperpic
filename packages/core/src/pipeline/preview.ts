@@ -4,7 +4,7 @@ import type { LoadedImage } from '../render/load-image'
 import type { PipelineStep, ToneStep } from './operations'
 import { adjustPixels } from '../processing/adjust'
 import { applyThreshold } from '../processing/threshold'
-import { pixelsToCanvas, readPixels } from './pixels'
+import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 import { planRead, resultSize } from './read-plan'
 
 /** The size of the copy that previews work on. It keeps each step well under a second on a phone. */
@@ -76,9 +76,6 @@ export async function renderPreview(
     element: canvas,
     ...resultSize(image, steps),
     tint,
-    release: () => {
-      canvas.width = 0
-      canvas.height = 0
-    },
+    release: () => releaseCanvas(canvas),
   }
 }

@@ -19,6 +19,8 @@ Con una Content Security Policy, permite:
 
 - `worker-src 'self'`, para el worker.
 - `img-src blob:`, porque el visor muestra los archivos adjuntos y los resultados de Aplicar con URLs `blob:`.
+- `paperpic` en `trusted-types`, si tu política limita las políticas de Trusted Types, porque los iconos de los botones pasan por esa política.
+- Una política `default` de Trusted Types cuyo `createScriptURL` acepte la URL del worker, si tu política exige Trusted Types. Los empaquetadores solo detectan un worker creado con una URL normal, que Trusted Types bloquea, así que sin esa política la edición se hace en el hilo principal.
 
 ## Fotos grandes
 

@@ -5,7 +5,7 @@ description: Die Ereignisse von PaperPic und was jedes liefert, load, error, cha
 
 # Ereignisse
 
-Ereignisse teilen deinem Code mit, was im Viewer passiert. Höre mit [`on()`](./methods#on) auf sie. In Vue sind sie Komponentenereignisse wie `@apply`, in React Props wie `onApply`.
+Ereignisse teilen deinem Code mit, was im Viewer passiert. Höre mit [`on()`](./methods#on) auf sie. In Vue sind sie Komponentenereignisse wie `@apply`, in React Props wie `onApply`. Wirft eine zuhörende Funktion einen Fehler, läuft der Viewer weiter: Die Seite erhält den Fehler wie jeden nicht abgefangenen, und die anderen Funktionen laufen trotzdem.
 
 :::tabs key:framework
 == JavaScript
@@ -44,7 +44,7 @@ Das Bild konnte nicht geladen oder die Änderungen nicht übernommen werden. Nac
 
 - **Daten:** [`PaperPicState`](./state)
 
-Der Nutzer hat die Ansicht oder die Bearbeitung geändert, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es meldet auch den Start von Übernehmen, mit `busy: true`. `setOptions()` und die Props der Komponenten lösen es nie aus.
+Der Nutzer hat die Ansicht oder die Bearbeitung geändert, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es meldet auch den Start von Übernehmen, mit `busy: true`. Das Verschieben des Bildes löst es nicht aus, weil der Zustand seine Position nicht enthält. `setOptions()` und die Props der Komponenten lösen es nie aus.
 
 ## `apply`
 

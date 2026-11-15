@@ -82,11 +82,11 @@ Während der Bearbeitung zeigt der Viewer die Änderungen als Vorschau auf einer
 
 ## Was dein Code erhält
 
-| Ereignis | Wann                                                                 |
-| -------- | -------------------------------------------------------------------- |
-| `apply`  | Wenn das Ergebnis fertig ist, mit `{ blob, width, height, type }`    |
-| `change` | Nach jeder Aktion des Nutzers, mit dem [Zustand](../reference/state) |
-| `error`  | Wenn Übernehmen fehlschlägt oder das Bild nicht geladen werden kann  |
+| Ereignis | Wann                                                                        |
+| -------- | --------------------------------------------------------------------------- |
+| `apply`  | Wenn das Ergebnis fertig ist, mit `{ blob, width, height, type }`           |
+| `change` | Nach jeder Aktion des Nutzers, die den [Zustand](../reference/state) ändert |
+| `error`  | Wenn Übernehmen fehlschlägt oder das Bild nicht geladen werden kann         |
 
 :::tabs key:framework
 == JavaScript

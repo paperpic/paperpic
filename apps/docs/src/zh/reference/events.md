@@ -5,7 +5,7 @@ description: PaperPic 的事件 load、error、change、apply 和 download 及�
 
 # 事件
 
-事件告诉你的代码查看器中发生了什么。用 [`on()`](./methods#on) 监听它们。在 Vue 中它们是组件事件，例如 `@apply`；在 React 中它们是 props，例如 `onApply`。
+事件告诉你的代码查看器中发生了什么。用 [`on()`](./methods#on) 监听它们。在 Vue 中它们是组件事件，例如 `@apply`；在 React 中它们是 props，例如 `onApply`。如果监听函数抛出错误，查看器会继续运行：页面会像收到任何未捕获的错误一样收到它，其他监听函数仍会执行。
 
 :::tabs key:framework
 == JavaScript
@@ -44,7 +44,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **载荷：** [`PaperPicState`](./state)
 
-用户改变了查看或编辑，例如缩放、打开工具或撤销。它也会以 `busy: true` 报告应用开始。`setOptions()` 和组件的 props 从不触发它。
+用户改变了查看或编辑，例如缩放、打开工具或撤销。它也会以 `busy: true` 报告应用开始。平移图片不会触发它，因为状态不包含图片的位置。`setOptions()` 和组件的 props 从不触发它。
 
 ## `apply`
 

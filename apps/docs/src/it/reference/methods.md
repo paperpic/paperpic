@@ -129,7 +129,7 @@ Ruota l’immagine di un quarto di giro: in senso orario con `1`, il valore pred
 function flip(): void
 ```
 
-Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la capovolge ancora da sinistra a destra. Per metterla sottosopra, capovolgila e ruotala due volte. È un cambiamento, e non fa nulla fuori dalla modalità di modifica o con uno strumento aperto.
+Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la capovolge ancora da sinistra a destra. Per specchiarla dall’alto in basso, capovolgila e ruotala due volte. È un cambiamento, e non fa nulla fuori dalla modalità di modifica o con uno strumento aperto.
 
 ### `openTool()`
 

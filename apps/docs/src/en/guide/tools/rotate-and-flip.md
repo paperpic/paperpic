@@ -22,7 +22,7 @@ pic.rotate(-1)
 
 ## Flip
 
-Flip mirrors the image left to right, as it is on display, so after a quarter turn it still mirrors left to right on the screen. To turn an image upside down, flip it and rotate it twice.
+Flip mirrors the image left to right, as it is on display, so after a quarter turn it still mirrors left to right on the screen. To mirror an image top to bottom, flip it and rotate it twice.
 
 Flips and rotations that cancel out leave nothing to apply. From code, call [`flip()`](../../reference/methods#flip).
 

@@ -1,6 +1,6 @@
 import type { PixelBuffer } from '../processing/types'
 import type { PipelineStep } from './operations'
-import { pixelsToCanvas, readPixels } from './pixels'
+import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 import { planRead } from './read-plan'
 
 /**
@@ -77,6 +77,7 @@ function encode(pixels: PixelBuffer, type: string, quality: number): Promise<Blo
   const canvas = pixelsToCanvas(pixels)
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
+      releaseCanvas(canvas)
       if (blob) {
         resolve(blob)
       }

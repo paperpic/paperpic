@@ -137,7 +137,7 @@ export interface PaperPicState {
 export interface PaperPicEvents {
   /** The user applied the changes. The result is already on display. */
   apply: ExportedImage
-  /** The user changed the view or the edit. `setOptions()` never triggers it. */
+  /** The user changed something in the state, such as the zoom or the edit. A pan and `setOptions()` never trigger it. */
   change: PaperPicState
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
   download: PaperPicDownload
@@ -996,9 +996,18 @@ export class PaperPic {
     }
   }
 
+  /**
+   * Tells the listeners of an event. A listener that throws is the app failing, not the viewer, so the page gets its
+   * error as any uncaught one, the other listeners still run, and it never looks like a failed load or Apply.
+   */
   private emit<Name extends keyof PaperPicEvents>(name: Name, payload: PaperPicEvents[Name]): void {
     for (const listener of this.listeners[name]) {
-      listener(payload)
+      try {
+        listener(payload)
+      }
+      catch (error) {
+        reportError(error)
+      }
     }
   }
 
@@ -1283,12 +1292,16 @@ export class PaperPic {
 
   private commit(view: View): void {
     const { zoom, panX, panY, rotation, fit } = this.view
-    if (view.zoom === zoom && view.panX === panX && view.panY === panY && view.rotation === rotation && view.fit === fit) {
+    const sameState = view.zoom === zoom && view.rotation === rotation && view.fit === fit
+    if (sameState && view.panX === panX && view.panY === panY) {
       return
     }
     this.view = view
     this.refresh()
-    this.emit('change', this.getState())
+    // The state does not hold the position of the image, so a pan would report the same state on every move of the pointer
+    if (!sameState) {
+      this.emit('change', this.getState())
+    }
   }
 
   private resetRotation(): void {

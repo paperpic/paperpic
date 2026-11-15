@@ -22,7 +22,7 @@ pic.rotate(-1)
 
 ## Retourner
 
-Retourner met l’image en miroir de gauche à droite, telle qu’elle est affichée, donc après un quart de tour elle reste en miroir de gauche à droite à l’écran. Pour mettre une image à l’envers, retournez-la et faites-la pivoter deux fois.
+Retourner met l’image en miroir de gauche à droite, telle qu’elle est affichée, donc après un quart de tour elle reste en miroir de gauche à droite à l’écran. Pour mettre une image en miroir de haut en bas, retournez-la et faites-la pivoter deux fois.
 
 Les retournements et rotations qui s’annulent ne laissent rien à appliquer. Depuis le code, appelez [`flip()`](../../reference/methods#flip).
 

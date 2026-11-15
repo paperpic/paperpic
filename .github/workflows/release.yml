@@ -83,7 +83,7 @@ jobs:
 
   pack:
     needs: select-mode
-    # Publishing stays off until npm is set up: set the NPM_PUBLISH repository variable to true
+    # The NPM_PUBLISH repository variable switches publishing: any value other than true stops it
     if: github.ref_name == 'main' && needs.select-mode.outputs.mode == 'publish' && vars.NPM_PUBLISH == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15

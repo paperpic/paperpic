@@ -19,6 +19,8 @@ worker 随包提供，并通过标准的 `new Worker(new URL(…, import.meta.ur
 
 - `worker-src 'self'`，用于 worker。
 - `img-src blob:`，因为查看器通过 `blob:` URL 显示添加的文件和应用的结果。
+- 如果你的策略限制 Trusted Types 策略，请在 `trusted-types` 中加入 `paperpic`，因为按钮的图标会经过这个策略。
+- 如果你的策略要求 Trusted Types，请提供一个 `default` 策略，让它的 `createScriptURL` 接受 worker 的 URL。打包工具只能处理用普通 URL 创建的 worker，而 Trusted Types 会拦截它，因此没有这个策略时，编辑会在主线程上运行。
 
 ## 大照片
 

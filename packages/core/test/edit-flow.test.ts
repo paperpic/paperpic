@@ -280,6 +280,31 @@ describe('editing', () => {
     expect(container.querySelector('.paperpic-status-visible')).toBeNull()
   })
 
+  it('applies when an apply listener throws, because the Apply did not fail', async () => {
+    const reportError = vi.fn()
+    vi.stubGlobal('reportError', reportError)
+    const failure = new Error('the upload failed')
+    const onError = vi.fn()
+    pic.on('error', onError)
+    pic.on('apply', () => {
+      throw failure
+    })
+    pic.edit()
+    pic.rotate(1)
+    onChange.mockClear()
+
+    const applying = pic.apply()
+    await flush()
+    await finishLoading()
+    await applying
+
+    expect(reportError).toHaveBeenCalledWith(failure)
+    expect(onError).not.toHaveBeenCalled()
+    expect(pic.getState()).toMatchObject({ mode: 'view', busy: false })
+    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ mode: 'view', busy: false }))
+    expect(container.querySelector('.paperpic-status-visible')).toBeNull()
+  })
+
   describe('cancelling', () => {
     it('leaves at once when there is nothing to lose', () => {
       pic.edit()

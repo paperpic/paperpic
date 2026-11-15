@@ -111,10 +111,10 @@ The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `
 - **The same `src` keeps the edit.** Passing the value again does not reload the image, so the result of Apply stays on display. Call `reload()` for the original. A new `src` while editing discards the edits.
 - **The result format follows the source.** A cleaned up image is PNG, to keep the edges of the letters sharp, unless `output.type` says otherwise. The saved filename takes the matching extension.
 - **Stable objects in props.** In Vue, build `labels`, `tools`, `icons` and `output` with `computed`. In React, define them outside the component or with `useMemo`. Inline event handlers are fine in both.
-- **`change` comes from the user only.** `setOptions()` and prop changes never emit it.
+- **`change` comes from the user only.** `setOptions()` and prop changes never emit it. Neither does a pan, because the state does not hold the position of the image.
 - **Errors arrive as an event.** `error` carries `{ error }` when the image fails to load or Apply fails. After a failed Apply, the edit stays open.
 - **Server-side rendering works with the components.** In Nuxt or Next.js, they render an empty element on the server and create the viewer in the browser. The React component is already marked `'use client'`.
-- **Content Security Policy:** allow `worker-src 'self'` and `img-src blob:`.
+- **Content Security Policy:** allow `worker-src 'self'` and `img-src blob:`. If the policy restricts Trusted Types policies, add `paperpic` to `trusted-types`. Where it requires Trusted Types, the worker starts only with a `default` policy whose `createScriptURL` accepts its URL, and otherwise the editing runs on the main thread.
 - **`icons` is inserted as HTML.** Pass only markup you trust.
 
 ## Full reference

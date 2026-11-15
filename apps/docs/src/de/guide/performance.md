@@ -19,6 +19,8 @@ Erlaube mit einer Content Security Policy:
 
 - `worker-src 'self'` für den Worker.
 - `img-src blob:`, weil der Viewer angehängte Dateien und die Ergebnisse von Übernehmen über `blob:`-URLs zeigt.
+- `paperpic` in `trusted-types`, wenn deine Richtlinie die Richtlinien von Trusted Types einschränkt, weil die Icons der Schaltflächen durch diese Richtlinie laufen.
+- Eine `default`-Richtlinie von Trusted Types, deren `createScriptURL` die URL des Workers annimmt, wenn deine Richtlinie Trusted Types verlangt. Bundler erkennen nur einen Worker, der mit einer einfachen URL erstellt wird, und die blockiert Trusted Types. Ohne diese Richtlinie läuft die Bearbeitung also im Hauptthread.
 
 ## Große Fotos
 

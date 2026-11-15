@@ -22,7 +22,7 @@ pic.rotate(-1)
 
 ## Capovolgere
 
-Capovolgi specchia l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la specchia ancora da sinistra a destra sullo schermo. Per mettere un’immagine sottosopra, capovolgila e ruotala due volte.
+Capovolgi specchia l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la specchia ancora da sinistra a destra sullo schermo. Per specchiare un’immagine dall’alto in basso, capovolgila e ruotala due volte.
 
 Capovolgimenti e rotazioni che si annullano non lasciano nulla da applicare. Dal codice, chiama [`flip()`](../../reference/methods#flip).
 

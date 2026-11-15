@@ -134,7 +134,7 @@ Pour afficher un document qui ne doit pas être modifié, désactivez la modific
 
 - PaperPic fonctionne dans les navigateurs de [Baseline Widely Available](https://web.dev/baseline).
 - La modification s’exécute dans un Web Worker, que des bundlers comme Vite et webpack prennent en charge seuls. Si le worker ne peut pas démarrer, la modification s’exécute sur le thread principal : elle fonctionne toujours, mais la page peut se figer un instant avec de grandes images.
-- Avec une Content Security Policy, autorisez le worker avec `worker-src 'self'`, et autorisez `img-src blob:`, car la visionneuse affiche les fichiers joints et les résultats par des URL `blob:`.
+- Avec une Content Security Policy, autorisez le worker avec `worker-src 'self'`, et autorisez `img-src blob:`, car la visionneuse affiche les fichiers joints et les résultats par des URL `blob:`. Si elle limite aussi les politiques Trusted Types, ajoutez `paperpic` à `trusted-types`, car les icônes des boutons passent par cette politique.
 - Avec un rendu côté serveur, comme dans Nuxt ou Next.js, les composants Vue et React rendent un élément vide sur le serveur et créent la visionneuse dans le navigateur. Avec le cœur, créez vous-même la visionneuse dans le navigateur.
 
 ## Étapes suivantes

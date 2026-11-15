@@ -129,7 +129,7 @@ Dreht das Bild um eine Vierteldrehung: im Uhrzeigersinn mit `1`, dem Standard, u
 function flip(): void
 ```
 
-Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vierteldrehung also immer noch von links nach rechts. Um das Bild auf den Kopf zu stellen, spiegle es und drehe es zweimal. Es ist eine Änderung und tut nichts außerhalb des Bearbeitungsmodus oder bei offenem Werkzeug.
+Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vierteldrehung also immer noch von links nach rechts. Um das Bild von oben nach unten zu spiegeln, spiegle es und drehe es zweimal. Es ist eine Änderung und tut nichts außerhalb des Bearbeitungsmodus oder bei offenem Werkzeug.
 
 ### `openTool()`
 

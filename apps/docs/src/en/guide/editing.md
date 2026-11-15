@@ -82,11 +82,11 @@ Apply cannot be interrupted. It blocks the controls and shows a message while it
 
 ## What your code receives
 
-| Event    | When                                                                |
-| -------- | ------------------------------------------------------------------- |
-| `apply`  | When the result is ready, with `{ blob, width, height, type }`      |
-| `change` | After each action of the user, with the [state](../reference/state) |
-| `error`  | When Apply fails, or when the image cannot be loaded                |
+| Event    | When                                                                       |
+| -------- | -------------------------------------------------------------------------- |
+| `apply`  | When the result is ready, with `{ blob, width, height, type }`             |
+| `change` | After each action of the user that changes the [state](../reference/state) |
+| `error`  | When Apply fails, or when the image cannot be loaded                       |
 
 :::tabs key:framework
 == JavaScript

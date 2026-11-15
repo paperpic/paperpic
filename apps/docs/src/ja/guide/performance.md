@@ -19,6 +19,8 @@ Content Security Policy を使う場合は、次を許可してください。
 
 - worker のための `worker-src 'self'`。
 - `img-src blob:`。ビューアーは添付ファイルと適用の結果を `blob:` URL で表示するためです。
+- Trusted Types のポリシーを制限している場合は、`trusted-types` に `paperpic`。ボタンのアイコンはこのポリシーを通るためです。
+- Trusted Types を必須にしている場合は、`createScriptURL` が worker の URL を受け入れる `default` ポリシー。バンドラーは通常の URL から作る worker しか扱えず、Trusted Types はそれをブロックします。このポリシーがないと、編集はメインスレッドで行われます。
 
 ## 大きな写真
 

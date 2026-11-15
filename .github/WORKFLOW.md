@@ -126,7 +126,7 @@ Nothing has to be merged back into `development`: the versions were bumped there
 ### Safety nets
 
 - If changesets reach `main` without passing through the version PR, the `unversioned` job fails and says what to do.
-- Publishing runs only when the repository variable `NPM_PUBLISH` is `true`. It is not set yet; see [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+- Publishing runs only when the repository variable `NPM_PUBLISH` is `true`.
 - The **Release tags** ruleset blocks deleting, moving or force-pushing any `@paperpic/*` tag, so a tag always points at the code that was published.
 - The `npm` environment can only deploy from `main`, and administrators cannot skip its approval.
 

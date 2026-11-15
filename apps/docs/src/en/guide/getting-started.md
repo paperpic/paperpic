@@ -134,7 +134,7 @@ To show a document that people should not change, turn editing off with `editabl
 
 - PaperPic works in the browsers of [Baseline Widely Available](https://web.dev/baseline).
 - The editing runs in a Web Worker, which bundlers such as Vite and webpack pick up on their own. If the worker cannot start, the editing runs on the main thread: it still works, but the page can freeze for a moment with large images.
-- With a Content Security Policy, allow the worker with `worker-src 'self'`, and allow `img-src blob:`, because the viewer shows attached files and results through `blob:` URLs.
+- With a Content Security Policy, allow the worker with `worker-src 'self'`, and allow `img-src blob:`, because the viewer shows attached files and results through `blob:` URLs. If it also restricts Trusted Types policies, add `paperpic` to `trusted-types`, because the icons of the buttons go through that policy.
 - With server-side rendering, such as in Nuxt or Next.js, the Vue and React components render an empty element on the server and create the viewer in the browser. With the core, create the viewer in the browser yourself.
 
 ## Next steps

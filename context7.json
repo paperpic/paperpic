@@ -15,6 +15,6 @@
     "Import types such as ExportedImage, PaperPicState or ToolId from the package you installed. @paperpic/vue and @paperpic/react export every type of @paperpic/core, so never import from @paperpic/core in a Vue or React app.",
     "Set editable: false to show a document without editing.",
     "With @paperpic/core, create the viewer in the browser once its element exists, and call destroy() when you remove it.",
-    "With a Content Security Policy, allow worker-src 'self' and img-src blob:."
+    "With a Content Security Policy, allow worker-src 'self' and img-src blob:. If it restricts Trusted Types policies, add paperpic to trusted-types."
   ]
 }

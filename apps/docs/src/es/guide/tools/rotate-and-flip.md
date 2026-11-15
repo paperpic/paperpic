@@ -22,7 +22,7 @@ pic.rotate(-1)
 
 ## Voltear
 
-Voltear refleja la imagen de izquierda a derecha tal como se ve, así que después de un cuarto de vuelta sigue reflejándola de izquierda a derecha en la pantalla. Para poner una imagen boca abajo, voltéala y gírala dos veces.
+Voltear refleja la imagen de izquierda a derecha tal como se ve, así que después de un cuarto de vuelta sigue reflejándola de izquierda a derecha en la pantalla. Para reflejar una imagen de arriba abajo, voltéala y gírala dos veces.
 
 Los volteos y giros que se anulan entre sí no dejan nada que aplicar. Desde el código, llama a [`flip()`](../../reference/methods#flip).
 
