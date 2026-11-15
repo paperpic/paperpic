@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: '一张收据' }
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` 只修改你传入的选项，传入 `undefined` 会让该选项恢复默认值。它从不触发 `change`。
+`setOptions()` 只修改你传入的选项，传入 `undefined` 会让该选项恢复默认值。它从不触发 `change`。超出范围的选项会抛出带有其名称的 `RangeError`，例如 `softness` 为 2。
 
 ## 图片
 
@@ -54,7 +54,7 @@ pic.setOptions({ editable: false })
 - **类型：** [`readonly ToolId[]`](./types#toolid)
 - **默认值：** 所有工具
 
-编辑栏提供的工具。无论数组的顺序如何，它们都按此表的顺序排列。
+编辑栏提供的工具。无论数组的顺序如何，它们都按此表的顺序排列。它只决定按钮：[方法](./methods)对所有工具都有效。
 
 | Id              | 按钮                   |
 | --------------- | ---------------------- |

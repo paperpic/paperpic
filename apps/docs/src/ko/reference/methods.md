@@ -27,7 +27,7 @@ class PaperPic {
 
 `container` 안에 뷰어를 만들고 컨테이너를 가득 채웁니다. 컨테이너에 높이를 지정하세요. 지정하지 않으면 뷰어가 최소 높이로 남습니다. `options`에 전달할 수 있는 값은 [옵션](./options)에 있습니다.
 
-`container`가 요소가 아니면 `TypeError`를 던집니다. 요소가 만들어진 뒤에, 예를 들어 마운트할 때 뷰어를 만드세요.
+`container`가 요소가 아니면 `TypeError`를 던집니다. 요소가 만들어진 뒤에, 예를 들어 마운트할 때 뷰어를 만드세요. 옵션이 범위를 벗어나면 `RangeError`를 던집니다.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ function destroy(): void
 function setOptions(options: PaperPicOptions): void
 ```
 
-전달한 옵션을 바꾸고 나머지는 그대로 둡니다. `undefined`를 전달하면 기본값으로 돌아갑니다. `change`를 발생시키지 않으므로 양방향 바인딩이 반복되지 않습니다.
+전달한 옵션을 바꾸고 나머지는 그대로 둡니다. `undefined`를 전달하면 기본값으로 돌아갑니다. `change`를 발생시키지 않으므로 양방향 바인딩이 반복되지 않습니다. 옵션이 범위를 벗어나면 `RangeError`를 던지고, 어떤 옵션도 바꾸지 않습니다.
 
 ### `getState()`
 

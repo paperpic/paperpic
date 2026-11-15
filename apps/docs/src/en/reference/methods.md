@@ -27,7 +27,7 @@ class PaperPic {
 
 Creates the viewer inside `container`, which it fills. Give the container a height, or the viewer stays at its minimum height. [Options](./options) lists what `options` takes.
 
-It throws a `TypeError` if `container` is not an element. Create the viewer once the element exists, such as on mount.
+It throws a `TypeError` if `container` is not an element. Create the viewer once the element exists, such as on mount. It throws a `RangeError` if an option is out of its range.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ Removes the viewer and releases everything it holds, such as its worker and the 
 function setOptions(options: PaperPicOptions): void
 ```
 
-Changes the options you pass and keeps the others. `undefined` brings an option back to its default. It never emits `change`, so two-way bindings do not loop.
+Changes the options you pass and keeps the others. `undefined` brings an option back to its default. It never emits `change`, so two-way bindings do not loop. It throws a `RangeError` if an option is out of its range, and then no option changes.
 
 ### `getState()`
 

@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: 'Ein Kassenbon' 
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` ändert nur die Optionen, die du übergibst, und `undefined` setzt eine Option auf ihren Standardwert zurück. Es löst nie `change` aus.
+`setOptions()` ändert nur die Optionen, die du übergibst, und `undefined` setzt eine Option auf ihren Standardwert zurück. Es löst nie `change` aus. Eine Option außerhalb ihres Bereichs wirft einen `RangeError`, der sie nennt, etwa ein `softness` von 2.
 
 ## Bild
 
@@ -54,7 +54,7 @@ Ob die eingebaute Werkzeugleiste und Bearbeitungsleiste angezeigt werden. Ohne s
 - **Typ:** [`readonly ToolId[]`](./types#toolid)
 - **Standard:** alle Werkzeuge
 
-Die Werkzeuge, die die Bearbeitungsleiste anbietet. Sie behalten die Reihenfolge dieser Tabelle, egal in welcher Reihenfolge das Array sie nennt.
+Die Werkzeuge, die die Bearbeitungsleiste anbietet. Sie behalten die Reihenfolge dieser Tabelle, egal in welcher Reihenfolge das Array sie nennt. Sie wählt nur die Schaltflächen aus: Die [Methoden](./methods) funktionieren mit jedem Werkzeug.
 
 | Id              | Schaltfläche                          |
 | --------------- | ------------------------------------- |

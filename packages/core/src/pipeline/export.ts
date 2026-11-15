@@ -44,7 +44,8 @@ export interface ExportRequest {
   width: number
 }
 
-const ENCODABLE = new Set(['image/jpeg', 'image/png', 'image/webp'])
+/** The formats that editing can produce. */
+export const ENCODABLE: ReadonlySet<string> = new Set(['image/jpeg', 'image/png', 'image/webp'])
 const EXTENSIONS: Record<string, string> = {
   jpg: 'image/jpeg',
   jpeg: 'image/jpeg',

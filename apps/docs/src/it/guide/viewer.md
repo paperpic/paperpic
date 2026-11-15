@@ -18,7 +18,7 @@ I caratteri piccoli e gli scontrini lunghi sono difficili da leggere a colpo d�
 | Passare dall’adattamento al 100 % e viceversa | Doppio clic                       | Doppio tocco |           |
 | Adattare l’immagine intera                    |                                   |              | `0`       |
 
-La tastiera funziona con il focus sul visualizzatore. Un pizzico zooma attorno al punto tra le dita. Su uno schermo touch, un dito scorre la pagina finché l’immagine è adattata, e sposta l’immagine quando è ingrandita.
+La tastiera funziona con il focus sul visualizzatore. Finché non c’è nulla da spostare, le frecce scorrono la pagina. Un pizzico zooma attorno al punto tra le dita. Su uno schermo touch, un dito scorre la pagina finché l’immagine è adattata, e sposta l’immagine quando è ingrandita.
 
 Lo zoom va dall’adattamento dell’immagine intera, o dal 100 % per un’immagine piccola, fino all’800 %. Un’immagine che ci sta resta centrata, e una che sborda si sposta fino ai suoi bordi.
 

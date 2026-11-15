@@ -8,8 +8,14 @@ export interface GestureHandlers {
   onTap: (point: ViewPoint) => boolean
   /** `factor` multiplies the current zoom, around `point`. */
   onZoom: (factor: number, point: ViewPoint) => void
-  /** Whether the wheel zooms. If it does not, the page scrolls as usual. */
-  wheelZoom: () => boolean
+}
+
+/** The gestures attached to an element. */
+export interface Gestures {
+  /** Removes every listener. */
+  detach: () => void
+  /** Chooses whether the wheel zooms. If it does not, the page scrolls as usual. It starts off. */
+  setWheelZoom: (enabled: boolean) => void
 }
 
 const DOUBLE_TAP_TIME = 300
@@ -23,10 +29,8 @@ const LINE_HEIGHT = 16
 
 /**
  * Turns Pointer Events and the wheel into pan, zoom, tap and double tap.
- *
- * @returns The function that removes every listener.
  */
-export function attachGestures(element: HTMLElement, handlers: GestureHandlers): () => void {
+export function attachGestures(element: HTMLElement, handlers: GestureHandlers): Gestures {
   const pointers = new Map<number, ViewPoint>()
   let lastTap: { point: ViewPoint, time: number } | null = null
   let travelled = 0
@@ -100,9 +104,6 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
   }
 
   const onWheel = (event: WheelEvent) => {
-    if (!handlers.wheelZoom()) {
-      return
-    }
     event.preventDefault()
     const unit = event.deltaMode === WheelEvent.DOM_DELTA_LINE
       ? LINE_HEIGHT
@@ -117,13 +118,32 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
   element.addEventListener('pointermove', onPointerMove)
   element.addEventListener('pointerup', onPointerUp)
   element.addEventListener('pointercancel', onPointerCancel)
-  element.addEventListener('wheel', onWheel, { passive: false })
 
-  return () => {
-    element.removeEventListener('pointerdown', onPointerDown)
-    element.removeEventListener('pointermove', onPointerMove)
-    element.removeEventListener('pointerup', onPointerUp)
-    element.removeEventListener('pointercancel', onPointerCancel)
-    element.removeEventListener('wheel', onWheel)
+  let wheelZoom = false
+
+  // A wheel listener that can stop the scroll makes the browser wait for it before it scrolls the page, so the
+  // element has one only while the wheel zooms
+  const setWheelZoom = (enabled: boolean) => {
+    if (enabled === wheelZoom) {
+      return
+    }
+    wheelZoom = enabled
+    if (enabled) {
+      element.addEventListener('wheel', onWheel, { passive: false })
+    }
+    else {
+      element.removeEventListener('wheel', onWheel)
+    }
+  }
+
+  return {
+    setWheelZoom,
+    detach: () => {
+      element.removeEventListener('pointerdown', onPointerDown)
+      element.removeEventListener('pointermove', onPointerMove)
+      element.removeEventListener('pointerup', onPointerUp)
+      element.removeEventListener('pointercancel', onPointerCancel)
+      setWheelZoom(false)
+    },
   }
 }

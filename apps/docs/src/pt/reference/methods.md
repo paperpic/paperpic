@@ -27,7 +27,7 @@ class PaperPic {
 
 Cria o visualizador dentro de `container`, que ele preenche. Defina uma altura para o contêiner, senão o visualizador fica na altura mínima. [Opções](./options) explica o que `options` aceita.
 
-Lança um `TypeError` se `container` não for um elemento. Crie o visualizador quando o elemento já existir, por exemplo na montagem.
+Lança um `TypeError` se `container` não for um elemento. Crie o visualizador quando o elemento já existir, por exemplo na montagem. Lança um `RangeError` se uma opção estiver fora do seu intervalo.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ Remove o visualizador e libera tudo o que ele ocupa, como o worker e a memória 
 function setOptions(options: PaperPicOptions): void
 ```
 
-Muda as opções que você passa e mantém as outras. `undefined` devolve uma opção ao seu valor padrão. Nunca emite `change`, então vínculos bidirecionais não entram em loop.
+Muda as opções que você passa e mantém as outras. `undefined` devolve uma opção ao seu valor padrão. Nunca emite `change`, então vínculos bidirecionais não entram em loop. Lança um `RangeError` se uma opção estiver fora do seu intervalo, e nesse caso nenhuma opção muda.
 
 ### `getState()`
 

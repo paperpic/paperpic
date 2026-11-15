@@ -1,4 +1,5 @@
 import type { PaperPicDownload } from './download'
+import type { Gestures } from './input/gestures'
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
 import type { AdjustSetting, Operation, PipelineStep, ToneStep } from './pipeline/operations'
@@ -31,6 +32,7 @@ import { DEFAULT_ICONS } from './ui/icons'
 import { DEFAULT_LABELS } from './ui/labels'
 import { warnWithoutStyles } from './ui/styles-check'
 import { Toolbar } from './ui/toolbar'
+import { validateOptions } from './validate-options'
 
 const ZOOM_STEP = 1.25
 const ZOOM_TOLERANCE = 0.001
@@ -86,7 +88,7 @@ export interface PaperPicOptions {
   src?: PaperPicSource
   /** Whether to show the built-in toolbar and edit bar. Without them, build your own with the public methods. */
   toolbar?: boolean
-  /** Which tools the edit bar offers. By default, all of them. */
+  /** Which tools the edit bar offers. By default, all of them. It only chooses the buttons: the methods work with every tool. */
   tools?: readonly ToolId[]
   /** Whether the wheel zooms. Turn it off when the viewer sits in a long page. */
   wheelZoom?: boolean
@@ -193,6 +195,7 @@ export class PaperPic {
   private readonly toolbar: Toolbar
   private readonly editBar: EditBar
   private readonly renderer: Renderer
+  private readonly gestures: Gestures
   private readonly runner = new PipelineRunner()
   private readonly listeners: Listeners = {
     apply: new Set(),
@@ -221,6 +224,8 @@ export class PaperPic {
   private draft: Draft | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
+  /** Changes when an edit ends without a trace, so an Apply that finishes afterwards knows that its edit is gone. */
+  private editId = 0
   private view: View = createView()
   private viewport: Size = { width: 0, height: 0 }
   private mode: PaperPicState['mode'] = 'view'
@@ -232,6 +237,7 @@ export class PaperPic {
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
    * @throws {TypeError} If `container` is not an element. Create the instance once the element exists, such as on mount.
+   * @throws {RangeError} If an option is out of its range, such as a `softness` of 2.
    *
    * @example
    * const pic = new PaperPic(container, {
@@ -245,6 +251,8 @@ export class PaperPic {
     if (!(container instanceof HTMLElement)) {
       throw new TypeError('PaperPic needs an HTML element as its container. Create the instance once the element exists, such as on mount.')
     }
+    // Before anything reaches the page, so a wrong option leaves nothing behind
+    validateOptions(options)
 
     this.root = document.createElement('div')
     this.root.className = 'paperpic'
@@ -320,13 +328,13 @@ export class PaperPic {
 
     this.renderer = new Renderer(this.canvas, overlay, () => this.scene())
 
-    this.cleanups.push(attachGestures(this.viewportElement, {
+    this.gestures = attachGestures(this.viewportElement, {
       onPan: (deltaX, deltaY) => this.pan(deltaX, deltaY),
       onZoom: (factor, point) => this.zoomAround(this.view.zoom * factor, point),
       onTap: point => this.session?.handle.tap?.(point) ?? false,
       onDoubleTap: point => this.toggleZoom(point),
-      wheelZoom: () => this.options.wheelZoom,
-    }))
+    })
+    this.cleanups.push(this.gestures.detach)
 
     const onKeyDown = (event: KeyboardEvent) => {
       const command = keyToCommand(event)
@@ -362,6 +370,8 @@ export class PaperPic {
    * Changes only the options you pass, and `undefined` brings one back to its default. It does not emit `change`, so
    * two-way bindings do not loop.
    *
+   * @throws {RangeError} If an option is out of its range, such as a `softness` of 2. No option changes then.
+   *
    * @example
    * pic.setOptions({ editable: false })
    */
@@ -369,6 +379,7 @@ export class PaperPic {
     if (this.destroyed) {
       return
     }
+    validateOptions(options)
     const next: ResolvedOptions = { ...this.options }
     for (const name of Object.keys(DEFAULT_OPTIONS) as (keyof ResolvedOptions)[]) {
       if (name in options) {
@@ -378,6 +389,7 @@ export class PaperPic {
     }
     const wasEditable = this.options.editable
     this.options = next
+    this.gestures.setWheelZoom(next.wheelZoom)
 
     this.labels = {
       ...DEFAULT_LABELS,
@@ -509,9 +521,7 @@ export class PaperPic {
    * is a flip and a half turn. It does nothing outside the edit mode, or while a tool is open.
    */
   flip(): void {
-    if (this.options.tools.includes('flip')) {
-      this.addOperation({ type: 'flip' })
-    }
+    this.addOperation({ type: 'flip' })
   }
 
   /** Starts editing. It does nothing if the image is not ready or cannot be edited. */
@@ -554,7 +564,7 @@ export class PaperPic {
    */
   openTool(id: ToolId): void {
     const tool = TOOLS.find(candidate => candidate.id === id)
-    if (this.mode !== 'edit' || this.busy || this.openToolId() || !tool || !this.options.tools.includes(id)) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId() || !tool) {
       return
     }
     const hadFocus = this.hasFocus()
@@ -648,7 +658,7 @@ export class PaperPic {
       })
       return
     }
-    if (this.mode !== 'edit' || this.busy || this.openToolId() || !this.options.tools.includes('threshold')) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId()) {
       return
     }
     const current = thresholdSetting(this.history.done)
@@ -730,6 +740,8 @@ export class PaperPic {
     }
 
     const id = this.loadId
+    const edit = this.editId
+    const outdated = () => id !== this.loadId || edit !== this.editId
     this.busy = true
     this.applyFailed = false
     this.showStatus()
@@ -748,7 +760,7 @@ export class PaperPic {
         maxOutputSize: this.options.maxOutputSize,
       })
       const loaded = await loadImage(exported.blob)
-      if (id !== this.loadId) {
+      if (outdated()) {
         loaded.release()
         return
       }
@@ -765,7 +777,7 @@ export class PaperPic {
       this.emit('change', this.getState())
     }
     catch (cause) {
-      if (id !== this.loadId) {
+      if (outdated()) {
         return
       }
       this.busy = false
@@ -936,7 +948,6 @@ export class PaperPic {
     return this.mode === 'edit'
       && !this.busy
       && !this.openToolId()
-      && this.options.tools.includes('adjust')
       && !thresholdSetting(this.history.done).enabled
   }
 
@@ -1023,6 +1034,10 @@ export class PaperPic {
   }
 
   private async load(source: PaperPicSource | undefined): Promise<void> {
+    // A destroyed viewer has nowhere to show an image, and nothing would release it
+    if (this.destroyed) {
+      return
+    }
     const id = ++this.loadId
     this.source = source
     this.setSaved(source)
@@ -1073,8 +1088,9 @@ export class PaperPic {
     this.applyViewport()
   }
 
-  /** Ends the edit without a trace. In-progress work is ignored when it finishes, because a load changes `loadId`. */
+  /** Ends the edit without a trace. An Apply in progress is ignored when it finishes, because `editId` changes. */
   private leaveEdit(): void {
+    this.editId++
     this.closeTool()
     this.mode = 'view'
     this.busy = false
@@ -1290,11 +1306,12 @@ export class PaperPic {
     this.renderer.requestPaint()
   }
 
-  private commit(view: View): void {
+  /** Shows another view. Returns whether it differs from the one on display. */
+  private commit(view: View): boolean {
     const { zoom, panX, panY, rotation, fit } = this.view
     const sameState = view.zoom === zoom && view.rotation === rotation && view.fit === fit
     if (sameState && view.panX === panX && view.panY === panY) {
-      return
+      return false
     }
     this.view = view
     this.refresh()
@@ -1302,6 +1319,7 @@ export class PaperPic {
     if (!sameState) {
       this.emit('change', this.getState())
     }
+    return true
   }
 
   private resetRotation(): void {
@@ -1314,11 +1332,10 @@ export class PaperPic {
     this.applyViewport()
   }
 
-  private pan(deltaX: number, deltaY: number): void {
+  /** Moves the image. Returns whether it moved, which an image that fits, or one at its edge, does not. */
+  private pan(deltaX: number, deltaY: number): boolean {
     const image = this.measuredImage()
-    if (image) {
-      this.commit(panBy(this.view, deltaX, deltaY, image, this.viewport, this.toolbarClearance()))
-    }
+    return image !== null && this.commit(panBy(this.view, deltaX, deltaY, image, this.viewport, this.toolbarClearance()))
   }
 
   private zoomAround(zoom: number, point: ViewPoint): void {
@@ -1367,8 +1384,8 @@ export class PaperPic {
         this.fit('image')
         return true
       case 'pan':
-        this.pan(command.deltaX, command.deltaY)
-        return true
+        // An arrow that moves nothing keeps its usual effect, so the page scrolls, as it does under one finger
+        return this.pan(command.deltaX, command.deltaY)
       case 'undo':
         this.undo()
         return editing

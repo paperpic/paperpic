@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: 'Uno scontrino' 
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` cambia solo le opzioni che passi, e `undefined` riporta un’opzione al suo valore predefinito. Non emette mai `change`.
+`setOptions()` cambia solo le opzioni che passi, e `undefined` riporta un’opzione al suo valore predefinito. Non emette mai `change`. Un’opzione fuori dal suo intervallo lancia un `RangeError` che la nomina, come un `softness` di 2.
 
 ## Immagine
 
@@ -54,7 +54,7 @@ Se mostrare la barra degli strumenti e la barra di modifica integrate. Senza di 
 - **Tipo:** [`readonly ToolId[]`](./types#toolid)
 - **Valore predefinito:** tutti gli strumenti
 
-Gli strumenti che offre la barra di modifica. Mantengono l’ordine di questa tabella, qualunque sia l’ordine dell’array.
+Gli strumenti che offre la barra di modifica. Mantengono l’ordine di questa tabella, qualunque sia l’ordine dell’array. Sceglie solo i pulsanti: i [metodi](./methods) funzionano con ogni strumento.
 
 | Id              | Pulsante                                 |
 | --------------- | ---------------------------------------- |

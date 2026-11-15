@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: 'レシート' }
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` は渡したオプションだけを変更し、`undefined` を渡すとそのオプションはデフォルト値に戻ります。`change` は発生しません。
+`setOptions()` は渡したオプションだけを変更し、`undefined` を渡すとそのオプションはデフォルト値に戻ります。`change` は発生しません。範囲外のオプションは、その名前を含む `RangeError` を投げます。たとえば `softness` が 2 の場合です。
 
 ## 画像
 
@@ -54,7 +54,7 @@ pic.setOptions({ editable: false })
 - **型:** [`readonly ToolId[]`](./types#toolid)
 - **デフォルト:** すべてのツール
 
-編集バーに表示するツールです。配列の順序にかかわらず、この表の順に並びます。
+編集バーに表示するツールです。配列の順序にかかわらず、この表の順に並びます。この設定で決まるのはボタンだけで、[メソッド](./methods)はどのツールでも使えます。
 
 | Id              | ボタン                       |
 | --------------- | ---------------------------- |

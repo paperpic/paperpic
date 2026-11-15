@@ -487,6 +487,41 @@ describe('editing', () => {
     expect(onApply).not.toHaveBeenCalled()
   })
 
+  it('ignores a result that arrives after editing was turned off, which discarded the edit', async () => {
+    const onApply = vi.fn()
+    pic.on('apply', onApply)
+    pic.edit()
+    pic.rotate(1)
+    const applying = pic.apply()
+    pic.setOptions({ editable: false })
+    expect(pic.getState()).toMatchObject({ mode: 'view', busy: false })
+    const count = images.length
+    await flush()
+    await finishLoading()
+    await applying
+
+    expect(images).toHaveLength(count + 1)
+    expect(onApply).not.toHaveBeenCalled()
+    expect(pic.getState()).toMatchObject({
+      mode: 'view',
+      image: { width: 600, height: 250 },
+    })
+  })
+
+  it('ignores a failure that arrives after editing was turned off', async () => {
+    const onError = vi.fn()
+    pic.on('error', onError)
+    mocks.exportImage.mockRejectedValue(new Error('too large'))
+    pic.edit()
+    pic.rotate(1)
+    const applying = pic.apply()
+    pic.setOptions({ editable: false })
+    await applying
+
+    expect(onError).not.toHaveBeenCalled()
+    expect(container.querySelector('.paperpic-status-visible')).toBeNull()
+  })
+
   it('ignores a result that arrives after destroy', async () => {
     const onApply = vi.fn()
     pic.on('apply', onApply)
@@ -689,12 +724,13 @@ describe('editing', () => {
       expect(mocks.exportImage).not.toHaveBeenCalled()
     })
 
-    it('cannot open a tool that was not chosen', () => {
+    it('opens from code a tool that the edit bar does not offer, because tools only chooses its buttons', () => {
       pic.setOptions({
         tools: ['rotate'],
       })
+      expect(crop().hidden).toBe(true)
       pic.openTool('crop')
-      expect(pic.getState().activeTool).toBeNull()
+      expect(pic.getState().activeTool).toBe('crop')
     })
 
     it('cannot open while a preview is on its way', async () => {
@@ -1068,16 +1104,14 @@ describe('editing', () => {
       })
     })
 
-    it('does nothing when it is not one of the chosen tools', () => {
+    it('works from code when it is not one of the chosen tools', () => {
       pic.setOptions({
         tools: ['crop'],
       })
       pic.setThreshold({ enabled: true })
+      expect(pic.getState().threshold.enabled).toBe(true)
       pic.openTool('threshold')
-      expect(pic.getState()).toMatchObject({
-        activeTool: null,
-        threshold: { enabled: false },
-      })
+      expect(pic.getState().activeTool).toBe('threshold')
     })
 
     it('explains a sensitivity out of range', () => {
@@ -1247,7 +1281,7 @@ describe('editing', () => {
       expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0 })
     })
 
-    it('does nothing outside the edit mode, while another tool is open, or when it is not one of the chosen tools', () => {
+    it('does nothing outside the edit mode or while another tool is open, and works without its button', () => {
       pic.openTool('crop')
       pic.setAdjustments({ brightness: 0.5 })
       pic.openTool('adjust')
@@ -1261,11 +1295,10 @@ describe('editing', () => {
         tools: ['crop'],
       })
       pic.setAdjustments({ brightness: 0.5 })
+      expect(pic.getState().adjustments.brightness).toBe(0.5)
       pic.openTool('adjust')
-      expect(pic.getState()).toMatchObject({
-        activeTool: null,
-        adjustments: { brightness: 0 },
-      })
+      expect(pic.getState().activeTool).toBe('adjust')
+      pic.cancelTool()
       pic.setOptions({ tools: undefined })
 
       pic.cancel()
@@ -1326,7 +1359,7 @@ describe('editing', () => {
       await applying
     })
 
-    it('does nothing outside the edit mode, while a tool is open, or when it is not one of the chosen tools', () => {
+    it('does nothing outside the edit mode or while a tool is open, and works without its button', () => {
       pic.openTool('crop')
       pic.flip()
       expect(pic.getState().canUndo).toBe(false)
@@ -1335,12 +1368,13 @@ describe('editing', () => {
       pic.setOptions({
         tools: ['crop'],
       })
-      pic.flip()
-      expect(pic.getState().canUndo).toBe(false)
       expect(flip().hidden).toBe(true)
+      pic.flip()
+      expect(pic.getState().canUndo).toBe(true)
       pic.setOptions({ tools: undefined })
 
       pic.cancel()
+      onChange.mockClear()
       pic.flip()
       expect(pic.getState().mode).toBe('view')
       expect(onChange).not.toHaveBeenCalledWith(expect.objectContaining({ canUndo: true }))

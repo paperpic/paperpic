@@ -2,6 +2,10 @@ import { readFile } from 'node:fs/promises'
 import { defineConfig } from 'tsdown'
 import { copyDocs } from '../../scripts/copy-docs.ts'
 
+/** How the source names its worker, in `src/pipeline/run.ts`. */
+const WORKER_SOURCE = '../processing/worker.ts'
+let workerUrlRewritten = false
+
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
@@ -28,7 +32,22 @@ export default defineConfig({
     {
       // The source points at worker.ts, so Vite finds it in the playgrounds. The package has dist/worker.js
       name: 'paperpic-worker-url',
-      renderChunk: code => code.replace('../processing/worker.ts', './worker.js'),
+      renderStart() {
+        workerUrlRewritten = false
+      },
+      renderChunk(code) {
+        if (!code.includes(WORKER_SOURCE)) {
+          return null
+        }
+        workerUrlRewritten = true
+        return code.replace(WORKER_SOURCE, './worker.js')
+      },
+      // A package that still points at worker.ts starts no worker and does the work on the main thread, without a word
+      generateBundle() {
+        if (!workerUrlRewritten) {
+          throw new Error(`No chunk creates the worker from '${WORKER_SOURCE}', so its URL was not rewritten. Update WORKER_SOURCE in tsdown.config.ts to the path in src/pipeline/run.ts.`)
+        }
+      },
     },
     {
       // Vite reads `?raw` imports as text, in the playgrounds and the tests. The build needs the same
