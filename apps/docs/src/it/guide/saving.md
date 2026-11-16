@@ -129,6 +129,8 @@ const pic = new PaperPic(container, {
 
 L’anteprima durante la modifica è sempre di circa 2 megapixel, quindi `maxOutputSize` cambia solo il risultato.
 
+Safari su iOS limita un canvas a circa 16 megapixel, e gli iPhone recenti scattano foto da 24 megapixel o più, quindi Applica può fallire a piena risoluzione. Se i tuoi utenti modificano foto da un iPhone, imposta `maxOutputSize`. 3000 pixel mantengono i documenti leggibili e restano ben sotto il limite. [Applica fallisce con una foto grande](./troubleshooting#too-large) mostra l’errore.
+
 ## Metadati {#metadata}
 
 Il risultato di Applica non contiene metadati. PaperPic disegna l’immagine su un canvas, quindi i dati EXIF della foto, come la posizione GPS, la fotocamera e la data, spariscono. Il pulsante di download salva l’immagine originale così com’è fino al primo Applica, con i suoi metadati.

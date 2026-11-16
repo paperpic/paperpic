@@ -129,6 +129,8 @@ const pic = new PaperPic(container, {
 
 Die Vorschau beim Bearbeiten hat immer etwa 2 Megapixel, `maxOutputSize` ändert also nur das Ergebnis.
 
+Safari auf iOS begrenzt ein Canvas auf etwa 16 Megapixel, und neuere iPhones machen Fotos mit 24 Megapixeln oder mehr, also kann Übernehmen in voller Auflösung fehlschlagen. Wenn deine Nutzer Fotos von einem iPhone bearbeiten, setze `maxOutputSize`. 3000 Pixel halten Dokumente lesbar und liegen weit unter der Grenze. [Übernehmen schlägt bei einem großen Foto fehl](./troubleshooting#too-large) zeigt den Fehler.
+
 ## Metadaten {#metadata}
 
 Das Ergebnis von Übernehmen enthält keine Metadaten. PaperPic zeichnet das Bild auf ein Canvas, also gehen die EXIF-Daten des Fotos verloren, etwa die GPS-Position, die Kamera und das Datum. Die Download-Schaltfläche speichert bis zum ersten Übernehmen das Quellbild unverändert, mit seinen Metadaten.
