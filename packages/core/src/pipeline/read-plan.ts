@@ -1,12 +1,11 @@
 import type { PixelRect } from '../processing/crop'
-import type { NormalizedRect, Quad } from '../processing/types'
-import type { Rotation } from '../rotation'
-import type { Size } from '../state/view'
-import type { PerspectiveEdit, PipelineStep } from './operations'
+import type { NormalizedRect, Quad, Size } from '../processing/types'
+import type { Rotation } from '../state/view'
+import type { PerspectiveStep, PipelineStep } from './steps'
 import { cropBox } from '../processing/crop'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
-import { normalizeRotation } from '../rotation'
-import { isToneStep, mirrorOrientation, orientationSteps, UPRIGHT } from './operations'
+import { normalizeRotation } from '../state/view'
+import { isToneStep, mirrorOrientation, orientationSteps, UPRIGHT } from './steps'
 
 /** What to read from an image, and what is left to do with those pixels. */
 export interface ReadPlan {
@@ -107,7 +106,7 @@ export function planRead(image: Size, steps: readonly PipelineStep[], { maxSide,
   let regionHeight = 1
   let orientation = UPRIGHT
   let index = 0
-  let perspective: PerspectiveEdit | null = null
+  let perspective: PerspectiveStep | null = null
 
   const keep = (frameRect: NormalizedRect) => {
     const turned = unrotateRect(frameRect, normalizeRotation(orientation.degrees))

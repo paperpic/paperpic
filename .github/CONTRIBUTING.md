@@ -47,6 +47,9 @@ pnpm install
 - **Wrappers hold no business logic.** A wrapper creates the instance on mount, forwards prop changes, translates events and destroys the instance on unmount. Anything else belongs in `@paperpic/core`.
 - **Image processing stays pure.** Code in `packages/core/src/processing` works on pixel arrays, so it can be tested without a browser.
 - **The public API documents itself.** Every public export has JSDoc, and error messages say how to fix the problem, because the published types are what developers and their AI tools read first.
+- **Each layer has its folder.** The [component spec](../docs/spec/paperpic-component.md#architecture) lists the layers of `packages/core/src` and what each one may import.
+- **One name per idea.** Code names the tools by their ids, such as `threshold` and `perspective`, and their labels, such as Clean up and Straighten, appear only in texts. A part that exists in two layers keeps its name in both, such as `tools/crop.ts`, which chooses the rectangle, and `processing/crop.ts`, which cuts the pixels.
+- **Tests follow the source.** `test/processing/` mirrors `src/processing/`. Each tool has a test named after its id, which covers it from the operation to the preview, and every other module has a test named after it.
 
 ## Scripts
 

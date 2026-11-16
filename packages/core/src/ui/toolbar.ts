@@ -96,7 +96,11 @@ export class Toolbar {
     }
   }
 
-  /** Updates what the buttons show. */
+  /** Shows or hides the bar. */
+  setVisible(visible: boolean): void {
+    this.element.hidden = !visible
+  }
+
   /** Updates the buttons that follow the view, which a pan or a zoom changes. */
   updateView({ fit, canZoomIn, canZoomOut }: Pick<ToolbarState, 'canZoomIn' | 'canZoomOut' | 'fit'>): void {
     // aria-disabled instead of disabled, so a button reaching its limit keeps the keyboard focus
@@ -106,6 +110,7 @@ export class Toolbar {
     this.buttons.fitHeight.setAttribute('aria-pressed', String(fit === 'height'))
   }
 
+  /** Updates what the buttons show. */
   update({ fit, canEdit, canZoomIn, canZoomOut, canRotate, canDownload }: ToolbarState): void {
     this.updateView({ fit, canZoomIn, canZoomOut })
     this.buttons.edit.hidden = !canEdit

@@ -1,9 +1,8 @@
 import type { Mock } from 'vitest'
 import type { ToolHost } from '../src/tools/types'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { constrainToRectangle, CornerEditor, initialCorners, rectangleCorners } from '../src/tools/corners'
+import { constrainToConvex, constrainToRectangle, CornerEditor, initialCorners, rectangleCorners } from '../src/tools/corners'
 import { cropTool } from '../src/tools/crop'
-import { placeLens } from '../src/tools/magnifier'
 import { DEFAULT_LABELS } from '../src/ui/labels'
 
 const frame = { width: 1000, height: 500 }
@@ -34,32 +33,41 @@ describe('constrainToRectangle', () => {
   })
 })
 
-describe('placeLens', () => {
-  const viewport = { width: 400, height: 600 }
+describe('constrainToConvex', () => {
+  const corners = rectangleCorners(100, 100, 300, 300)
 
-  it('goes above the finger', () => {
-    const lens = placeLens({ x: 1, y: 2 }, { x: 200, y: 300 }, viewport)
-    expect(lens.center.x).toBe(200)
-    expect(lens.center.y).toBeLessThan(300 - lens.radius)
-    expect(lens.point).toEqual({ x: 1, y: 2 })
+  it('moves only that corner', () => {
+    expect(constrainToConvex(corners, 0, { x: 50, y: 60 }, frame)).toEqual([
+      { x: 50, y: 60 },
+      corners[1],
+      corners[2],
+      corners[3],
+    ])
   })
 
-  it('goes below the finger at the top of the viewport', () => {
-    const lens = placeLens({ x: 1, y: 2 }, { x: 200, y: 30 }, viewport)
-    expect(lens.center.y).toBeGreaterThan(30 + lens.radius)
+  it('stays inside the frame', () => {
+    expect(constrainToConvex(corners, 2, { x: 5000, y: -90 }, frame)[2]).toEqual({ x: 1000, y: 300 })
   })
 
-  it('stays on screen at the sides', () => {
-    const lens = placeLens({ x: 1, y: 2 }, { x: 395, y: 300 }, viewport)
-    expect(lens.center.x + lens.radius).toBeLessThanOrEqual(400)
-    expect(placeLens({ x: 1, y: 2 }, { x: 5, y: 300 }, viewport).center.x).toBe(lens.radius)
+  it('never crosses, and slides along the side that still allows it', () => {
+    // Past the opposite side in x only: y still applies
+    expect(constrainToConvex(corners, 0, { x: 700, y: 60 }, frame)[0]).toEqual({ x: 100, y: 60 })
+  })
+
+  it('stays where it was when nothing allows the move', () => {
+    expect(constrainToConvex(corners, 0, { x: 700, y: 700 }, frame)).toBe(corners)
+  })
+
+  it('never leaves a concave shape', () => {
+    // Inside the triangle of the other three corners. It slides along the top side instead
+    expect(constrainToConvex(corners, 0, { x: 280, y: 280 }, frame)[0]).toEqual({ x: 280, y: 100 })
   })
 })
 
 describe('cornerEditor', () => {
   let host: ToolHost & {
     announce: Mock<ToolHost['announce']>
-    paintLens: Mock<ToolHost['paintLens']>
+    paintMagnifier: Mock<ToolHost['paintMagnifier']>
     reveal: Mock<ToolHost['reveal']>
     setHint: Mock<ToolHost['setHint']>
   }
@@ -101,7 +109,7 @@ describe('cornerEditor', () => {
         origin: { x: 0, y: 0 },
       }),
       aspectRatio: () => undefined,
-      paintLens: vi.fn(),
+      paintMagnifier: vi.fn(),
     }
   })
 
@@ -185,7 +193,7 @@ describe('cornerEditor', () => {
       expect(corners.points[2]).toEqual({ x: 320, y: 320 })
     })
 
-    it('shows the lens only with touch', () => {
+    it('shows the magnifier only with touch', () => {
       const context = {} as CanvasRenderingContext2D
       Object.assign(context, {
         beginPath: vi.fn(),
@@ -200,18 +208,18 @@ describe('cornerEditor', () => {
 
       handle.dispatchEvent(pointer('pointerdown', 160, 170))
       corners.drawOverlay(context)
-      expect(host.paintLens).not.toHaveBeenCalled()
+      expect(host.paintMagnifier).not.toHaveBeenCalled()
       handle.dispatchEvent(pointer('pointerup', 160, 170))
 
       handle.dispatchEvent(pointer('pointerdown', 160, 170, 'touch'))
       corners.drawOverlay(context)
-      expect(host.paintLens).toHaveBeenCalledOnce()
+      expect(host.paintMagnifier).toHaveBeenCalledOnce()
       expect(handles().map(({ hidden }) => hidden)).toEqual([true, true, false, true])
-      expect(host.paintLens.mock.calls[0]![1].point).toEqual(corners.points[2])
+      expect(host.paintMagnifier.mock.calls[0]![1].point).toEqual(corners.points[2])
 
       handle.dispatchEvent(pointer('pointerup', 160, 170, 'touch'))
       corners.drawOverlay(context)
-      expect(host.paintLens).toHaveBeenCalledOnce()
+      expect(host.paintMagnifier).toHaveBeenCalledOnce()
       expect(handles().map(({ hidden }) => hidden)).toEqual([false, false, false, false])
     })
   })

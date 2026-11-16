@@ -1,9 +1,9 @@
-import type { Operation } from '../pipeline/operations'
+import type { AdjustSetting, Operation, ThresholdSetting } from '../pipeline/operations'
 import type { PhotoFrame } from '../pipeline/photo-frame'
-import type { Point } from '../processing/types'
-import type { Size, ViewPoint } from '../state/view'
+import type { Point, Size } from '../processing/types'
+import type { Magnifier } from '../render/magnifier'
+import type { ViewPoint } from '../state/view'
 import type { PaperPicLabels } from '../ui/labels'
-import type { Lens } from './magnifier'
 
 /**
  * The tools the edit bar can offer. `perspective` is Straighten, and `threshold` is Clean up.
@@ -41,7 +41,7 @@ export interface ToolHost {
   /** The layer for the elements of the tool, on top of the image. */
   layer: HTMLElement
   /** Paints a magnified part of the image. */
-  paintLens: (context: CanvasRenderingContext2D, lens: Lens) => void
+  paintMagnifier: (context: CanvasRenderingContext2D, magnifier: Magnifier) => void
   /** Where the image on display sits in the photo it comes from. */
   photoFrame: () => PhotoFrame
   requestPaint: () => void
@@ -71,7 +71,7 @@ export interface ToolSession {
   update: () => void
 }
 
-/** A tool. Adding one means creating its folder and registering it in `tools/index.ts`. */
+/** A tool. Adding one means creating its file in `tools/` and registering it in `tools/index.ts`. */
 export interface Tool {
   actions: readonly ToolAction[]
   /** Only for a tool with a selection of its own, such as corners. */
@@ -80,3 +80,14 @@ export interface Tool {
   hint?: 'cropHint' | 'perspectiveHint'
   id: ToolId
 }
+
+/** What Clean up shows: whether it is on, and its sensitivity. */
+export type ThresholdPanelSetting = Pick<ThresholdSetting, 'enabled' | 'sensitivity'>
+
+/**
+ * What an open Adjust or Clean up shows, before Done turns it into one edit. These tools have a panel of settings
+ * instead of a selection, so the viewer keeps their draft apart from the edits.
+ */
+export type PanelDraft
+  = | { setting: AdjustSetting, tool: 'adjust' }
+    | { setting: ThresholdPanelSetting, tool: 'threshold' }

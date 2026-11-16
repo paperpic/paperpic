@@ -1,9 +1,10 @@
-import type { Point, Quad } from '../processing/types'
-import type { Size, ViewPoint } from '../state/view'
-import type { Lens } from './magnifier'
-import type { ToolHost } from './types'
+import type { Operation } from '../pipeline/operations'
+import type { Point, Quad, Size } from '../processing/types'
+import type { Magnifier } from '../render/magnifier'
+import type { ViewPoint } from '../state/view'
+import type { ToolHost, ToolSession } from './types'
 import { TAP_MOVEMENT } from '../input/gestures'
-import { placeLens } from './magnifier'
+import { placeMagnifier } from './magnifier'
 
 /** Decides where the corners end up when the user moves one of them towards a point. */
 export type ConstrainCorner = (corners: Quad, index: number, point: Point, frame: Size) => Quad
@@ -139,7 +140,7 @@ export class CornerEditor {
   private readonly constrain: ConstrainCorner
   private readonly handles: HTMLButtonElement[]
   private corners: Quad
-  private lens: Lens | null = null
+  private magnifier: Magnifier | null = null
   /** The corner that the next tap on the image moves. */
   private selected: number | null = null
 
@@ -174,8 +175,8 @@ export class CornerEditor {
     const { width, height } = this.host.frameSize()
     const frame = rectangleCorners(0, 0, width, height).map(point => this.host.frameToViewport(point))
     drawSelection(context, frame, this.corners.map(point => this.host.frameToViewport(point)))
-    if (this.lens) {
-      this.host.paintLens(context, this.lens)
+    if (this.magnifier) {
+      this.host.paintMagnifier(context, this.magnifier)
     }
   }
 
@@ -278,9 +279,9 @@ export class CornerEditor {
       travelled = 0
       tapped = false
       if (event.pointerType !== 'mouse') {
-        // The other handles would cover the lens
+        // The other handles would cover the magnifier
         this.setOthersHidden(handle, true)
-        this.showLens(index, point)
+        this.showMagnifier(index, point)
       }
     })
 
@@ -293,7 +294,7 @@ export class CornerEditor {
       last = point
       this.move(index, this.host.viewportToFrame({ x: point.x - grab.x, y: point.y - grab.y }))
       if (event.pointerType !== 'mouse') {
-        this.showLens(index, point)
+        this.showMagnifier(index, point)
       }
     })
 
@@ -302,7 +303,7 @@ export class CornerEditor {
         return
       }
       grab = null
-      this.lens = null
+      this.magnifier = null
       this.setOthersHidden(handle, false)
       if (travelled < TAP_MOVEMENT) {
         // A tap selects the corner, so the small shake of a finger must not move it
@@ -360,9 +361,26 @@ export class CornerEditor {
     }
   }
 
-  private showLens(index: number, finger: ViewPoint): void {
+  private showMagnifier(index: number, finger: ViewPoint): void {
     const { width, height } = this.host.layer.getBoundingClientRect()
-    this.lens = placeLens(this.corners[index]!, finger, { width, height })
+    this.magnifier = placeMagnifier(this.corners[index]!, finger, { width, height })
     this.host.requestPaint()
+  }
+}
+
+/**
+ * The session of a tool that edits corners. Crop and Straighten differ only in how they constrain the corners, which
+ * goes to the editor, and in the edit that their corners mean, which `confirm` returns.
+ */
+export function cornerSession(editor: CornerEditor, confirm: () => Operation | null): ToolSession {
+  return {
+    anchor: () => editor.anchor(),
+    focus: () => editor.focus(),
+    update: () => editor.update(),
+    drawOverlay: context => editor.drawOverlay(context),
+    deactivate: () => editor.deactivate(),
+    tap: point => editor.place(point),
+    escape: () => editor.deselect(),
+    confirm,
   }
 }

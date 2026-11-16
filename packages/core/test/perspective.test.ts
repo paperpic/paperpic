@@ -1,13 +1,13 @@
-import type { PerspectiveEdit, PipelineStep } from '../src/pipeline/operations'
+import type { PerspectiveStep, PipelineStep } from '../src/pipeline/steps'
 import type { Quad } from '../src/processing/types'
 import type { ToolHost } from '../src/tools/types'
 import { describe, expect, it, vi } from 'vitest'
 import { photoFrame } from '../src/pipeline/photo-frame'
-import { applySteps } from '../src/pipeline/pipeline'
 import { planRead, resultSize } from '../src/pipeline/read-plan'
+import { applySteps } from '../src/pipeline/steps'
 import { cropPixels } from '../src/processing/crop'
 import { estimateAspectRatio, scaleQuad } from '../src/processing/homography'
-import { constrainToConvex, rectangleCorners } from '../src/tools/corners'
+import { rectangleCorners } from '../src/tools/corners'
 import { perspectiveTool } from '../src/tools/perspective'
 import { DEFAULT_LABELS } from '../src/ui/labels'
 
@@ -24,7 +24,7 @@ function gradient(width: number, height: number) {
   return { data, width, height }
 }
 
-const insideHalf: PerspectiveEdit = {
+const insideHalf: PerspectiveStep = {
   type: 'perspective',
   quad: [
     { x: 0.5, y: 0 },
@@ -65,7 +65,7 @@ describe('planRead with a perspective change', () => {
       height: 250,
     })
     expect(plan.steps).toHaveLength(1)
-    expect((plan.steps[0] as PerspectiveEdit).quad).toEqual(rectangleCorners(0, 0, 1, 1))
+    expect((plan.steps[0] as PerspectiveStep).quad).toEqual(rectangleCorners(0, 0, 1, 1))
   })
 
   it('leaves the steps after it in place, and stops joining crops there', () => {
@@ -222,37 +222,6 @@ describe('photoFrame', () => {
   })
 })
 
-describe('constrainToConvex', () => {
-  const corners = rectangleCorners(100, 100, 300, 300)
-
-  it('moves only that corner', () => {
-    expect(constrainToConvex(corners, 0, { x: 50, y: 60 }, frame)).toEqual([
-      { x: 50, y: 60 },
-      corners[1],
-      corners[2],
-      corners[3],
-    ])
-  })
-
-  it('stays inside the frame', () => {
-    expect(constrainToConvex(corners, 2, { x: 5000, y: -90 }, frame)[2]).toEqual({ x: 1000, y: 300 })
-  })
-
-  it('never crosses, and slides along the side that still allows it', () => {
-    // Past the opposite side in x only: y still applies
-    expect(constrainToConvex(corners, 0, { x: 700, y: 60 }, frame)[0]).toEqual({ x: 100, y: 60 })
-  })
-
-  it('stays where it was when nothing allows the move', () => {
-    expect(constrainToConvex(corners, 0, { x: 700, y: 700 }, frame)).toBe(corners)
-  })
-
-  it('never leaves a concave shape', () => {
-    // Inside the triangle of the other three corners. It slides along the top side instead
-    expect(constrainToConvex(corners, 0, { x: 280, y: 280 }, frame)[0]).toEqual({ x: 280, y: 100 })
-  })
-})
-
 describe('perspective tool', () => {
   const host = (overrides: Partial<ToolHost> = {}): ToolHost => ({
     layer: document.createElement('div'),
@@ -269,12 +238,12 @@ describe('perspective tool', () => {
       origin: { x: 0, y: 0 },
     }),
     aspectRatio: () => undefined,
-    paintLens: () => {},
+    paintMagnifier: () => {},
     ...overrides,
   })
 
   it('gives the corners as fractions of the image', () => {
-    const edit = perspectiveTool.activate!(host()).confirm() as PerspectiveEdit
+    const edit = perspectiveTool.activate!(host()).confirm() as PerspectiveStep
     expect(edit.type).toBe('perspective')
     expect(edit.quad[0].x).toBeCloseTo(0.1)
     expect(edit.quad[0].y).toBeCloseTo(0.1)
@@ -283,7 +252,7 @@ describe('perspective tool', () => {
   })
 
   it('estimates the proportions when nobody says them', () => {
-    const edit = perspectiveTool.activate!(host()).confirm() as PerspectiveEdit
+    const edit = perspectiveTool.activate!(host()).confirm() as PerspectiveStep
     const corners = scaleQuad(edit.quad, frame.width, frame.height)
     expect(edit.aspectRatio).toBeCloseTo(estimateAspectRatio(corners, frame))
   })
@@ -291,7 +260,7 @@ describe('perspective tool', () => {
   it('uses the proportions the consumer knows', () => {
     const edit = perspectiveTool.activate!(host({
       aspectRatio: () => 0.7,
-    })).confirm() as PerspectiveEdit
+    })).confirm() as PerspectiveStep
     expect(edit.aspectRatio).toBe(0.7)
   })
 
@@ -359,7 +328,7 @@ describe('perspective tool', () => {
     const points = wholeFrame.map((corner, position) => position === index
       ? point
       : corner)
-    const edit = placed(points).session.confirm() as PerspectiveEdit
+    const edit = placed(points).session.confirm() as PerspectiveStep
     expect(edit.type).toBe('perspective')
     expect(edit.quad[index]).toEqual({ x: point.x / frame.width, y: point.y / frame.height })
   })
@@ -416,7 +385,7 @@ describe('perspective tool', () => {
         photo,
         origin: { x: 3000, y: 100 },
       }),
-    })).confirm() as PerspectiveEdit
+    })).confirm() as PerspectiveStep
     const moved = scaleQuad(edit.quad, frame.width, frame.height).map(({ x, y }) => ({ x: x + 3000, y: y + 100 })) as unknown as Quad
     expect(edit.aspectRatio).toBeCloseTo(estimateAspectRatio(moved, photo))
   })

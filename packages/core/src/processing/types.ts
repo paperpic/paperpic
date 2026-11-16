@@ -6,6 +6,16 @@ export interface PixelBuffer {
   width: number
 }
 
+/**
+ * A width and a height in pixels.
+ *
+ * @see https://paperpic.dev/reference/types#size
+ */
+export interface Size {
+  height: number
+  width: number
+}
+
 /** A position in image pixels. */
 export interface Point {
   x: number

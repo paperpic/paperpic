@@ -1,166 +1,270 @@
-import type { PixelBuffer } from '../src/processing/types'
-import { describe, expect, it } from 'vitest'
-import { adaptiveThreshold, applyThreshold, prepareThreshold } from '../src/processing/threshold'
+import type { Operation } from '../src/pipeline/operations'
+import type { PipelineStep } from '../src/pipeline/steps'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { resolveOutputType } from '../src/pipeline/export'
+import { thresholdSetting, toPipelineSteps, toPreviewSteps, trailingRotation } from '../src/pipeline/operations'
+import { photoFrame } from '../src/pipeline/photo-frame'
+import { renderPreview } from '../src/pipeline/preview'
+import { planRead, resultSize } from '../src/pipeline/read-plan'
+import { PipelineRunner } from '../src/pipeline/runner'
+import { applySteps } from '../src/pipeline/steps'
+import { adaptiveThreshold, prepareThreshold } from '../src/processing/threshold'
+import { confirmThreshold, openThreshold, thresholdEdit, thresholdOperation } from '../src/tools/threshold'
 
-function grayImage(width: number, height: number, value: (x: number, y: number) => number): PixelBuffer {
-  const data = new Uint8ClampedArray(width * height * 4)
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const offset = (y * width + x) * 4
-      data.fill(value(x, y), offset, offset + 3)
-      data[offset + 3] = 255
-    }
+const right = { type: 'rotate', direction: 1 } as const
+const left = { type: 'rotate', direction: -1 } as const
+const crop = {
+  type: 'crop',
+  rect: { x: 0, y: 0, width: 0.5, height: 0.5 },
+} as const
+const on: Operation = {
+  type: 'threshold',
+  enabled: true,
+  sensitivity: 0.7,
+  softness: 0.25,
+}
+const off: Operation = {
+  type: 'threshold',
+  enabled: false,
+  sensitivity: 0.7,
+  softness: 0.25,
+}
+const step: PipelineStep = { type: 'threshold', sensitivity: 0.7, softness: 0.25 }
+
+function pixels(size = 8) {
+  return {
+    data: new Uint8ClampedArray(size * size * 4).fill(200),
+    width: size,
+    height: size,
   }
-  return { data, width, height }
 }
 
-function isBlack({ data, width }: PixelBuffer, x: number, y: number): boolean {
-  return data[(y * width + x) * 4] === 0
-}
+describe('threshold in the operations', () => {
+  it('always runs last, wherever the user turned it on', () => {
+    expect(toPipelineSteps([on, crop, right])).toEqual([
+      crop,
+      { type: 'rotate', rotation: 90 },
+      step,
+    ])
+    expect(toPipelineSteps([crop, on, right])).toEqual([
+      crop,
+      { type: 'rotate', rotation: 90 },
+      step,
+    ])
+  })
 
-const WIDTH = 200
-const HEIGHT = 100
+  it('takes the setting of its last edit', () => {
+    expect(thresholdSetting([])).toEqual({ enabled: false, sensitivity: 0.5, softness: 0.25 })
+    expect(thresholdSetting([on, crop])).toEqual({ enabled: true, sensitivity: 0.7, softness: 0.25 })
+    expect(thresholdSetting([on, off])).toMatchObject({ enabled: false })
+    expect(toPipelineSteps([on, off])).toEqual([])
+  })
 
-/** Text is 80 levels darker than the paper, and the paper goes from 90 to 230 from left to right. */
-function isText(x: number, y: number): boolean {
-  return x % 20 < 3 && y % 20 < 3
-}
+  it('does not break rotations that cancel out', () => {
+    expect(toPipelineSteps([right, on, left])).toEqual([step])
+  })
 
-const unevenPage = grayImage(WIDTH, HEIGHT, (x, y) => {
-  const paper = 90 + 140 * x / WIDTH
-  return isText(x, y)
-    ? paper - 80
-    : paper
+  it('leaves a rotation after it to the view matrix', () => {
+    expect(trailingRotation([on, right])).toBe(90)
+    expect(trailingRotation([right, on])).toBe(90)
+    expect(trailingRotation([crop, on, right])).toBe(90)
+    expect(toPreviewSteps([on, right])).toEqual([])
+  })
+
+  it('stays out of the shape that a preview computes', () => {
+    expect(toPreviewSteps([right, crop, on])).toEqual([
+      { type: 'rotate', rotation: 90 },
+      crop,
+    ])
+    expect(toPreviewSteps([crop, on, crop])).toEqual([crop, crop])
+  })
 })
 
-describe('adaptiveThreshold', () => {
-  it('returns an opaque image of the same size', () => {
-    const result = adaptiveThreshold(unevenPage)
-    expect(result.width).toBe(WIDTH)
-    expect(result.height).toBe(HEIGHT)
-    for (let offset = 3; offset < result.data.length; offset += 4) {
-      expect(result.data[offset]).toBe(255)
-    }
+describe('threshold in the pipeline', () => {
+  it('cleans the image', () => {
+    const source = pixels()
+    expect(applySteps(source, [step]).data).toEqual(adaptiveThreshold(pixels(), { sensitivity: 0.7, softness: 0.25 }).data)
   })
 
-  it('returns only black and white with a softness of 0', () => {
-    const { data } = adaptiveThreshold(unevenPage, { softness: 0 })
-    for (let offset = 0; offset < data.length; offset += 4) {
-      expect([0, 255]).toContain(data[offset])
-    }
+  it('stays a step after reading, and keeps the size', () => {
+    const plan = planRead({ width: 100, height: 50 }, [crop, step])
+    expect(plan.region).toEqual({ x: 0, y: 0, width: 50, height: 25 })
+    expect(plan.steps).toEqual([step])
+    expect(resultSize({ width: 100, height: 50 }, [crop, step])).toEqual({ width: 50, height: 25 })
   })
 
-  it('keeps gray around the limit by default, so soft edges stay readable', () => {
-    // A ramp from paper to ink, as the blurred edge of a letter in a photo
-    const edge = grayImage(60, 60, x => 220 - Math.min(160, Math.max(0, x - 20) * 8))
-    const { data } = adaptiveThreshold(edge, { windowRatio: 1 })
-    const values = new Set<number>()
-    for (let offset = 0; offset < data.length; offset += 4) {
-      values.add(data[offset]!)
-    }
-    expect(values.has(0)).toBe(true)
-    expect(values.has(255)).toBe(true)
-    expect(values.size).toBeGreaterThan(2)
+  it('reads the region of the crops before it, and keeps rotation before it', () => {
+    const plan = planRead({ width: 100, height: 50 }, [
+      { type: 'rotate', rotation: 90 },
+      step,
+    ])
+    expect(plan.steps).toEqual([
+      { type: 'rotate', rotation: 90 },
+      step,
+    ])
   })
 
-  it('gives the same result from one preparation as from a full run, for every slider position', () => {
-    const prepared = prepareThreshold(unevenPage)
-    for (const sensitivity of [0, 0.25, 0.5, 0.75, 1]) {
-      for (const softness of [0, 0.25]) {
-        const options = { sensitivity, softness }
-        expect(applyThreshold(prepared, options).data).toEqual(adaptiveThreshold(unevenPage, options).data)
+  it('does not move the photo', () => {
+    expect(photoFrame({ width: 100, height: 50 }, [step])).toEqual({
+      photo: { width: 100, height: 50 },
+      origin: { x: 0, y: 0 },
+    })
+  })
+})
+
+describe('resolveOutputType for a cleaned document', () => {
+  it('uses PNG, whatever the source', () => {
+    expect(resolveOutputType('/a.jpg', {}, true)).toBe('image/png')
+    expect(resolveOutputType(new Blob([], { type: 'image/webp' }), {}, true)).toBe('image/png')
+  })
+
+  it('lets the consumer choose', () => {
+    expect(resolveOutputType('/a.jpg', { type: 'image/jpeg' }, true)).toBe('image/jpeg')
+  })
+})
+
+describe('pipelineRunner.prepare', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('falls back to the main thread', async () => {
+    vi.stubGlobal('Worker', class {
+      constructor() {
+        throw new Error('not allowed')
       }
+    })
+    const prepared = await new PipelineRunner().prepare(pixels(), [])
+    expect(prepared.ratios).toEqual(prepareThreshold(pixels()).ratios)
+  })
+
+  it('sends the job to the worker and takes the result', async () => {
+    const instances: { onmessage: (event: { data: unknown }) => void, postMessage: ReturnType<typeof vi.fn> }[] = []
+    vi.stubGlobal('Worker', class {
+      onmessage = () => {}
+      onerror = () => {}
+      postMessage = vi.fn()
+      terminate = vi.fn()
+      constructor() {
+        instances.push(this as never)
+      }
+    })
+    const job = new PipelineRunner().prepare(pixels(), [])
+    await vi.waitFor(() => expect(instances).toHaveLength(1))
+    const worker = instances[0]!
+    worker.onmessage({
+      data: { ready: true },
+    })
+    await vi.waitFor(() => expect(worker.postMessage).toHaveBeenCalledOnce())
+    const [request] = worker.postMessage.mock.calls[0]!
+    expect(request.operation).toBe('prepare')
+
+    const prepared = prepareThreshold(pixels())
+    worker.onmessage({
+      data: { id: request.id, prepared, milliseconds: 1 },
+    })
+    await expect(job).resolves.toBe(prepared)
+  })
+})
+
+describe('renderPreview', () => {
+  const putImageData = vi.fn()
+
+  const stubCanvas = () => {
+    vi.stubGlobal('ImageData', class {})
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+      drawImage: vi.fn(),
+      getImageData: (_x: number, _y: number, width: number, height: number) => ({
+        data: new Uint8ClampedArray(width * height * 4),
+      }),
+      putImageData,
+    } as unknown as CanvasRenderingContext2D)
+  }
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+    vi.unstubAllGlobals()
+    putImageData.mockClear()
+  })
+
+  const image = {
+    element: {} as CanvasImageSource,
+    width: 8,
+    height: 8,
+    release: () => {},
+  }
+
+  it('without a threshold, has nothing for a slider to change', async () => {
+    stubCanvas()
+    const runner = {
+      run: vi.fn(),
+      prepare: vi.fn(),
     }
+    const preview = await renderPreview(image, [], null, runner)
+    expect(preview.tint).toBeUndefined()
+    expect(runner.prepare).not.toHaveBeenCalled()
   })
 
-  it('stores the color channels in the right order, with an opaque alpha', () => {
-    const page = grayImage(10, 10, () => 200)
-    expect([
-      ...applyThreshold(prepareThreshold(page)).data.slice(0, 4),
-    ]).toEqual([255, 255, 255, 255])
-    const dark = grayImage(10, 10, (x, y) => x === 5 && y === 5
-      ? 10
-      : 200)
-    const { data, width } = applyThreshold(prepareThreshold(dark, { windowRatio: 1 }))
-    expect([
-      ...data.slice((5 * width + 5) * 4, (5 * width + 5) * 4 + 4),
-    ]).toEqual([0, 0, 0, 255])
+  it('with a threshold, prepares it once and repaints without the worker', async () => {
+    stubCanvas()
+    const runner = {
+      run: vi.fn(),
+      prepare: vi.fn(async () => prepareThreshold(pixels())),
+    }
+    const preview = await renderPreview(image, [], step, runner)
+    expect(runner.prepare).toHaveBeenCalledOnce()
+    expect(putImageData).toHaveBeenCalledTimes(1)
+
+    preview.tint!({ type: 'threshold', sensitivity: 0.9, softness: 0.25 })
+
+    expect(runner.prepare).toHaveBeenCalledOnce()
+    expect(putImageData).toHaveBeenCalledTimes(2)
   })
 
-  it('keeps paper white at the highest sensitivity', () => {
-    const page = grayImage(40, 40, () => 200)
-    expect(adaptiveThreshold(page, { sensitivity: 1 }).data[0]).toBe(255)
+  it('with a threshold, ignores brightness and contrast', async () => {
+    stubCanvas()
+    const runner = {
+      run: vi.fn(),
+      prepare: vi.fn(async () => prepareThreshold(pixels())),
+    }
+    const preview = await renderPreview(image, [], step, runner)
+    preview.tint!({ type: 'adjust', brightness: 0.5, contrast: 0 })
+    expect(putImageData).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('the panel of Clean up', () => {
+  const on: Operation = {
+    type: 'threshold',
+    enabled: true,
+    sensitivity: 0.6,
+    softness: 0.25,
+  }
+
+  it('opens turned on, with the sensitivity of the edits', () => {
+    expect(openThreshold([])).toEqual({ enabled: true, sensitivity: 0.5 })
+    expect(openThreshold([on])).toEqual({ enabled: true, sensitivity: 0.6 })
   })
 
-  it('keeps a fully black image black', () => {
-    const page = grayImage(10, 10, () => 0)
-    expect(isBlack(adaptiveThreshold(page), 5, 5)).toBe(true)
+  it('leaves no edit on Done when nothing on display changes, even if the sensitivity moved while it stayed off', () => {
+    expect(confirmThreshold({ enabled: false, sensitivity: 0.9 }, [], undefined)).toBeNull()
+    expect(confirmThreshold({ enabled: true, sensitivity: 0.6 }, [on], undefined)).toBeNull()
+    expect(confirmThreshold({ enabled: false, sensitivity: 0.6 }, [on], undefined)).toEqual({ ...on, enabled: false })
   })
 
-  it('finds dark text under uneven light, which no single global value can do', () => {
-    // The text on the bright side (about 137) is lighter than the paper on the dark side (about 90)
-    const result = adaptiveThreshold(unevenPage, { windowRatio: 0.3 })
-    expect(isBlack(result, 1, 1)).toBe(true)
-    expect(isBlack(result, 181, 1)).toBe(true)
-    expect(isBlack(result, 10, 10)).toBe(false)
-    expect(isBlack(result, 190, 10)).toBe(false)
+  it('keeps a sensitivity set from code while it is off, for when it turns on', () => {
+    expect(thresholdEdit({ enabled: false, sensitivity: 0.9 }, [], undefined)).toEqual({
+      type: 'threshold',
+      enabled: false,
+      sensitivity: 0.9,
+      softness: 0.25,
+    })
   })
 
-  it('handles the image borders and corners', () => {
-    const page = grayImage(50, 50, (x, y) => (x < 2 && y < 2) || (x > 47 && y > 47)
-      ? 20
-      : 220)
-    const result = adaptiveThreshold(page, { windowRatio: 0.2 })
-    expect(isBlack(result, 0, 0)).toBe(true)
-    expect(isBlack(result, 49, 49)).toBe(true)
-    expect(isBlack(result, 25, 0)).toBe(false)
-    expect(isBlack(result, 49, 25)).toBe(false)
-  })
-
-  it('accepts a window larger than the image', () => {
-    const page = grayImage(10, 6, x => x < 2
-      ? 20
-      : 220)
-    const result = adaptiveThreshold(page, { windowRatio: 10 })
-    expect(isBlack(result, 0, 0)).toBe(true)
-    expect(isBlack(result, 9, 5)).toBe(false)
-  })
-
-  it('keeps a flat area white', () => {
-    const page = grayImage(40, 40, () => 200)
-    expect(isBlack(adaptiveThreshold(page), 20, 20)).toBe(false)
-  })
-
-  it.each([0, 0.25])('darkens more pixels at a higher sensitivity, with a softness of %d', (softness) => {
-    const brightness = ({ data }: PixelBuffer) => data.reduce((total, value, index) => index % 4 === 0
-      ? total + value
-      : total, 0)
-    const page = grayImage(100, 100, (x, y) => 150 + (x * 7 + y * 13) % 60)
-    const low = adaptiveThreshold(page, { sensitivity: 0.1, softness })
-    const high = adaptiveThreshold(page, { sensitivity: 0.9, softness })
-    expect(brightness(high)).toBeLessThan(brightness(low))
-  })
-
-  it.each([
-    [
-      { windowRatio: 0 },
-    ],
-    [
-      { windowRatio: Number.NaN },
-    ],
-    [
-      { sensitivity: -0.1 },
-    ],
-    [
-      { sensitivity: 1.1 },
-    ],
-    [
-      { softness: -0.1 },
-    ],
-    [
-      { softness: 1.1 },
-    ],
-  ])('throws RangeError for %o', (options) => {
-    expect(() => adaptiveThreshold(unevenPage, options)).toThrow(RangeError)
+  it('takes the softness of the option over the one of the edits', () => {
+    expect(thresholdOperation({ enabled: true, sensitivity: 0.5 }, [on], 0)).toMatchObject({ softness: 0 })
+    expect(thresholdOperation({ enabled: true, sensitivity: 0.5 }, [
+      { ...on, softness: 0.4 },
+    ], undefined)).toMatchObject({ softness: 0.4 })
   })
 })

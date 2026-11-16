@@ -205,7 +205,7 @@ export function Receipt() {
 
 ## Un curseur à vous {#slider}
 
-Une réglette à vous pour Nettoyer ouvre d’abord l’outil. Chaque mouvement appelle alors `setThreshold()`, qui change ce que Nettoyer affiche, et `confirmTool()` garde la dernière valeur comme une seule modification. Ici, Terminé applique aussi le résultat, et Annuler quitte le mode d’édition, si bien que ces contrôles forment toute l’interface.
+Un curseur à vous pour Nettoyer ouvre d’abord l’outil. Chaque mouvement appelle alors `setThreshold()`, qui change ce que Nettoyer affiche, et `confirmTool()` garde la dernière valeur comme une seule modification. Ici, Terminé applique aussi le résultat, et Annuler quitte le mode d’édition, si bien que ces contrôles forment toute l’interface.
 
 :::tabs key:framework
 == JavaScript

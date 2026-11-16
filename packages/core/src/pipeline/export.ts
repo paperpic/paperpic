@@ -1,5 +1,5 @@
 import type { PixelBuffer } from '../processing/types'
-import type { PipelineStep } from './operations'
+import type { PipelineStep } from './steps'
 import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 import { planRead } from './read-plan'
 

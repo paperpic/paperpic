@@ -1,13 +1,15 @@
-import type { Operation, PipelineStep } from '../src/pipeline/operations'
+import type { Operation } from '../src/pipeline/operations'
+import type { PipelineStep } from '../src/pipeline/steps'
 import type { PixelBuffer } from '../src/processing/types'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { resolveOutputType } from '../src/pipeline/export'
 import { adjustSetting, toneStep, toPipelineSteps, toPreviewSteps } from '../src/pipeline/operations'
 import { photoFrame } from '../src/pipeline/photo-frame'
-import { applySteps } from '../src/pipeline/pipeline'
 import { renderPreview } from '../src/pipeline/preview'
 import { planRead, resultSize } from '../src/pipeline/read-plan'
+import { applySteps } from '../src/pipeline/steps'
 import { adjustPixels } from '../src/processing/adjust'
+import { adjustEdit, canAdjust } from '../src/tools/adjust'
 
 const crop = {
   type: 'crop',
@@ -32,39 +34,6 @@ function grays(...values: number[]) {
     height: 1,
   }
 }
-
-function reds(pixels: { data: Uint8ClampedArray }) {
-  return [...pixels.data].filter((_, index) => index % 4 === 0)
-}
-
-describe('adjustPixels', () => {
-  it('leaves the image as it is at 0', () => {
-    const source = grays(0, 1, 64, 128, 200, 255)
-    expect(adjustPixels(source).data).toEqual(source.data)
-    expect(adjustPixels(source, { brightness: 0, contrast: 0 }).data).toEqual(source.data)
-  })
-
-  it('shifts every tone with the brightness, up to half the range', () => {
-    expect(reds(adjustPixels(grays(0, 100, 200, 255), { brightness: 0.3 }))).toEqual([38, 138, 238, 255])
-    expect(reds(adjustPixels(grays(0, 100, 255), { brightness: -0.5 }))).toEqual([0, 36, 191])
-  })
-
-  it('spreads the tones away from middle gray with the contrast', () => {
-    expect(reds(adjustPixels(grays(0, 100, 128, 200, 255), { contrast: 0.25 }))).toEqual([0, 89, 128, 230, 255])
-    expect(reds(adjustPixels(grays(0, 128, 255), { contrast: -1 }))).toEqual([96, 128, 159])
-  })
-
-  it('keeps the transparency and the size', () => {
-    const result = adjustPixels(grays(10, 20), { brightness: 1, contrast: 1 })
-    expect([...result.data].filter((_, index) => index % 4 === 3)).toEqual([128, 128])
-    expect(result).toMatchObject({ width: 2, height: 1 })
-  })
-
-  it('explains a value out of range', () => {
-    expect(() => adjustPixels(grays(0), { brightness: 1.5 })).toThrow('brightness must be between -1 and 1, got 1.5')
-    expect(() => adjustPixels(grays(0), { contrast: Number.NaN })).toThrow('contrast must be between -1 and 1')
-  })
-})
 
 describe('adjustments in the operations', () => {
   it('take the setting of their last edit', () => {
@@ -185,5 +154,25 @@ describe('renderPreview with adjustments', () => {
     expect(runner.run).not.toHaveBeenCalled()
     preview.tint!({ type: 'threshold', sensitivity: 0.5, softness: 0.25 })
     expect(putImageData).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('the panel of Adjust', () => {
+  it('cannot change the tones of a cleaned document', () => {
+    expect(canAdjust([])).toBe(true)
+    expect(canAdjust([
+      {
+        type: 'threshold',
+        enabled: true,
+        sensitivity: 0.5,
+        softness: 0.25,
+      },
+    ])).toBe(false)
+  })
+
+  it('leaves an edit only when the brightness or the contrast changes', () => {
+    const adjusted: Operation = { type: 'adjust', brightness: 0.2, contrast: 0 }
+    expect(adjustEdit({ brightness: 0.2, contrast: 0 }, [adjusted])).toBeNull()
+    expect(adjustEdit({ brightness: 0.2, contrast: 0.1 }, [adjusted])).toEqual({ type: 'adjust', brightness: 0.2, contrast: 0.1 })
   })
 })

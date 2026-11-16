@@ -205,7 +205,7 @@ export function Receipt() {
 
 ## Ein eigener Schieberegler {#slider}
 
-Ein eigenes Lineal für Bereinigen öffnet zuerst das Werkzeug. Jede Bewegung ruft dann `setThreshold()` auf, was ändert, was Bereinigen zeigt, und `confirmTool()` behält den letzten Wert als eine Bearbeitung. Hier übernimmt Fertig auch das Ergebnis, und Abbrechen verlässt den Bearbeitungsmodus, sodass diese Bedienelemente die ganze Oberfläche sind.
+Ein eigener Schieberegler für Bereinigen öffnet zuerst das Werkzeug. Jede Bewegung ruft dann `setThreshold()` auf, was ändert, was Bereinigen zeigt, und `confirmTool()` behält den letzten Wert als eine Bearbeitung. Hier übernimmt Fertig auch das Ergebnis, und Abbrechen verlässt den Bearbeitungsmodus, sodass diese Bedienelemente die ganze Oberfläche sind.
 
 :::tabs key:framework
 == JavaScript

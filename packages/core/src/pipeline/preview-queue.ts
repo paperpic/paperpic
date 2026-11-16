@@ -1,5 +1,5 @@
-import type { PipelineStep, ToneStep } from './operations'
 import type { Preview } from './preview'
+import type { PipelineStep, ToneStep } from './steps'
 
 /** What the queue asks of the viewer. */
 export interface PreviewQueueHost {
@@ -16,7 +16,7 @@ export interface PreviewQueueHost {
 /**
  * Computes the previews of the edits, one at a time. While one is on its way, a newer one waits, and replaces any that
  * was already waiting, so a quick run of Undo or Flip reads the pixels twice and not once per press. It also repaints
- * the tones at most once per frame, because a slider sends more `input` events than the screen has frames.
+ * the tones at most once per frame, because a ruler sends more `input` events than the screen has frames.
  */
 export class PreviewQueue {
   private readonly host: PreviewQueueHost

@@ -1,8 +1,8 @@
-import type { PipelineStep } from '../pipeline/operations'
-import type { PreparedThreshold } from './threshold'
-import type { PixelBuffer } from './types'
-import { applySteps } from '../pipeline/pipeline'
-import { prepareThreshold } from './threshold'
+import type { PreparedThreshold } from '../processing/threshold'
+import type { PixelBuffer } from '../processing/types'
+import type { PipelineStep } from './steps'
+import { prepareThreshold } from '../processing/threshold'
+import { applySteps } from './steps'
 
 /**
  * A job for the processing worker: run the steps, or run them and prepare a threshold on the result. The pixel buffer

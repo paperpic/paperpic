@@ -1,3 +1,10 @@
+/**
+ * The image to show: a URL from the same origin, or a file attached on the client.
+ *
+ * @see https://paperpic.dev/reference/options#src
+ */
+export type PaperPicSource = string | Blob
+
 /** An image ready to paint. */
 export interface LoadedImage {
   element: CanvasImageSource
@@ -12,7 +19,7 @@ export interface LoadedImage {
  *
  * @throws {Error} If the browser cannot load or decode the image.
  */
-export async function loadImage(source: string | Blob): Promise<LoadedImage> {
+export async function loadImage(source: PaperPicSource): Promise<LoadedImage> {
   const objectUrl = typeof source === 'string'
     ? null
     : URL.createObjectURL(source)

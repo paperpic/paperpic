@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { downloadName } from '../src/download'
+import { downloadName } from '../src/pipeline/download'
 
 const png = new Blob(['x'], { type: 'image/png' })
 const jpeg = new Blob(['x'], { type: 'image/jpeg' })

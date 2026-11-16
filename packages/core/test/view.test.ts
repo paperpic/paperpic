@@ -1,6 +1,6 @@
 import type { View } from '../src/state/view'
 import { describe, expect, it } from 'vitest'
-import { clampPan, createView, fitView, overflows, panBy, resizeView, rotateView, zoomLimits, zoomTo } from '../src/state/view'
+import { clampPan, createView, fitView, normalizeRotation, overflows, panBy, resizeView, rotateView, zoomLimits, zoomTo } from '../src/state/view'
 
 const viewport = { width: 300, height: 150 }
 const image = { width: 600, height: 250 }
@@ -163,4 +163,25 @@ describe('overflows', () => {
     expect(overflows(fitView(view(), 'image', image, viewport), image, viewport)).toBe(false)
     expect(overflows(view({ zoom: 1 }), image, viewport)).toBe(true)
   })
+})
+
+describe('normalizeRotation', () => {
+  it.each([
+    [0, 0],
+    [90, 90],
+    [-90, 270],
+    [450, 90],
+    [44, 0],
+    [46, 90],
+    [359, 0],
+  ])('normalizes %d to %d', (input, expected) => {
+    expect(normalizeRotation(input)).toBe(expected)
+  })
+
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY])(
+    'throws RangeError for %d',
+    (input) => {
+      expect(() => normalizeRotation(input)).toThrow(RangeError)
+    },
+  )
 })

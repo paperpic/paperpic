@@ -1,6 +1,6 @@
-import type { PixelBuffer, Quad } from '../src/processing/types'
+import type { PixelBuffer, Quad } from '../../src/processing/types'
 import { describe, expect, it } from 'vitest'
-import { warpPerspective } from '../src/processing/warp'
+import { warpPerspective } from '../../src/processing/warp'
 
 /** Stores x in the red channel and y in the green channel, so each pixel tells where it came from. */
 function coordinateImage(width: number, height: number): PixelBuffer {

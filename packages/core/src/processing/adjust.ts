@@ -21,7 +21,7 @@ function assertInRange(name: string, value: number): void {
 
 /**
  * Changes the brightness and contrast of an image. Each channel goes through the same table of 256 values,
- * so it is fast enough to run on every change of a slider. Transparency does not change.
+ * so it is fast enough to run on every change of a ruler. Transparency does not change.
  *
  * @throws {RangeError} If an option is out of range.
  */
