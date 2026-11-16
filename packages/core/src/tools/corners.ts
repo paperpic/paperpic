@@ -1,7 +1,8 @@
-import type { Point, Quad } from '../processing/types'
-import type { Size, ViewPoint } from '../state/view'
-import type { Lens } from './magnifier'
-import type { ToolHost } from './types'
+import type { Operation } from '../pipeline/operations'
+import type { Point, Quad, Size } from '../processing/types'
+import type { Lens } from '../render/lens'
+import type { ViewPoint } from '../state/view'
+import type { ToolHost, ToolSession } from './types'
 import { TAP_MOVEMENT } from '../input/gestures'
 import { placeLens } from './magnifier'
 
@@ -364,5 +365,22 @@ export class CornerEditor {
     const { width, height } = this.host.layer.getBoundingClientRect()
     this.lens = placeLens(this.corners[index]!, finger, { width, height })
     this.host.requestPaint()
+  }
+}
+
+/**
+ * The session of a tool that edits corners. Crop and Straighten differ only in how they constrain the corners, which
+ * goes to the editor, and in the edit that their corners mean, which `confirm` returns.
+ */
+export function cornerSession(editor: CornerEditor, confirm: () => Operation | null): ToolSession {
+  return {
+    anchor: () => editor.anchor(),
+    focus: () => editor.focus(),
+    update: () => editor.update(),
+    drawOverlay: context => editor.drawOverlay(context),
+    deactivate: () => editor.deactivate(),
+    tap: point => editor.place(point),
+    escape: () => editor.deselect(),
+    confirm,
   }
 }

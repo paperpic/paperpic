@@ -4,10 +4,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { resolveOutputType } from '../src/pipeline/export'
 import { adjustSetting, toneStep, toPipelineSteps, toPreviewSteps } from '../src/pipeline/operations'
 import { photoFrame } from '../src/pipeline/photo-frame'
-import { applySteps } from '../src/pipeline/pipeline'
 import { renderPreview } from '../src/pipeline/preview'
 import { planRead, resultSize } from '../src/pipeline/read-plan'
+import { applySteps } from '../src/pipeline/steps'
 import { adjustPixels } from '../src/processing/adjust'
+import { adjustEdit, canAdjust } from '../src/tools/adjust'
 
 const crop = {
   type: 'crop',
@@ -185,5 +186,25 @@ describe('renderPreview with adjustments', () => {
     expect(runner.run).not.toHaveBeenCalled()
     preview.tint!({ type: 'threshold', sensitivity: 0.5, softness: 0.25 })
     expect(putImageData).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('the panel of Adjust', () => {
+  it('cannot change the tones of a cleaned document', () => {
+    expect(canAdjust([])).toBe(true)
+    expect(canAdjust([
+      {
+        type: 'threshold',
+        enabled: true,
+        sensitivity: 0.5,
+        softness: 0.25,
+      },
+    ])).toBe(false)
+  })
+
+  it('leaves an edit only when the brightness or the contrast changes', () => {
+    const adjusted: Operation = { type: 'adjust', brightness: 0.2, contrast: 0 }
+    expect(adjustEdit({ brightness: 0.2, contrast: 0 }, [adjusted])).toBeNull()
+    expect(adjustEdit({ brightness: 0.2, contrast: 0.1 }, [adjusted])).toEqual({ type: 'adjust', brightness: 0.2, contrast: 0.1 })
   })
 })

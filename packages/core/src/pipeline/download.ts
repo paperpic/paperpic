@@ -1,5 +1,5 @@
-import type { PaperPicSource } from './paperpic'
-import { typeFromUrl } from './pipeline/export'
+import type { PaperPicSource } from './load-image'
+import { typeFromUrl } from './export'
 
 /**
  * What the `download` event carries.

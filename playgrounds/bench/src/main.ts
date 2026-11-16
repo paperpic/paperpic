@@ -1,6 +1,6 @@
+import type { WorkerRequest, WorkerResponse } from '../../../packages/core/src/pipeline/worker'
 import type { PreparedThreshold } from '../../../packages/core/src/processing/threshold'
 import type { PixelBuffer, Quad } from '../../../packages/core/src/processing/types'
-import type { WorkerRequest, WorkerResponse } from '../../../packages/core/src/processing/worker'
 import { renderHeader } from 'playground-shared/page'
 import { estimateOutputSize } from '../../../packages/core/src/processing/homography'
 import { adaptiveThreshold, applyThreshold, DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS, prepareThreshold } from '../../../packages/core/src/processing/threshold'
@@ -174,7 +174,7 @@ function toCanvas({ data, width, height }: PixelBuffer): OffscreenCanvas {
 }
 
 function startWorker() {
-  const worker = new Worker(new URL('../../../packages/core/src/processing/worker.ts', import.meta.url), { type: 'module' })
+  const worker = new Worker(new URL('../../../packages/core/src/pipeline/worker.ts', import.meta.url), { type: 'module' })
   let nextId = 0
   const send = (request: Job) => new Promise<Exclude<WorkerResponse, { ready: true }>>((resolve, reject) => {
     worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {

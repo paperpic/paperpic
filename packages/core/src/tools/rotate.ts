@@ -1,4 +1,4 @@
-import type { Tool } from '../types'
+import type { Tool } from './types'
 
 /** Turns the image a quarter turn to the left, at once, as photo galleries do. Four presses cover every turn. */
 export const rotateTool: Tool = {

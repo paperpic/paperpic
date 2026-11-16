@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { toPipelineSteps, trailingRotation } from '../src/pipeline/operations'
-import { applySteps } from '../src/pipeline/pipeline'
+import { applySteps } from '../src/pipeline/steps'
 import { rotatePixels } from '../src/processing/rotate'
 import { addToHistory, createHistory, redoHistory, undoHistory } from '../src/state/history'
 

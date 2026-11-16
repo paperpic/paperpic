@@ -3,11 +3,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { resolveOutputType } from '../src/pipeline/export'
 import { thresholdSetting, toPipelineSteps, toPreviewSteps, trailingRotation } from '../src/pipeline/operations'
 import { photoFrame } from '../src/pipeline/photo-frame'
-import { applySteps } from '../src/pipeline/pipeline'
 import { renderPreview } from '../src/pipeline/preview'
 import { planRead, resultSize } from '../src/pipeline/read-plan'
 import { PipelineRunner } from '../src/pipeline/run'
+import { applySteps } from '../src/pipeline/steps'
 import { adaptiveThreshold, prepareThreshold } from '../src/processing/threshold'
+import { confirmCleanUp, openCleanUp, thresholdEdit, thresholdOperation } from '../src/tools/threshold'
 
 const right = { type: 'rotate', direction: 1 } as const
 const left = { type: 'rotate', direction: -1 } as const
@@ -228,5 +229,41 @@ describe('renderPreview', () => {
     const preview = await renderPreview(image, [], step, runner)
     preview.tint!({ type: 'adjust', brightness: 0.5, contrast: 0 })
     expect(putImageData).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('the panel of Clean up', () => {
+  const on: Operation = {
+    type: 'threshold',
+    enabled: true,
+    sensitivity: 0.6,
+    softness: 0.25,
+  }
+
+  it('opens turned on, with the sensitivity of the edits', () => {
+    expect(openCleanUp([])).toEqual({ enabled: true, sensitivity: 0.5 })
+    expect(openCleanUp([on])).toEqual({ enabled: true, sensitivity: 0.6 })
+  })
+
+  it('leaves no edit on Done when nothing on display changes, even if the sensitivity moved while it stayed off', () => {
+    expect(confirmCleanUp({ enabled: false, sensitivity: 0.9 }, [], undefined)).toBeNull()
+    expect(confirmCleanUp({ enabled: true, sensitivity: 0.6 }, [on], undefined)).toBeNull()
+    expect(confirmCleanUp({ enabled: false, sensitivity: 0.6 }, [on], undefined)).toEqual({ ...on, enabled: false })
+  })
+
+  it('keeps a sensitivity set from code while it is off, for when it turns on', () => {
+    expect(thresholdEdit({ enabled: false, sensitivity: 0.9 }, [], undefined)).toEqual({
+      type: 'threshold',
+      enabled: false,
+      sensitivity: 0.9,
+      softness: 0.25,
+    })
+  })
+
+  it('takes the softness of the option over the one of the edits', () => {
+    expect(thresholdOperation({ enabled: true, sensitivity: 0.5 }, [on], 0)).toMatchObject({ softness: 0 })
+    expect(thresholdOperation({ enabled: true, sensitivity: 0.5 }, [
+      { ...on, softness: 0.4 },
+    ], undefined)).toMatchObject({ softness: 0.4 })
   })
 })

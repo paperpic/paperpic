@@ -1,8 +1,17 @@
-import type { Size, View } from '../state/view'
-import type { Lens } from '../tools/magnifier'
-import type { LoadedImage } from './load-image'
+import type { LoadedImage } from '../pipeline/load-image'
+import type { Point, Size } from '../processing/types'
+import type { View, ViewPoint } from '../state/view'
 import { frameToViewport } from '../state/view'
 import { computeTransform } from './transform'
+
+/** What a magnifier shows and where. */
+export interface Lens {
+  /** Where the lens goes in the viewport. */
+  center: ViewPoint
+  /** The point of the frame to magnify. */
+  point: Point
+  radius: number
+}
 
 /** How much larger the magnifier shows the image than the view does. */
 const LENS_ZOOM = 3

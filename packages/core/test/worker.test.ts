@@ -1,4 +1,4 @@
-import type { WorkerRequest, WorkerResponse } from '../src/processing/worker'
+import type { WorkerRequest, WorkerResponse } from '../src/pipeline/worker'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 interface WorkerScope {
@@ -25,7 +25,7 @@ describe('processing worker', () => {
 
   beforeAll(async () => {
     vi.stubGlobal('postMessage', postMessage)
-    await import('../src/processing/worker')
+    await import('../src/pipeline/worker')
     firstMessage = postMessage.mock.calls[0]
     postMessage.mockClear()
   })

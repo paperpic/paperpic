@@ -1,11 +1,10 @@
 import type { PixelRect } from '../processing/crop'
-import type { NormalizedRect, Quad } from '../processing/types'
-import type { Rotation } from '../rotation'
-import type { Size } from '../state/view'
+import type { NormalizedRect, Quad, Size } from '../processing/types'
+import type { Rotation } from '../state/view'
 import type { PerspectiveEdit, PipelineStep } from './operations'
 import { cropBox } from '../processing/crop'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
-import { normalizeRotation } from '../rotation'
+import { normalizeRotation } from '../state/view'
 import { isToneStep, mirrorOrientation, orientationSteps, UPRIGHT } from './operations'
 
 /** What to read from an image, and what is left to do with those pixels. */

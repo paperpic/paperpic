@@ -1,4 +1,5 @@
-import type { Size, View } from '../state/view'
+import type { Size } from '../processing/types'
+import type { View } from '../state/view'
 import { computeTransform } from './transform'
 
 /** What one frame shows. */

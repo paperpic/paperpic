@@ -1,4 +1,4 @@
-import type { LoadedImage } from '../src/render/load-image'
+import type { LoadedImage } from '../src/pipeline/load-image'
 import { describe, expect, it, vi } from 'vitest'
 import { paintLens } from '../src/render/lens'
 import { computeTransform } from '../src/render/transform'

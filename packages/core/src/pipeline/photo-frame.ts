@@ -1,5 +1,4 @@
-import type { Point } from '../processing/types'
-import type { Size } from '../state/view'
+import type { Point, Size } from '../processing/types'
 import type { PipelineStep } from './operations'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 

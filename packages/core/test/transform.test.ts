@@ -1,4 +1,4 @@
-import type { Rotation } from '../src/rotation'
+import type { Rotation } from '../src/state/view'
 import { describe, expect, it } from 'vitest'
 import { computeTransform, imageToViewport, viewportToImage } from '../src/render/transform'
 import { createView } from '../src/state/view'

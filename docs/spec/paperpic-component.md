@@ -141,26 +141,27 @@ pic.destroy()
 
 ## Architecture
 
-The code lives in `packages/core/src`. Dependencies point downwards in this table, and `processing` knows nothing about the others.
+The code lives in `packages/core/src`. Dependencies point downwards in this table, and `processing/` knows nothing about the others. The one exception is a type in each direction between `ui/` and `tools/`: the edit bar shows the `Tool` behind each button, and the tools speak to the user with `PaperPicLabels`.
 
-| Layer         | Responsibility                                                                                                        |
-| ------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `paperpic.ts` | Public class. Connects the other layers.                                                                              |
-| `ui/`         | Optional toolbar and edit bar. They only call commands and read state.                                                |
-| `tools/`      | One folder per tool: `adjust/`, `crop/`, `flip/`, `perspective/`, `rotate/`, `threshold/`.                            |
-| `input/`      | Turns Pointer Events into drag, pinch and wheel gestures, and routes them to the active tool or the view.             |
-| `render/`     | Paints a scene on the canvas. It decides nothing.                                                                     |
-| `pipeline/`   | Turns the operation list into an image. Preview and export use the same code.                                         |
-| `state/`      | Mode, zoom and pan, operation list, Undo and Redo history.                                                            |
-| `processing/` | Pure functions on pixel arrays: homography, warp, threshold, flip, brightness and contrast. Tested without a browser. |
+| Layer         | Responsibility                                                                                                                                                                                           |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic.ts` | Public class, with its state and its events. Connects the other layers.                                                                                                                                  |
+| `options.ts`  | The options of the class: their types, defaults and ranges, and how a change merges with the options in use.                                                                                             |
+| `ui/`         | Optional toolbar and edit bar, which only call commands and read state, and the texts and icons of the interface.                                                                                        |
+| `tools/`      | One file per tool, with its button and what it does. Crop and Straighten share the corner handles of `corners.ts`.                                                                                       |
+| `input/`      | Turns Pointer Events into drag, pinch and wheel gestures, and routes them to the active tool or the view.                                                                                                |
+| `render/`     | Paints a scene on the canvas, and the magnifier over it. It decides nothing.                                                                                                                             |
+| `pipeline/`   | Turns the operation list into an image: loads the source, runs the steps in the worker, and exports or downloads the result. Preview and export use the same code.                                       |
+| `state/`      | The view, with its zoom, pan and rotation, and the Undo and Redo history.                                                                                                                                |
+| `processing/` | Pure functions on pixel arrays, such as homography, warp, threshold, flip, brightness and contrast, and the geometry types that every layer shares, such as `Size` and `Quad`. Tested without a browser. |
 
 ### Tools
 
-Adding a tool means creating its folder and registering it. A tool handles its own interaction and, on confirm, adds an operation such as `{ type: 'crop', rect }`. It does not paint the image or touch pixels.
+Adding a tool means creating its file in `tools/` and registering it in `tools/index.ts`. A tool handles its own interaction and, on confirm, adds an operation such as `{ type: 'crop', rect }`. It does not paint the image or touch pixels.
 
 Operations store fractions of the image, as the user saw it at that moment with the earlier edits done, so they mean the same on a preview and at full resolution.
 
-Each action of a tool becomes a button in the edit bar. Crop and Straighten also have `activate`, which opens their corner handles: DOM elements with their own pointer events, so any other drag still pans the view. Adjust and Clean up open a panel of settings, which the viewer keeps apart from the edits until Done turns them into one.
+Each action of a tool becomes a button in the edit bar. Crop and Straighten also have `activate`, which opens their corner handles: DOM elements with their own pointer events, so any other drag still pans the view. Both build their session with `cornerSession()`, and only decide the edit that their corners mean. Adjust and Clean up open a panel of settings, which the viewer keeps apart from the edits as a `PanelDraft` until Done turns it into one. Their files say what the panel starts with and which edit Done leaves.
 
 ```ts
 interface Tool {

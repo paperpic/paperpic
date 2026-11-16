@@ -3,13 +3,13 @@ import { defineConfig } from 'tsdown'
 import { copyDocs } from '../../scripts/copy-docs.ts'
 
 /** How the source names its worker, in `src/pipeline/run.ts`. */
-const WORKER_SOURCE = '../processing/worker.ts'
+const WORKER_SOURCE = './worker.ts'
 let workerUrlRewritten = false
 
 export default defineConfig({
   entry: {
     index: 'src/index.ts',
-    worker: 'src/processing/worker.ts',
+    worker: 'src/pipeline/worker.ts',
   },
   format: 'esm',
   platform: 'neutral',

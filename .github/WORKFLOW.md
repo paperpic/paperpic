@@ -77,7 +77,8 @@ The packages share one version: `.changeset/config.json` puts them in a `fixed` 
 The sentence goes straight into `CHANGELOG.md`, which users read.
 
 - Describe what changes for **users of the package**, not how the code changed.
-- Name public APIs in backticks: `` `PaperPic` ``, `` `normalizeRotation` ``.
+- A change that users cannot see, such as a refactor, still changes the code they install, so it needs a `patch` changeset. Say in one sentence that nothing changes for them.
+- Name public APIs in backticks: `` `PaperPic` ``, `` `setOptions()` ``.
 - For breaking changes, add the migration steps below the first sentence. A changeset can hold several paragraphs.
 
 Reviewers check the changeset wording like any other line of the pull request. To fix wording after merging, open a small PR that edits the `.changeset/*.md` file while it is still pending.

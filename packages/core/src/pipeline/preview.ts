@@ -1,6 +1,6 @@
 import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
-import type { LoadedImage } from '../render/load-image'
+import type { LoadedImage } from './load-image'
 import type { PipelineStep, ToneStep } from './operations'
 import { adjustPixels } from '../processing/adjust'
 import { applyThreshold } from '../processing/threshold'

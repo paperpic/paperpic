@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { toPipelineSteps, toPreviewSteps, trailingRotation } from '../src/pipeline/operations'
-import { applySteps } from '../src/pipeline/pipeline'
 import { planRead, resultSize, unrotateRect } from '../src/pipeline/read-plan'
+import { applySteps } from '../src/pipeline/steps'
 import { cropBox, cropPixels } from '../src/processing/crop'
 import { rotatePixels } from '../src/processing/rotate'
 

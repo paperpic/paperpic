@@ -1,4 +1,5 @@
-import type { Size, View, ViewPoint } from '../state/view'
+import type { Size } from '../processing/types'
+import type { View, ViewPoint } from '../state/view'
 
 /** A 2D transform in the order canvas uses: x' = a·x + c·y + e, y' = b·x + d·y + f. */
 export type Transform = readonly [a: number, b: number, c: number, d: number, e: number, f: number]

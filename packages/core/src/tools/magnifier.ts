@@ -1,14 +1,6 @@
-import type { Point } from '../processing/types'
-import type { Size, ViewPoint } from '../state/view'
-
-/** What a magnifier shows and where. */
-export interface Lens {
-  /** Where the lens goes in the viewport. */
-  center: ViewPoint
-  /** The point of the frame to magnify. */
-  point: Point
-  radius: number
-}
+import type { Point, Size } from '../processing/types'
+import type { Lens } from '../render/lens'
+import type { ViewPoint } from '../state/view'
 
 const LENS_RADIUS = 56
 /** Keeps the lens clear of a finger, which covers more than the point it touches. */

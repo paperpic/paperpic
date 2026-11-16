@@ -1,9 +1,9 @@
 import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
-import type { WorkerResponse } from '../processing/worker'
 import type { PipelineStep } from './operations'
+import type { WorkerResponse } from './worker'
 import { prepareThreshold } from '../processing/threshold'
-import { applySteps } from './pipeline'
+import { applySteps } from './steps'
 
 type JobResponse = Exclude<WorkerResponse, { ready: true } | { error: string }>
 
@@ -70,7 +70,7 @@ export class PipelineRunner {
       let worker: Worker
       try {
         // Bundlers need this exact form to find the file. The build rewrites the path for the published package.
-        worker = new Worker(new URL('../processing/worker.ts', import.meta.url), { type: 'module' })
+        worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' })
       }
       catch {
         resolve(null)

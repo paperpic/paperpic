@@ -1,8 +1,8 @@
 import type { QuarterTurn } from '../processing/rotate'
 import type { NormalizedRect, Quad } from '../processing/types'
-import type { Rotation } from '../rotation'
+import type { Rotation } from '../state/view'
 import { DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS } from '../processing/threshold'
-import { normalizeRotation } from '../rotation'
+import { normalizeRotation } from '../state/view'
 
 /** Changes the brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. */
 export interface AdjustEdit {

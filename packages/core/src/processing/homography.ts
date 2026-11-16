@@ -1,4 +1,4 @@
-import type { Point, Quad } from './types'
+import type { Point, Quad, Size } from './types'
 
 /** A 3×3 matrix, row by row. */
 export type Matrix3 = readonly [number, number, number, number, number, number, number, number, number]
@@ -72,12 +72,6 @@ export function applyHomography(matrix: Matrix3, { x, y }: Point): Point {
 /** Turns corners given as fractions of an image into its pixels. */
 export function scaleQuad(quad: Quad, width: number, height: number): Quad {
   return quad.map(({ x, y }) => ({ x: x * width, y: y * height })) as unknown as Quad
-}
-
-/** A size in pixels. */
-export interface Size {
-  height: number
-  width: number
 }
 
 export interface OutputSizeOptions {
