@@ -55,6 +55,8 @@ Cinco [tokens CSS](../reference/css-tokens) definem o fundo, o texto, a cor de d
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="Um recibo" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 Os tokens são herdados, então uma classe no contêiner de um visualizador, ou no componente Vue ou React, muda só esse visualizador:
 
 ```css

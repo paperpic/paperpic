@@ -203,6 +203,189 @@ export function Receipt() {
 
 :::
 
+## Un slider propio {#slider}
+
+Una regla propia para Limpiar abre antes la herramienta. Cada movimiento llama entonces a `setThreshold()`, que cambia lo que muestra Limpiar, y `confirmTool()` guarda el último valor como una sola edición. Aquí Hecho también aplica el resultado, y Cancelar sale del modo de edición, así que estos controles son toda la interfaz.
+
+:::tabs key:framework
+== JavaScript
+
+```html
+<button id="clean-up" type="button">Limpiar</button>
+<div id="ruler" hidden>
+  <label>
+    Sensibilidad
+    <input id="sensitivity" type="range" min="0" max="1" step="0.05" />
+  </label>
+  <button id="done" type="button">Hecho</button>
+  <button id="cancel" type="button">Cancelar</button>
+</div>
+<div id="viewer" style="height: 480px"></div>
+```
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
+  src: '/receipt.jpg',
+  alt: 'Un tique',
+  toolbar: false,
+})
+const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
+
+document.querySelector('#clean-up')!.addEventListener('click', () => {
+  pic.edit()
+  pic.openTool('threshold')
+})
+slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+document.querySelector('#done')!.addEventListener('click', () => {
+  pic.confirmTool()
+  pic.apply()
+})
+document.querySelector('#cancel')!.addEventListener('click', () => {
+  pic.cancelTool()
+  pic.cancel()
+})
+
+pic.on('change', ({ activeTool, threshold }) => {
+  const open = activeTool === 'threshold'
+  document.querySelector<HTMLElement>('#ruler')!.hidden = !open
+  document.querySelector<HTMLElement>('#clean-up')!.hidden = open
+  slider.value = String(threshold.sensitivity)
+})
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import type { PaperPicState } from '@paperpic/vue'
+import { PaperPic } from '@paperpic/vue'
+import { computed, shallowRef, useTemplateRef } from 'vue'
+import '@paperpic/vue/style.css'
+
+const pic = useTemplateRef<InstanceType<typeof PaperPic>>('pic')
+const viewer = computed(() => pic.value?.instance)
+const state = shallowRef<PaperPicState>()
+
+function open() {
+  viewer.value?.edit()
+  viewer.value?.openTool('threshold')
+}
+
+function slide(event: Event) {
+  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+}
+
+function done() {
+  viewer.value?.confirmTool()
+  viewer.value?.apply()
+}
+
+function cancel() {
+  viewer.value?.cancelTool()
+  viewer.value?.cancel()
+}
+</script>
+
+<template>
+  <div v-if="state?.activeTool === 'threshold'">
+    <label>
+      Sensibilidad
+      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+    </label>
+    <button type="button" @click="done">
+      Hecho
+    </button>
+    <button type="button" @click="cancel">
+      Cancelar
+    </button>
+  </div>
+  <button v-else type="button" :disabled="state?.status !== 'ready'" @click="open">
+    Limpiar
+  </button>
+  <div style="height: 480px">
+    <PaperPic
+      ref="pic"
+      src="/receipt.jpg"
+      alt="Un tique"
+      :toolbar="false"
+      @change="next => (state = next)"
+      @load="state = viewer?.getState()"
+    />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance, PaperPicState } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef, useState } from 'react'
+import '@paperpic/react/style.css'
+
+export function CleanUpRuler() {
+  const picRef = useRef<PaperPicInstance>(null)
+  const [state, setState] = useState<PaperPicState>()
+  const viewer = () => picRef.current!
+
+  function open() {
+    viewer().edit()
+    viewer().openTool('threshold')
+  }
+
+  function done() {
+    viewer().confirmTool()
+    viewer().apply()
+  }
+
+  function cancel() {
+    viewer().cancelTool()
+    viewer().cancel()
+  }
+
+  return (
+    <>
+      {state?.activeTool === 'threshold'
+        ? (
+            <div>
+              <label>
+                Sensibilidad
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={state.threshold.sensitivity}
+                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                />
+              </label>
+              <button type="button" onClick={done}>Hecho</button>
+              <button type="button" onClick={cancel}>Cancelar</button>
+            </div>
+          )
+        : (
+            <button type="button" disabled={state?.status !== 'ready'} onClick={open}>Limpiar</button>
+          )}
+      <div style={{ height: 480 }}>
+        <PaperPic
+          ref={picRef}
+          src="/receipt.jpg"
+          alt="Un tique"
+          toolbar={false}
+          onChange={setState}
+          onLoad={() => setState(viewer().getState())}
+        />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
 ## Notas
 
 - Con `toolbar: false` también se oculta la barra de edición integrada, así que Recortar y Enderezar muestran sus tiradores pero no el botón Hecho. Tu interfaz los confirma con [`confirmTool()`](../reference/methods#confirmtool), como hace `Enter`.

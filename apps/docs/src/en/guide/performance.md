@@ -9,7 +9,7 @@ Phone photos have 12 megapixels or more, and editing them takes real work. This 
 
 ## A Web Worker does the work
 
-Clean up and Straighten take more than a second on a 12-megapixel photo on a phone. On the main thread, the page would freeze for that long. PaperPic runs them in a Web Worker instead, so the page keeps responding while Apply runs.
+Clean up and Straighten take about a second and a half on a 12-megapixel photo on a recent phone, as the [measured times](#measurements) show. On the main thread, the page would freeze for that long. PaperPic runs them in a Web Worker instead, so the page keeps responding while Apply runs.
 
 The worker ships inside the package and starts with the standard `new Worker(new URL(…, import.meta.url))`, which bundlers such as Vite and webpack 5 pick up on their own, with no configuration. If the worker cannot start, the editing runs on the main thread: it still works, but the page can freeze for a moment with large images.
 
@@ -27,6 +27,22 @@ With a Content Security Policy, allow:
 - **While editing**, the preview works on a copy of about 2 megapixels, so rulers and tools stay fluid with any photo.
 - **On Apply**, every edit runs at full resolution. Large photos take a few seconds, so the viewer shows a message and blocks the controls meanwhile.
 - **To save time and memory**, set [`maxOutputSize`](../reference/options#maxoutputsize). A limit such as 2000 or 3000 pixels keeps documents readable, and makes Apply faster and the files smaller.
+
+## Measured times {#measurements}
+
+Each step of Apply, in the worker, on a Pixel 10 Pro with Chrome 156:
+
+| Step                        | 2 MP   | 12 MP  | 37.5 MP |
+| --------------------------- | ------ | ------ | ------- |
+| Clean up                    | 256 ms | 1.5 s  | 4.8 s   |
+| Straighten                  | 251 ms | 1.6 s  | 5.0 s   |
+| Export to PNG               | 92 ms  | 378 ms | 979 ms  |
+| Export to JPEG, quality 0.9 | 33 ms  | 142 ms | 525 ms  |
+
+- A move of the ruler of Clean up takes about 40 ms on the same phone, because it works on the preview of about 2 MP.
+- A desktop computer with 8 cores does each step about six times faster.
+- At 37.5 MP, Clean up needs about 340 MB of memory at its peak.
+- Mid-range Android phones and iPhones are not measured yet.
 
 ## Server-side rendering
 

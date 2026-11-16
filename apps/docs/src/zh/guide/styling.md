@@ -55,6 +55,8 @@ import '@paperpic/react/style.css'
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="一张收据" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 令牌会被继承，因此在某个查看器的容器上，或在 Vue 或 React 组件上加一个类，只会改变这个查看器：
 
 ```css

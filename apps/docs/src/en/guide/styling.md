@@ -55,6 +55,8 @@ Five [CSS tokens](../reference/css-tokens) set the surface, the text, the accent
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="A receipt" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 The tokens are inherited, so a class on the container of one viewer, or on the Vue or React component, changes that viewer only:
 
 ```css

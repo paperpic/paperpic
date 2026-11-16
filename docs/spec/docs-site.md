@@ -39,24 +39,24 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 
 ### Guide
 
-| Page                    | Path                           | Covers                                                                                                                                                                          |
-| ----------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF or automatic detection, and how the packages fit together.                                                                      |
-| Getting started         | `/guide/getting-started`       | Installing with any package manager or from a CDN, importing the styles, giving the container a height, showing the first image, and removing the viewer with `destroy()`.      |
-| Loading images          | `/guide/loading`               | Where the image comes from: a URL, a `File` or a `Blob`, images from other origins or behind a login, formats, the EXIF orientation, `load`, `error` and `reload()`.            |
-| Viewer                  | `/guide/viewer`                | Zoom, pan, fit, wheel zoom, the toolbar, and read-only use with `editable: false`. With a demo.                                                                                 |
-| Editing                 | `/guide/editing`               | Edit mode, the edit bar, Undo and Redo, Apply and Cancel, choosing tools with `tools`, and what discards an edit.                                                               |
-| Crop                    | `/guide/tools/crop`            | Corner handles, the magnifier, `Enter` and `Esc`.                                                                                                                               |
-| Straighten              | `/guide/tools/straighten`      | The `perspective` tool: estimated proportions, `aspectRatio` and corners cut off by the photo. With a demo.                                                                     |
-| Rotate and flip         | `/guide/tools/rotate-and-flip` | Quarter turns, mirroring, and turns that cancel out.                                                                                                                            |
-| Adjust                  | `/guide/tools/adjust`          | Brightness and contrast.                                                                                                                                                        |
-| Clean up                | `/guide/tools/clean-up`        | The `threshold` tool: black and white, sensitivity and `softness`. With a demo.                                                                                                 |
-| Saving the result       | `/guide/saving`                | The `apply` event, `output`, `maxOutputSize`, `filename`, the download button and its event, uploading the `Blob`, and the metadata the result drops.                           |
-| Styling                 | `/guide/styling`               | `style.css`, the `--paperpic-*` tokens and how to point them at a design system, dark mode with `color-scheme`, the `paperpic` layer with Tailwind CSS, icons, and class names. |
-| Labels                  | `/guide/labels`                | Replacing or translating any text of the interface.                                                                                                                             |
-| Accessibility           | `/guide/accessibility`         | Keyboard shortcuts, screen readers, `alt`, reduced motion and forced colors.                                                                                                    |
-| Performance and support | `/guide/performance`           | The worker, bundlers and Content Security Policy, preview and full resolution, and supported browsers.                                                                          |
-| Troubleshooting         | `/guide/troubleshooting`       | The usual problems and their fix: no height, no stylesheet, Tailwind CSS, other origins, load errors, a blocked worker, large photos and the wheel.                             |
+| Page                    | Path                           | Covers                                                                                                                                                                                       |
+| ----------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF or automatic detection, and how the packages fit together.                                                                                   |
+| Getting started         | `/guide/getting-started`       | Installing with any package manager or from a CDN, importing the styles, giving the container a height, showing the first image, and removing the viewer with `destroy()`.                   |
+| Loading images          | `/guide/loading`               | Where the image comes from: a URL, a `File` or a `Blob`, images from other origins or behind a login, formats, the EXIF orientation, `load`, `error` and `reload()`.                         |
+| Viewer                  | `/guide/viewer`                | Zoom, pan, fit, wheel zoom, the toolbar, and read-only use with `editable: false`. With a demo.                                                                                              |
+| Editing                 | `/guide/editing`               | Edit mode, the edit bar, Undo and Redo, Apply and Cancel, choosing tools with `tools`, and what discards an edit.                                                                            |
+| Crop                    | `/guide/tools/crop`            | Corner handles, the magnifier, `Enter` and `Esc`. With a demo.                                                                                                                               |
+| Straighten              | `/guide/tools/straighten`      | The `perspective` tool: estimated proportions, `aspectRatio` and corners cut off by the photo. With a demo.                                                                                  |
+| Rotate and flip         | `/guide/tools/rotate-and-flip` | Quarter turns, mirroring, and turns that cancel out. With a demo.                                                                                                                            |
+| Adjust                  | `/guide/tools/adjust`          | Brightness and contrast. With a demo.                                                                                                                                                        |
+| Clean up                | `/guide/tools/clean-up`        | The `threshold` tool: black and white, sensitivity and `softness`. With a demo.                                                                                                              |
+| Saving the result       | `/guide/saving`                | The `apply` event, `output`, `maxOutputSize`, `filename`, the download button and its event, uploading the `Blob`, and the metadata the result drops.                                        |
+| Styling                 | `/guide/styling`               | `style.css`, the `--paperpic-*` tokens and how to point them at a design system, dark mode with `color-scheme`, the `paperpic` layer with Tailwind CSS, icons, and class names. With a demo. |
+| Labels                  | `/guide/labels`                | Replacing or translating any text of the interface.                                                                                                                                          |
+| Accessibility           | `/guide/accessibility`         | Keyboard shortcuts, screen readers, `alt`, reduced motion and forced colors.                                                                                                                 |
+| Performance and support | `/guide/performance`           | The worker, bundlers and Content Security Policy, preview and full resolution, and supported browsers, and measured times.                                                                   |
+| Troubleshooting         | `/guide/troubleshooting`       | The usual problems and their fix: no height, no stylesheet, Tailwind CSS, other origins, load errors, a blocked worker, large photos and the wheel.                                          |
 
 ### Reference
 
@@ -74,13 +74,13 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 
 ### Examples
 
-| Page               | Path                          | Covers                                                                             |
-| ------------------ | ----------------------------- | ---------------------------------------------------------------------------------- |
-| Attach and scan    | `/examples/attach-and-scan`   | A file input with the camera, the edit mode on load, and the upload of the result. |
-| Upload to a server | `/examples/upload`            | Sending the result of Apply with `fetch`.                                          |
-| Read-only viewer   | `/examples/read-only`         | A viewer without editing, with rotate buttons.                                     |
-| Custom toolbar     | `/examples/custom-toolbar`    | `toolbar: false` and buttons of your own that call the methods.                    |
-| Fixed proportions  | `/examples/fixed-proportions` | `aspectRatio` for known documents, such as A4 sheets or ID cards.                  |
+| Page               | Path                          | Covers                                                                                                |
+| ------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Attach and scan    | `/examples/attach-and-scan`   | A file input with the camera, the edit mode on load, and the upload of the result.                    |
+| Upload to a server | `/examples/upload`            | Sending the result of Apply with `fetch`.                                                             |
+| Read-only viewer   | `/examples/read-only`         | A viewer without editing, with rotate buttons.                                                        |
+| Custom toolbar     | `/examples/custom-toolbar`    | `toolbar: false` and buttons of your own that call the methods, and a ruler of your own for Clean up. |
+| Fixed proportions  | `/examples/fixed-proportions` | `aspectRatio` for known documents, such as A4 sheets or ID cards.                                     |
 
 ### Other pages
 

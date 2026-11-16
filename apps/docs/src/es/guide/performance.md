@@ -9,7 +9,7 @@ Las fotos de móvil tienen 12 megapíxeles o más, y editarlas cuesta trabajo de
 
 ## Un Web Worker hace el trabajo
 
-Limpiar y Enderezar tardan más de un segundo con una foto de 12 megapíxeles en un móvil. En el hilo principal, la página se congelaría todo ese tiempo. PaperPic los ejecuta en un Web Worker, así que la página sigue respondiendo mientras Aplicar está en marcha.
+Limpiar y Enderezar tardan alrededor de un segundo y medio con una foto de 12 megapíxeles en un móvil reciente, como muestran los [tiempos medidos](#measurements). En el hilo principal, la página se congelaría ese tiempo. PaperPic los ejecuta en un Web Worker, así que la página sigue respondiendo mientras se aplica.
 
 El worker viene dentro del paquete y arranca con el estándar `new Worker(new URL(…, import.meta.url))`, que empaquetadores como Vite y webpack 5 detectan solos, sin configuración. Si el worker no puede arrancar, la edición se hace en el hilo principal: sigue funcionando, pero la página puede congelarse un momento con imágenes grandes.
 
@@ -27,6 +27,22 @@ Con una Content Security Policy, permite:
 - **Durante la edición**, la vista previa trabaja sobre una copia de unos 2 megapíxeles, así que las reglas y las herramientas van fluidas con cualquier foto.
 - **Al aplicar**, cada cambio se calcula a resolución completa. Las fotos grandes tardan unos segundos, así que el visor muestra un mensaje y bloquea los controles mientras tanto.
 - **Para ahorrar tiempo y memoria**, usa [`maxOutputSize`](../reference/options#maxoutputsize). Un límite como 2000 o 3000 píxeles mantiene legibles los documentos, y hace Aplicar más rápido y los archivos más pequeños.
+
+## Tiempos medidos {#measurements}
+
+Cada paso de Aplicar, en el worker, en un Pixel 10 Pro con Chrome 156:
+
+| Paso                         | 2 MP   | 12 MP  | 37,5 MP |
+| ---------------------------- | ------ | ------ | ------- |
+| Limpiar                      | 256 ms | 1,5 s  | 4,8 s   |
+| Enderezar                    | 251 ms | 1,6 s  | 5,0 s   |
+| Exportar a PNG               | 92 ms  | 378 ms | 979 ms  |
+| Exportar a JPEG, calidad 0,9 | 33 ms  | 142 ms | 525 ms  |
+
+- Mover la regla de Limpiar tarda unos 40 ms en el mismo móvil, porque trabaja sobre la vista previa de unos 2 MP.
+- Un ordenador de sobremesa con 8 núcleos hace cada paso unas seis veces más rápido.
+- A 37,5 MP, Limpiar necesita unos 340 MB de memoria en su punto máximo.
+- Los Android de gama media y los iPhone aún no están medidos.
 
 ## Renderizado en el servidor
 

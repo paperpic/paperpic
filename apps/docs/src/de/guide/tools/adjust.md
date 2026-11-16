@@ -7,6 +7,8 @@ description: Wie das Werkzeug Anpassen von PaperPic Helligkeit und Kontrast eine
 
 Fotos bei schlechtem Licht werden dunkel oder grau. Anpassen ändert Helligkeit und Kontrast und behält die Farben, für Dokumente, die nicht schwarzweiß werden sollen, etwa farbige Formulare oder Fotos.
 
+<Demo src="/samples/receipt.jpg" alt="Ein Kassenbon" :tools="['adjust']" />
+
 ## So geht’s
 
 1. Drücke Bearbeiten, dann Anpassen. Sein Bedienfeld nimmt den Platz der Werkzeuge ein: eine Skala, dazu Helligkeit und Kontrast, um den Ton zu wählen, den sie ändert.

@@ -7,6 +7,8 @@ description: Come lo strumento Regola di PaperPic cambia la luminosità e il con
 
 Le foto scattate con poca luce escono scure o grigie. Regola cambia la luminosità e il contrasto e conserva i colori, per i documenti che non devono diventare in bianco e nero, come moduli a colori o foto.
 
+<Demo src="/samples/receipt.jpg" alt="Uno scontrino" :tools="['adjust']" />
+
 ## Come si usa
 
 1. Premi Modifica, poi Regola. Il suo pannello prende il posto degli strumenti: un righello, con Luminosità e Contrasto per scegliere quale tono cambia.
