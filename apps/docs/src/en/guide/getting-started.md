@@ -9,30 +9,94 @@ This page takes you from installing PaperPic to showing an image and getting the
 
 ## Installation
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue` requires Vue 3.5 or newer.
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react` requires React 19 or newer.
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react` requires React 19 or newer.
+
+::::
+
+### Without a bundler {#cdn}
+
+The core also loads from a CDN that serves the files of the package as they are, such as jsDelivr. Import `dist/index.js` from a module script, and link `dist/style.css`:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: 'A receipt' })
+</script>
+```
+
+Browsers only start a worker from the origin of the page, so the editing runs on the main thread there: it works, but large photos freeze the page for a moment on Apply. Serve the files from your own origin, or use a bundler, to keep the worker. The Vue and React components need a bundler.
 
 ## Show an image
 
@@ -126,16 +190,23 @@ async function upload(blob: Blob) {
 
 The `blob` keeps the format of the source, or is PNG when the user cleaned up the document. The [`output`](../reference/options#output) option changes it.
 
+## Remove the viewer {#destroy}
+
+The Vue and React components create the viewer when they mount and destroy it when they unmount. With the core, call [`destroy()`](../reference/methods#destroy) when you take the viewer out of the page, such as when the route changes:
+
+```ts
+pic.destroy()
+```
+
+It removes the viewer from its container, stops its listeners and its worker, and frees the memory of the image. To show it again, create a new one.
+
 ## Only show the image
 
 To show a document that people should not change, turn editing off with `editable: false`. The [Viewer](./viewer) page shows it at work.
 
 ## Requirements
 
-- PaperPic works in the browsers of [Baseline Widely Available](https://web.dev/baseline).
-- The editing runs in a Web Worker, which bundlers such as Vite and webpack pick up on their own. If the worker cannot start, the editing runs on the main thread: it still works, but the page can freeze for a moment with large images.
-- With a Content Security Policy, allow the worker with `worker-src 'self'`, and allow `img-src blob:`, because the viewer shows attached files and results through `blob:` URLs. If it also restricts Trusted Types policies, add `paperpic` to `trusted-types`, because the icons of the buttons go through that policy.
-- With server-side rendering, such as in Nuxt or Next.js, the Vue and React components render an empty element on the server and create the viewer in the browser. With the core, create the viewer in the browser yourself.
+PaperPic works in the browsers of [Baseline Widely Available](https://web.dev/baseline). [Performance and support](./performance) covers the worker, Content Security Policy, server-side rendering and large photos.
 
 ## Next steps
 
@@ -143,3 +214,4 @@ To show a document that people should not change, turn editing off with `editabl
 - [Viewer](./viewer): zoom, fit and read-only use.
 - [Editing](./editing): the edit mode, the tools, Undo and Apply.
 - [Options](../reference/options): everything you can configure.
+- [Troubleshooting](./troubleshooting): when the viewer does not look or work as it should.

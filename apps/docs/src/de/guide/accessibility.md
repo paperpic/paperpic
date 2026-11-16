@@ -14,7 +14,7 @@ Menschen lesen und korrigieren Dokumente mit der Maus, dem Finger, der Tastatur 
 - **Eigene Bedienelemente, falls vorhanden.** Mit `toolbar: false` ersetzen deine Schaltflächen die eingebauten, und sie brauchen eigene Namen und Tastaturbedienung.
 - **Einen sichtbaren Fokus.** Achte darauf, dass dein CSS den Fokusrahmen des Viewers nicht versteckt.
 
-## Tastatur
+## Tastatur {#keyboard}
 
 Wenn der Viewer den Fokus hat:
 

@@ -9,30 +9,94 @@ description: JavaScript、Vue、React 向けに PaperPic をインストール�
 
 ## インストール
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue` には Vue 3.5 以降が必要です。
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react` には React 19 以降が必要です。
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react` には React 19 以降が必要です。
+
+::::
+
+### バンドラーを使わない場合 {#cdn}
+
+core は、jsDelivr のようにパッケージのファイルをそのまま配信する CDN からも読み込めます。モジュールスクリプトで `dist/index.js` を読み込み、`dist/style.css` をリンクしてください。
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: 'レシート' })
+</script>
+```
+
+ブラウザーはページのオリジンからしか worker を起動しないので、この場合は編集がメインスレッドで動きます。動作はしますが、大きな写真では適用中にページが少しのあいだ固まります。worker を使うには、ファイルを自分のオリジンから配信するか、バンドラーを使ってください。Vue と React のコンポーネントにはバンドラーが必要です。
 
 ## 画像を表示する
 
@@ -126,16 +190,23 @@ async function upload(blob: Blob) {
 
 `blob` は元画像の形式のままですが、ユーザーが文書をクリーンアップした場合は PNG になります。[`output`](../reference/options#output) オプションで変更できます。
 
+## ビューアーを取り除く {#destroy}
+
+Vue と React のコンポーネントは、マウント時にビューアーを作り、アンマウント時に破棄します。core の場合は、ルートが変わるときなど、ビューアーをページから取り除くときに [`destroy()`](../reference/methods#destroy) を呼んでください。
+
+```ts
+pic.destroy()
+```
+
+ビューアーをコンテナから取り除き、リスナーと worker を止め、画像のメモリーを解放します。もう一度表示するには、新しく作ってください。
+
 ## 画像を表示するだけにする
 
 変更されては困る文書を表示するには、`editable: false` で編集をオフにします。[ビューアー](./viewer)のページで動作を確認できます。
 
 ## 必要な環境
 
-- PaperPic は [Baseline Widely Available](https://web.dev/baseline) のブラウザーで動作します。
-- 編集は Web Worker で行われ、Vite や webpack などのバンドラーが自動で扱います。worker を起動できない場合はメインスレッドで編集が行われます。動作はしますが、大きな画像ではページが一瞬止まることがあります。
-- Content Security Policy を使う場合は、`worker-src 'self'` で worker を、`img-src blob:` で画像を許可してください。ビューアーは添付ファイルと結果を `blob:` URL で表示するためです。Trusted Types のポリシーも制限している場合は、`trusted-types` に `paperpic` を追加してください。ボタンのアイコンはこのポリシーを通るためです。
-- Nuxt や Next.js などのサーバーサイドレンダリングでは、Vue と React のコンポーネントはサーバーで空の要素を描画し、ブラウザーでビューアーを作成します。コアを使う場合は、ブラウザーでビューアーを作成してください。
+PaperPic は [Baseline Widely Available](https://web.dev/baseline) のブラウザーで動きます。worker、Content Security Policy、サーバーサイドレンダリング、大きな写真については[パフォーマンスと対応環境](./performance)を参照してください。
 
 ## 次のステップ
 
@@ -143,3 +214,4 @@ async function upload(blob: Blob) {
 - [ビューアー](./viewer): ズーム、フィット、読み取り専用での使い方。
 - [編集](./editing): 編集モード、ツール、元に戻す、適用。
 - [オプション](../reference/options): 設定できるすべての項目。
+- [トラブルシューティング](./troubleshooting)：ビューアーの見た目や動きがおかしいとき。

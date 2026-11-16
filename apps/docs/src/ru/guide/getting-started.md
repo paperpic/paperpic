@@ -9,30 +9,94 @@ description: Установите PaperPic для JavaScript, Vue или React, 
 
 ## Установка
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue` требует Vue 3.5 или новее.
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react` требует React 19 или новее.
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react` требует React 19 или новее.
+
+::::
+
+### Без сборщика {#cdn}
+
+Core загружается и с CDN, который отдаёт файлы пакета как есть, например jsDelivr. Импортируйте `dist/index.js` из скрипта-модуля и подключите `dist/style.css`:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: 'Чек' })
+</script>
+```
+
+Браузеры запускают worker только с источника страницы, поэтому в таком случае редактирование идёт в основном потоке: оно работает, но при применении большие фото ненадолго замораживают страницу. Чтобы сохранить worker, отдавайте файлы со своего источника или используйте сборщик. Компонентам для Vue и React нужен сборщик.
 
 ## Показать изображение
 
@@ -126,16 +190,23 @@ async function upload(blob: Blob) {
 
 `blob` сохраняет формат исходного изображения или будет PNG, если пользователь очистил документ. Опция [`output`](../reference/options#output) это меняет.
 
+## Удаление просмотрщика {#destroy}
+
+Компоненты для Vue и React создают просмотрщик при монтировании и уничтожают при размонтировании. С core вызывайте [`destroy()`](../reference/methods#destroy), когда убираете просмотрщик со страницы, например при смене маршрута:
+
+```ts
+pic.destroy()
+```
+
+Метод убирает просмотрщик из контейнера, останавливает его слушатели и worker и освобождает память изображения. Чтобы показать его снова, создайте новый.
+
 ## Только показать изображение
 
 Чтобы показать документ, который нельзя менять, выключите редактирование через `editable: false`. На странице [Просмотрщик](./viewer) это показано в работе.
 
 ## Требования
 
-- PaperPic работает в браузерах из [Baseline Widely Available](https://web.dev/baseline).
-- Редактирование выполняется в Web Worker, который сборщики вроде Vite и webpack подхватывают сами. Если worker не может запуститься, редактирование выполняется в основном потоке: всё работает, но страница может ненадолго замереть на больших изображениях.
-- С Content Security Policy разрешите worker через `worker-src 'self'` и разрешите `img-src blob:`, потому что просмотрщик показывает прикреплённые файлы и результаты через URL `blob:`. Если она ещё и ограничивает политики Trusted Types, добавьте `paperpic` в `trusted-types`, потому что иконки кнопок проходят через эту политику.
-- При рендеринге на сервере, например в Nuxt или Next.js, компоненты Vue и React выводят на сервере пустой элемент и создают просмотрщик в браузере. С ядром создавайте просмотрщик в браузере сами.
+PaperPic работает в браузерах [Baseline Widely Available](https://web.dev/baseline). Worker, Content Security Policy, серверный рендеринг и большие фото описаны в разделе [Производительность и поддержка](./performance).
 
 ## Что дальше
 
@@ -143,3 +214,4 @@ async function upload(blob: Blob) {
 - [Просмотрщик](./viewer): масштаб, подгонка и режим только для чтения.
 - [Редактирование](./editing): режим редактирования, инструменты, отмена и применение.
 - [Опции](../reference/options): всё, что можно настроить.
+- [Решение проблем](./troubleshooting): если просмотрщик выглядит или работает не так, как должен.

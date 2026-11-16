@@ -128,13 +128,4 @@ Nach dem Übernehmen bewirkt derselbe `src` ein zweites Mal nichts, das Ergebnis
 
 ## Tastatur
 
-Wenn der Viewer den Fokus hat:
-
-| Taste                           | Aktion                                                          |
-| ------------------------------- | --------------------------------------------------------------- |
-| `Strg+Z`                        | Rückgängig                                                      |
-| `Strg+Umschalt+Z` oder `Strg+Y` | Wiederholen                                                     |
-| `Enter`                         | Das offene Werkzeug bestätigen, sonst die Änderungen übernehmen |
-| `Esc`                           | Das offene Werkzeug schließen, sonst die Änderungen abbrechen   |
-
-Unter macOS funktioniert `Cmd` wie `Strg`.
+Mit dem Fokus auf dem Viewer gibt es Tasten zum Rückgängigmachen, Wiederholen, Bestätigen und Abbrechen. [Barrierefreiheit](./accessibility#keyboard) listet alle auf.

@@ -129,6 +129,10 @@ const pic = new PaperPic(container, {
 
 La vista previa durante la edición siempre es de unos 2 megapíxeles, así que `maxOutputSize` solo cambia el resultado.
 
+## Metadatos {#metadata}
+
+El resultado de Aplicar no lleva metadatos. PaperPic dibuja la imagen en un canvas, así que los datos EXIF de la foto, como la posición GPS, la cámara y la fecha, desaparecen. El botón de descarga guarda la imagen original tal cual hasta el primer Aplicar, con sus metadatos.
+
 ## El botón de descarga
 
 [`download: true`](../reference/options#download) añade un botón al final de la barra de herramientas que guarda la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original tal cual. Se oculta durante la edición, porque los cambios aún no se han aplicado. [`download()`](../reference/methods#download) hace lo mismo desde el código, con o sin el botón. El menú contextual del navegador no se abre sobre el visor, así que este botón es la forma de guardar la imagen desde él.

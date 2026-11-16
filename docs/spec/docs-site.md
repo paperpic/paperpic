@@ -42,7 +42,7 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 | Page                    | Path                           | Covers                                                                                                                                                                          |
 | ----------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF or automatic detection, and how the packages fit together.                                                                      |
-| Getting started         | `/guide/getting-started`       | Installing, importing the styles, giving the container a height and showing the first image.                                                                                    |
+| Getting started         | `/guide/getting-started`       | Installing with any package manager or from a CDN, importing the styles, giving the container a height, showing the first image, and removing the viewer with `destroy()`.      |
 | Loading images          | `/guide/loading`               | Where the image comes from: a URL, a `File` or a `Blob`, images from other origins or behind a login, formats, the EXIF orientation, `load`, `error` and `reload()`.            |
 | Viewer                  | `/guide/viewer`                | Zoom, pan, fit, wheel zoom, the toolbar, and read-only use with `editable: false`. With a demo.                                                                                 |
 | Editing                 | `/guide/editing`               | Edit mode, the edit bar, Undo and Redo, Apply and Cancel, choosing tools with `tools`, and what discards an edit.                                                               |
@@ -51,11 +51,12 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 | Rotate and flip         | `/guide/tools/rotate-and-flip` | Quarter turns, mirroring, and turns that cancel out.                                                                                                                            |
 | Adjust                  | `/guide/tools/adjust`          | Brightness and contrast.                                                                                                                                                        |
 | Clean up                | `/guide/tools/clean-up`        | The `threshold` tool: black and white, sensitivity and `softness`. With a demo.                                                                                                 |
-| Saving the result       | `/guide/saving`                | The `apply` event, `output`, `maxOutputSize`, `filename`, the download button and its event, and uploading the `Blob`.                                                          |
+| Saving the result       | `/guide/saving`                | The `apply` event, `output`, `maxOutputSize`, `filename`, the download button and its event, uploading the `Blob`, and the metadata the result drops.                           |
 | Styling                 | `/guide/styling`               | `style.css`, the `--paperpic-*` tokens and how to point them at a design system, dark mode with `color-scheme`, the `paperpic` layer with Tailwind CSS, icons, and class names. |
 | Labels                  | `/guide/labels`                | Replacing or translating any text of the interface.                                                                                                                             |
 | Accessibility           | `/guide/accessibility`         | Keyboard shortcuts, screen readers, `alt`, reduced motion and forced colors.                                                                                                    |
 | Performance and support | `/guide/performance`           | The worker, bundlers and Content Security Policy, preview and full resolution, and supported browsers.                                                                          |
+| Troubleshooting         | `/guide/troubleshooting`       | The usual problems and their fix: no height, no stylesheet, Tailwind CSS, other origins, load errors, a blocked worker, large photos and the wheel.                             |
 
 ### Reference
 

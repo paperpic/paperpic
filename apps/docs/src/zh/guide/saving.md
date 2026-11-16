@@ -129,6 +129,10 @@ const pic = new PaperPic(container, {
 
 编辑时的预览始终约为 200 万像素，因此 `maxOutputSize` 只影响结果。
 
+## 元数据 {#metadata}
+
+应用的结果不带任何元数据。PaperPic 把图片绘制到 canvas 上，因此照片的 EXIF 数据（例如 GPS 位置、相机和日期）都会丢失。在第一次应用之前，下载按钮会原样保存原图，包括它的元数据。
+
 ## 下载按钮
 
 [`download: true`](../reference/options#download) 会在工具栏末尾添加一个保存显示图片的按钮：保存的是上一次应用的结果，没有则是原样的原图。编辑时它会隐藏，因为修改尚未应用。[`download()`](../reference/methods#download) 可以通过代码做同样的事，不论有没有按钮。查看器上不会打开浏览器的右键菜单，因此要从查看器保存图片就用这个按钮。

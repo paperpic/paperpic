@@ -14,7 +14,7 @@ Le persone leggono e sistemano documenti con il mouse, con un dito, con la tasti
 - **I tuoi controlli, se ce ne sono.** Con `toolbar: false`, i pulsanti che crei sostituiscono quelli integrati, e servono loro nomi propri e supporto da tastiera.
 - **Un focus visibile.** Evita che il tuo CSS nasconda il contorno del focus del visualizzatore.
 
-## Tastiera
+## Tastiera {#keyboard}
 
 Con il focus sul visualizzatore:
 

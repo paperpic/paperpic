@@ -128,13 +128,4 @@ Dopo Applica, passare di nuovo lo stesso `src` non fa nulla, quindi il risultato
 
 ## Tastiera
 
-Con il focus sul visualizzatore:
-
-| Tasto                      | Azione                                                        |
-| -------------------------- | ------------------------------------------------------------- |
-| `Ctrl+Z`                   | Annulla l’ultima azione                                       |
-| `Ctrl+Maiusc+Z` o `Ctrl+Y` | Ripeti                                                        |
-| `Invio`                    | Conferma lo strumento aperto, altrimenti applica le modifiche |
-| `Esc`                      | Chiude lo strumento aperto, altrimenti annulla le modifiche   |
-
-Su macOS, `Cmd` funziona come `Ctrl`.
+Con il focus sul visualizzatore, ci sono tasti per annullare, ripetere, confermare e annullare la modifica. [Accessibilità](./accessibility#keyboard) li elenca tutti.

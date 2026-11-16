@@ -14,7 +14,7 @@ On lit et on corrige des documents à la souris, au doigt, au clavier ou avec un
 - **Vos propres commandes, le cas échéant.** Avec `toolbar: false`, les boutons que vous créez remplacent ceux intégrés, et ils ont besoin de leurs propres noms et de la prise en charge du clavier.
 - **Un focus visible.** Évitez que votre CSS masque le contour de focus de la visionneuse.
 
-## Clavier
+## Clavier {#keyboard}
 
 Quand la visionneuse a le focus :
 

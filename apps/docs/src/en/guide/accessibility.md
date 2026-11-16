@@ -14,7 +14,7 @@ People read and fix documents with a mouse, a finger, the keyboard or a screen r
 - **Your own controls, if any.** With `toolbar: false`, the buttons you build replace the built-in ones, and they need their own names and keyboard support.
 - **A visible focus.** Keep your CSS from hiding the focus outline of the viewer.
 
-## Keyboard
+## Keyboard {#keyboard}
 
 With the focus on the viewer:
 

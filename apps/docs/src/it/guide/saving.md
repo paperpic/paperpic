@@ -129,6 +129,10 @@ const pic = new PaperPic(container, {
 
 L’anteprima durante la modifica è sempre di circa 2 megapixel, quindi `maxOutputSize` cambia solo il risultato.
 
+## Metadati {#metadata}
+
+Il risultato di Applica non contiene metadati. PaperPic disegna l’immagine su un canvas, quindi i dati EXIF della foto, come la posizione GPS, la fotocamera e la data, spariscono. Il pulsante di download salva l’immagine originale così com’è fino al primo Applica, con i suoi metadati.
+
 ## Il pulsante di download
 
 [`download: true`](../reference/options#download) aggiunge in fondo alla barra degli strumenti un pulsante che salva l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale così com’è. È nascosto durante la modifica, perché le modifiche non sono ancora applicate. [`download()`](../reference/methods#download) fa lo stesso dal codice, con o senza il pulsante. Il menu contestuale del browser non si apre sul visualizzatore, quindi questo pulsante è il modo per salvarne l’immagine.

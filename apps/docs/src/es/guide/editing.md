@@ -128,13 +128,4 @@ Después de Aplicar, pasar el mismo `src` otra vez no hace nada, así que el res
 
 ## Teclado
 
-Con el foco en el visor:
-
-| Tecla                     | Acción                                                         |
-| ------------------------- | -------------------------------------------------------------- |
-| `Ctrl+Z`                  | Deshacer                                                       |
-| `Ctrl+Shift+Z` o `Ctrl+Y` | Rehacer                                                        |
-| `Enter`                   | Confirmar la herramienta abierta, o si no, aplicar los cambios |
-| `Esc`                     | Cerrar la herramienta abierta, o si no, cancelar los cambios   |
-
-En macOS, `Cmd` funciona como `Ctrl`.
+Con el foco en el visor, hay teclas para deshacer, rehacer, confirmar y cancelar. [Accesibilidad](./accessibility#keyboard) enumera todas.
