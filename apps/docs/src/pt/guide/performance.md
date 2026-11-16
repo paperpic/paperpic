@@ -28,10 +28,6 @@ Com uma Content Security Policy, permita:
 - **No Aplicar**, cada alteração é calculada na resolução completa. Fotos grandes levam alguns segundos, então o visualizador mostra uma mensagem e bloqueia os controles nesse tempo.
 - **Para economizar tempo e memória**, defina [`maxOutputSize`](../reference/options#maxoutputsize). Um limite como 2000 ou 3000 pixels mantém os documentos legíveis, deixa o Aplicar mais rápido e os arquivos menores.
 
-## Imagens que ele aceita
-
-`src` aceita uma URL da mesma origem da sua página, ou um `File` ou `Blob` anexado no cliente. O PaperPic lê os pixels da imagem, e os navegadores só permitem isso com imagens de outras origens via CORS, que o PaperPic não solicita. Sirva as imagens do seu próprio domínio, ou baixe-as você mesmo e passe o `Blob`.
-
 ## Renderização no servidor
 
 O PaperPic precisa de um navegador. Os componentes Vue e React renderizam um elemento vazio no servidor, como no Nuxt ou no Next.js, e criam o visualizador no navegador. Com o core, crie você mesmo o visualizador no navegador, por exemplo quando o seu componente é montado.

@@ -87,7 +87,7 @@ export function Receipt() {
 
 :::
 
-`src` nimmt eine URL vom selben Ursprung wie deine Seite, oder eine `File`, die der Nutzer auswählt, etwa über ein `<input type="file">`. `alt` beschreibt das Bild für Screenreader.
+`src` nimmt eine URL vom selben Ursprung wie deine Seite, oder eine `File`, die der Nutzer auswählt, etwa über ein `<input type="file">`. `alt` beschreibt das Bild für Screenreader. [Bilder laden](./loading) erklärt Bilder von anderen Ursprüngen, Formate und Ladefehler.
 
 ## Das bearbeitete Bild erhalten
 
@@ -139,6 +139,7 @@ Um ein Dokument anzuzeigen, das nicht verändert werden soll, schalte die Bearbe
 
 ## Nächste Schritte
 
+- [Bilder laden](./loading): woher das Bild kommt und welche Formate sich öffnen.
 - [Viewer](./viewer): Zoom, Einpassen und schreibgeschützte Nutzung.
 - [Bearbeitung](./editing): der Bearbeitungsmodus, die Werkzeuge, Rückgängig und Übernehmen.
 - [Optionen](../reference/options): alles, was du einstellen kannst.

@@ -87,7 +87,7 @@ export function Receipt() {
 
 :::
 
-`src` 接受与页面同源的 URL，或用户选择的 `File`，例如来自 `<input type="file">`。`alt` 为屏幕阅读器描述图片。
+`src` 接受与页面同源的 URL，或用户选择的 `File`，例如来自 `<input type="file">`。`alt` 为屏幕阅读器描述图片。 [加载图片](./loading)介绍了其他源的图片、格式和加载错误。
 
 ## 取回编辑后的图片
 
@@ -139,6 +139,7 @@ async function upload(blob: Blob) {
 
 ## 下一步
 
+- [加载图片](./loading)：图片从哪里来，以及哪些格式可以打开。
 - [查看器](./viewer)：缩放、适合和只读用法。
 - [编辑](./editing)：编辑模式、工具、撤销和应用。
 - [选项](../reference/options)：所有可配置的内容。

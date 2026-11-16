@@ -1,6 +1,6 @@
 ---
 name: paperpic
-description: Add PaperPic to an app, a viewer and editor that turns photos of paper into clean documents in the browser. Use when code imports @paperpic/core, @paperpic/vue or @paperpic/react, or when the user wants to show, crop, straighten or clean up photos of documents, receipts or ID cards.
+description: Add PaperPic to an app, a viewer and editor that straightens, crops and cleans up document images, such as phone photos and scans, in the browser. Use when code imports @paperpic/core, @paperpic/vue or @paperpic/react, or when the user wants to show, crop, straighten or clean up photos of documents, receipts or ID cards.
 ---
 
 # PaperPic

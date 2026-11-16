@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: 文書画像のビューアー兼エディター
-description: オープンソースの文書画像ビューアー兼エディター。ズーム、回転、遠近補正、明るさとコントラストの調整、白黒変換、影の除去に対応します。
+description: ブラウザー向けの文書画像ビューアー兼エディター。スマートフォンの写真、スキャン、文字の入ったあらゆる画像の傾き補正、切り抜き、回転、クリーンアップ。JavaScript、Vue、React 向け。
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: 文書画像を、美しく正確に
-  tagline: 文書の写真を表示して編集できます。ズーム、回転、遠近補正、明るさとコントラストの調整、くっきりした白黒への変換、影の除去が可能です。
+  text: きれいで読みやすい文書画像を、ブラウザーだけで
+  tagline: スマートフォンの写真、スキャン、文字の入ったあらゆる画像の傾き補正、切り抜き、クリーンアップ。JavaScript、Vue、React で使え、あなたのコードが送るまで何も端末から出ません。
   actions:
     - theme: brand
       text: はじめる
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "机の上のレシートを斜めから撮った、一部が影になった写真"
   afterAlt: "同じレシートを傾き補正し、白黒にクリーンアップしたもの"
 ---
+
+## ブラウザーの外には何も出ません
+
+PaperPic は画像をユーザーの端末上の Web Worker で編集し、サーバーも使わず、自分からリクエストも送りません。レシートや身分証、契約書の写真が端末から出るのは、あなたのコードが結果を送るときだけです。
+
+## 数行で始める
+
+フレームワークに合ったパッケージをインストールし、コンテナに高さを与えて、適用を受け取ります。
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: 'レシート' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="レシート" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="レシート" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+インストールと各手順は[はじめに](./guide/getting-started)で説明しています。

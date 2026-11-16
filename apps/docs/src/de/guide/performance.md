@@ -28,10 +28,6 @@ Erlaube mit einer Content Security Policy:
 - **Beim Übernehmen** läuft jede Änderung in voller Auflösung. Große Fotos brauchen ein paar Sekunden, deshalb zeigt der Viewer eine Meldung und sperrt währenddessen die Bedienelemente.
 - **Um Zeit und Speicher zu sparen**, setze [`maxOutputSize`](../reference/options#maxoutputsize). Eine Grenze wie 2000 oder 3000 Pixel hält Dokumente lesbar, macht Übernehmen schneller und die Dateien kleiner.
 
-## Welche Bilder es annimmt
-
-`src` nimmt eine URL vom selben Ursprung wie deine Seite, oder eine `File` oder einen `Blob`, die im Client angehängt wurden. PaperPic liest die Pixel des Bildes, und Browser erlauben das bei Bildern anderer Ursprünge nur über CORS, das PaperPic nicht anfordert. Liefere die Bilder von deiner eigenen Domain aus, oder lade sie selbst und übergib den `Blob`.
-
 ## Serverseitiges Rendern
 
 PaperPic braucht einen Browser. Die Vue- und React-Komponenten rendern auf dem Server ein leeres Element, etwa in Nuxt oder Next.js, und erstellen den Viewer im Browser. Mit dem Kern erstellst du den Viewer selbst im Browser, etwa beim Mounten deiner Komponente.

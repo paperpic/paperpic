@@ -1,8 +1,9 @@
 {
   "label": "Español",
   "lang": "es",
+  "ogImageAlt": "Foto de un tique hecha en ángulo, junto al documento recto en blanco y negro que PaperPic ha sacado de ella",
   "ogLocale": "es_ES",
-  "description": "Visor y editor de imágenes de documentos: zoom, rotación, corrección de perspectiva, brillo y contraste, blanco y negro y eliminación de sombras.",
+  "description": "Visor y editor de imágenes de documentos para el navegador: endereza, recorta, gira y limpia fotos del móvil, escaneos y cualquier imagen con texto. Para JavaScript, Vue y React.",
   "guide": "Guía",
   "reference": "Referencia",
   "examples": "Ejemplos",
@@ -22,6 +23,7 @@
   "pages": {
     "guide/introduction": "¿Qué es PaperPic?",
     "guide/getting-started": "Primeros pasos",
+    "guide/loading": "Cargar imágenes",
     "guide/viewer": "Visor",
     "guide/editing": "Edición",
     "guide/saving": "Guardar el resultado",
@@ -43,6 +45,7 @@
     "reference/css-tokens": "Tokens CSS",
     "reference/vue": "Vue",
     "reference/react": "React",
+    "examples/attach-and-scan": "Adjuntar y escanear",
     "examples/upload": "Subir a un servidor",
     "examples/read-only": "Visor de solo lectura",
     "examples/custom-toolbar": "Barra de herramientas propia",

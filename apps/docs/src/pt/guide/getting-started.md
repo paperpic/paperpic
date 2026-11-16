@@ -87,7 +87,7 @@ export function Receipt() {
 
 :::
 
-`src` aceita uma URL da mesma origem da sua página, ou um `File` que o usuário escolhe, por exemplo num `<input type="file">`. `alt` descreve a imagem para leitores de tela.
+`src` aceita uma URL da mesma origem da sua página, ou um `File` que o usuário escolhe, por exemplo num `<input type="file">`. `alt` descreve a imagem para leitores de tela. [Carregar imagens](./loading) trata de imagens de outras origens, formatos e erros de carregamento.
 
 ## Receber a imagem editada
 
@@ -139,6 +139,7 @@ Para mostrar um documento que não deve ser alterado, desative a edição com `e
 
 ## Próximos passos
 
+- [Carregar imagens](./loading): de onde vem a imagem e quais formatos abrem.
 - [Visualizador](./viewer): zoom, ajuste e uso somente leitura.
 - [Edição](./editing): o modo de edição, as ferramentas, Desfazer e Aplicar.
 - [Opções](../reference/options): tudo o que você pode configurar.

@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: Visualizzatore ed editor di immagini di documenti
-description: Visualizzatore ed editor open source di immagini di documenti. Zoom, rotazione, correzione della prospettiva, luminosità e contrasto, bianco e nero e rimozione delle ombre.
+description: "Visualizzatore ed editor di immagini di documenti per il browser: raddrizza, ritaglia, ruota e pulisci foto del telefono, scansioni e qualsiasi immagine con del testo. Per JavaScript, Vue e React."
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: Immagini di documenti, fatte bene
-  tagline: Visualizza e modifica le foto dei documenti. Ingrandisci, ruota, correggi la prospettiva, regola luminosità e contrasto, converti in un bianco e nero pulito e rimuovi le ombre.
+  text: Immagini di documenti pulite e leggibili, direttamente nel browser
+  tagline: Raddrizza, ritaglia e pulisci una foto del telefono, una scansione o qualsiasi immagine con del testo. Con JavaScript, Vue o React, e niente lascia il dispositivo finché il tuo codice non lo invia.
   actions:
     - theme: brand
       text: Inizia
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "Foto di uno scontrino su un tavolo, scattata di sbieco e in parte in ombra"
   afterAlt: "Lo stesso scontrino, raddrizzato e pulito in bianco e nero"
 ---
+
+## Niente lascia il browser
+
+PaperPic modifica l’immagine sul dispositivo dell’utente, in un Web Worker, senza server e senza richieste proprie. La foto di uno scontrino, di una carta d’identità o di un contratto lascia il dispositivo solo quando il tuo codice invia il risultato.
+
+## Inizia in poche righe
+
+Installa il pacchetto del tuo framework, dai un’altezza al contenitore e ascolta Applica:
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: 'Uno scontrino' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="Uno scontrino" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="Uno scontrino" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+[Primi passi](./guide/getting-started) spiega l’installazione e ogni passo.

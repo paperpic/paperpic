@@ -69,9 +69,22 @@ export function transformHead({ pageData, siteConfig, title, description }: Tran
       'meta',
       { property: 'og:url', content: url },
     ],
+    // The comparison of the home, which shows what PaperPic does better than the logo
     [
       'meta',
-      { property: 'og:image', content: `${hostname}/logo.png` },
+      { property: 'og:image', content: `${hostname}/og-image.jpg` },
+    ],
+    [
+      'meta',
+      { property: 'og:image:width', content: '1200' },
+    ],
+    [
+      'meta',
+      { property: 'og:image:height', content: '630' },
+    ],
+    [
+      'meta',
+      { property: 'og:image:alt', content: translations[locale]!.ogImageAlt },
     ],
     [
       'meta',
@@ -85,7 +98,7 @@ export function transformHead({ pageData, siteConfig, title, description }: Tran
       ]),
     [
       'meta',
-      { name: 'twitter:card', content: 'summary' },
+      { name: 'twitter:card', content: 'summary_large_image' },
     ],
   ]
 

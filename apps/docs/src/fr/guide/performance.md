@@ -28,10 +28,6 @@ Avec une Content Security Policy, autorisez :
 - **À l’application**, chaque changement est calculé en pleine résolution. Les grandes photos prennent quelques secondes, donc la visionneuse affiche un message et bloque les commandes pendant ce temps.
 - **Pour gagner du temps et de la mémoire**, utilisez [`maxOutputSize`](../reference/options#maxoutputsize). Une limite comme 2000 ou 3000 pixels garde les documents lisibles, accélère Appliquer et réduit la taille des fichiers.
 
-## Images acceptées
-
-`src` accepte une URL de la même origine que votre page, ou un `File` ou un `Blob` joint côté client. PaperPic lit les pixels de l’image, et les navigateurs ne le permettent pour les images d’autres origines qu’avec CORS, que PaperPic ne demande pas. Servez les images depuis votre propre domaine, ou téléchargez-les vous-même et passez le `Blob`.
-
 ## Rendu côté serveur
 
 PaperPic a besoin d’un navigateur. Les composants Vue et React rendent un élément vide sur le serveur, comme dans Nuxt ou Next.js, et créent la visionneuse dans le navigateur. Avec le cœur, créez vous-même la visionneuse dans le navigateur, par exemple au montage de votre composant.
