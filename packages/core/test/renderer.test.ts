@@ -70,10 +70,28 @@ describe('renderer', () => {
     expect(context.drawImage).toHaveBeenCalledTimes(2)
   })
 
+  it('keeps the canvas, and its pixels, when the size does not change', () => {
+    const renderer = new Renderer(canvas, overlay, () => scene)
+    renderer.resize({ width: 300, height: 150 }, 2)
+    const setWidth = vi.spyOn(canvas, 'width', 'set')
+    renderer.resize({ width: 300, height: 150 }, 2)
+    expect(setWidth).not.toHaveBeenCalled()
+  })
+
+  it('paints at once after a resize, and drops the paint of the next frame', () => {
+    const renderer = new Renderer(canvas, overlay, () => scene)
+    renderer.requestPaint()
+    renderer.resize({ width: 300, height: 150 }, 2)
+    renderer.paintNow()
+    expect(context.drawImage).toHaveBeenCalledOnce()
+    paint()
+    expect(context.drawImage).toHaveBeenCalledOnce()
+  })
+
   it('draws through the transform, scaled to device pixels', () => {
     const renderer = new Renderer(canvas, overlay, () => scene)
     renderer.resize({ width: 300, height: 150 }, 2)
-    paint()
+    renderer.paintNow()
     expect(context.setTransform).toHaveBeenLastCalledWith(1, 0, -0, 1, 0, 25)
     expect(context.drawImage).toHaveBeenCalledWith(scene!.image, 0, 0, 600, 250)
     expect(context.imageSmoothingQuality).toBe('high')
