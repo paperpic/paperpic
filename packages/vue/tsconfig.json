@@ -8,5 +8,5 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["src", "test", "vitest.config.ts", "tsdown.config.ts"]
+  "include": ["src", "vitest.config.ts", "tsdown.config.ts"]
 }

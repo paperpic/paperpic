@@ -202,7 +202,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 - An `aria-live` region announces processing, the active tool and results.
 - The rulers of Adjust and Clean up are native ranges, from -100 to 100 and from 0 to 100, so the arrow keys, `Page Up`, `Page Down`, `Home` and `End` move them, and screen readers read their value. The switch of Clean up has `role="switch"`, and the dot of a tool in use is read as its description.
 - On the surface, the accent has a contrast of 3.65:1 in light mode and 7.56:1 in dark mode, above the 3:1 that controls and focus outlines need. It is never the color of text, which needs 4.5:1. The text has 15:1 in both modes.
-- `packages/core/test/accessibility.test.ts` runs axe on each state of the interface. It skips contrast, which needs a real browser, so a change to a color token needs these figures checked again.
+- `packages/core/src/paperpic.accessibility.test.ts` runs axe on each state of the interface. It skips contrast, which needs a real browser, so a change to a color token needs these figures checked again.
 
 | Key                                       | Action                                                                                                 |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------ |
