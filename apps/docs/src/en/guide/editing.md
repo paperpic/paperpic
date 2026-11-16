@@ -86,7 +86,7 @@ Apply cannot be interrupted. It blocks the controls and shows a message while it
 | -------- | -------------------------------------------------------------------------- |
 | `apply`  | When the result is ready, with `{ blob, width, height, type }`             |
 | `change` | After each action of the user that changes the [state](../reference/state) |
-| `error`  | When Apply fails, or when the image cannot be loaded                       |
+| `error`  | When the image cannot be loaded, or an edit cannot be shown or applied     |
 
 :::tabs key:framework
 == JavaScript

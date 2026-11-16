@@ -31,7 +31,7 @@ The component fills its parent element, so give the parent a height.
 
 Every [option](./options) is a prop with the same name, such as `:editable="false"` or `:aspect-ratio="210 / 297"`. A change of a prop reaches the viewer through `setOptions()`.
 
-Objects and arrays that the template builds, such as `:labels="{ apply: t('apply') }"`, are new on every render of the parent, and the viewer receives them again each time. Build them with `computed` instead.
+An object or array with the same contents as before, such as `:tools="['crop', 'rotate']"`, changes nothing, so the template can build them. A function is new on every render of the parent, so build `labels` that hold functions, such as `zoomLevel`, with `computed`.
 
 ## Events
 
@@ -40,7 +40,7 @@ Objects and arrays that the template builds, such as `:labels="{ apply: t('apply
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 [Events](./events) describes each one. A change of a prop never emits `change`.

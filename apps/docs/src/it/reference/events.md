@@ -36,9 +36,13 @@ L’immagine è caricata e visualizzata. `width` e `height` sono la sua dimensio
 
 ## `error`
 
-- **Dati:** `{ error: Error }`
+- **Dati:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-Non è stato possibile caricare l’immagine o applicare i cambiamenti. Dopo un Applica fallito, la modifica resta aperta.
+Qualcosa è fallito, e `phase` dice cosa:
+
+- `'load'`: non è stato possibile caricare l’immagine.
+- `'preview'`: non è stato possibile mostrare una modifica, per esempio perché l’immagine è troppo grande per il browser. La modifica resta aperta.
+- `'apply'`: non è stato possibile applicare i cambiamenti. La modifica resta aperta.
 
 ## `change`
 

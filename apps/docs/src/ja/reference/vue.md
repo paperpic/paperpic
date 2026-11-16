@@ -31,7 +31,7 @@ function upload({ blob }: ExportedImage) {
 
 各[オプション](./options)は同じ名前の prop です。たとえば `:editable="false"` や `:aspect-ratio="210 / 297"` です。prop の変更は `setOptions()` を通じてビューアーに届きます。
 
-`:labels="{ apply: t('apply') }"` のようにテンプレートで作るオブジェクトや配列は、親がレンダーするたびに新しくなり、ビューアーはそのつど受け取り直します。代わりに `computed` で作ってください。
+`:tools="['crop', 'rotate']"` のように前と同じ内容のオブジェクトや配列は何も変えないので、テンプレートで作ってかまいません。関数は親がレンダーするたびに新しくなるので、`zoomLevel` のような関数を含む `labels` は `computed` で作ってください。
 
 ## イベント
 
@@ -40,7 +40,7 @@ function upload({ blob }: ExportedImage) {
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 各イベントは[イベント](./events)で説明しています。prop の変更で `change` は発生しません。

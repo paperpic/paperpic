@@ -36,7 +36,7 @@ Jede [Option](./options) ist eine Prop mit demselben Namen, etwa `editable={fals
 | `className` | `string`        | Klassen zusätzlich zu `paperpic-host` |
 | `style`     | `CSSProperties` | Inline-Styles                         |
 
-Objekte und Arrays wie `labels` oder `tools` erreichen den Viewer erneut, wann immer sie neu sind. Definiere sie außerhalb der Komponente oder mit `useMemo`.
+Ein Objekt oder Array mit demselben Inhalt wie zuvor, etwa `tools={['crop', 'rotate']}`, ändert nichts, also sind Inline-Werte in Ordnung. Eine Funktion ist bei jedem Rendern neu, also definiere die Funktionen von `labels`, etwa `zoomLevel`, außerhalb der Komponente oder baue diese Labels mit `useMemo`.
 
 ## Ereignisse
 
@@ -45,7 +45,7 @@ Objekte und Arrays wie `labels` oder `tools` erreichen den Viewer erneut, wann i
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 [Ereignisse](./events) beschreibt jedes davon. Eine neue Funktion erstellt den Viewer nicht neu, Inline-Funktionen sind also in Ordnung. Geänderte Props rufen nie `onChange` auf.

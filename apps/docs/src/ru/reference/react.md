@@ -36,7 +36,7 @@ export function Receipt() {
 | `className` | `string`        | Классы в дополнение к `paperpic-host` |
 | `style`     | `CSSProperties` | Встроенные стили                      |
 
-Объекты и массивы, например `labels` или `tools`, снова доходят до просмотрщика, когда они новые. Определяйте их вне компонента или через `useMemo`.
+Объект или массив с тем же содержимым, что и раньше, например `tools={['crop', 'rotate']}`, ничего не меняет, так что встроенные значения подходят. Функция создаётся заново при каждом рендере, поэтому определяйте функции `labels`, например `zoomLevel`, вне компонента или стройте такие подписи через `useMemo`.
 
 ## События
 
@@ -45,7 +45,7 @@ export function Receipt() {
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 [События](./events) описывают каждое. Новая функция не пересоздаёт просмотрщик, поэтому встроенные функции подходят. Изменение props никогда не вызывает `onChange`.

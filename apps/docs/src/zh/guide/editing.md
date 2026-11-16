@@ -86,7 +86,7 @@ export function Receipt() {
 | -------- | ------------------------------------------------ |
 | `apply`  | 结果就绪时，附带 `{ blob, width, height, type }` |
 | `change` | 用户每次改变[状态](../reference/state)的操作之后 |
-| `error`  | 应用失败，或图片无法加载时                       |
+| `error`  | 图片无法加载，或某项编辑无法显示或应用时         |
 
 :::tabs key:framework
 == JavaScript

@@ -31,7 +31,7 @@ Le composant remplit son élément parent : donnez une hauteur au parent.
 
 Chaque [option](./options) est une prop du même nom, comme `:editable="false"` ou `:aspect-ratio="210 / 297"`. Un changement de prop parvient à la visionneuse par `setOptions()`.
 
-Les objets et tableaux que le template construit, comme `:labels="{ apply: t('apply') }"`, sont nouveaux à chaque rendu du parent, et la visionneuse les reçoit de nouveau chaque fois. Construisez-les plutôt avec `computed`.
+Un objet ou un tableau au même contenu qu’avant, comme `:tools="['crop', 'rotate']"`, ne change rien, donc le template peut les construire. Une fonction est nouvelle à chaque rendu du parent, donc construisez avec `computed` les `labels` qui contiennent des fonctions, comme `zoomLevel`.
 
 ## Événements
 
@@ -40,7 +40,7 @@ Les objets et tableaux que le template construit, comme `:labels="{ apply: t('ap
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 [Événements](./events) décrit chacun d’eux. Un changement de prop n’émet jamais `change`.

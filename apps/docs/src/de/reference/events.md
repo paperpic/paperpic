@@ -36,9 +36,13 @@ Das Bild ist geladen und wird angezeigt. `width` und `height` sind seine Größe
 
 ## `error`
 
-- **Daten:** `{ error: Error }`
+- **Daten:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-Das Bild konnte nicht geladen oder die Änderungen nicht übernommen werden. Nach einem fehlgeschlagenen Übernehmen bleibt die Bearbeitung offen.
+Etwas ist fehlgeschlagen, und `phase` sagt, was:
+
+- `'load'`: Das Bild konnte nicht geladen werden.
+- `'preview'`: Eine Bearbeitung konnte nicht angezeigt werden, etwa weil das Bild für den Browser zu groß ist. Die Bearbeitung bleibt offen.
+- `'apply'`: Die Änderungen konnten nicht übernommen werden. Die Bearbeitung bleibt offen.
 
 ## `change`
 

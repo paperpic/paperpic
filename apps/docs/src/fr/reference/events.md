@@ -36,9 +36,13 @@ L’image est chargée et affichée. `width` et `height` sont sa taille en pixel
 
 ## `error`
 
-- **Données :** `{ error: Error }`
+- **Données :** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-L’image n’a pas pu être chargée, ou les changements n’ont pas pu être appliqués. Après un Appliquer qui échoue, la modification reste ouverte.
+Quelque chose a échoué, et `phase` dit quoi :
+
+- `'load'` : l’image n’a pas pu être chargée.
+- `'preview'` : une modification n’a pas pu être affichée, par exemple parce que l’image est trop grande pour le navigateur. La modification reste ouverte.
+- `'apply'` : les changements n’ont pas pu être appliqués. La modification reste ouverte.
 
 ## `change`
 

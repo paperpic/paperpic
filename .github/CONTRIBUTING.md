@@ -63,12 +63,15 @@ pnpm install
 | `pnpm dev:bench:host` | Starts the same page for other devices on your network, to measure on a phone |
 | `pnpm test`           | Runs all tests (`pnpm test:watch` for watch mode)                             |
 | `pnpm test:coverage`  | Runs all tests with a coverage report in `coverage/`                          |
+| `pnpm test:e2e`       | Builds the packages and runs the smoke tests in Chromium, Firefox and WebKit  |
 | `pnpm typecheck`      | Type-checks every package                                                     |
 | `pnpm lint`           | Runs ESLint and Stylelint                                                     |
 | `pnpm lint:fix`       | Fixes lint and formatting problems                                            |
 | `pnpm build`          | Builds every package and checks each published one with publint and attw      |
 
-CI runs lint, typecheck, test and build on every pull request.
+CI runs lint, typecheck, test, build and the smoke tests on every pull request.
+
+The smoke tests (`playgrounds/vanilla/e2e`) load the vanilla playground in real browsers, against the built packages, from the development server and from a production build. They cover what the unit tests cannot see in happy-dom: the canvas, the gestures and the bundled worker. Install the browsers once with `pnpm --filter playground-vanilla exec playwright install chromium firefox webkit`.
 
 `pnpm dev:bench:host` exposes the development server, and files of the repository, to your whole network. Use it only on a network you trust, and stop it when you finish. Photos you choose in the benchmarks stay in the browser, so never add real documents to the repository.
 

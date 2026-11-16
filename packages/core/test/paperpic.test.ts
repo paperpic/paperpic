@@ -204,6 +204,7 @@ describe('paperPic', () => {
 
     expect(pic.getState().status).toBe('error')
     expect(onError.mock.calls[0]![0].error.message).toMatch(/"\/missing\.jpg".*Check/)
+    expect(onError.mock.calls[0]![0].phase).toBe('load')
     expect(container.querySelector('.paperpic-status-visible')!.textContent).toBe('The image could not be loaded')
   })
 

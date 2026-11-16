@@ -2,6 +2,7 @@ import type { Mock } from 'vitest'
 import type { PaperPicState } from '../src'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PaperPic } from '../src'
+import { ALL_TOOL_IDS } from '../src/tools'
 import { DEFAULT_LABELS } from '../src/ui/labels'
 
 const mocks = vi.hoisted(() => ({
@@ -16,7 +17,19 @@ vi.mock('../src/pipeline/export', async importOriginal => ({
 vi.mock('../src/pipeline/preview', () => ({ renderPreview: mocks.renderPreview }))
 
 let images: { resolve: () => void }[]
+let frames: Map<number, FrameRequestCallback>
 const revoke = vi.fn()
+
+/** Runs the frames the viewer asked for, as the browser would before the next paint. */
+function runFrames() {
+  const pending = [
+    ...frames.values(),
+  ]
+  frames.clear()
+  for (const callback of pending) {
+    callback(performance.now())
+  }
+}
 
 async function flush() {
   for (let i = 0; i < 6; i++) {
@@ -86,8 +99,13 @@ describe('editing', () => {
       observe() {}
       disconnect() {}
     })
-    vi.stubGlobal('requestAnimationFrame', () => 1)
-    vi.stubGlobal('cancelAnimationFrame', () => {})
+    frames = new Map()
+    let nextFrame = 1
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      frames.set(nextFrame, callback)
+      return nextFrame++
+    })
+    vi.stubGlobal('cancelAnimationFrame', (id: number) => frames.delete(id))
     URL.createObjectURL = () => 'blob:fake'
     URL.revokeObjectURL = revoke
     Object.defineProperty(HTMLElement.prototype, 'clientWidth', { configurable: true, value: 300 })
@@ -224,6 +242,30 @@ describe('editing', () => {
     expect(container.querySelector('[role="status"]')!.textContent).toBe('Changes applied')
   })
 
+  it('keeps the announcement of Apply when a wrapper passes the same options again', async () => {
+    pic.edit()
+    pic.rotate(1)
+    const applying = pic.apply()
+    await flush()
+    await finishLoading()
+    await applying
+
+    // A render passes new arrays and objects with the same contents, and undefined for the options not set
+    pic.setOptions({
+      src: '/receipt.jpg',
+      tools: [...ALL_TOOL_IDS],
+      output: undefined,
+      labels: undefined,
+    })
+    expect(container.querySelector('[role="status"]')!.textContent).toBe('Changes applied')
+
+    // Equal contents count, not the same object, so a changed label still reaches the buttons
+    pic.setOptions({
+      labels: { edit: 'Modify' },
+    })
+    expect(container.querySelector('[data-paperpic-control="edit"]')!.getAttribute('aria-label')).toBe('Modify')
+  })
+
   it('passes the output options on', async () => {
     pic.setOptions({
       output: { type: 'image/webp', quality: 0.5 },
@@ -272,7 +314,10 @@ describe('editing', () => {
 
     await pic.apply()
 
-    expect(onError.mock.calls[0]![0].error.message).toBe('too large')
+    expect(onError.mock.calls[0]![0]).toMatchObject({
+      phase: 'apply',
+      error: { message: 'too large' },
+    })
     expect(pic.getState()).toMatchObject({ mode: 'edit', busy: false, canApply: true })
     expect(container.querySelector('.paperpic-status-visible')!.textContent).toBe('The changes could not be applied')
 
@@ -836,6 +881,26 @@ describe('editing', () => {
       expect(releasePreview).toHaveBeenCalledOnce()
     })
 
+    it('renders only the latest edits after the preview on its way, and skips the ones between', async () => {
+      mocks.renderPreview.mockClear()
+      pic.flip()
+      pic.setThreshold({ enabled: true })
+      pic.undo()
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+
+      await flush()
+      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
+      expect(mocks.renderPreview.mock.calls[1]!.slice(1, 3)).toEqual([
+        [
+          { type: 'flip' },
+        ],
+        null,
+      ])
+      // The first one arrived after newer edits
+      expect(releasePreview).toHaveBeenCalledOnce()
+      expect(pic.getState().image).toEqual({ width: 480, height: 200 })
+    })
+
     it('ignores a preview that arrives after destroy', async () => {
       crop().click()
       button('Done').click()
@@ -851,7 +916,10 @@ describe('editing', () => {
       crop().click()
       button('Done').click()
       await flush()
-      expect(onError.mock.calls[0]![0].error.message).toBe('too large')
+      expect(onError.mock.calls[0]![0]).toMatchObject({
+        phase: 'preview',
+        error: { message: 'too large' },
+      })
       expect(pic.getState()).toMatchObject({ mode: 'edit', canUndo: true })
       expect(crop().getAttribute('aria-disabled')).toBe('false')
     })
@@ -939,9 +1007,14 @@ describe('editing', () => {
       cleanUp().click()
       await flush()
       onChange.mockClear()
+      tint.mockClear()
 
       move(60, 'input')
       move(70, 'input')
+      // The preview repaints once per frame, with the last value
+      expect(tint).not.toHaveBeenCalled()
+      runFrames()
+      expect(tint).toHaveBeenCalledOnce()
       expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.7, softness: 0.25 })
       expect(pic.getState()).toMatchObject({
         threshold: { enabled: true, sensitivity: 0.7 },
@@ -1175,9 +1248,12 @@ describe('editing', () => {
       adjust().click()
       await flush()
       onChange.mockClear()
+      tint.mockClear()
 
       move('Brightness', 20, 'input')
       move('Brightness', 30, 'input')
+      runFrames()
+      expect(tint).toHaveBeenCalledOnce()
       expect(tint).toHaveBeenLastCalledWith({ type: 'adjust', brightness: 0.3, contrast: 0 })
       expect(pic.getState()).toMatchObject({
         adjustments: { brightness: 0.3, contrast: 0 },
@@ -1244,10 +1320,12 @@ describe('editing', () => {
       expect(pic.getState().activeTool).toBeNull()
       pic.setAdjustments({ brightness: 0.5 })
       expect(pic.getState().adjustments).toEqual({ brightness: 0, contrast: 0.5 })
+      await flush()
       expect(mocks.renderPreview.mock.calls.at(-1)![2]).toMatchObject({ type: 'threshold' })
 
       pic.setThreshold({ enabled: false })
       expect(adjust().getAttribute('aria-disabled')).toBe('false')
+      await flush()
       expect(mocks.renderPreview.mock.calls.at(-1)![2]).toEqual({ type: 'adjust', brightness: 0, contrast: 0.5 })
     })
 

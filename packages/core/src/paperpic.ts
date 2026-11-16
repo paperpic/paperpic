@@ -143,8 +143,11 @@ export interface PaperPicEvents {
   change: PaperPicState
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
   download: PaperPicDownload
-  /** The image could not be loaded, or the changes could not be applied. */
-  error: { error: Error }
+  /**
+   * Something failed. `phase` says what: `'load'` for the image, `'preview'` for the pixels of an edit on display,
+   * which leaves the edit open, and `'apply'` for the changes.
+   */
+  error: { error: Error, phase: 'load' | 'preview' | 'apply' }
   /** The image is ready. */
   load: Size
 }
@@ -173,6 +176,23 @@ const DEFAULT_OPTIONS: ResolvedOptions = {
   toolbar: true,
   tools: ALL_TOOL_IDS,
   wheelZoom: true,
+}
+
+/**
+ * Whether two values of an option are the same, looking one level into arrays and objects. Wrappers pass a new
+ * `tools` or `output` with the same contents on every render, which must not count as a change.
+ */
+function sameOption(a: unknown, b: unknown): boolean {
+  if (a === b) {
+    return true
+  }
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null || Array.isArray(a) !== Array.isArray(b)) {
+    return false
+  }
+  const keysA = Object.keys(a)
+  const keysB = Object.keys(b)
+  return keysA.length === keysB.length
+    && keysA.every(key => Object.is((a as Record<string, unknown>)[key], (b as Record<string, unknown>)[key]))
 }
 
 /**
@@ -218,6 +238,9 @@ export class PaperPic {
   private previewKey = NO_PREVIEW
   private previewId = 0
   private previewing = false
+  /** Whether a preview is being rendered, and the newest one that waits for it to finish. */
+  private previewRunning = false
+  private waitingPreview: { id: number, steps: PipelineStep[], tone: ToneStep | null } | null = null
   /** The open tool with a selection of its own, such as Crop. */
   private session: { handle: ToolSession, tool: Tool } | null = null
   /** The open Adjust or Clean up. */
@@ -233,6 +256,9 @@ export class PaperPic {
   private busy = false
   private applyFailed = false
   private destroyed = false
+  /** The frame that repaints the tones of the preview, and the tones it paints, which are the latest. */
+  private tintFrame: number | null = null
+  private pendingTone: ToneStep | null = null
 
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
@@ -362,7 +388,7 @@ export class PaperPic {
     observer.observe(this.viewportElement)
     this.cleanups.push(() => observer.disconnect())
 
-    this.setOptions(options)
+    this.changeOptions(options, true)
     this.measure()
   }
 
@@ -376,6 +402,14 @@ export class PaperPic {
    * pic.setOptions({ editable: false })
    */
   setOptions(options: PaperPicOptions): void {
+    this.changeOptions(options, false)
+  }
+
+  /**
+   * Applies the options that changed. Options with the same values change nothing, so a wrapper can pass them all on
+   * every render, and a message on screen stays. The constructor passes `initial` to set everything up.
+   */
+  private changeOptions(options: PaperPicOptions, initial: boolean): void {
     if (this.destroyed) {
       return
     }
@@ -387,26 +421,42 @@ export class PaperPic {
         Object.assign(next, { [name]: options[name] ?? DEFAULT_OPTIONS[name] })
       }
     }
-    const wasEditable = this.options.editable
+    const previous = this.options
+    const changed = (name: keyof ResolvedOptions) => initial || !sameOption(previous[name], next[name])
+    const reload = 'src' in options && options.src !== this.source
+    if (!reload && !(Object.keys(DEFAULT_OPTIONS) as (keyof ResolvedOptions)[]).some(changed)) {
+      return
+    }
+    const wasEditable = previous.editable
     this.options = next
-    this.gestures.setWheelZoom(next.wheelZoom)
 
-    this.labels = {
-      ...DEFAULT_LABELS,
-      ...next.labels,
+    if (changed('wheelZoom')) {
+      this.gestures.setWheelZoom(next.wheelZoom)
     }
-    this.toolbar.setLabels(this.labels)
-    this.editBar.setLabels(this.labels)
-    // An icon that keeps its markup is not parsed again, so wrappers can pass the same icons on every change
-    const icons = {
-      ...DEFAULT_ICONS,
-      ...next.icons,
+    if (changed('labels')) {
+      this.labels = {
+        ...DEFAULT_LABELS,
+        ...next.labels,
+      }
+      this.toolbar.setLabels(this.labels)
+      this.editBar.setLabels(this.labels)
+      this.viewportElement.setAttribute('aria-label', this.labels.viewer)
     }
-    this.toolbar.setIcons(icons)
-    this.editBar.setIcons(icons)
-    this.editBar.setTools(next.tools)
-    this.viewportElement.setAttribute('aria-label', this.labels.viewer)
-    this.describeImage(next.alt)
+    if (changed('icons')) {
+      // An icon that keeps its markup is not parsed again, so new icons with some of the same markup are cheap
+      const icons = {
+        ...DEFAULT_ICONS,
+        ...next.icons,
+      }
+      this.toolbar.setIcons(icons)
+      this.editBar.setIcons(icons)
+    }
+    if (changed('tools')) {
+      this.editBar.setTools(next.tools)
+    }
+    if (changed('alt')) {
+      this.describeImage(next.alt)
+    }
 
     if (next.editable !== wasEditable) {
       this.leaveEdit()
@@ -784,7 +834,7 @@ export class PaperPic {
       this.applyFailed = true
       this.showStatus()
       this.refresh()
-      this.emit('error', { error: cause as Error })
+      this.emit('error', { error: cause as Error, phase: 'apply' })
     }
   }
 
@@ -845,6 +895,7 @@ export class PaperPic {
       cleanup()
     }
     this.closeTool()
+    this.cancelTint()
     this.renderer.destroy()
     this.runner.destroy()
     this.previewId++
@@ -1065,7 +1116,7 @@ export class PaperPic {
         return
       }
       this.setImage(null, 'error')
-      this.emit('error', { error: cause as Error })
+      this.emit('error', { error: cause as Error, phase: 'load' })
     }
   }
 
@@ -1154,7 +1205,7 @@ export class PaperPic {
     if (key === this.previewKey) {
       this.syncRotation()
       if (tone) {
-        this.preview?.tint?.(tone)
+        this.scheduleTint(tone)
       }
     }
     else if (steps.length === 0 && !tone) {
@@ -1166,10 +1217,63 @@ export class PaperPic {
     }
   }
 
-  /** Computes the pixels of the edits. A result that arrives after newer edits is ignored. */
-  private async startPreview(steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
+  /**
+   * Repaints the tones of the preview on the next frame, with the latest ones. A slider sends more `input` events than
+   * the screen has frames, and each repaint of a large preview takes tens of milliseconds on a phone.
+   */
+  private scheduleTint(tone: ToneStep): void {
+    this.pendingTone = tone
+    this.tintFrame ??= requestAnimationFrame(() => {
+      this.tintFrame = null
+      const latest = this.pendingTone
+      this.pendingTone = null
+      if (latest && this.preview?.tint) {
+        this.preview.tint(latest)
+        this.renderer.requestPaint()
+      }
+    })
+  }
+
+  private cancelTint(): void {
+    if (this.tintFrame !== null) {
+      cancelAnimationFrame(this.tintFrame)
+      this.tintFrame = null
+    }
+    this.pendingTone = null
+  }
+
+  /**
+   * Computes the pixels of the edits. While one preview is on its way, a newer one waits, and replaces any that was
+   * already waiting, so a quick run of Undo or Flip reads the pixels twice and not once per press.
+   */
+  private startPreview(steps: PipelineStep[], tone: ToneStep | null): void {
     const id = ++this.previewId
     this.previewing = true
+    if (this.previewRunning) {
+      this.waitingPreview = { id, steps, tone }
+      return
+    }
+    void this.runPreview(id, steps, tone)
+  }
+
+  /** Renders one preview, and then the one that waits, unless newer edits or `setPreview(null)` made it outdated. */
+  private async runPreview(id: number, steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
+    this.previewRunning = true
+    try {
+      await this.renderPreview(id, steps, tone)
+    }
+    finally {
+      this.previewRunning = false
+      const waiting = this.waitingPreview
+      this.waitingPreview = null
+      if (waiting?.id === this.previewId) {
+        void this.runPreview(waiting.id, waiting.steps, waiting.tone)
+      }
+    }
+  }
+
+  /** A result that arrives after newer edits is ignored. */
+  private async renderPreview(id: number, steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
     try {
       const preview = await renderPreview(this.image!, steps, tone, this.runner)
       if (id !== this.previewId) {
@@ -1192,7 +1296,7 @@ export class PaperPic {
       this.applyFailed = true
       this.showStatus()
       this.refresh()
-      this.emit('error', { error: cause as Error })
+      this.emit('error', { error: cause as Error, phase: 'preview' })
     }
   }
 
@@ -1202,6 +1306,8 @@ export class PaperPic {
    */
   private setPreview(preview: Preview | null): void {
     const before = this.preview ?? this.image
+    // A new preview starts with the latest tones, and no preview has none to paint
+    this.cancelTint()
     if (!preview) {
       this.previewId++
       this.previewKey = NO_PREVIEW

@@ -36,7 +36,7 @@ Chaque [option](./options) est une prop du même nom, comme `editable={false}` o
 | `className` | `string`        | Classes ajoutées à `paperpic-host` |
 | `style`     | `CSSProperties` | Styles en ligne                    |
 
-Les objets et tableaux, comme `labels` ou `tools`, parviennent de nouveau à la visionneuse chaque fois qu’ils sont nouveaux. Définissez-les hors du composant, ou avec `useMemo`.
+Un objet ou un tableau au même contenu qu’avant, comme `tools={['crop', 'rotate']}`, ne change rien, donc les valeurs en ligne conviennent. Une fonction est nouvelle à chaque rendu, donc définissez les fonctions de `labels`, comme `zoomLevel`, hors du composant, ou construisez ces libellés avec `useMemo`.
 
 ## Événements
 
@@ -45,7 +45,7 @@ Les objets et tableaux, comme `labels` ou `tools`, parviennent de nouveau à la 
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 [Événements](./events) décrit chacun d’eux. Une nouvelle fonction ne recrée pas la visionneuse, donc les fonctions en ligne conviennent. Un changement de props n’appelle jamais `onChange`.

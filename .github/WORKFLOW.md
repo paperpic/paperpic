@@ -132,15 +132,15 @@ Nothing has to be merged back into `development`: the versions were bumped there
 
 ## Automation reference
 
-| What                   | When                                        | Does                                                                            |
-| ---------------------- | ------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`; coverage in the run summary |
-| `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji    |
-| `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                  |
-| `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included |
-| `changeset-status.yml` | PRs into `development` from this repository | Comments whether the PR has a changeset and which packages it releases          |
-| CodeQL                 | PRs and pushes                              | GitHub code scanning                                                            |
-| Dependabot             | Weekly (npm), monthly (actions)             | npm: security fixes only. Actions: version bumps after a 7-day cooldown         |
+| What                   | When                                        | Does                                                                                                        |
+| ---------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`, the Playwright smoke tests; coverage in the run summary |
+| `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji                                |
+| `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                                              |
+| `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included                             |
+| `changeset-status.yml` | PRs into `development` from this repository | Comments whether the PR has a changeset and which packages it releases                                      |
+| CodeQL                 | PRs and pushes                              | GitHub code scanning                                                                                        |
+| Dependabot             | Weekly (npm), monthly (actions)             | npm: security fixes only. Actions: version bumps after a 7-day cooldown                                     |
 
 Every action in a workflow must be pinned to a full commit SHA, and only GitHub-owned actions plus an allowlist can run. A new third-party action needs a repository admin to add it under **Settings → Actions → General**.
 

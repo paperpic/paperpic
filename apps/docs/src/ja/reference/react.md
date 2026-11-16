@@ -36,7 +36,7 @@ export function Receipt() {
 | `className` | `string`        | `paperpic-host` に追加するクラス |
 | `style`     | `CSSProperties` | インラインスタイル               |
 
-`labels` や `tools` のようなオブジェクトや配列は、新しくなるたびにビューアーに届き直します。コンポーネントの外で定義するか、`useMemo` を使ってください。
+`tools={['crop', 'rotate']}` のように前と同じ内容のオブジェクトや配列は何も変えないので、インラインで書いてかまいません。関数はレンダーのたびに新しくなるので、`zoomLevel` のような `labels` の関数はコンポーネントの外で定義するか、そのラベルを `useMemo` で作ってください。
 
 ## イベント
 
@@ -45,7 +45,7 @@ export function Receipt() {
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 各イベントは[イベント](./events)で説明しています。新しい関数を渡してもビューアーは作り直されないため、インライン関数で問題ありません。props の変更で `onChange` が呼ばれることはありません。
