@@ -49,7 +49,7 @@ pnpm install
 - **The public API documents itself.** Every public export has JSDoc, and error messages say how to fix the problem, because the published types are what developers and their AI tools read first.
 - **Each layer has its folder.** The [component spec](../docs/spec/paperpic-component.md#architecture) lists the layers of `packages/core/src` and what each one may import.
 - **One name per idea.** Code names the tools by their ids, such as `threshold` and `perspective`, and their labels, such as Clean up and Straighten, appear only in texts. A part that exists in two layers keeps its name in both, such as `tools/crop.ts`, which chooses the rectangle, and `processing/crop.ts`, which cuts the pixels.
-- **Tests follow the source.** `test/processing/` mirrors `src/processing/`. Each tool has a test named after its id, which covers it from the operation to the preview, and every other module has a test named after it.
+- **Tests sit next to the source.** Each module with logic has its test beside it with the same name, such as `processing/crop.test.ts` for `processing/crop.ts`. Only modules of types, data or exports, such as `types.ts`, `labels.ts` and `index.ts`, have none. The test of a tool, such as `tools/threshold.test.ts`, covers it from the operation to the preview. The tests of the whole component, such as `paperpic.accessibility.test.ts` and `paperpic.edit-flow.test.ts`, sit next to `paperpic.ts` and start with its name.
 
 ## Scripts
 
