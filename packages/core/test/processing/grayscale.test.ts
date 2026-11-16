@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { toGrayscale } from '../src/processing/grayscale'
+import { toGrayscale } from '../../src/processing/grayscale'
 
 function onePixel(red: number, green: number, blue: number) {
   return {

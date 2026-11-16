@@ -1,6 +1,6 @@
 import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
-import type { PipelineStep } from './operations'
+import type { PipelineStep } from './steps'
 import { prepareThreshold } from '../processing/threshold'
 import { applySteps } from './steps'
 

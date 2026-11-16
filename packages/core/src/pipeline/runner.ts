@@ -1,6 +1,6 @@
 import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
-import type { PipelineStep } from './operations'
+import type { PipelineStep } from './steps'
 import type { WorkerResponse } from './worker'
 import { prepareThreshold } from '../processing/threshold'
 import { applySteps } from './steps'
@@ -35,7 +35,7 @@ export class PipelineRunner {
       : applySteps(source, steps)
   }
 
-  /** Runs the steps and prepares a threshold on the result, which a slider can then change at once. The buffer is transferred too. */
+  /** Runs the steps and prepares a threshold on the result, which a ruler can then change at once. The buffer is transferred too. */
   async prepare(source: PixelBuffer, steps: readonly PipelineStep[]): Promise<PreparedThreshold> {
     const worker = await this.ready()
     return worker

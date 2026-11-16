@@ -205,7 +205,7 @@ export function Receipt() {
 
 ## A slider of your own {#slider}
 
-A ruler of your own for Clean up opens the tool first. Each move then calls `setThreshold()`, which changes what Clean up shows, and `confirmTool()` keeps the last value as one edit. Here Done also applies the result, and Cancel leaves the edit mode, so these controls are the whole interface.
+A slider of your own for Clean up opens the tool first. Each move then calls `setThreshold()`, which changes what Clean up shows, and `confirmTool()` keeps the last value as one edit. Here Done also applies the result, and Cancel leaves the edit mode, so these controls are the whole interface.
 
 :::tabs key:framework
 == JavaScript

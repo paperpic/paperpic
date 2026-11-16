@@ -1,7 +1,7 @@
 import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
 import type { LoadedImage } from './load-image'
-import type { PipelineStep, ToneStep } from './operations'
+import type { PipelineStep, ToneStep } from './steps'
 import { adjustPixels } from '../processing/adjust'
 import { applyThreshold } from '../processing/threshold'
 import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
@@ -13,7 +13,7 @@ const PREVIEW_PIXELS = 2_000_000
 /** What the edits look like. */
 export interface Preview extends LoadedImage {
   /**
-   * Repaints with another setting of its tones, fast enough for a slider. Only a preview with tones has it,
+   * Repaints with another setting of its tones, fast enough for a ruler. Only a preview with tones has it,
    * and it ignores a step of another kind than the one it was computed with.
    */
   tint?: (tone: ToneStep) => void
@@ -59,7 +59,7 @@ export async function renderPreview(
       ? await runner.run(pixels, plan.steps)
       : pixels
     if (tone?.type === 'adjust') {
-      // The shaped pixels stay, so a slider only runs the table of tones on them
+      // The shaped pixels stay, so a ruler only runs the table of tones on them
       canvas = pixelsToCanvas(adjustPixels(shaped, tone))
       tint = (next) => {
         if (next.type === 'adjust') {

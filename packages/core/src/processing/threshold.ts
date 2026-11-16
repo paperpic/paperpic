@@ -18,7 +18,7 @@ export interface ApplyThresholdOptions {
 
 export type ThresholdOptions = PrepareThresholdOptions & ApplyThresholdOptions
 
-/** The expensive part of a threshold, which sensitivity and softness do not change, so a slider can reuse it. */
+/** The expensive part of a threshold, which sensitivity and softness do not change, so a ruler can reuse it. */
 export interface PreparedThreshold {
   height: number
   /** One byte per pixel: its brightness relative to the local mean, multiplied by `RATIO_SCALE`. */
@@ -106,7 +106,7 @@ export function prepareThreshold(source: PixelBuffer, { windowRatio = DEFAULT_WI
 }
 
 /**
- * Produces the final image from a prepared threshold. It is fast enough to run on every change of a slider.
+ * Produces the final image from a prepared threshold. It is fast enough to run on every change of a ruler.
  * Pixels well below the local mean turn black, pixels close to it turn white, and the ones in between stay gray according to `softness`.
  *
  * @throws {RangeError} If an option is out of range.
@@ -146,7 +146,7 @@ export function applyThreshold({ ratios, width, height }: PreparedThreshold, opt
 }
 
 /**
- * Cleans a document image in one step. To react to a slider, call `prepareThreshold` once and `applyThreshold` on each change.
+ * Cleans a document image in one step. To react to a ruler, call `prepareThreshold` once and `applyThreshold` on each change.
  *
  * @throws {RangeError} If an option is out of range.
  */

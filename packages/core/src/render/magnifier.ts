@@ -5,8 +5,8 @@ import { frameToViewport } from '../state/view'
 import { computeTransform } from './transform'
 
 /** What a magnifier shows and where. */
-export interface Lens {
-  /** Where the lens goes in the viewport. */
+export interface Magnifier {
+  /** Where the magnifier goes in the viewport. */
   center: ViewPoint
   /** The point of the frame to magnify. */
   point: Point
@@ -14,12 +14,12 @@ export interface Lens {
 }
 
 /** How much larger the magnifier shows the image than the view does. */
-const LENS_ZOOM = 3
+const MAGNIFIER_ZOOM = 3
 
 /** Paints the image larger around a point, inside a circle with a cross at its center. */
-export function paintLens(
+export function paintMagnifier(
   context: CanvasRenderingContext2D,
-  { point, center, radius }: Lens,
+  { point, center, radius }: Magnifier,
   { view, image, viewport }: { image: LoadedImage, view: View, viewport: Size },
 ): void {
   const [a, b, c, d, e, f] = computeTransform(view, image, viewport)
@@ -31,12 +31,12 @@ export function paintLens(
   context.fillStyle = '#fff'
   context.fill()
   context.transform(
-    a * LENS_ZOOM,
-    b * LENS_ZOOM,
-    c * LENS_ZOOM,
-    d * LENS_ZOOM,
-    center.x + (e - target.x) * LENS_ZOOM,
-    center.y + (f - target.y) * LENS_ZOOM,
+    a * MAGNIFIER_ZOOM,
+    b * MAGNIFIER_ZOOM,
+    c * MAGNIFIER_ZOOM,
+    d * MAGNIFIER_ZOOM,
+    center.x + (e - target.x) * MAGNIFIER_ZOOM,
+    center.y + (f - target.y) * MAGNIFIER_ZOOM,
   )
   context.drawImage(image.element, 0, 0, image.width, image.height)
   context.restore()

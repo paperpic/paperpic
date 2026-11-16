@@ -4,8 +4,9 @@ import type { OptionName, PaperPicOptions, ResolvedOptions } from './options'
 import type { PaperPicDownload } from './pipeline/download'
 import type { ExportedImage } from './pipeline/export'
 import type { LoadedImage, PaperPicSource } from './pipeline/load-image'
-import type { Operation, ToneStep } from './pipeline/operations'
+import type { Operation } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
+import type { ToneStep } from './pipeline/steps'
 import type { Size } from './processing/types'
 import type { Scene } from './render/renderer'
 import type { History } from './state/history'
@@ -22,14 +23,14 @@ import { adjustSetting, thresholdSetting, toneStep, toPipelineSteps, toPreviewSt
 import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PreviewQueue } from './pipeline/preview-queue'
-import { PipelineRunner } from './pipeline/run'
-import { paintLens } from './render/lens'
+import { PipelineRunner } from './pipeline/runner'
+import { paintMagnifier } from './render/magnifier'
 import { Renderer } from './render/renderer'
 import { addToHistory, createHistory, redoHistory, undoHistory } from './state/history'
 import { createView, displayedSize, fitView, frameToViewport, overflows, panBy, resizeView, rotateView, setRotation, viewportToFrame, zoomLimits, zoomTo } from './state/view'
 import { TOOLS } from './tools'
 import { adjustEdit, canAdjust } from './tools/adjust'
-import { confirmCleanUp, openCleanUp, thresholdEdit, thresholdOperation } from './tools/threshold'
+import { confirmThreshold, openThreshold, thresholdEdit, thresholdOperation } from './tools/threshold'
 import { EditBar } from './ui/edit-bar'
 import { DEFAULT_ICONS } from './ui/icons'
 import { DEFAULT_LABELS } from './ui/labels'
@@ -144,7 +145,7 @@ export class PaperPic {
   /** What the edits look like, while they need other pixels than the image. */
   private preview: Preview | null = null
   private previewKey = NO_PREVIEW
-  private readonly previews = new PreviewQueue({
+  private readonly previewQueue = new PreviewQueue({
     render: (steps, tone) => renderPreview(this.image!, steps, tone, this.runner),
     ready: preview => this.showPreview(preview),
     failed: cause => this.previewFailed(cause),
@@ -536,10 +537,10 @@ export class PaperPic {
     else if (id === 'threshold') {
       this.draft = {
         tool: 'threshold',
-        setting: openCleanUp(this.history.done),
+        setting: openThreshold(this.history.done),
       }
     }
-    else if (tool.activate && !this.previews.pending) {
+    else if (tool.activate && !this.previewQueue.pending) {
       this.session = {
         tool,
         handle: tool.activate(this.toolHost()),
@@ -796,7 +797,7 @@ export class PaperPic {
       cleanup()
     }
     this.closeTool()
-    this.previews.forget()
+    this.previewQueue.forget()
     this.renderer.destroy()
     this.runner.destroy()
     this.preview?.release()
@@ -858,7 +859,7 @@ export class PaperPic {
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
-      paintLens: (context, lens) => paintLens(context, lens, {
+      paintMagnifier: (context, magnifier) => paintMagnifier(context, magnifier, {
         view: this.view,
         image: shown(),
         viewport: this.viewport,
@@ -889,7 +890,7 @@ export class PaperPic {
       return adjustEdit(draft.setting, this.history.done)
     }
     if (draft?.tool === 'threshold') {
-      return confirmCleanUp(draft.setting, this.history.done, this.options.softness)
+      return confirmThreshold(draft.setting, this.history.done, this.options.softness)
     }
     return null
   }
@@ -1056,7 +1057,7 @@ export class PaperPic {
     if (key === this.previewKey) {
       this.syncRotation()
       if (tone) {
-        this.previews.scheduleTint(tone)
+        this.previewQueue.scheduleTint(tone)
       }
     }
     else if (steps.length === 0 && !tone) {
@@ -1064,11 +1065,11 @@ export class PaperPic {
     }
     else {
       this.previewKey = key
-      this.previews.request(steps, tone)
+      this.previewQueue.request(steps, tone)
     }
   }
 
-  /** Shows a preview that arrived, with the tones of the slider, which may have moved while it was on its way. */
+  /** Shows a preview that arrived, with the tones of the ruler, which may have moved while it was on its way. */
   private showPreview(preview: Preview): void {
     this.setPreview(preview)
     const latest = this.previewTone()
@@ -1093,9 +1094,9 @@ export class PaperPic {
   private setPreview(preview: Preview | null): void {
     const before = this.preview ?? this.image
     // A new preview starts with the latest tones, and no preview has none to paint
-    this.previews.cancelTint()
+    this.previewQueue.cancelTint()
     if (!preview) {
-      this.previews.forget()
+      this.previewQueue.forget()
       this.previewKey = NO_PREVIEW
     }
     this.preview?.release()
@@ -1128,7 +1129,7 @@ export class PaperPic {
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')
-    this.root.setAttribute('aria-busy', String(this.busy || this.previews.pending || this.loadStatus === 'loading'))
+    this.root.setAttribute('aria-busy', String(this.busy || this.previewQueue.pending || this.loadStatus === 'loading'))
   }
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
@@ -1164,7 +1165,7 @@ export class PaperPic {
   }
 
   /** Whether the zoom can go further in each direction, from the view on display. */
-  private zoomRoom(): { canZoomIn: boolean, canZoomOut: boolean } {
+  private canZoom(): { canZoomIn: boolean, canZoomOut: boolean } {
     const image = this.measuredImage()
     const limits = image && zoomLimits(image, this.viewport, this.view.rotation)
     return {
@@ -1176,7 +1177,7 @@ export class PaperPic {
   /** Makes the whole interface match the state: the bars, the mode and the view. */
   private refresh(): void {
     const state = this.getState()
-    const zoom = this.zoomRoom()
+    const zoom = this.canZoom()
 
     this.toolbar.update({
       fit: this.view.fit,
@@ -1186,13 +1187,13 @@ export class PaperPic {
       canDownload: this.options.download && this.mode === 'view' && this.loadStatus === 'ready',
     })
     // Nothing covers the image while editing, so no corner ends up under a button
-    this.toolbar.element.hidden = !this.options.toolbar || this.mode === 'edit'
+    this.toolbar.setVisible(this.options.toolbar && this.mode === 'view')
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
     this.editBar.update({
       ...state,
-      canOpenTool: !this.previews.pending,
+      canOpenTool: !this.previewQueue.pending,
       ...zoom,
-      cleanedUp: thresholdSetting(this.history.done).enabled,
+      thresholdInEdits: thresholdSetting(this.history.done).enabled,
     })
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
     this.refreshView(zoom)
@@ -1202,10 +1203,10 @@ export class PaperPic {
    * Makes what follows the view match it: the zoom and fit buttons, the handles of an open tool, the cursor and the
    * image. A pan or a zoom needs nothing else, and it can come on every move of the pointer.
    */
-  private refreshView(zoom = this.zoomRoom()): void {
+  private refreshView(zoom = this.canZoom()): void {
     const image = this.measuredImage()
     this.toolbar.updateView({ fit: this.view.fit, ...zoom })
-    this.editBar.updateZoom(zoom)
+    this.editBar.updateView(zoom)
     this.session?.handle.update()
     this.viewportElement.classList.toggle(
       'paperpic-viewport-pannable',

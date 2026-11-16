@@ -1,7 +1,7 @@
 import type { PixelBuffer } from '../src/processing/types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { exportImage, resolveOutputType } from '../src/pipeline/export'
-import { PipelineRunner } from '../src/pipeline/run'
+import { PipelineRunner } from '../src/pipeline/runner'
 
 const steps = [
   { type: 'rotate', rotation: 90 },

@@ -1,5 +1,5 @@
 import type { Point, Size } from '../processing/types'
-import type { PipelineStep } from './operations'
+import type { PipelineStep } from './steps'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 
 /** Where the image on display sits in the photo it comes from, turned the same way. */

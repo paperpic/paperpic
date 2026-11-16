@@ -45,7 +45,7 @@ export default defineConfig({
       // A package that still points at worker.ts starts no worker and does the work on the main thread, without a word
       generateBundle() {
         if (!workerUrlRewritten) {
-          throw new Error(`No chunk creates the worker from '${WORKER_SOURCE}', so its URL was not rewritten. Update WORKER_SOURCE in tsdown.config.ts to the path in src/pipeline/run.ts.`)
+          throw new Error(`No chunk creates the worker from '${WORKER_SOURCE}', so its URL was not rewritten. Update WORKER_SOURCE in tsdown.config.ts to the path in src/pipeline/runner.ts.`)
         }
       },
     },

@@ -25,7 +25,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D11 | Edits can be undone with an Undo button until they are applied.                                                                                                                                                                                                                                                                                                                                     | The user can experiment safely.                                                                                                                                                                                               |
 | D12 | Applying the changes emits an event with the changed image. Sending it to a backend is up to the consumer.                                                                                                                                                                                                                                                                                          | The component does not know about any backend.                                                                                                                                                                                |
 | D13 | No TIFF. No pagination for now, though it may come later.                                                                                                                                                                                                                                                                                                                                           | Browsers rarely decode TIFF, and pages depended on a backend.                                                                                                                                                                 |
-| D14 | Rotate and flip apply at once and can be undone. Crop, Straighten, Adjust and Clean up open a panel in the edit bar with their own Cancel and Done, and Done leaves one edit. Apply confirms everything.                                                                                                                                                                                            | A button press needs no end, and a selection or a slider does. One way to end every tool is easier to learn than two.                                                                                                         |
+| D14 | Rotate and flip apply at once and can be undone. Crop, Straighten, Adjust and Clean up open a panel in the edit bar with their own Cancel and Done, and Done leaves one edit. Apply confirms everything.                                                                                                                                                                                            | A button press needs no end, and a selection or a ruler does. One way to end every tool is easier to learn than two.                                                                                                          |
 | D15 | Threshold is one on/off setting that always runs after geometry. Its ruler controls the real sensitivity, and preview and export share one pipeline. The output keeps some gray by default, and `softness: 0` gives strict black and white.                                                                                                                                                         | The result must not depend on tool order, and what the user sees must be what is exported. Strict black and white breaks thin strokes in real photos.                                                                         |
 | D16 | Rotation in edit mode is permanent. With `editable: false`, view mode has rotate buttons, which only change the display. With editing available, view mode has no rotation.                                                                                                                                                                                                                         | A read-only viewer needs to turn a sideways image, and each case still shows only one kind of rotation, so they cannot be confused.                                                                                           |
 | D17 | Images come from the same origin or are attached on the client.                                                                                                                                                                                                                                                                                                                                     | Pixels can always be read, so cross-origin support is out of scope.                                                                                                                                                           |
@@ -50,7 +50,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D36 | The view toolbar sits at the right: zoom in, zoom out, fit to width, fit to height and, only with `editable: false`, rotate left and right. Fit to width and fit to height stay pressed while their fit holds.                                                                                                                                                                                      | The controls of the previous viewer, which already worked for long documents.                                                                                                                                                 |
 | D37 | The Edit pencil goes at the top of the right toolbar. A line separates it, and download at the end, from the view controls, and each line shows only with its button. The whole toolbar hides while editing, and the panels of Crop and Straighten carry zoom in and zoom out, because placing corners needs them. They zoom toward the selected corner, or the focused one, so it stays on screen. | The buttons that act on the image stay apart from the ones that only change the view. Nothing covers the image while editing, so no corner ends up under a button.                                                            |
 | D38 | Passing the same `src` again does not reload the image. `reload()` does.                                                                                                                                                                                                                                                                                                                            | Wrappers resend every option on each change, which would erase the result of an edit.                                                                                                                                         |
-| D39 | The color tokens take their light and dark values from `light-dark()`, so the viewer follows the `color-scheme` of the page, as native controls do. A page without `color-scheme` gets the light colors.                                                                                                                                                                                            | A light page must not get a dark viewer because the system prefers dark, and the native sliders inside the viewer already follow the page. `light-dark()` is Baseline Widely Available from November 2026.                    |
+| D39 | The color tokens take their light and dark values from `light-dark()`, so the viewer follows the `color-scheme` of the page, as native controls do. A page without `color-scheme` gets the light colors.                                                                                                                                                                                            | A light page must not get a dark viewer because the system prefers dark, and the native ranges inside the viewer already follow the page. `light-dark()` is Baseline Widely Available from November 2026.                     |
 | D40 | `download: true` adds a button at the end of the view toolbar that saves the image on display, which is the result of the last Apply or else the source as it is. It is off by default and hidden while editing. The `download` event comes first, and `preventDefault()` on it stops the browser from saving.                                                                                      | Saving needs no backend, but many viewers show documents their site does not want to offer. The event lets an app save another way, such as from its own server.                                                              |
 | D41 | The browser's context menu never opens over the viewer.                                                                                                                                                                                                                                                                                                                                             | It only offers to save the canvas, which holds the view on screen at screen size, and never the image. Nothing can stop a screenshot, so this is no protection.                                                               |
 | D42 | Brightness and contrast share one Adjust button. Its panel chooses between them and shows one ruler, from -1 to 1 with 0 as no change. Like threshold, they are a setting that runs after geometry, and Done leaves one edit with both. While threshold is on they are left out and their button is disabled.                                                                                       | Photo galleries group these behind one button, and one ruler at a time keeps the panel on one row. Threshold compares each pixel with its surroundings, so tones set before it barely change its result.                      |
@@ -163,43 +163,20 @@ Operations store fractions of the image, as the user saw it at that moment with 
 
 Each action of a tool becomes a button in the edit bar. Crop and Straighten also have `activate`, which opens their corner handles: DOM elements with their own pointer events, so any other drag still pans the view. Both build their session with `cornerSession()`, and only decide the edit that their corners mean. Adjust and Clean up open a panel of settings, which the viewer keeps apart from the edits as a `PanelDraft` until Done turns it into one. Their files say what the panel starts with and which edit Done leaves.
 
-```ts
-interface Tool {
-  actions: readonly ToolAction[]
-  /** Only for a tool with a selection of its own, such as corners. */
-  activate?: (host: ToolHost) => ToolSession
-  id: ToolId
-}
+The interfaces live in `packages/core/src/tools/types.ts`:
 
-interface ToolAction {
-  id: string
-  run: (context: ToolContext) => void
-}
-
-interface ToolContext {
-  addOperation: (operation: Operation) => void
-  openTool: (id: ToolId) => void
-}
-
-interface ToolSession {
-  /** The edit the user chose, or `null` if it changes nothing. */
-  confirm: () => Operation | null
-  deactivate: () => void
-  drawOverlay: (context: CanvasRenderingContext2D) => void
-  focus: () => void
-  update: () => void
-}
-```
-
-`ToolHost` gives an open tool the layer for its elements, conversions between the image and the viewport, and ways to paint and announce.
+- `Tool`: its id, its buttons in the edit bar, the hint that tells the user what to do, and `activate` for a tool with a selection of its own.
+- `ToolContext`: what a button can do, which is to add an operation or to open a tool.
+- `ToolSession`: what an open tool does. It confirms the edit, takes the focus, paints over the image, adapts to a new zoom, and can take a tap, `Esc` or the point the zoom buttons keep in place.
+- `ToolHost`: what the viewer gives an open tool. It is the layer for its elements, conversions between the frame and the viewport, and ways to paint the magnifier and to announce.
 
 ### Rendering
 
 - The image is repainted when something changes: zoom, pan, container size, a loaded image, a new pipeline result, rotation, Undo or Redo. There is no continuous loop.
-- Changes are coalesced with `requestAnimationFrame`, so one frame paints once.
+- Changes are coalesced with `requestAnimationFrame`, so one frame paints once. A new size of the viewer paints at once instead, because a canvas that changes size is cleared, and the browser would show that frame blank.
 - Painting never processes pixels. It draws an image the pipeline has already produced.
 - The canvas respects `devicePixelRatio`.
-- One pure function computes the transform matrix. Painting and converting pointer coordinates to image coordinates both use it.
+- One pure function, `computeTransform()`, gives the matrix that paints the image and the magnifier. Pointer positions convert through the frame, the image as the user sees it, turned, with `frameToViewport()` and `viewportToFrame()`.
 - A 90 degree rotation after the last edit that needs new pixels is applied in the matrix, so it is instant. Export bakes it into the pixels.
 - The crops at the start of the edits, and the area around the first perspective change, decide which part of the image gets read. A small selection of a large photo stays sharp in the preview and uses less memory on export.
 - There are three layers: a canvas for the image, a canvas for the dimmed area and selection lines, and DOM elements for the corner handles, so they can take focus and work with a keyboard.
@@ -210,7 +187,7 @@ interface ToolSession {
 The [spike results](spike-results.md) track the status of each one. One top Android phone is measured. Mid-range Android and iOS are not.
 
 - **Worker packaging.** Heavy processing belongs in a worker, which must work with consumers' bundlers and Content Security Policy. Proven in Vite and webpack 5, falling back to the main thread if a policy blocks it. A policy that requires Trusted Types blocks the worker unless the page has a `default` policy that accepts its URL, and needs `paperpic` among its allowed policies, if it names them (D54). Checked in Chrome.
-- **Preview and export.** The threshold slider works on a copy of about 2 MP to stay fluid, at 40 ms per change on a top Android phone. Code and parameters are the same, but the result can differ slightly from full resolution.
+- **Preview and export.** The ruler of Clean up works on a copy of about 2 MP to stay fluid, at 40 ms per change on a top Android phone. Code and parameters are the same, but the result can differ slightly from full resolution.
 - **Memory.** A 12 MP photo takes 48 MB as RGBA, so only the base image and the last result are kept. Undo recomputes from the base image. Threshold peaks at about 340 MB at 37.5 MP.
 - **Text sharpness when downscaling.** No visible difference on desktop or Android, so painting needs no reduced copy for sharpness. Zoom and pan also work well with a 37.5 MP photo on a top Android phone, checked by hand.
 

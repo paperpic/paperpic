@@ -205,7 +205,7 @@ export function Receipt() {
 
 ## Um slider próprio {#slider}
 
-Uma régua própria para o Limpar abre a ferramenta antes. Cada movimento então chama `setThreshold()`, que muda o que o Limpar mostra, e `confirmTool()` guarda o último valor como uma única edição. Aqui o Concluído também aplica o resultado, e o Cancelar sai do modo de edição, então esses controles são toda a interface.
+Um slider próprio para o Limpar abre a ferramenta antes. Cada movimento então chama `setThreshold()`, que muda o que o Limpar mostra, e `confirmTool()` guarda o último valor como uma única edição. Aqui o Concluído também aplica o resultado, e o Cancelar sai do modo de edição, então esses controles são toda a interface.
 
 :::tabs key:framework
 == JavaScript

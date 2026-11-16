@@ -1,98 +1,31 @@
-import type { QuarterTurn } from '../processing/rotate'
-import type { NormalizedRect, Quad } from '../processing/types'
+import type { NormalizedRect } from '../processing/types'
 import type { Rotation } from '../state/view'
+import type { AdjustStep, PerspectiveStep, PipelineStep, ToneStep } from './steps'
 import { DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS } from '../processing/threshold'
 import { normalizeRotation } from '../state/view'
-
-/** Changes the brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. */
-export interface AdjustEdit {
-  brightness: number
-  contrast: number
-  type: 'adjust'
-}
-
-/** Straightens the area inside `quad`, whose corners are fractions of the image, into these proportions. */
-export interface PerspectiveEdit {
-  /** The proportions of the result, as width divided by height. */
-  aspectRatio: number
-  quad: Quad
-  type: 'perspective'
-}
+import { mirrorOrientation, orientationSteps, UPRIGHT } from './steps'
 
 /**
  * One edit, as the history stores it.
- * A rectangle refers to the image as the user saw it at that moment, with the earlier edits done.
+ * A rectangle refers to the image as the user saw it at that moment, with the earlier edits done. Straighten and
+ * Adjust store the same fields as their step.
  */
 export type Operation
   = | { direction: 1 | -1, type: 'rotate' }
     | { type: 'flip' }
     | { rect: NormalizedRect, type: 'crop' }
-    | PerspectiveEdit
+    | PerspectiveStep
     | { enabled: boolean, sensitivity: number, softness: number, type: 'threshold' }
-    | AdjustEdit
+    | AdjustStep
 
 /** The brightness and contrast in effect. */
-export type AdjustSetting = Omit<AdjustEdit, 'type'>
+export type AdjustSetting = Omit<AdjustStep, 'type'>
 
 /** The threshold in effect. */
 export interface ThresholdSetting {
   enabled: boolean
   sensitivity: number
   softness: number
-}
-
-/** Cleans up the image. */
-export interface ThresholdStep {
-  sensitivity: number
-  softness: number
-  type: 'threshold'
-}
-
-/** A step that changes the tones and not the shape. It always runs after the others. */
-export type ToneStep = AdjustEdit | ThresholdStep
-
-/** One thing the pipeline does to the pixels. */
-export type PipelineStep
-  = | { rotation: QuarterTurn, type: 'rotate' }
-    /** Mirrors the image left to right. */
-    | { type: 'flip' }
-    | { rect: NormalizedRect, type: 'crop' }
-    | PerspectiveEdit
-    | ToneStep
-
-/** Whether a step changes only the tones. */
-export function isToneStep(step: PipelineStep): step is ToneStep {
-  return step.type === 'threshold' || step.type === 'adjust'
-}
-
-/** Every way to turn and mirror an image: a flip if `mirrored`, and then a clockwise turn. */
-export interface Orientation {
-  degrees: number
-  mirrored: boolean
-}
-
-export const UPRIGHT: Orientation = { degrees: 0, mirrored: false }
-
-/** Mirrors an orientation left to right. A flip after a turn is the same as a flip before the opposite turn. */
-export function mirrorOrientation({ degrees, mirrored }: Orientation): Orientation {
-  return { degrees: -degrees, mirrored: !mirrored }
-}
-
-/** The steps of an orientation, in the order it means: the flip, then the turn. */
-export function orientationSteps({ degrees, mirrored }: Orientation): PipelineStep[] {
-  const rotation = normalizeRotation(degrees)
-  return [
-    ...(mirrored
-      ? [
-          { type: 'flip' as const },
-        ]
-      : []),
-    ...(rotation === 0
-      ? []
-      : [
-          { type: 'rotate' as const, rotation },
-        ]),
-  ]
 }
 
 /** The steps that change the shape of the image. Turns and flips next to each other merge or cancel out. */
@@ -168,7 +101,7 @@ export function toneStep(operations: readonly Operation[]): ToneStep | null {
 
 /**
  * Turns edits into the shortest list of steps, with the tones always last, so the result does not depend on when the user changed them.
- * A user who turns the image all the way around, or moves a slider back to 0, has changed nothing.
+ * A user who turns the image all the way around, or moves a ruler back to 0, has changed nothing.
  */
 export function toPipelineSteps(operations: readonly Operation[]): PipelineStep[] {
   const steps = geometrySteps(operations)
@@ -199,7 +132,7 @@ export function trailingRotation(operations: readonly Operation[]): Rotation {
 
 /**
  * The steps that decide the shape on display. The last rotations are left out, because the view matrix does them,
- * and so are the tones, which a preview paints apart so that a slider can change them.
+ * and so are the tones, which a preview paints apart so that a ruler can change them.
  */
 export function toPreviewSteps(operations: readonly Operation[]): PipelineStep[] {
   return geometrySteps(operations.slice(0, lastPixelEdit(operations) + 1))

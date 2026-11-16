@@ -62,13 +62,6 @@ export function solveHomography(from: Quad, to: Quad): Matrix3 {
   ]
 }
 
-/** Applies a projective transform to a point. */
-export function applyHomography(matrix: Matrix3, { x, y }: Point): Point {
-  const [a, b, c, d, e, f, g, h, i] = matrix
-  const w = g * x + h * y + i
-  return { x: (a * x + b * y + c) / w, y: (d * x + e * y + f) / w }
-}
-
 /** Turns corners given as fractions of an image into its pixels. */
 export function scaleQuad(quad: Quad, width: number, height: number): Quad {
   return quad.map(({ x, y }) => ({ x: x * width, y: y * height })) as unknown as Quad

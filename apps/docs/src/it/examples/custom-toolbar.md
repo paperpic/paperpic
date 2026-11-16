@@ -205,7 +205,7 @@ export function Receipt() {
 
 ## Uno slider tutto tuo {#slider}
 
-Un righello tutto tuo per Pulisci apre prima lo strumento. Ogni movimento chiama poi `setThreshold()`, che cambia quello che mostra Pulisci, e `confirmTool()` tiene l’ultimo valore come una sola modifica. Qui Fatto applica anche il risultato, e Annulla esce dalla modalità di modifica, così questi controlli sono tutta l’interfaccia.
+Uno slider tutto tuo per Pulisci apre prima lo strumento. Ogni movimento chiama poi `setThreshold()`, che cambia quello che mostra Pulisci, e `confirmTool()` tiene l’ultimo valore come una sola modifica. Qui Fatto applica anche il risultato, e Annulla esce dalla modalità di modifica, così questi controlli sono tutta l’interfaccia.
 
 :::tabs key:framework
 == JavaScript

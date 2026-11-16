@@ -1,5 +1,5 @@
 import type { Size } from '../processing/types'
-import type { View, ViewPoint } from '../state/view'
+import type { View } from '../state/view'
 
 /** A 2D transform in the order canvas uses: x' = a·x + c·y + e, y' = b·x + d·y + f. */
 export type Transform = readonly [a: number, b: number, c: number, d: number, e: number, f: number]
@@ -7,7 +7,10 @@ export type Transform = readonly [a: number, b: number, c: number, d: number, e:
 const COSINES = { 0: 1, 90: 0, 180: -1, 270: 0 }
 const SINES = { 0: 0, 90: 1, 180: 0, 270: -1 }
 
-/** Computes the transform from image pixels to viewport pixels. Painting and pointer conversion both use it. */
+/**
+ * Computes the transform from image pixels to viewport pixels, which paints the image and the magnifier. Pointer
+ * positions convert through the frame instead, with `frameToViewport()` and `viewportToFrame()` of `state/view.ts`.
+ */
 export function computeTransform(view: View, image: Size, viewport: Size): Transform {
   const cosine = COSINES[view.rotation] * view.zoom
   const sine = SINES[view.rotation] * view.zoom
@@ -21,18 +24,4 @@ export function computeTransform(view: View, image: Size, viewport: Size): Trans
     centerX - (cosine * image.width - sine * image.height) / 2,
     centerY - (sine * image.width + cosine * image.height) / 2,
   ]
-}
-
-/** Converts an image position to a viewport position. */
-export function imageToViewport([a, b, c, d, e, f]: Transform, { x, y }: ViewPoint): ViewPoint {
-  return { x: a * x + c * y + e, y: b * x + d * y + f }
-}
-
-/** Converts a viewport position to an image position. */
-export function viewportToImage([a, b, c, d, e, f]: Transform, { x, y }: ViewPoint): ViewPoint {
-  const determinant = a * d - b * c
-  return {
-    x: (d * (x - e) - c * (y - f)) / determinant,
-    y: (a * (y - f) - b * (x - e)) / determinant,
-  }
 }

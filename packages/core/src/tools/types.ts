@@ -1,7 +1,7 @@
 import type { AdjustSetting, Operation, ThresholdSetting } from '../pipeline/operations'
 import type { PhotoFrame } from '../pipeline/photo-frame'
 import type { Point, Size } from '../processing/types'
-import type { Lens } from '../render/lens'
+import type { Magnifier } from '../render/magnifier'
 import type { ViewPoint } from '../state/view'
 import type { PaperPicLabels } from '../ui/labels'
 
@@ -41,7 +41,7 @@ export interface ToolHost {
   /** The layer for the elements of the tool, on top of the image. */
   layer: HTMLElement
   /** Paints a magnified part of the image. */
-  paintLens: (context: CanvasRenderingContext2D, lens: Lens) => void
+  paintMagnifier: (context: CanvasRenderingContext2D, magnifier: Magnifier) => void
   /** Where the image on display sits in the photo it comes from. */
   photoFrame: () => PhotoFrame
   requestPaint: () => void
@@ -82,7 +82,7 @@ export interface Tool {
 }
 
 /** What Clean up shows: whether it is on, and its sensitivity. */
-export type CleanUpSetting = Pick<ThresholdSetting, 'enabled' | 'sensitivity'>
+export type ThresholdPanelSetting = Pick<ThresholdSetting, 'enabled' | 'sensitivity'>
 
 /**
  * What an open Adjust or Clean up shows, before Done turns it into one edit. These tools have a panel of settings
@@ -90,4 +90,4 @@ export type CleanUpSetting = Pick<ThresholdSetting, 'enabled' | 'sensitivity'>
  */
 export type PanelDraft
   = | { setting: AdjustSetting, tool: 'adjust' }
-    | { setting: CleanUpSetting, tool: 'threshold' }
+    | { setting: ThresholdPanelSetting, tool: 'threshold' }

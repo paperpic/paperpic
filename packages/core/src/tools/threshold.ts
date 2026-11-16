@@ -1,8 +1,6 @@
 import type { Operation } from '../pipeline/operations'
-import type { CleanUpSetting, Tool } from './types'
+import type { ThresholdPanelSetting, Tool } from './types'
 import { thresholdSetting } from '../pipeline/operations'
-
-type ThresholdEdit = Extract<Operation, { type: 'threshold' }>
 
 /**
  * Cleans up a document. It is a setting that always runs last, so its button opens a panel with a switch and the
@@ -19,12 +17,12 @@ export const thresholdTool: Tool = {
 }
 
 /** What Clean up shows when it opens: turned on, so the preview shows what it does, with the sensitivity of the edits. */
-export function openCleanUp(operations: readonly Operation[]): CleanUpSetting {
+export function openThreshold(operations: readonly Operation[]): ThresholdPanelSetting {
   return { enabled: true, sensitivity: thresholdSetting(operations).sensitivity }
 }
 
 /** The edit of a setting of Clean up. `softness` is the option, which wins over the softness of the edits. */
-export function thresholdOperation(setting: CleanUpSetting, operations: readonly Operation[], softness: number | undefined): ThresholdEdit {
+export function thresholdOperation(setting: ThresholdPanelSetting, operations: readonly Operation[], softness: number | undefined): Extract<Operation, { type: 'threshold' }> {
   return {
     type: 'threshold',
     ...setting,
@@ -33,7 +31,7 @@ export function thresholdOperation(setting: CleanUpSetting, operations: readonly
 }
 
 /** The edit that leaves Clean up at `setting`, or `null` if it already is. */
-export function thresholdEdit(setting: CleanUpSetting, operations: readonly Operation[], softness: number | undefined): Operation | null {
+export function thresholdEdit(setting: ThresholdPanelSetting, operations: readonly Operation[], softness: number | undefined): Operation | null {
   const current = thresholdSetting(operations)
   return setting.enabled !== current.enabled || setting.sensitivity !== current.sensitivity
     ? thresholdOperation(setting, operations, softness)
@@ -44,7 +42,7 @@ export function thresholdEdit(setting: CleanUpSetting, operations: readonly Oper
  * The edit that Done leaves in Clean up. A sensitivity that changes while Clean up stays off changes nothing on
  * display, so it leaves none.
  */
-export function confirmCleanUp(setting: CleanUpSetting, operations: readonly Operation[], softness: number | undefined): Operation | null {
+export function confirmThreshold(setting: ThresholdPanelSetting, operations: readonly Operation[], softness: number | undefined): Operation | null {
   return !setting.enabled && !thresholdSetting(operations).enabled
     ? null
     : thresholdEdit(setting, operations, softness)

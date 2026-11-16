@@ -1,6 +1,14 @@
-import type { Quad } from '../src/processing/types'
+import type { Matrix3 } from '../../src/processing/homography'
+import type { Point, Quad } from '../../src/processing/types'
 import { describe, expect, it } from 'vitest'
-import { applyHomography, estimateOutputSize, solveHomography } from '../src/processing/homography'
+import { estimateOutputSize, solveHomography } from '../../src/processing/homography'
+
+/** Applies a projective transform to a point, as the warp does to each pixel. */
+function applyHomography(matrix: Matrix3, { x, y }: Point): Point {
+  const [a, b, c, d, e, f, g, h, i] = matrix
+  const w = g * x + h * y + i
+  return { x: (a * x + b * y + c) / w, y: (d * x + e * y + f) / w }
+}
 
 const square: Quad = [
   { x: 0, y: 0 },
