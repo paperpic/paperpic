@@ -203,6 +203,189 @@ export function Receipt() {
 
 :::
 
+## 직접 만든 슬라이더 {#slider}
+
+정리용 눈금자를 직접 만들 때는 먼저 도구를 엽니다. 그다음 움직일 때마다 `setThreshold()`를 호출하면 정리가 보여 주는 내용이 바뀌고, `confirmTool()`이 마지막 값을 하나의 편집으로 남깁니다. 여기서는 완료가 결과도 적용하고 취소가 편집 모드를 끝내므로, 이 컨트롤만으로 인터페이스가 완성됩니다.
+
+:::tabs key:framework
+== JavaScript
+
+```html
+<button id="clean-up" type="button">정리</button>
+<div id="ruler" hidden>
+  <label>
+    민감도
+    <input id="sensitivity" type="range" min="0" max="1" step="0.05" />
+  </label>
+  <button id="done" type="button">완료</button>
+  <button id="cancel" type="button">취소</button>
+</div>
+<div id="viewer" style="height: 480px"></div>
+```
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
+  src: '/receipt.jpg',
+  alt: '영수증',
+  toolbar: false,
+})
+const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
+
+document.querySelector('#clean-up')!.addEventListener('click', () => {
+  pic.edit()
+  pic.openTool('threshold')
+})
+slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+document.querySelector('#done')!.addEventListener('click', () => {
+  pic.confirmTool()
+  pic.apply()
+})
+document.querySelector('#cancel')!.addEventListener('click', () => {
+  pic.cancelTool()
+  pic.cancel()
+})
+
+pic.on('change', ({ activeTool, threshold }) => {
+  const open = activeTool === 'threshold'
+  document.querySelector<HTMLElement>('#ruler')!.hidden = !open
+  document.querySelector<HTMLElement>('#clean-up')!.hidden = open
+  slider.value = String(threshold.sensitivity)
+})
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import type { PaperPicState } from '@paperpic/vue'
+import { PaperPic } from '@paperpic/vue'
+import { computed, shallowRef, useTemplateRef } from 'vue'
+import '@paperpic/vue/style.css'
+
+const pic = useTemplateRef<InstanceType<typeof PaperPic>>('pic')
+const viewer = computed(() => pic.value?.instance)
+const state = shallowRef<PaperPicState>()
+
+function open() {
+  viewer.value?.edit()
+  viewer.value?.openTool('threshold')
+}
+
+function slide(event: Event) {
+  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+}
+
+function done() {
+  viewer.value?.confirmTool()
+  viewer.value?.apply()
+}
+
+function cancel() {
+  viewer.value?.cancelTool()
+  viewer.value?.cancel()
+}
+</script>
+
+<template>
+  <div v-if="state?.activeTool === 'threshold'">
+    <label>
+      민감도
+      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+    </label>
+    <button type="button" @click="done">
+      완료
+    </button>
+    <button type="button" @click="cancel">
+      취소
+    </button>
+  </div>
+  <button v-else type="button" :disabled="state?.status !== 'ready'" @click="open">
+    정리
+  </button>
+  <div style="height: 480px">
+    <PaperPic
+      ref="pic"
+      src="/receipt.jpg"
+      alt="영수증"
+      :toolbar="false"
+      @change="next => (state = next)"
+      @load="state = viewer?.getState()"
+    />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance, PaperPicState } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef, useState } from 'react'
+import '@paperpic/react/style.css'
+
+export function CleanUpRuler() {
+  const picRef = useRef<PaperPicInstance>(null)
+  const [state, setState] = useState<PaperPicState>()
+  const viewer = () => picRef.current!
+
+  function open() {
+    viewer().edit()
+    viewer().openTool('threshold')
+  }
+
+  function done() {
+    viewer().confirmTool()
+    viewer().apply()
+  }
+
+  function cancel() {
+    viewer().cancelTool()
+    viewer().cancel()
+  }
+
+  return (
+    <>
+      {state?.activeTool === 'threshold'
+        ? (
+            <div>
+              <label>
+                민감도
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={state.threshold.sensitivity}
+                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                />
+              </label>
+              <button type="button" onClick={done}>완료</button>
+              <button type="button" onClick={cancel}>취소</button>
+            </div>
+          )
+        : (
+            <button type="button" disabled={state?.status !== 'ready'} onClick={open}>정리</button>
+          )}
+      <div style={{ height: 480 }}>
+        <PaperPic
+          ref={picRef}
+          src="/receipt.jpg"
+          alt="영수증"
+          toolbar={false}
+          onChange={setState}
+          onLoad={() => setState(viewer().getState())}
+        />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
 ## 참고
 
 - `toolbar: false`에서는 기본 편집 바도 숨겨지므로, ‘자르기’와 ‘기울기 보정’은 핸들은 보여 주지만 ‘완료’ 버튼은 없습니다. 여러분의 인터페이스에서 `Enter`처럼 [`confirmTool()`](../reference/methods#confirmtool)로 확정하세요.

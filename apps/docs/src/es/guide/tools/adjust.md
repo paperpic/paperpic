@@ -7,6 +7,8 @@ description: Cómo la herramienta Ajustar de PaperPic cambia el brillo y el cont
 
 Las fotos hechas con poca luz salen oscuras o grises. Ajustar cambia el brillo y el contraste y conserva los colores, para documentos que no deben pasar a blanco y negro, como formularios en color o fotos.
 
+<Demo src="/samples/receipt.jpg" alt="Un tique" :tools="['adjust']" />
+
 ## Cómo se usa
 
 1. Pulsa Editar y luego Ajustar. Su panel ocupa el lugar de las herramientas: una regla, y Brillo y Contraste para elegir qué tono cambia.

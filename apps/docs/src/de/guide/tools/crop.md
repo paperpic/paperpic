@@ -7,6 +7,8 @@ description: Wie das Werkzeug Zuschneiden von PaperPic den Teil eines Fotos beh�
 
 Das Foto eines Dokuments zeigt oft den Tisch, eine Hand oder andere Papiere drumherum. Zuschneiden behält das Rechteck mit dem Dokument und verwirft den Rest.
 
+<Demo src="/samples/receipt.jpg" alt="Ein Kassenbon" :tools="['crop']" />
+
 ## So geht’s
 
 1. Drücke Bearbeiten, dann Zuschneiden. Im Bild erscheint ein Rechteck mit einem Griff an jeder Ecke.

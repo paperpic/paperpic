@@ -7,6 +7,8 @@ description: Cómo girar y voltear la imagen de un documento en PaperPic, en el 
 
 Los móviles guardan a menudo la foto de un documento de lado o boca abajo, y algunos escaneos salen como en un espejo. Girar a la izquierda y Voltear corrigen la orientación y dejan el resto de la imagen como está.
 
+<Demo src="/samples/receipt.jpg" alt="Un tique" :tools="['rotate', 'flip']" />
+
 ## Girar
 
 En la barra de edición, Girar a la izquierda gira la imagen un cuarto de vuelta en sentido contrario a las agujas del reloj, como en las galerías de fotos. Púlsalo dos veces para media vuelta, o tres para un cuarto de vuelta en el sentido de las agujas del reloj.

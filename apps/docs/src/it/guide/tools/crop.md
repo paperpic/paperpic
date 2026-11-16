@@ -7,6 +7,8 @@ description: Come lo strumento Ritaglia di PaperPic tiene la parte della foto ch
 
 La foto di un documento mostra spesso il tavolo, una mano o altri fogli intorno. Ritaglia tiene il rettangolo che contiene il documento e scarta il resto.
 
+<Demo src="/samples/receipt.jpg" alt="Uno scontrino" :tools="['crop']" />
+
 ## Come si usa
 
 1. Premi Modifica, poi Ritaglia. Dentro l’immagine compare un rettangolo, con una maniglia a ogni angolo.

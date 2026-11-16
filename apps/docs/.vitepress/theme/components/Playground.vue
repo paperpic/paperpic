@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ToolId } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 import { useData } from 'vitepress'
 import { computed, onBeforeUnmount, shallowRef, watch } from 'vue'
@@ -17,6 +18,8 @@ const props = defineProps<{
   receiptLabel: string
   resultLabel: string
   sampleLabel: string
+  /** The choice of `output.type` that keeps the format of the source. */
+  sourceFormatLabel: string
 }>()
 
 // The options start at the defaults of the component
@@ -42,6 +45,24 @@ const aspectRatio = shallowRef('')
 const aspectRatioValue = computed(() => aspectRatio.value === ''
   ? undefined
   : Number(aspectRatio.value))
+
+/** Every tool, in the order of the edit bar, which the chosen ones keep whatever order they are checked in. */
+const allTools: ToolId[] = [
+  'crop',
+  'perspective',
+  'rotate',
+  'flip',
+  'adjust',
+  'threshold',
+]
+const checkedTools = shallowRef<ToolId[]>([...allTools])
+const tools = computed(() => allTools.filter(tool => checkedTools.value.includes(tool)))
+
+const formats = ['image/jpeg', 'image/png', 'image/webp']
+const outputType = shallowRef('')
+const output = computed(() => outputType.value === ''
+  ? undefined
+  : { type: outputType.value })
 
 interface Result {
   fileName: string
@@ -150,6 +171,15 @@ onBeforeUnmount(() => setResult(null))
           <code>download</code>
           <input v-model="download" class="checkbox" type="checkbox">
         </label>
+        <div class="field field-block">
+          <code>tools</code>
+          <span class="chips">
+            <label v-for="tool in allTools" :key="tool" class="chip">
+              <input v-model="checkedTools" class="checkbox" type="checkbox" :value="tool">
+              {{ tool }}
+            </label>
+          </span>
+        </div>
         <label class="field">
           <code>aspectRatio</code>
           <select v-model="aspectRatio" class="select">
@@ -165,6 +195,17 @@ onBeforeUnmount(() => setResult(null))
             <output class="range-value">{{ softnessPreview.toFixed(2) }}</output>
           </span>
         </label>
+        <label class="field">
+          <code>output.type</code>
+          <select v-model="outputType" class="select">
+            <option value="">
+              {{ sourceFormatLabel }}
+            </option>
+            <option v-for="format in formats" :key="format" :value="format">
+              {{ format.split('/')[1] }}
+            </option>
+          </select>
+        </label>
       </fieldset>
 
       <p class="result" role="status">
@@ -177,7 +218,7 @@ onBeforeUnmount(() => setResult(null))
 
     <div class="stage">
       <PaperPic
-        :src :alt :labels :editable :download :softness
+        :src :alt :labels :editable :download :softness :tools :output
         :aspect-ratio="aspectRatioValue"
         @change="onChange" @apply="showResult"
       />
@@ -306,6 +347,26 @@ onBeforeUnmount(() => setResult(null))
 .checkbox,
 .range input {
   accent-color: var(--vp-c-brand-1);
+}
+
+/* The tools wrap under their name, because six of them do not fit in one line of the panel */
+.options .field-block {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.chip {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.8125rem;
 }
 
 .range {

@@ -7,6 +7,8 @@ description: How the Adjust tool of PaperPic changes the brightness and the cont
 
 Photos taken in poor light come out dark or gray. Adjust changes the brightness and the contrast and keeps the colors, for documents that should not become black and white, such as colored forms or photos.
 
+<Demo src="/samples/receipt.jpg" alt="A receipt" :tools="['adjust']" />
+
 ## Use it
 
 1. Press Edit, then Adjust. Its panel takes the place of the tools: a ruler, and Brightness and Contrast to choose which tone it changes.

@@ -7,6 +7,8 @@ description: How the Crop tool of PaperPic keeps the part of a photo that holds 
 
 A photo of a document often shows the table, a hand or other papers around it. Crop keeps the rectangle that holds the document and drops the rest.
 
+<Demo src="/samples/receipt.jpg" alt="A receipt" :tools="['crop']" />
+
 ## Use it
 
 1. Press Edit, then Crop. A rectangle appears inside the image, with a handle at each corner.
