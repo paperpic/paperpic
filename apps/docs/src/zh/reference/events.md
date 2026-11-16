@@ -36,9 +36,13 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `error`
 
-- **载荷：** `{ error: Error }`
+- **载荷：** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-图片无法加载，或修改无法应用。应用失败后，编辑保持打开。
+某个环节失败了，`phase` 说明是哪一个：
+
+- `'load'`：图片无法加载。
+- `'preview'`：某项编辑无法显示，例如图片对浏览器来说太大。编辑保持打开。
+- `'apply'`：修改无法应用。编辑保持打开。
 
 ## `change`
 

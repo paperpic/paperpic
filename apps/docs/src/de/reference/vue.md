@@ -31,7 +31,7 @@ Die Komponente füllt ihr Elternelement aus, gib diesem also eine Höhe.
 
 Jede [Option](./options) ist eine Prop mit demselben Namen, etwa `:editable="false"` oder `:aspect-ratio="210 / 297"`. Eine geänderte Prop erreicht den Viewer über `setOptions()`.
 
-Objekte und Arrays, die das Template baut, etwa `:labels="{ apply: t('apply') }"`, sind bei jedem Rendern des Elternteils neu, und der Viewer bekommt sie jedes Mal erneut. Baue sie stattdessen mit `computed`.
+Ein Objekt oder Array mit demselben Inhalt wie zuvor, etwa `:tools="['crop', 'rotate']"`, ändert nichts, also darf das Template sie bauen. Eine Funktion ist bei jedem Rendern des Elternteils neu, also baue `labels` mit Funktionen, etwa `zoomLevel`, mit `computed`.
 
 ## Ereignisse
 
@@ -40,7 +40,7 @@ Objekte und Arrays, die das Template baut, etwa `:labels="{ apply: t('apply') }"
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 [Ereignisse](./events) beschreibt jedes davon. Eine geänderte Prop löst nie `change` aus.

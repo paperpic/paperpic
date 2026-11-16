@@ -31,7 +31,7 @@ function upload({ blob }: ExportedImage) {
 
 각 [옵션](./options)은 같은 이름의 prop입니다. 예를 들어 `:editable="false"`나 `:aspect-ratio="210 / 297"`입니다. prop이 바뀌면 `setOptions()`를 통해 뷰어에 전달됩니다.
 
-`:labels="{ apply: t('apply') }"`처럼 템플릿에서 만드는 객체와 배열은 부모가 렌더링할 때마다 새로 만들어지고, 뷰어는 매번 다시 받습니다. 대신 `computed`로 만드세요.
+`:tools="['crop', 'rotate']"`처럼 이전과 내용이 같은 객체나 배열은 아무것도 바꾸지 않으므로 템플릿에서 만들어도 됩니다. 함수는 부모가 렌더링할 때마다 새로 만들어지므로, `zoomLevel` 같은 함수를 담은 `labels`는 `computed`로 만드세요.
 
 ## 이벤트
 
@@ -40,7 +40,7 @@ function upload({ blob }: ExportedImage) {
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 각 이벤트는 [이벤트](./events)에서 설명합니다. prop이 바뀌어도 `change`는 발생하지 않습니다.

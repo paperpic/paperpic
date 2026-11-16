@@ -36,7 +36,7 @@ export function Receipt() {
 | `className` | `string`        | 追加到 `paperpic-host` 的类 |
 | `style`     | `CSSProperties` | 内联样式                    |
 
-`labels` 或 `tools` 这类对象和数组，每次变成新值时都会重新传给查看器。请在组件外定义它们，或使用 `useMemo`。
+内容与之前相同的对象或数组，例如 `tools={['crop', 'rotate']}`，不会改变任何东西，所以可以直接内联。函数在每次渲染时都是新的，所以请在组件外定义 `labels` 中的函数，例如 `zoomLevel`，或用 `useMemo` 构建这些标签。
 
 ## 事件
 
@@ -45,7 +45,7 @@ export function Receipt() {
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 每个事件见[事件](./events)。传入新函数不会重新创建查看器，因此可以使用内联函数。props 的变化从不调用 `onChange`。

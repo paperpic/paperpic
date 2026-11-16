@@ -76,11 +76,14 @@ describe('processing worker', () => {
     expect(transfer).toHaveLength(1)
   })
 
-  it('answers a threshold job and transfers the result', () => {
+  it('transfers the result of the pipeline, with the time it took', () => {
     const [response, transfer] = send({
       id: 1,
-      operation: 'threshold',
+      operation: 'pipeline',
       source: grayImage(8),
+      steps: [
+        { type: 'threshold', sensitivity: 0.5, softness: 0.25 },
+      ],
     })
     expect(response).toMatchObject({
       id: 1,
@@ -90,32 +93,14 @@ describe('processing worker', () => {
     expect(transfer).toHaveLength(1)
   })
 
-  it('answers a warp job with the requested size', () => {
-    const [response] = send({
-      id: 2,
-      operation: 'warp',
-      source: grayImage(8),
-      quad: [
-        { x: 0, y: 0 },
-        { x: 7, y: 0 },
-        { x: 7, y: 7 },
-        { x: 0, y: 7 },
-      ],
-      width: 4,
-      height: 2,
-    })
-    expect(response).toMatchObject({
-      id: 2,
-      result: { width: 4, height: 2 },
-    })
-  })
-
   it('reports an error instead of failing silently', () => {
     const [response, transfer] = send({
       id: 3,
-      operation: 'threshold',
+      operation: 'pipeline',
       source: grayImage(8),
-      options: { sensitivity: 2 },
+      steps: [
+        { type: 'threshold', sensitivity: 2, softness: 0.25 },
+      ],
     })
     expect(response).toMatchObject({
       id: 3,

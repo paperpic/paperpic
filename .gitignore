@@ -16,6 +16,8 @@ vite.config.*.timestamp-*
 
 # Tests
 coverage
+test-results
+playwright-report
 
 # Lint caches
 .eslintcache

@@ -31,7 +31,7 @@ function upload({ blob }: ExportedImage) {
 
 每个[选项](./options)都是同名的 prop，例如 `:editable="false"` 或 `:aspect-ratio="210 / 297"`。prop 的变化通过 `setOptions()` 传给查看器。
 
-模板中构建的对象和数组，例如 `:labels="{ apply: t('apply') }"`，在父组件每次渲染时都是新的，查看器每次都会重新接收它们。请改用 `computed` 构建。
+内容与之前相同的对象或数组，例如 `:tools="['crop', 'rotate']"`，不会改变任何东西，所以模板可以直接构建它们。函数在父组件每次渲染时都是新的，所以请用 `computed` 构建包含函数的 `labels`，例如 `zoomLevel`。
 
 ## 事件
 
@@ -40,7 +40,7 @@ function upload({ blob }: ExportedImage) {
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 每个事件见[事件](./events)。prop 的变化从不触发 `change`。

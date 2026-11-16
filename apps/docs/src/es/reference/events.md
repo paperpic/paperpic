@@ -36,9 +36,13 @@ La imagen se ha cargado y está en pantalla. `width` y `height` son su tamaño e
 
 ## `error`
 
-- **Datos:** `{ error: Error }`
+- **Datos:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-La imagen no se pudo cargar, o los cambios no se pudieron aplicar. Si Aplicar falla, la edición sigue abierta.
+Algo falló, y `phase` dice qué:
+
+- `'load'`: la imagen no se pudo cargar.
+- `'preview'`: una edición no se pudo mostrar, como cuando la imagen es demasiado grande para el navegador. La edición sigue abierta.
+- `'apply'`: los cambios no se pudieron aplicar. La edición sigue abierta.
 
 ## `change`
 

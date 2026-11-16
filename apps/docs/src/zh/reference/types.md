@@ -226,7 +226,7 @@ interface PaperPicEvents {
   apply: ExportedImage
   change: PaperPicState
   download: PaperPicDownload
-  error: { error: Error }
+  error: { error: Error, phase: 'load' | 'preview' | 'apply' }
   load: Size
 }
 ```

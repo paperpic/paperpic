@@ -36,7 +36,7 @@ Cada [opção](./options) é uma prop com o mesmo nome, como `editable={false}` 
 | `className` | `string`        | Classes somadas a `paperpic-host` |
 | `style`     | `CSSProperties` | Estilos inline                    |
 
-Objetos e arrays, como `labels` ou `tools`, chegam de novo ao visualizador sempre que são novos. Defina-os fora do componente, ou com `useMemo`.
+Um objeto ou array com o mesmo conteúdo de antes, como `tools={['crop', 'rotate']}`, não muda nada, então valores inline servem. Uma função é nova a cada renderização, então defina as funções de `labels`, como `zoomLevel`, fora do componente, ou monte esses labels com `useMemo`.
 
 ## Eventos
 
@@ -45,7 +45,7 @@ Objetos e arrays, como `labels` ou `tools`, chegam de novo ao visualizador sempr
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 [Eventos](./events) descreve cada um. Uma função nova não recria o visualizador, então funções inline não são problema. Uma mudança de props nunca chama `onChange`.

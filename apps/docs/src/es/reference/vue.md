@@ -31,7 +31,7 @@ El componente llena su elemento padre, así que dale una altura al padre.
 
 Cada [opción](./options) es una prop con el mismo nombre, como `:editable="false"` o `:aspect-ratio="210 / 297"`. Un cambio en una prop llega al visor a través de `setOptions()`.
 
-Los objetos y arrays que crea la plantilla, como `:labels="{ apply: t('apply') }"`, son nuevos en cada renderizado del padre, y el visor los recibe otra vez cada vez. Créalos con `computed`.
+Un objeto o array con el mismo contenido que antes, como `:tools="['crop', 'rotate']"`, no cambia nada, así que la plantilla puede crearlos. Una función es nueva en cada renderizado del padre, así que crea con `computed` los `labels` que llevan funciones, como `zoomLevel`.
 
 ## Eventos
 
@@ -40,7 +40,7 @@ Los objetos y arrays que crea la plantilla, como `:labels="{ apply: t('apply') }
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 [Eventos](./events) describe cada uno. Un cambio en una prop nunca emite `change`.

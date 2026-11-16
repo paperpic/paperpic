@@ -86,7 +86,7 @@ export function Receipt() {
 | -------- | ------------------------------------------------------------ |
 | `apply`  | 結果ができたときに、`{ blob, width, height, type }` とともに |
 | `change` | ユーザーの操作で[状態](../reference/state)が変わるたびに     |
-| `error`  | 適用に失敗したとき、または画像を読み込めないとき             |
+| `error`  | 画像を読み込めないとき、または編集を表示も適用もできないとき |
 
 :::tabs key:framework
 == JavaScript

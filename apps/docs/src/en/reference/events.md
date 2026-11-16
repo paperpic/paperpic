@@ -36,9 +36,13 @@ The image is loaded and on display. `width` and `height` are its size in pixels.
 
 ## `error`
 
-- **Payload:** `{ error: Error }`
+- **Payload:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-The image could not be loaded, or the edits could not be applied. After a failed Apply, the edit stays open.
+Something failed, and `phase` says what:
+
+- `'load'`: the image could not be loaded.
+- `'preview'`: an edit could not be shown, as when the image is too large for the browser. The edit stays open.
+- `'apply'`: the changes could not be applied. The edit stays open.
 
 ## `change`
 
