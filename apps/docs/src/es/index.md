@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: Visor y editor de imágenes de documentos
-description: Visor y editor de imágenes de documentos de código abierto. Zoom, rotación, corrección de perspectiva, brillo y contraste, blanco y negro y eliminación de sombras.
+description: "Visor y editor de imágenes de documentos para el navegador: endereza, recorta, gira y limpia fotos del móvil, escaneos y cualquier imagen con texto. Para JavaScript, Vue y React."
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: Imágenes de documentos, bien hechas
-  tagline: Visualiza y edita fotos de documentos. Haz zoom, gira, corrige la perspectiva, ajusta el brillo y el contraste, conviértelas a un blanco y negro limpio y elimina las sombras.
+  text: Imágenes de documentos limpias y legibles, en el propio navegador
+  tagline: Endereza, recorta y limpia una foto del móvil, un escaneo o cualquier imagen con texto. Con JavaScript, Vue o React, y nada sale del dispositivo hasta que tu código lo envía.
   actions:
     - theme: brand
       text: Empezar
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "Foto de un tique sobre una mesa, hecha en ángulo y en parte a la sombra"
   afterAlt: "El mismo tique, enderezado y limpiado en blanco y negro"
 ---
+
+## Nada sale del navegador
+
+PaperPic edita la imagen en el dispositivo del usuario, en un Web Worker, sin servidor y sin peticiones propias. La foto de un tique, un DNI o un contrato solo sale del dispositivo cuando tu código envía el resultado.
+
+## Empieza en pocas líneas
+
+Instala el paquete de tu framework, da una altura al contenedor y escucha Aplicar:
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: 'Un tique' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="Un tique" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="Un tique" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+[Primeros pasos](./guide/getting-started) explica la instalación y cada paso.

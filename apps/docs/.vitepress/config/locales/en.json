@@ -1,8 +1,9 @@
 {
   "label": "English",
   "lang": "en",
+  "ogImageAlt": "A photo of a receipt taken at an angle, next to the straight black and white document that PaperPic made from it",
   "ogLocale": "en_US",
-  "description": "Document image viewer & editor: zoom, rotate, perspective correction, brightness/contrast, black & white and shadow removal.",
+  "description": "Document image viewer and editor for the browser: straighten, crop, rotate and clean up phone photos, scans and any image with text. For plain JavaScript, Vue and React.",
   "guide": "Guide",
   "reference": "Reference",
   "examples": "Examples",
@@ -22,6 +23,7 @@
   "pages": {
     "guide/introduction": "What is PaperPic?",
     "guide/getting-started": "Getting started",
+    "guide/loading": "Loading images",
     "guide/viewer": "Viewer",
     "guide/editing": "Editing",
     "guide/saving": "Saving the result",
@@ -43,6 +45,7 @@
     "reference/css-tokens": "CSS tokens",
     "reference/vue": "Vue",
     "reference/react": "React",
+    "examples/attach-and-scan": "Attach and scan",
     "examples/upload": "Upload to a server",
     "examples/read-only": "Read-only viewer",
     "examples/custom-toolbar": "Custom toolbar",

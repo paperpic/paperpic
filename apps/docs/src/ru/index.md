@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: Просмотр и редактирование изображений документов
-description: Инструмент с открытым исходным кодом для просмотра и редактирования изображений документов. Масштабирование, поворот, коррекция перспективы, яркость и контраст, чёрно-белый режим и удаление теней.
+description: "Просмотрщик и редактор изображений документов для браузера: выравнивание, обрезка, поворот и очистка фото с телефона, сканов и любых изображений с текстом. Для JavaScript, Vue и React."
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: Изображения документов — как надо
-  tagline: Просматривайте и редактируйте фотографии документов. Масштабируйте, поворачивайте, исправляйте перспективу, настраивайте яркость и контраст, преобразуйте в чистое чёрно-белое изображение и удаляйте тени.
+  text: Чистые и читаемые изображения документов прямо в браузере
+  tagline: Выравнивайте, обрезайте и очищайте фото с телефона, сканы и любые изображения с текстом. На JavaScript, Vue или React, и ничего не покидает устройство, пока это не отправит ваш код.
   actions:
     - theme: brand
       text: Начать
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "Фотография чека на столе, снятая под углом и частично в тени"
   afterAlt: "Тот же чек, выровненный и очищенный до чёрно-белого"
 ---
+
+## Ничего не покидает браузер
+
+PaperPic редактирует изображение на устройстве пользователя, в Web Worker, без сервера и без собственных запросов. Фото чека, удостоверения личности или договора покидает устройство, только когда ваш код отправляет результат.
+
+## Начните с нескольких строк
+
+Установите пакет для своего фреймворка, задайте контейнеру высоту и слушайте применение:
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: 'Чек' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="Чек" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="Чек" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+Установка и каждый шаг описаны в разделе [Начало работы](./guide/getting-started).

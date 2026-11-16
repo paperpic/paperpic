@@ -1,8 +1,9 @@
 {
   "label": "Deutsch",
   "lang": "de",
+  "ogImageAlt": "Ein schräg aufgenommenes Foto eines Kassenbons neben dem geraden Schwarz-Weiß-Dokument, das PaperPic daraus gemacht hat",
   "ogLocale": "de_DE",
-  "description": "Betrachter und Editor für Dokumentbilder: Zoom, Drehung, Perspektivkorrektur, Helligkeit und Kontrast, Schwarzweiß und Schattenentfernung.",
+  "description": "Viewer und Editor für Dokumentbilder im Browser: Smartphone-Fotos, Scans und jedes Bild mit Text begradigen, beschneiden, drehen und bereinigen. Für JavaScript, Vue und React.",
   "guide": "Anleitung",
   "reference": "Referenz",
   "examples": "Beispiele",
@@ -22,6 +23,7 @@
   "pages": {
     "guide/introduction": "Was ist PaperPic?",
     "guide/getting-started": "Erste Schritte",
+    "guide/loading": "Bilder laden",
     "guide/viewer": "Viewer",
     "guide/editing": "Bearbeitung",
     "guide/saving": "Das Ergebnis speichern",
@@ -43,6 +45,7 @@
     "reference/css-tokens": "CSS-Token",
     "reference/vue": "Vue",
     "reference/react": "React",
+    "examples/attach-and-scan": "Anhängen und scannen",
     "examples/upload": "Auf einen Server hochladen",
     "examples/read-only": "Schreibgeschützter Viewer",
     "examples/custom-toolbar": "Eigene Werkzeugleiste",

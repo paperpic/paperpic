@@ -1,8 +1,9 @@
 {
   "label": "Português (Brasil)",
   "lang": "pt-BR",
+  "ogImageAlt": "Foto de um recibo tirada de lado, junto ao documento reto em preto e branco que o PaperPic fez a partir dela",
   "ogLocale": "pt_BR",
-  "description": "Visualizador e editor de imagens de documentos: zoom, rotação, correção de perspectiva, brilho e contraste, preto e branco e remoção de sombras.",
+  "description": "Visualizador e editor de imagens de documentos para o navegador: endireite, corte, gire e limpe fotos de celular, escaneamentos e qualquer imagem com texto. Para JavaScript, Vue e React.",
   "guide": "Guia",
   "reference": "Referência",
   "examples": "Exemplos",
@@ -22,6 +23,7 @@
   "pages": {
     "guide/introduction": "O que é o PaperPic?",
     "guide/getting-started": "Primeiros passos",
+    "guide/loading": "Carregar imagens",
     "guide/viewer": "Visualizador",
     "guide/editing": "Edição",
     "guide/saving": "Salvar o resultado",
@@ -43,6 +45,7 @@
     "reference/css-tokens": "Tokens CSS",
     "reference/vue": "Vue",
     "reference/react": "React",
+    "examples/attach-and-scan": "Anexar e digitalizar",
     "examples/upload": "Enviar para um servidor",
     "examples/read-only": "Visualizador somente leitura",
     "examples/custom-toolbar": "Barra de ferramentas própria",

@@ -1,8 +1,9 @@
 {
   "label": "한국어",
   "lang": "ko",
+  "ogImageAlt": "비스듬히 찍은 영수증 사진과, PaperPic이 그 사진으로 만든 반듯한 흑백 문서",
   "ogLocale": "ko_KR",
-  "description": "문서 이미지 뷰어 및 편집기: 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 흑백 변환, 그림자 제거.",
+  "description": "브라우저용 문서 이미지 뷰어 및 편집기: 휴대폰 사진, 스캔, 글자가 있는 모든 이미지의 기울기 보정, 자르기, 회전, 정리. JavaScript, Vue, React용.",
   "guide": "가이드",
   "reference": "레퍼런스",
   "examples": "예제",
@@ -22,6 +23,7 @@
   "pages": {
     "guide/introduction": "PaperPic이란?",
     "guide/getting-started": "시작하기",
+    "guide/loading": "이미지 불러오기",
     "guide/viewer": "뷰어",
     "guide/editing": "편집",
     "guide/saving": "결과 저장",
@@ -43,6 +45,7 @@
     "reference/css-tokens": "CSS 토큰",
     "reference/vue": "Vue",
     "reference/react": "React",
+    "examples/attach-and-scan": "첨부하고 스캔하기",
     "examples/upload": "서버에 업로드",
     "examples/read-only": "읽기 전용 뷰어",
     "examples/custom-toolbar": "직접 만든 도구 모음",

@@ -87,7 +87,7 @@ export function Receipt() {
 
 :::
 
-`src`에는 페이지와 같은 출처의 URL이나, 사용자가 `<input type="file">` 등으로 고른 `File`을 지정합니다. `alt`는 스크린 리더를 위한 이미지 설명입니다.
+`src`에는 페이지와 같은 출처의 URL이나, 사용자가 `<input type="file">` 등으로 고른 `File`을 지정합니다. `alt`는 스크린 리더를 위한 이미지 설명입니다. 다른 출처의 이미지, 형식, 불러오기 오류는 [이미지 불러오기](./loading)에서 다룹니다.
 
 ## 편집한 이미지 받기
 
@@ -139,6 +139,7 @@ async function upload(blob: Blob) {
 
 ## 다음 단계
 
+- [이미지 불러오기](./loading): 이미지를 가져오는 곳과 열 수 있는 형식.
 - [뷰어](./viewer): 확대/축소, 맞추기, 읽기 전용 사용.
 - [편집](./editing): 편집 모드, 도구, 실행 취소, 적용.
 - [옵션](../reference/options): 설정할 수 있는 모든 것.

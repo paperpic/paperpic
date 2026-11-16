@@ -28,10 +28,6 @@ With a Content Security Policy, allow:
 - **On Apply**, every edit runs at full resolution. Large photos take a few seconds, so the viewer shows a message and blocks the controls meanwhile.
 - **To save time and memory**, set [`maxOutputSize`](../reference/options#maxoutputsize). A limit such as 2000 or 3000 pixels keeps documents readable, and makes Apply faster and the files smaller.
 
-## Images it accepts
-
-`src` takes a URL from the same origin as your page, or a `File` or `Blob` attached on the client. PaperPic reads the pixels of the image, and browsers only allow that for images from other origins under CORS, which PaperPic does not request. Serve the images from your own domain, or fetch them yourself and pass the `Blob`.
-
 ## Server-side rendering
 
 PaperPic needs a browser. The Vue and React components render an empty element on the server, such as in Nuxt or Next.js, and create the viewer in the browser. With the core, create the viewer in the browser yourself, such as when your component mounts.

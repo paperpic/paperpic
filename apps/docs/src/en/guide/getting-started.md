@@ -87,7 +87,7 @@ export function Receipt() {
 
 :::
 
-`src` takes a URL from the same origin as your page, or a `File` that the user picks, such as from an `<input type="file">`. `alt` describes the image for screen readers.
+`src` takes a URL from the same origin as your page, or a `File` that the user picks, such as from an `<input type="file">`. `alt` describes the image for screen readers. [Loading images](./loading) covers images from other origins, formats and load errors.
 
 ## Get the edited image
 
@@ -139,6 +139,7 @@ To show a document that people should not change, turn editing off with `editabl
 
 ## Next steps
 
+- [Loading images](./loading): where the image comes from, and which formats open.
 - [Viewer](./viewer): zoom, fit and read-only use.
 - [Editing](./editing): the edit mode, the tools, Undo and Apply.
 - [Options](../reference/options): everything you can configure.

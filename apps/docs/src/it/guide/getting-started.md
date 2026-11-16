@@ -87,7 +87,7 @@ export function Receipt() {
 
 :::
 
-`src` accetta un URL della stessa origine della tua pagina, o un `File` scelto dall’utente, ad esempio da un `<input type="file">`. `alt` descrive l’immagine per i lettori di schermo.
+`src` accetta un URL della stessa origine della tua pagina, o un `File` scelto dall’utente, ad esempio da un `<input type="file">`. `alt` descrive l’immagine per i lettori di schermo. [Caricare le immagini](./loading) spiega le immagini da altre origini, i formati e gli errori di caricamento.
 
 ## Ricevere l’immagine modificata
 
@@ -139,6 +139,7 @@ Per mostrare un documento che non si deve modificare, disattiva la modifica con 
 
 ## Prossimi passi
 
+- [Caricare le immagini](./loading): da dove viene l’immagine e quali formati si aprono.
 - [Visualizzatore](./viewer): zoom, adattamento e uso in sola lettura.
 - [Modifica](./editing): la modalità di modifica, gli strumenti e Applica.
 - [Opzioni](../reference/options): tutto ciò che puoi configurare.

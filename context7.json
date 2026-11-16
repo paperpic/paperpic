@@ -3,7 +3,7 @@
   "url": "https://context7.com/paperpic/paperpic",
   "public_key": "pk_jY4aHJ3BdnyuS5RSlvshn",
   "projectTitle": "PaperPic",
-  "description": "Turn photos of paper into clean, readable documents in the browser: a document viewer and editor for plain JavaScript, Vue and React.",
+  "description": "Document image viewer and editor for the browser: straighten, crop, rotate and clean up phone photos, scans and any image with text. For plain JavaScript, Vue and React.",
   "folders": ["apps/docs/src/en"],
   "excludeFiles": ["playground.md"],
   "rules": [

@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: Visionneuse et éditeur d’images de documents
-description: Visionneuse et éditeur d’images de documents open source. Zoom, rotation, correction de perspective, luminosité et contraste, noir et blanc et suppression des ombres.
+description: "Visionneuse et éditeur d’images de documents pour le navigateur : redressez, recadrez, faites pivoter et nettoyez photos de téléphone, scans et toute image avec du texte. Pour JavaScript, Vue et React."
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: Des images de documents impeccables
-  tagline: Affichez et modifiez des photos de documents. Zoomez, faites pivoter, corrigez la perspective, réglez la luminosité et le contraste, convertissez en noir et blanc net et supprimez les ombres.
+  text: Des images de documents nettes et lisibles, directement dans le navigateur
+  tagline: Redressez, recadrez et nettoyez une photo de téléphone, un scan ou toute image avec du texte. En JavaScript, Vue ou React, et rien ne quitte l’appareil avant que votre code ne l’envoie.
   actions:
     - theme: brand
       text: Commencer
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "Photo d’un ticket de caisse sur une table, prise de biais et en partie dans l’ombre"
   afterAlt: "Le même ticket, redressé et nettoyé en noir et blanc"
 ---
+
+## Rien ne quitte le navigateur
+
+PaperPic modifie l’image sur l’appareil de l’utilisateur, dans un Web Worker, sans serveur et sans requête de sa part. La photo d’un ticket de caisse, d’une carte d’identité ou d’un contrat ne quitte l’appareil que lorsque votre code envoie le résultat.
+
+## Démarrer en quelques lignes
+
+Installez le paquet de votre framework, donnez une hauteur au conteneur et écoutez Appliquer :
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: 'Un ticket de caisse' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="Un ticket de caisse" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="Un ticket de caisse" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+[Bien démarrer](./guide/getting-started) détaille l’installation et chaque étape.
