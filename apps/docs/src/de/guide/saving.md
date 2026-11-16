@@ -129,6 +129,10 @@ const pic = new PaperPic(container, {
 
 Die Vorschau beim Bearbeiten hat immer etwa 2 Megapixel, `maxOutputSize` ändert also nur das Ergebnis.
 
+## Metadaten {#metadata}
+
+Das Ergebnis von Übernehmen enthält keine Metadaten. PaperPic zeichnet das Bild auf ein Canvas, also gehen die EXIF-Daten des Fotos verloren, etwa die GPS-Position, die Kamera und das Datum. Die Download-Schaltfläche speichert bis zum ersten Übernehmen das Quellbild unverändert, mit seinen Metadaten.
+
 ## Die Download-Schaltfläche
 
 [`download: true`](../reference/options#download) fügt am Ende der Werkzeugleiste eine Schaltfläche hinzu, die das angezeigte Bild speichert: das Ergebnis des letzten Übernehmens, sonst das Quellbild, wie es ist. Während der Bearbeitung ist sie ausgeblendet, weil die Änderungen noch nicht übernommen sind. [`download()`](../reference/methods#download) tut dasselbe aus dem Code, mit oder ohne Schaltfläche. Das Kontextmenü des Browsers öffnet sich nicht über dem Viewer, daher ist diese Schaltfläche der Weg, das Bild aus ihm zu speichern.

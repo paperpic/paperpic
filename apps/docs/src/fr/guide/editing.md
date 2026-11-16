@@ -128,13 +128,4 @@ Après Appliquer, passer le même `src` une nouvelle fois ne fait rien, donc le 
 
 ## Clavier
 
-Quand la visionneuse a le focus :
-
-| Touche                   | Action                                                  |
-| ------------------------ | ------------------------------------------------------- |
-| `Ctrl+Z`                 | Annuler la dernière action                              |
-| `Ctrl+Maj+Z` ou `Ctrl+Y` | Rétablir                                                |
-| `Entrée`                 | Valider l’outil ouvert, sinon appliquer les changements |
-| `Échap`                  | Fermer l’outil ouvert, sinon annuler les changements    |
-
-Sur macOS, `Cmd` fonctionne comme `Ctrl`.
+Avec le focus sur la visionneuse, des touches annulent, rétablissent, confirment et abandonnent. [Accessibilité](./accessibility#keyboard) liste toutes les touches.

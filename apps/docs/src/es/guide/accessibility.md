@@ -14,7 +14,7 @@ La gente lee y arregla documentos con ratón, con el dedo, con el teclado o con 
 - **Tus propios controles, si los hay.** Con `toolbar: false`, los botones que crees sustituyen a los integrados, y necesitan sus propios nombres y soporte de teclado.
 - **Un foco visible.** Evita que tu CSS oculte el contorno de foco del visor.
 
-## Teclado
+## Teclado {#keyboard}
 
 Con el foco en el visor:
 

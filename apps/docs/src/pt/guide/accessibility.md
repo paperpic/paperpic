@@ -14,7 +14,7 @@ As pessoas leem e corrigem documentos com o mouse, o dedo, o teclado ou um leito
 - **Seus próprios controles, se houver.** Com `toolbar: false`, os botões que você cria substituem os integrados, e precisam de nomes próprios e suporte a teclado.
 - **Um foco visível.** Evite que o seu CSS esconda o contorno de foco do visualizador.
 
-## Teclado
+## Teclado {#keyboard}
 
 Com o foco no visualizador:
 

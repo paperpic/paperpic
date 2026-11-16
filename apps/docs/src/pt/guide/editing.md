@@ -128,13 +128,4 @@ Depois do Aplicar, passar o mesmo `src` de novo não faz nada, então o resultad
 
 ## Teclado
 
-Com o foco no visualizador:
-
-| Tecla                      | Ação                                                          |
-| -------------------------- | ------------------------------------------------------------- |
-| `Ctrl+Z`                   | Desfazer                                                      |
-| `Ctrl+Shift+Z` ou `Ctrl+Y` | Refazer                                                       |
-| `Enter`                    | Confirmar a ferramenta aberta, ou então aplicar as alterações |
-| `Esc`                      | Fechar a ferramenta aberta, ou então cancelar as alterações   |
-
-No macOS, `Cmd` funciona como `Ctrl`.
+Com o foco no visualizador, há teclas para desfazer, refazer, confirmar e cancelar. [Acessibilidade](./accessibility#keyboard) lista todas.

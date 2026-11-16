@@ -9,30 +9,94 @@ Esta página te lleva desde instalar PaperPic hasta mostrar una imagen y recuper
 
 ## Instalación
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue` requiere Vue 3.5 o posterior.
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react` requiere React 19 o posterior.
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react` requiere React 19 o posterior.
+
+::::
+
+### Sin bundler {#cdn}
+
+El core también carga desde un CDN que sirve los archivos del paquete tal cual, como jsDelivr. Importa `dist/index.js` desde un script de módulo, y enlaza `dist/style.css`:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: 'Un tique' })
+</script>
+```
+
+Los navegadores solo arrancan un worker del origen de la página, así que ahí la edición va en el hilo principal: funciona, pero las fotos grandes congelan la página un momento al aplicar. Sirve los archivos desde tu propio origen, o usa un bundler, para conservar el worker. Los componentes de Vue y React necesitan un bundler.
 
 ## Mostrar una imagen
 
@@ -126,16 +190,23 @@ async function upload(blob: Blob) {
 
 El `blob` mantiene el formato de la imagen original, o es PNG cuando el usuario limpió el documento. La opción [`output`](../reference/options#output) lo cambia.
 
+## Quitar el visor {#destroy}
+
+Los componentes de Vue y React crean el visor al montarse y lo destruyen al desmontarse. Con el core, llama a [`destroy()`](../reference/methods#destroy) cuando quites el visor de la página, por ejemplo al cambiar de ruta:
+
+```ts
+pic.destroy()
+```
+
+Saca el visor de su contenedor, detiene sus listeners y su worker, y libera la memoria de la imagen. Para volver a mostrarlo, crea uno nuevo.
+
 ## Solo mostrar la imagen
 
 Para mostrar un documento que no se debe cambiar, desactiva la edición con `editable: false`. La página [Visor](./viewer) lo muestra en acción.
 
 ## Requisitos
 
-- PaperPic funciona en los navegadores de [Baseline Widely Available](https://web.dev/baseline).
-- La edición se hace en un Web Worker, que empaquetadores como Vite y webpack detectan solos. Si el worker no puede arrancar, la edición se hace en el hilo principal: sigue funcionando, pero la página puede congelarse un momento con imágenes grandes.
-- Con una Content Security Policy, permite el worker con `worker-src 'self'`, y permite `img-src blob:`, porque el visor muestra los archivos adjuntos y los resultados con URLs `blob:`. Si además limita las políticas de Trusted Types, añade `paperpic` a `trusted-types`, porque los iconos de los botones pasan por esa política.
-- Con renderizado en el servidor, como en Nuxt o Next.js, los componentes de Vue y React renderizan un elemento vacío en el servidor y crean el visor en el navegador. Con el core, crea tú el visor en el navegador.
+PaperPic funciona en los navegadores de [Baseline Widely Available](https://web.dev/baseline). [Rendimiento y compatibilidad](./performance) explica el worker, la Content Security Policy, el renderizado en servidor y las fotos grandes.
 
 ## Siguientes pasos
 
@@ -143,3 +214,4 @@ Para mostrar un documento que no se debe cambiar, desactiva la edición con `edi
 - [Visor](./viewer): zoom, ajuste y uso de solo lectura.
 - [Edición](./editing): el modo de edición, las herramientas, Deshacer y Aplicar.
 - [Opciones](../reference/options): todo lo que puedes configurar.
+- [Solución de problemas](./troubleshooting): cuando el visor no se ve o no funciona como debería.
