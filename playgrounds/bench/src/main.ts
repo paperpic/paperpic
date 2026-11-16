@@ -1,9 +1,9 @@
+import type { WorkerRequest, WorkerResponse } from '../../../packages/core/src/pipeline/worker'
 import type { PreparedThreshold } from '../../../packages/core/src/processing/threshold'
 import type { PixelBuffer, Quad } from '../../../packages/core/src/processing/types'
-import type { WorkerRequest, WorkerResponse } from '../../../packages/core/src/processing/worker'
 import { renderHeader } from 'playground-shared/page'
 import { estimateOutputSize } from '../../../packages/core/src/processing/homography'
-import { adaptiveThreshold, applyThreshold, prepareThreshold } from '../../../packages/core/src/processing/threshold'
+import { adaptiveThreshold, applyThreshold, DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS, prepareThreshold } from '../../../packages/core/src/processing/threshold'
 import { warpPerspective } from '../../../packages/core/src/processing/warp'
 import './style.css'
 
@@ -17,7 +17,7 @@ interface Row {
 }
 
 /** A worker request without its id, keeping the union of operations apart. */
-type Job<T = WorkerRequest> = T extends unknown ? Omit<T, 'id'> : never
+type Job = Omit<WorkerRequest, 'id'>
 
 const element = <T extends HTMLElement>(id: string) => document.querySelector<T>(`#${id}`)!
 
@@ -174,7 +174,7 @@ function toCanvas({ data, width, height }: PixelBuffer): OffscreenCanvas {
 }
 
 function startWorker() {
-  const worker = new Worker(new URL('../../../packages/core/src/processing/worker.ts', import.meta.url), { type: 'module' })
+  const worker = new Worker(new URL('../../../packages/core/src/pipeline/worker.ts', import.meta.url), { type: 'module' })
   let nextId = 0
   const send = (request: Job) => new Promise<Exclude<WorkerResponse, { ready: true }>>((resolve, reject) => {
     worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
@@ -268,18 +268,31 @@ async function runBenchmarks() {
     }, `${output.width}×${output.height}`)
 
     await measure({ size: label, operation: 'threshold', where: 'worker' }, fullRuns, async () => {
-      const response = await worker.send({ operation: 'threshold', source: pixels })
+      // The viewer sends the pipeline, so the bench measures the same path
+      const response = await worker.send({
+        operation: 'pipeline',
+        source: pixels,
+        steps: [
+          { type: 'threshold', sensitivity: DEFAULT_SENSITIVITY, softness: DEFAULT_SOFTNESS },
+        ],
+      })
       if ('error' in response) {
         throw new Error(response.error)
       }
       return response.milliseconds
     })
     await measure({ size: label, operation: 'warp', where: 'worker' }, fullRuns, async () => {
+      // The pipeline takes the corners in proportions of the image, and the size as its proportions
       const response = await worker.send({
-        operation: 'warp',
+        operation: 'pipeline',
         source: pixels,
-        quad,
-        ...output,
+        steps: [
+          {
+            type: 'perspective',
+            quad: readCorners(1, 1),
+            aspectRatio: output.width / output.height,
+          },
+        ],
       })
       if ('error' in response) {
         throw new Error(response.error)

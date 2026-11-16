@@ -7,6 +7,8 @@ description: Comment faire pivoter et retourner l’image d’un document dans P
 
 Les téléphones enregistrent souvent la photo d’un document de côté ou à l’envers, et certains scans sortent en miroir. Pivoter à gauche et Retourner corrigent l’orientation et laissent le reste de l’image tel quel.
 
+<Demo src="/samples/receipt.jpg" alt="Un ticket de caisse" :tools="['rotate', 'flip']" />
+
 ## Pivoter
 
 Dans la barre de modification, Pivoter à gauche fait pivoter l’image d’un quart de tour dans le sens inverse des aiguilles d’une montre, comme dans les galeries de photos. Appuyez deux fois pour un demi-tour, ou trois fois pour un quart de tour dans le sens des aiguilles d’une montre.
@@ -22,7 +24,7 @@ pic.rotate(-1)
 
 ## Retourner
 
-Retourner met l’image en miroir de gauche à droite, telle qu’elle est affichée, donc après un quart de tour elle reste en miroir de gauche à droite à l’écran. Pour mettre une image à l’envers, retournez-la et faites-la pivoter deux fois.
+Retourner met l’image en miroir de gauche à droite, telle qu’elle est affichée, donc après un quart de tour elle reste en miroir de gauche à droite à l’écran. Pour mettre une image en miroir de haut en bas, retournez-la et faites-la pivoter deux fois.
 
 Les retournements et rotations qui s’annulent ne laissent rien à appliquer. Depuis le code, appelez [`flip()`](../../reference/methods#flip).
 

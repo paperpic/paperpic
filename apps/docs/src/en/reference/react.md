@@ -36,7 +36,7 @@ Every [option](./options) is a prop with the same name, such as `editable={false
 | `className` | `string`        | Classes on top of `paperpic-host` |
 | `style`     | `CSSProperties` | Inline styles                     |
 
-Objects and arrays, such as `labels` or `tools`, reach the viewer again whenever they are new. Define them outside the component, or with `useMemo`.
+An object or array with the same contents as before, such as `tools={['crop', 'rotate']}`, changes nothing, so inline values are fine. A function is new on every render, so define the functions of `labels`, such as `zoomLevel`, outside the component, or build those labels with `useMemo`.
 
 ## Events
 
@@ -45,7 +45,7 @@ Objects and arrays, such as `labels` or `tools`, reach the viewer again whenever
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 [Events](./events) describes each one. A new function does not recreate the viewer, so inline functions are fine. A change of props never calls `onChange`.

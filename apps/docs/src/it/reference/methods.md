@@ -27,7 +27,7 @@ class PaperPic {
 
 Crea il visualizzatore dentro `container`, che riempie. Dai un’altezza al contenitore, altrimenti il visualizzatore resta alla sua altezza minima. [Opzioni](./options) spiega cosa accetta `options`.
 
-Lancia un `TypeError` se `container` non è un elemento. Crea il visualizzatore quando l’elemento esiste già, ad esempio al montaggio.
+Lancia un `TypeError` se `container` non è un elemento. Crea il visualizzatore quando l’elemento esiste già, ad esempio al montaggio. Lancia un `RangeError` se un’opzione è fuori dal suo intervallo.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ Rimuove il visualizzatore e libera tutto ciò che occupa, come il suo worker e l
 function setOptions(options: PaperPicOptions): void
 ```
 
-Cambia le opzioni che passi e mantiene le altre. `undefined` riporta un’opzione al suo valore predefinito. Non emette mai `change`, così i binding bidirezionali non vanno in loop.
+Cambia le opzioni che passi e mantiene le altre. `undefined` riporta un’opzione al suo valore predefinito. Non emette mai `change`, così i binding bidirezionali non vanno in loop. Lancia un `RangeError` se un’opzione è fuori dal suo intervallo, e in quel caso nessuna opzione cambia.
 
 ### `getState()`
 
@@ -129,7 +129,7 @@ Ruota l’immagine di un quarto di giro: in senso orario con `1`, il valore pred
 function flip(): void
 ```
 
-Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la capovolge ancora da sinistra a destra. Per metterla sottosopra, capovolgila e ruotala due volte. È un cambiamento, e non fa nulla fuori dalla modalità di modifica o con uno strumento aperto.
+Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la capovolge ancora da sinistra a destra. Per specchiarla dall’alto in basso, capovolgila e ruotala due volte. È un cambiamento, e non fa nulla fuori dalla modalità di modifica o con uno strumento aperto.
 
 ### `openTool()`
 

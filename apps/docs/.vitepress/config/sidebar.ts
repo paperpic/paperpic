@@ -11,7 +11,12 @@ export const sidebar = [
   {
     section: 'guide',
     group: 'essentials',
-    pages: ['guide/viewer', 'guide/editing', 'guide/saving'],
+    pages: [
+      'guide/loading',
+      'guide/viewer',
+      'guide/editing',
+      'guide/saving',
+    ],
   },
   {
     section: 'guide',
@@ -32,7 +37,11 @@ export const sidebar = [
   {
     section: 'guide',
     group: 'production',
-    pages: ['guide/accessibility', 'guide/performance'],
+    pages: [
+      'guide/accessibility',
+      'guide/performance',
+      'guide/troubleshooting',
+    ],
   },
   {
     section: 'reference',
@@ -59,6 +68,7 @@ export const sidebar = [
     section: 'examples',
     group: 'examples',
     pages: [
+      'examples/attach-and-scan',
       'examples/upload',
       'examples/read-only',
       'examples/custom-toolbar',

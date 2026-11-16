@@ -1,6 +1,6 @@
 import type { PixelBuffer } from '../processing/types'
-import type { PipelineStep } from './operations'
-import { pixelsToCanvas, readPixels } from './pixels'
+import type { PipelineStep } from './steps'
+import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 import { planRead } from './read-plan'
 
 /**
@@ -44,7 +44,8 @@ export interface ExportRequest {
   width: number
 }
 
-const ENCODABLE = new Set(['image/jpeg', 'image/png', 'image/webp'])
+/** The formats that editing can produce. */
+export const ENCODABLE: ReadonlySet<string> = new Set(['image/jpeg', 'image/png', 'image/webp'])
 const EXTENSIONS: Record<string, string> = {
   jpg: 'image/jpeg',
   jpeg: 'image/jpeg',
@@ -77,6 +78,7 @@ function encode(pixels: PixelBuffer, type: string, quality: number): Promise<Blo
   const canvas = pixelsToCanvas(pixels)
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
+      releaseCanvas(canvas)
       if (blob) {
         resolve(blob)
       }

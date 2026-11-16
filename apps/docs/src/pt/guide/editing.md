@@ -82,11 +82,11 @@ Aplicar não pode ser interrompido. Ele bloqueia os controles e mostra uma mensa
 
 ## O que o seu código recebe
 
-| Evento   | Quando                                                              |
-| -------- | ------------------------------------------------------------------- |
-| `apply`  | Quando o resultado está pronto, com `{ blob, width, height, type }` |
-| `change` | Depois de cada ação do usuário, com o [estado](../reference/state)  |
-| `error`  | Quando Aplicar falha, ou quando a imagem não carrega                |
+| Evento   | Quando                                                                       |
+| -------- | ---------------------------------------------------------------------------- |
+| `apply`  | Quando o resultado está pronto, com `{ blob, width, height, type }`          |
+| `change` | Depois de cada ação do usuário que muda o [estado](../reference/state)       |
+| `error`  | Quando a imagem não carrega, ou uma edição não pode ser mostrada ou aplicada |
 
 :::tabs key:framework
 == JavaScript
@@ -128,13 +128,4 @@ Depois do Aplicar, passar o mesmo `src` de novo não faz nada, então o resultad
 
 ## Teclado
 
-Com o foco no visualizador:
-
-| Tecla                      | Ação                                                          |
-| -------------------------- | ------------------------------------------------------------- |
-| `Ctrl+Z`                   | Desfazer                                                      |
-| `Ctrl+Shift+Z` ou `Ctrl+Y` | Refazer                                                       |
-| `Enter`                    | Confirmar a ferramenta aberta, ou então aplicar as alterações |
-| `Esc`                      | Fechar a ferramenta aberta, ou então cancelar as alterações   |
-
-No macOS, `Cmd` funciona como `Ctrl`.
+Com o foco no visualizador, há teclas para desfazer, refazer, confirmar e cancelar. [Acessibilidade](./accessibility#keyboard) lista todas.

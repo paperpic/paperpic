@@ -9,30 +9,94 @@ description: JavaScript, Vue, React용 PaperPic을 설치하고, 첫 문서 이�
 
 ## 설치
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue`에는 Vue 3.5 이상이 필요합니다.
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react`에는 React 19 이상이 필요합니다.
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react`에는 React 19 이상이 필요합니다.
+
+::::
+
+### 번들러 없이 {#cdn}
+
+core는 jsDelivr처럼 패키지 파일을 그대로 제공하는 CDN에서도 불러올 수 있습니다. 모듈 스크립트에서 `dist/index.js`를 가져오고 `dist/style.css`를 연결하세요.
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: '영수증' })
+</script>
+```
+
+브라우저는 페이지의 출처에서만 worker를 시작하므로, 이 경우 편집은 메인 스레드에서 실행됩니다. 동작은 하지만, 큰 사진은 적용 중에 페이지를 잠시 멈추게 합니다. worker를 쓰려면 파일을 자신의 출처에서 제공하거나 번들러를 쓰세요. Vue와 React 컴포넌트에는 번들러가 필요합니다.
 
 ## 이미지 보여 주기
 
@@ -87,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src`에는 페이지와 같은 출처의 URL이나, 사용자가 `<input type="file">` 등으로 고른 `File`을 지정합니다. `alt`는 스크린 리더를 위한 이미지 설명입니다.
+`src`에는 페이지와 같은 출처의 URL이나, 사용자가 `<input type="file">` 등으로 고른 `File`을 지정합니다. `alt`는 스크린 리더를 위한 이미지 설명입니다. 다른 출처의 이미지, 형식, 불러오기 오류는 [이미지 불러오기](./loading)에서 다룹니다.
 
 ## 편집한 이미지 받기
 
@@ -126,19 +190,28 @@ async function upload(blob: Blob) {
 
 `blob`은 원본 이미지의 형식을 유지하고, 사용자가 문서를 정리했다면 PNG가 됩니다. [`output`](../reference/options#output) 옵션으로 바꿀 수 있습니다.
 
+## 뷰어 제거하기 {#destroy}
+
+Vue와 React 컴포넌트는 마운트될 때 뷰어를 만들고 언마운트될 때 제거합니다. core에서는 라우트가 바뀔 때처럼 뷰어를 페이지에서 뺄 때 [`destroy()`](../reference/methods#destroy)를 호출하세요.
+
+```ts
+pic.destroy()
+```
+
+뷰어를 컨테이너에서 빼고, 리스너와 worker를 멈추고, 이미지의 메모리를 해제합니다. 다시 보여 주려면 새로 만드세요.
+
 ## 이미지만 보여 주기
 
 바뀌면 안 되는 문서를 보여 주려면 `editable: false`로 편집을 끄세요. [뷰어](./viewer) 페이지에서 동작을 볼 수 있습니다.
 
 ## 요구 사항
 
-- PaperPic은 [Baseline Widely Available](https://web.dev/baseline) 브라우저에서 동작합니다.
-- 편집은 Web Worker에서 실행되며, Vite와 webpack 같은 번들러가 알아서 처리합니다. worker를 시작할 수 없으면 편집이 메인 스레드에서 실행됩니다. 여전히 동작하지만, 큰 이미지에서는 페이지가 잠깐 멈출 수 있습니다.
-- Content Security Policy를 쓴다면 `worker-src 'self'`로 worker를, `img-src blob:`으로 이미지를 허용하세요. 뷰어는 첨부 파일과 결과를 `blob:` URL로 보여 주기 때문입니다.
-- Nuxt나 Next.js 같은 서버 사이드 렌더링에서는 Vue와 React 컴포넌트가 서버에서 빈 요소를 렌더링하고 브라우저에서 뷰어를 만듭니다. 코어를 쓴다면 브라우저에서 직접 뷰어를 만드세요.
+PaperPic은 [Baseline Widely Available](https://web.dev/baseline) 브라우저에서 동작합니다. worker, Content Security Policy, 서버 사이드 렌더링, 큰 사진은 [성능과 지원 환경](./performance)에서 다룹니다.
 
 ## 다음 단계
 
+- [이미지 불러오기](./loading): 이미지를 가져오는 곳과 열 수 있는 형식.
 - [뷰어](./viewer): 확대/축소, 맞추기, 읽기 전용 사용.
 - [편집](./editing): 편집 모드, 도구, 실행 취소, 적용.
 - [옵션](../reference/options): 설정할 수 있는 모든 것.
+- [문제 해결](./troubleshooting): 뷰어가 제대로 보이지 않거나 동작하지 않을 때.

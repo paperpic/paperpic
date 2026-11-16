@@ -27,7 +27,7 @@ class PaperPic {
 
 在 `container` 中创建查看器并填满它。请给容器设置高度，否则查看器会停留在最小高度。`options` 接受的内容见[选项](./options)。
 
-如果 `container` 不是元素，会抛出 `TypeError`。请在元素存在之后创建查看器，例如在挂载时。
+如果 `container` 不是元素，会抛出 `TypeError`。请在元素存在之后创建查看器，例如在挂载时。如果某个选项超出范围，会抛出 `RangeError`。
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ function destroy(): void
 function setOptions(options: PaperPicOptions): void
 ```
 
-修改你传入的选项，保留其他选项。传入 `undefined` 会让选项恢复默认值。它从不触发 `change`，因此双向绑定不会循环。
+修改你传入的选项，保留其他选项。传入 `undefined` 会让选项恢复默认值。它从不触发 `change`，因此双向绑定不会循环。如果某个选项超出范围，会抛出 `RangeError`，此时不会修改任何选项。
 
 ### `getState()`
 
@@ -129,7 +129,7 @@ function rotate(direction?: 1 | -1): void
 function flip(): void
 ```
 
-按显示的样子将图片左右翻转，因此旋转四分之一圈之后仍是左右翻转。要上下颠倒图片，先翻转再旋转两次。这是一项修改，在编辑模式之外或有工具打开时什么也不做。
+按显示的样子将图片左右翻转，因此旋转四分之一圈之后仍是左右翻转。要上下镜像图片，先翻转再旋转两次。这是一项修改，在编辑模式之外或有工具打开时什么也不做。
 
 ### `openTool()`
 

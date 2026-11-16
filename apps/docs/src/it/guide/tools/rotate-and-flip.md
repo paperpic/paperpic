@@ -7,6 +7,8 @@ description: Come ruotare e capovolgere l’immagine di un documento in PaperPic
 
 I telefoni salvano spesso la foto di un documento di lato o sottosopra, e alcune scansioni escono specchiate. Ruota a sinistra e Capovolgi correggono l’orientamento e lasciano il resto dell’immagine com’è.
 
+<Demo src="/samples/receipt.jpg" alt="Uno scontrino" :tools="['rotate', 'flip']" />
+
 ## Ruotare
 
 Nella barra di modifica, Ruota a sinistra ruota l’immagine di un quarto di giro in senso antiorario, come nelle gallerie di foto. Premilo due volte per mezzo giro, o tre volte per un quarto di giro in senso orario.
@@ -22,7 +24,7 @@ pic.rotate(-1)
 
 ## Capovolgere
 
-Capovolgi specchia l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la specchia ancora da sinistra a destra sullo schermo. Per mettere un’immagine sottosopra, capovolgila e ruotala due volte.
+Capovolgi specchia l’immagine da sinistra a destra così come appare, quindi dopo un quarto di giro la specchia ancora da sinistra a destra sullo schermo. Per specchiare un’immagine dall’alto in basso, capovolgila e ruotala due volte.
 
 Capovolgimenti e rotazioni che si annullano non lasciano nulla da applicare. Dal codice, chiama [`flip()`](../../reference/methods#flip).
 

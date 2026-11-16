@@ -12,5 +12,5 @@
 
 A task is done when both of these hold:
 
-- `pnpm lint`, `pnpm typecheck`, `pnpm test` and `pnpm build` pass. Run lint with `CI=true`, because ESLint disables some rules inside an editor terminal and CI enforces them.
+- `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` and `pnpm test:e2e` pass. Run lint with `CI=true`, because ESLint disables some rules inside an editor terminal and CI enforces them.
 - Any visual change has been seen working in a browser, through `pnpm dev` for `packages/core`, `pnpm dev:vue` for `packages/vue` or `pnpm dev:react` for `packages/react`. Set `BROWSER=none` to keep these scripts from opening a window.

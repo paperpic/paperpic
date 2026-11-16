@@ -55,6 +55,8 @@ Cinq [jetons CSS](../reference/css-tokens) règlent le fond, le texte, la couleu
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="Un ticket de caisse" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 Les jetons s’héritent, donc une classe sur le conteneur d’une visionneuse, ou sur le composant Vue ou React, ne change que cette visionneuse :
 
 ```css

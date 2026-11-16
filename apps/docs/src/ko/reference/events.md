@@ -5,7 +5,7 @@ description: PaperPic의 이벤트 load, error, change, apply, download와 각 �
 
 # 이벤트
 
-이벤트는 뷰어에서 일어난 일을 코드에 알립니다. [`on()`](./methods#on)으로 구독합니다. Vue에서는 `@apply` 같은 컴포넌트 이벤트이고, React에서는 `onApply` 같은 props입니다.
+이벤트는 뷰어에서 일어난 일을 코드에 알립니다. [`on()`](./methods#on)으로 구독합니다. Vue에서는 `@apply` 같은 컴포넌트 이벤트이고, React에서는 `onApply` 같은 props입니다. 구독한 함수가 오류를 던져도 뷰어는 멈추지 않습니다. 페이지는 그 오류를 처리되지 않은 오류로 받고, 다른 함수도 실행됩니다.
 
 :::tabs key:framework
 == JavaScript
@@ -36,15 +36,19 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 ## `error`
 
-- **페이로드:** `{ error: Error }`
+- **페이로드:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-이미지를 불러오지 못했거나 변경을 적용하지 못했습니다. 적용에 실패하면 편집은 열린 채로 남습니다.
+무언가 실패했으며, `phase`가 무엇인지 알려 줍니다.
+
+- `'load'`: 이미지를 불러오지 못했습니다.
+- `'preview'`: 편집을 표시하지 못했습니다. 예를 들어 이미지가 브라우저에 비해 너무 큰 경우입니다. 편집은 열린 채로 남습니다.
+- `'apply'`: 변경을 적용하지 못했습니다. 편집은 열린 채로 남습니다.
 
 ## `change`
 
 - **페이로드:** [`PaperPicState`](./state)
 
-사용자가 보기나 편집을 바꿨습니다. 예를 들어 확대/축소, 도구 열기, 실행 취소 등입니다. 적용의 시작도 `busy: true`로 알립니다. `setOptions()`와 컴포넌트의 props로는 발생하지 않습니다.
+사용자가 보기나 편집을 바꿨습니다. 예를 들어 확대/축소, 도구 열기, 실행 취소 등입니다. 적용의 시작도 `busy: true`로 알립니다. 이미지를 이동해도 발생하지 않습니다. 상태에 이미지의 위치가 없기 때문입니다. `setOptions()`와 컴포넌트의 props로는 발생하지 않습니다.
 
 ## `apply`
 

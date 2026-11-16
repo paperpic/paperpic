@@ -31,7 +31,7 @@ function upload({ blob }: ExportedImage) {
 
 Каждая [опция](./options) — это prop с тем же именем, например `:editable="false"` или `:aspect-ratio="210 / 297"`. Изменённый prop доходит до просмотрщика через `setOptions()`.
 
-Объекты и массивы, которые строит шаблон, например `:labels="{ apply: t('apply') }"`, создаются заново при каждом рендере родителя, и просмотрщик каждый раз получает их снова. Стройте их через `computed`.
+Объект или массив с тем же содержимым, что и раньше, например `:tools="['crop', 'rotate']"`, ничего не меняет, так что шаблон может их строить. Функция создаётся заново при каждом рендере родителя, поэтому `labels` с функциями, например `zoomLevel`, стройте через `computed`.
 
 ## События
 
@@ -40,7 +40,7 @@ function upload({ blob }: ExportedImage) {
 | `apply`    | [`ExportedImage`](./types#exportedimage)       |
 | `change`   | [`PaperPicState`](./state)                     |
 | `download` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `error`    | `{ error }`                                    |
+| `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
 [События](./events) описывают каждое. Изменённый prop никогда не вызывает `change`.

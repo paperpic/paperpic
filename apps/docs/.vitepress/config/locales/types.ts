@@ -30,6 +30,8 @@ export interface Translation {
   guide: string
   label: string
   lang: string
+  /** Describes the image that links to the site show, which compares a photo with its result. */
+  ogImageAlt: string
   ogLocale: string
   /** The titles of the pages in the sidebar. */
   pages: Record<SidebarPage, string>

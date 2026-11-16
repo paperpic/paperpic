@@ -1,4 +1,5 @@
-import type { Size, View } from '../state/view'
+import type { Size } from '../processing/types'
+import type { View } from '../state/view'
 import { computeTransform } from './transform'
 
 /** What one frame shows. */
@@ -26,15 +27,33 @@ export class Renderer {
     this.getScene = getScene
   }
 
-  /** Sizes the canvases in device pixels, so they stay sharp on high density screens. */
+  /**
+   * Sizes the canvases in device pixels, so they stay sharp on high density screens. A new size clears them, so the
+   * caller paints with `paintNow()` before the browser shows the frame.
+   */
   resize(viewport: Size, pixelRatio: number): void {
     this.viewport = viewport
     this.pixelRatio = pixelRatio
+    const width = Math.round(viewport.width * pixelRatio)
+    const height = Math.round(viewport.height * pixelRatio)
     for (const canvas of [this.canvas, this.overlay]) {
-      canvas.width = Math.round(viewport.width * pixelRatio)
-      canvas.height = Math.round(viewport.height * pixelRatio)
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width
+        canvas.height = height
+      }
     }
-    this.requestPaint()
+  }
+
+  /**
+   * Paints at once, and drops the paint scheduled for the next frame. A resize needs it: the observer of the size runs
+   * after the frame callbacks, so a paint scheduled there would leave one frame blank.
+   */
+  paintNow(): void {
+    if (this.frame !== null) {
+      cancelAnimationFrame(this.frame)
+      this.frame = null
+    }
+    this.paint()
   }
 
   /** Schedules a paint for the next frame. Several calls in one frame paint once. */

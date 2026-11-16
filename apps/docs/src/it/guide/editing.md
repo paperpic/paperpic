@@ -82,11 +82,11 @@ Applica non si può interrompere. Blocca i controlli e mostra un messaggio mentr
 
 ## Cosa riceve il tuo codice
 
-| Evento   | Quando                                                            |
-| -------- | ----------------------------------------------------------------- |
-| `apply`  | Quando il risultato è pronto, con `{ blob, width, height, type }` |
-| `change` | Dopo ogni azione dell’utente, con lo [stato](../reference/state)  |
-| `error`  | Quando Applica fallisce, o quando l’immagine non si carica        |
+| Evento   | Quando                                                                          |
+| -------- | ------------------------------------------------------------------------------- |
+| `apply`  | Quando il risultato è pronto, con `{ blob, width, height, type }`               |
+| `change` | Dopo ogni azione dell’utente che cambia lo [stato](../reference/state)          |
+| `error`  | Quando l’immagine non si carica, o una modifica non si può mostrare o applicare |
 
 :::tabs key:framework
 == JavaScript
@@ -128,13 +128,4 @@ Dopo Applica, passare di nuovo lo stesso `src` non fa nulla, quindi il risultato
 
 ## Tastiera
 
-Con il focus sul visualizzatore:
-
-| Tasto                      | Azione                                                        |
-| -------------------------- | ------------------------------------------------------------- |
-| `Ctrl+Z`                   | Annulla l’ultima azione                                       |
-| `Ctrl+Maiusc+Z` o `Ctrl+Y` | Ripeti                                                        |
-| `Invio`                    | Conferma lo strumento aperto, altrimenti applica le modifiche |
-| `Esc`                      | Chiude lo strumento aperto, altrimenti annulla le modifiche   |
-
-Su macOS, `Cmd` funziona come `Ctrl`.
+Con il focus sul visualizzatore, ci sono tasti per annullare, ripetere, confermare e annullare la modifica. [Accessibilità](./accessibility#keyboard) li elenca tutti.

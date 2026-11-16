@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: 문서 이미지 뷰어 및 편집기
-description: 오픈 소스 문서 이미지 뷰어 및 편집기. 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 흑백 변환, 그림자 제거를 지원합니다.
+description: "브라우저용 문서 이미지 뷰어 및 편집기: 휴대폰 사진, 스캔, 글자가 있는 모든 이미지의 기울기 보정, 자르기, 회전, 정리. JavaScript, Vue, React용."
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: 문서 이미지를 제대로
-  tagline: 문서 사진을 보고 편집하세요. 확대/축소, 회전, 원근 보정, 밝기 및 대비 조정, 깔끔한 흑백 변환, 그림자 제거가 가능합니다.
+  text: 깨끗하고 읽기 쉬운 문서 이미지를 브라우저 안에서 바로
+  tagline: 휴대폰 사진, 스캔, 글자가 있는 모든 이미지의 기울기 보정, 자르기, 정리를 할 수 있습니다. JavaScript, Vue, React에서 쓸 수 있고, 여러분의 코드가 보내기 전까지 아무것도 기기를 떠나지 않습니다.
   actions:
     - theme: brand
       text: 시작하기
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "탁자 위 영수증을 비스듬히 찍은 사진으로, 일부가 그림자에 가려져 있습니다"
   afterAlt: "같은 영수증을 기울기 보정하고 흑백으로 정리한 결과"
 ---
+
+## 아무것도 브라우저를 떠나지 않습니다
+
+PaperPic은 사용자의 기기에서, Web Worker 안에서 이미지를 편집하며, 서버도 쓰지 않고 스스로 요청도 보내지 않습니다. 영수증, 신분증, 계약서 사진은 여러분의 코드가 결과를 보낼 때만 기기를 떠납니다.
+
+## 몇 줄로 시작하기
+
+프레임워크에 맞는 패키지를 설치하고, 컨테이너에 높이를 주고, 적용을 받아 처리하세요.
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: '영수증' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="영수증" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="영수증" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+설치와 각 단계는 [시작하기](./guide/getting-started)에서 설명합니다.

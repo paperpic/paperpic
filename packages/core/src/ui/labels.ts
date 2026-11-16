@@ -6,7 +6,7 @@
 export interface PaperPicLabels {
   /** Opens the ruler of brightness and contrast. */
   adjust: string
-  /** Announced after changing a slider of brightness or contrast, with its name and its value from -100 to 100. */
+  /** Announced after moving the ruler of Adjust, with the name of the tone and its value from -100 to 100. */
   adjustmentLevel: (name: string, value: number) => string
   /** Announced when the changes are applied. */
   applied: string
@@ -62,7 +62,7 @@ export interface PaperPicLabels {
   rotateRight: string
   /** Opens Clean up, and names its switch. */
   threshold: string
-  /** Announced after changing the ruler of Clean up. */
+  /** Announced after moving the ruler of Clean up, with its value in percent. */
   thresholdLevel: (percent: number) => string
   /** Name of the ruler of Clean up. */
   thresholdSensitivity: string

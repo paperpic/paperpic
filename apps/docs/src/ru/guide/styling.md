@@ -55,6 +55,8 @@ import '@paperpic/react/style.css'
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="Кассовый чек" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 Токены наследуются, поэтому класс на контейнере одного просмотрщика или на компоненте Vue или React меняет только этот просмотрщик:
 
 ```css

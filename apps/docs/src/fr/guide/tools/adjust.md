@@ -7,6 +7,8 @@ description: Comment l’outil Ajuster de PaperPic change la luminosité et le c
 
 Les photos prises avec peu de lumière sortent sombres ou grises. Ajuster change la luminosité et le contraste et garde les couleurs, pour les documents qui ne doivent pas passer en noir et blanc, comme des formulaires en couleur ou des photos.
 
+<Demo src="/samples/receipt.jpg" alt="Un ticket de caisse" :tools="['adjust']" />
+
 ## Utilisation
 
 1. Appuyez sur Modifier, puis sur Ajuster. Son panneau prend la place des outils : une règle, avec Luminosité et Contraste pour choisir le ton qu’elle change.

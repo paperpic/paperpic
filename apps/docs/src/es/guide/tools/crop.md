@@ -7,6 +7,8 @@ description: Cómo la herramienta Recortar de PaperPic conserva la parte de la f
 
 La foto de un documento suele mostrar la mesa, una mano u otros papeles alrededor. Recortar conserva el rectángulo que contiene el documento y descarta el resto.
 
+<Demo src="/samples/receipt.jpg" alt="Un tique" :tools="['crop']" />
+
 ## Cómo se usa
 
 1. Pulsa Editar y luego Recortar. Aparece un rectángulo dentro de la imagen, con un tirador en cada esquina.

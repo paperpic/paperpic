@@ -36,7 +36,7 @@ export function Receipt() {
 | `className` | `string`        | `paperpic-host`에 더할 클래스 |
 | `style`     | `CSSProperties` | 인라인 스타일                 |
 
-`labels`나 `tools` 같은 객체와 배열은 새로 만들어질 때마다 뷰어에 다시 전달됩니다. 컴포넌트 밖에서 정의하거나 `useMemo`를 쓰세요.
+`tools={['crop', 'rotate']}`처럼 이전과 내용이 같은 객체나 배열은 아무것도 바꾸지 않으므로 인라인으로 써도 됩니다. 함수는 렌더링할 때마다 새로 만들어지므로, `zoomLevel` 같은 `labels`의 함수는 컴포넌트 밖에서 정의하거나 그 라벨을 `useMemo`로 만드세요.
 
 ## 이벤트
 
@@ -45,7 +45,7 @@ export function Receipt() {
 | `onApply`    | [`ExportedImage`](./types#exportedimage)       |
 | `onChange`   | [`PaperPicState`](./state)                     |
 | `onDownload` | [`PaperPicDownload`](./types#paperpicdownload) |
-| `onError`    | `{ error }`                                    |
+| `onError`    | `{ error, phase }`                             |
 | `onLoad`     | [`Size`](./types#size)                         |
 
 각 이벤트는 [이벤트](./events)에서 설명합니다. 새 함수를 전달해도 뷰어를 다시 만들지 않으므로 인라인 함수를 써도 됩니다. props가 바뀌어도 `onChange`는 호출되지 않습니다.

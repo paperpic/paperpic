@@ -203,6 +203,189 @@ export function Receipt() {
 
 :::
 
+## 自前のスライダー {#slider}
+
+クリーンアップ用の自前のスライダーでは、先にツールを開きます。そのあとは動かすたびに `setThreshold()` を呼ぶと、クリーンアップの表示が変わり、`confirmTool()` で最後の値が 1 つの編集として残ります。この例では完了で結果も適用し、キャンセルで編集モードを抜けるので、これらのコントロールだけで操作が完結します。
+
+:::tabs key:framework
+== JavaScript
+
+```html
+<button id="clean-up" type="button">クリーンアップ</button>
+<div id="ruler" hidden>
+  <label>
+    感度
+    <input id="sensitivity" type="range" min="0" max="1" step="0.05" />
+  </label>
+  <button id="done" type="button">完了</button>
+  <button id="cancel" type="button">キャンセル</button>
+</div>
+<div id="viewer" style="height: 480px"></div>
+```
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
+  src: '/receipt.jpg',
+  alt: 'レシート',
+  toolbar: false,
+})
+const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
+
+document.querySelector('#clean-up')!.addEventListener('click', () => {
+  pic.edit()
+  pic.openTool('threshold')
+})
+slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+document.querySelector('#done')!.addEventListener('click', () => {
+  pic.confirmTool()
+  pic.apply()
+})
+document.querySelector('#cancel')!.addEventListener('click', () => {
+  pic.cancelTool()
+  pic.cancel()
+})
+
+pic.on('change', ({ activeTool, threshold }) => {
+  const open = activeTool === 'threshold'
+  document.querySelector<HTMLElement>('#ruler')!.hidden = !open
+  document.querySelector<HTMLElement>('#clean-up')!.hidden = open
+  slider.value = String(threshold.sensitivity)
+})
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import type { PaperPicState } from '@paperpic/vue'
+import { PaperPic } from '@paperpic/vue'
+import { computed, shallowRef, useTemplateRef } from 'vue'
+import '@paperpic/vue/style.css'
+
+const pic = useTemplateRef<InstanceType<typeof PaperPic>>('pic')
+const viewer = computed(() => pic.value?.instance)
+const state = shallowRef<PaperPicState>()
+
+function open() {
+  viewer.value?.edit()
+  viewer.value?.openTool('threshold')
+}
+
+function slide(event: Event) {
+  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+}
+
+function done() {
+  viewer.value?.confirmTool()
+  viewer.value?.apply()
+}
+
+function cancel() {
+  viewer.value?.cancelTool()
+  viewer.value?.cancel()
+}
+</script>
+
+<template>
+  <div v-if="state?.activeTool === 'threshold'">
+    <label>
+      感度
+      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+    </label>
+    <button type="button" @click="done">
+      完了
+    </button>
+    <button type="button" @click="cancel">
+      キャンセル
+    </button>
+  </div>
+  <button v-else type="button" :disabled="state?.status !== 'ready'" @click="open">
+    クリーンアップ
+  </button>
+  <div style="height: 480px">
+    <PaperPic
+      ref="pic"
+      src="/receipt.jpg"
+      alt="レシート"
+      :toolbar="false"
+      @change="next => (state = next)"
+      @load="state = viewer?.getState()"
+    />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance, PaperPicState } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef, useState } from 'react'
+import '@paperpic/react/style.css'
+
+export function CleanUpRuler() {
+  const picRef = useRef<PaperPicInstance>(null)
+  const [state, setState] = useState<PaperPicState>()
+  const viewer = () => picRef.current!
+
+  function open() {
+    viewer().edit()
+    viewer().openTool('threshold')
+  }
+
+  function done() {
+    viewer().confirmTool()
+    viewer().apply()
+  }
+
+  function cancel() {
+    viewer().cancelTool()
+    viewer().cancel()
+  }
+
+  return (
+    <>
+      {state?.activeTool === 'threshold'
+        ? (
+            <div>
+              <label>
+                感度
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={state.threshold.sensitivity}
+                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                />
+              </label>
+              <button type="button" onClick={done}>完了</button>
+              <button type="button" onClick={cancel}>キャンセル</button>
+            </div>
+          )
+        : (
+            <button type="button" disabled={state?.status !== 'ready'} onClick={open}>クリーンアップ</button>
+          )}
+      <div style={{ height: 480 }}>
+        <PaperPic
+          ref={picRef}
+          src="/receipt.jpg"
+          alt="レシート"
+          toolbar={false}
+          onChange={setState}
+          onLoad={() => setState(viewer().getState())}
+        />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
 ## 補足
 
 - `toolbar: false` では組み込みの編集バーも隠れるため、「切り抜き」と「傾き補正」はハンドルを表示しますが、「完了」ボタンはありません。あなたのインターフェースから、`Enter` と同じく [`confirmTool()`](../reference/methods#confirmtool) で確定してください。

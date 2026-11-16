@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: 'Un tique' })
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` cambia solo las opciones que pasas, y `undefined` devuelve una opción a su valor por defecto. Nunca emite `change`.
+`setOptions()` cambia solo las opciones que pasas, y `undefined` devuelve una opción a su valor por defecto. Nunca emite `change`. Una opción fuera de su rango lanza un `RangeError` que la nombra, como un `softness` de 2.
 
 ## Imagen
 
@@ -54,7 +54,7 @@ Si se muestran la barra de herramientas y la barra de edición integradas. Sin e
 - **Tipo:** [`readonly ToolId[]`](./types#toolid)
 - **Valor por defecto:** todas las herramientas
 
-Las herramientas que ofrece la barra de edición. Mantienen el orden de esta tabla, sea cual sea el orden del array.
+Las herramientas que ofrece la barra de edición. Mantienen el orden de esta tabla, sea cual sea el orden del array. Solo elige los botones: los [métodos](./methods) funcionan con todas las herramientas.
 
 | Id              | Botón                                  |
 | --------------- | -------------------------------------- |

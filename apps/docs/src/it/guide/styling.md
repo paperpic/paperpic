@@ -55,6 +55,8 @@ Cinque [token CSS](../reference/css-tokens) stabiliscono lo sfondo, il testo, il
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="Uno scontrino" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 I token si ereditano, quindi una classe sul contenitore di un visualizzatore, o sul componente Vue o React, cambia solo quel visualizzatore:
 
 ```css

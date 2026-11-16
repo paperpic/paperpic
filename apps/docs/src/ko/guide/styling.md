@@ -55,6 +55,8 @@ import '@paperpic/react/style.css'
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="영수증" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 토큰은 상속되므로, 한 뷰어의 컨테이너나 Vue 또는 React 컴포넌트에 클래스를 붙이면 그 뷰어만 바뀝니다.
 
 ```css

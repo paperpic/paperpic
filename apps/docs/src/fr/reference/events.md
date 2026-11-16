@@ -5,7 +5,7 @@ description: Les événements de PaperPic et ce que chacun transporte, load, err
 
 # Événements
 
-Les événements informent votre code de ce qui se passe dans la visionneuse. Écoutez-les avec [`on()`](./methods#on). En Vue, ce sont des événements du composant, comme `@apply`, et en React, ce sont des props, comme `onApply`.
+Les événements informent votre code de ce qui se passe dans la visionneuse. Écoutez-les avec [`on()`](./methods#on). En Vue, ce sont des événements du composant, comme `@apply`, et en React, ce sont des props, comme `onApply`. Si une fonction à l’écoute lève une erreur, la visionneuse continue : la page reçoit l’erreur comme toute erreur non interceptée, et les autres fonctions s’exécutent quand même.
 
 :::tabs key:framework
 == JavaScript
@@ -36,15 +36,19 @@ L’image est chargée et affichée. `width` et `height` sont sa taille en pixel
 
 ## `error`
 
-- **Données :** `{ error: Error }`
+- **Données :** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-L’image n’a pas pu être chargée, ou les changements n’ont pas pu être appliqués. Après un Appliquer qui échoue, la modification reste ouverte.
+Quelque chose a échoué, et `phase` dit quoi :
+
+- `'load'` : l’image n’a pas pu être chargée.
+- `'preview'` : une modification n’a pas pu être affichée, par exemple parce que l’image est trop grande pour le navigateur. La modification reste ouverte.
+- `'apply'` : les changements n’ont pas pu être appliqués. La modification reste ouverte.
 
 ## `change`
 
 - **Données :** [`PaperPicState`](./state)
 
-L’utilisateur a changé l’affichage ou la modification, par exemple en zoomant, en ouvrant un outil ou en annulant. Il signale aussi le début d’Appliquer, avec `busy: true`. `setOptions()` et les props des composants ne l’émettent jamais.
+L’utilisateur a changé l’affichage ou la modification, par exemple en zoomant, en ouvrant un outil ou en annulant. Il signale aussi le début d’Appliquer, avec `busy: true`. Déplacer l’image ne l’émet pas, car l’état ne contient pas sa position. `setOptions()` et les props des composants ne l’émettent jamais.
 
 ## `apply`
 

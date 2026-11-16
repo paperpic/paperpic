@@ -9,7 +9,7 @@ Le foto da telefono hanno 12 megapixel o più, e modificarle richiede lavoro ver
 
 ## Un Web Worker fa il lavoro
 
-Pulisci e Raddrizza impiegano più di un secondo su una foto da 12 megapixel su un telefono. Sul thread principale, la pagina resterebbe bloccata per tutto quel tempo. PaperPic li esegue invece in un Web Worker, così la pagina resta reattiva mentre Applica è in corso.
+Pulisci e Raddrizza impiegano circa un secondo e mezzo su una foto da 12 megapixel con un telefono recente, come mostrano i [tempi misurati](#measurements). Sul thread principale, la pagina resterebbe bloccata per tutto quel tempo. PaperPic li esegue quindi in un Web Worker, e la pagina continua a rispondere durante Applica.
 
 Il worker è incluso nel pacchetto e parte con lo standard `new Worker(new URL(…, import.meta.url))`, che bundler come Vite e webpack 5 riconoscono da soli, senza configurazione. Se il worker non può partire, la modifica gira sul thread principale: funziona comunque, ma la pagina può bloccarsi per un attimo con immagini grandi.
 
@@ -19,6 +19,8 @@ Con una Content Security Policy, consenti:
 
 - `worker-src 'self'`, per il worker.
 - `img-src blob:`, perché il visualizzatore mostra i file allegati e i risultati di Applica tramite URL `blob:`.
+- `paperpic` in `trusted-types`, se la tua policy limita le policy di Trusted Types, perché le icone dei pulsanti passano da quella policy.
+- Una policy `default` di Trusted Types il cui `createScriptURL` accetti l’URL del worker, se la tua policy richiede Trusted Types. I bundler riconoscono solo un worker creato con un URL semplice, che Trusted Types blocca, quindi senza quella policy la modifica gira sul thread principale.
 
 ## Foto grandi
 
@@ -26,9 +28,21 @@ Con una Content Security Policy, consenti:
 - **Ad Applica**, ogni cambiamento viene calcolato alla risoluzione piena. Le foto grandi richiedono qualche secondo, quindi il visualizzatore mostra un messaggio e blocca i controlli nel frattempo.
 - **Per risparmiare tempo e memoria**, imposta [`maxOutputSize`](../reference/options#maxoutputsize). Un limite come 2000 o 3000 pixel mantiene leggibili i documenti, rende Applica più veloce e i file più piccoli.
 
-## Immagini accettate
+## Tempi misurati {#measurements}
 
-`src` accetta un URL della stessa origine della tua pagina, oppure un `File` o un `Blob` allegato nel client. PaperPic legge i pixel dell’immagine, e i browser lo consentono per le immagini di altre origini solo tramite CORS, che PaperPic non richiede. Servi le immagini dal tuo dominio, oppure scaricale tu e passa il `Blob`.
+Ogni passo di Applica, nel worker, su un Pixel 10 Pro con Chrome 156:
+
+| Passo                             | 2 MP   | 12 MP  | 37,5 MP |
+| --------------------------------- | ------ | ------ | ------- |
+| Pulisci                           | 256 ms | 1,5 s  | 4,8 s   |
+| Raddrizza                         | 251 ms | 1,6 s  | 5,0 s   |
+| Esportazione in PNG               | 92 ms  | 378 ms | 979 ms  |
+| Esportazione in JPEG, qualità 0,9 | 33 ms  | 142 ms | 525 ms  |
+
+- Un movimento del righello di Pulisci richiede circa 40 ms sullo stesso telefono, perché lavora sull’anteprima di circa 2 MP.
+- Un computer desktop con 8 core fa ogni passo circa sei volte più in fretta.
+- A 37,5 MP, Pulisci ha bisogno di circa 340 MB di memoria al picco.
+- I telefoni Android di fascia media e gli iPhone non sono ancora misurati.
 
 ## Rendering lato server
 

@@ -7,6 +7,8 @@ description: Comment l’outil Recadrer de PaperPic garde la partie de la photo 
 
 La photo d’un document montre souvent la table, une main ou d’autres papiers autour. Recadrer garde le rectangle qui contient le document et écarte le reste.
 
+<Demo src="/samples/receipt.jpg" alt="Un ticket de caisse" :tools="['crop']" />
+
 ## Utilisation
 
 1. Appuyez sur Modifier, puis sur Recadrer. Un rectangle apparaît dans l’image, avec une poignée à chaque coin.

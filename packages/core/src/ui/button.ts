@@ -23,6 +23,36 @@ export function nameButton(button: HTMLButtonElement, label: string): void {
   button.title = label
 }
 
+/** The part of Trusted Types that the icons use. Its result is a `TrustedHTML`, which stands in for a string. */
+interface TrustedTypes {
+  createPolicy: (name: string, rules: { createHTML: (markup: string) => string }) => { createHTML: (markup: string) => string }
+}
+
+let trust: ((markup: string) => string) | undefined
+
+/**
+ * Passes the markup of an icon through the `paperpic` policy of Trusted Types, in the browsers that have them, so the
+ * viewer works under a Content Security Policy that requires them. The policy changes nothing: the markup is a built-in
+ * icon, or one that the consumer vouches for.
+ */
+function trustedMarkup(markup: string): string {
+  if (!trust) {
+    trust = html => html
+    try {
+      const policy = (globalThis as { trustedTypes?: TrustedTypes }).trustedTypes?.createPolicy('paperpic', {
+        createHTML: html => html,
+      })
+      if (policy) {
+        trust = html => policy.createHTML(html)
+      }
+    }
+    catch {
+      // The page does not allow this policy, so the browser reports the markup, and its message names the policy to allow
+    }
+  }
+  return trust(markup)
+}
+
 /** The markup of the icon that each button shows, so an icon that does not change is not parsed again. */
 const iconMarkup = new WeakMap<HTMLButtonElement, string>()
 
@@ -43,7 +73,7 @@ export function setIcon(button: HTMLButtonElement, markup: string): void {
   }
 
   const template = document.createElement('template')
-  template.innerHTML = markup
+  template.innerHTML = trustedMarkup(markup)
   const icon = template.content.firstElementChild
   if (icon) {
     icon.classList.add('paperpic-icon')

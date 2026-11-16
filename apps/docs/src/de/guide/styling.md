@@ -55,6 +55,8 @@ Fünf [CSS-Token](../reference/css-tokens) legen Hintergrund, Text, Akzentfarbe,
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="Ein Kassenbon" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 Die Token werden vererbt, also ändert eine Klasse auf dem Container eines Viewers, oder auf der Vue- oder React-Komponente, nur diesen Viewer:
 
 ```css

@@ -85,8 +85,8 @@ export function Receipt() {
 | 事件     | 时机                                             |
 | -------- | ------------------------------------------------ |
 | `apply`  | 结果就绪时，附带 `{ blob, width, height, type }` |
-| `change` | 用户每次操作之后，附带[状态](../reference/state) |
-| `error`  | 应用失败，或图片无法加载时                       |
+| `change` | 用户每次改变[状态](../reference/state)的操作之后 |
+| `error`  | 图片无法加载，或某项编辑无法显示或应用时         |
 
 :::tabs key:framework
 == JavaScript
@@ -128,13 +128,4 @@ pic.on('error', ({ error }) => console.error(error))
 
 ## 键盘
 
-焦点在查看器上时：
-
-| 按键                       | 操作                         |
-| -------------------------- | ---------------------------- |
-| `Ctrl+Z`                   | 撤销                         |
-| `Ctrl+Shift+Z` 或 `Ctrl+Y` | 重做                         |
-| `Enter`                    | 确认打开的工具，否则应用修改 |
-| `Esc`                      | 关闭打开的工具，否则取消修改 |
-
-在 macOS 上，`Cmd` 与 `Ctrl` 作用相同。
+焦点在查看器上时，可以用按键撤销、重做、确认和取消。[无障碍](./accessibility#keyboard)列出了所有按键。

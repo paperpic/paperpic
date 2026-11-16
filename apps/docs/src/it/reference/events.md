@@ -5,7 +5,7 @@ description: Gli eventi di PaperPic e cosa porta ciascuno, load, error, change, 
 
 # Eventi
 
-Gli eventi dicono al tuo codice cosa succede nel visualizzatore. Ascoltali con [`on()`](./methods#on). In Vue sono eventi del componente, come `@apply`, e in React sono props, come `onApply`.
+Gli eventi dicono al tuo codice cosa succede nel visualizzatore. Ascoltali con [`on()`](./methods#on). In Vue sono eventi del componente, come `@apply`, e in React sono props, come `onApply`. Se una funzione in ascolto lancia un errore, il visualizzatore va avanti: la pagina riceve l’errore come ogni errore non gestito, e le altre funzioni vengono eseguite lo stesso.
 
 :::tabs key:framework
 == JavaScript
@@ -36,15 +36,19 @@ L’immagine è caricata e visualizzata. `width` e `height` sono la sua dimensio
 
 ## `error`
 
-- **Dati:** `{ error: Error }`
+- **Dati:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-Non è stato possibile caricare l’immagine o applicare i cambiamenti. Dopo un Applica fallito, la modifica resta aperta.
+Qualcosa è fallito, e `phase` dice cosa:
+
+- `'load'`: non è stato possibile caricare l’immagine.
+- `'preview'`: non è stato possibile mostrare una modifica, per esempio perché l’immagine è troppo grande per il browser. La modifica resta aperta.
+- `'apply'`: non è stato possibile applicare i cambiamenti. La modifica resta aperta.
 
 ## `change`
 
 - **Dati:** [`PaperPicState`](./state)
 
-L’utente ha cambiato la visualizzazione o la modifica, ad esempio zoomando, aprendo uno strumento o annullando. Segnala anche l’inizio di Applica, con `busy: true`. `setOptions()` e le props dei componenti non lo emettono mai.
+L’utente ha cambiato la visualizzazione o la modifica, ad esempio zoomando, aprendo uno strumento o annullando. Segnala anche l’inizio di Applica, con `busy: true`. Spostare l’immagine non lo emette, perché lo stato non contiene la sua posizione. `setOptions()` e le props dei componenti non lo emettono mai.
 
 ## `apply`
 

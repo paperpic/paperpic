@@ -77,7 +77,8 @@ The packages share one version: `.changeset/config.json` puts them in a `fixed` 
 The sentence goes straight into `CHANGELOG.md`, which users read.
 
 - Describe what changes for **users of the package**, not how the code changed.
-- Name public APIs in backticks: `` `PaperPic` ``, `` `normalizeRotation` ``.
+- A change that users cannot see, such as a refactor, still changes the code they install, so it needs a `patch` changeset. Say in one sentence that nothing changes for them.
+- Name public APIs in backticks: `` `PaperPic` ``, `` `setOptions()` ``.
 - For breaking changes, add the migration steps below the first sentence. A changeset can hold several paragraphs.
 
 Reviewers check the changeset wording like any other line of the pull request. To fix wording after merging, open a small PR that edits the `.changeset/*.md` file while it is still pending.
@@ -126,21 +127,21 @@ Nothing has to be merged back into `development`: the versions were bumped there
 ### Safety nets
 
 - If changesets reach `main` without passing through the version PR, the `unversioned` job fails and says what to do.
-- Publishing runs only when the repository variable `NPM_PUBLISH` is `true`. It is not set yet; see [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+- Publishing runs only when the repository variable `NPM_PUBLISH` is `true`.
 - The **Release tags** ruleset blocks deleting, moving or force-pushing any `@paperpic/*` tag, so a tag always points at the code that was published.
 - The `npm` environment can only deploy from `main`, and administrators cannot skip its approval.
 
 ## Automation reference
 
-| What                   | When                                        | Does                                                                            |
-| ---------------------- | ------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`; coverage in the run summary |
-| `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji    |
-| `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                  |
-| `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included |
-| `changeset-status.yml` | PRs into `development` from this repository | Comments whether the PR has a changeset and which packages it releases          |
-| CodeQL                 | PRs and pushes                              | GitHub code scanning                                                            |
-| Dependabot             | Weekly (npm), monthly (actions)             | npm: security fixes only. Actions: version bumps after a 7-day cooldown         |
+| What                   | When                                        | Does                                                                                                        |
+| ---------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`, the Playwright smoke tests; coverage in the run summary |
+| `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji                                |
+| `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                                              |
+| `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included                             |
+| `changeset-status.yml` | PRs into `development` from this repository | Comments whether the PR has a changeset and which packages it releases                                      |
+| CodeQL                 | PRs and pushes                              | GitHub code scanning                                                                                        |
+| Dependabot             | Weekly (npm), monthly (actions)             | npm: security fixes only. Actions: version bumps after a 7-day cooldown                                     |
 
 Every action in a workflow must be pinned to a full commit SHA, and only GitHub-owned actions plus an allowlist can run. A new third-party action needs a repository admin to add it under **Settings → Actions → General**.
 

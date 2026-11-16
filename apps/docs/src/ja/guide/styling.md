@@ -55,6 +55,8 @@ import '@paperpic/react/style.css'
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="レシート" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 トークンは継承されるため、1 つのビューアーのコンテナー、または Vue や React のコンポーネントにクラスを付けると、そのビューアーだけが変わります。
 
 ```css

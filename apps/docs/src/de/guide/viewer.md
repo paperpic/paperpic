@@ -18,7 +18,7 @@ Kleingedrucktes und lange Kassenbons sind auf einem Bildschirm schwer auf einen 
 | Zwischen Einpassung und 100 % wechseln | Doppelklick                                | Doppeltippen |             |
 | Das ganze Bild einpassen               |                                            |              | `0`         |
 
-Die Tastatur funktioniert, wenn der Viewer den Fokus hat. Mit zwei Fingern zoomt man um den Punkt zwischen den Fingern. Auf einem Touchscreen scrollt ein Finger die Seite, solange das Bild eingepasst ist, und verschiebt das Bild, sobald es vergrößert ist.
+Die Tastatur funktioniert, wenn der Viewer den Fokus hat. Solange es nichts zu verschieben gibt, scrollen die Pfeiltasten die Seite. Mit zwei Fingern zoomt man um den Punkt zwischen den Fingern. Auf einem Touchscreen scrollt ein Finger die Seite, solange das Bild eingepasst ist, und verschiebt das Bild, sobald es vergrößert ist.
 
 Der Zoom reicht von der Einpassung des ganzen Bildes, oder 100 % bei einem kleinen Bild, bis 800 %. Ein Bild, das hineinpasst, bleibt zentriert, und eines, das übersteht, lässt sich bis zu seinen Rändern verschieben.
 

@@ -5,7 +5,7 @@ description: Die Ereignisse von PaperPic und was jedes liefert, load, error, cha
 
 # Ereignisse
 
-Ereignisse teilen deinem Code mit, was im Viewer passiert. Höre mit [`on()`](./methods#on) auf sie. In Vue sind sie Komponentenereignisse wie `@apply`, in React Props wie `onApply`.
+Ereignisse teilen deinem Code mit, was im Viewer passiert. Höre mit [`on()`](./methods#on) auf sie. In Vue sind sie Komponentenereignisse wie `@apply`, in React Props wie `onApply`. Wirft eine zuhörende Funktion einen Fehler, läuft der Viewer weiter: Die Seite erhält den Fehler wie jeden nicht abgefangenen, und die anderen Funktionen laufen trotzdem.
 
 :::tabs key:framework
 == JavaScript
@@ -36,15 +36,19 @@ Das Bild ist geladen und wird angezeigt. `width` und `height` sind seine Größe
 
 ## `error`
 
-- **Daten:** `{ error: Error }`
+- **Daten:** `{ error: Error, phase: 'load' | 'preview' | 'apply' }`
 
-Das Bild konnte nicht geladen oder die Änderungen nicht übernommen werden. Nach einem fehlgeschlagenen Übernehmen bleibt die Bearbeitung offen.
+Etwas ist fehlgeschlagen, und `phase` sagt, was:
+
+- `'load'`: Das Bild konnte nicht geladen werden.
+- `'preview'`: Eine Bearbeitung konnte nicht angezeigt werden, etwa weil das Bild für den Browser zu groß ist. Die Bearbeitung bleibt offen.
+- `'apply'`: Die Änderungen konnten nicht übernommen werden. Die Bearbeitung bleibt offen.
 
 ## `change`
 
 - **Daten:** [`PaperPicState`](./state)
 
-Der Nutzer hat die Ansicht oder die Bearbeitung geändert, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es meldet auch den Start von Übernehmen, mit `busy: true`. `setOptions()` und die Props der Komponenten lösen es nie aus.
+Der Nutzer hat die Ansicht oder die Bearbeitung geändert, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es meldet auch den Start von Übernehmen, mit `busy: true`. Das Verschieben des Bildes löst es nicht aus, weil der Zustand seine Position nicht enthält. `setOptions()` und die Props der Komponenten lösen es nie aus.
 
 ## `apply`
 

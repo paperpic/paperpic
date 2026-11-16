@@ -9,30 +9,94 @@ Questa pagina ti accompagna dall’installazione di PaperPic fino a mostrare un�
 
 ## Installazione
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue` richiede Vue 3.5 o successivo.
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react` richiede React 19 o successivo.
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react` richiede React 19 o successivo.
+
+::::
+
+### Senza bundler {#cdn}
+
+Il core si carica anche da una CDN che serve i file del pacchetto così come sono, come jsDelivr. Importa `dist/index.js` da uno script di modulo, e collega `dist/style.css`:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: 'Uno scontrino' })
+</script>
+```
+
+I browser avviano un worker solo dall’origine della pagina, quindi lì la modifica gira sul thread principale: funziona, ma le foto grandi bloccano la pagina per un momento durante Applica. Servi i file dalla tua origine, o usa un bundler, per mantenere il worker. I componenti per Vue e React hanno bisogno di un bundler.
 
 ## Mostrare un’immagine
 
@@ -87,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` accetta un URL della stessa origine della tua pagina, o un `File` scelto dall’utente, ad esempio da un `<input type="file">`. `alt` descrive l’immagine per i lettori di schermo.
+`src` accetta un URL della stessa origine della tua pagina, o un `File` scelto dall’utente, ad esempio da un `<input type="file">`. `alt` descrive l’immagine per i lettori di schermo. [Caricare le immagini](./loading) spiega le immagini da altre origini, i formati e gli errori di caricamento.
 
 ## Ricevere l’immagine modificata
 
@@ -126,19 +190,28 @@ async function upload(blob: Blob) {
 
 Il `blob` mantiene il formato dell’immagine originale, oppure è PNG quando l’utente ha pulito il documento. L’opzione [`output`](../reference/options#output) lo cambia.
 
+## Rimuovere il visualizzatore {#destroy}
+
+I componenti per Vue e React creano il visualizzatore quando vengono montati e lo distruggono quando vengono smontati. Con il core, chiama [`destroy()`](../reference/methods#destroy) quando togli il visualizzatore dalla pagina, per esempio quando cambia la route:
+
+```ts
+pic.destroy()
+```
+
+Toglie il visualizzatore dal suo contenitore, ferma i suoi listener e il suo worker, e libera la memoria dell’immagine. Per mostrarlo di nuovo, creane uno nuovo.
+
 ## Mostrare soltanto l’immagine
 
 Per mostrare un documento che non si deve modificare, disattiva la modifica con `editable: false`. La pagina [Visualizzatore](./viewer) lo mostra in azione.
 
 ## Requisiti
 
-- PaperPic funziona nei browser di [Baseline Widely Available](https://web.dev/baseline).
-- La modifica gira in un Web Worker, che bundler come Vite e webpack riconoscono da soli. Se il worker non può partire, la modifica gira sul thread principale: funziona comunque, ma la pagina può bloccarsi per un attimo con immagini grandi.
-- Con una Content Security Policy, consenti il worker con `worker-src 'self'`, e consenti `img-src blob:`, perché il visualizzatore mostra i file allegati e i risultati tramite URL `blob:`.
-- Con il rendering lato server, come in Nuxt o Next.js, i componenti Vue e React renderizzano un elemento vuoto sul server e creano il visualizzatore nel browser. Con il core, crea tu il visualizzatore nel browser.
+PaperPic funziona nei browser di [Baseline Widely Available](https://web.dev/baseline). [Prestazioni e compatibilità](./performance) tratta il worker, la Content Security Policy, il rendering lato server e le foto grandi.
 
 ## Prossimi passi
 
+- [Caricare le immagini](./loading): da dove viene l’immagine e quali formati si aprono.
 - [Visualizzatore](./viewer): zoom, adattamento e uso in sola lettura.
 - [Modifica](./editing): la modalità di modifica, gli strumenti e Applica.
 - [Opzioni](../reference/options): tutto ciò che puoi configurare.
+- [Risoluzione dei problemi](./troubleshooting): quando il visualizzatore non si vede o non funziona come dovrebbe.

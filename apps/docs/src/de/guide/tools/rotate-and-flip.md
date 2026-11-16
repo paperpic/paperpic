@@ -7,6 +7,8 @@ description: Wie man das Bild eines Dokuments in PaperPic dreht und spiegelt, im
 
 Handys speichern das Foto eines Dokuments oft seitlich oder kopfüber, und manche Scans kommen gespiegelt heraus. Nach links drehen und Spiegeln korrigieren die Ausrichtung und lassen den Rest des Bildes unverändert.
 
+<Demo src="/samples/receipt.jpg" alt="Ein Kassenbon" :tools="['rotate', 'flip']" />
+
 ## Drehen
 
 In der Bearbeitungsleiste dreht Nach links drehen das Bild um eine Vierteldrehung gegen den Uhrzeigersinn, wie in Fotogalerien. Drücke zweimal für eine halbe Drehung oder dreimal für eine Vierteldrehung im Uhrzeigersinn.
@@ -22,7 +24,7 @@ pic.rotate(-1)
 
 ## Spiegeln
 
-Spiegeln spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vierteldrehung also weiterhin von links nach rechts auf dem Bildschirm. Um ein Bild auf den Kopf zu stellen, spiegle es und drehe es zweimal.
+Spiegeln spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vierteldrehung also weiterhin von links nach rechts auf dem Bildschirm. Um ein Bild von oben nach unten zu spiegeln, spiegle es und drehe es zweimal.
 
 Spiegelungen und Drehungen, die sich aufheben, lassen nichts zu übernehmen. Aus dem Code rufst du [`flip()`](../../reference/methods#flip) auf.
 

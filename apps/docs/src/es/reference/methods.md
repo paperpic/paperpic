@@ -27,7 +27,7 @@ class PaperPic {
 
 Crea el visor dentro de `container`, que llena por completo. Dale una altura al contenedor, o el visor se queda en su altura mínima. [Opciones](./options) explica lo que acepta `options`.
 
-Lanza un `TypeError` si `container` no es un elemento. Crea el visor cuando el elemento ya exista, por ejemplo al montarlo.
+Lanza un `TypeError` si `container` no es un elemento. Crea el visor cuando el elemento ya exista, por ejemplo al montarlo. Lanza un `RangeError` si una opción está fuera de su rango.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ Quita el visor y libera todo lo que ocupa, como su worker y la memoria de sus im
 function setOptions(options: PaperPicOptions): void
 ```
 
-Cambia las opciones que pasas y mantiene las demás. `undefined` devuelve una opción a su valor por defecto. Nunca emite `change`, así que los enlaces bidireccionales no entran en bucle.
+Cambia las opciones que pasas y mantiene las demás. `undefined` devuelve una opción a su valor por defecto. Nunca emite `change`, así que los enlaces bidireccionales no entran en bucle. Lanza un `RangeError` si una opción está fuera de su rango, y entonces no cambia ninguna.
 
 ### `getState()`
 
@@ -129,7 +129,7 @@ Gira la imagen un cuarto de vuelta: en el sentido de las agujas del reloj con `1
 function flip(): void
 ```
 
-Voltea la imagen de izquierda a derecha tal como se ve, así que después de un cuarto de vuelta sigue volteando de izquierda a derecha. Para ponerla boca abajo, voltéala y gírala dos veces. Es un cambio, y no hace nada fuera del modo de edición ni con una herramienta abierta.
+Voltea la imagen de izquierda a derecha tal como se ve, así que después de un cuarto de vuelta sigue volteando de izquierda a derecha. Para reflejarla de arriba abajo, voltéala y gírala dos veces. Es un cambio, y no hace nada fuera del modo de edición ni con una herramienta abierta.
 
 ### `openTool()`
 

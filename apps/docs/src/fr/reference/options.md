@@ -13,7 +13,7 @@ const pic = new PaperPic(container, { src: '/receipt.jpg', alt: 'Un ticket de ca
 pic.setOptions({ editable: false })
 ```
 
-`setOptions()` ne change que les options que vous passez, et `undefined` remet une option à sa valeur par défaut. Elle n’émet jamais `change`.
+`setOptions()` ne change que les options que vous passez, et `undefined` remet une option à sa valeur par défaut. Elle n’émet jamais `change`. Une option hors de sa plage lève une `RangeError` qui la nomme, comme un `softness` de 2.
 
 ## Image
 
@@ -54,7 +54,7 @@ Indique s’il faut afficher la barre d’outils et la barre de modification int
 - **Type :** [`readonly ToolId[]`](./types#toolid)
 - **Valeur par défaut :** tous les outils
 
-Les outils que propose la barre de modification. Ils gardent l’ordre de ce tableau, quel que soit l’ordre du tableau passé.
+Les outils que propose la barre de modification. Ils gardent l’ordre de ce tableau, quel que soit l’ordre du tableau passé. Elle ne choisit que les boutons : les [méthodes](./methods) fonctionnent avec tous les outils.
 
 | Id              | Bouton                                      |
 | --------------- | ------------------------------------------- |

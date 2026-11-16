@@ -42,10 +42,10 @@ export interface EditBarState {
   canUndo: boolean
   canZoomIn: boolean
   canZoomOut: boolean
-  /** Whether the edits already clean up the document, so an open Clean up offers its switch to turn it off. */
-  cleanedUp: boolean
   /** The clean up on display, which an open Clean up may still change. */
   threshold: { enabled: boolean, sensitivity: number }
+  /** Whether the edits already clean up the document, so an open Clean up offers its switch to turn it off. */
+  thresholdInEdits: boolean
 }
 
 /** Creates a dot that marks a button whose setting is in effect. */
@@ -98,7 +98,7 @@ export class EditBar {
   private adjustment: AdjustmentName = 'brightness'
   /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
   private hintOverride: string | null = null
-  private cleanedUp = false
+  private thresholdInEdits = false
   private canApply = false
   private busy = false
 
@@ -330,16 +330,15 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow, and what the panel of an open tool shows. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, cleanedUp, threshold, adjustments }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, thresholdInEdits, threshold, adjustments }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
-    this.cleanedUp = cleanedUp
+    this.thresholdInEdits = thresholdInEdits
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
-    this.zoomInButton.setAttribute('aria-disabled', String(!canZoomIn))
-    this.zoomOutButton.setAttribute('aria-disabled', String(!canZoomOut))
+    this.updateView({ canZoomIn, canZoomOut })
     // A cleaned document has tones of its own, so brightness and contrast are not in effect
     const adjusted = !threshold.enabled && (adjustments.brightness !== 0 || adjustments.contrast !== 0)
     for (const { tool, button } of this.toolButtons) {
@@ -361,6 +360,12 @@ export class EditBar {
       this.rulers[name].setDisabled(busy)
     }
     this.showPanel()
+  }
+
+  /** Updates the zoom buttons of an open tool, which a pan or a zoom changes. */
+  updateView({ canZoomIn, canZoomOut }: Pick<EditBarState, 'canZoomIn' | 'canZoomOut'>): void {
+    this.zoomInButton.setAttribute('aria-disabled', String(!canZoomIn))
+    this.zoomOutButton.setAttribute('aria-disabled', String(!canZoomOut))
   }
 
   /** Cancels, asking first if there are changes to lose. */
@@ -402,7 +407,7 @@ export class EditBar {
       ? this.labels[this.activeTool.actions[0]!.id]
       : ''
     const hasCorners = id === 'crop' || id === 'perspective'
-    const hasSwitch = id === 'threshold' && this.cleanedUp
+    const hasSwitch = id === 'threshold' && this.thresholdInEdits
     this.toolControls.setAttribute('aria-label', name)
     this.corners.hidden = !hasCorners
     // A tool without a switch or a choice shows its name in their place

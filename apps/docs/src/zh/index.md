@@ -2,12 +2,12 @@
 layout: home
 title: PaperPic
 titleTemplate: 文档图像查看与编辑工具
-description: 开源的文档图像查看与编辑工具。支持缩放、旋转、透视校正、亮度和对比度调整、黑白转换以及阴影去除。
+description: 面向浏览器的文档图像查看与编辑工具：矫正、裁剪、旋转和清理手机照片、扫描件以及任何带文字的图片。适用于原生 JavaScript、Vue 和 React。
 
 hero:
   name: Paper<span class="name-accent">Pic</span>
-  text: 让文档图像恰到好处
-  tagline: 查看和编辑文档照片。缩放、旋转、校正透视、调整亮度和对比度、转换为清晰的黑白效果并去除阴影。
+  text: 在浏览器中得到清晰易读的文档图像
+  tagline: 矫正、裁剪和清理手机照片、扫描件或任何带文字的图片。支持原生 JavaScript、Vue 和 React，在你的代码发送之前，任何内容都不会离开设备。
   actions:
     - theme: brand
       text: 快速开始
@@ -54,3 +54,50 @@ comparison:
   beforeAlt: "桌上一张收据的照片，斜着拍摄，部分处于阴影中"
   afterAlt: "同一张收据，经过矫正并清理成黑白"
 ---
+
+## 数据不会离开浏览器
+
+PaperPic 在用户的设备上、在 Web Worker 中编辑图片，不需要服务器，也不会自行发出任何请求。收据、身份证或合同的照片只有在你的代码发送结果时才会离开设备。
+
+## 几行代码即可开始
+
+安装对应框架的包，给容器设置高度，然后监听应用：
+
+:::tabs key:framework
+== JavaScript
+
+```ts
+import { PaperPic } from '@paperpic/core'
+import '@paperpic/core/style.css'
+
+const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, { src: '/receipt.jpg', alt: '一张收据' })
+pic.on('apply', ({ blob }) => upload(blob))
+```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import '@paperpic/vue/style.css'
+</script>
+
+<template>
+  <PaperPic src="/receipt.jpg" alt="一张收据" @apply="({ blob }) => upload(blob)" />
+</template>
+```
+
+== React
+
+```tsx
+import { PaperPic } from '@paperpic/react'
+import '@paperpic/react/style.css'
+
+export function Receipt() {
+  return <PaperPic src="/receipt.jpg" alt="一张收据" onApply={({ blob }) => upload(blob)} />
+}
+```
+
+:::
+
+[快速开始](./guide/getting-started)介绍了安装和每一步。

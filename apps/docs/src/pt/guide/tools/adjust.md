@@ -7,6 +7,8 @@ description: Como a ferramenta Ajustar do PaperPic muda o brilho e o contraste d
 
 Fotos tiradas com pouca luz saem escuras ou acinzentadas. Ajustar muda o brilho e o contraste e mantém as cores, para documentos que não devem virar preto e branco, como formulários coloridos ou fotos.
 
+<Demo src="/samples/receipt.jpg" alt="Um recibo" :tools="['adjust']" />
+
 ## Como usar
 
 1. Toque em Editar e depois em Ajustar. O painel dele ocupa o lugar das ferramentas: uma régua, com Brilho e Contraste para escolher qual tom ela muda.

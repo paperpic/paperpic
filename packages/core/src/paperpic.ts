@@ -1,31 +1,36 @@
-import type { PaperPicDownload } from './download'
+import type { Gestures } from './input/gestures'
 import type { KeyCommand } from './input/keyboard'
-import type { ExportedImage, PaperPicOutput } from './pipeline/export'
-import type { AdjustSetting, Operation, PipelineStep, ToneStep } from './pipeline/operations'
+import type { OptionName, PaperPicOptions, ResolvedOptions } from './options'
+import type { PaperPicDownload } from './pipeline/download'
+import type { ExportedImage } from './pipeline/export'
+import type { LoadedImage, PaperPicSource } from './pipeline/load-image'
+import type { Operation } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
-import type { LoadedImage } from './render/load-image'
+import type { ToneStep } from './pipeline/steps'
+import type { Size } from './processing/types'
 import type { Scene } from './render/renderer'
-import type { Rotation } from './rotation'
 import type { History } from './state/history'
-import type { Fit, Size, View, ViewPoint } from './state/view'
-import type { Lens } from './tools/magnifier'
-import type { Tool, ToolContext, ToolHost, ToolId, ToolSession } from './tools/types'
-import type { PaperPicIcons } from './ui/icons'
+import type { Fit, Rotation, View, ViewPoint } from './state/view'
+import type { PanelDraft, Tool, ToolContext, ToolHost, ToolId, ToolSession } from './tools/types'
 import type { PaperPicLabels } from './ui/labels'
-import { downloadName, saveFile } from './download'
 import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
+import { DEFAULT_OPTIONS, mergeOptions, OPTION_NAMES, sameOption, validateOptions } from './options'
+import { downloadName, saveFile } from './pipeline/download'
 import { exportImage } from './pipeline/export'
+import { loadImage } from './pipeline/load-image'
 import { adjustSetting, thresholdSetting, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
 import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
-import { PipelineRunner } from './pipeline/run'
-import { loadImage } from './render/load-image'
+import { PreviewQueue } from './pipeline/preview-queue'
+import { PipelineRunner } from './pipeline/runner'
+import { paintMagnifier } from './render/magnifier'
 import { Renderer } from './render/renderer'
-import { computeTransform } from './render/transform'
 import { addToHistory, createHistory, redoHistory, undoHistory } from './state/history'
 import { createView, displayedSize, fitView, frameToViewport, overflows, panBy, resizeView, rotateView, setRotation, viewportToFrame, zoomLimits, zoomTo } from './state/view'
-import { ALL_TOOL_IDS, TOOLS } from './tools'
+import { TOOLS } from './tools'
+import { adjustEdit, canAdjust } from './tools/adjust'
+import { confirmThreshold, openThreshold, thresholdEdit, thresholdOperation } from './tools/threshold'
 import { EditBar } from './ui/edit-bar'
 import { DEFAULT_ICONS } from './ui/icons'
 import { DEFAULT_LABELS } from './ui/labels'
@@ -36,61 +41,8 @@ const ZOOM_STEP = 1.25
 const ZOOM_TOLERANCE = 0.001
 const TOOLBAR_GAP = 16
 const NO_PREVIEW = JSON.stringify({ steps: [], tone: null })
-const LENS_ZOOM = 3
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
-
-/**
- * The image to show: a URL from the same origin, or a file attached on the client.
- *
- * @see https://paperpic.dev/reference/options#src
- */
-export type PaperPicSource = string | Blob
-
-/**
- * What the constructor and `setOptions()` take.
- *
- * @see https://paperpic.dev/reference/options
- */
-export interface PaperPicOptions {
-  /** Describes the image for screen readers. Without it, they skip the image, as they skip an `<img>` with an empty `alt`. */
-  alt?: string
-  /** The real proportions of the document, as width divided by height, such as `210 / 297` for A4. Without it, straightening estimates them. */
-  aspectRatio?: number
-  /** Whether the toolbar has a button that saves the image on display, which is the result of the last Apply or else the source. */
-  download?: boolean
-  /**
-   * Whether the image can be edited. With `false` it is a read-only viewer, whose toolbar can also rotate the image.
-   * That rotation only changes the display.
-   */
-  editable?: boolean
-  /** The name of the saved file. By default, the name of the source. The extension follows the format of the image. */
-  filename?: string
-  /**
-   * Replaces any of the icons with the markup of one element, such as an `<svg>`. The markup is inserted as HTML, so
-   * pass only markup you trust. An empty string leaves the buttons of that icon without one.
-   */
-  icons?: Partial<PaperPicIcons>
-  /** Replaces any of the texts, which are in English by default. */
-  labels?: Partial<PaperPicLabels>
-  /** The longest side of the edited image, in pixels. By default, it keeps the full resolution. */
-  maxOutputSize?: number
-  /** The format of the edited image. By default, the format of the source. */
-  output?: PaperPicOutput
-  /**
-   * From 0 to 1. How much gray cleaning up a document keeps, which makes letters easier to read. By default, 0.25.
-   * Use 0 for strict black and white, which gives smaller files but breaks thin strokes.
-   */
-  softness?: number
-  /** The image to show. Passing the same value again does not reload it: use `reload()`. */
-  src?: PaperPicSource
-  /** Whether to show the built-in toolbar and edit bar. Without them, build your own with the public methods. */
-  toolbar?: boolean
-  /** Which tools the edit bar offers. By default, all of them. */
-  tools?: readonly ToolId[]
-  /** Whether the wheel zooms. Turn it off when the viewer sits in a long page. */
-  wheelZoom?: boolean
-}
 
 /**
  * What the viewer is showing, which `getState()` returns and the `change` event carries.
@@ -137,42 +89,21 @@ export interface PaperPicState {
 export interface PaperPicEvents {
   /** The user applied the changes. The result is already on display. */
   apply: ExportedImage
-  /** The user changed the view or the edit. `setOptions()` never triggers it. */
+  /** The user changed something in the state, such as the zoom or the edit. A pan and `setOptions()` never trigger it. */
   change: PaperPicState
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
   download: PaperPicDownload
-  /** The image could not be loaded, or the changes could not be applied. */
-  error: { error: Error }
+  /**
+   * Something failed. `phase` says what: `'load'` for the image, `'preview'` for the pixels of an edit on display,
+   * which leaves the edit open, and `'apply'` for the changes.
+   */
+  error: { error: Error, phase: 'load' | 'preview' | 'apply' }
   /** The image is ready. */
   load: Size
 }
 
-/** What an open Adjust or Clean up shows, before Done turns it into one edit. */
-type Draft
-  = | { setting: AdjustSetting, tool: 'adjust' }
-    | { setting: { enabled: boolean, sensitivity: number }, tool: 'threshold' }
-
 type Listener<Name extends keyof PaperPicEvents> = (payload: PaperPicEvents[Name]) => void
 type Listeners = { [Name in keyof PaperPicEvents]: Set<Listener<Name>> }
-type OptionalOption = 'icons' | 'labels' | 'output' | 'maxOutputSize' | 'aspectRatio' | 'softness' | 'filename'
-type ResolvedOptions = Required<Omit<PaperPicOptions, 'src' | OptionalOption>> & Pick<PaperPicOptions, OptionalOption>
-
-const DEFAULT_OPTIONS: ResolvedOptions = {
-  alt: '',
-  aspectRatio: undefined,
-  download: false,
-  editable: true,
-  filename: undefined,
-  icons: undefined,
-  labels: undefined,
-  maxOutputSize: undefined,
-  output: undefined,
-  softness: undefined,
-  toolbar: true,
-  tools: ALL_TOOL_IDS,
-  wheelZoom: true,
-}
-
 /**
  * A document image viewer and editor. It fills its container, which needs a height. Import the stylesheet once, from
  * `@paperpic/core/style.css`.
@@ -193,6 +124,7 @@ export class PaperPic {
   private readonly toolbar: Toolbar
   private readonly editBar: EditBar
   private readonly renderer: Renderer
+  private readonly gestures: Gestures
   private readonly runner = new PipelineRunner()
   private readonly listeners: Listeners = {
     apply: new Set(),
@@ -213,14 +145,26 @@ export class PaperPic {
   /** What the edits look like, while they need other pixels than the image. */
   private preview: Preview | null = null
   private previewKey = NO_PREVIEW
-  private previewId = 0
-  private previewing = false
+  private readonly previewQueue = new PreviewQueue({
+    render: (steps, tone) => renderPreview(this.image!, steps, tone, this.runner),
+    ready: preview => this.showPreview(preview),
+    failed: cause => this.previewFailed(cause),
+    tint: (tone) => {
+      if (this.preview?.tint) {
+        this.preview.tint(tone)
+        this.renderer.requestPaint()
+      }
+    },
+  })
+
   /** The open tool with a selection of its own, such as Crop. */
   private session: { handle: ToolSession, tool: Tool } | null = null
   /** The open Adjust or Clean up. */
-  private draft: Draft | null = null
+  private draft: PanelDraft | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
+  /** Changes when an edit ends without a trace, so an Apply that finishes afterwards knows that its edit is gone. */
+  private editId = 0
   private view: View = createView()
   private viewport: Size = { width: 0, height: 0 }
   private mode: PaperPicState['mode'] = 'view'
@@ -232,6 +176,7 @@ export class PaperPic {
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
    * @throws {TypeError} If `container` is not an element. Create the instance once the element exists, such as on mount.
+   * @throws {RangeError} If an option is out of its range, such as a `softness` of 2.
    *
    * @example
    * const pic = new PaperPic(container, {
@@ -245,6 +190,8 @@ export class PaperPic {
     if (!(container instanceof HTMLElement)) {
       throw new TypeError('PaperPic needs an HTML element as its container. Create the instance once the element exists, such as on mount.')
     }
+    // Before anything reaches the page, so a wrong option leaves nothing behind
+    validateOptions(options)
 
     this.root = document.createElement('div')
     this.root.className = 'paperpic'
@@ -320,13 +267,13 @@ export class PaperPic {
 
     this.renderer = new Renderer(this.canvas, overlay, () => this.scene())
 
-    this.cleanups.push(attachGestures(this.viewportElement, {
+    this.gestures = attachGestures(this.viewportElement, {
       onPan: (deltaX, deltaY) => this.pan(deltaX, deltaY),
       onZoom: (factor, point) => this.zoomAround(this.view.zoom * factor, point),
       onTap: point => this.session?.handle.tap?.(point) ?? false,
       onDoubleTap: point => this.toggleZoom(point),
-      wheelZoom: () => this.options.wheelZoom,
-    }))
+    })
+    this.cleanups.push(this.gestures.detach)
 
     const onKeyDown = (event: KeyboardEvent) => {
       const command = keyToCommand(event)
@@ -354,7 +301,7 @@ export class PaperPic {
     observer.observe(this.viewportElement)
     this.cleanups.push(() => observer.disconnect())
 
-    this.setOptions(options)
+    this.changeOptions(options, true)
     this.measure()
   }
 
@@ -362,39 +309,61 @@ export class PaperPic {
    * Changes only the options you pass, and `undefined` brings one back to its default. It does not emit `change`, so
    * two-way bindings do not loop.
    *
+   * @throws {RangeError} If an option is out of its range, such as a `softness` of 2. No option changes then.
+   *
    * @example
    * pic.setOptions({ editable: false })
    */
   setOptions(options: PaperPicOptions): void {
+    this.changeOptions(options, false)
+  }
+
+  /**
+   * Applies the options that changed. Options with the same values change nothing, so a wrapper can pass them all on
+   * every render, and a message on screen stays. The constructor passes `initial` to set everything up.
+   */
+  private changeOptions(options: PaperPicOptions, initial: boolean): void {
     if (this.destroyed) {
       return
     }
-    const next: ResolvedOptions = { ...this.options }
-    for (const name of Object.keys(DEFAULT_OPTIONS) as (keyof ResolvedOptions)[]) {
-      if (name in options) {
-        // Wrappers pass every option, with undefined for the ones not set
-        Object.assign(next, { [name]: options[name] ?? DEFAULT_OPTIONS[name] })
-      }
+    validateOptions(options)
+    const previous = this.options
+    const next = mergeOptions(previous, options)
+    const changed = (name: OptionName) => initial || !sameOption(previous[name], next[name])
+    const reload = 'src' in options && options.src !== this.source
+    if (!reload && !OPTION_NAMES.some(changed)) {
+      return
     }
-    const wasEditable = this.options.editable
+    const wasEditable = previous.editable
     this.options = next
 
-    this.labels = {
-      ...DEFAULT_LABELS,
-      ...next.labels,
+    if (changed('wheelZoom')) {
+      this.gestures.setWheelZoom(next.wheelZoom)
     }
-    this.toolbar.setLabels(this.labels)
-    this.editBar.setLabels(this.labels)
-    // An icon that keeps its markup is not parsed again, so wrappers can pass the same icons on every change
-    const icons = {
-      ...DEFAULT_ICONS,
-      ...next.icons,
+    if (changed('labels')) {
+      this.labels = {
+        ...DEFAULT_LABELS,
+        ...next.labels,
+      }
+      this.toolbar.setLabels(this.labels)
+      this.editBar.setLabels(this.labels)
+      this.viewportElement.setAttribute('aria-label', this.labels.viewer)
     }
-    this.toolbar.setIcons(icons)
-    this.editBar.setIcons(icons)
-    this.editBar.setTools(next.tools)
-    this.viewportElement.setAttribute('aria-label', this.labels.viewer)
-    this.describeImage(next.alt)
+    if (changed('icons')) {
+      // An icon that keeps its markup is not parsed again, so new icons with some of the same markup are cheap
+      const icons = {
+        ...DEFAULT_ICONS,
+        ...next.icons,
+      }
+      this.toolbar.setIcons(icons)
+      this.editBar.setIcons(icons)
+    }
+    if (changed('tools')) {
+      this.editBar.setTools(next.tools)
+    }
+    if (changed('alt')) {
+      this.describeImage(next.alt)
+    }
 
     if (next.editable !== wasEditable) {
       this.leaveEdit()
@@ -509,9 +478,7 @@ export class PaperPic {
    * is a flip and a half turn. It does nothing outside the edit mode, or while a tool is open.
    */
   flip(): void {
-    if (this.options.tools.includes('flip')) {
-      this.addOperation({ type: 'flip' })
-    }
+    this.addOperation({ type: 'flip' })
   }
 
   /** Starts editing. It does nothing if the image is not ready or cannot be edited. */
@@ -554,27 +521,26 @@ export class PaperPic {
    */
   openTool(id: ToolId): void {
     const tool = TOOLS.find(candidate => candidate.id === id)
-    if (this.mode !== 'edit' || this.busy || this.openToolId() || !tool || !this.options.tools.includes(id)) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId() || !tool) {
       return
     }
     const hadFocus = this.hasFocus()
-    if (id === 'adjust' || id === 'threshold') {
-      const threshold = thresholdSetting(this.history.done)
-      // A cleaned document has tones of its own
-      if (id === 'adjust' && threshold.enabled) {
+    if (id === 'adjust') {
+      if (!canAdjust(this.history.done)) {
         return
       }
-      this.draft = id === 'adjust'
-        ? {
-            tool: 'adjust',
-            setting: adjustSetting(this.history.done),
-          }
-        : {
-            tool: 'threshold',
-            setting: { enabled: true, sensitivity: threshold.sensitivity },
-          }
+      this.draft = {
+        tool: 'adjust',
+        setting: adjustSetting(this.history.done),
+      }
     }
-    else if (tool.activate && !this.previewing) {
+    else if (id === 'threshold') {
+      this.draft = {
+        tool: 'threshold',
+        setting: openThreshold(this.history.done),
+      }
+    }
+    else if (tool.activate && !this.previewQueue.pending) {
       this.session = {
         tool,
         handle: tool.activate(this.toolHost()),
@@ -648,20 +614,16 @@ export class PaperPic {
       })
       return
     }
-    if (this.mode !== 'edit' || this.busy || this.openToolId() || !this.options.tools.includes('threshold')) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId()) {
       return
     }
     const current = thresholdSetting(this.history.done)
-    const next = {
+    const edit = thresholdEdit({
       enabled: enabled ?? current.enabled,
       sensitivity: sensitivity ?? current.sensitivity,
-    }
-    if (next.enabled !== current.enabled || next.sensitivity !== current.sensitivity) {
-      this.addOperation({
-        type: 'threshold',
-        ...next,
-        softness: this.options.softness ?? current.softness,
-      })
+    }, this.history.done, this.options.softness)
+    if (edit) {
+      this.addOperation(edit)
     }
   }
 
@@ -689,16 +651,16 @@ export class PaperPic {
       })
       return
     }
-    if (!this.canAdjust()) {
+    if (this.mode !== 'edit' || this.busy || this.openToolId() || !canAdjust(this.history.done)) {
       return
     }
     const current = adjustSetting(this.history.done)
-    const next = {
+    const edit = adjustEdit({
       brightness: brightness ?? current.brightness,
       contrast: contrast ?? current.contrast,
-    }
-    if (next.brightness !== current.brightness || next.contrast !== current.contrast) {
-      this.addOperation({ type: 'adjust', ...next })
+    }, this.history.done)
+    if (edit) {
+      this.addOperation(edit)
     }
   }
 
@@ -730,6 +692,8 @@ export class PaperPic {
     }
 
     const id = this.loadId
+    const edit = this.editId
+    const outdated = () => id !== this.loadId || edit !== this.editId
     this.busy = true
     this.applyFailed = false
     this.showStatus()
@@ -748,7 +712,7 @@ export class PaperPic {
         maxOutputSize: this.options.maxOutputSize,
       })
       const loaded = await loadImage(exported.blob)
-      if (id !== this.loadId) {
+      if (outdated()) {
         loaded.release()
         return
       }
@@ -765,14 +729,14 @@ export class PaperPic {
       this.emit('change', this.getState())
     }
     catch (cause) {
-      if (id !== this.loadId) {
+      if (outdated()) {
         return
       }
       this.busy = false
       this.applyFailed = true
       this.showStatus()
       this.refresh()
-      this.emit('error', { error: cause as Error })
+      this.emit('error', { error: cause as Error, phase: 'apply' })
     }
   }
 
@@ -833,9 +797,9 @@ export class PaperPic {
       cleanup()
     }
     this.closeTool()
+    this.previewQueue.forget()
     this.renderer.destroy()
     this.runner.destroy()
-    this.previewId++
     this.preview?.release()
     this.preview = null
     this.image?.release()
@@ -895,49 +859,12 @@ export class PaperPic {
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
-      paintLens: (context, lens) => this.paintLens(context, lens),
+      paintMagnifier: (context, magnifier) => paintMagnifier(context, magnifier, {
+        view: this.view,
+        image: shown(),
+        viewport: this.viewport,
+      }),
     }
-  }
-
-  /** Paints the image larger around a point, inside a circle. */
-  private paintLens(context: CanvasRenderingContext2D, { point, center, radius }: Lens): void {
-    const shown = (this.preview ?? this.image)!
-    const [a, b, c, d, e, f] = computeTransform(this.view, shown, this.viewport)
-    const target = frameToViewport(this.view, shown, this.viewport, point)
-    context.save()
-    context.beginPath()
-    context.arc(center.x, center.y, radius, 0, Math.PI * 2)
-    context.clip()
-    context.fillStyle = '#fff'
-    context.fill()
-    context.transform(
-      a * LENS_ZOOM,
-      b * LENS_ZOOM,
-      c * LENS_ZOOM,
-      d * LENS_ZOOM,
-      center.x + (e - target.x) * LENS_ZOOM,
-      center.y + (f - target.y) * LENS_ZOOM,
-    )
-    context.drawImage(shown.element, 0, 0, shown.width, shown.height)
-    context.restore()
-
-    context.beginPath()
-    context.arc(center.x, center.y, radius, 0, Math.PI * 2)
-    context.moveTo(center.x - 8, center.y)
-    context.lineTo(center.x + 8, center.y)
-    context.moveTo(center.x, center.y - 8)
-    context.lineTo(center.x, center.y + 8)
-    context.lineWidth = 2
-    context.strokeStyle = '#fff'
-    context.stroke()
-  }
-
-  private canAdjust(): boolean {
-    return this.mode === 'edit'
-      && !this.busy
-      && !this.openToolId()
-      && this.options.tools.includes('adjust')
-      && !thresholdSetting(this.history.done).enabled
   }
 
   /** The open tool, with a selection or a panel of settings of its own. */
@@ -946,7 +873,7 @@ export class PaperPic {
   }
 
   /** Shows other settings in the open Adjust or Clean up, without any edit. */
-  private changeDraft(draft: Draft): void {
+  private changeDraft(draft: PanelDraft): void {
     if (JSON.stringify(draft) === JSON.stringify(this.draft)) {
       return
     }
@@ -960,23 +887,10 @@ export class PaperPic {
   private draftEdit(): Operation | null {
     const draft = this.draft
     if (draft?.tool === 'adjust') {
-      const { brightness, contrast } = adjustSetting(this.history.done)
-      return draft.setting.brightness !== brightness || draft.setting.contrast !== contrast
-        ? { type: 'adjust', ...draft.setting }
-        : null
+      return adjustEdit(draft.setting, this.history.done)
     }
     if (draft?.tool === 'threshold') {
-      const current = thresholdSetting(this.history.done)
-      const { enabled, sensitivity } = draft.setting
-      // A sensitivity that changes while the clean up stays off changes nothing on display
-      return enabled !== current.enabled || (enabled && sensitivity !== current.sensitivity)
-        ? {
-            type: 'threshold',
-            enabled,
-            sensitivity,
-            softness: this.options.softness ?? current.softness,
-          }
-        : null
+      return confirmThreshold(draft.setting, this.history.done, this.options.softness)
     }
     return null
   }
@@ -996,9 +910,18 @@ export class PaperPic {
     }
   }
 
+  /**
+   * Tells the listeners of an event. A listener that throws is the app failing, not the viewer, so the page gets its
+   * error as any uncaught one, the other listeners still run, and it never looks like a failed load or Apply.
+   */
   private emit<Name extends keyof PaperPicEvents>(name: Name, payload: PaperPicEvents[Name]): void {
     for (const listener of this.listeners[name]) {
-      listener(payload)
+      try {
+        listener(payload)
+      }
+      catch (error) {
+        reportError(error)
+      }
     }
   }
 
@@ -1014,6 +937,10 @@ export class PaperPic {
   }
 
   private async load(source: PaperPicSource | undefined): Promise<void> {
+    // A destroyed viewer has nowhere to show an image, and nothing would release it
+    if (this.destroyed) {
+      return
+    }
     const id = ++this.loadId
     this.source = source
     this.setSaved(source)
@@ -1041,7 +968,7 @@ export class PaperPic {
         return
       }
       this.setImage(null, 'error')
-      this.emit('error', { error: cause as Error })
+      this.emit('error', { error: cause as Error, phase: 'load' })
     }
   }
 
@@ -1064,8 +991,9 @@ export class PaperPic {
     this.applyViewport()
   }
 
-  /** Ends the edit without a trace. In-progress work is ignored when it finishes, because a load changes `loadId`. */
+  /** Ends the edit without a trace. An Apply in progress is ignored when it finishes, because `editId` changes. */
   private leaveEdit(): void {
+    this.editId++
     this.closeTool()
     this.mode = 'view'
     this.busy = false
@@ -1110,7 +1038,7 @@ export class PaperPic {
       operations.push({ type: 'adjust', ...draft.setting })
     }
     if (draft?.tool === 'threshold') {
-      operations.push({ type: 'threshold', ...draft.setting, softness: this.options.softness ?? thresholdSetting(operations).softness })
+      operations.push(thresholdOperation(draft.setting, operations, this.options.softness))
     }
     const tone = toneStep(operations)
     if (tone?.type === 'threshold' && this.session?.tool.id === 'perspective') {
@@ -1129,7 +1057,7 @@ export class PaperPic {
     if (key === this.previewKey) {
       this.syncRotation()
       if (tone) {
-        this.preview?.tint?.(tone)
+        this.previewQueue.scheduleTint(tone)
       }
     }
     else if (steps.length === 0 && !tone) {
@@ -1137,38 +1065,26 @@ export class PaperPic {
     }
     else {
       this.previewKey = key
-      this.startPreview(steps, tone)
+      this.previewQueue.request(steps, tone)
     }
   }
 
-  /** Computes the pixels of the edits. A result that arrives after newer edits is ignored. */
-  private async startPreview(steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
-    const id = ++this.previewId
-    this.previewing = true
-    try {
-      const preview = await renderPreview(this.image!, steps, tone, this.runner)
-      if (id !== this.previewId) {
-        preview.release()
-        return
-      }
-      this.setPreview(preview)
-      // The slider may have moved while the preview was on its way
-      const latest = this.previewTone()
-      if (latest) {
-        preview.tint?.(latest)
-      }
-      this.emit('change', this.getState())
+  /** Shows a preview that arrived, with the tones of the ruler, which may have moved while it was on its way. */
+  private showPreview(preview: Preview): void {
+    this.setPreview(preview)
+    const latest = this.previewTone()
+    if (latest) {
+      preview.tint?.(latest)
     }
-    catch (cause) {
-      if (id !== this.previewId) {
-        return
-      }
-      this.previewing = false
-      this.applyFailed = true
-      this.showStatus()
-      this.refresh()
-      this.emit('error', { error: cause as Error })
-    }
+    this.emit('change', this.getState())
+  }
+
+  /** Keeps the edit open, and reports that its pixels could not be shown. */
+  private previewFailed(cause: unknown): void {
+    this.applyFailed = true
+    this.showStatus()
+    this.refresh()
+    this.emit('error', { error: cause as Error, phase: 'preview' })
   }
 
   /**
@@ -1177,11 +1093,12 @@ export class PaperPic {
    */
   private setPreview(preview: Preview | null): void {
     const before = this.preview ?? this.image
+    // A new preview starts with the latest tones, and no preview has none to paint
+    this.previewQueue.cancelTint()
     if (!preview) {
-      this.previewId++
+      this.previewQueue.forget()
       this.previewKey = NO_PREVIEW
     }
-    this.previewing = false
     this.preview?.release()
     this.preview = preview
     const after = this.preview ?? this.image
@@ -1212,7 +1129,7 @@ export class PaperPic {
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')
-    this.root.setAttribute('aria-busy', String(this.busy || this.previewing || this.loadStatus === 'loading'))
+    this.root.setAttribute('aria-busy', String(this.busy || this.previewQueue.pending || this.loadStatus === 'loading'))
   }
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
@@ -1229,6 +1146,7 @@ export class PaperPic {
     this.viewport = { width: this.viewportElement.clientWidth, height: this.viewportElement.clientHeight }
     this.renderer.resize(this.viewport, globalThis.devicePixelRatio || 1)
     this.applyViewport()
+    this.renderer.paintNow()
   }
 
   /** The image on display, once the viewer has a size to show it in. A hidden container has none. */
@@ -1246,34 +1164,50 @@ export class PaperPic {
     this.refresh()
   }
 
-  private refresh(): void {
+  /** Whether the zoom can go further in each direction, from the view on display. */
+  private canZoom(): { canZoomIn: boolean, canZoomOut: boolean } {
     const image = this.measuredImage()
     const limits = image && zoomLimits(image, this.viewport, this.view.rotation)
-    const state = this.getState()
+    return {
+      canZoomIn: limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE,
+      canZoomOut: limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE,
+    }
+  }
 
-    const canZoomIn = limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE
-    const canZoomOut = limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE
+  /** Makes the whole interface match the state: the bars, the mode and the view. */
+  private refresh(): void {
+    const state = this.getState()
+    const zoom = this.canZoom()
 
     this.toolbar.update({
       fit: this.view.fit,
       canEdit: this.options.editable && this.mode === 'view' && this.loadStatus === 'ready',
-      canZoomIn,
-      canZoomOut,
+      ...zoom,
       canRotate: !this.options.editable,
       canDownload: this.options.download && this.mode === 'view' && this.loadStatus === 'ready',
     })
     // Nothing covers the image while editing, so no corner ends up under a button
-    this.toolbar.element.hidden = !this.options.toolbar || this.mode === 'edit'
+    this.toolbar.setVisible(this.options.toolbar && this.mode === 'view')
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
     this.editBar.update({
       ...state,
-      canOpenTool: !this.previewing,
-      canZoomIn,
-      canZoomOut,
-      cleanedUp: thresholdSetting(this.history.done).enabled,
+      canOpenTool: !this.previewQueue.pending,
+      ...zoom,
+      thresholdInEdits: thresholdSetting(this.history.done).enabled,
     })
-    this.session?.handle.update()
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
+    this.refreshView(zoom)
+  }
+
+  /**
+   * Makes what follows the view match it: the zoom and fit buttons, the handles of an open tool, the cursor and the
+   * image. A pan or a zoom needs nothing else, and it can come on every move of the pointer.
+   */
+  private refreshView(zoom = this.canZoom()): void {
+    const image = this.measuredImage()
+    this.toolbar.updateView({ fit: this.view.fit, ...zoom })
+    this.editBar.updateView(zoom)
+    this.session?.handle.update()
     this.viewportElement.classList.toggle(
       'paperpic-viewport-pannable',
       image !== null && overflows(this.view, image, this.viewport),
@@ -1281,14 +1215,21 @@ export class PaperPic {
     this.renderer.requestPaint()
   }
 
-  private commit(view: View): void {
+  /** Shows another view. Returns whether it differs from the one on display. */
+  private commit(view: View): boolean {
     const { zoom, panX, panY, rotation, fit } = this.view
-    if (view.zoom === zoom && view.panX === panX && view.panY === panY && view.rotation === rotation && view.fit === fit) {
-      return
+    const sameState = view.zoom === zoom && view.rotation === rotation && view.fit === fit
+    if (sameState && view.panX === panX && view.panY === panY) {
+      return false
     }
     this.view = view
-    this.refresh()
-    this.emit('change', this.getState())
+    // A view changes nothing in the bars but the zoom and the fit
+    this.refreshView()
+    // The state does not hold the position of the image, so a pan would report the same state on every move of the pointer
+    if (!sameState) {
+      this.emit('change', this.getState())
+    }
+    return true
   }
 
   private resetRotation(): void {
@@ -1301,11 +1242,10 @@ export class PaperPic {
     this.applyViewport()
   }
 
-  private pan(deltaX: number, deltaY: number): void {
+  /** Moves the image. Returns whether it moved, which an image that fits, or one at its edge, does not. */
+  private pan(deltaX: number, deltaY: number): boolean {
     const image = this.measuredImage()
-    if (image) {
-      this.commit(panBy(this.view, deltaX, deltaY, image, this.viewport, this.toolbarClearance()))
-    }
+    return image !== null && this.commit(panBy(this.view, deltaX, deltaY, image, this.viewport, this.toolbarClearance()))
   }
 
   private zoomAround(zoom: number, point: ViewPoint): void {
@@ -1354,8 +1294,8 @@ export class PaperPic {
         this.fit('image')
         return true
       case 'pan':
-        this.pan(command.deltaX, command.deltaY)
-        return true
+        // An arrow that moves nothing keeps its usual effect, so the page scrolls, as it does under one finger
+        return this.pan(command.deltaX, command.deltaY)
       case 'undo':
         this.undo()
         return editing

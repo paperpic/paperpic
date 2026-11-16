@@ -82,11 +82,11 @@ Appliquer ne peut pas être interrompu. Il bloque les commandes et affiche un me
 
 ## Ce que reçoit votre code
 
-| Événement | Quand                                                                   |
-| --------- | ----------------------------------------------------------------------- |
-| `apply`   | Quand le résultat est prêt, avec `{ blob, width, height, type }`        |
-| `change`  | Après chaque action de l’utilisateur, avec l’[état](../reference/state) |
-| `error`   | Quand Appliquer échoue, ou quand l’image ne peut pas être chargée       |
+| Événement | Quand                                                                                                 |
+| --------- | ----------------------------------------------------------------------------------------------------- |
+| `apply`   | Quand le résultat est prêt, avec `{ blob, width, height, type }`                                      |
+| `change`  | Après chaque action de l’utilisateur qui change l’[état](../reference/state)                          |
+| `error`   | Quand l’image ne peut pas être chargée, ou qu’une modification ne peut pas être affichée ou appliquée |
 
 :::tabs key:framework
 == JavaScript
@@ -128,13 +128,4 @@ Après Appliquer, passer le même `src` une nouvelle fois ne fait rien, donc le 
 
 ## Clavier
 
-Quand la visionneuse a le focus :
-
-| Touche                   | Action                                                  |
-| ------------------------ | ------------------------------------------------------- |
-| `Ctrl+Z`                 | Annuler la dernière action                              |
-| `Ctrl+Maj+Z` ou `Ctrl+Y` | Rétablir                                                |
-| `Entrée`                 | Valider l’outil ouvert, sinon appliquer les changements |
-| `Échap`                  | Fermer l’outil ouvert, sinon annuler les changements    |
-
-Sur macOS, `Cmd` fonctionne comme `Ctrl`.
+Avec le focus sur la visionneuse, des touches annulent, rétablissent, confirment et abandonnent. [Accessibilité](./accessibility#keyboard) liste toutes les touches.

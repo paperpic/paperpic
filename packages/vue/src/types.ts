@@ -50,7 +50,7 @@ export interface PaperPicProps {
   src?: PaperPicSource
   /** Whether to show the built-in toolbar and edit bar. Without them, build your own with the methods of `instance`. */
   toolbar?: boolean
-  /** Which tools the edit bar offers. By default, all of them. */
+  /** Which tools the edit bar offers. By default, all of them. It only chooses the buttons: the methods work with every tool. */
   tools?: readonly ToolId[]
   /** Whether the wheel zooms. Turn it off when the viewer sits in a long page. */
   wheelZoom?: boolean

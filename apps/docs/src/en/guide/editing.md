@@ -82,11 +82,11 @@ Apply cannot be interrupted. It blocks the controls and shows a message while it
 
 ## What your code receives
 
-| Event    | When                                                                |
-| -------- | ------------------------------------------------------------------- |
-| `apply`  | When the result is ready, with `{ blob, width, height, type }`      |
-| `change` | After each action of the user, with the [state](../reference/state) |
-| `error`  | When Apply fails, or when the image cannot be loaded                |
+| Event    | When                                                                       |
+| -------- | -------------------------------------------------------------------------- |
+| `apply`  | When the result is ready, with `{ blob, width, height, type }`             |
+| `change` | After each action of the user that changes the [state](../reference/state) |
+| `error`  | When the image cannot be loaded, or an edit cannot be shown or applied     |
 
 :::tabs key:framework
 == JavaScript
@@ -128,13 +128,4 @@ After Apply, passing the same `src` again does nothing, so the result stays on d
 
 ## Keyboard
 
-With the focus on the viewer:
-
-| Key                        | Action                                           |
-| -------------------------- | ------------------------------------------------ |
-| `Ctrl+Z`                   | Undo                                             |
-| `Ctrl+Shift+Z` or `Ctrl+Y` | Redo                                             |
-| `Enter`                    | Confirm the open tool, or else apply the changes |
-| `Esc`                      | Close the open tool, or else cancel the changes  |
-
-On macOS, `Cmd` works like `Ctrl`.
+With the focus on the viewer, keys undo, redo, confirm and cancel. [Accessibility](./accessibility#keyboard) lists every key.

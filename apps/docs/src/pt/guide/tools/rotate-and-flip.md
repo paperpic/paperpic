@@ -7,6 +7,8 @@ description: Como girar e espelhar a imagem de um documento no PaperPic, no modo
 
 Celulares costumam salvar a foto de um documento de lado ou de cabeça para baixo, e alguns escaneamentos saem espelhados. Girar para a esquerda e Espelhar corrigem a orientação e deixam o resto da imagem como está.
 
+<Demo src="/samples/receipt.jpg" alt="Um recibo" :tools="['rotate', 'flip']" />
+
 ## Girar
 
 Na barra de edição, Girar para a esquerda gira a imagem um quarto de volta no sentido anti-horário, como nas galerias de fotos. Toque duas vezes para meia volta, ou três vezes para um quarto de volta no sentido horário.
@@ -22,7 +24,7 @@ pic.rotate(-1)
 
 ## Espelhar
 
-Espelhar inverte a imagem da esquerda para a direita como ela aparece, então depois de um quarto de volta ela ainda é espelhada da esquerda para a direita na tela. Para virar uma imagem de cabeça para baixo, espelhe-a e gire-a duas vezes.
+Espelhar inverte a imagem da esquerda para a direita como ela aparece, então depois de um quarto de volta ela ainda é espelhada da esquerda para a direita na tela. Para espelhar uma imagem de cima para baixo, espelhe-a e gire-a duas vezes.
 
 Espelhamentos e giros que se anulam não deixam nada a aplicar. Pelo código, chame [`flip()`](../../reference/methods#flip).
 

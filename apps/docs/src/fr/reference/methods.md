@@ -27,7 +27,7 @@ class PaperPic {
 
 Crée la visionneuse dans `container`, qu’elle remplit. Donnez une hauteur au conteneur, sinon la visionneuse reste à sa hauteur minimale. [Options](./options) détaille ce qu’accepte `options`.
 
-Elle lève une `TypeError` si `container` n’est pas un élément. Créez la visionneuse une fois l’élément créé, par exemple au montage.
+Elle lève une `TypeError` si `container` n’est pas un élément. Créez la visionneuse une fois l’élément créé, par exemple au montage. Elle lève une `RangeError` si une option est hors de sa plage.
 
 ### `destroy()`
 
@@ -45,7 +45,7 @@ Retire la visionneuse et libère tout ce qu’elle occupe, comme son worker et l
 function setOptions(options: PaperPicOptions): void
 ```
 
-Change les options que vous passez et garde les autres. `undefined` remet une option à sa valeur par défaut. Elle n’émet jamais `change`, donc les liaisons bidirectionnelles ne bouclent pas.
+Change les options que vous passez et garde les autres. `undefined` remet une option à sa valeur par défaut. Elle n’émet jamais `change`, donc les liaisons bidirectionnelles ne bouclent pas. Elle lève une `RangeError` si une option est hors de sa plage, et aucune option ne change alors.
 
 ### `getState()`
 
@@ -129,7 +129,7 @@ Fait pivoter l’image d’un quart de tour : dans le sens des aiguilles d’une
 function flip(): void
 ```
 
-Retourne l’image de gauche à droite telle qu’elle est affichée, donc après un quart de tour elle retourne toujours de gauche à droite. Pour mettre l’image à l’envers, retournez-la et faites-la pivoter deux fois. C’est un changement, et elle ne fait rien hors du mode d’édition ou avec un outil ouvert.
+Retourne l’image de gauche à droite telle qu’elle est affichée, donc après un quart de tour elle retourne toujours de gauche à droite. Pour la mettre en miroir de haut en bas, retournez-la et faites-la pivoter deux fois. C’est un changement, et elle ne fait rien hors du mode d’édition ou avec un outil ouvert.
 
 ### `openTool()`
 

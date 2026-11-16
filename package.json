@@ -20,6 +20,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "pnpm --filter \"./packages/*\" build && pnpm --filter playground-vanilla test:e2e",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . --cache && stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --cache",
     "lint:fix": "stylelint \"**/*.{css,vue}\" \"apps/docs/.vitepress/theme/**/*.{css,vue}\" --cache --fix && eslint . --cache --fix",

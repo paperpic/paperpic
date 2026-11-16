@@ -129,6 +129,12 @@ const pic = new PaperPic(container, {
 
 A pré-visualização durante a edição tem sempre cerca de 2 megapixels, então `maxOutputSize` só muda o resultado.
 
+O Safari no iOS limita um canvas a cerca de 16 megapixels, e os iPhones recentes tiram fotos de 24 megapixels ou mais, então o Aplicar pode falhar na resolução completa. Se seus usuários editam fotos de um iPhone, defina `maxOutputSize`. 3000 pixels mantêm os documentos legíveis e ficam bem abaixo do limite. [O Aplicar falha com uma foto grande](./troubleshooting#too-large) mostra o erro.
+
+## Metadados {#metadata}
+
+O resultado do Aplicar não traz metadados. O PaperPic desenha a imagem em um canvas, então os dados EXIF da foto, como a posição GPS, a câmera e a data, se perdem. O botão de download salva a imagem original como está até o primeiro Aplicar, com os metadados dela.
+
 ## O botão de download
 
 [`download: true`](../reference/options#download) adiciona um botão no fim da barra de ferramentas que salva a imagem na tela: o resultado do último Aplicar, ou então a imagem original como está. Ele fica oculto durante a edição, porque as alterações ainda não foram aplicadas. [`download()`](../reference/methods#download) faz o mesmo pelo código, com ou sem o botão. O menu de contexto do navegador não abre sobre o visualizador, então esse botão é a forma de salvar a imagem a partir dele.

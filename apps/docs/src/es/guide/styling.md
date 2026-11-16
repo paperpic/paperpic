@@ -55,6 +55,8 @@ Cinco [tokens CSS](../reference/css-tokens) fijan el fondo, el texto, el color d
 }
 ```
 
+<Demo src="/samples/receipt.jpg" alt="Un tique" style="--paperpic-color-accent: #c2410c; --paperpic-radius: 0" />
+
 Los tokens se heredan, así que una clase en el contenedor de un visor, o en el componente de Vue o React, cambia solo ese visor:
 
 ```css

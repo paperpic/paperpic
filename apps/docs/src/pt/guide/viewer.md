@@ -18,7 +18,7 @@ Letras miúdas e recibos longos são difíceis de ler de relance numa tela. O vi
 | Alternar entre o ajuste e 100% | Clique duplo               | Toque duplo |           |
 | Ajustar a imagem inteira       |                            |             | `0`       |
 
-O teclado funciona com o foco no visualizador. A pinça dá zoom em torno do ponto entre os dedos. Numa tela sensível ao toque, um dedo rola a página enquanto a imagem está ajustada, e move a imagem quando ela tem zoom.
+O teclado funciona com o foco no visualizador. Enquanto não há nada para mover, as setas rolam a página. A pinça dá zoom em torno do ponto entre os dedos. Numa tela sensível ao toque, um dedo rola a página enquanto a imagem está ajustada, e move a imagem quando ela tem zoom.
 
 O zoom vai do ajuste da imagem inteira, ou 100% para uma imagem pequena, até 800%. Uma imagem que cabe fica centralizada, e uma que passa do limite se move até as bordas.
 

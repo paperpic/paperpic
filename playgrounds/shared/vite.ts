@@ -23,7 +23,8 @@ export function definePlayground({ stylesheet, plugins = [] }: PlaygroundConfig)
     const isDist = mode === 'dist'
 
     return {
-      publicDir: '../shared/public',
+      // The sample images and the logo are those of the docs site, so there is one copy of each
+      publicDir: '../../apps/docs/src/public',
       plugins: [
         ...plugins,
         {

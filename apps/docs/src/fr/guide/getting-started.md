@@ -9,30 +9,94 @@ Cette page vous mène de l’installation de PaperPic à l’affichage d’une i
 
 ## Installation
 
-:::tabs key:framework
+::::tabs key:framework
 == JavaScript
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/core
+```
+
+```sh [pnpm]
 pnpm add @paperpic/core
 ```
 
+```sh [yarn]
+yarn add @paperpic/core
+```
+
+```sh [bun]
+bun add @paperpic/core
+```
+
+:::
+
 == Vue
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/vue
+```
+
+```sh [pnpm]
 pnpm add @paperpic/vue
 ```
+
+```sh [yarn]
+yarn add @paperpic/vue
+```
+
+```sh [bun]
+bun add @paperpic/vue
+```
+
+:::
 
 `@paperpic/vue` nécessite Vue 3.5 ou plus récent.
 
 == React
 
-```sh
+::: code-group
+
+```sh [npm]
+npm install @paperpic/react
+```
+
+```sh [pnpm]
 pnpm add @paperpic/react
 ```
 
-`@paperpic/react` nécessite React 19 ou plus récent.
+```sh [yarn]
+yarn add @paperpic/react
+```
+
+```sh [bun]
+bun add @paperpic/react
+```
 
 :::
+
+`@paperpic/react` nécessite React 19 ou plus récent.
+
+::::
+
+### Sans bundler {#cdn}
+
+Le core se charge aussi depuis un CDN qui sert les fichiers du paquet tels quels, comme jsDelivr. Importez `dist/index.js` depuis un script de module, et liez `dist/style.css` :
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/style.css" />
+<div id="viewer" style="height: 480px"></div>
+<script type="module">
+  import { PaperPic } from 'https://cdn.jsdelivr.net/npm/@paperpic/core@0.3/dist/index.js'
+
+  const pic = new PaperPic(document.querySelector('#viewer'), { src: '/receipt.jpg', alt: 'Un ticket de caisse' })
+</script>
+```
+
+Les navigateurs ne démarrent un worker que depuis l’origine de la page, donc la modification s’y exécute sur le thread principal : elle fonctionne, mais les grandes photos figent la page un instant pendant Appliquer. Servez les fichiers depuis votre propre origine, ou utilisez un bundler, pour garder le worker. Les composants Vue et React ont besoin d’un bundler.
 
 ## Afficher une image
 
@@ -87,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` accepte une URL de la même origine que votre page, ou un `File` choisi par l’utilisateur, par exemple depuis un `<input type="file">`. `alt` décrit l’image pour les lecteurs d’écran.
+`src` accepte une URL de la même origine que votre page, ou un `File` choisi par l’utilisateur, par exemple depuis un `<input type="file">`. `alt` décrit l’image pour les lecteurs d’écran. [Charger des images](./loading) traite des images d’autres origines, des formats et des erreurs de chargement.
 
 ## Récupérer l’image modifiée
 
@@ -126,19 +190,28 @@ async function upload(blob: Blob) {
 
 Le `blob` garde le format de l’image source, ou est en PNG quand l’utilisateur a nettoyé le document. L’option [`output`](../reference/options#output) le change.
 
+## Retirer la visionneuse {#destroy}
+
+Les composants Vue et React créent la visionneuse quand ils sont montés et la détruisent quand ils sont démontés. Avec le core, appelez [`destroy()`](../reference/methods#destroy) quand vous retirez la visionneuse de la page, par exemple quand la route change :
+
+```ts
+pic.destroy()
+```
+
+Elle retire la visionneuse de son conteneur, arrête ses écouteurs et son worker, et libère la mémoire de l’image. Pour l’afficher de nouveau, créez-en une nouvelle.
+
 ## Seulement afficher l’image
 
 Pour afficher un document qui ne doit pas être modifié, désactivez la modification avec `editable: false`. La page [Visionneuse](./viewer) le montre en action.
 
 ## Prérequis
 
-- PaperPic fonctionne dans les navigateurs de [Baseline Widely Available](https://web.dev/baseline).
-- La modification s’exécute dans un Web Worker, que des bundlers comme Vite et webpack prennent en charge seuls. Si le worker ne peut pas démarrer, la modification s’exécute sur le thread principal : elle fonctionne toujours, mais la page peut se figer un instant avec de grandes images.
-- Avec une Content Security Policy, autorisez le worker avec `worker-src 'self'`, et autorisez `img-src blob:`, car la visionneuse affiche les fichiers joints et les résultats par des URL `blob:`.
-- Avec un rendu côté serveur, comme dans Nuxt ou Next.js, les composants Vue et React rendent un élément vide sur le serveur et créent la visionneuse dans le navigateur. Avec le cœur, créez vous-même la visionneuse dans le navigateur.
+PaperPic fonctionne dans les navigateurs de [Baseline Widely Available](https://web.dev/baseline). [Performances et compatibilité](./performance) traite du worker, de la Content Security Policy, du rendu côté serveur et des grandes photos.
 
 ## Étapes suivantes
 
+- [Charger des images](./loading) : d’où vient l’image, et quels formats s’ouvrent.
 - [Visionneuse](./viewer) : zoom, ajustement et lecture seule.
 - [Modification](./editing) : le mode d’édition, les outils et Appliquer.
 - [Options](../reference/options) : tout ce que vous pouvez configurer.
+- [Dépannage](./troubleshooting) : quand la visionneuse ne s’affiche pas ou ne fonctionne pas comme prévu.

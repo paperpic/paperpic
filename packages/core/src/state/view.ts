@@ -1,14 +1,23 @@
-import type { Rotation } from '../rotation'
-import { normalizeRotation } from '../rotation'
+import type { Size } from '../processing/types'
 
 /**
- * A width and a height in pixels.
+ * How far the image is turned, in degrees clockwise.
  *
- * @see https://paperpic.dev/reference/types#size
+ * @see https://paperpic.dev/reference/state
  */
-export interface Size {
-  height: number
-  width: number
+export type Rotation = 0 | 90 | 180 | 270
+
+/**
+ * Rounds an angle in degrees to the nearest multiple of 90 and wraps it into [0, 360).
+ *
+ * @throws {RangeError} If `degrees` is not a finite number.
+ */
+export function normalizeRotation(degrees: number): Rotation {
+  if (!Number.isFinite(degrees)) {
+    throw new RangeError(`Rotation must be a finite number, got ${degrees}`)
+  }
+  const quarterTurns = Math.round(degrees / 90)
+  return ((((quarterTurns * 90) % 360) + 360) % 360) as Rotation
 }
 
 /**
