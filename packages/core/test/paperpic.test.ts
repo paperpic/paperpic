@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PaperPic } from '../src'
+import { Toolbar } from '../src/ui/toolbar'
 
 interface FakeImage {
   decode: () => Promise<void>
@@ -300,6 +301,18 @@ describe('paperPic', () => {
       const moved = !viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
       expect(moved).toBe(true)
       expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it('updates only what follows the view on a pan or a zoom, and not the whole bars', () => {
+      const update = vi.spyOn(Toolbar.prototype, 'update')
+      const updateView = vi.spyOn(Toolbar.prototype, 'updateView')
+      pic.zoomTo(2)
+      viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true }))
+      expect(update).not.toHaveBeenCalled()
+      expect(updateView).toHaveBeenCalledTimes(2)
+      expect(container.querySelector('.paperpic-toolbar [data-paperpic-control="zoomOut"]')!.getAttribute('aria-disabled')).toBe('false')
+      update.mockRestore()
+      updateView.mockRestore()
     })
 
     it('leaves an arrow key to the page when there is nothing to move, so it can scroll', () => {

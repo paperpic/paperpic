@@ -338,8 +338,7 @@ export class EditBar {
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
-    this.zoomInButton.setAttribute('aria-disabled', String(!canZoomIn))
-    this.zoomOutButton.setAttribute('aria-disabled', String(!canZoomOut))
+    this.updateZoom({ canZoomIn, canZoomOut })
     // A cleaned document has tones of its own, so brightness and contrast are not in effect
     const adjusted = !threshold.enabled && (adjustments.brightness !== 0 || adjustments.contrast !== 0)
     for (const { tool, button } of this.toolButtons) {
@@ -361,6 +360,12 @@ export class EditBar {
       this.rulers[name].setDisabled(busy)
     }
     this.showPanel()
+  }
+
+  /** Updates the zoom buttons of an open tool, which a pan or a zoom changes. */
+  updateZoom({ canZoomIn, canZoomOut }: Pick<EditBarState, 'canZoomIn' | 'canZoomOut'>): void {
+    this.zoomInButton.setAttribute('aria-disabled', String(!canZoomIn))
+    this.zoomOutButton.setAttribute('aria-disabled', String(!canZoomOut))
   }
 
   /** Cancels, asking first if there are changes to lose. */

@@ -2,14 +2,13 @@ import type { PaperPicDownload } from './download'
 import type { Gestures } from './input/gestures'
 import type { KeyCommand } from './input/keyboard'
 import type { ExportedImage, PaperPicOutput } from './pipeline/export'
-import type { AdjustSetting, Operation, PipelineStep, ToneStep } from './pipeline/operations'
+import type { AdjustSetting, Operation, ToneStep } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
 import type { LoadedImage } from './render/load-image'
 import type { Scene } from './render/renderer'
 import type { Rotation } from './rotation'
 import type { History } from './state/history'
 import type { Fit, Size, View, ViewPoint } from './state/view'
-import type { Lens } from './tools/magnifier'
 import type { Tool, ToolContext, ToolHost, ToolId, ToolSession } from './tools/types'
 import type { PaperPicIcons } from './ui/icons'
 import type { PaperPicLabels } from './ui/labels'
@@ -20,10 +19,11 @@ import { exportImage } from './pipeline/export'
 import { adjustSetting, thresholdSetting, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
 import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
+import { PreviewQueue } from './pipeline/preview-queue'
 import { PipelineRunner } from './pipeline/run'
+import { paintLens } from './render/lens'
 import { loadImage } from './render/load-image'
 import { Renderer } from './render/renderer'
-import { computeTransform } from './render/transform'
 import { addToHistory, createHistory, redoHistory, undoHistory } from './state/history'
 import { createView, displayedSize, fitView, frameToViewport, overflows, panBy, resizeView, rotateView, setRotation, viewportToFrame, zoomLimits, zoomTo } from './state/view'
 import { ALL_TOOL_IDS, TOOLS } from './tools'
@@ -38,7 +38,6 @@ const ZOOM_STEP = 1.25
 const ZOOM_TOLERANCE = 0.001
 const TOOLBAR_GAP = 16
 const NO_PREVIEW = JSON.stringify({ steps: [], tone: null })
-const LENS_ZOOM = 3
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
 
@@ -236,11 +235,18 @@ export class PaperPic {
   /** What the edits look like, while they need other pixels than the image. */
   private preview: Preview | null = null
   private previewKey = NO_PREVIEW
-  private previewId = 0
-  private previewing = false
-  /** Whether a preview is being rendered, and the newest one that waits for it to finish. */
-  private previewRunning = false
-  private waitingPreview: { id: number, steps: PipelineStep[], tone: ToneStep | null } | null = null
+  private readonly previews = new PreviewQueue({
+    render: (steps, tone) => renderPreview(this.image!, steps, tone, this.runner),
+    ready: preview => this.showPreview(preview),
+    failed: cause => this.previewFailed(cause),
+    tint: (tone) => {
+      if (this.preview?.tint) {
+        this.preview.tint(tone)
+        this.renderer.requestPaint()
+      }
+    },
+  })
+
   /** The open tool with a selection of its own, such as Crop. */
   private session: { handle: ToolSession, tool: Tool } | null = null
   /** The open Adjust or Clean up. */
@@ -256,9 +262,6 @@ export class PaperPic {
   private busy = false
   private applyFailed = false
   private destroyed = false
-  /** The frame that repaints the tones of the preview, and the tones it paints, which are the latest. */
-  private tintFrame: number | null = null
-  private pendingTone: ToneStep | null = null
 
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
@@ -634,7 +637,7 @@ export class PaperPic {
             setting: { enabled: true, sensitivity: threshold.sensitivity },
           }
     }
-    else if (tool.activate && !this.previewing) {
+    else if (tool.activate && !this.previews.pending) {
       this.session = {
         tool,
         handle: tool.activate(this.toolHost()),
@@ -895,10 +898,9 @@ export class PaperPic {
       cleanup()
     }
     this.closeTool()
-    this.cancelTint()
+    this.previews.forget()
     this.renderer.destroy()
     this.runner.destroy()
-    this.previewId++
     this.preview?.release()
     this.preview = null
     this.image?.release()
@@ -958,41 +960,12 @@ export class PaperPic {
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
-      paintLens: (context, lens) => this.paintLens(context, lens),
+      paintLens: (context, lens) => paintLens(context, lens, {
+        view: this.view,
+        image: shown(),
+        viewport: this.viewport,
+      }),
     }
-  }
-
-  /** Paints the image larger around a point, inside a circle. */
-  private paintLens(context: CanvasRenderingContext2D, { point, center, radius }: Lens): void {
-    const shown = (this.preview ?? this.image)!
-    const [a, b, c, d, e, f] = computeTransform(this.view, shown, this.viewport)
-    const target = frameToViewport(this.view, shown, this.viewport, point)
-    context.save()
-    context.beginPath()
-    context.arc(center.x, center.y, radius, 0, Math.PI * 2)
-    context.clip()
-    context.fillStyle = '#fff'
-    context.fill()
-    context.transform(
-      a * LENS_ZOOM,
-      b * LENS_ZOOM,
-      c * LENS_ZOOM,
-      d * LENS_ZOOM,
-      center.x + (e - target.x) * LENS_ZOOM,
-      center.y + (f - target.y) * LENS_ZOOM,
-    )
-    context.drawImage(shown.element, 0, 0, shown.width, shown.height)
-    context.restore()
-
-    context.beginPath()
-    context.arc(center.x, center.y, radius, 0, Math.PI * 2)
-    context.moveTo(center.x - 8, center.y)
-    context.lineTo(center.x + 8, center.y)
-    context.moveTo(center.x, center.y - 8)
-    context.lineTo(center.x, center.y + 8)
-    context.lineWidth = 2
-    context.strokeStyle = '#fff'
-    context.stroke()
   }
 
   private canAdjust(): boolean {
@@ -1205,7 +1178,7 @@ export class PaperPic {
     if (key === this.previewKey) {
       this.syncRotation()
       if (tone) {
-        this.scheduleTint(tone)
+        this.previews.scheduleTint(tone)
       }
     }
     else if (steps.length === 0 && !tone) {
@@ -1213,91 +1186,26 @@ export class PaperPic {
     }
     else {
       this.previewKey = key
-      this.startPreview(steps, tone)
+      this.previews.request(steps, tone)
     }
   }
 
-  /**
-   * Repaints the tones of the preview on the next frame, with the latest ones. A slider sends more `input` events than
-   * the screen has frames, and each repaint of a large preview takes tens of milliseconds on a phone.
-   */
-  private scheduleTint(tone: ToneStep): void {
-    this.pendingTone = tone
-    this.tintFrame ??= requestAnimationFrame(() => {
-      this.tintFrame = null
-      const latest = this.pendingTone
-      this.pendingTone = null
-      if (latest && this.preview?.tint) {
-        this.preview.tint(latest)
-        this.renderer.requestPaint()
-      }
-    })
+  /** Shows a preview that arrived, with the tones of the slider, which may have moved while it was on its way. */
+  private showPreview(preview: Preview): void {
+    this.setPreview(preview)
+    const latest = this.previewTone()
+    if (latest) {
+      preview.tint?.(latest)
+    }
+    this.emit('change', this.getState())
   }
 
-  private cancelTint(): void {
-    if (this.tintFrame !== null) {
-      cancelAnimationFrame(this.tintFrame)
-      this.tintFrame = null
-    }
-    this.pendingTone = null
-  }
-
-  /**
-   * Computes the pixels of the edits. While one preview is on its way, a newer one waits, and replaces any that was
-   * already waiting, so a quick run of Undo or Flip reads the pixels twice and not once per press.
-   */
-  private startPreview(steps: PipelineStep[], tone: ToneStep | null): void {
-    const id = ++this.previewId
-    this.previewing = true
-    if (this.previewRunning) {
-      this.waitingPreview = { id, steps, tone }
-      return
-    }
-    void this.runPreview(id, steps, tone)
-  }
-
-  /** Renders one preview, and then the one that waits, unless newer edits or `setPreview(null)` made it outdated. */
-  private async runPreview(id: number, steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
-    this.previewRunning = true
-    try {
-      await this.renderPreview(id, steps, tone)
-    }
-    finally {
-      this.previewRunning = false
-      const waiting = this.waitingPreview
-      this.waitingPreview = null
-      if (waiting?.id === this.previewId) {
-        void this.runPreview(waiting.id, waiting.steps, waiting.tone)
-      }
-    }
-  }
-
-  /** A result that arrives after newer edits is ignored. */
-  private async renderPreview(id: number, steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
-    try {
-      const preview = await renderPreview(this.image!, steps, tone, this.runner)
-      if (id !== this.previewId) {
-        preview.release()
-        return
-      }
-      this.setPreview(preview)
-      // The slider may have moved while the preview was on its way
-      const latest = this.previewTone()
-      if (latest) {
-        preview.tint?.(latest)
-      }
-      this.emit('change', this.getState())
-    }
-    catch (cause) {
-      if (id !== this.previewId) {
-        return
-      }
-      this.previewing = false
-      this.applyFailed = true
-      this.showStatus()
-      this.refresh()
-      this.emit('error', { error: cause as Error, phase: 'preview' })
-    }
+  /** Keeps the edit open, and reports that its pixels could not be shown. */
+  private previewFailed(cause: unknown): void {
+    this.applyFailed = true
+    this.showStatus()
+    this.refresh()
+    this.emit('error', { error: cause as Error, phase: 'preview' })
   }
 
   /**
@@ -1307,12 +1215,11 @@ export class PaperPic {
   private setPreview(preview: Preview | null): void {
     const before = this.preview ?? this.image
     // A new preview starts with the latest tones, and no preview has none to paint
-    this.cancelTint()
+    this.previews.cancelTint()
     if (!preview) {
-      this.previewId++
+      this.previews.forget()
       this.previewKey = NO_PREVIEW
     }
-    this.previewing = false
     this.preview?.release()
     this.preview = preview
     const after = this.preview ?? this.image
@@ -1343,7 +1250,7 @@ export class PaperPic {
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')
-    this.root.setAttribute('aria-busy', String(this.busy || this.previewing || this.loadStatus === 'loading'))
+    this.root.setAttribute('aria-busy', String(this.busy || this.previews.pending || this.loadStatus === 'loading'))
   }
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
@@ -1360,6 +1267,7 @@ export class PaperPic {
     this.viewport = { width: this.viewportElement.clientWidth, height: this.viewportElement.clientHeight }
     this.renderer.resize(this.viewport, globalThis.devicePixelRatio || 1)
     this.applyViewport()
+    this.renderer.paintNow()
   }
 
   /** The image on display, once the viewer has a size to show it in. A hidden container has none. */
@@ -1377,19 +1285,25 @@ export class PaperPic {
     this.refresh()
   }
 
-  private refresh(): void {
+  /** Whether the zoom can go further in each direction, from the view on display. */
+  private zoomRoom(): { canZoomIn: boolean, canZoomOut: boolean } {
     const image = this.measuredImage()
     const limits = image && zoomLimits(image, this.viewport, this.view.rotation)
-    const state = this.getState()
+    return {
+      canZoomIn: limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE,
+      canZoomOut: limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE,
+    }
+  }
 
-    const canZoomIn = limits !== null && this.view.zoom < limits.max - ZOOM_TOLERANCE
-    const canZoomOut = limits !== null && this.view.zoom > limits.min + ZOOM_TOLERANCE
+  /** Makes the whole interface match the state: the bars, the mode and the view. */
+  private refresh(): void {
+    const state = this.getState()
+    const zoom = this.zoomRoom()
 
     this.toolbar.update({
       fit: this.view.fit,
       canEdit: this.options.editable && this.mode === 'view' && this.loadStatus === 'ready',
-      canZoomIn,
-      canZoomOut,
+      ...zoom,
       canRotate: !this.options.editable,
       canDownload: this.options.download && this.mode === 'view' && this.loadStatus === 'ready',
     })
@@ -1398,13 +1312,23 @@ export class PaperPic {
     this.editBar.setVisible(this.mode === 'edit' && this.options.toolbar)
     this.editBar.update({
       ...state,
-      canOpenTool: !this.previewing,
-      canZoomIn,
-      canZoomOut,
+      canOpenTool: !this.previews.pending,
+      ...zoom,
       cleanedUp: thresholdSetting(this.history.done).enabled,
     })
-    this.session?.handle.update()
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
+    this.refreshView(zoom)
+  }
+
+  /**
+   * Makes what follows the view match it: the zoom and fit buttons, the handles of an open tool, the cursor and the
+   * image. A pan or a zoom needs nothing else, and it can come on every move of the pointer.
+   */
+  private refreshView(zoom = this.zoomRoom()): void {
+    const image = this.measuredImage()
+    this.toolbar.updateView({ fit: this.view.fit, ...zoom })
+    this.editBar.updateZoom(zoom)
+    this.session?.handle.update()
     this.viewportElement.classList.toggle(
       'paperpic-viewport-pannable',
       image !== null && overflows(this.view, image, this.viewport),
@@ -1420,7 +1344,8 @@ export class PaperPic {
       return false
     }
     this.view = view
-    this.refresh()
+    // A view changes nothing in the bars but the zoom and the fit
+    this.refreshView()
     // The state does not hold the position of the image, so a pan would report the same state on every move of the pointer
     if (!sameState) {
       this.emit('change', this.getState())
