@@ -129,6 +129,8 @@ const pic = new PaperPic(container, {
 
 The preview while editing is always about 2 megapixels, so `maxOutputSize` changes only the result.
 
+Safari on iOS limits a canvas to about 16 megapixels, and recent iPhones take photos of 24 megapixels or more, so Apply can fail at full resolution. If your users edit photos from an iPhone, set `maxOutputSize`. 3000 pixels keeps documents readable and stays well below the limit. [Apply fails with a large photo](./troubleshooting#too-large) shows the error.
+
 ## Metadata {#metadata}
 
 The result of Apply carries no metadata. PaperPic draws the image on a canvas, so the EXIF data of the photo, such as the GPS position, the camera and the date, is gone. The download button saves the source as it is until the first Apply, with its metadata.

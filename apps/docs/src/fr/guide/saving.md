@@ -129,6 +129,8 @@ const pic = new PaperPic(container, {
 
 L’aperçu pendant la modification fait toujours environ 2 mégapixels, donc `maxOutputSize` ne change que le résultat.
 
+Safari sur iOS limite un canvas à environ 16 mégapixels, et les iPhone récents prennent des photos de 24 mégapixels ou plus, donc Appliquer peut échouer en pleine résolution. Si vos utilisateurs modifient des photos depuis un iPhone, définissez `maxOutputSize`. 3000 pixels gardent les documents lisibles et restent bien en dessous de la limite. [Appliquer échoue avec une grande photo](./troubleshooting#too-large) montre l’erreur.
+
 ## Métadonnées {#metadata}
 
 Le résultat d’Appliquer ne contient aucune métadonnée. PaperPic dessine l’image sur un canvas, donc les données EXIF de la photo, comme la position GPS, l’appareil et la date, disparaissent. Le bouton de téléchargement enregistre l’image source telle quelle jusqu’au premier Appliquer, avec ses métadonnées.

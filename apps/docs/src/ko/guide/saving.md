@@ -129,6 +129,8 @@ const pic = new PaperPic(container, {
 
 편집 중 미리보기는 항상 약 2메가픽셀이므로, `maxOutputSize`는 결과만 바꿉니다.
 
+iOS의 Safari는 canvas를 약 16메가픽셀로 제한하고, 최신 iPhone은 24메가픽셀 이상의 사진을 찍으므로, 전체 해상도에서 적용이 실패할 수 있습니다. 사용자가 iPhone에서 사진을 편집한다면 `maxOutputSize`를 설정하세요. 3000픽셀이면 문서를 충분히 읽을 수 있고 제한보다 훨씬 작습니다. 오류는 [큰 사진에서 적용이 실패함](./troubleshooting#too-large)에 나옵니다.
+
 ## 메타데이터 {#metadata}
 
 적용의 결과에는 메타데이터가 없습니다. PaperPic은 이미지를 canvas에 그리므로, GPS 위치, 카메라, 날짜 같은 사진의 EXIF 데이터가 사라집니다. 처음 적용하기 전까지 다운로드 버튼은 원본 이미지를 메타데이터와 함께 그대로 저장합니다.
