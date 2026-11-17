@@ -29,7 +29,7 @@ The component fills its parent element, so give the parent a height.
 
 ## Props
 
-Every [option](./options) is a prop with the same name, such as `:editable="false"` or `:aspect-ratio="210 / 297"`. A change of a prop reaches the viewer through `setOptions()`.
+Every [option](./options) is a prop with the same name, such as `:editable="false"` or `:aspect-ratio="210 / 297"`. A change of a prop reaches the viewer through `setOptions()`. `class` and `style` go to the element that holds the viewer, which also has the class `paperpic-host`.
 
 An object or array with the same contents as before, such as `:tools="['crop', 'rotate']"`, changes nothing, so the template can build them. A function is new on every render of the parent, so build `labels` that hold functions, such as `zoomLevel`, with `computed`.
 
@@ -43,11 +43,11 @@ An object or array with the same contents as before, such as `:tools="['crop', '
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-[Events](./events) describes each one. A change of a prop never emits `change`.
+[Events](./events) describes each one. A change of a prop never emits `change`. [State](./state#in-step) shows how to keep the state in a `shallowRef` with `@change`, `@load` and `@error`.
 
-## Methods
+## Methods {#methods}
 
-The component exposes the viewer as `instance`, with every [method](./methods). It is `null` until the component mounts:
+The component exposes the viewer as `instance`, with the [methods](./methods), such as `zoomIn()` or `apply()`. It is `null` until the component mounts:
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+The component creates the viewer when it mounts and destroys it when it unmounts, so do not call `destroy()`. Change the props instead of calling `setOptions()`, which the next change of a prop would undo, and use the component events instead of `on()`.
 
 Passing the same `src` again does not reload the image, so it keeps the result of an edit. To bring back the original, call `instance.reload()`.
 

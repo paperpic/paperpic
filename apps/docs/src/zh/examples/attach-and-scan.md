@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         文档照片
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## 说明
 
 - `capture="environment"` 在手机上会打开后置摄像头，电脑会忽略它。不加它时，手机会同时提供相机和相册，适合用户已有的文档。
+- 每次选择后清空 input，用户就能再次选择同一张照片，例如在应用之后重新开始。
 - 照片加载后，查看器会进入编辑模式，用户可以直接使用矫正或清理。去掉 `load` 监听器即可先显示照片。
 - `phase: 'load'` 能把浏览器无法打开的文件（例如 Safari 之外的 HEIC 照片）与编辑失败区分开。[加载图片](../guide/loading#formats)列出了支持的格式。
 - 在应用调用 `upload` 之前，照片一直留在浏览器中。PaperPic 不会自行发送任何内容。

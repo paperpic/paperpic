@@ -5,7 +5,10 @@ description: PaperPic クラスのすべてのメソッド。ズーム、フィ�
 
 # メソッド
 
-メソッドを使うと、コードからビューアーを操作できます。たとえば [`toolbar: false`](./options#toolbar) にして独自のボタンから呼び出します。Vue と React では、コンポーネントの ref からビューアーを取得します。[Vue](./vue) と [React](./react) を参照してください。
+メソッドを使うと、コードからビューアーを操作できます。たとえば [`toolbar: false`](./options#toolbar) にして独自のボタンから呼び出します。core では、作成した `PaperPic` に対して呼び出します。Vue ではコンポーネントがビューアーを `instance` として公開し、React では `ref` が受け取ります。どちらもコンポーネントがマウントされるまでは `null` です。
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    拡大
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>拡大</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+Vue と React では、コンポーネントがビューアーを作成・破棄し、オプションを props として、イベントを独自のイベントとして受け取ります。そのため、そこでは [`new PaperPic()`](#new-paperpic)、[`destroy()`](#destroy)、[`setOptions()`](#setoptions)、[`on()`](#on) を呼び出さないでください。
 
 ## 作成と破棄
 
@@ -29,6 +77,8 @@ class PaperPic {
 
 `container` が要素でない場合は `TypeError` を投げます。要素ができてから、たとえばマウント時にビューアーを作成してください。オプションが範囲外の場合は `RangeError` を投げます。
 
+core のみ: Vue と React のコンポーネントは、マウント時にビューアーを作成します。
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 ビューアーを取り除き、worker や画像のメモリなど、保持しているものをすべて解放します。2 回呼び出しても問題ありません。
+
+core のみ: Vue と React のコンポーネントは、アンマウント時にこれを呼び出します。コンポーネントのビューアーに対して呼ぶと、コンポーネントが空になります。
 
 ## オプションと状態
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 渡したオプションを変更し、ほかはそのまま残します。`undefined` を渡すとデフォルト値に戻ります。`change` は発生しないため、双方向バインディングがループしません。オプションが範囲外の場合は `RangeError` を投げ、どのオプションも変更しません。
 
+Vue と React では、代わりに props を変更してください。いずれかの prop が次に変わるとすべてのオプションが再送されるため、`setOptions()` で行った変更は元に戻ります。
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-ズーム、モード、適用できる変更があるかなど、ビューアーの表示内容を返します。各フィールドは[状態](./state)で説明しています。
+ズーム、モード、適用できる変更があるかなど、ビューアーの現在の状態を返します。尋ねずに変更のたびに知るには、[`change`](./events#change) を受け取ります。各フィールドと 2 つの組み合わせ方は[状態](./state)で説明しています。
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+Vue と React では、代わりにコンポーネントのイベント（`@apply` や `onApply` など）を受け取ってください。
 
 ## 表示
 
@@ -121,7 +177,7 @@ function edit(): void
 function rotate(direction?: 1 | -1): void
 ```
 
-画像を 90 度回転します。デフォルトの `1` で時計回り、`-1` で反時計回りです。編集中は、[`apply()`](#apply) で確定する変更になります。読み取り専用のビューアーでは表示だけが変わります。それ以外の場合は何もしません。
+画像を 90 度回転します。デフォルトの `1` で時計回り、`-1` で反時計回りです。編集中は、[`apply()`](#apply) で確定する変更を加えます。ツールが開いている間や適用中は何もしません。読み取り専用のビューアーでは表示だけが変わります。それ以外の場合は何もしません。
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-パネルを持つツールを開きます。`'crop'` で切り抜き、`'perspective'` で傾き補正、`'adjust'` で調整、`'threshold'` でクリーンアップが開き、クリーンアップは開くとオンになります。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままで、その間はほかの変更、元に戻す、やり直す、適用は何もしません。編集モード以外、ほかのツールが開いている間、クリーンアップがオンのときの調整、プレビューの準備中の切り抜きと傾き補正では何もしません。
+パネルを持つツールを開きます。切り抜き（`'crop'`）、傾き補正（`'perspective'`）、調整（`'adjust'`）、クリーンアップ（`'threshold'`）のどれかで、クリーンアップは開くとオンになります。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままです。その間はほかの変更を始められず、元に戻す、やり直す、適用は何もしません。編集モード以外、ほかのツールが開いている間、クリーンアップがオンのときの調整、プレビューの準備中の切り抜きと傾き補正では何もしません。
 
 ### `confirmTool()`
 
@@ -171,7 +227,7 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあとに適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、クリーンアップがオンの間は何もしません。クリーンアップした文書には独自の階調があるためです。
+明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあとに適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、クリーンアップがオンの間は何もしません。クリーンアップは各ピクセルを周囲と比べるので、明るさとコントラストは結果をほとんど変えないためです。
 
 値が -1 から 1 の範囲外なら `RangeError` を投げます。
 
@@ -181,7 +237,7 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 function undo(): void
 ```
 
-最後の変更を元に戻します。
+最後の変更を元に戻します。編集モード以外、ツールが開いている間、適用中は何もしません。
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ function undo(): void
 function redo(): void
 ```
 
-最後に元に戻した変更をやり直します。
+最後に元に戻した変更をやり直します。編集モード以外、ツールが開いている間、適用中は何もしません。
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ function redo(): void
 function apply(): Promise<void>
 ```
 
-変更をフル解像度、または [`maxOutputSize`](./options#maxoutputsize) で適用します。結果が表示中の画像になり、履歴が空になり、ビューアーは表示モードに戻り、[`apply`](./events#apply) イベントが結果を渡します。適用は中断できず、実行中は操作がロックされます。
+変更をフル解像度、または [`maxOutputSize`](./options#maxoutputsize) で適用します。結果が表示中の画像になり、履歴が空になり、ビューアーは表示モードに戻り、[`apply`](./events#apply) イベントが結果を渡します。適用は中断できず、実行中は操作がロックされます。編集モード以外、ツールが開いている間、適用するものがないときは何もしません。
 
-失敗した場合は [`error`](./events#error) イベントで通知され、編集は開いたままです。
+失敗した場合は [`error`](./events#error) イベントで通知され、編集は開いたままです。Promise は適用が終わると、失敗した場合も解決されます。`try/catch` では検出できないので、`error` を受け取ってください。
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ function apply(): Promise<void>
 function cancel(): void
 ```
 
-変更を破棄して表示モードに戻ります。確認はしません。確認するのは組み込みの「キャンセル」ボタンと `Esc` です。
+変更を破棄して表示モードに戻ります。確認はしません。確認するのは組み込みの「キャンセル」ボタンと `Esc` です。適用中は何もしません。
 
 ## 画像
 
@@ -217,7 +273,7 @@ function cancel(): void
 function download(): void
 ```
 
-表示中の画像をファイルに保存します。保存されるのは最後の適用の結果、なければ元画像です。ボタンを表示するだけの [`download`](./options#download) オプションがなくても動きます。[`download`](./events#download) イベントが先に発生し、保存を止めることができます。編集中は、変更がまだ適用されていないため何もしません。
+表示中の画像をファイルに保存します。保存されるのは最後の適用の結果、なければ元画像です。ボタンを表示するだけの [`download`](./options#download) オプションがなくても動きます。[`download`](./events#download) イベントが先に発生し、保存を止めることができます。編集中は、変更がまだ適用されていないため何もしません。最初の適用より前は、別のオリジンの `src` はブラウザーで開かれます。[結果の保存](../guide/saving#download)を参照してください。
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ function download(): void
 function reload(): void
 ```
 
-現在の [`src`](./options#src) を読み込み直します。適用のあとに元画像に戻せます。
+現在の [`src`](./options#src) を読み込み直します。適用のあとに元画像に戻せます。編集中は変更を破棄します。`src` がなければ何もしません。

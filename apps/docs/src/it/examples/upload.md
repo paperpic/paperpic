@@ -127,4 +127,4 @@ export function Invoice() {
 - `role="status"` fa annunciare ai lettori di schermo il risultato del caricamento.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene il file piccolo. I documenti restano leggibili con 3000 pixel sul lato più lungo.
 - Dopo Applica la cronologia è vuota, quindi l’utente non può tornare all’immagine precedente. Per offrire un pulsante Riprova, conserva l’ultimo `blob` e `type` e chiama di nuovo `upload`.
-- Il server riceve PNG per un documento pulito, altrimenti il formato dell’immagine originale. Vedi [Salvare il risultato](../guide/saving) per sceglierne un altro.
+- Il server riceve PNG per un documento pulito, altrimenti il formato dell’immagine originale quando è JPEG, PNG o WebP. Vedi [Salvare il risultato](../guide/saving#format) per sapere come PaperPic riconosce il formato, e per sceglierne un altro.

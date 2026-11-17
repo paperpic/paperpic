@@ -20,7 +20,7 @@ Mentre Ritaglia è aperto, l’immagine appare come sarà il risultato, con Rego
 ## Maniglie d’angolo
 
 - Le maniglie restano dentro l’immagine, e il rettangolo non si capovolge mai.
-- Su uno schermo touch, una lente d’ingrandimento mostra la zona sotto il dito mentre trascina un angolo, così il dito non nasconde dove finisce.
+- Con il dito o una penna, una lente d’ingrandimento mostra la zona sottostante mentre si trascina un angolo, così non si nasconde dove finisce.
 - Senza trascinare, premi una maniglia e poi tocca il punto in cui va il suo angolo. Fino ad allora la maniglia resta evidenziata, i pulsanti dello zoom ingrandiscono verso il suo angolo, e `Esc` la rilascia.
 - Con la tastiera, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc. `+` e `-` ingrandiscono e riducono verso la maniglia con il focus. I lettori di schermo annunciano ogni spostamento.
 

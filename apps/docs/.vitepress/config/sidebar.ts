@@ -73,6 +73,8 @@ export const sidebar = [
       'examples/read-only',
       'examples/custom-toolbar',
       'examples/fixed-proportions',
+      'examples/dialog',
+      'examples/form',
     ],
   },
 ] as const

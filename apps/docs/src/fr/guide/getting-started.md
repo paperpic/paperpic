@@ -96,7 +96,7 @@ Le core se charge aussi depuis un CDN qui sert les fichiers du paquet tels quels
 </script>
 ```
 
-Les navigateurs ne démarrent un worker que depuis l’origine de la page, donc la modification s’y exécute sur le thread principal : elle fonctionne, mais les grandes photos figent la page un instant pendant Appliquer. Servez les fichiers depuis votre propre origine, ou utilisez un bundler, pour garder le worker. Les composants Vue et React ont besoin d’un bundler.
+Les navigateurs ne démarrent un worker que depuis l’origine de la page, donc avec le paquet sur un CDN la modification s’exécute sur le thread principal : elle fonctionne, mais les grandes photos figent la page un instant pendant Appliquer. Servez les fichiers depuis votre propre origine, ou utilisez un bundler, pour garder le worker. Les composants Vue et React ont besoin d’un bundler.
 
 ## Afficher une image
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` accepte une URL de la même origine que votre page, ou un `File` choisi par l’utilisateur, par exemple depuis un `<input type="file">`. `alt` décrit l’image pour les lecteurs d’écran. [Charger des images](./loading) traite des images d’autres origines, des formats et des erreurs de chargement.
+`src` accepte une URL de la même origine que votre page, un `File` choisi par l’utilisateur, par exemple depuis un `<input type="file">`, ou un `Blob`. `alt` décrit l’image pour les lecteurs d’écran. [Charger des images](./loading) traite des images d’autres origines, des formats et des erreurs de chargement.
 
 ## Récupérer l’image modifiée
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-Le `blob` garde le format de l’image source, ou est en PNG quand l’utilisateur a nettoyé le document. L’option [`output`](../reference/options#output) le change.
+Le `blob` garde le format de l’image source quand c’est du JPEG, du PNG ou du WebP, et est en PNG quand l’utilisateur a nettoyé le document. [Format et qualité](./saving#format) explique comment PaperPic reconnaît le format, et l’option [`output`](../reference/options#output) le change.
 
 ## Retirer la visionneuse {#destroy}
 
@@ -211,7 +211,7 @@ PaperPic fonctionne dans les navigateurs de [Baseline Widely Available](https://
 ## Étapes suivantes
 
 - [Charger des images](./loading) : d’où vient l’image, et quels formats s’ouvrent.
-- [Visionneuse](./viewer) : zoom, ajustement et lecture seule.
+- [Visionneuse](./viewer) : zoom, adaptation et lecture seule.
 - [Modification](./editing) : le mode d’édition, les outils et Appliquer.
 - [Options](../reference/options) : tout ce que vous pouvez configurer.
 - [Dépannage](./troubleshooting) : quand la visionneuse ne s’affiche pas ou ne fonctionne pas comme prévu.

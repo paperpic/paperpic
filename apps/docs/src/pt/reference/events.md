@@ -1,6 +1,6 @@
 ---
 title: Eventos
-description: Os eventos do PaperPic e o que cada um traz, load, error, change, apply e download, e como escutá-los em JavaScript, Vue e React.
+description: Os eventos do PaperPic (load, error, change, apply e download), os dados de cada um e como escutá-los em JavaScript, Vue e React.
 ---
 
 # Eventos
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Dados:** [`Size`](./types#size)
 
-A imagem foi carregada e está na tela. `width` e `height` são o tamanho dela em pixels.
+A imagem foi carregada e está na tela. `width` e `height` são o tamanho dela em pixels. É emitido a cada carregamento de um `src`, também com [`reload()`](./methods#reload), mas não depois do Aplicar, cujo resultado chega com [`apply`](#apply).
 
 ## `error`
 
@@ -48,13 +48,22 @@ Algo falhou, e `phase` diz o quê:
 
 - **Dados:** [`PaperPicState`](./state)
 
-O usuário mudou a visualização ou a edição, por exemplo ao dar zoom, abrir uma ferramenta ou desfazer. Também avisa o início do Aplicar, com `busy: true`. Mover a imagem não o emite, porque o estado não guarda a posição dela. `setOptions()` e as props dos componentes nunca o emitem.
+O estado mudou, pelo usuário ou por um método, por exemplo ao dar zoom, abrir uma ferramenta ou desfazer. Envia o estado completo, o mesmo que [`getState()`](./methods#getstate) retornaria naquele momento. O Aplicar o emite duas vezes: ao começar, com `busy: true`, e ao terminar bem, depois de [`apply`](#apply).
+
+Estas coisas mudam o estado sem emitir `change`:
+
+- Carregar uma imagem, o que [`load`](#load) ou [`error`](#error) avisa.
+- Um Aplicar que falha, o que [`error`](#error) avisa. `busy` volta a ser `false`.
+- `setOptions()` e as props dos componentes, para que vínculos bidirecionais não entrem em loop.
+- Uma mudança de tamanho do visualizador, que muda `zoom` enquanto há um encaixe em vigor.
+
+Mover a imagem não emite nada, porque o estado não guarda a posição dela. [Estado](./state#in-step) mostra como sincronizar seus próprios controles.
 
 ## `apply`
 
 - **Dados:** [`ExportedImage`](./types#exportedimage)
 
-O usuário aplicou as alterações, e o resultado já está na tela. `blob` contém a imagem no formato `type`, que [`output`](./options#output) escolhe.
+O Aplicar terminou, pelo botão, `Enter` ou [`apply()`](./methods#apply), e o resultado já está na tela. `blob` contém a imagem no formato `type`, que [`output`](./options#output) escolhe.
 
 ## `download`
 

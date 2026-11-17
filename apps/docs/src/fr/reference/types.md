@@ -61,7 +61,7 @@ Ce que prennent le constructeur et [`setOptions()`](./methods#setoptions). Dans 
 type PaperPicSource = string | Blob
 ```
 
-L’image de [`src`](./options#src) : une URL de la même origine, ou un `File` ou un `Blob` joint côté client. Le `source` de [`PaperPicDownload`](#paperpicdownload) a le même type.
+L’image de [`src`](./options#src) : une URL, ou un `File` ou un `Blob`. Le `source` de [`PaperPicDownload`](#paperpicdownload) a le même type.
 
 ### `PaperPicOutput`
 
@@ -196,7 +196,7 @@ Ce que renvoie [`getState()`](./methods#getstate) et ce que transmet l’événe
 type Fit = 'image' | 'width' | 'height'
 ```
 
-Comment l’image s’ajuste à la visionneuse : entière, à sa largeur ou à sa hauteur. [`fit()`](./methods#fit) le prend, et le `fit` de l’[état](./state) le contient.
+Comment l’image s’adapte à la visionneuse : entière, à sa largeur ou à sa hauteur. [`fit()`](./methods#fit) le prend, et le `fit` de l’[état](./state) le contient.
 
 ### `Rotation`
 

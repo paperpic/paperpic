@@ -15,7 +15,7 @@ La photo d’un document a souvent besoin de quelques corrections avant de valoi
 
 Rien ne modifie l’image avant Appliquer. Jusque-là, les changements sont une liste dont la visionneuse montre un aperçu.
 
-La barre de modification a deux lignes de même hauteur dans tous ses états : en haut, les outils ou le panneau de l’outil ouvert, et en bas, Annuler à gauche et Appliquer, ou Terminé, à droite. Ainsi l’image garde sa place quand un outil s’ouvre. Dans une visionneuse d’au moins 28rem de large, la barre tient sur une ligne. Un point marque Ajuster et Nettoyer tant que leur réglage s’applique.
+Dans une visionneuse étroite, la barre de modification a deux lignes : en haut, les outils ou le panneau de l’outil ouvert, et en bas, Annuler à gauche et Appliquer, ou Terminé, à droite. À partir de 28rem de large, tout tient sur une ligne. Dans les deux cas, la barre garde sa hauteur quand un outil s’ouvre, donc l’image garde sa place. Un point marque Ajuster et Nettoyer tant que leur réglage s’applique.
 
 ## Outils
 
@@ -70,7 +70,7 @@ export function Receipt() {
 
 :::
 
-Recadrer, Redresser, Ajuster et Nettoyer ouvrent un panneau à la place des outils, donc le reste de la barre de modification attend tant que l’un d’eux est ouvert. Terminé, ou `Entrée`, ajoute aux changements ce que l’outil a choisi, et Annuler cet outil, ou `Échap`, l’abandonne.
+Recadrer, Redresser, Ajuster et Nettoyer ouvrent un panneau à la place des outils. Tant que l’un d’eux est ouvert, les autres outils, Annuler la dernière action, Rétablir et Appliquer attendent. Terminé, ou `Entrée`, ajoute aux changements ce que l’outil a choisi, et Annuler cet outil, ou `Échap`, l’abandonne.
 
 Dans un panneau, l’image apparaît telle que sera le résultat, Nettoyer compris. Redresser fait exception : il montre la photo sans Nettoyer, pour que les bords du papier restent visibles.
 
@@ -85,7 +85,7 @@ Appliquer ne peut pas être interrompu. Il bloque les commandes et affiche un me
 | Événement | Quand                                                                                                 |
 | --------- | ----------------------------------------------------------------------------------------------------- |
 | `apply`   | Quand le résultat est prêt, avec `{ blob, width, height, type }`                                      |
-| `change`  | Après chaque action de l’utilisateur qui change l’[état](../reference/state)                          |
+| `change`  | Chaque fois que l’utilisateur ou une méthode change l’[état](../reference/state)                      |
 | `error`   | Quand l’image ne peut pas être chargée, ou qu’une modification ne peut pas être affichée ou appliquée |
 
 :::tabs key:framework
@@ -121,7 +121,7 @@ pic.on('error', ({ error }) => console.error(error))
 ## Ce qui abandonne les changements
 
 - Annuler, après confirmation de l’utilisateur, ou [`cancel()`](../reference/methods#cancel), qui ne demande rien.
-- Un nouveau `src` pendant la modification.
+- Un nouveau `src`, ou [`reload()`](../reference/methods#reload), pendant la modification.
 - Un changement d’`editable` pendant la modification.
 
 Après Appliquer, passer le même `src` une nouvelle fois ne fait rien, donc le résultat reste affiché. [`reload()`](../reference/methods#reload) ramène l’original.

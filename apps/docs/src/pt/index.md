@@ -22,7 +22,7 @@ hero:
 features:
   - icon: { src: /icons/viewer.svg, wrap: true, width: 24, height: 24 }
     title: "Visualizador"
-    details: "Dê zoom com os botões, a roda ou a pinça, mova a imagem e ajuste a largura de recibos longos. Somente leitura quando precisar."
+    details: "Dê zoom com os botões, a roda ou a pinça, mova a imagem e encaixe na largura recibos longos. Somente leitura quando precisar."
     link: /pt/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Endireitar e recortar"

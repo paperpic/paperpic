@@ -17,7 +17,7 @@ Straighten the receipt first, then clean it up.
 2. Drag the ruler. Higher sensitivity darkens more pixels, which recovers faint or worn text. Lower sensitivity gives a cleaner page, without the print that shows through from the back.
 3. Press Done to keep it as one edit, or Cancel this tool to leave the image as it was.
 
-To turn off a Clean up that is already an edit, open it again: a switch next to the ruler turns it off, and the edits that came after it stay. Undo would take those edits away first.
+To turn off a Clean up that is already an edit, open it again: a switch next to the ruler turns it off, and the edits that came after it stay. Undo, instead, would also remove those edits.
 
 Clean up always runs after the other edits. Crop shows the image cleaned up, as it will be. Straighten shows it without Clean up, because the edges of the paper are hard to find on a cleaned up page.
 

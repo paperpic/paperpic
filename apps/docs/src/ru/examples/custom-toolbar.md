@@ -19,6 +19,7 @@ description: Полный пример, который скрывает встр
   <button type="button" data-action="edit">Редактировать</button>
   <button type="button" data-action="straighten">Выровнять</button>
   <button type="button" data-action="confirmTool">Готово</button>
+  <button type="button" data-action="cancelTool">Отменить этот инструмент</button>
   <button type="button" data-action="undo">Отменить</button>
   <button type="button" data-action="cancel">Отмена</button>
   <button type="button" data-action="apply">Применить</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         Готово
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        Отменить этот инструмент
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Редактировать</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>Готово</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>Готово</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>Отменить этот инструмент</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## Примечания
 
-- С `toolbar: false` скрыта и встроенная панель редактирования, поэтому «Обрезать» и «Выровнять» показывают маркеры, но не кнопку «Готово». Ваш интерфейс подтверждает их через [`confirmTool()`](../reference/methods#confirmtool), как `Enter`.
+- С `toolbar: false` скрыта и встроенная панель редактирования, поэтому «Обрезать» и «Выровнять» показывают маркеры, но не кнопку «Готово». Ваш интерфейс подтверждает их через [`confirmTool()`](../reference/methods#confirmtool), как `Enter`. Чтобы закрыть их без изменений, вызовите [`cancelTool()`](../reference/methods#canceltool), как это делает `Esc`.
 - Ваши собственные ползунки могут напрямую вызывать [`setThreshold()`](../reference/methods#setthreshold) и [`setAdjustments()`](../reference/methods#setadjustments), и каждый вызов добавляет изменение. Чтобы всё перетаскивание дало одно изменение, сначала откройте инструмент через [`openTool()`](../reference/methods#opentool): тогда те же методы меняют то, что он показывает, а `confirmTool()` сохраняет это.
 - [`cancel()`](../reference/methods#cancel) не спрашивает перед отменой изменений. Если они есть, спросите пользователя сами, например когда `canApply` равно true.
 - Сочетания клавиш продолжают работать, когда фокус на просмотрщике. См. [Доступность](../guide/accessibility).

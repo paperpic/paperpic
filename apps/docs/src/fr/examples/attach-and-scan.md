@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         Photo du document
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## Remarques
 
 - `capture="environment"` ouvre la caméra arrière sur les téléphones, et les ordinateurs l’ignorent. Sans lui, les téléphones proposent la caméra et la photothèque, ce qui convient aux documents que l’utilisateur a déjà.
+- Vider le champ après chaque choix permet de choisir à nouveau la même photo, par exemple pour recommencer après Appliquer.
 - La visionneuse ouvre le mode d’édition dès que la photo est chargée, si bien que l’utilisateur passe directement à Redresser ou Nettoyer. Retirez l’écouteur de `load` pour montrer d’abord la photo.
 - `phase: 'load'` distingue un fichier que le navigateur ne peut pas ouvrir, comme une photo HEIC hors de Safari, d’une modification qui échoue. [Charger des images](../guide/loading#formats) liste les formats.
 - La photo reste dans le navigateur jusqu’à ce que Appliquer appelle `upload`. PaperPic n’envoie rien de lui-même.

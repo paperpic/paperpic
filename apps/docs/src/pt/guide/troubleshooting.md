@@ -9,7 +9,7 @@ A maioria dos problemas com o PaperPic vem da configuração, e não da imagem. 
 
 ## O visualizador é uma faixa fina, ou não aparece {#no-height}
 
-O visualizador preenche o seu contêiner, e um contêiner sem altura encolhe para a altura mínima do visualizador. Dê uma altura ao contêiner, como `height: 480px`, ou um lugar em um layout flex ou grid que lhe dê uma. [Estilos](./styling) mostra as duas formas.
+O visualizador preenche o seu contêiner, e um contêiner sem altura encolhe para a altura mínima do visualizador, 16rem. Dê uma altura ao contêiner, como `height: 480px`, ou um lugar em um layout flex ou grid que lhe dê uma. [Estilos](./styling) mostra as duas formas.
 
 ## Os botões não têm estilo, e o console avisa {#no-stylesheet}
 
@@ -25,7 +25,7 @@ O [`error`](../reference/events#error) diz que a imagem vem de outra origem. Os 
 
 ## A imagem não carrega {#load-error}
 
-O visualizador mostra que não foi possível carregar a imagem, e `error` traz `phase: 'load'`. Confira se a URL existe e se o navegador abre o formato: HEIC só abre no Safari, e um SVG precisa dos atributos `width` e `height`. [Carregar imagens](./loading#formats) lista os formatos.
+O visualizador mostra que não foi possível carregar a imagem, e `error` chega com `phase: 'load'`. Confira se a URL existe e se o navegador abre o formato: HEIC só abre no Safari, e um SVG precisa dos atributos `width` e `height`. [Carregar imagens](./loading#formats) lista os formatos.
 
 ## A página trava enquanto o Aplicar roda {#worker}
 
@@ -38,7 +38,7 @@ O painel de rede do navegador mostra se a página pediu o arquivo do worker, cuj
 
 ## O Aplicar falha com uma foto grande {#too-large}
 
-O `error` diz `The browser could not read an image of …`. Os navegadores limitam o tamanho de um canvas, e o Safari no iOS mais que todos. Defina [`maxOutputSize`](../reference/options#maxoutputsize), por exemplo em 3000 pixels, o que mantém os documentos legíveis.
+O `error` diz `The browser could not read an image of …`, ou `could not save an image of …`. Os navegadores limitam o tamanho de um canvas, e o Safari no iOS mais que todos. Defina [`maxOutputSize`](../reference/options#maxoutputsize), por exemplo em 3000 pixels, o que mantém os documentos legíveis.
 
 ## A roda do mouse dá zoom na imagem em vez de rolar a página {#wheel}
 

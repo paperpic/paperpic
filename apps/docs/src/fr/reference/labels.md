@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l’objet une seule fois, et non à chaque rendu, pour que la visionneuse ne le reçoive pas à nouveau chaque fois.
+Cinq libellés sont des fonctions, car leur texte contient une valeur. Une fonction est nouvelle chaque fois qu’on la crée, et la visionneuse prend une nouvelle fonction pour un changement : créez donc une seule fois les libellés qui contiennent des fonctions, et non à chaque rendu.
 
 | Clé                    | Anglais                                      | Usage                                                                                                                                 |
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l�
 | `adjustmentLevel`      | Brightness +30                               | Fonction du nom et de la valeur de -100 à 100, annoncée après avoir déplacé la règle d’Ajuster                                        |
 | `applied`              | Changes applied                              | Annoncé quand les changements sont appliqués                                                                                          |
 | `apply`                | Apply                                        | Le bouton qui applique les changements                                                                                                |
-| `applyError`           | The changes could not be applied             | Affiché quand Appliquer échoue                                                                                                        |
+| `applyError`           | The changes could not be applied             | Affiché quand Appliquer échoue, ou quand un changement ne peut pas s’afficher                                                         |
 | `brightness`           | Brightness                                   | Le choix de la luminosité dans Ajuster, et le nom de sa règle                                                                         |
 | `cancel`               | Cancel                                       | Le bouton qui quitte le mode d’édition                                                                                                |
 | `cancelTool`           | Cancel this tool                             | Le bouton qui ferme un outil et abandonne ses changements                                                                             |
@@ -46,8 +46,8 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Créez l�
 | `edit`                 | Edit                                         | Le bouton qui commence la modification                                                                                                |
 | `editBar`              | Editing controls                             | Le nom de la barre de modification, pour les lecteurs d’écran                                                                         |
 | `editing`              | Editing                                      | Annoncé quand le mode d’édition commence                                                                                              |
-| `fitHeight`            | Fit to height                                | Le bouton qui ajuste la hauteur de l’image                                                                                            |
-| `fitWidth`             | Fit to width                                 | Le bouton qui ajuste la largeur de l’image                                                                                            |
+| `fitHeight`            | Fit to height                                | Le bouton qui adapte l’image à la hauteur                                                                                             |
+| `fitWidth`             | Fit to width                                 | Le bouton qui adapte l’image à la largeur                                                                                             |
 | `flip`                 | Flip                                         | Le bouton Retourner                                                                                                                   |
 | `inUse`                | In use                                       | La description d’Ajuster ou de Nettoyer tant que son réglage s’applique, ce que montre un point                                       |
 | `keepEditing`          | Keep editing                                 | Le bouton qui revient à la modification au lieu de perdre les changements                                                             |

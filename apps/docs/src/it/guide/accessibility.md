@@ -7,7 +7,7 @@ description: Come funziona PaperPic con la tastiera, i lettori di schermo e gli 
 
 Le persone leggono e sistemano documenti con il mouse, con un dito, con la tastiera o con un lettore di schermo. PaperPic punta alle WCAG 2.2 AA, e quasi tutto il lavoro è già incluso. Questa pagina spiega cosa fa e cosa deve aggiungere la tua app.
 
-## Cosa fornisce la tua app
+## Cosa deve fare la tua app
 
 - **Una descrizione.** Passa [`alt`](../reference/options#alt), come «Scontrino del 5 novembre». I lettori di schermo lo leggono come nome dell’immagine.
 - **Testi nella lingua dell’utente.** I lettori di schermo annunciano i pulsanti e i cambiamenti, quindi traducili con [`labels`](./labels).
@@ -16,7 +16,7 @@ Le persone leggono e sistemano documenti con il mouse, con un dito, con la tasti
 
 ## Tastiera {#keyboard}
 
-Con il focus sul visualizzatore:
+Con il focus nel visualizzatore:
 
 | Tasto                      | Azione                                                                                      |
 | -------------------------- | ------------------------------------------------------------------------------------------- |
@@ -28,7 +28,7 @@ Con il focus sul visualizzatore:
 | `Invio`                    | Conferma lo strumento aperto, altrimenti applica le modifiche                               |
 | `Esc`                      | Rilascia un angolo selezionato, chiude lo strumento aperto, altrimenti annulla le modifiche |
 
-Su macOS, `Cmd` funziona come `Ctrl`. Prima di annullare le modifiche, `Esc` chiede conferma. Con `toolbar: false`, le lascia alla tua interfaccia.
+Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme invece quel pulsante. Prima di annullare le modifiche, `Esc` chiede conferma. Con `toolbar: false`, `Esc` chiude ancora uno strumento, ma non annulla la modifica: decide la tua interfaccia.
 
 - **Barra degli strumenti e barra di modifica.** Tab raggiunge ogni barra, e al suo interno le frecce passano da un pulsante all’altro, con `Home` e `Fine` per il primo e l’ultimo.
 - **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc.
@@ -38,7 +38,7 @@ Su macOS, `Cmd` funziona come `Ctrl`. Prima di annullare le modifiche, `Esc` chi
 
 - L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
-- Un annuncio segnala ogni cambiamento che l’utente non vede dal solo focus: il livello di zoom, l’inizio della modalità di modifica, la posizione di un angolo spostato, il valore di un righello e il risultato di Applica.
+- Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato di Applica e ogni errore.
 - L’interruttore di Pulisci ha il ruolo di un interruttore. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo».
 
 ## Schermi touch

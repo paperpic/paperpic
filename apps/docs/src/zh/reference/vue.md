@@ -29,7 +29,7 @@ function upload({ blob }: ExportedImage) {
 
 ## Props
 
-每个[选项](./options)都是同名的 prop，例如 `:editable="false"` 或 `:aspect-ratio="210 / 297"`。prop 的变化通过 `setOptions()` 传给查看器。
+每个[选项](./options)都是同名的 prop，例如 `:editable="false"` 或 `:aspect-ratio="210 / 297"`。prop 的变化通过 `setOptions()` 传给查看器。`class` 和 `style` 会加到包含查看器的元素上，该元素也带有 `paperpic-host` 类。
 
 内容与之前相同的对象或数组，例如 `:tools="['crop', 'rotate']"`，不会改变任何东西，所以模板可以直接构建它们。函数在父组件每次渲染时都是新的，所以请用 `computed` 构建包含函数的 `labels`，例如 `zoomLevel`。
 
@@ -43,11 +43,11 @@ function upload({ blob }: ExportedImage) {
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-每个事件见[事件](./events)。prop 的变化从不触发 `change`。
+每个事件见[事件](./events)。prop 的变化从不触发 `change`。如何用 `@change`、`@load` 和 `@error` 把状态保存在 `shallowRef` 中，见[状态](./state#in-step)。
 
-## 方法
+## 方法 {#methods}
 
-组件把查看器暴露为 `instance`，带有所有[方法](./methods)。组件挂载之前它为 `null`：
+组件把查看器暴露为 `instance`，带有 `zoomIn()`、`apply()` 等[方法](./methods)。组件挂载之前它为 `null`：
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+组件在挂载时创建查看器、在卸载时销毁它，所以不要调用 `destroy()`。请修改 props 而不是调用 `setOptions()`（下一次 prop 变化会撤销它的修改），并用组件事件代替 `on()`。
 
 再次传入相同的 `src` 不会重新加载图片，因此会保留编辑结果。要恢复原图，调用 `instance.reload()`。
 

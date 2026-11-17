@@ -29,7 +29,7 @@ function upload({ blob }: ExportedImage) {
 
 ## Props
 
-各[オプション](./options)は同じ名前の prop です。たとえば `:editable="false"` や `:aspect-ratio="210 / 297"` です。prop の変更は `setOptions()` を通じてビューアーに届きます。
+各[オプション](./options)は同じ名前の prop です。たとえば `:editable="false"` や `:aspect-ratio="210 / 297"` です。prop の変更は `setOptions()` を通じてビューアーに届きます。`class` と `style` は、ビューアーを含む要素に付きます。この要素には `paperpic-host` クラスも付いています。
 
 `:tools="['crop', 'rotate']"` のように前と同じ内容のオブジェクトや配列は何も変えないので、テンプレートで作ってかまいません。関数は親がレンダーするたびに新しくなるので、`zoomLevel` のような関数を含む `labels` は `computed` で作ってください。
 
@@ -43,11 +43,11 @@ function upload({ blob }: ExportedImage) {
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-各イベントは[イベント](./events)で説明しています。prop の変更で `change` は発生しません。
+各イベントは[イベント](./events)で説明しています。prop の変更で `change` は発生しません。`@change`、`@load`、`@error` で状態を `shallowRef` に保つ方法は[状態](./state#in-step)で説明しています。
 
-## メソッド
+## メソッド {#methods}
 
-コンポーネントは、すべての[メソッド](./methods)を持つビューアーを `instance` として公開します。コンポーネントがマウントされるまでは `null` です。
+コンポーネントはビューアーを `instance` として公開し、`zoomIn()` や `apply()` などの[メソッド](./methods)を使えます。コンポーネントがマウントされるまでは `null` です。
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+コンポーネントはマウント時にビューアーを作成し、アンマウント時に破棄するので、`destroy()` は呼び出さないでください。`setOptions()` の代わりに props を変更し（`setOptions()` での変更は次の prop の変更で元に戻ります）、`on()` の代わりにコンポーネントのイベントを使ってください。
 
 同じ `src` をもう一度渡しても画像は再読み込みされないため、編集の結果が残ります。元画像に戻すには `instance.reload()` を呼び出します。
 

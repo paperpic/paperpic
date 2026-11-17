@@ -1,11 +1,14 @@
 ---
 title: Métodos
-description: Todos os métodos da classe PaperPic, para controlar o visualizador pelo seu código, como dar zoom, ajustar, girar, editar, aplicar, baixar e recarregar.
+description: Todos os métodos da classe PaperPic, para controlar o visualizador pelo seu código, como dar zoom, encaixar, girar, editar, aplicar, baixar e recarregar.
 ---
 
 # Métodos
 
-Os métodos controlam o visualizador pelo seu código, por exemplo a partir de botões seus com [`toolbar: false`](./options#toolbar). Em Vue e React, a ref do componente dá acesso ao visualizador: veja [Vue](./vue) e [React](./react).
+Os métodos controlam o visualizador pelo seu código, por exemplo a partir de botões seus com [`toolbar: false`](./options#toolbar). Com o core, chame-os no `PaperPic` que você cria. Em Vue, o componente expõe o visualizador como `instance`, e em React, `ref` o recebe. Os dois são `null` até o componente ser montado:
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    Ampliar
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>Ampliar</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+Em Vue e React, o componente cria e destrói o visualizador, e recebe as opções como props e os eventos como eventos próprios. Então ali não chame [`new PaperPic()`](#new-paperpic), [`destroy()`](#destroy), [`setOptions()`](#setoptions) nem [`on()`](#on).
 
 ## Criar e destruir
 
@@ -29,6 +77,8 @@ Cria o visualizador dentro de `container`, que ele preenche. Defina uma altura p
 
 Lança um `TypeError` se `container` não for um elemento. Crie o visualizador quando o elemento já existir, por exemplo na montagem. Lança um `RangeError` se uma opção estiver fora do seu intervalo.
 
+Só com o core: os componentes de Vue e React criam o visualizador ao serem montados.
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 Remove o visualizador e libera tudo o que ele ocupa, como o worker e a memória das imagens. Chamá-lo duas vezes não causa problemas.
+
+Só com o core: os componentes de Vue e React o chamam ao serem desmontados. Chamado no visualizador deles, deixaria o componente vazio.
 
 ## Opções e estado
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 Muda as opções que você passa e mantém as outras. `undefined` devolve uma opção ao seu valor padrão. Nunca emite `change`, então vínculos bidirecionais não entram em loop. Lança um `RangeError` se uma opção estiver fora do seu intervalo, e nesse caso nenhuma opção muda.
 
+Em Vue e React, mude as props em vez disso. A próxima mudança de qualquer prop envia todas as opções de novo, o que desfaria uma mudança feita com `setOptions()`.
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-Retorna o que o visualizador está mostrando, como o zoom, o modo e se há alterações para aplicar. [Estado](./state) descreve cada campo.
+Retorna o estado atual do visualizador, como o zoom, o modo e se há alterações para aplicar. Para saber de cada mudança sem perguntar, escute [`change`](./events#change). [Estado](./state) descreve cada campo, e como os dois se combinam.
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+Em Vue e React, escute os eventos do componente em vez disso, como `@apply` ou `onApply`.
 
 ## Visualização
 
@@ -95,7 +151,7 @@ function zoomTo(zoom: number, point?: ViewPoint): void
 
 Define o zoom, em que `1` mostra um pixel da imagem por pixel da tela. [`point`](./types#viewpoint) fica no lugar: ele é dado em pixels CSS a partir do canto superior esquerdo do visualizador, e por padrão é o centro dele.
 
-O zoom vai do ajuste da imagem inteira, ou `1` se for menor, até `8`. Um valor fora desse intervalo é limitado.
+O zoom vai do que encaixa a imagem inteira, ou `1` se for menor, até `8`. Um valor fora desse intervalo é limitado.
 
 ### `fit()`
 
@@ -103,7 +159,7 @@ O zoom vai do ajuste da imagem inteira, ou `1` se for menor, até `8`. Um valor 
 function fit(fit: Fit): void
 ```
 
-Ajusta ao visualizador a imagem inteira, a largura ou a altura dela. `fit` é um [`Fit`](./types#fit): `'image'`, `'width'` ou `'height'`.
+Encaixa no visualizador a imagem inteira, a largura ou a altura dela. `fit` é um [`Fit`](./types#fit): `'image'`, `'width'` ou `'height'`.
 
 ## Edição
 
@@ -121,7 +177,7 @@ Começa a edição. Não faz nada se a imagem não estiver pronta ou se [`editab
 function rotate(direction?: 1 | -1): void
 ```
 
-Gira a imagem um quarto de volta: no sentido horário com `1`, o padrão, e no anti-horário com `-1`. Durante a edição, é uma alteração que [`apply()`](#apply) torna permanente. Num visualizador somente leitura, muda só a exibição. Nos outros casos, não faz nada.
+Gira a imagem um quarto de volta: no sentido horário com `1`, o padrão, e no anti-horário com `-1`. Durante a edição, adiciona uma alteração que [`apply()`](#apply) torna permanente, e não faz nada com uma ferramenta aberta ou enquanto o Aplicar roda. Num visualizador somente leitura, muda só a exibição. Nos outros casos, não faz nada.
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ Espelha a imagem da esquerda para a direita como ela aparece, então depois de u
 function openTool(id: ToolId): void
 ```
 
-Abre uma ferramenta com painel: Recortar, com `'crop'`, Endireitar, com `'perspective'`, Ajustar, com `'adjust'`, ou Limpar, com `'threshold'`, que liga ao abrir. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool), e enquanto isso as outras alterações, Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar com Limpar ligado, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
+Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'threshold'`), que liga ao abrir. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar com Limpar ligado, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
 
 ### `confirmTool()`
 
@@ -145,7 +201,7 @@ Abre uma ferramenta com painel: Recortar, com `'crop'`, Endireitar, com `'perspe
 function confirmTool(): void
 ```
 
-Fecha a ferramenta aberta e adiciona o que ela escolheu às alterações, como faz o `Enter`: a seleção de Recortar ou de Endireitar, ou os ajustes de Ajustar ou de Limpar, como uma única alteração.
+Fecha a ferramenta aberta e adiciona o que ela escolheu às alterações, como faz o `Enter`: a seleção de Recortar ou de Endireitar, ou os valores de Ajustar ou de Limpar, como uma única alteração.
 
 ### `cancelTool()`
 
@@ -171,7 +227,7 @@ Lança um `RangeError` se `sensitivity` não estiver entre 0 e 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Muda o brilho ou o contraste, cada um de -1 a 1, em que 0 deixa a imagem como está. Eles vêm depois das outras alterações. Enquanto Ajustar está aberto, muda o que Ajustar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição, com outra ferramenta aberta ou com Limpar ligado, porque um documento limpo tem tons próprios.
+Muda o brilho ou o contraste, cada um de -1 a 1, em que 0 deixa a imagem como está. Eles vêm depois das outras alterações. Enquanto Ajustar está aberto, muda o que Ajustar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição, com outra ferramenta aberta ou com Limpar ligado: Limpar compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado.
 
 Lança um `RangeError` se um valor não estiver entre -1 e 1.
 
@@ -181,7 +237,7 @@ Lança um `RangeError` se um valor não estiver entre -1 e 1.
 function undo(): void
 ```
 
-Desfaz a última alteração.
+Desfaz a última alteração. Não faz nada fora do modo de edição, com uma ferramenta aberta ou enquanto o Aplicar roda.
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ Desfaz a última alteração.
 function redo(): void
 ```
 
-Traz de volta a última alteração desfeita.
+Traz de volta a última alteração desfeita. Não faz nada fora do modo de edição, com uma ferramenta aberta ou enquanto o Aplicar roda.
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ Traz de volta a última alteração desfeita.
 function apply(): Promise<void>
 ```
 
-Aplica as alterações na resolução completa, ou em [`maxOutputSize`](./options#maxoutputsize). O resultado vira a imagem na tela, o histórico se esvazia, o visualizador volta ao modo de visualização, e o evento [`apply`](./events#apply) traz o resultado. Aplicar não pode ser interrompido, e bloqueia os controles enquanto roda.
+Aplica as alterações na resolução completa, ou em [`maxOutputSize`](./options#maxoutputsize). O resultado vira a imagem na tela, o histórico se esvazia, o visualizador volta ao modo de visualização, e o evento [`apply`](./events#apply) entrega o resultado. Aplicar não pode ser interrompido, e bloqueia os controles enquanto roda. Não faz nada fora do modo de edição, com uma ferramenta aberta, ou quando não há nada para aplicar.
 
-Se falhar, o evento [`error`](./events#error) informa, e a edição continua aberta.
+Se falhar, o evento [`error`](./events#error) informa, e a edição continua aberta. A promise se resolve quando o Aplicar termina, mesmo se falhar: escute `error`, porque um `try/catch` não o detecta.
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ Se falhar, o evento [`error`](./events#error) informa, e a edição continua abe
 function cancel(): void
 ```
 
-Descarta as alterações e volta ao modo de visualização. Não pergunta antes: quem pergunta são o botão Cancelar integrado e o `Esc`.
+Descarta as alterações e volta ao modo de visualização. Não pergunta antes: quem pergunta são o botão Cancelar integrado e o `Esc`. Não faz nada enquanto o Aplicar roda.
 
 ## Imagem
 
@@ -217,7 +273,7 @@ Descarta as alterações e volta ao modo de visualização. Não pergunta antes:
 function download(): void
 ```
 
-Salva a imagem na tela como arquivo: o resultado do último Aplicar, ou então a imagem original. Funciona sem a opção [`download`](./options#download), que só mostra um botão. O evento [`download`](./events#download) vem antes e pode impedir o salvamento. Não faz nada durante a edição, porque as alterações ainda não foram aplicadas.
+Salva a imagem na tela como arquivo: o resultado do último Aplicar, ou então a imagem original. Funciona sem a opção [`download`](./options#download), que só mostra um botão. O evento [`download`](./events#download) vem antes e pode impedir o salvamento. Não faz nada durante a edição, porque as alterações ainda não foram aplicadas. Antes do primeiro Aplicar, um `src` de outra origem abre no navegador: veja [Salvar o resultado](../guide/saving#download).
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ Salva a imagem na tela como arquivo: o resultado do último Aplicar, ou então a
 function reload(): void
 ```
 
-Carrega de novo o [`src`](./options#src) atual, o que traz de volta a original depois de um Aplicar.
+Carrega de novo o [`src`](./options#src) atual, o que traz de volta a original depois de um Aplicar. Durante a edição, descarta as alterações. Sem `src`, não faz nada.

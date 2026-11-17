@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-Cinque etichette sono funzioni, perché il loro testo include un valore. Crea l’oggetto una volta sola, e non a ogni render, così il visualizzatore non lo riceve di nuovo ogni volta.
+Cinque etichette sono funzioni, perché il loro testo include un valore. Una funzione è nuova ogni volta che viene creata, e il visualizzatore la considera un cambiamento, quindi crea una volta sola le etichette che contengono funzioni, e non a ogni render.
 
 | Chiave                 | Inglese                                      | Uso                                                                                                                              |
 | ---------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Crea l�
 | `adjustmentLevel`      | Brightness +30                               | Funzione del nome e del valore da -100 a 100, annunciata dopo aver spostato il righello di Regola                                |
 | `applied`              | Changes applied                              | Annunciata quando i cambiamenti sono applicati                                                                                   |
 | `apply`                | Apply                                        | Il pulsante che applica i cambiamenti                                                                                            |
-| `applyError`           | The changes could not be applied             | Mostrata quando Applica fallisce                                                                                                 |
+| `applyError`           | The changes could not be applied             | Mostrata quando Applica fallisce, o quando un cambiamento non si può mostrare                                                    |
 | `brightness`           | Brightness                                   | La scelta della luminosità in Regola, e il nome del suo righello                                                                 |
 | `cancel`               | Cancel                                       | Il pulsante che esce dalla modalità di modifica                                                                                  |
 | `cancelTool`           | Cancel this tool                             | Il pulsante che chiude uno strumento e scarta i suoi cambiamenti                                                                 |

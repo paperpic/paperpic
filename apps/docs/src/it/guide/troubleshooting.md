@@ -9,7 +9,7 @@ La maggior parte dei problemi con PaperPic nasce dalla configurazione, e non dal
 
 ## Il visualizzatore è una striscia sottile, o non si vede {#no-height}
 
-Il visualizzatore riempie il suo contenitore, e un contenitore senza altezza si riduce all’altezza minima del visualizzatore. Dai un’altezza al contenitore, come `height: 480px`, o un posto in un layout flex o grid che gliene dia una. [Stili](./styling) mostra entrambe le strade.
+Il visualizzatore riempie il suo contenitore, e un contenitore senza altezza si riduce all’altezza minima del visualizzatore, 16rem. Dai un’altezza al contenitore, come `height: 480px`, o un posto in un layout flex o grid che gliene dia una. [Stili](./styling) mostra entrambe le strade.
 
 ## I pulsanti non hanno stile, e la console avvisa {#no-stylesheet}
 
@@ -25,7 +25,7 @@ L’[`error`](../reference/events#error) dice che l’immagine viene da un’alt
 
 ## L’immagine non si carica {#load-error}
 
-Il visualizzatore mostra che non è stato possibile caricare l’immagine, e `error` porta `phase: 'load'`. Controlla che l’URL esista e che il browser apra il formato: HEIC si apre solo in Safari, e un SVG ha bisogno degli attributi `width` e `height`. [Caricare le immagini](./loading#formats) elenca i formati.
+Il visualizzatore mostra che non è stato possibile caricare l’immagine, e `error` arriva con `phase: 'load'`. Controlla che l’URL esista e che il browser apra il formato: HEIC si apre solo in Safari, e un SVG ha bisogno degli attributi `width` e `height`. [Caricare le immagini](./loading#formats) elenca i formati.
 
 ## La pagina si blocca mentre Applica è in corso {#worker}
 
@@ -38,7 +38,7 @@ Il pannello di rete del browser mostra se la pagina ha richiesto il file del wor
 
 ## Applica fallisce con una foto grande {#too-large}
 
-L’`error` dice `The browser could not read an image of …`. I browser limitano la dimensione di un canvas, e Safari su iOS più di tutti. Imposta [`maxOutputSize`](../reference/options#maxoutputsize), per esempio a 3000 pixel, che mantiene leggibili i documenti.
+L’`error` dice `The browser could not read an image of …`, o `could not save an image of …`. I browser limitano la dimensione di un canvas, e Safari su iOS più di tutti. Imposta [`maxOutputSize`](../reference/options#maxoutputsize), per esempio a 3000 pixel, che mantiene leggibili i documenti.
 
 ## La rotellina fa zoom sull’immagine invece di scorrere la pagina {#wheel}
 

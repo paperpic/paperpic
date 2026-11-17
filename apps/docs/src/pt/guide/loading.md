@@ -19,7 +19,7 @@ Para um `File` ou um `Blob`, o PaperPic cria a URL `blob:` de que precisa, e a l
 
 ## Imagens de outra origem, ou atrás de um login {#fetch}
 
-O PaperPic lê os pixels da imagem para editá-la. Os navegadores só permitem isso com uma imagem de outra origem quando ela chega com CORS, que o PaperPic não pede. Essa imagem aparece, mas a primeira edição falha com um [`error`](../reference/events#error) que diz isso.
+O PaperPic lê os pixels da imagem para editá-la. Os navegadores só permitem isso com uma imagem de outra origem quando ela chega com CORS, que o PaperPic não pede. Essa imagem aparece, mas editá-la falha: um [`error`](../reference/events#error) avisa assim que uma alteração precisa dos pixels dela, ou no Aplicar.
 
 Busque a imagem você mesmo e passe o `Blob` como `src`. Isso também cobre imagens atrás de um login, porque a sua requisição leva os cookies do usuário:
 
@@ -47,7 +47,7 @@ Os celulares costumam salvar a foto de lado, com uma tag EXIF que diz como girá
 
 ## Saber quando carrega ou falha
 
-O evento [`load`](../reference/events#load) avisa que a imagem está na tela, com o tamanho dela. Se a imagem não puder carregar, porque não existe, não é uma imagem ou o navegador não sabe decodificá-la, o visualizador mostra uma mensagem, e o evento [`error`](../reference/events#error) traz `phase: 'load'`:
+O evento [`load`](../reference/events#load) avisa que a imagem está na tela, com o tamanho dela. Se a imagem não puder carregar, porque não existe, não é uma imagem ou o navegador não sabe decodificá-la, o visualizador mostra uma mensagem, e o evento [`error`](../reference/events#error) chega com `phase: 'load'`:
 
 :::tabs key:framework
 == JavaScript
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+`load` é emitido a cada carregamento de um `src`, também com [`reload()`](../reference/methods#reload), mas não depois do Aplicar: o resultado chega com o evento [`apply`](../reference/events#apply).
+
 O `status` de [`getState()`](../reference/state) dá a mesma resposta a qualquer momento: `'empty'`, `'loading'`, `'ready'` ou `'error'`.
 
 ## Trocar ou recarregar a imagem
 
 - **Um `src` novo** carrega a nova imagem. Enquanto o usuário está editando, descarta as edições.
 - **O mesmo `src`** não faz nada, então o resultado do Aplicar continua na tela.
-- **[`reload()`](../reference/methods#reload)** carrega de novo o `src` atual, o que traz de volta o original depois do Aplicar.
+- **[`reload()`](../reference/methods#reload)** carrega de novo o `src` atual, o que traz de volta o original depois do Aplicar. Durante a edição, também descarta as alterações.

@@ -5,7 +5,10 @@ description: Tutti i metodi della classe PaperPic, per controllare il visualizza
 
 # Metodi
 
-I metodi controllano il visualizzatore dal tuo codice, ad esempio da pulsanti tuoi con [`toolbar: false`](./options#toolbar). In Vue e React, la ref del componente ti dà il visualizzatore: vedi [Vue](./vue) e [React](./react).
+I metodi controllano il visualizzatore dal tuo codice, ad esempio da pulsanti tuoi con [`toolbar: false`](./options#toolbar). Con il core, chiamali sul `PaperPic` che crei. In Vue il componente espone il visualizzatore come `instance`, e in React lo riceve `ref`. Entrambi sono `null` finché il componente non viene montato:
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    Ingrandisci
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>Ingrandisci</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+In Vue e React il componente crea e distrugge il visualizzatore, e riceve le opzioni come props e gli eventi come eventi propri. Quindi lì non chiamare [`new PaperPic()`](#new-paperpic), [`destroy()`](#destroy), [`setOptions()`](#setoptions) né [`on()`](#on).
 
 ## Creare e distruggere
 
@@ -29,6 +77,8 @@ Crea il visualizzatore dentro `container`, che riempie. Dai un’altezza al cont
 
 Lancia un `TypeError` se `container` non è un elemento. Crea il visualizzatore quando l’elemento esiste già, ad esempio al montaggio. Lancia un `RangeError` se un’opzione è fuori dal suo intervallo.
 
+Solo con il core: i componenti per Vue e React creano il visualizzatore quando vengono montati.
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 Rimuove il visualizzatore e libera tutto ciò che occupa, come il suo worker e la memoria delle sue immagini. Chiamarlo due volte non crea problemi.
+
+Solo con il core: i componenti per Vue e React lo chiamano quando vengono smontati. Chiamato sul loro visualizzatore, lascerebbe il componente vuoto.
 
 ## Opzioni e stato
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 Cambia le opzioni che passi e mantiene le altre. `undefined` riporta un’opzione al suo valore predefinito. Non emette mai `change`, così i binding bidirezionali non vanno in loop. Lancia un `RangeError` se un’opzione è fuori dal suo intervallo, e in quel caso nessuna opzione cambia.
 
+In Vue e React, cambia invece le props. Il prossimo cambio di una prop invia di nuovo tutte le opzioni, e annullerebbe un cambio fatto con `setOptions()`.
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-Restituisce ciò che mostra il visualizzatore, come lo zoom, la modalità e se ci sono modifiche da applicare. [Stato](./state) descrive ogni campo.
+Restituisce lo stato attuale del visualizzatore, come lo zoom, la modalità e se ci sono modifiche da applicare. Per sapere di ogni cambiamento senza chiedere, ascolta [`change`](./events#change). [Stato](./state) descrive ogni campo, e come si combinano i due.
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+In Vue e React, ascolta invece gli eventi del componente, come `@apply` o `onApply`.
 
 ## Visualizzazione
 
@@ -121,7 +177,7 @@ Avvia la modifica. Non fa nulla se l’immagine non è pronta o se [`editable`](
 function rotate(direction?: 1 | -1): void
 ```
 
-Ruota l’immagine di un quarto di giro: in senso orario con `1`, il valore predefinito, e in senso antiorario con `-1`. Durante la modifica è un cambiamento che [`apply()`](#apply) rende permanente. In un visualizzatore di sola lettura cambia solo la visualizzazione. Negli altri casi non fa nulla.
+Ruota l’immagine di un quarto di giro: in senso orario con `1`, il valore predefinito, e in senso antiorario con `-1`. Durante la modifica aggiunge un cambiamento che [`apply()`](#apply) rende permanente, e non fa nulla con uno strumento aperto o mentre Applica è in corso. In un visualizzatore di sola lettura cambia solo la visualizzazione. Negli altri casi non fa nulla.
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un qu
 function openTool(id: ToolId): void
 ```
 
-Apre uno strumento con un pannello: Ritaglia, con `'crop'`, Raddrizza, con `'perspective'`, Regola, con `'adjust'`, o Pulisci, con `'threshold'`, che si attiva quando si apre. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool), e nel frattempo gli altri cambiamenti, Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola con Pulisci attivo, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo.
+Apre uno strumento con un pannello: Ritaglia (`'crop'`), Raddrizza (`'perspective'`), Regola (`'adjust'`) o Pulisci (`'threshold'`), che si attiva quando si apre. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Nel frattempo non può cominciare nessun altro cambiamento, e Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola con Pulisci attivo, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo.
 
 ### `confirmTool()`
 
@@ -171,7 +227,7 @@ Lancia un `RangeError` se `sensitivity` non è tra 0 e 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti. Mentre Regola è aperto, cambia ciò che mostra Regola, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto o con Pulisci attivo, perché un documento pulito ha toni suoi.
+Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti. Mentre Regola è aperto, cambia ciò che mostra Regola, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto o con Pulisci attivo: Pulisci confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato.
 
 Lancia un `RangeError` se un valore non è tra -1 e 1.
 
@@ -181,7 +237,7 @@ Lancia un `RangeError` se un valore non è tra -1 e 1.
 function undo(): void
 ```
 
-Annulla l’ultimo cambiamento.
+Annulla l’ultimo cambiamento. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o mentre Applica è in corso.
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ Annulla l’ultimo cambiamento.
 function redo(): void
 ```
 
-Ripristina l’ultimo cambiamento annullato.
+Ripristina l’ultimo cambiamento annullato. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o mentre Applica è in corso.
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ Ripristina l’ultimo cambiamento annullato.
 function apply(): Promise<void>
 ```
 
-Applica i cambiamenti alla risoluzione piena, o a [`maxOutputSize`](./options#maxoutputsize). Il risultato diventa l’immagine visualizzata, la cronologia si svuota, il visualizzatore torna alla modalità di visualizzazione e l’evento [`apply`](./events#apply) porta il risultato. Applica non si può interrompere, e blocca i controlli mentre è in corso.
+Applica i cambiamenti alla risoluzione piena, o a [`maxOutputSize`](./options#maxoutputsize). Il risultato diventa l’immagine visualizzata, la cronologia si svuota, il visualizzatore torna alla modalità di visualizzazione e l’evento [`apply`](./events#apply) invia il risultato. Applica non si può interrompere, e blocca i controlli mentre è in corso. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto, o quando non c’è nulla da applicare.
 
-Se fallisce, l’evento [`error`](./events#error) lo segnala e la modifica resta aperta.
+Se fallisce, l’evento [`error`](./events#error) lo segnala e la modifica resta aperta. La promessa si risolve quando Applica finisce, anche se fallisce: ascolta quindi `error`, perché un `try/catch` non lo vede.
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ Se fallisce, l’evento [`error`](./events#error) lo segnala e la modifica resta
 function cancel(): void
 ```
 
-Scarta i cambiamenti e torna alla modalità di visualizzazione. Non chiede conferma: lo fanno il pulsante Annulla integrato e `Esc`.
+Scarta i cambiamenti e torna alla modalità di visualizzazione. Non chiede conferma: lo fanno il pulsante Annulla integrato e `Esc`. Non fa nulla mentre Applica è in corso.
 
 ## Immagine
 
@@ -217,7 +273,7 @@ Scarta i cambiamenti e torna alla modalità di visualizzazione. Non chiede confe
 function download(): void
 ```
 
-Salva come file l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale. Funziona senza l’opzione [`download`](./options#download), che mostra solo un pulsante. L’evento [`download`](./events#download) arriva prima e può impedirlo. Non fa nulla durante la modifica, perché i cambiamenti non sono ancora applicati.
+Salva come file l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale. Funziona senza l’opzione [`download`](./options#download), che mostra solo un pulsante. L’evento [`download`](./events#download) arriva prima e può impedirlo. Non fa nulla durante la modifica, perché i cambiamenti non sono ancora applicati. Prima del primo Applica, uno `src` da un’altra origine si apre invece nel browser: vedi [Salvare il risultato](../guide/saving#download).
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ Salva come file l’immagine visualizzata: il risultato dell’ultimo Applica, a
 function reload(): void
 ```
 
-Ricarica il [`src`](./options#src) attuale, il che riporta l’originale dopo un Applica.
+Ricarica il [`src`](./options#src) attuale, il che riporta l’originale dopo un Applica. Durante la modifica, scarta i cambiamenti. Senza `src`, non fa nulla.

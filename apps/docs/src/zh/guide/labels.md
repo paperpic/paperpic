@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## 跟随应用的语言
 
-当你的应用切换语言时，传入新的标签，查看器会立即更新文本。只在语言变化时创建对象，这样查看器不会在每次渲染时都收到新对象：
+当你的应用切换语言时，传入新语言的标签，查看器会立即更新文本。每种语言只创建一次标签对象，让每次渲染都传入同一个对象：
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

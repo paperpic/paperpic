@@ -50,9 +50,11 @@ Um objeto ou array com o mesmo conteúdo de antes, como `tools={['crop', 'rotate
 
 [Eventos](./events) descreve cada um. Uma função nova não recria o visualizador, então funções inline não são problema. Uma mudança de props nunca chama `onChange`.
 
-## Métodos
+`onChange` recebe o [estado](./state) do visualizador, não um evento do DOM. [Estado](./state#in-step) mostra como guardá-lo com `useState`, `onChange`, `onLoad` e `onError`.
 
-`ref` recebe o visualizador, do tipo [`PaperPicInstance`](./types#paperpicinstance), com todos os [métodos](./methods). Ele é `null` até o componente ser montado:
+## Métodos {#methods}
+
+`ref` recebe o visualizador, do tipo [`PaperPicInstance`](./types#paperpicinstance), com os [métodos](./methods), como `zoomIn()` ou `apply()`. Ele é `null` até o componente ser montado:
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+O componente cria o visualizador ao ser montado e o destrói ao ser desmontado, então não chame `destroy()`. Mude as props em vez de chamar `setOptions()`, que a próxima mudança de uma prop desfaria, e use as props de callback em vez de `on()`.
 
 Passar o mesmo `src` de novo não recarrega a imagem, então ela mantém o resultado de uma edição. Para trazer de volta a original, chame `picRef.current.reload()`.
 

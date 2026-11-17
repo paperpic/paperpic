@@ -27,7 +27,7 @@ Anpassen läuft nach den übrigen Änderungen, deshalb zeigen Zuschneiden und Be
 | Für farbige Formulare, Stempel und Fotos | Für Text auf Papier            |
 | Behält das Format des Quellbilds         | Ergibt PNG                     |
 
-Solange Bereinigen eingeschaltet ist, ist Anpassen deaktiviert, weil ein bereinigtes Dokument eigene Töne hat.
+Solange Bereinigen eingeschaltet ist, ist Anpassen deaktiviert. Bereinigen vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern.
 
 ## Aus dem Code
 

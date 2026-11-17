@@ -5,7 +5,10 @@ description: Every method of the PaperPic class, to control the viewer from your
 
 # Methods
 
-The methods control the viewer from your own code, such as from buttons of your own with [`toolbar: false`](./options#toolbar). In Vue and React, the component ref gives you the viewer: see [Vue](./vue) and [React](./react).
+The methods control the viewer from your own code, such as from buttons of your own with [`toolbar: false`](./options#toolbar). With the core, call them on the `PaperPic` you create. In Vue, the component exposes the viewer as `instance`, and in React, `ref` receives it. Both are `null` until the component mounts:
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    Zoom in
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>Zoom in</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+In Vue and React, the component creates and destroys the viewer, and takes the options as props and the events as events of its own. So do not call [`new PaperPic()`](#new-paperpic), [`destroy()`](#destroy), [`setOptions()`](#setoptions) or [`on()`](#on) there.
 
 ## Create and destroy
 
@@ -29,6 +77,8 @@ Creates the viewer inside `container`, which it fills. Give the container a heig
 
 It throws a `TypeError` if `container` is not an element. Create the viewer once the element exists, such as on mount. It throws a `RangeError` if an option is out of its range.
 
+Only with the core: the Vue and React components create the viewer when they mount.
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 Removes the viewer and releases everything it holds, such as its worker and the memory of its images. Calling it twice is safe.
+
+Only with the core: the Vue and React components call it when they unmount. Called on their viewer, it would leave the component empty.
 
 ## Options and state
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 Changes the options you pass and keeps the others. `undefined` brings an option back to its default. It never emits `change`, so two-way bindings do not loop. It throws a `RangeError` if an option is out of its range, and then no option changes.
 
+In Vue and React, change the props instead. The next change of any prop sends every option again, which would undo a change made with `setOptions()`.
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-Returns what the viewer is showing, such as the zoom, the mode and whether there are changes to apply. [State](./state) describes every field.
+Returns the current state of the viewer, such as the zoom, the mode and whether there are changes to apply. To hear of each change instead of asking, listen to [`change`](./events#change). [State](./state) describes every field, and how the two fit together.
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+In Vue and React, listen to the events of the component instead, such as `@apply` or `onApply`.
 
 ## View
 
@@ -121,7 +177,7 @@ Starts editing. It does nothing if the image is not ready or [`editable`](./opti
 function rotate(direction?: 1 | -1): void
 ```
 
-Turns the image a quarter turn: clockwise with `1`, the default, and counterclockwise with `-1`. While editing, it is an edit that [`apply()`](#apply) makes permanent. In a read-only viewer, it only changes the display. Otherwise, it does nothing.
+Turns the image a quarter turn: clockwise with `1`, the default, and counterclockwise with `-1`. While editing, it adds an edit that [`apply()`](#apply) makes permanent, and it does nothing while a tool is open or Apply runs. In a read-only viewer, it only changes the display. Otherwise, it does nothing.
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ Mirrors the image left to right as it is on display, so after a quarter turn it 
 function openTool(id: ToolId): void
 ```
 
-Opens a tool with a panel: Crop, with `'crop'`, Straighten, with `'perspective'`, Adjust, with `'adjust'`, or Clean up, with `'threshold'`, which turns on as it opens. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool), and meanwhile the other edits, Undo, Redo and Apply do nothing. It does nothing outside the edit mode, while another tool is open, for Adjust while Clean up is on, and for Crop and Straighten while a preview is on its way.
+Opens a tool with a panel: Crop (`'crop'`), Straighten (`'perspective'`), Adjust (`'adjust'`) or Clean up (`'threshold'`), which turns on as it opens. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool). Meanwhile, no other edit can start, and Undo, Redo and Apply do nothing. It does nothing outside the edit mode, while another tool is open, for Adjust while Clean up is on, and for Crop and Straighten while a preview is on its way.
 
 ### `confirmTool()`
 
@@ -171,7 +227,7 @@ It throws a `RangeError` if `sensitivity` is not between 0 and 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits. While Adjust is open, it changes what Adjust shows, and [`confirmTool()`](#confirmtool) keeps it as one edit. It does nothing outside the edit mode, while another tool is open or while Clean up is on, because a cleaned up document has tones of its own.
+Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits. While Adjust is open, it changes what Adjust shows, and [`confirmTool()`](#confirmtool) keeps it as one edit. It does nothing outside the edit mode, while another tool is open or while Clean up is on: Clean up compares each pixel with its surroundings, so brightness and contrast would barely change its result.
 
 It throws a `RangeError` if a value is not between -1 and 1.
 
@@ -181,7 +237,7 @@ It throws a `RangeError` if a value is not between -1 and 1.
 function undo(): void
 ```
 
-Undoes the last edit.
+Undoes the last edit. It does nothing outside the edit mode, while a tool is open or while Apply runs.
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ Undoes the last edit.
 function redo(): void
 ```
 
-Brings back the last edit undone.
+Brings back the last edit undone. It does nothing outside the edit mode, while a tool is open or while Apply runs.
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ Brings back the last edit undone.
 function apply(): Promise<void>
 ```
 
-Applies the edits at full resolution, or at [`maxOutputSize`](./options#maxoutputsize). The result becomes the image on display, the history empties, the viewer goes back to the view mode, and the [`apply`](./events#apply) event carries the result. Apply cannot be interrupted, and it blocks the controls while it runs.
+Applies the edits at full resolution, or at [`maxOutputSize`](./options#maxoutputsize). The result becomes the image on display, the history empties, the viewer goes back to the view mode, and the [`apply`](./events#apply) event carries the result. Apply cannot be interrupted, and it blocks the controls while it runs. It does nothing outside the edit mode, while a tool is open, or when there is nothing to apply.
 
-If it fails, the [`error`](./events#error) event reports it and the edit stays open.
+If it fails, the [`error`](./events#error) event reports it and the edit stays open. The promise resolves when Apply ends, also when it fails, so listen to `error` instead of catching it.
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ If it fails, the [`error`](./events#error) event reports it and the edit stays o
 function cancel(): void
 ```
 
-Discards the edits and goes back to the view mode. It does not ask first: the built-in Cancel button and `Esc` do.
+Discards the edits and goes back to the view mode. It does not ask first: the built-in Cancel button and `Esc` do. It does nothing while Apply runs.
 
 ## Image
 
@@ -217,7 +273,7 @@ Discards the edits and goes back to the view mode. It does not ask first: the bu
 function download(): void
 ```
 
-Saves the image on display as a file: the result of the last Apply, or else the source. It works without the [`download`](./options#download) option, which only shows a button. The [`download`](./events#download) event comes first and can stop it. It does nothing while editing, because the edits are not applied yet.
+Saves the image on display as a file: the result of the last Apply, or else the source. It works without the [`download`](./options#download) option, which only shows a button. The [`download`](./events#download) event comes first and can stop it. It does nothing while editing, because the edits are not applied yet. Before the first Apply, a `src` from another origin opens in the browser instead: see [Saving the result](../guide/saving#download).
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ Saves the image on display as a file: the result of the last Apply, or else the 
 function reload(): void
 ```
 
-Loads the current [`src`](./options#src) again, which brings back the original after an Apply.
+Loads the current [`src`](./options#src) again, which brings back the original after an Apply. While editing, it discards the edits. Without a `src`, it does nothing.

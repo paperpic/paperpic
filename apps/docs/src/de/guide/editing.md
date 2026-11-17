@@ -15,7 +15,7 @@ Das Foto eines Dokuments braucht meist ein paar Korrekturen, bevor es sich lohnt
 
 Nichts verändert das Bild vor dem Übernehmen. Bis dahin sind die Änderungen eine Liste, die der Viewer als Vorschau zeigt.
 
-Die Bearbeitungsleiste hat in jedem Zustand zwei gleich hohe Zeilen: oben die Werkzeuge oder das Bedienfeld des offenen Werkzeugs, unten links Abbrechen und rechts Übernehmen oder Fertig. So bleibt das Bild an seinem Platz, wenn sich ein Werkzeug öffnet. In einem Viewer ab 28rem Breite passt die Leiste in eine Zeile. Ein Punkt markiert Anpassen und Bereinigen, solange ihre Einstellung gilt.
+In einem schmalen Viewer hat die Bearbeitungsleiste zwei Zeilen: oben die Werkzeuge oder das Bedienfeld des offenen Werkzeugs, unten links Abbrechen und rechts Übernehmen oder Fertig. Ab 28rem Breite passt alles in eine Zeile. In beiden Fällen behält die Leiste ihre Höhe, wenn sich ein Werkzeug öffnet, sodass das Bild an seinem Platz bleibt. Ein Punkt markiert Anpassen und Bereinigen, solange ihre Einstellung gilt.
 
 ## Werkzeuge
 
@@ -70,7 +70,7 @@ export function Receipt() {
 
 :::
 
-Zuschneiden, Begradigen, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge, deshalb wartet der Rest der Bearbeitungsleiste, solange eines davon offen ist. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
+Zuschneiden, Begradigen, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge. Solange eines davon offen ist, warten die anderen Werkzeuge, Rückgängig, Wiederholen und Übernehmen. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
 
 In einem Bedienfeld sieht das Bild so aus, wie das Ergebnis wird, mit Bereinigen. Begradigen ist die Ausnahme: Es zeigt das Foto ohne Bereinigen, damit die Ränder des Papiers sichtbar bleiben.
 
@@ -85,7 +85,7 @@ Während der Bearbeitung zeigt der Viewer die Änderungen als Vorschau auf einer
 | Ereignis | Wann                                                                                          |
 | -------- | --------------------------------------------------------------------------------------------- |
 | `apply`  | Wenn das Ergebnis fertig ist, mit `{ blob, width, height, type }`                             |
-| `change` | Nach jeder Aktion des Nutzers, die den [Zustand](../reference/state) ändert                   |
+| `change` | Jedes Mal, wenn der Nutzer oder eine Methode den [Zustand](../reference/state) ändert         |
 | `error`  | Wenn das Bild nicht geladen oder eine Bearbeitung nicht angezeigt oder übernommen werden kann |
 
 :::tabs key:framework
@@ -121,7 +121,7 @@ pic.on('error', ({ error }) => console.error(error))
 ## Was die Änderungen verwirft
 
 - Abbrechen, nachdem der Nutzer bestätigt hat, oder [`cancel()`](../reference/methods#cancel), das nicht nachfragt.
-- Ein neuer `src` während der Bearbeitung.
+- Ein neuer `src`, oder [`reload()`](../reference/methods#reload), während der Bearbeitung.
 - Eine Änderung von `editable` während der Bearbeitung.
 
 Nach dem Übernehmen bewirkt derselbe `src` ein zweites Mal nichts, das Ergebnis bleibt also sichtbar. [`reload()`](../reference/methods#reload) holt das Original zurück.

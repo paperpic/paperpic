@@ -1,6 +1,6 @@
 ---
 title: Ereignisse
-description: Die Ereignisse von PaperPic und was jedes liefert, load, error, change, apply und download, und wie du in JavaScript, Vue und React auf sie hörst.
+description: Die Ereignisse von PaperPic (load, error, change, apply und download), was jedes liefert, und wie du in JavaScript, Vue und React auf sie hörst.
 ---
 
 # Ereignisse
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Daten:** [`Size`](./types#size)
 
-Das Bild ist geladen und wird angezeigt. `width` und `height` sind seine Größe in Pixeln.
+Das Bild ist geladen und wird angezeigt. `width` und `height` sind seine Größe in Pixeln. Es wird bei jedem Laden eines `src` ausgelöst, auch mit [`reload()`](./methods#reload), aber nicht nach dem Übernehmen, dessen Ergebnis mit [`apply`](#apply) kommt.
 
 ## `error`
 
@@ -48,13 +48,22 @@ Etwas ist fehlgeschlagen, und `phase` sagt, was:
 
 - **Daten:** [`PaperPicState`](./state)
 
-Der Nutzer hat die Ansicht oder die Bearbeitung geändert, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es meldet auch den Start von Übernehmen, mit `busy: true`. Das Verschieben des Bildes löst es nicht aus, weil der Zustand seine Position nicht enthält. `setOptions()` und die Props der Komponenten lösen es nie aus.
+Der Zustand hat sich geändert, durch den Nutzer oder durch eine Methode, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es liefert den ganzen Zustand, denselben, den [`getState()`](./methods#getstate) in diesem Moment zurückgeben würde. Übernehmen löst es zweimal aus: beim Start, mit `busy: true`, und beim erfolgreichen Ende, nach [`apply`](#apply).
+
+Diese Dinge ändern den Zustand, ohne `change` auszulösen:
+
+- Das Laden eines Bildes, das [`load`](#load) oder [`error`](#error) meldet.
+- Ein Übernehmen, das fehlschlägt, was [`error`](#error) meldet. `busy` ist wieder `false`.
+- `setOptions()` und die Props der Komponenten, damit Zwei-Wege-Bindungen keine Schleife bilden.
+- Eine Größenänderung des Viewers, die `zoom` ändert, solange eine Einpassung aktiv ist.
+
+Das Verschieben des Bildes löst nichts aus, weil der Zustand seine Position nicht enthält. [Zustand](./state#in-step) zeigt, wie du eigene Bedienelemente synchron hältst.
 
 ## `apply`
 
 - **Daten:** [`ExportedImage`](./types#exportedimage)
 
-Der Nutzer hat die Änderungen übernommen, und das Ergebnis wird schon angezeigt. `blob` enthält das Bild im Format `type`, das [`output`](./options#output) bestimmt.
+Übernehmen ist fertig, über die Schaltfläche, `Enter` oder [`apply()`](./methods#apply), und das Ergebnis wird schon angezeigt. `blob` enthält das Bild im Format `type`, das [`output`](./options#output) bestimmt.
 
 ## `download`
 

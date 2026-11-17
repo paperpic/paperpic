@@ -17,7 +17,7 @@ Endireite o recibo primeiro e depois limpe-o.
 2. Arraste a régua. Mais sensibilidade escurece mais pixels, o que recupera texto fraco ou gasto. Menos sensibilidade deixa a página mais limpa, sem o que aparece do verso.
 3. Toque em Concluído para mantê-lo como uma única alteração, ou em Cancelar esta ferramenta para deixar a imagem como estava.
 
-Para desligar um Limpar que já é uma alteração, abra-o de novo: um interruptor ao lado da régua o desliga, e as alterações que vieram depois continuam. Desfazer tiraria essas alterações primeiro.
+Para desligar um Limpar que já é uma alteração, abra-o de novo: um interruptor ao lado da régua o desliga, e as alterações que vieram depois continuam. Desfazer, por outro lado, tiraria também essas alterações.
 
 Limpar sempre vem depois das outras alterações. Recortar mostra a imagem limpa, como ela vai ficar. Endireitar a mostra sem Limpar, porque numa página limpa é difícil encontrar as bordas do papel.
 

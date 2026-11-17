@@ -22,7 +22,7 @@ pic.setOptions({ editable: false })
 - **Type :** [`PaperPicSource`](./types#paperpicsource)
 - **Valeur par défaut :** aucune
 
-L’image à afficher : une URL de la même origine, ou un `File` ou un `Blob` joint côté client.
+L’image à afficher : une URL, ou un `File` ou un `Blob`. Une image d’une autre origine s’affiche, mais ne peut pas être modifiée : [Charger des images](../guide/loading#fetch) explique pourquoi, et quoi faire.
 
 Passer la même valeur une nouvelle fois ne recharge pas l’image, donc le résultat d’une modification reste affiché. Appelez [`reload()`](./methods#reload) pour retrouver l’original. Une nouvelle valeur pendant la modification abandonne les changements.
 
@@ -70,14 +70,14 @@ Les outils que propose la barre de modification. Ils gardent l’ordre de ce tab
 - **Type :** `boolean`
 - **Valeur par défaut :** `true`
 
-Indique si la molette zoome sur l’image. Désactivez-la quand la visionneuse se trouve dans une longue page, pour que la molette fasse défiler la page.
+Indique si la molette zoome sur l’image. Désactivez-la quand la visionneuse se trouve dans une longue page, pour que la molette fasse défiler la page. Un pincement sur un trackpad ne zoome plus sur l’image non plus, car le navigateur le traite comme la molette.
 
 ### `download`
 
 - **Type :** `boolean`
 - **Valeur par défaut :** `false`
 
-Indique si la barre d’outils a un bouton qui enregistre l’image affichée : le résultat du dernier Appliquer, ou sinon l’image source. Le bouton est masqué pendant la modification. L’événement [`download`](./events#download) vous permet d’enregistrer le fichier autrement.
+Indique si la barre d’outils a un bouton qui enregistre l’image affichée : le résultat du dernier Appliquer, ou sinon l’image source. Le bouton est masqué pendant la modification. L’événement [`download`](./events#download) vous permet d’enregistrer le fichier autrement. Avant le premier Appliquer, un `src` d’une autre origine s’ouvre dans le navigateur au lieu d’être enregistré : [Enregistrer le résultat](../guide/saving#download) explique quoi faire.
 
 ### `labels`
 
@@ -123,11 +123,11 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 ### `output`
 
 - **Type :** [`PaperPicOutput`](./types#paperpicoutput)
-- **Valeur par défaut :** le format de l’image source
+- **Valeur par défaut :** le format de l’image source, ou PNG
 
 Le format de l’image modifiée. `type` vaut `'image/jpeg'`, `'image/png'` ou `'image/webp'`, et `quality` va de 0 à 1 pour JPEG et WebP, avec `0.92` par défaut.
 
-Sans `type`, une image nettoyée est en PNG, car le JPEG abîmerait ses bords nets, et toute autre image garde le format de la source. Un format que le navigateur ne sait pas encoder donne du PNG.
+Sans `type`, une image nettoyée est en PNG, car le JPEG abîmerait ses bords nets. Toute autre image garde le format de la source quand c’est du JPEG, du PNG ou du WebP, que PaperPic lit dans l’extension de l’URL ou le type du `File` ou du `Blob`. Sinon, le résultat est en PNG, comme quand le navigateur ne sait pas encoder le format.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ Le plus grand côté de l’image modifiée, en pixels. Un résultat plus grand 
 - **Type :** `string`
 - **Valeur par défaut :** le nom de l’image source
 
-Le nom du fichier enregistré. Son extension suit le format de l’image, donc un `receipt.jpg` nettoyé s’enregistre en `receipt.png`. Quand la source n’a pas de nom, comme un `Blob`, le fichier s’appelle `image`.
+Le nom du fichier enregistré. Donnez-le sans extension : PaperPic ajoute celle du format, donc un `receipt.jpg` nettoyé s’enregistre en `receipt.png`. Quand la source n’a pas de nom, comme un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
 
 ## Outils
 
@@ -150,7 +150,7 @@ Le nom du fichier enregistré. Son extension suit le format de l’image, donc u
 - **Type :** `number`
 - **Valeur par défaut :** estimées
 
-Les proportions réelles du document, en largeur divisée par hauteur, comme `210 / 297` pour une feuille A4. Redresser donne ces proportions à son résultat. Sans elles, il les estime à partir de la photo.
+Les proportions réelles du document, en largeur divisée par hauteur, comme `210 / 297` pour une feuille A4. Redresser donne ces proportions à son résultat. Sans elles, il les estime à partir de la photo. Recadrer ne les utilise pas : son rectangle reste libre.
 
 ### `softness`
 

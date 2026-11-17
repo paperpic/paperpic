@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-Five labels are functions, because their text includes a value. Create the object once, and not on every render, so the viewer does not receive it again each time.
+Five labels are functions, because their text includes a value. A function is new each time it is created, and the viewer takes a new one as a change, so create the labels that hold functions once, and not on every render.
 
 | Key                    | English                                      | Use                                                                                                           |
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ Five labels are functions, because their text includes a value. Create the objec
 | `adjustmentLevel`      | Brightness +30                               | Function of the name and the value from -100 to 100, announced after moving the ruler of Adjust               |
 | `applied`              | Changes applied                              | Announced when the changes are applied                                                                        |
 | `apply`                | Apply                                        | The button that applies the changes                                                                           |
-| `applyError`           | The changes could not be applied             | Shown when Apply fails                                                                                        |
+| `applyError`           | The changes could not be applied             | Shown when Apply fails, or when an edit cannot be shown                                                       |
 | `brightness`           | Brightness                                   | The choice of brightness in Adjust, and the name of its ruler                                                 |
 | `cancel`               | Cancel                                       | The button that leaves the edit mode                                                                          |
 | `cancelTool`           | Cancel this tool                             | The button that closes a tool and discards its changes                                                        |

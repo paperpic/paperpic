@@ -81,6 +81,8 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 | Read-only viewer   | `/examples/read-only`         | A viewer without editing, with rotate buttons.                                                        |
 | Custom toolbar     | `/examples/custom-toolbar`    | `toolbar: false` and buttons of your own that call the methods, and a ruler of your own for Clean up. |
 | Fixed proportions  | `/examples/fixed-proportions` | `aspectRatio` for known documents, such as A4 sheets or ID cards.                                     |
+| Edit in a dialog   | `/examples/dialog`            | The viewer in a `<dialog>` that opens editing and closes on Apply or Cancel, with `Esc` left to it.   |
+| Send with a form   | `/examples/form`              | The result of Apply put back in a file field with `DataTransfer`, so a plain form sends it.           |
 
 ### Other pages
 

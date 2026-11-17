@@ -61,7 +61,7 @@ O que o construtor e [`setOptions()`](./methods#setoptions) recebem. No Vue e no
 type PaperPicSource = string | Blob
 ```
 
-A imagem em [`src`](./options#src): uma URL da mesma origem, ou um `File` ou `Blob` anexado no cliente. O `source` de [`PaperPicDownload`](#paperpicdownload) tem o mesmo tipo.
+A imagem em [`src`](./options#src): uma URL, ou um `File` ou um `Blob`. O `source` de [`PaperPicDownload`](#paperpicdownload) tem o mesmo tipo.
 
 ### `PaperPicOutput`
 
@@ -196,7 +196,7 @@ O que [`getState()`](./methods#getstate) retorna e o evento [`change`](./events#
 type Fit = 'image' | 'width' | 'height'
 ```
 
-Como a imagem se ajusta ao visualizador: inteira, pela largura ou pela altura. [`fit()`](./methods#fit) o recebe, e o `fit` do [estado](./state) o guarda.
+Como a imagem se encaixa no visualizador: inteira, pela largura ou pela altura. [`fit()`](./methods#fit) o recebe, e o `fit` do [estado](./state) o guarda.
 
 ### `Rotation`
 

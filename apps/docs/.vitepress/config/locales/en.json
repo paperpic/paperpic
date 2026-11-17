@@ -50,7 +50,9 @@
     "examples/upload": "Upload to a server",
     "examples/read-only": "Read-only viewer",
     "examples/custom-toolbar": "Custom toolbar",
-    "examples/fixed-proportions": "Fixed proportions"
+    "examples/fixed-proportions": "Fixed proportions",
+    "examples/dialog": "Edit in a dialog",
+    "examples/form": "Send with a form"
   },
   "search": {
     "button": {

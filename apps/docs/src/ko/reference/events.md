@@ -1,6 +1,6 @@
 ---
 title: 이벤트
-description: PaperPic의 이벤트 load, error, change, apply, download와 각 이벤트가 전달하는 데이터, 그리고 JavaScript, Vue, React에서 구독하는 방법.
+description: PaperPic의 이벤트(load, error, change, apply, download)와 각 이벤트가 전달하는 데이터, 그리고 JavaScript, Vue, React에서 수신하는 방법.
 ---
 
 # 이벤트
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **페이로드:** [`Size`](./types#size)
 
-이미지를 불러와 화면에 표시했습니다. `width`와 `height`는 픽셀 단위 크기입니다.
+이미지를 불러와 화면에 표시했습니다. `width`와 `height`는 픽셀 단위 크기입니다. `src`를 불러올 때마다 발생하며 [`reload()`](./methods#reload)에서도 발생하지만, 적용 뒤에는 발생하지 않습니다. 적용 결과는 [`apply`](#apply)로 옵니다.
 
 ## `error`
 
@@ -48,13 +48,22 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **페이로드:** [`PaperPicState`](./state)
 
-사용자가 보기나 편집을 바꿨습니다. 예를 들어 확대/축소, 도구 열기, 실행 취소 등입니다. 적용의 시작도 `busy: true`로 알립니다. 이미지를 이동해도 발생하지 않습니다. 상태에 이미지의 위치가 없기 때문입니다. `setOptions()`와 컴포넌트의 props로는 발생하지 않습니다.
+사용자나 메서드가 상태를 바꿨습니다. 예를 들어 확대/축소, 도구 열기, 실행 취소 등입니다. 상태 전체를 보내며, 그 순간 [`getState()`](./methods#getstate)가 반환할 값과 같습니다. 적용은 이 이벤트를 두 번 발생시킵니다. 시작할 때 `busy: true`로, 성공적으로 끝났을 때 [`apply`](#apply) 다음에 발생합니다.
+
+다음은 상태를 바꾸지만 `change`를 발생시키지 않습니다.
+
+- 이미지 불러오기. [`load`](#load)나 [`error`](#error)가 알립니다.
+- 실패한 적용. [`error`](#error)가 알립니다. `busy`는 다시 `false`가 됩니다.
+- `setOptions()`와 컴포넌트의 props. 양방향 바인딩이 반복되지 않게 하기 위해서입니다.
+- 뷰어 크기 변경. 맞추기가 적용 중이면 `zoom`이 바뀝니다.
+
+이미지를 이동해도 아무것도 발생하지 않습니다. 상태에 이미지의 위치가 없기 때문입니다. 자체 컨트롤을 동기화하는 방법은 [상태](./state#in-step)에서 설명합니다.
 
 ## `apply`
 
 - **페이로드:** [`ExportedImage`](./types#exportedimage)
 
-사용자가 변경을 적용했고, 결과가 이미 화면에 있습니다. `blob`에는 [`output`](./options#output)이 정하는 형식 `type`의 이미지가 들어 있습니다.
+버튼, `Enter`, [`apply()`](./methods#apply) 중 하나로 적용이 끝났고, 결과가 이미 화면에 있습니다. `blob`에는 [`output`](./options#output)이 정하는 형식 `type`의 이미지가 들어 있습니다.
 
 ## `download`
 

@@ -50,7 +50,9 @@
     "examples/upload": "上传到服务器",
     "examples/read-only": "只读查看器",
     "examples/custom-toolbar": "自定义工具栏",
-    "examples/fixed-proportions": "固定宽高比"
+    "examples/fixed-proportions": "固定宽高比",
+    "examples/dialog": "在对话框中编辑",
+    "examples/form": "通过表单发送"
   },
   "search": {
     "button": {

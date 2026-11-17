@@ -50,9 +50,11 @@ export function Receipt() {
 
 각 이벤트는 [이벤트](./events)에서 설명합니다. 새 함수를 전달해도 뷰어를 다시 만들지 않으므로 인라인 함수를 써도 됩니다. props가 바뀌어도 `onChange`는 호출되지 않습니다.
 
-## 메서드
+`onChange`는 DOM 이벤트가 아니라 뷰어의 [상태](./state)를 받습니다. `useState`, `onChange`, `onLoad`, `onError`로 유지하는 방법은 [상태](./state#in-step)에서 설명합니다.
 
-`ref`는 모든 [메서드](./methods)를 가진 [`PaperPicInstance`](./types#paperpicinstance) 타입의 뷰어를 받습니다. 컴포넌트가 마운트되기 전에는 `null`입니다.
+## 메서드 {#methods}
+
+`ref`는 [`PaperPicInstance`](./types#paperpicinstance) 타입의 뷰어를 받으며, `zoomIn()`이나 `apply()` 같은 [메서드](./methods)를 쓸 수 있습니다. 컴포넌트가 마운트되기 전에는 `null`입니다.
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+컴포넌트는 마운트될 때 뷰어를 만들고 언마운트될 때 없애므로, `destroy()`는 호출하지 마세요. `setOptions()`를 호출하는 대신 props를 바꾸고(`setOptions()`로 한 변경은 다음 prop 변경 때 되돌려집니다), `on()` 대신 콜백 props를 쓰세요.
 
 같은 `src`를 다시 전달해도 이미지를 다시 불러오지 않으므로 편집 결과가 유지됩니다. 원본으로 돌아가려면 `picRef.current.reload()`를 호출하세요.
 

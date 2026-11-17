@@ -9,7 +9,7 @@ Die meisten Probleme mit PaperPic kommen von der Einrichtung und nicht vom Bild.
 
 ## Der Viewer ist ein dünner Streifen oder nicht zu sehen {#no-height}
 
-Der Viewer füllt seinen Container, und ein Container ohne Höhe schrumpft auf die Mindesthöhe des Viewers. Gib dem Container eine Höhe, etwa `height: 480px`, oder einen Platz in einem Flex- oder Grid-Layout, das ihm eine gibt. [Gestaltung](./styling) zeigt beides.
+Der Viewer füllt seinen Container, und ein Container ohne Höhe schrumpft auf die Mindesthöhe des Viewers, 16rem. Gib dem Container eine Höhe, etwa `height: 480px`, oder einen Platz in einem Flex- oder Grid-Layout, das ihm eine gibt. [Gestaltung](./styling) zeigt beides.
 
 ## Die Schaltflächen haben keine Gestaltung, und die Konsole warnt {#no-stylesheet}
 
@@ -38,7 +38,7 @@ Das Netzwerk-Panel des Browsers zeigt, ob die Seite die Datei des Workers angefo
 
 ## Übernehmen schlägt bei einem großen Foto fehl {#too-large}
 
-Der `error` meldet `The browser could not read an image of …`. Browser begrenzen die Größe eines Canvas, Safari auf iOS am stärksten. Setze [`maxOutputSize`](../reference/options#maxoutputsize), etwa auf 3000 Pixel, wobei Dokumente lesbar bleiben.
+Der `error` meldet `The browser could not read an image of …` oder `could not save an image of …`. Browser begrenzen die Größe eines Canvas, Safari auf iOS am stärksten. Setze [`maxOutputSize`](../reference/options#maxoutputsize), etwa auf 3000 Pixel, wobei Dokumente lesbar bleiben.
 
 ## Das Mausrad zoomt das Bild, statt die Seite zu scrollen {#wheel}
 

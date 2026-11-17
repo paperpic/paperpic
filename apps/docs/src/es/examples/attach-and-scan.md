@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         Foto del documento
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,7 +195,8 @@ export function AttachDocument() {
 ## Notas
 
 - `capture="environment"` abre la cámara trasera en los móviles, y los ordenadores lo ignoran. Sin él, los móviles ofrecen la cámara y la galería, lo que va mejor para documentos que el usuario ya tiene.
+- Vaciar el input después de cada elección permite volver a elegir la misma foto, por ejemplo para empezar de nuevo después de Aplicar.
 - El visor abre el modo de edición en cuanto carga la foto, así que el usuario va directo a Enderezar o Limpiar. Quita el listener de `load` para mostrar antes la foto.
-- `phase: 'load'` distingue un archivo que el navegador no puede abrir, como una foto HEIC fuera de Safari, de una edición que falla. [Cargar imágenes](../guide/loading#formats) enumera los formatos.
+- `phase: 'load'` distingue un archivo que el navegador no puede abrir, como una foto HEIC fuera de Safari, de un cambio que falla. [Cargar imágenes](../guide/loading#formats) enumera los formatos.
 - La foto se queda en el navegador hasta que Aplicar llama a `upload`. PaperPic no envía nada por su cuenta.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene pequeño el envío. Las fotos del móvil tienen 12 megapíxeles o más, y los documentos siguen legibles a 3000 píxeles en el lado más largo.

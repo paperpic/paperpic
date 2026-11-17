@@ -7,7 +7,7 @@ description: Wie PaperPic mit Tastatur, Screenreadern und Touchscreens funktioni
 
 Menschen lesen und korrigieren Dokumente mit der Maus, dem Finger, der Tastatur oder einem Screenreader. PaperPic zielt auf WCAG 2.2 AA, und das meiste ist schon eingebaut. Diese Seite zeigt, was es tut und was deine App ergänzen muss.
 
-## Was deine App beisteuert
+## Was deine App tun muss
 
 - **Eine Beschreibung.** Übergib [`alt`](../reference/options#alt), etwa „Kassenbon vom 5. November“. Screenreader lesen ihn als Namen des Bildes.
 - **Texte in der Sprache des Nutzers.** Screenreader sagen Schaltflächen und Änderungen an, also übersetze sie mit [`labels`](./labels).
@@ -16,7 +16,7 @@ Menschen lesen und korrigieren Dokumente mit der Maus, dem Finger, der Tastatur 
 
 ## Tastatur {#keyboard}
 
-Wenn der Viewer den Fokus hat:
+Wenn der Fokus im Viewer liegt:
 
 | Taste                           | Aktion                                                                                         |
 | ------------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -28,7 +28,7 @@ Wenn der Viewer den Fokus hat:
 | `Enter`                         | Das offene Werkzeug bestätigen, sonst die Änderungen übernehmen                                |
 | `Esc`                           | Eine ausgewählte Ecke loslassen, das offene Werkzeug schließen, sonst die Änderungen abbrechen |
 
-Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fragt es nach. Mit `toolbar: false` überlässt es sie deiner Oberfläche.
+Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche drückt `Enter` stattdessen diese Schaltfläche. Bevor `Esc` Änderungen abbricht, fragt es nach. Mit `toolbar: false` schließt `Esc` weiterhin ein Werkzeug, bricht die Bearbeitung aber nicht ab: Das entscheidet deine Oberfläche.
 
 - **Werkzeugleiste und Bearbeitungsleiste.** Tab erreicht jede Leiste, und darin wechseln die Pfeiltasten zwischen den Schaltflächen, mit `Pos1` und `Ende` für die erste und die letzte.
 - **Eckgriffe.** Bei offenem Zuschneiden oder Begradigen wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten um 1 Bildschirmpixel, mit Umschalt um 10.
@@ -38,7 +38,7 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Bevor `Esc` Änderungen abbricht, fra
 
 - Das Bild hat die Rolle eines Bildes, mit `alt` als Namen. Ohne `alt` überspringen Screenreader es.
 - Werkzeugleiste und Bearbeitungsleiste haben eigene Namen, etwa „Bildsteuerung“ und „Bearbeitungssteuerung“.
-- Eine Ansage meldet jede Änderung, die der Nutzer nicht allein am Fokus erkennt: die Zoomstufe, den Beginn des Bearbeitungsmodus, die Position einer verschobenen Ecke, den Wert einer Skala und das Ergebnis von Übernehmen.
+- Eine Ansage meldet, was der Nutzer nicht allein am Fokus erkennt: das Laden des Bildes, die Zoomstufe, den Beginn des Bearbeitungsmodus, eine ausgewählte Ecke und die Position einer verschobenen Ecke, den Wert einer Skala, das Ergebnis von Übernehmen und jeden Fehler.
 - Der Schalter von Bereinigen hat die Rolle eines Schalters. Ein Werkzeug in Verwendung, das auf dem Bildschirm ein Punkt markiert, wird als „Aktiv“ beschrieben.
 
 ## Touchscreens

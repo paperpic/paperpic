@@ -22,9 +22,9 @@ pic.setOptions({ editable: false })
 - **Tipo:** [`PaperPicSource`](./types#paperpicsource)
 - **Valor por defecto:** ninguno
 
-La imagen que se muestra: una URL del mismo origen, o un `File` o `Blob` adjuntado en el cliente.
+La imagen que se muestra: una URL, o un `File` o un `Blob`. Una imagen de otro origen se muestra, pero no se puede editar: [Cargar imágenes](../guide/loading#fetch) explica por qué y qué hacer.
 
-Pasar el mismo valor otra vez no recarga la imagen, así que el resultado de una edición sigue en pantalla. Llama a [`reload()`](./methods#reload) para recuperar la original. Un valor nuevo durante la edición descarta los cambios.
+Pasar el mismo valor otra vez no recarga la imagen, así que el resultado de Aplicar sigue en pantalla. Llama a [`reload()`](./methods#reload) para recuperar la original. Un valor nuevo durante la edición descarta los cambios.
 
 ### `alt`
 
@@ -70,14 +70,14 @@ Las herramientas que ofrece la barra de edición. Mantienen el orden de esta tab
 - **Tipo:** `boolean`
 - **Valor por defecto:** `true`
 
-Si la rueda hace zoom en la imagen. Desactívala cuando el visor esté en una página larga, para que la rueda desplace la página.
+Si la rueda hace zoom en la imagen. Desactívala cuando el visor esté en una página larga, para que la rueda haga scroll en la página. Pellizcar en un trackpad también deja de hacer zoom en la imagen, porque el navegador lo trata como la rueda.
 
 ### `download`
 
 - **Tipo:** `boolean`
 - **Valor por defecto:** `false`
 
-Si la barra de herramientas tiene un botón que guarda la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original. El botón se oculta durante la edición. El evento [`download`](./events#download) te permite guardar el archivo de otra forma.
+Si la barra de herramientas tiene un botón que guarda la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original. El botón se oculta durante la edición. El evento [`download`](./events#download) te permite guardar el archivo de otra forma. Antes del primer Aplicar, un `src` de otro origen se abre en el navegador en vez de guardarse: [Guardar el resultado](../guide/saving#download) explica qué hacer.
 
 ### `labels`
 
@@ -123,11 +123,11 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 ### `output`
 
 - **Tipo:** [`PaperPicOutput`](./types#paperpicoutput)
-- **Valor por defecto:** el formato de la imagen original
+- **Valor por defecto:** el formato de la imagen original, o PNG
 
 El formato de la imagen editada. `type` es `'image/jpeg'`, `'image/png'` o `'image/webp'`, y `quality` va de 0 a 1 para JPEG y WebP, con `0.92` por defecto.
 
-Sin `type`, una imagen limpiada sale en PNG, porque JPEG dañaría sus bordes nítidos, y cualquier otra imagen mantiene el formato de la original. Un formato que el navegador no sabe codificar da PNG.
+Sin `type`, una imagen limpiada sale en PNG, porque JPEG dañaría sus bordes nítidos. Cualquier otra imagen mantiene el formato de la original cuando es JPEG, PNG o WebP, que PaperPic saca de la extensión de la URL o del tipo del `File` o del `Blob`. Si no, el resultado es PNG, igual que cuando el navegador no sabe codificar el formato.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ El lado más largo de la imagen editada, en píxeles. Un resultado mayor se redu
 - **Tipo:** `string`
 - **Valor por defecto:** el nombre de la imagen original
 
-El nombre del archivo guardado. Su extensión sigue el formato de la imagen, así que un `receipt.jpg` limpiado se guarda como `receipt.png`. Si la imagen original no tiene nombre, como un `Blob`, el archivo se llama `image`.
+El nombre del archivo guardado. Escríbelo sin extensión: PaperPic añade la del formato, así que un `receipt.jpg` limpiado se guarda como `receipt.png`. Si la imagen original no tiene nombre, como un `Blob`, el archivo se llama `image`. Antes del primer Aplicar, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
 
 ## Herramientas
 
@@ -150,7 +150,7 @@ El nombre del archivo guardado. Su extensión sigue el formato de la imagen, as�
 - **Tipo:** `number`
 - **Valor por defecto:** se estiman
 
-Las proporciones reales del documento, como ancho dividido por alto, por ejemplo `210 / 297` para una hoja A4. Enderezar da a su resultado estas proporciones. Sin ellas, las estima a partir de la foto.
+Las proporciones reales del documento, como ancho dividido por alto, por ejemplo `210 / 297` para una hoja A4. Enderezar da a su resultado estas proporciones. Sin ellas, las estima a partir de la foto. Recortar no las usa: su rectángulo sigue libre.
 
 ### `softness`
 

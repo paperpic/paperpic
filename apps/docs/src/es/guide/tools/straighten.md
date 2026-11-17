@@ -57,7 +57,7 @@ const pic = new PaperPic(container, {
 | Hoja US Letter, en vertical         | `8.5 / 11`     |
 | Tarjeta de identidad, en horizontal | `85.6 / 53.98` |
 
-Para una hoja en horizontal, invierte los números, como en `297 / 210`.
+Para una hoja en horizontal, invierte los números, como en `297 / 210`. Las proporciones se aplican a la página tal como se ve en pantalla, así que, si la foto está de lado, gírala con [Girar a la izquierda](./rotate-and-flip) antes de enderezarla.
 
 ## Esquinas que se salen de la foto
 

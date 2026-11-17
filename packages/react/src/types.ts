@@ -7,15 +7,18 @@ export type PaperPicInstance = PaperPic
 export interface PaperPicProps extends PaperPicOptions {
   /** Classes for the element that holds the viewer, on top of `paperpic-host`. */
   className?: string
-  /** The user applied the changes. The result is already on display. */
+  /** Apply finished, from the button, `Enter` or `apply()`. The result is already on display. */
   onApply?: (result: PaperPicEvents['apply']) => void
-  /** The user changed something in the state, such as the zoom or the edit. A pan and a change of props never call it. */
+  /**
+   * The user or a method changed the state, such as the zoom or the edit. A loaded image comes with `onLoad`, and a
+   * failed Apply with `onError`, instead. A pan and a change of props never call it.
+   */
   onChange?: (state: PaperPicEvents['change']) => void
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
   onDownload?: (download: PaperPicEvents['download']) => void
-  /** The image could not be loaded, or the changes could not be applied. */
+  /** The image could not be loaded, or an edit could not be shown or applied. */
   onError?: (failure: PaperPicEvents['error']) => void
-  /** The image is ready. */
+  /** The image of `src` is ready, also after `reload()`. Apply does not call it. */
   onLoad?: (size: PaperPicEvents['load']) => void
   /** Receives the viewer, for a custom interface. It is `null` until the component mounts. */
   ref?: Ref<PaperPicInstance>

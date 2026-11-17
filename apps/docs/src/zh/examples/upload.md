@@ -127,4 +127,4 @@ export function Invoice() {
 - `role="status"` 让屏幕阅读器朗读上传的结果。
 - [`maxOutputSize`](../reference/options#maxoutputsize) 让文件保持较小。最长边为 3000 像素时文档依然清晰可读。
 - 应用之后历史记录为空，用户无法撤销回原来的图片。要提供“重试”按钮，请保留最后的 `blob` 和 `type`，再次调用 `upload`。
-- 清理过的文档服务器收到的是 PNG，否则是原图的格式。要选择其他格式，参见[保存结果](../guide/saving)。
+- 清理过的文档服务器收到的是 PNG，否则如果原图是 JPEG、PNG 或 WebP，就是原图的格式。PaperPic 如何判断格式以及如何选择其他格式，参见[保存结果](../guide/saving#format)。

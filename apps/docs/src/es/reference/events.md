@@ -1,6 +1,6 @@
 ---
 title: Eventos
-description: Los eventos de PaperPic y lo que lleva cada uno, load, error, change, apply y download, con cómo escucharlos en JavaScript, Vue y React.
+description: Los eventos de PaperPic (load, error, change, apply y download), los datos de cada uno y cómo escucharlos en JavaScript, Vue y React.
 ---
 
 # Eventos
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Datos:** [`Size`](./types#size)
 
-La imagen se ha cargado y está en pantalla. `width` y `height` son su tamaño en píxeles.
+La imagen se ha cargado y está en pantalla. `width` y `height` son su tamaño en píxeles. Se emite cada vez que carga un `src`, también con [`reload()`](./methods#reload), pero no después de Aplicar, cuyo resultado llega con [`apply`](#apply).
 
 ## `error`
 
@@ -41,20 +41,29 @@ La imagen se ha cargado y está en pantalla. `width` y `height` son su tamaño e
 Algo falló, y `phase` dice qué:
 
 - `'load'`: la imagen no se pudo cargar.
-- `'preview'`: una edición no se pudo mostrar, como cuando la imagen es demasiado grande para el navegador. La edición sigue abierta.
+- `'preview'`: un cambio no se pudo mostrar, como cuando la imagen es demasiado grande para el navegador. La edición sigue abierta.
 - `'apply'`: los cambios no se pudieron aplicar. La edición sigue abierta.
 
 ## `change`
 
 - **Datos:** [`PaperPicState`](./state)
 
-El usuario cambió la vista o la edición, por ejemplo al hacer zoom, abrir una herramienta o deshacer. También avisa del inicio de Aplicar, con `busy: true`. Desplazar la imagen no lo emite, porque el estado no guarda su posición. `setOptions()` y las props de los componentes nunca lo emiten.
+El estado cambió, por el usuario o por un método, por ejemplo al hacer zoom, abrir una herramienta o deshacer. Envía el estado completo, el mismo que devolvería [`getState()`](./methods#getstate) en ese momento. Aplicar lo emite dos veces: al empezar, con `busy: true`, y al terminar bien, después de [`apply`](#apply).
+
+Esto cambia el estado sin emitir `change`:
+
+- Cargar una imagen, de lo que avisa [`load`](#load) o [`error`](#error).
+- Un Aplicar que falla, de lo que avisa [`error`](#error). `busy` vuelve a ser `false`.
+- `setOptions()` y las props de los componentes, para que los enlaces bidireccionales no entren en bucle.
+- Un cambio de tamaño del visor, que cambia `zoom` mientras hay un encaje vigente.
+
+Desplazar la imagen no emite nada, porque el estado no guarda su posición. [Estado](./state#in-step) muestra cómo sincronizar tus propios controles.
 
 ## `apply`
 
 - **Datos:** [`ExportedImage`](./types#exportedimage)
 
-El usuario aplicó los cambios, y el resultado ya está en pantalla. `blob` contiene la imagen en el formato `type`, que elige [`output`](./options#output).
+Aplicar terminó, desde el botón, `Enter` o [`apply()`](./methods#apply), y el resultado ya está en pantalla. `blob` contiene la imagen en el formato `type`, que elige [`output`](./options#output).
 
 ## `download`
 

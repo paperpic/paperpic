@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## 앱의 언어 따르기
 
-앱의 언어가 바뀌면 새 레이블을 전달하세요. 뷰어가 바로 텍스트를 바꿉니다. 객체는 언어가 바뀔 때만 만드세요. 그래야 뷰어가 렌더링할 때마다 새 객체를 받지 않습니다.
+앱의 언어가 바뀌면 그 언어의 레이블을 전달하세요. 뷰어가 바로 텍스트를 바꿉니다. 레이블 객체는 언어마다 한 번만 만들어, 렌더링할 때마다 같은 객체를 전달하세요.
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

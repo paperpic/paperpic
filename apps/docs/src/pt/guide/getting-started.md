@@ -96,7 +96,7 @@ O core também carrega de uma CDN que serve os arquivos do pacote como estão, c
 </script>
 ```
 
-Os navegadores só iniciam um worker da origem da página, então ali a edição roda na thread principal: funciona, mas fotos grandes travam a página por um momento no Aplicar. Sirva os arquivos da sua própria origem, ou use um bundler, para manter o worker. Os componentes de Vue e React precisam de um bundler.
+Os navegadores só iniciam um worker da origem da página, então com o pacote num CDN a edição roda na thread principal: funciona, mas fotos grandes travam a página por um momento no Aplicar. Sirva os arquivos da sua própria origem, ou use um bundler, para manter o worker. Os componentes de Vue e React precisam de um bundler.
 
 ## Mostrar uma imagem
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` aceita uma URL da mesma origem da sua página, ou um `File` que o usuário escolhe, por exemplo num `<input type="file">`. `alt` descreve a imagem para leitores de tela. [Carregar imagens](./loading) trata de imagens de outras origens, formatos e erros de carregamento.
+`src` aceita uma URL da mesma origem da sua página, um `File` que o usuário escolhe, por exemplo num `<input type="file">`, ou um `Blob`. `alt` descreve a imagem para leitores de tela. [Carregar imagens](./loading) trata de imagens de outras origens, formatos e erros de carregamento.
 
 ## Receber a imagem editada
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-O `blob` mantém o formato da imagem original, ou é PNG quando o usuário limpou o documento. A opção [`output`](../reference/options#output) muda isso.
+O `blob` mantém o formato da imagem original quando é JPEG, PNG ou WebP, e é PNG quando o usuário limpou o documento. [Formato e qualidade](./saving#format) explica como o PaperPic reconhece o formato, e a opção [`output`](../reference/options#output) muda isso.
 
 ## Remover o visualizador {#destroy}
 
@@ -211,7 +211,7 @@ O PaperPic funciona nos navegadores do [Baseline Widely Available](https://web.d
 ## Próximos passos
 
 - [Carregar imagens](./loading): de onde vem a imagem e quais formatos abrem.
-- [Visualizador](./viewer): zoom, ajuste e uso somente leitura.
+- [Visualizador](./viewer): zoom, encaixe e uso somente leitura.
 - [Edição](./editing): o modo de edição, as ferramentas, Desfazer e Aplicar.
 - [Opções](../reference/options): tudo o que você pode configurar.
 - [Solução de problemas](./troubleshooting): quando o visualizador não aparece ou não funciona como deveria.

@@ -61,7 +61,7 @@ What the constructor and [`setOptions()`](./methods#setoptions) take. In Vue and
 type PaperPicSource = string | Blob
 ```
 
-The image in [`src`](./options#src): a URL from the same origin, or a `File` or `Blob` attached on the client. The `source` of [`PaperPicDownload`](#paperpicdownload) has the same type.
+The image in [`src`](./options#src): a URL, or a `File` or a `Blob`. The `source` of [`PaperPicDownload`](#paperpicdownload) has the same type.
 
 ### `PaperPicOutput`
 

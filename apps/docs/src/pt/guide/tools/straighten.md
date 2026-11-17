@@ -57,7 +57,7 @@ const pic = new PaperPic(container, {
 | Folha US Letter, em retrato          | `8.5 / 11`     |
 | Documento de identidade, em paisagem | `85.6 / 53.98` |
 
-Para uma folha em paisagem, inverta os números, como `297 / 210`.
+Para uma folha em paisagem, inverta os números, como `297 / 210`. As proporções valem para a página como ela aparece na tela, então, se a foto estiver de lado, gire-a com [Girar para a esquerda](./rotate-and-flip) antes de endireitá-la.
 
 ## Cantos cortados pela foto
 

@@ -50,7 +50,9 @@
     "examples/upload": "サーバーへのアップロード",
     "examples/read-only": "読み取り専用のビューアー",
     "examples/custom-toolbar": "独自のツールバー",
-    "examples/fixed-proportions": "固定の縦横比"
+    "examples/fixed-proportions": "固定の縦横比",
+    "examples/dialog": "ダイアログでの編集",
+    "examples/form": "フォームでの送信"
   },
   "search": {
     "button": {

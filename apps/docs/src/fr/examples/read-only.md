@@ -112,4 +112,4 @@ export function Attachments() {
 - Avec `editable: false`, la barre d’outils n’a pas de bouton Modifier, et ses boutons de rotation ne font pivoter que l’image affichée.
 - `download: true` ajoute un bouton qui enregistre le document tel quel, avec son propre nom de fichier. L’événement [`download`](../reference/events#download) vous permet de le servir depuis votre serveur.
 - `wheelZoom: false` laisse la molette faire défiler la page, ce qui convient à une visionneuse dans une page plus longue.
-- Un nouveau `src` charge le document suivant et l’ajuste à la visionneuse.
+- Un nouveau `src` charge le document suivant et l’adapte à la visionneuse.
