@@ -1,5 +1,12 @@
 # @paperpic/vue
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [[`bc2c194`](https://github.com/paperpic/paperpic/commit/bc2c19498f5f946e89f39c1545b5fd29ed699b6d)]:
+  - @paperpic/core@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes
