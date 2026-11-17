@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## Seguire la lingua della tua app
 
-Quando la tua app cambia lingua, passa le nuove etichette, e il visualizzatore aggiorna subito i suoi testi. Crea l’oggetto solo quando cambia la lingua, così il visualizzatore non ne riceve uno nuovo a ogni render:
+Quando la tua app cambia lingua, passa le etichette della nuova lingua, e il visualizzatore aggiorna subito i suoi testi. Tieni un oggetto di etichette per lingua, creato una volta sola, così ogni render passa lo stesso oggetto:
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

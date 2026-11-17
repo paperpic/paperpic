@@ -84,10 +84,10 @@ Estas classes são públicas: os nomes delas, e os elementos que marcam, ficam e
 
 Os botões mostram o estado com atributos ARIA, que você também pode selecionar:
 
-| Atributo                 | Estado                                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------------------------ |
-| `[aria-disabled='true']` | O botão não pode agir agora. Ele mantém o foco do teclado, então não é `disabled`                |
-| `[aria-pressed='true']`  | O ajuste em uso, Ajustar à largura ou Ajustar à altura, ou a escolha de Ajustar que a régua muda |
+| Atributo                 | Estado                                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------------------------- |
+| `[aria-disabled='true']` | O botão não pode agir agora. Ele mantém o foco do teclado, então não é `disabled`                 |
+| `[aria-pressed='true']`  | O encaixe em uso, Ajustar à largura ou Ajustar à altura, ou a escolha de Ajustar que a régua muda |
 
 O estado ao passar o ponteiro e esses estados são pintados com `box-shadow`, que os resets globais de botões não tocam. Para mudá-los, sobrescreva também `box-shadow`.
 

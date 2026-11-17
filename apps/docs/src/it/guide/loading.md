@@ -19,7 +19,7 @@ Per un `File` o un `Blob`, PaperPic crea l’URL `blob:` che gli serve, e lo lib
 
 ## Immagini da un’altra origine, o dietro un accesso {#fetch}
 
-PaperPic legge i pixel dell’immagine per modificarla. I browser lo permettono per un’immagine da un’altra origine solo quando arriva con CORS, che PaperPic non richiede. Un’immagine così si vede, ma la prima modifica fallisce con un [`error`](../reference/events#error) che lo dice.
+PaperPic legge i pixel dell’immagine per modificarla. I browser lo permettono per un’immagine da un’altra origine solo quando arriva con CORS, che PaperPic non richiede. Un’immagine così si vede, ma modificarla fallisce: un [`error`](../reference/events#error) lo segnala appena un cambiamento ha bisogno dei suoi pixel, o durante Applica.
 
 Scarica tu l’immagine e passa il `Blob` come `src`. Questo copre anche le immagini dietro un accesso, perché la tua richiesta porta i cookie dell’utente:
 
@@ -47,7 +47,7 @@ I telefoni spesso salvano una foto di lato, con un tag EXIF che dice come girarl
 
 ## Sapere quando si carica o fallisce
 
-L’evento [`load`](../reference/events#load) segnala che l’immagine è sullo schermo, con le sue dimensioni. Se l’immagine non può caricarsi, perché manca, non è un’immagine o il browser non sa decodificarla, il visualizzatore mostra un messaggio, e l’evento [`error`](../reference/events#error) porta `phase: 'load'`:
+L’evento [`load`](../reference/events#load) segnala che l’immagine è sullo schermo, con le sue dimensioni. Se l’immagine non può caricarsi, perché manca, non è un’immagine o il browser non sa decodificarla, il visualizzatore mostra un messaggio, e l’evento [`error`](../reference/events#error) arriva con `phase: 'load'`:
 
 :::tabs key:framework
 == JavaScript
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+`load` viene emesso a ogni caricamento di uno `src`, anche con [`reload()`](../reference/methods#reload), ma non dopo Applica: il risultato arriva con l’evento [`apply`](../reference/events#apply).
+
 Lo `status` di [`getState()`](../reference/state) dà la stessa risposta in ogni momento: `'empty'`, `'loading'`, `'ready'` o `'error'`.
 
 ## Cambiare o ricaricare l’immagine
 
 - **Un nuovo `src`** carica la nuova immagine. Mentre l’utente sta modificando, scarta le modifiche.
 - **Lo stesso `src`** non fa nulla, così il risultato di Applica resta sullo schermo.
-- **[`reload()`](../reference/methods#reload)** ricarica lo `src` attuale, il che riporta l’originale dopo Applica.
+- **[`reload()`](../reference/methods#reload)** ricarica lo `src` attuale, il che riporta l’originale dopo Applica. Durante la modifica, scarta anche i cambiamenti.

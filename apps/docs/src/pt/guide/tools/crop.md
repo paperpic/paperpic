@@ -20,7 +20,7 @@ Enquanto Recortar está aberto, a imagem aparece como o resultado vai ficar, com
 ## Alças de canto
 
 - As alças ficam dentro da imagem, e o retângulo nunca se inverte.
-- Numa tela sensível ao toque, uma lupa mostra a área sob o dedo enquanto ele arrasta um canto, para que o dedo não esconda onde o canto vai parar.
+- Com o dedo ou uma caneta, uma lupa mostra a área embaixo enquanto um canto é arrastado, para não esconder onde ele vai parar.
 - Sem arrastar, pressione uma alça e depois toque onde o canto dela vai. Até lá a alça fica destacada, os botões de zoom ampliam em direção ao canto dela, e `Esc` a solta.
 - Pelo teclado, Tab passa de uma alça para outra, e as setas movem a alça com foco 1 pixel da tela, ou 10 com Shift. `+` e `-` dão zoom em direção à alça com foco. Os leitores de tela anunciam cada movimento.
 

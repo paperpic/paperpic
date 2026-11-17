@@ -29,9 +29,9 @@ El componente llena su elemento padre, así que dale una altura al padre.
 
 ## Props
 
-Cada [opción](./options) es una prop con el mismo nombre, como `:editable="false"` o `:aspect-ratio="210 / 297"`. Un cambio en una prop llega al visor a través de `setOptions()`.
+Cada [opción](./options) es una prop con el mismo nombre, como `:editable="false"` o `:aspect-ratio="210 / 297"`. Un cambio en una prop llega al visor a través de `setOptions()`. `class` y `style` van al elemento que contiene el visor, que también tiene la clase `paperpic-host`.
 
-Un objeto o array con el mismo contenido que antes, como `:tools="['crop', 'rotate']"`, no cambia nada, así que la plantilla puede crearlos. Una función es nueva en cada renderizado del padre, así que crea con `computed` los `labels` que llevan funciones, como `zoomLevel`.
+Un objeto o array con el mismo contenido que antes, como `:tools="['crop', 'rotate']"`, no cambia nada, así que la plantilla puede crearlos. Una función es nueva en cada renderizado del padre, así que crea con `computed` los `labels` que contienen funciones, como `zoomLevel`.
 
 ## Eventos
 
@@ -43,11 +43,11 @@ Un objeto o array con el mismo contenido que antes, como `:tools="['crop', 'rota
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-[Eventos](./events) describe cada uno. Un cambio en una prop nunca emite `change`.
+[Eventos](./events) describe cada uno. Un cambio en una prop nunca emite `change`. [Estado](./state#in-step) muestra cómo guardar el estado en un `shallowRef` con `@change`, `@load` y `@error`.
 
-## Métodos
+## Métodos {#methods}
 
-El componente expone el visor como `instance`, con todos los [métodos](./methods). Es `null` hasta que el componente se monta:
+El componente expone el visor como `instance`, con los [métodos](./methods), como `zoomIn()` o `apply()`. Es `null` hasta que el componente se monta:
 
 ```vue
 <script setup lang="ts">
@@ -67,7 +67,9 @@ const pic = useTemplateRef('pic')
 </template>
 ```
 
-Pasar el mismo `src` otra vez no recarga la imagen, así que conserva el resultado de una edición. Para recuperar la original, llama a `instance.reload()`.
+El componente crea el visor al montarse y lo destruye al desmontarse, así que no llames a `destroy()`. Cambia las props en vez de llamar a `setOptions()`, que el siguiente cambio de una prop desharía, y usa los eventos del componente en vez de `on()`.
+
+Pasar el mismo `src` otra vez no recarga la imagen, así que conserva el resultado de Aplicar. Para recuperar la original, llama a `instance.reload()`.
 
 ## Tipos {#types}
 

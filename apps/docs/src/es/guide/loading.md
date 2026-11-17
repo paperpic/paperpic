@@ -13,13 +13,13 @@ PaperPic muestra la imagen que pasas en `src`. Esta página explica de dónde pu
 
 - **Una URL del mismo origen que tu página**, como `/documents/42.jpg`.
 - **Un `File`** que el usuario elige con `<input type="file">`. [Adjuntar y escanear](../examples/attach-and-scan) muestra el flujo completo, de la cámara a la subida.
-- **Un `Blob`** que tiene tu código, como el cuerpo de una respuesta.
+- **Un `Blob`** que ya tenga tu código, como el cuerpo de una respuesta.
 
 Para un `File` o un `Blob`, PaperPic crea la URL `blob:` que necesita, y la libera cuando cambia la imagen o se destruye el visor.
 
 ## Imágenes de otro origen o tras un inicio de sesión {#fetch}
 
-PaperPic lee los píxeles de la imagen para editarla. Los navegadores solo lo permiten con una imagen de otro origen cuando llega con CORS, que PaperPic no pide. Esa imagen se muestra, pero la primera edición falla con un [`error`](../reference/events#error) que lo dice.
+PaperPic lee los píxeles de la imagen para editarla. Con una imagen de otro origen, los navegadores solo lo permiten si se pide con CORS, y PaperPic no lo hace. Esa imagen se muestra, pero editarla falla: un [`error`](../reference/events#error) lo avisa en cuanto un cambio necesita sus píxeles, o al aplicar.
 
 Descarga tú la imagen y pasa el `Blob` como `src`. Así también funcionan las imágenes tras un inicio de sesión, porque tu petición lleva las cookies del usuario:
 
@@ -47,7 +47,7 @@ Los móviles suelen guardar la foto de lado, con una etiqueta EXIF que dice cóm
 
 ## Saber cuándo carga o falla
 
-El evento [`load`](../reference/events#load) avisa de que la imagen está en pantalla, con su tamaño. Si la imagen no puede cargar, porque no existe, no es una imagen o el navegador no sabe decodificarla, el visor muestra un mensaje, y el evento [`error`](../reference/events#error) lleva `phase: 'load'`:
+El evento [`load`](../reference/events#load) avisa de que la imagen está en pantalla, con su tamaño. Si la imagen no puede cargar, porque no existe, no es una imagen o el navegador no sabe decodificarla, el visor muestra un mensaje, y el evento [`error`](../reference/events#error) llega con `phase: 'load'`:
 
 :::tabs key:framework
 == JavaScript
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+`load` se emite cada vez que carga un `src`, también con [`reload()`](../reference/methods#reload), pero no después de Aplicar: el resultado llega con el evento [`apply`](../reference/events#apply).
+
 El `status` de [`getState()`](../reference/state) da la misma respuesta en cualquier momento: `'empty'`, `'loading'`, `'ready'` o `'error'`.
 
 ## Cambiar o recargar la imagen
 
-- **Un `src` nuevo** carga la imagen nueva. Si el usuario está editando, descarta las ediciones.
+- **Un `src` nuevo** carga la imagen nueva. Si el usuario está editando, descarta los cambios.
 - **El mismo `src`** no hace nada, así que el resultado de Aplicar sigue en pantalla.
-- **[`reload()`](../reference/methods#reload)** vuelve a cargar el `src` actual, lo que recupera el original después de Aplicar.
+- **[`reload()`](../reference/methods#reload)** vuelve a cargar el `src` actual, lo que recupera el original después de Aplicar. Si el usuario está editando, también descarta los cambios.

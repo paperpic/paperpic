@@ -22,7 +22,7 @@ hero:
 features:
   - icon: { src: /icons/viewer.svg, wrap: true, width: 24, height: 24 }
     title: "Visor"
-    details: "Haz zoom con los botones, la rueda o pellizcando, desplázate y ajusta el ancho de los tiques largos. De solo lectura si lo necesitas."
+    details: "Haz zoom con los botones, la rueda o pellizcando, desplázate y encaja a lo ancho los tiques largos. De solo lectura si lo necesitas."
     link: /es/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Enderezar y recortar"

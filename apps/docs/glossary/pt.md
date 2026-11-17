@@ -13,6 +13,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | edit mode                                     | modo de edição       |
 | editor                                        | editor               |
 | event                                         | evento               |
+| fit, of the image in the viewer               | encaixar, encaixe    |
 | guide                                         | Guia                 |
 | keyboard shortcut                             | atalho de teclado    |
 | label, a text of the interface                | rótulo               |
@@ -41,3 +42,5 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | viewer                                        | visualizador         |
 | wrapper, such as `@paperpic/vue`              | wrapper              |
 | zoom                                          | dar zoom             |
+
+The prose says encaixar for a fit, so that it never mixes with Ajustar, the tool of brightness and contrast. The buttons keep their labels, Ajustar à largura and Ajustar à altura. For the setting of a tool, say valor, not ajuste.

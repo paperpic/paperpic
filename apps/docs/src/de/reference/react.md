@@ -50,9 +50,11 @@ Ein Objekt oder Array mit demselben Inhalt wie zuvor, etwa `tools={['crop', 'rot
 
 [Ereignisse](./events) beschreibt jedes davon. Eine neue Funktion erstellt den Viewer nicht neu, Inline-Funktionen sind also in Ordnung. Geänderte Props rufen nie `onChange` auf.
 
-## Methoden
+`onChange` bekommt den [Zustand](./state) des Viewers, kein DOM-Ereignis. [Zustand](./state#in-step) zeigt, wie du ihn mit `useState`, `onChange`, `onLoad` und `onError` hältst.
 
-`ref` bekommt den Viewer, vom Typ [`PaperPicInstance`](./types#paperpicinstance), mit allen [Methoden](./methods). Bis die Komponente gemountet ist, ist er `null`:
+## Methoden {#methods}
+
+`ref` bekommt den Viewer, vom Typ [`PaperPicInstance`](./types#paperpicinstance), mit den [Methoden](./methods), etwa `zoomIn()` oder `apply()`. Bis die Komponente gemountet ist, ist er `null`:
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+Die Komponente erstellt den Viewer, wenn sie gemountet wird, und zerstört ihn, wenn sie entfernt wird, also rufe nicht `destroy()` auf. Ändere die Props, statt `setOptions()` aufzurufen, was die nächste Änderung einer Prop rückgängig machen würde, und nutze die Callback-Props statt `on()`.
 
 Derselbe `src` ein zweites Mal lädt das Bild nicht neu, es behält also das Ergebnis einer Bearbeitung. Um das Original zurückzuholen, rufe `picRef.current.reload()` auf.
 

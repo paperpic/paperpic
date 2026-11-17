@@ -15,7 +15,7 @@ Photos taken in poor light come out dark or gray. Adjust changes the brightness 
 2. Drag the ruler. The preview changes while you drag. Choose Contrast to change the other tone with the same ruler.
 3. Press Done to keep both tones as one edit, which Undo removes. Cancel this tool leaves the image as it was.
 
-The middle of the ruler leaves the image as it is, and the needle catches there, so no change is easy to find again. Screen readers announce the value from -100 to 100, such as "Brightness +30". A dot on Adjust marks values that are not 0.
+The middle of the ruler leaves the image as it is, and the needle catches there, so it is easy to go back to no change. Screen readers announce the value from -100 to 100, such as "Brightness +30". A dot on Adjust marks values that are not 0.
 
 Adjust runs after the other edits, so Crop and Straighten show the image with it.
 
@@ -27,7 +27,7 @@ Adjust runs after the other edits, so Crop and Straighten show the image with it
 | For colored forms, stamps and photos | For text on paper                       |
 | Keeps the format of the source       | Gives PNG                               |
 
-While Clean up is on, Adjust is disabled, because a cleaned up document has tones of its own.
+While Clean up is on, Adjust is disabled. Clean up compares each pixel with its surroundings, so brightness and contrast would barely change its result.
 
 ## From code
 

@@ -20,7 +20,7 @@ Tant que Recadrer est ouvert, l’image apparaît telle que sera le résultat, A
 ## Poignées d’angle
 
 - Les poignées restent dans l’image, et le rectangle ne se retourne jamais.
-- Sur un écran tactile, une loupe montre la zone sous le doigt pendant qu’il fait glisser un coin, pour que le doigt ne cache pas où il se pose.
+- Avec le doigt ou un stylet, une loupe montre la zone dessous pendant le glissement d’un coin, pour ne pas cacher où il se pose.
 - Sans faire glisser, appuyez sur une poignée, puis touchez l’endroit où va son coin. La poignée reste mise en évidence jusque-là, les boutons de zoom zooment vers son coin, et `Échap` la relâche.
 - Au clavier, Tab passe d’une poignée à l’autre, et les flèches déplacent la poignée qui a le focus de 1 pixel d’écran, ou de 10 avec Maj. `+` et `-` zooment vers la poignée qui a le focus. Les lecteurs d’écran annoncent chaque déplacement.
 

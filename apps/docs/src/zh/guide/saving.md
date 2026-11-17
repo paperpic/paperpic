@@ -21,19 +21,19 @@ PaperPic 从不上传或存储任何东西。用户应用修改后，它把结�
 == JavaScript
 
 ```ts
-pic.on('apply', result => upload(result))
+pic.on('apply', ({ blob, type }) => upload(blob, type))
 ```
 
 == Vue
 
 ```vue
-<PaperPic src="/receipt.jpg" @apply="upload" />
+<PaperPic src="/receipt.jpg" @apply="({ blob, type }) => upload(blob, type)" />
 ```
 
 == React
 
 ```tsx
-<PaperPic src="/receipt.jpg" onApply={upload} />
+<PaperPic src="/receipt.jpg" onApply={({ blob, type }) => upload(blob, type)} />
 ```
 
 :::
@@ -45,7 +45,7 @@ pic.on('apply', result => upload(result))
 把 `blob` 作为表单中的文件发送：
 
 ```ts
-async function upload({ blob, type }: { blob: Blob, type: string }) {
+async function upload(blob: Blob, type: string) {
   const body = new FormData()
   body.append('image', blob, `document.${type.split('/')[1]}`)
   const response = await fetch('/api/documents', { method: 'POST', body })
@@ -57,9 +57,9 @@ async function upload({ blob, type }: { blob: Blob, type: string }) {
 
 无论结果是否到达你的服务器，查看器都会立即显示它，因此上传失败时请告知用户。
 
-## 格式和质量
+## 格式和质量 {#format}
 
-没有选项时，结果保留原图的格式：JPEG、PNG 或 WebP。清理后的文档为 PNG，因为 JPEG 会在清晰的边缘周围产生噪点。其他原图，例如 GIF，会得到 PNG。
+没有选项时，如果原图是 JPEG、PNG 或 WebP，结果会保留它的格式。PaperPic 根据 URL 的扩展名（例如 `.jpg`）或 `File`、`Blob` 的类型判断格式。清理后的文档为 PNG，因为 JPEG 会在清晰的边缘周围产生噪点。其他原图也会得到 PNG，例如 GIF，或像 `/api/documents/42` 这样没有扩展名的 URL，即使它返回的是 JPEG。
 
 [`output`](../reference/options#output) 选择格式，以及 JPEG 和 WebP 的质量（0 到 1，默认为 0.92）：
 
@@ -127,7 +127,7 @@ const pic = new PaperPic(container, {
 
 :::
 
-编辑时的预览始终约为 200 万像素，因此 `maxOutputSize` 只影响结果。
+编辑时的预览最多约为 200 万像素，因此 `maxOutputSize` 只影响结果。
 
 iOS 上的 Safari 将 canvas 限制在约 1600 万像素，而新款 iPhone 拍摄的照片有 2400 万像素或更多，因此以完整分辨率应用可能失败。如果用户在 iPhone 上编辑照片，请设置 `maxOutputSize`。3000 像素既能让文档保持清晰可读，又远低于这一限制。错误信息见[处理大照片时应用失败](./troubleshooting#too-large)。
 
@@ -135,11 +135,13 @@ iOS 上的 Safari 将 canvas 限制在约 1600 万像素，而新款 iPhone 拍�
 
 应用的结果不带任何元数据。PaperPic 把图片绘制到 canvas 上，因此照片的 EXIF 数据（例如 GPS 位置、相机和日期）都会丢失。在第一次应用之前，下载按钮会原样保存原图，包括它的元数据。
 
-## 下载按钮
+## 下载按钮 {#download}
 
 [`download: true`](../reference/options#download) 会在工具栏末尾添加一个保存显示图片的按钮：保存的是上一次应用的结果，没有则是原样的原图。编辑时它会隐藏，因为修改尚未应用。[`download()`](../reference/methods#download) 可以通过代码做同样的事，不论有没有按钮。查看器上不会打开浏览器的右键菜单，因此要从查看器保存图片就用这个按钮。
 
-文件保留原图的名称，并使用其格式的扩展名，因此清理后的 `receipt.jpg` 会保存为 `receipt.png`。[`filename`](../reference/options#filename) 可以设置其他名称。完全没有名称时（例如 `Blob`），文件名为 `image`。
+文件保留原图的名称，并使用其格式的扩展名，因此清理后的 `receipt.jpg` 会保存为 `receipt.png`。[`filename`](../reference/options#filename) 可以设置其他名称。完全没有名称时（例如 `Blob`），文件名为 `image`。在第一次应用之前，没有扩展名的 URL 因为格式未知，保存时也没有扩展名。
+
+如果 `src` 来自其他源，在第一次应用之前浏览器不会保存文件，而是打开图片，用户会离开你的页面。请像[加载图片](./loading#fetch)中那样以 `Blob` 传入图片，或在 `download` 事件中自己保存。
 
 ### 用其他方式保存
 

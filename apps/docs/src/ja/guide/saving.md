@@ -21,19 +21,19 @@ PaperPic は何もアップロードせず、何も保存しません。ユー�
 == JavaScript
 
 ```ts
-pic.on('apply', result => upload(result))
+pic.on('apply', ({ blob, type }) => upload(blob, type))
 ```
 
 == Vue
 
 ```vue
-<PaperPic src="/receipt.jpg" @apply="upload" />
+<PaperPic src="/receipt.jpg" @apply="({ blob, type }) => upload(blob, type)" />
 ```
 
 == React
 
 ```tsx
-<PaperPic src="/receipt.jpg" onApply={upload} />
+<PaperPic src="/receipt.jpg" onApply={({ blob, type }) => upload(blob, type)} />
 ```
 
 :::
@@ -45,7 +45,7 @@ pic.on('apply', result => upload(result))
 `blob` をフォームのファイルとして送ります。
 
 ```ts
-async function upload({ blob, type }: { blob: Blob, type: string }) {
+async function upload(blob: Blob, type: string) {
   const body = new FormData()
   body.append('image', blob, `document.${type.split('/')[1]}`)
   const response = await fetch('/api/documents', { method: 'POST', body })
@@ -57,9 +57,9 @@ async function upload({ blob, type }: { blob: Blob, type: string }) {
 
 ビューアーは、サーバーに届いたかどうかに関係なく結果をすぐに表示します。アップロードに失敗したときは、ユーザーに知らせてください。
 
-## 形式と品質
+## 形式と品質 {#format}
 
-オプションがなければ、結果は元画像の形式（JPEG、PNG、WebP）を保ちます。クリーンアップした文書は PNG になります。JPEG だとくっきりした輪郭の周りにノイズが出るためです。GIF などそれ以外の元画像は PNG になります。
+オプションがなければ、結果は元画像が JPEG、PNG、WebP ならその形式を保ちます。PaperPic は形式を URL の拡張子（`.jpg` など）か、`File` や `Blob` の type から判断します。クリーンアップした文書は PNG になります。JPEG だとくっきりした輪郭の周りにノイズが出るためです。それ以外の元画像も PNG になります。GIF や、`/api/documents/42` のような拡張子のない URL は、JPEG を返す場合でも PNG になります。
 
 [`output`](../reference/options#output) で形式と、JPEG と WebP の品質を 0 から 1 で選べます。品質のデフォルトは 0.92 です。
 
@@ -127,7 +127,7 @@ const pic = new PaperPic(container, {
 
 :::
 
-編集中のプレビューは常に約 2 メガピクセルなので、`maxOutputSize` が変えるのは結果だけです。
+編集中のプレビューは最大でも約 2 メガピクセルなので、`maxOutputSize` が変えるのは結果だけです。
 
 iOS の Safari は canvas を約 16 メガピクセルに制限しており、最近の iPhone は 24 メガピクセル以上の写真を撮るため、フル解像度での適用は失敗することがあります。ユーザーが iPhone から写真を編集する場合は、`maxOutputSize` を設定してください。3000 ピクセルなら文書は十分に読め、制限を大きく下回ります。エラーは[大きな写真で適用に失敗する](./troubleshooting#too-large)を参照してください。
 
@@ -135,11 +135,13 @@ iOS の Safari は canvas を約 16 メガピクセルに制限しており、�
 
 適用の結果にはメタデータが付きません。PaperPic は画像を canvas に描くので、GPS の位置、カメラ、日付などの写真の EXIF データは失われます。最初に適用するまでは、ダウンロードボタンは元画像をメタデータごとそのまま保存します。
 
-## ダウンロードボタン
+## ダウンロードボタン {#download}
 
 [`download: true`](../reference/options#download) にすると、ツールバーの最後に、表示中の画像を保存するボタンが加わります。保存されるのは最後の適用の結果、なければ元画像そのものです。編集中は、変更がまだ適用されていないためボタンが隠れます。[`download()`](../reference/methods#download) は、ボタンの有無にかかわらずコードから同じことをします。ビューアーの上ではブラウザーのコンテキストメニューが開かないため、画像を保存するにはこのボタンを使います。
 
-ファイルは元画像の名前を保ち、形式の拡張子が付きます。そのため、クリーンアップした `receipt.jpg` は `receipt.png` として保存されます。[`filename`](../reference/options#filename) で別の名前を指定できます。`Blob` のように名前がまったくない場合、ファイル名は `image` になります。
+ファイルは元画像の名前を保ち、形式の拡張子が付きます。そのため、クリーンアップした `receipt.jpg` は `receipt.png` として保存されます。[`filename`](../reference/options#filename) で別の名前を指定できます。`Blob` のように名前がまったくない場合、ファイル名は `image` になります。最初の適用より前は、拡張子のない URL は形式がわからないため、拡張子なしで保存されます。
+
+別のオリジンの `src` では、最初の適用より前はブラウザーがファイルを保存せず、代わりに画像を開くため、ユーザーはページから離れてしまいます。[画像の読み込み](./loading#fetch)のように画像を `Blob` として渡すか、`download` イベントで自分で保存してください。
 
 ### 別の方法で保存する
 

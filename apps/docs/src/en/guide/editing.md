@@ -15,7 +15,7 @@ A photo of a document usually needs a few fixes before it is worth keeping. The 
 
 Nothing changes the image until Apply. Before that, the edits are a list that the viewer previews.
 
-The edit bar has two rows of the same height in every state: the tools, or the panel of the open tool, above, and below, Cancel at the left and Apply, or Done, at the right. So the image keeps its place when a tool opens. In a viewer at least 28rem wide, the bar fits on one row. A dot marks Adjust and Clean up while their setting is in effect.
+In a narrow viewer, the edit bar has two rows: the tools, or the panel of the open tool, above, and below, Cancel at the left and Apply, or Done, at the right. From 28rem wide, everything fits on one row. Either way, the bar keeps its height when a tool opens, so the image keeps its place. A dot marks Adjust and Clean up while their setting is in effect.
 
 ## Tools
 
@@ -70,7 +70,7 @@ export function Receipt() {
 
 :::
 
-Crop, Straighten, Adjust and Clean up open a panel in place of the tools, so the rest of the edit bar waits while one of them is open. Done, or `Enter`, adds what the tool chose to the edits, and Cancel this tool, or `Esc`, discards it.
+Crop, Straighten, Adjust and Clean up open a panel in place of the tools. While one of them is open, the other tools, Undo, Redo and Apply wait. Done, or `Enter`, adds what the tool chose to the edits, and Cancel this tool, or `Esc`, discards it.
 
 Inside a panel, the image looks as the result will, Clean up included. Straighten is the exception: it shows the photo without Clean up, so the edges of the paper stay visible.
 
@@ -82,11 +82,11 @@ Apply cannot be interrupted. It blocks the controls and shows a message while it
 
 ## What your code receives
 
-| Event    | When                                                                       |
-| -------- | -------------------------------------------------------------------------- |
-| `apply`  | When the result is ready, with `{ blob, width, height, type }`             |
-| `change` | After each action of the user that changes the [state](../reference/state) |
-| `error`  | When the image cannot be loaded, or an edit cannot be shown or applied     |
+| Event    | When                                                                   |
+| -------- | ---------------------------------------------------------------------- |
+| `apply`  | When the result is ready, with `{ blob, width, height, type }`         |
+| `change` | Each time the user or a method changes the [state](../reference/state) |
+| `error`  | When the image cannot be loaded, or an edit cannot be shown or applied |
 
 :::tabs key:framework
 == JavaScript
@@ -121,7 +121,7 @@ pic.on('error', ({ error }) => console.error(error))
 ## What discards the edits
 
 - Cancel, after the user confirms, or [`cancel()`](../reference/methods#cancel), which does not ask.
-- A new `src` while editing.
+- A new `src`, or [`reload()`](../reference/methods#reload), while editing.
 - A change of `editable` while editing.
 
 After Apply, passing the same `src` again does nothing, so the result stays on display. [`reload()`](../reference/methods#reload) brings back the original.

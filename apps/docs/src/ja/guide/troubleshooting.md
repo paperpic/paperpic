@@ -9,7 +9,7 @@ PaperPic の問題の多くは、画像ではなくセットアップが原因�
 
 ## ビューアーが細い帯になる、または表示されない {#no-height}
 
-ビューアーはコンテナいっぱいに広がるので、高さのないコンテナではビューアーの最小の高さまで縮みます。コンテナに `height: 480px` のような高さを与えるか、高さを決める flex や grid のレイアウトに置いてください。どちらの方法も[スタイル](./styling)にあります。
+ビューアーはコンテナいっぱいに広がるので、高さのないコンテナではビューアーの最小の高さ（16rem）まで縮みます。コンテナに `height: 480px` のような高さを与えるか、高さを決める flex や grid のレイアウトに置いてください。どちらの方法も[スタイル](./styling)にあります。
 
 ## ボタンにスタイルがなく、コンソールに警告が出る {#no-stylesheet}
 
@@ -38,7 +38,7 @@ worker が起動せず、編集がメインスレッドで動いています。�
 
 ## 大きな写真で適用に失敗する {#too-large}
 
-`error` に `The browser could not read an image of …` と出ます。ブラウザーは canvas の大きさを制限しており、iOS の Safari が最も厳しい制限です。[`maxOutputSize`](../reference/options#maxoutputsize) をたとえば 3000 ピクセルに設定してください。文書は十分に読めます。
+`error` に `The browser could not read an image of …` または `could not save an image of …` と出ます。ブラウザーは canvas の大きさを制限しており、iOS の Safari が最も厳しい制限です。[`maxOutputSize`](../reference/options#maxoutputsize) をたとえば 3000 ピクセルに設定してください。文書は十分に読めます。
 
 ## ホイールでページがスクロールせず、画像がズームする {#wheel}
 

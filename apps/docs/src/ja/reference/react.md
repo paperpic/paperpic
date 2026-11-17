@@ -50,9 +50,11 @@ export function Receipt() {
 
 各イベントは[イベント](./events)で説明しています。新しい関数を渡してもビューアーは作り直されないため、インライン関数で問題ありません。props の変更で `onChange` が呼ばれることはありません。
 
-## メソッド
+`onChange` が受け取るのはビューアーの[状態](./state)で、DOM イベントではありません。`useState`、`onChange`、`onLoad`、`onError` で保つ方法は[状態](./state#in-step)で説明しています。
 
-`ref` は、すべての[メソッド](./methods)を持つ [`PaperPicInstance`](./types#paperpicinstance) 型のビューアーを受け取ります。コンポーネントがマウントされるまでは `null` です。
+## メソッド {#methods}
+
+`ref` は [`PaperPicInstance`](./types#paperpicinstance) 型のビューアーを受け取り、`zoomIn()` や `apply()` などの[メソッド](./methods)を使えます。コンポーネントがマウントされるまでは `null` です。
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+コンポーネントはマウント時にビューアーを作成し、アンマウント時に破棄するので、`destroy()` は呼び出さないでください。`setOptions()` の代わりに props を変更し（`setOptions()` での変更は次の prop の変更で元に戻ります）、`on()` の代わりにコールバック props を使ってください。
 
 同じ `src` をもう一度渡しても画像は再読み込みされないため、編集の結果が残ります。元画像に戻すには `picRef.current.reload()` を呼び出します。
 

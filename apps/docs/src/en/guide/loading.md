@@ -19,7 +19,7 @@ For a `File` or a `Blob`, PaperPic creates the `blob:` URL it needs, and frees i
 
 ## Images from another origin, or behind a login {#fetch}
 
-PaperPic reads the pixels of the image to edit it. Browsers only allow that for an image from another origin when it arrives with CORS, which PaperPic does not request. Such an image shows, but the first edit fails with an [`error`](../reference/events#error) that says so.
+PaperPic reads the pixels of the image to edit it. Browsers only allow that for an image from another origin when it arrives with CORS, which PaperPic does not request. Such an image shows, but editing it fails: an [`error`](../reference/events#error) says so as soon as an edit needs its pixels, or on Apply.
 
 Fetch the image yourself, and pass the `Blob` as `src`. This also covers images behind a login, because your request carries the cookies of the user:
 
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+`load` fires each time a `src` loads, also with [`reload()`](../reference/methods#reload), but not after Apply: the result arrives with the [`apply`](../reference/events#apply) event.
+
 The `status` of [`getState()`](../reference/state) gives the same answer at any time: `'empty'`, `'loading'`, `'ready'` or `'error'`.
 
 ## Change or reload the image
 
 - **A new `src`** loads the new image. While the user is editing, it discards the edits.
 - **The same `src`** does nothing, so the result of Apply stays on display.
-- **[`reload()`](../reference/methods#reload)** loads the current `src` again, which brings back the original after an Apply.
+- **[`reload()`](../reference/methods#reload)** loads the current `src` again, which brings back the original after an Apply. While the user is editing, it discards the edits too.

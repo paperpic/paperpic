@@ -1,6 +1,6 @@
 ---
 title: Events
-description: The events of PaperPic and what each one carries, load, error, change, apply and download, with how to listen to them in JavaScript, Vue and React.
+description: The events of PaperPic (load, error, change, apply and download), what each one carries, and how to listen to them in JavaScript, Vue and React.
 ---
 
 # Events
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Payload:** [`Size`](./types#size)
 
-The image is loaded and on display. `width` and `height` are its size in pixels.
+The image is loaded and on display. `width` and `height` are its size in pixels. It fires each time a `src` loads, also with [`reload()`](./methods#reload), but not after Apply, whose result comes with [`apply`](#apply).
 
 ## `error`
 
@@ -48,13 +48,22 @@ Something failed, and `phase` says what:
 
 - **Payload:** [`PaperPicState`](./state)
 
-The user changed the view or the edit, such as by zooming, opening a tool or undoing. It also reports the start of Apply, with `busy: true`. Panning the image does not emit it, because the state does not hold its position. `setOptions()` and the props of the components never emit it.
+The state changed, through the user or through a method, such as by zooming, opening a tool or undoing. It carries the whole state, the same that [`getState()`](./methods#getstate) would return at that moment. Apply emits it twice: when it starts, with `busy: true`, and when it ends well, after [`apply`](#apply).
+
+These change the state without emitting `change`:
+
+- Loading an image, which [`load`](#load) or [`error`](#error) reports.
+- An Apply that fails, which [`error`](#error) reports. `busy` is `false` again.
+- `setOptions()` and the props of the components, so two-way bindings do not loop.
+- A resize of the viewer, which changes `zoom` while a fit is in effect.
+
+A pan emits nothing, because the state does not hold the position of the image. [State](./state#in-step) shows how to keep controls of your own in step.
 
 ## `apply`
 
 - **Payload:** [`ExportedImage`](./types#exportedimage)
 
-The user applied the edits, and the result is already on display. `blob` holds the image in the format `type`, which [`output`](./options#output) chooses.
+Apply finished, from the button, `Enter` or [`apply()`](./methods#apply), and the result is already on display. `blob` holds the image in the format `type`, which [`output`](./options#output) chooses.
 
 ## `download`
 

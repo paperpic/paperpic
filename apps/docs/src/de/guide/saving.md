@@ -21,19 +21,19 @@ PaperPic lädt nie etwas hoch und speichert nichts. Wenn der Nutzer die Änderun
 == JavaScript
 
 ```ts
-pic.on('apply', result => upload(result))
+pic.on('apply', ({ blob, type }) => upload(blob, type))
 ```
 
 == Vue
 
 ```vue
-<PaperPic src="/receipt.jpg" @apply="upload" />
+<PaperPic src="/receipt.jpg" @apply="({ blob, type }) => upload(blob, type)" />
 ```
 
 == React
 
 ```tsx
-<PaperPic src="/receipt.jpg" onApply={upload} />
+<PaperPic src="/receipt.jpg" onApply={({ blob, type }) => upload(blob, type)} />
 ```
 
 :::
@@ -45,7 +45,7 @@ Nach dem Übernehmen ist das Ergebnis das angezeigte Bild, der Verlauf ist leer,
 Sende den `blob` als Datei in einem Formular:
 
 ```ts
-async function upload({ blob, type }: { blob: Blob, type: string }) {
+async function upload(blob: Blob, type: string) {
   const body = new FormData()
   body.append('image', blob, `document.${type.split('/')[1]}`)
   const response = await fetch('/api/documents', { method: 'POST', body })
@@ -57,9 +57,9 @@ async function upload({ blob, type }: { blob: Blob, type: string }) {
 
 Der Viewer zeigt das Ergebnis sofort, ob es deinen Server erreicht oder nicht, also sag dem Nutzer Bescheid, wenn das Hochladen fehlschlägt.
 
-## Format und Qualität
+## Format und Qualität {#format}
 
-Ohne Optionen behält das Ergebnis das Format des Quellbilds: JPEG, PNG oder WebP. Ein bereinigtes Dokument ist PNG, weil JPEG Artefakte um seine scharfen Kanten erzeugen würde. Jede andere Quelle, etwa ein GIF, ergibt PNG.
+Ohne Optionen behält das Ergebnis das Format des Quellbilds, wenn es JPEG, PNG oder WebP ist. PaperPic liest es aus der Endung der URL, etwa `.jpg`, oder aus dem Typ der `File` oder des `Blob`. Ein bereinigtes Dokument ist PNG, weil JPEG Artefakte um seine scharfen Kanten erzeugen würde. Jede andere Quelle ergibt ebenfalls PNG, etwa ein GIF oder eine URL ohne Endung wie `/api/documents/42`, auch wenn sie ein JPEG liefert.
 
 [`output`](../reference/options#output) wählt das Format und seine Qualität von 0 bis 1 für JPEG und WebP, standardmäßig 0.92:
 
@@ -127,7 +127,7 @@ const pic = new PaperPic(container, {
 
 :::
 
-Die Vorschau beim Bearbeiten hat immer etwa 2 Megapixel, `maxOutputSize` ändert also nur das Ergebnis.
+Die Vorschau beim Bearbeiten hat höchstens etwa 2 Megapixel, `maxOutputSize` ändert also nur das Ergebnis.
 
 Safari auf iOS begrenzt ein Canvas auf etwa 16 Megapixel, und neuere iPhones machen Fotos mit 24 Megapixeln oder mehr, also kann Übernehmen in voller Auflösung fehlschlagen. Wenn deine Nutzer Fotos von einem iPhone bearbeiten, setze `maxOutputSize`. 3000 Pixel halten Dokumente lesbar und liegen weit unter der Grenze. [Übernehmen schlägt bei einem großen Foto fehl](./troubleshooting#too-large) zeigt den Fehler.
 
@@ -135,11 +135,13 @@ Safari auf iOS begrenzt ein Canvas auf etwa 16 Megapixel, und neuere iPhones mac
 
 Das Ergebnis von Übernehmen enthält keine Metadaten. PaperPic zeichnet das Bild auf ein Canvas, also gehen die EXIF-Daten des Fotos verloren, etwa die GPS-Position, die Kamera und das Datum. Die Download-Schaltfläche speichert bis zum ersten Übernehmen das Quellbild unverändert, mit seinen Metadaten.
 
-## Die Download-Schaltfläche
+## Die Download-Schaltfläche {#download}
 
 [`download: true`](../reference/options#download) fügt am Ende der Werkzeugleiste eine Schaltfläche hinzu, die das angezeigte Bild speichert: das Ergebnis des letzten Übernehmens, sonst das Quellbild, wie es ist. Während der Bearbeitung ist sie ausgeblendet, weil die Änderungen noch nicht übernommen sind. [`download()`](../reference/methods#download) tut dasselbe aus dem Code, mit oder ohne Schaltfläche. Das Kontextmenü des Browsers öffnet sich nicht über dem Viewer, daher ist diese Schaltfläche der Weg, das Bild aus ihm zu speichern.
 
-Die Datei behält den Namen der Quelle und bekommt die Endung ihres Formats, ein bereinigtes `receipt.jpg` wird also als `receipt.png` gespeichert. [`filename`](../reference/options#filename) setzt einen anderen Namen. Ganz ohne Namen, etwa bei einem `Blob`, heißt die Datei `image`.
+Die Datei behält den Namen der Quelle und bekommt die Endung ihres Formats, ein bereinigtes `receipt.jpg` wird also als `receipt.png` gespeichert. [`filename`](../reference/options#filename) setzt einen anderen Namen. Ganz ohne Namen, etwa bei einem `Blob`, heißt die Datei `image`. Vor dem ersten Übernehmen bekommt eine URL ohne Endung auch beim Speichern keine, weil ihr Format unbekannt ist.
+
+Bei einem `src` von einem anderen Ursprung speichern Browser die Datei vor dem ersten Übernehmen nicht: Sie öffnen stattdessen das Bild, und der Nutzer verlässt deine Seite. Übergib das Bild als `Blob`, wie [Bilder laden](./loading#fetch) zeigt, oder speichere es selbst im Ereignis `download`.
 
 ### Auf andere Weise speichern
 

@@ -9,7 +9,7 @@ La plupart des problèmes avec PaperPic viennent de sa mise en place, et non de 
 
 ## La visionneuse est une fine bande, ou ne s’affiche pas {#no-height}
 
-La visionneuse remplit son conteneur, et un conteneur sans hauteur se réduit à la hauteur minimale de la visionneuse. Donnez une hauteur au conteneur, comme `height: 480px`, ou une place dans une mise en page flex ou grid qui lui en donne une. [Styles](./styling) montre les deux.
+La visionneuse remplit son conteneur, et un conteneur sans hauteur se réduit à la hauteur minimale de la visionneuse, 16rem. Donnez une hauteur au conteneur, comme `height: 480px`, ou une place dans une mise en page flex ou grid qui lui en donne une. [Styles](./styling) montre les deux.
 
 ## Les boutons n’ont pas de style, et la console avertit {#no-stylesheet}
 
@@ -38,7 +38,7 @@ Le panneau réseau du navigateur montre si la page a demandé le fichier du work
 
 ## Appliquer échoue avec une grande photo {#too-large}
 
-L’`error` indique `The browser could not read an image of …`. Les navigateurs limitent la taille d’un canvas, et Safari sur iOS plus que les autres. Définissez [`maxOutputSize`](../reference/options#maxoutputsize), par exemple à 3000 pixels, ce qui garde les documents lisibles.
+L’`error` indique `The browser could not read an image of …`, ou `could not save an image of …`. Les navigateurs limitent la taille d’un canvas, et Safari sur iOS plus que les autres. Définissez [`maxOutputSize`](../reference/options#maxoutputsize), par exemple à 3000 pixels, ce qui garde les documents lisibles.
 
 ## La molette zoome dans l’image au lieu de faire défiler la page {#wheel}
 

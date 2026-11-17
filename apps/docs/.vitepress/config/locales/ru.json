@@ -50,7 +50,9 @@
     "examples/upload": "Загрузка на сервер",
     "examples/read-only": "Просмотрщик только для чтения",
     "examples/custom-toolbar": "Своя панель инструментов",
-    "examples/fixed-proportions": "Фиксированные пропорции"
+    "examples/fixed-proportions": "Фиксированные пропорции",
+    "examples/dialog": "Редактирование в диалоге",
+    "examples/form": "Отправка через форму"
   },
   "search": {
     "button": {

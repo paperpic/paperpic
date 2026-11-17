@@ -22,7 +22,7 @@ hero:
 features:
   - icon: { src: /icons/viewer.svg, wrap: true, width: 24, height: 24 }
     title: "Visionneuse"
-    details: "Zoomez avec les boutons, la molette ou un pincement, déplacez l’image et ajustez la largeur des longs tickets. En lecture seule si besoin."
+    details: "Zoomez avec les boutons, la molette ou un pincement, déplacez l’image et adaptez à la largeur les longs tickets. En lecture seule si besoin."
     link: /fr/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Redresser et recadrer"

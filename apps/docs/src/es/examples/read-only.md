@@ -112,4 +112,4 @@ export function Attachments() {
 - Con `editable: false`, la barra de herramientas no tiene botón Editar, y sus botones de girar solo giran la imagen en pantalla.
 - `download: true` añade un botón que guarda el documento tal cual, con su propio nombre de archivo. El evento [`download`](../reference/events#download) te permite servirlo desde tu servidor.
 - `wheelZoom: false` deja que la rueda desplace la página, lo que va bien para un visor dentro de una página más larga.
-- Un `src` nuevo carga el siguiente documento y lo ajusta al visor.
+- Un `src` nuevo carga el siguiente documento y lo encaja en el visor.

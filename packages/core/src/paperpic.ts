@@ -59,7 +59,7 @@ export interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   /** Whether the changes are being applied. */
   busy: boolean
-  /** Whether there are changes to apply. Rotations that cancel out are no change. */
+  /** Whether there are changes to apply. Rotations and flips that cancel out are no change. */
   canApply: boolean
   /** Whether there is an edit to bring back. */
   canRedo: boolean
@@ -67,11 +67,14 @@ export interface PaperPicState {
   canUndo: boolean
   /** The fit in effect, or `null` once the user has zoomed by hand. */
   fit: Fit | null
-  /** The size of the image on display in pixels, with the edits so far, or `null` if there is none. */
+  /**
+   * The size of the image in pixels, at full resolution and with the edits so far, but without the turn of `rotation`,
+   * or `null` if there is none.
+   */
   image: Size | null
   /** Whether the user is viewing or editing the image. */
   mode: 'view' | 'edit'
-  /** How far the image on display is turned, in degrees clockwise. */
+  /** How far the image on display is turned from `image`, in degrees clockwise. */
   rotation: Rotation
   /** Whether there is an image, and whether it loaded. */
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -87,9 +90,12 @@ export interface PaperPicState {
  * @see https://paperpic.dev/reference/events
  */
 export interface PaperPicEvents {
-  /** The user applied the changes. The result is already on display. */
+  /** Apply finished, from the button, `Enter` or `apply()`. The result is already on display. */
   apply: ExportedImage
-  /** The user changed something in the state, such as the zoom or the edit. A pan and `setOptions()` never trigger it. */
+  /**
+   * The user or a method changed the state, such as the zoom or the edit. A loaded image comes with `load`, and a failed
+   * Apply with `error`, instead. A pan, `setOptions()` and the props of the components never trigger it.
+   */
   change: PaperPicState
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
   download: PaperPicDownload
@@ -98,7 +104,7 @@ export interface PaperPicEvents {
    * which leaves the edit open, and `'apply'` for the changes.
    */
   error: { error: Error, phase: 'load' | 'preview' | 'apply' }
-  /** The image is ready. */
+  /** The image of `src` is ready, also after `reload()`. Apply does not trigger it. */
   load: Size
 }
 
@@ -678,7 +684,7 @@ export class PaperPic {
 
   /**
    * Applies the edits. The result becomes the image on display, and the `apply` event carries it.
-   * If it fails, the `error` event reports it and the edit stays open.
+   * If it fails, the `error` event reports it and the edit stays open. The promise resolves either way.
    *
    * @example
    * pic.on('apply', ({ blob, type }) => upload(blob, type))

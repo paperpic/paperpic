@@ -19,6 +19,7 @@ description: 一个完整示例：隐藏 PaperPic 的内置工具栏，用你自
   <button type="button" data-action="edit">编辑</button>
   <button type="button" data-action="straighten">矫正</button>
   <button type="button" data-action="confirmTool">完成</button>
+  <button type="button" data-action="cancelTool">取消此工具</button>
   <button type="button" data-action="undo">撤销</button>
   <button type="button" data-action="cancel">取消</button>
   <button type="button" data-action="apply">应用</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         完成
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        取消此工具
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>编辑</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>完成</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>完成</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>取消此工具</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## 说明
 
-- 设置 `toolbar: false` 时内置编辑栏也会隐藏，因此“裁剪”和“矫正”会显示手柄，但没有“完成”按钮。你的界面用 [`confirmTool()`](../reference/methods#confirmtool) 确认它们，与 `Enter` 相同。
+- 设置 `toolbar: false` 时内置编辑栏也会隐藏，因此“裁剪”和“矫正”会显示手柄，但没有“完成”按钮。你的界面用 [`confirmTool()`](../reference/methods#confirmtool) 确认它们，与 `Enter` 相同。要不保留修改就关闭它们，请像 `Esc` 一样调用 [`cancelTool()`](../reference/methods#canceltool)。
 - 你自己的滑块可以直接调用 [`setThreshold()`](../reference/methods#setthreshold) 和 [`setAdjustments()`](../reference/methods#setadjustments)，每次调用都会添加一项修改。若要让整次拖动只留下一项修改，请先用 [`openTool()`](../reference/methods#opentool) 打开工具：这样同样的方法会改变工具显示的内容，`confirmTool()` 再把它保留下来。
 - [`cancel()`](../reference/methods#cancel) 在放弃修改前不会询问。如果有修改，请先询问用户，例如在 `canApply` 为 true 时。
 - 焦点在查看器上时，键盘快捷键依然有效。参见[无障碍](../guide/accessibility)。

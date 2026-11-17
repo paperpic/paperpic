@@ -22,7 +22,7 @@ pic.setOptions({ editable: false })
 - **Typ:** [`PaperPicSource`](./types#paperpicsource)
 - **Standard:** keiner
 
-Das anzuzeigende Bild: eine URL vom selben Ursprung, oder ein `File` oder `Blob`, das im Client angehängt wurde.
+Das anzuzeigende Bild: eine URL, oder ein `File` oder ein `Blob`. Ein Bild von einem anderen Ursprung wird angezeigt, lässt sich aber nicht bearbeiten: [Bilder laden](../guide/loading#fetch) erklärt, warum, und was zu tun ist.
 
 Derselbe Wert ein zweites Mal lädt das Bild nicht neu, das Ergebnis einer Bearbeitung bleibt also sichtbar. Rufe [`reload()`](./methods#reload) auf, um das Original zurückzuholen. Ein neuer Wert während der Bearbeitung verwirft die Änderungen.
 
@@ -70,14 +70,14 @@ Die Werkzeuge, die die Bearbeitungsleiste anbietet. Sie behalten die Reihenfolge
 - **Typ:** `boolean`
 - **Standard:** `true`
 
-Ob das Mausrad das Bild zoomt. Schalte es aus, wenn der Viewer in einer langen Seite sitzt, damit das Mausrad die Seite scrollt.
+Ob das Mausrad das Bild zoomt. Schalte es aus, wenn der Viewer in einer langen Seite sitzt, damit das Mausrad die Seite scrollt. Auch zwei Finger auf einem Trackpad zoomen das Bild dann nicht mehr, weil der Browser sie als Mausrad meldet.
 
 ### `download`
 
 - **Typ:** `boolean`
 - **Standard:** `false`
 
-Ob die Werkzeugleiste eine Schaltfläche hat, die das angezeigte Bild speichert: das Ergebnis des letzten Übernehmens, sonst das Quellbild. Während der Bearbeitung ist die Schaltfläche ausgeblendet. Mit dem Ereignis [`download`](./events#download) kannst du die Datei auf andere Weise speichern.
+Ob die Werkzeugleiste eine Schaltfläche hat, die das angezeigte Bild speichert: das Ergebnis des letzten Übernehmens, sonst das Quellbild. Während der Bearbeitung ist die Schaltfläche ausgeblendet. Mit dem Ereignis [`download`](./events#download) kannst du die Datei auf andere Weise speichern. Vor dem ersten Übernehmen öffnet sich ein `src` von einem anderen Ursprung im Browser, statt gespeichert zu werden: [Das Ergebnis speichern](../guide/saving#download) erklärt, was zu tun ist.
 
 ### `labels`
 
@@ -123,11 +123,11 @@ Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltfläch
 ### `output`
 
 - **Typ:** [`PaperPicOutput`](./types#paperpicoutput)
-- **Standard:** das Format des Quellbilds
+- **Standard:** das Format des Quellbilds, oder PNG
 
 Das Format des bearbeiteten Bildes. `type` ist `'image/jpeg'`, `'image/png'` oder `'image/webp'`, und `quality` reicht von 0 bis 1 für JPEG und WebP, standardmäßig `0.92`.
 
-Ohne `type` wird ein bereinigtes Bild zu PNG, weil JPEG seine scharfen Kanten beschädigen würde, und jedes andere Bild behält das Format der Quelle. Ein Format, das der Browser nicht kodieren kann, ergibt PNG.
+Ohne `type` wird ein bereinigtes Bild zu PNG, weil JPEG seine scharfen Kanten beschädigen würde. Jedes andere Bild behält das Format der Quelle, wenn es JPEG, PNG oder WebP ist, was PaperPic aus der Endung der URL oder dem Typ der `File` oder des `Blob` liest. Sonst ist das Ergebnis PNG, wie auch, wenn der Browser das Format nicht kodieren kann.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ Die längste Seite des bearbeiteten Bildes in Pixeln. Ein größeres Ergebnis wi
 - **Typ:** `string`
 - **Standard:** der Name des Quellbilds
 
-Der Name der gespeicherten Datei. Ihre Endung folgt dem Format des Bildes, ein bereinigtes `receipt.jpg` wird also als `receipt.png` gespeichert. Hat die Quelle keinen Namen, etwa ein `Blob`, heißt die Datei `image`.
+Der Name der gespeicherten Datei. Gib ihn ohne Endung an: PaperPic hängt die des Formats an, ein bereinigtes `receipt.jpg` wird also als `receipt.png` gespeichert. Hat die Quelle keinen Namen, etwa ein `Blob`, heißt die Datei `image`. Vor dem ersten Übernehmen bekommt eine URL ohne Endung auch beim Speichern keine, weil ihr Format unbekannt ist.
 
 ## Werkzeuge
 
@@ -150,7 +150,7 @@ Der Name der gespeicherten Datei. Ihre Endung folgt dem Format des Bildes, ein b
 - **Typ:** `number`
 - **Standard:** geschätzt
 
-Das echte Seitenverhältnis des Dokuments, als Breite geteilt durch Höhe, etwa `210 / 297` für ein A4-Blatt. Begradigen gibt seinem Ergebnis dieses Seitenverhältnis. Ohne diese Option schätzt es das Verhältnis aus dem Foto.
+Das echte Seitenverhältnis des Dokuments, als Breite geteilt durch Höhe, etwa `210 / 297` für ein A4-Blatt. Begradigen gibt seinem Ergebnis dieses Seitenverhältnis. Ohne diese Option schätzt es das Verhältnis aus dem Foto. Zuschneiden nutzt es nicht: Sein Rechteck bleibt frei.
 
 ### `softness`
 

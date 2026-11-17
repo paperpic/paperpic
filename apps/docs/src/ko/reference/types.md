@@ -61,7 +61,7 @@ interface PaperPicOptions {
 type PaperPicSource = string | Blob
 ```
 
-[`src`](./options#src)의 이미지입니다. 같은 출처의 URL이거나, 클라이언트에서 첨부한 `File` 또는 `Blob`입니다. [`PaperPicDownload`](#paperpicdownload)의 `source`도 같은 타입입니다.
+[`src`](./options#src)의 이미지입니다. URL이거나 `File` 또는 `Blob`입니다. [`PaperPicDownload`](#paperpicdownload)의 `source`도 같은 타입입니다.
 
 ### `PaperPicOutput`
 

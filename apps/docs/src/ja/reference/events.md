@@ -1,6 +1,6 @@
 ---
 title: イベント
-description: PaperPic のイベント load、error、change、apply、download と、それぞれが渡すデータ。JavaScript、Vue、React での購読方法も説明します。
+description: PaperPic のイベント（load、error、change、apply、download）と、それぞれが渡すデータ、JavaScript、Vue、React での受け取り方。
 ---
 
 # イベント
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **データ:** [`Size`](./types#size)
 
-画像が読み込まれ、表示されました。`width` と `height` はピクセル単位のサイズです。
+画像が読み込まれ、表示されました。`width` と `height` はピクセル単位のサイズです。`src` を読み込むたびに発生し、[`reload()`](./methods#reload) でも発生しますが、適用のあとには発生しません。適用の結果は [`apply`](#apply) で届きます。
 
 ## `error`
 
@@ -48,13 +48,22 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **データ:** [`PaperPicState`](./state)
 
-ユーザーが表示や編集を変更しました。たとえばズーム、ツールを開く、元に戻すなどです。適用の開始も `busy: true` で通知します。画像を移動しても発生しません。状態は画像の位置を持たないためです。`setOptions()` とコンポーネントの props では発生しません。
+ユーザーかメソッドによって状態が変わりました。たとえばズーム、ツールを開く、元に戻すなどです。状態全体を送り、その時点で [`getState()`](./methods#getstate) が返すものと同じです。適用はこのイベントを 2 回発生させます。開始時に `busy: true` で、成功して終わったときに [`apply`](#apply) の後で発生します。
+
+次の場合は、状態が変わっても `change` は発生しません。
+
+- 画像の読み込み。[`load`](#load) か [`error`](#error) が通知します。
+- 失敗した適用。[`error`](#error) が通知します。`busy` は `false` に戻ります。
+- `setOptions()` とコンポーネントの props。双方向バインディングがループしないためです。
+- ビューアーのサイズ変更。フィットが有効な間は `zoom` が変わります。
+
+画像を移動しても何も発生しません。状態は画像の位置を持たないためです。独自の操作を同期する方法は[状態](./state#in-step)で説明しています。
 
 ## `apply`
 
 - **データ:** [`ExportedImage`](./types#exportedimage)
 
-ユーザーが変更を適用し、結果はすでに表示されています。`blob` は [`output`](./options#output) が決める形式 `type` の画像です。
+ボタン、`Enter`、[`apply()`](./methods#apply) のいずれかで適用が終わり、結果はすでに表示されています。`blob` は [`output`](./options#output) が決める形式 `type` の画像です。
 
 ## `download`
 

@@ -22,7 +22,7 @@ pic.setOptions({ editable: false })
 - **Type:** [`PaperPicSource`](./types#paperpicsource)
 - **Default:** none
 
-The image to show: a URL from the same origin, or a `File` or `Blob` attached on the client.
+The image to show: a URL, or a `File` or a `Blob`. An image from another origin shows, but cannot be edited: [Loading images](../guide/loading#fetch) explains why, and what to do.
 
 Passing the same value again does not reload the image, so the result of an edit stays on display. Call [`reload()`](./methods#reload) to bring back the original. A new value while editing discards the edits.
 
@@ -70,14 +70,14 @@ The tools the edit bar offers. They keep the order of this table, whatever the o
 - **Type:** `boolean`
 - **Default:** `true`
 
-Whether the wheel zooms the image. Turn it off when the viewer sits in a long page, so the wheel scrolls the page.
+Whether the wheel zooms the image. Turn it off when the viewer sits in a long page, so the wheel scrolls the page. A pinch on a trackpad stops zooming the image too, because the browser reports it as the wheel.
 
 ### `download`
 
 - **Type:** `boolean`
 - **Default:** `false`
 
-Whether the toolbar has a button that saves the image on display: the result of the last Apply, or else the source. The button is hidden while editing. The [`download`](./events#download) event lets you save the file another way.
+Whether the toolbar has a button that saves the image on display: the result of the last Apply, or else the source. The button is hidden while editing. The [`download`](./events#download) event lets you save the file another way. Before the first Apply, a `src` from another origin opens in the browser instead of saving: [Saving the result](../guide/saving#download) explains what to do.
 
 ### `labels`
 
@@ -123,11 +123,11 @@ Each key names an icon, and some icons appear on two buttons:
 ### `output`
 
 - **Type:** [`PaperPicOutput`](./types#paperpicoutput)
-- **Default:** the format of the source
+- **Default:** the format of the source, or PNG
 
 The format of the edited image. `type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`, and `quality` goes from 0 to 1 for JPEG and WebP, with `0.92` by default.
 
-Without a `type`, a cleaned up image is PNG, because JPEG would damage its sharp edges, and any other image keeps the format of the source. A format that the browser cannot encode gives PNG.
+Without a `type`, a cleaned up image is PNG, because JPEG would damage its sharp edges. Any other image keeps the format of the source when it is JPEG, PNG or WebP, which PaperPic reads from the extension of the URL or the type of the `File` or `Blob`. Otherwise, the result is PNG, as it is when the browser cannot encode the format.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ The longest side of the edited image, in pixels. A larger result is scaled down.
 - **Type:** `string`
 - **Default:** the name of the source
 
-The name of the saved file. Its extension follows the format of the image, so a cleaned up `receipt.jpg` saves as `receipt.png`. When the source has no name, such as a `Blob`, the file is called `image`.
+The name of the saved file. Give it without an extension: PaperPic adds the one of the format, so a cleaned up `receipt.jpg` saves as `receipt.png`. When the source has no name, such as a `Blob`, the file is called `image`. Before the first Apply, a URL without an extension saves without one, because its format is unknown.
 
 ## Tools
 
@@ -150,7 +150,7 @@ The name of the saved file. Its extension follows the format of the image, so a 
 - **Type:** `number`
 - **Default:** estimated
 
-The real proportions of the document, as width divided by height, such as `210 / 297` for an A4 sheet. Straighten gives its result these proportions. Without them, it estimates them from the photo.
+The real proportions of the document, as width divided by height, such as `210 / 297` for an A4 sheet. Straighten gives its result these proportions. Without them, it estimates them from the photo. Crop does not use them: its rectangle stays free.
 
 ### `softness`
 

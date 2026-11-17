@@ -7,7 +7,7 @@ description: Un exemple complet qui masque la barre d’outils intégrée de Pap
 
 Quand les commandes de la visionneuse doivent s’accorder avec le reste de votre interface, masquez celles intégrées avec `toolbar: false` et appelez les [méthodes](../reference/methods) depuis vos propres boutons. Cet exemple propose le zoom, Redresser, Annuler la dernière action et Appliquer, et n’active chaque bouton que lorsqu’il peut agir.
 
-L’événement [`change`](../reference/events#change) transporte l’[état](../reference/state) après chaque action, y compris celles lancées par vos boutons. `load` et `error` signalent l’arrivée de l’image ou l’échec d’Appliquer.
+L’événement [`change`](../reference/events#change) envoie l’[état](../reference/state) après chaque action, y compris celles lancées par vos boutons. `load` et `error` signalent l’arrivée de l’image ou l’échec d’Appliquer.
 
 :::tabs key:framework
 == JavaScript
@@ -19,6 +19,7 @@ L’événement [`change`](../reference/events#change) transporte l’[état](..
   <button type="button" data-action="edit">Modifier</button>
   <button type="button" data-action="straighten">Redresser</button>
   <button type="button" data-action="confirmTool">Terminé</button>
+  <button type="button" data-action="cancelTool">Annuler cet outil</button>
   <button type="button" data-action="undo">Annuler la dernière action</button>
   <button type="button" data-action="cancel">Annuler</button>
   <button type="button" data-action="apply">Appliquer</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         Terminé
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        Annuler cet outil
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Modifier</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>Terminé</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>Terminé</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>Annuler cet outil</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## Remarques
 
-- Avec `toolbar: false`, la barre de modification intégrée est aussi masquée, donc Recadrer et Redresser affichent leurs poignées mais pas de bouton Terminé. Votre interface les valide avec [`confirmTool()`](../reference/methods#confirmtool), comme `Entrée`.
+- Avec `toolbar: false`, la barre de modification intégrée est aussi masquée, donc Recadrer et Redresser affichent leurs poignées mais pas de bouton Terminé. Votre interface les valide avec [`confirmTool()`](../reference/methods#confirmtool), comme `Entrée`. Pour les fermer sans leurs changements, appelez [`cancelTool()`](../reference/methods#canceltool), comme le fait `Échap`.
 - Vos propres curseurs peuvent appeler directement [`setThreshold()`](../reference/methods#setthreshold) et [`setAdjustments()`](../reference/methods#setadjustments), ce qui ajoute un changement à chaque appel. Pour laisser un seul changement pour tout un glissement, ouvrez d’abord l’outil avec [`openTool()`](../reference/methods#opentool) : les mêmes méthodes changent alors ce qu’il montre, et `confirmTool()` le garde.
 - [`cancel()`](../reference/methods#cancel) ne demande rien avant d’abandonner les changements. Demandez à l’utilisateur s’il y en a, par exemple quand `canApply` est vrai.
 - Les raccourcis clavier fonctionnent toujours quand la visionneuse a le focus. Voir [Accessibilité](../guide/accessibility).

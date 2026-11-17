@@ -1,6 +1,6 @@
 ---
 title: Eventi
-description: Gli eventi di PaperPic e cosa porta ciascuno, load, error, change, apply e download, con come ascoltarli in JavaScript, Vue e React.
+description: Gli eventi di PaperPic (load, error, change, apply e download), i dati di ciascuno e come ascoltarli in JavaScript, Vue e React.
 ---
 
 # Eventi
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Dati:** [`Size`](./types#size)
 
-L’immagine è caricata e visualizzata. `width` e `height` sono la sua dimensione in pixel.
+L’immagine è caricata e visualizzata. `width` e `height` sono la sua dimensione in pixel. Viene emesso a ogni caricamento di uno `src`, anche con [`reload()`](./methods#reload), ma non dopo Applica, il cui risultato arriva con [`apply`](#apply).
 
 ## `error`
 
@@ -48,13 +48,22 @@ Qualcosa è fallito, e `phase` dice cosa:
 
 - **Dati:** [`PaperPicState`](./state)
 
-L’utente ha cambiato la visualizzazione o la modifica, ad esempio zoomando, aprendo uno strumento o annullando. Segnala anche l’inizio di Applica, con `busy: true`. Spostare l’immagine non lo emette, perché lo stato non contiene la sua posizione. `setOptions()` e le props dei componenti non lo emettono mai.
+Lo stato è cambiato, per mano dell’utente o di un metodo, ad esempio zoomando, aprendo uno strumento o annullando. Invia lo stato completo, lo stesso che restituirebbe [`getState()`](./methods#getstate) in quel momento. Applica lo emette due volte: all’inizio, con `busy: true`, e alla fine se riesce, dopo [`apply`](#apply).
+
+Queste cose cambiano lo stato senza emettere `change`:
+
+- Il caricamento di un’immagine, che segnala [`load`](#load) o [`error`](#error).
+- Un Applica che fallisce, che segnala [`error`](#error). `busy` torna `false`.
+- `setOptions()` e le props dei componenti, così i binding bidirezionali non vanno in loop.
+- Un ridimensionamento del visualizzatore, che cambia `zoom` mentre è in vigore un adattamento.
+
+Spostare l’immagine non emette nulla, perché lo stato non contiene la sua posizione. [Stato](./state#in-step) mostra come sincronizzare i tuoi controlli.
 
 ## `apply`
 
 - **Dati:** [`ExportedImage`](./types#exportedimage)
 
-L’utente ha applicato i cambiamenti, e il risultato è già visualizzato. `blob` contiene l’immagine nel formato `type`, che sceglie [`output`](./options#output).
+Applica è terminato, dal pulsante, `Invio` o [`apply()`](./methods#apply), e il risultato è già visualizzato. `blob` contiene l’immagine nel formato `type`, che sceglie [`output`](./options#output).
 
 ## `download`
 

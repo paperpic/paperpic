@@ -29,7 +29,7 @@ Il componente riempie il suo elemento genitore, quindi assegnagli un’altezza.
 
 ## Props
 
-Ogni [opzione](./options) è una prop con lo stesso nome, come `:editable="false"` o `:aspect-ratio="210 / 297"`. Una prop cambiata arriva al visualizzatore tramite `setOptions()`.
+Ogni [opzione](./options) è una prop con lo stesso nome, come `:editable="false"` o `:aspect-ratio="210 / 297"`. Una prop cambiata arriva al visualizzatore tramite `setOptions()`. `class` e `style` vanno all’elemento che contiene il visualizzatore, che ha anche la classe `paperpic-host`.
 
 Un oggetto o un array con lo stesso contenuto di prima, come `:tools="['crop', 'rotate']"`, non cambia nulla, quindi il template può costruirli. Una funzione è nuova a ogni render del genitore, quindi costruisci con `computed` i `labels` che contengono funzioni, come `zoomLevel`.
 
@@ -43,11 +43,11 @@ Un oggetto o un array con lo stesso contenuto di prima, come `:tools="['crop', '
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-[Eventi](./events) descrive ciascuno. Una prop cambiata non emette mai `change`.
+[Eventi](./events) descrive ciascuno. Una prop cambiata non emette mai `change`. [Stato](./state#in-step) mostra come tenere lo stato in uno `shallowRef` con `@change`, `@load` ed `@error`.
 
-## Metodi
+## Metodi {#methods}
 
-Il componente espone il visualizzatore come `instance`, con tutti i [metodi](./methods). È `null` finché il componente non viene montato:
+Il componente espone il visualizzatore come `instance`, con i [metodi](./methods), come `zoomIn()` o `apply()`. È `null` finché il componente non viene montato:
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+Il componente crea il visualizzatore quando viene montato e lo distrugge quando viene smontato, quindi non chiamare `destroy()`. Cambia le props invece di chiamare `setOptions()`, che il prossimo cambio di una prop annullerebbe, e usa gli eventi del componente invece di `on()`.
 
 Passare di nuovo lo stesso `src` non ricarica l’immagine, quindi conserva il risultato di una modifica. Per riavere l’originale, chiama `instance.reload()`.
 

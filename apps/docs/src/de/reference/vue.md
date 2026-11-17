@@ -29,7 +29,7 @@ Die Komponente füllt ihr Elternelement aus, gib diesem also eine Höhe.
 
 ## Props
 
-Jede [Option](./options) ist eine Prop mit demselben Namen, etwa `:editable="false"` oder `:aspect-ratio="210 / 297"`. Eine geänderte Prop erreicht den Viewer über `setOptions()`.
+Jede [Option](./options) ist eine Prop mit demselben Namen, etwa `:editable="false"` oder `:aspect-ratio="210 / 297"`. Eine geänderte Prop erreicht den Viewer über `setOptions()`. `class` und `style` gehen an das Element, das den Viewer enthält und auch die Klasse `paperpic-host` hat.
 
 Ein Objekt oder Array mit demselben Inhalt wie zuvor, etwa `:tools="['crop', 'rotate']"`, ändert nichts, also darf das Template sie bauen. Eine Funktion ist bei jedem Rendern des Elternteils neu, also baue `labels` mit Funktionen, etwa `zoomLevel`, mit `computed`.
 
@@ -43,11 +43,11 @@ Ein Objekt oder Array mit demselben Inhalt wie zuvor, etwa `:tools="['crop', 'ro
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-[Ereignisse](./events) beschreibt jedes davon. Eine geänderte Prop löst nie `change` aus.
+[Ereignisse](./events) beschreibt jedes davon. Eine geänderte Prop löst nie `change` aus. [Zustand](./state#in-step) zeigt, wie du den Zustand mit `@change`, `@load` und `@error` in einer `shallowRef` hältst.
 
-## Methoden
+## Methoden {#methods}
 
-Die Komponente stellt den Viewer als `instance` bereit, mit allen [Methoden](./methods). Bis die Komponente gemountet ist, ist sie `null`:
+Die Komponente stellt den Viewer als `instance` bereit, mit den [Methoden](./methods), etwa `zoomIn()` oder `apply()`. Bis die Komponente gemountet ist, ist er `null`:
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+Die Komponente erstellt den Viewer, wenn sie gemountet wird, und zerstört ihn, wenn sie entfernt wird, also rufe nicht `destroy()` auf. Ändere die Props, statt `setOptions()` aufzurufen, was die nächste Änderung einer Prop rückgängig machen würde, und nutze die Ereignisse der Komponente statt `on()`.
 
 Derselbe `src` ein zweites Mal lädt das Bild nicht neu, es behält also das Ergebnis einer Bearbeitung. Um das Original zurückzuholen, rufe `instance.reload()` auf.
 

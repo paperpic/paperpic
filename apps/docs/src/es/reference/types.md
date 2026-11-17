@@ -61,7 +61,7 @@ Lo que reciben el constructor y [`setOptions()`](./methods#setoptions). En Vue y
 type PaperPicSource = string | Blob
 ```
 
-La imagen de [`src`](./options#src): una URL del mismo origen, o un `File` o `Blob` adjuntado en el cliente. El `source` de [`PaperPicDownload`](#paperpicdownload) tiene el mismo tipo.
+La imagen de [`src`](./options#src): una URL, o un `File` o un `Blob`. El `source` de [`PaperPicDownload`](#paperpicdownload) tiene el mismo tipo.
 
 ### `PaperPicOutput`
 
@@ -188,7 +188,7 @@ interface PaperPicState {
 }
 ```
 
-Lo que devuelve [`getState()`](./methods#getstate) y lleva el evento [`change`](./events#change). [Estado](./state) explica cada campo.
+Lo que devuelve [`getState()`](./methods#getstate) y envía el evento [`change`](./events#change). [Estado](./state) explica cada campo.
 
 ### `Fit`
 
@@ -196,7 +196,7 @@ Lo que devuelve [`getState()`](./methods#getstate) y lleva el evento [`change`](
 type Fit = 'image' | 'width' | 'height'
 ```
 
-Cómo se ajusta la imagen al visor: entera, por su ancho o por su alto. Lo recibe [`fit()`](./methods#fit), y lo guarda el `fit` del [estado](./state).
+Cómo encaja la imagen en el visor: entera, por su ancho o por su alto. Lo recibe [`fit()`](./methods#fit), y lo guarda el `fit` del [estado](./state).
 
 ### `Rotation`
 
@@ -215,7 +215,7 @@ interface Size {
 }
 ```
 
-Un ancho y un alto en píxeles, como el `image` del [estado](./state) o lo que lleva el evento [`load`](./events#load).
+Un ancho y un alto en píxeles, como el `image` del [estado](./state) o lo que envía el evento [`load`](./events#load).
 
 ## Eventos
 
@@ -231,7 +231,7 @@ interface PaperPicEvents {
 }
 ```
 
-Cada evento con lo que lleva, para [`on()`](./methods#on). [Eventos](./events) explica cada uno.
+Cada evento con sus datos, para [`on()`](./methods#on). [Eventos](./events) explica cada uno.
 
 ### `ExportedImage`
 
@@ -244,7 +244,7 @@ interface ExportedImage {
 }
 ```
 
-La imagen editada, que lleva el evento [`apply`](./events#apply). `type` es el formato de `blob`, que elige [`output`](./options#output).
+La imagen editada, que entrega el evento [`apply`](./events#apply). `type` es el formato de `blob`, que elige [`output`](./options#output).
 
 ### `PaperPicDownload`
 
@@ -256,7 +256,7 @@ interface PaperPicDownload {
 }
 ```
 
-Lo que lleva el evento [`download`](./events#download). Llama a `preventDefault()` para guardar el archivo de otra forma.
+Los datos del evento [`download`](./events#download). Llama a `preventDefault()` para guardar el archivo de otra forma.
 
 ## Métodos
 

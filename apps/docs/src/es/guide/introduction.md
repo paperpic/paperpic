@@ -9,7 +9,7 @@ Las fotos de documentos llegan torcidas, con sombras y con mucho fondo. PaperPic
 
 ## Qué hace
 
-- **Ver.** Hacer zoom con los botones, la rueda o el gesto de pellizcar, desplazar la imagen y ajustar la imagen entera, su ancho o su alto. Un visor de solo lectura también puede girar la imagen.
+- **Ver.** Hacer zoom con los botones, la rueda, el gesto de pellizcar, un doble clic o el teclado, desplazar la imagen y encajar en el visor la imagen entera, su ancho o su alto. Un visor de solo lectura también puede girar la imagen.
 - **Editar.** En el modo de edición, el usuario puede recortar, enderezar una foto hecha en ángulo, girar, voltear, ajustar el brillo y el contraste, y limpiar el documento en blanco y negro. Cada cambio se puede deshacer hasta que el usuario aplica los cambios.
 - **Entregar.** Aplicar calcula el resultado a resolución completa y se lo pasa a tu código como un `Blob`. Un botón de descarga también puede guardarlo.
 

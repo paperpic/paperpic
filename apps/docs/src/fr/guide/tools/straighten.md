@@ -57,7 +57,7 @@ const pic = new PaperPic(container, {
 | Feuille US Letter, en portrait | `8.5 / 11`     |
 | Carte d’identité, en paysage   | `85.6 / 53.98` |
 
-Pour une feuille en paysage, inversez les nombres, comme `297 / 210`.
+Pour une feuille en paysage, inversez les nombres, comme `297 / 210`. Les proportions s’appliquent à la page telle qu’elle s’affiche à l’écran : si la photo est de côté, faites-la pivoter avec [Pivoter à gauche](./rotate-and-flip) avant de la redresser.
 
 ## Coins coupés par la photo
 

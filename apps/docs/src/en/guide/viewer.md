@@ -18,31 +18,33 @@ Small print and long receipts are hard to read at a glance on a screen. The view
 | Switch between the fit and 100% | Double click                  | Double tap |             |
 | Fit the whole image             |                               |            | `0`         |
 
-The keyboard works with the focus on the viewer. While there is nothing to move, the arrow keys scroll the page. A pinch zooms around the point between the fingers. On a touch screen, one finger scrolls the page while the image is fitted, and pans the image once it is zoomed in.
+The keys work while the focus is inside the viewer. On a button, the arrow keys move between the buttons instead, and while there is nothing to move, they scroll the page. A pinch zooms around the point between the fingers. On a touch screen, one finger scrolls the page while the image is fitted, and pans the image once it is zoomed in.
 
 The zoom goes from the fit of the whole image, or 100% for a small image, up to 800%. An image that fits stays centered, and one that overflows pans up to its edges.
 
 When the image loads, it fits the viewer whole, and it keeps its fit when the viewer changes size, until the user zooms by hand.
 
-In a long page, the wheel would zoom the image instead of scrolling the page. Set `wheelZoom: false` there: the buttons, the keyboard and a pinch on a touch screen still zoom.
+In a long page, the wheel would zoom the image instead of scrolling the page. Set `wheelZoom: false` there: the buttons, the keyboard and a pinch on a touch screen still zoom. A pinch on a trackpad no longer zooms the image, because the browser reports it as the wheel.
 
 ## The toolbar
 
 The toolbar sits at the right of the viewer, and scrolls when the viewer is too short for its buttons. It hides while editing, so it never covers a corner of Crop or Straighten.
 
-| Button                      | What it does                                                     |
-| --------------------------- | ---------------------------------------------------------------- |
-| Edit                        | Starts the [edit mode](./editing). Hidden with `editable: false` |
-| Zoom in, Zoom out           | Zoom one step, around the center                                 |
-| Fit to width, Fit to height | Fit the width, which suits long documents, or the height         |
-| Rotate left, Rotate right   | Only in a read-only viewer: turn the image on display            |
-| Download                    | Only with `download: true`: save the image on display            |
+| Button                      | What it does                                                                                          |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Edit                        | Starts the [edit mode](./editing). It shows once the image is ready, and never with `editable: false` |
+| Zoom in, Zoom out           | Zoom one step of 25%, around the center                                                               |
+| Fit to width, Fit to height | Fit the width, which suits long documents, or the height                                              |
+| Rotate left, Rotate right   | Only in a read-only viewer: turn the image on display                                                 |
+| Download                    | Only with `download: true`: save the image on display                                                 |
+
+Fit to width and Fit to height stay pressed while their fit holds. No button fits the whole image again: press `0`, or zoom out all the way.
 
 With `toolbar: false`, the toolbar and the edit bar are hidden, and you can build your own controls with the [methods](../reference/methods).
 
 ## Read-only viewer {#read-only}
 
-With `editable: false`, the Edit button goes away, and the toolbar gets two buttons that rotate the image. That rotation only changes the display, and nothing is saved. Use it for documents that people should read but not change, such as the attachments of a record.
+With `editable: false`, the Edit button goes away, and the toolbar gets two buttons that rotate the image. That rotation only changes the display, and nothing is saved: Download saves the image without it. Use it for documents that people should read but not change, such as the attachments of a record.
 
 :::tabs key:framework
 == JavaScript

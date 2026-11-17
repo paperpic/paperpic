@@ -116,5 +116,6 @@ export function Form() {
 
 - Begradigen speichert das Seitenverhältnis, wenn der Nutzer Fertig drückt, also wähle die Art vor dem Begradigen. Eine spätere Änderung wirkt nur auf das nächste Begradigen.
 - Für ein Dokument im Querformat vertausche die Zahlen, etwa `297 / 210`.
+- Das Seitenverhältnis gilt für die Seite, wie sie auf dem Bildschirm erscheint. Liegt das Foto seitlich, drehe es mit Nach links drehen, bevor du Begradigen nutzt, sonst wird ein Blatt im Hochformat gestaucht.
 - Lass `aspectRatio` für Dokumente ohne feste Größe weg, etwa Kassenbons, dann schätzt Begradigen es.
 - [Begradigen](../guide/tools/straighten) erklärt die Schätzung und den Umgang mit Ecken außerhalb des Fotos.

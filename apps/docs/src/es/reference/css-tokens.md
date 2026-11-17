@@ -87,7 +87,7 @@ Los botones muestran su estado con atributos ARIA, que también puedes seleccion
 | Atributo                 | Estado                                                                                            |
 | ------------------------ | ------------------------------------------------------------------------------------------------- |
 | `[aria-disabled='true']` | El botón no puede actuar ahora. Conserva el foco del teclado, así que no es `disabled`            |
-| `[aria-pressed='true']`  | El ajuste vigente, Ajustar al ancho o Ajustar al alto, o la opción de Ajustar que cambia la regla |
+| `[aria-pressed='true']`  | El encaje vigente, Ajustar al ancho o Ajustar al alto, o la opción de Ajustar que cambia la regla |
 
 El estado al pasar el puntero y estos estados se pintan con `box-shadow`, que los reset globales de botones no tocan. Para cambiarlos, sobrescribe también `box-shadow`.
 

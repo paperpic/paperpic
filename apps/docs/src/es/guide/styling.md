@@ -114,11 +114,11 @@ Para elegir tus propios colores oscuros, da a un token sus dos valores con `ligh
 }
 ```
 
-Los tokens que apuntan a las variables de tu [sistema de diseño](#design-system) siguen tu tema en su lugar.
+En cambio, los tokens que apuntan a las variables de tu [sistema de diseño](#design-system) siguen tu tema.
 
 ## Iconos {#icons}
 
-La opción [`icons`](../reference/options#icons) sustituye cualquier icono por tu propio marcado, normalmente un `<svg>` del set de iconos de tu app:
+La opción [`icons`](../reference/options#icons) sustituye cualquier icono por tu propio marcado, normalmente un `<svg>` del conjunto de iconos de tu app:
 
 :::tabs key:framework
 == JavaScript
@@ -259,7 +259,7 @@ Cada botón, regla y tirador de esquina lleva además `data-paperpic-control`, c
 
 La interfaz se adapta sola a su contenedor:
 
-- La barra de herramientas está a la derecha y se desplaza cuando el visor es demasiado bajo para sus botones. Se oculta durante la edición.
+- La barra de herramientas está a la derecha y tiene scroll cuando el visor es demasiado bajo para sus botones. Se oculta durante la edición.
 - La barra de edición es una tarjeta abajo con dos filas de altura fija, o una fila en un visor de al menos 28rem de ancho, así que la imagen no se mueve al abrir una herramienta.
 - En pantallas táctiles, los botones y los tiradores de esquina miden al menos 44 píxeles.
 

@@ -29,7 +29,7 @@ function upload({ blob }: ExportedImage) {
 
 ## Props
 
-각 [옵션](./options)은 같은 이름의 prop입니다. 예를 들어 `:editable="false"`나 `:aspect-ratio="210 / 297"`입니다. prop이 바뀌면 `setOptions()`를 통해 뷰어에 전달됩니다.
+각 [옵션](./options)은 같은 이름의 prop입니다. 예를 들어 `:editable="false"`나 `:aspect-ratio="210 / 297"`입니다. prop이 바뀌면 `setOptions()`를 통해 뷰어에 전달됩니다. `class`와 `style`은 뷰어를 담는 요소에 붙으며, 이 요소에는 `paperpic-host` 클래스도 있습니다.
 
 `:tools="['crop', 'rotate']"`처럼 이전과 내용이 같은 객체나 배열은 아무것도 바꾸지 않으므로 템플릿에서 만들어도 됩니다. 함수는 부모가 렌더링할 때마다 새로 만들어지므로, `zoomLevel` 같은 함수를 담은 `labels`는 `computed`로 만드세요.
 
@@ -43,11 +43,11 @@ function upload({ blob }: ExportedImage) {
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-각 이벤트는 [이벤트](./events)에서 설명합니다. prop이 바뀌어도 `change`는 발생하지 않습니다.
+각 이벤트는 [이벤트](./events)에서 설명합니다. prop이 바뀌어도 `change`는 발생하지 않습니다. `@change`, `@load`, `@error`로 상태를 `shallowRef`에 유지하는 방법은 [상태](./state#in-step)에서 설명합니다.
 
-## 메서드
+## 메서드 {#methods}
 
-컴포넌트는 모든 [메서드](./methods)를 가진 뷰어를 `instance`로 노출합니다. 컴포넌트가 마운트되기 전에는 `null`입니다.
+컴포넌트는 뷰어를 `instance`로 노출하며, `zoomIn()`이나 `apply()` 같은 [메서드](./methods)를 쓸 수 있습니다. 컴포넌트가 마운트되기 전에는 `null`입니다.
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+컴포넌트는 마운트될 때 뷰어를 만들고 언마운트될 때 없애므로, `destroy()`는 호출하지 마세요. `setOptions()`를 호출하는 대신 props를 바꾸고(`setOptions()`로 한 변경은 다음 prop 변경 때 되돌려집니다), `on()` 대신 컴포넌트 이벤트를 쓰세요.
 
 같은 `src`를 다시 전달해도 이미지를 다시 불러오지 않으므로 편집 결과가 유지됩니다. 원본으로 돌아가려면 `instance.reload()`를 호출하세요.
 

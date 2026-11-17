@@ -21,19 +21,19 @@ PaperPic은 아무것도 업로드하거나 저장하지 않습니다. 사용자
 == JavaScript
 
 ```ts
-pic.on('apply', result => upload(result))
+pic.on('apply', ({ blob, type }) => upload(blob, type))
 ```
 
 == Vue
 
 ```vue
-<PaperPic src="/receipt.jpg" @apply="upload" />
+<PaperPic src="/receipt.jpg" @apply="({ blob, type }) => upload(blob, type)" />
 ```
 
 == React
 
 ```tsx
-<PaperPic src="/receipt.jpg" onApply={upload} />
+<PaperPic src="/receipt.jpg" onApply={({ blob, type }) => upload(blob, type)} />
 ```
 
 :::
@@ -45,7 +45,7 @@ pic.on('apply', result => upload(result))
 `blob`을 폼의 파일로 보내세요.
 
 ```ts
-async function upload({ blob, type }: { blob: Blob, type: string }) {
+async function upload(blob: Blob, type: string) {
   const body = new FormData()
   body.append('image', blob, `document.${type.split('/')[1]}`)
   const response = await fetch('/api/documents', { method: 'POST', body })
@@ -57,9 +57,9 @@ async function upload({ blob, type }: { blob: Blob, type: string }) {
 
 뷰어는 서버에 도착했는지와 관계없이 결과를 바로 보여 주므로, 업로드에 실패하면 사용자에게 알려 주세요.
 
-## 형식과 품질
+## 형식과 품질 {#format}
 
-옵션이 없으면 결과는 원본 이미지의 형식(JPEG, PNG, WebP)을 유지합니다. 정리한 문서는 PNG가 됩니다. JPEG는 선명한 가장자리 주변에 잡티를 만들기 때문입니다. GIF 같은 그 밖의 원본은 PNG가 됩니다.
+옵션이 없으면 결과는 원본 이미지가 JPEG, PNG, WebP일 때 그 형식을 유지합니다. PaperPic은 형식을 URL의 확장자(`.jpg` 등)나 `File` 또는 `Blob`의 type으로 판단합니다. 정리한 문서는 PNG가 됩니다. JPEG는 선명한 가장자리 주변에 잡티를 만들기 때문입니다. 그 밖의 원본도 PNG가 됩니다. GIF나 `/api/documents/42`처럼 확장자가 없는 URL은 JPEG를 제공하더라도 PNG가 됩니다.
 
 [`output`](../reference/options#output)으로 형식과, JPEG와 WebP의 품질을 0부터 1까지로 고릅니다. 품질 기본값은 0.92입니다.
 
@@ -127,7 +127,7 @@ const pic = new PaperPic(container, {
 
 :::
 
-편집 중 미리보기는 항상 약 2메가픽셀이므로, `maxOutputSize`는 결과만 바꿉니다.
+편집 중 미리보기는 많아야 약 2메가픽셀이므로, `maxOutputSize`는 결과만 바꿉니다.
 
 iOS의 Safari는 canvas를 약 16메가픽셀로 제한하고, 최신 iPhone은 24메가픽셀 이상의 사진을 찍으므로, 전체 해상도에서 적용이 실패할 수 있습니다. 사용자가 iPhone에서 사진을 편집한다면 `maxOutputSize`를 설정하세요. 3000픽셀이면 문서를 충분히 읽을 수 있고 제한보다 훨씬 작습니다. 오류는 [큰 사진에서 적용이 실패함](./troubleshooting#too-large)에 나옵니다.
 
@@ -135,11 +135,13 @@ iOS의 Safari는 canvas를 약 16메가픽셀로 제한하고, 최신 iPhone은 
 
 적용의 결과에는 메타데이터가 없습니다. PaperPic은 이미지를 canvas에 그리므로, GPS 위치, 카메라, 날짜 같은 사진의 EXIF 데이터가 사라집니다. 처음 적용하기 전까지 다운로드 버튼은 원본 이미지를 메타데이터와 함께 그대로 저장합니다.
 
-## 다운로드 버튼
+## 다운로드 버튼 {#download}
 
 [`download: true`](../reference/options#download)는 도구 모음 끝에 화면의 이미지를 저장하는 버튼을 더합니다. 저장되는 것은 마지막 적용의 결과이고, 없으면 원본 이미지 그대로입니다. 편집 중에는 변경이 아직 적용되지 않았으므로 버튼이 숨겨집니다. [`download()`](../reference/methods#download)는 버튼이 있든 없든 코드에서 같은 일을 합니다. 뷰어 위에서는 브라우저의 컨텍스트 메뉴가 열리지 않으므로, 이 버튼으로 이미지를 저장합니다.
 
-파일은 원본의 이름을 유지하고 형식에 맞는 확장자를 붙입니다. 그래서 정리한 `receipt.jpg`는 `receipt.png`로 저장됩니다. [`filename`](../reference/options#filename)으로 다른 이름을 지정할 수 있습니다. `Blob`처럼 이름이 전혀 없으면 파일 이름은 `image`입니다.
+파일은 원본의 이름을 유지하고 형식에 맞는 확장자를 붙입니다. 그래서 정리한 `receipt.jpg`는 `receipt.png`로 저장됩니다. [`filename`](../reference/options#filename)으로 다른 이름을 지정할 수 있습니다. `Blob`처럼 이름이 전혀 없으면 파일 이름은 `image`입니다. 첫 적용 전에는 확장자가 없는 URL은 형식을 알 수 없어서 확장자 없이 저장됩니다.
+
+다른 출처의 `src`라면, 첫 적용 전에는 브라우저가 파일을 저장하지 않고 이미지를 열어서 사용자가 페이지를 떠나게 됩니다. [이미지 불러오기](./loading#fetch)처럼 이미지를 `Blob`으로 넘기거나, `download` 이벤트에서 직접 저장하세요.
 
 ### 다른 방법으로 저장하기
 

@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält. Erstelle das Objekt einmal und nicht bei jedem Rendern, damit der Viewer es nicht jedes Mal neu bekommt.
+Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält. Eine Funktion ist bei jedem Erstellen neu, und der Viewer nimmt eine neue als Änderung, also erstelle die Beschriftungen mit Funktionen einmal und nicht bei jedem Rendern.
 
 | Schlüssel              | Englisch                                     | Verwendung                                                                                                             |
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält. Erstell
 | `adjustmentLevel`      | Brightness +30                               | Funktion von Name und Wert von -100 bis 100, angesagt nach dem Bewegen der Skala von Anpassen                          |
 | `applied`              | Changes applied                              | Angesagt, wenn die Änderungen übernommen sind                                                                          |
 | `apply`                | Apply                                        | Die Schaltfläche, die die Änderungen übernimmt                                                                         |
-| `applyError`           | The changes could not be applied             | Angezeigt, wenn Übernehmen fehlschlägt                                                                                 |
+| `applyError`           | The changes could not be applied             | Angezeigt, wenn Übernehmen fehlschlägt oder eine Änderung nicht angezeigt werden kann                                  |
 | `brightness`           | Brightness                                   | Die Wahl der Helligkeit in Anpassen, und der Name ihrer Skala                                                          |
 | `cancel`               | Cancel                                       | Die Schaltfläche, die den Bearbeitungsmodus verlässt                                                                   |
 | `cancelTool`           | Cancel this tool                             | Die Schaltfläche, die ein Werkzeug schließt und seine Änderungen verwirft                                              |

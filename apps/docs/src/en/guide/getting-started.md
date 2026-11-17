@@ -96,7 +96,7 @@ The core also loads from a CDN that serves the files of the package as they are,
 </script>
 ```
 
-Browsers only start a worker from the origin of the page, so the editing runs on the main thread there: it works, but large photos freeze the page for a moment on Apply. Serve the files from your own origin, or use a bundler, to keep the worker. The Vue and React components need a bundler.
+Browsers only start a worker from the origin of the page, so with the package on a CDN the editing runs on the main thread: it works, but large photos freeze the page for a moment on Apply. Serve the files from your own origin, or use a bundler, to keep the worker. The Vue and React components need a bundler.
 
 ## Show an image
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` takes a URL from the same origin as your page, or a `File` that the user picks, such as from an `<input type="file">`. `alt` describes the image for screen readers. [Loading images](./loading) covers images from other origins, formats and load errors.
+`src` takes a URL from the same origin as your page, a `File` that the user picks, such as from an `<input type="file">`, or a `Blob`. `alt` describes the image for screen readers. [Loading images](./loading) covers images from other origins, formats and load errors.
 
 ## Get the edited image
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-The `blob` keeps the format of the source, or is PNG when the user cleaned up the document. The [`output`](../reference/options#output) option changes it.
+The `blob` keeps the format of the source when it is JPEG, PNG or WebP, and is PNG when the user cleaned up the document. [Format and quality](./saving#format) explains how PaperPic tells the format, and the [`output`](../reference/options#output) option changes it.
 
 ## Remove the viewer {#destroy}
 

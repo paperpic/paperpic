@@ -50,7 +50,9 @@
     "examples/upload": "서버에 업로드",
     "examples/read-only": "읽기 전용 뷰어",
     "examples/custom-toolbar": "직접 만든 도구 모음",
-    "examples/fixed-proportions": "고정 비율"
+    "examples/fixed-proportions": "고정 비율",
+    "examples/dialog": "대화상자에서 편집하기",
+    "examples/form": "폼으로 보내기"
   },
   "search": {
     "button": {

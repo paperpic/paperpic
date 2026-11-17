@@ -50,9 +50,11 @@ export function Receipt() {
 
 每个事件见[事件](./events)。传入新函数不会重新创建查看器，因此可以使用内联函数。props 的变化从不调用 `onChange`。
 
-## 方法
+`onChange` 接收的是查看器的[状态](./state)，不是 DOM 事件。如何用 `useState`、`onChange`、`onLoad` 和 `onError` 保存它，见[状态](./state#in-step)。
 
-`ref` 接收类型为 [`PaperPicInstance`](./types#paperpicinstance) 的查看器，带有所有[方法](./methods)。组件挂载之前它为 `null`：
+## 方法 {#methods}
+
+`ref` 接收类型为 [`PaperPicInstance`](./types#paperpicinstance) 的查看器，带有 `zoomIn()`、`apply()` 等[方法](./methods)。组件挂载之前它为 `null`：
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+组件在挂载时创建查看器、在卸载时销毁它，所以不要调用 `destroy()`。请修改 props 而不是调用 `setOptions()`（下一次 prop 变化会撤销它的修改），并用回调 props 代替 `on()`。
 
 再次传入相同的 `src` 不会重新加载图片，因此会保留编辑结果。要恢复原图，调用 `picRef.current.reload()`。
 

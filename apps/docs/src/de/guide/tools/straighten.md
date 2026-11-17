@@ -57,7 +57,7 @@ const pic = new PaperPic(container, {
 | US-Letter-Blatt, hoch | `8.5 / 11`     |
 | Ausweiskarte, quer    | `85.6 / 53.98` |
 
-Für ein Blatt im Querformat vertausche die Zahlen, etwa `297 / 210`.
+Für ein Blatt im Querformat vertausche die Zahlen, etwa `297 / 210`. Das Seitenverhältnis gilt für die Seite, wie sie auf dem Bildschirm erscheint. Drehe ein seitliches Foto also mit [Nach links drehen](./rotate-and-flip), bevor du es begradigst.
 
 ## Vom Foto abgeschnittene Ecken
 

@@ -15,7 +15,7 @@ Le foto scattate con poca luce escono scure o grigie. Regola cambia la luminosit
 2. Trascina il righello. L’anteprima cambia mentre trascini. Scegli Contrasto per cambiare l’altro tono con lo stesso righello.
 3. Premi Fatto per conservare entrambi i toni come un solo cambiamento, che Annulla l’ultima azione toglie. Annulla questo strumento lascia l’immagine com’era.
 
-Il centro del righello lascia l’immagine com’è, e l’ago vi si aggancia, così tornare a nessun cambiamento è facile. I lettori di schermo annunciano il valore da -100 a 100, come «Luminosità +30». Un punto su Regola segna valori diversi da 0.
+Il centro del righello lascia l’immagine com’è, e l’ago vi si aggancia, così è facile tornare a lasciare l’immagine com’era. I lettori di schermo annunciano il valore da -100 a 100, come «Luminosità +30». Un punto su Regola segna valori diversi da 0.
 
 Regola viene dopo gli altri cambiamenti, quindi Ritaglia e Raddrizza mostrano l’immagine con esso.
 
@@ -27,7 +27,7 @@ Regola viene dopo gli altri cambiamenti, quindi Ritaglia e Raddrizza mostrano l�
 | Per moduli a colori, timbri e foto          | Per testo su carta                      |
 | Mantiene il formato dell’immagine originale | Dà PNG                                  |
 
-Mentre Pulisci è attivo, Regola è disattivato, perché un documento pulito ha toni suoi.
+Mentre Pulisci è attivo, Regola è disattivato. Pulisci confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato.
 
 ## Dal codice
 

@@ -127,4 +127,4 @@ export function Invoice() {
 - `role="status"`는 스크린 리더가 업로드 결과를 읽어 주게 합니다.
 - [`maxOutputSize`](../reference/options#maxoutputsize)는 파일을 작게 유지합니다. 긴 변이 3000픽셀이어도 문서는 읽기 좋습니다.
 - 적용한 뒤에는 기록이 비므로, 사용자가 이전 이미지로 실행 취소할 수 없습니다. 다시 시도 버튼을 두려면 마지막 `blob`과 `type`을 보관했다가 `upload`를 다시 호출하세요.
-- 정리한 문서라면 서버는 PNG를 받고, 그렇지 않으면 원본 이미지의 형식을 받습니다. 다른 형식을 고르려면 [결과 저장](../guide/saving)을 참고하세요.
+- 정리한 문서라면 서버는 PNG를 받고, 그렇지 않으면 원본이 JPEG, PNG, WebP일 때 그 형식을 받습니다. PaperPic이 형식을 판단하는 방법과 다른 형식을 고르는 방법은 [결과 저장](../guide/saving#format)을 참고하세요.

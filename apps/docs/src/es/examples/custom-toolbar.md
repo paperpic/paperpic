@@ -7,7 +7,7 @@ description: Un ejemplo completo que oculta la barra de herramientas integrada d
 
 Cuando los controles del visor deben encajar con el resto de tu interfaz, oculta los integrados con `toolbar: false` y llama a los [métodos](../reference/methods) desde tus propios botones. Este ejemplo ofrece zoom, Enderezar, Deshacer y Aplicar, y activa cada botón solo cuando puede actuar.
 
-El evento [`change`](../reference/events#change) lleva el [estado](../reference/state) después de cada acción, incluidas las que inician tus botones. `load` y `error` avisan de cuándo llega la imagen o de cuándo falla Aplicar.
+El evento [`change`](../reference/events#change) envía el [estado](../reference/state) después de cada acción, incluidas las que inician tus botones. `load` y `error` avisan de cuándo llega la imagen o de cuándo falla Aplicar.
 
 :::tabs key:framework
 == JavaScript
@@ -19,6 +19,7 @@ El evento [`change`](../reference/events#change) lleva el [estado](../reference/
   <button type="button" data-action="edit">Editar</button>
   <button type="button" data-action="straighten">Enderezar</button>
   <button type="button" data-action="confirmTool">Hecho</button>
+  <button type="button" data-action="cancelTool">Cancelar esta herramienta</button>
   <button type="button" data-action="undo">Deshacer</button>
   <button type="button" data-action="cancel">Cancelar</button>
   <button type="button" data-action="apply">Aplicar</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         Hecho
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        Cancelar esta herramienta
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Editar</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>Hecho</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>Hecho</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>Cancelar esta herramienta</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -203,9 +212,9 @@ export function Receipt() {
 
 :::
 
-## Un slider propio {#slider}
+## Un control deslizante propio {#slider}
 
-Un slider propio para Limpiar abre antes la herramienta. Cada movimiento llama entonces a `setThreshold()`, que cambia lo que muestra Limpiar, y `confirmTool()` guarda el último valor como una sola edición. Aquí Hecho también aplica el resultado, y Cancelar sale del modo de edición, así que estos controles son toda la interfaz.
+Un control deslizante propio para Limpiar abre antes la herramienta. Cada movimiento llama entonces a `setThreshold()`, que cambia lo que muestra Limpiar, y `confirmTool()` guarda el último valor como un solo cambio. Aquí Hecho también aplica el resultado, y Cancelar sale del modo de edición, así que estos controles son toda la interfaz.
 
 :::tabs key:framework
 == JavaScript
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## Notas
 
-- Con `toolbar: false` también se oculta la barra de edición integrada, así que Recortar y Enderezar muestran sus tiradores pero no el botón Hecho. Tu interfaz los confirma con [`confirmTool()`](../reference/methods#confirmtool), como hace `Enter`.
+- Con `toolbar: false` también se oculta la barra de edición integrada, así que Recortar y Enderezar muestran sus tiradores pero no el botón Hecho. Tu interfaz los confirma con [`confirmTool()`](../reference/methods#confirmtool), como hace `Enter`. Para cerrarlas sin sus cambios, llama a [`cancelTool()`](../reference/methods#canceltool), como hace `Esc`.
 - Tus propios controles deslizantes pueden llamar directamente a [`setThreshold()`](../reference/methods#setthreshold) y [`setAdjustments()`](../reference/methods#setadjustments), lo que añade un cambio por cada llamada. Para dejar un solo cambio por todo un arrastre, abre antes la herramienta con [`openTool()`](../reference/methods#opentool): los mismos métodos cambian entonces lo que muestra, y `confirmTool()` lo conserva.
 - [`cancel()`](../reference/methods#cancel) no pregunta antes de descartar los cambios. Pregunta tú al usuario si los hay, por ejemplo cuando `canApply` es verdadero.
 - Los atajos de teclado siguen funcionando con el foco en el visor. Consulta [Accesibilidad](../guide/accessibility).

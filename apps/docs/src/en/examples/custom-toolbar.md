@@ -19,6 +19,7 @@ The [`change`](../reference/events#change) event carries the [state](../referenc
   <button type="button" data-action="edit">Edit</button>
   <button type="button" data-action="straighten">Straighten</button>
   <button type="button" data-action="confirmTool">Done</button>
+  <button type="button" data-action="cancelTool">Cancel this tool</button>
   <button type="button" data-action="undo">Undo</button>
   <button type="button" data-action="cancel">Cancel</button>
   <button type="button" data-action="apply">Apply</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         Done
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        Cancel this tool
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Edit</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>Done</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>Done</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>Cancel this tool</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## Notes
 
-- With `toolbar: false`, the built-in edit bar is hidden too, so Crop and Straighten show their handles but no Done button. Your interface confirms them with [`confirmTool()`](../reference/methods#confirmtool), as `Enter` does.
+- With `toolbar: false`, the built-in edit bar is hidden too, so Crop and Straighten show their handles but no Done button. Your interface confirms them with [`confirmTool()`](../reference/methods#confirmtool), as `Enter` does. To close them without their changes, call [`cancelTool()`](../reference/methods#canceltool), as `Esc` does.
 - Sliders of your own can call [`setThreshold()`](../reference/methods#setthreshold) and [`setAdjustments()`](../reference/methods#setadjustments) directly, which adds one edit for each call. To leave one edit for a whole drag, open the tool with [`openTool()`](../reference/methods#opentool) first: the same methods then change what it shows, and `confirmTool()` keeps it.
 - [`cancel()`](../reference/methods#cancel) does not ask before discarding the edits. Ask the user first if there are some, such as when `canApply` is true.
 - The keyboard shortcuts keep working with the focus on the viewer. See [Accessibility](../guide/accessibility).

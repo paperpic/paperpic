@@ -29,7 +29,7 @@ O componente preenche o elemento pai, então defina uma altura para ele.
 
 ## Props
 
-Cada [opção](./options) é uma prop com o mesmo nome, como `:editable="false"` ou `:aspect-ratio="210 / 297"`. Uma prop alterada chega ao visualizador por `setOptions()`.
+Cada [opção](./options) é uma prop com o mesmo nome, como `:editable="false"` ou `:aspect-ratio="210 / 297"`. Uma prop alterada chega ao visualizador por `setOptions()`. `class` e `style` vão para o elemento que contém o visualizador, que também tem a classe `paperpic-host`.
 
 Um objeto ou array com o mesmo conteúdo de antes, como `:tools="['crop', 'rotate']"`, não muda nada, então o template pode montá-los. Uma função é nova a cada renderização do pai, então monte com `computed` os `labels` que têm funções, como `zoomLevel`.
 
@@ -43,11 +43,11 @@ Um objeto ou array com o mesmo conteúdo de antes, como `:tools="['crop', 'rotat
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-[Eventos](./events) descreve cada um. Uma prop alterada nunca emite `change`.
+[Eventos](./events) descreve cada um. Uma prop alterada nunca emite `change`. [Estado](./state#in-step) mostra como guardar o estado num `shallowRef` com `@change`, `@load` e `@error`.
 
-## Métodos
+## Métodos {#methods}
 
-O componente expõe o visualizador como `instance`, com todos os [métodos](./methods). Ela é `null` até o componente ser montado:
+O componente expõe o visualizador como `instance`, com os [métodos](./methods), como `zoomIn()` ou `apply()`. Ele é `null` até o componente ser montado:
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+O componente cria o visualizador ao ser montado e o destrói ao ser desmontado, então não chame `destroy()`. Mude as props em vez de chamar `setOptions()`, que a próxima mudança de uma prop desfaria, e use os eventos do componente em vez de `on()`.
 
 Passar o mesmo `src` de novo não recarrega a imagem, então ela mantém o resultado de uma edição. Para trazer de volta a original, chame `instance.reload()`.
 

@@ -7,7 +7,7 @@ description: Como o PaperPic funciona com teclado, leitores de tela e telas sens
 
 As pessoas leem e corrigem documentos com o mouse, o dedo, o teclado ou um leitor de tela. O PaperPic mira as WCAG 2.2 AA, e quase todo o trabalho já vem pronto. Esta página mostra o que ele faz e o que o seu app precisa acrescentar.
 
-## O que o seu app fornece
+## O que o seu app precisa fazer
 
 - **Uma descrição.** Passe [`alt`](../reference/options#alt), como "Recibo de 5 de novembro". Os leitores de tela o leem como nome da imagem.
 - **Textos no idioma do usuário.** Os leitores de tela anunciam os botões e as mudanças, então traduza-os com [`labels`](./labels).
@@ -16,19 +16,19 @@ As pessoas leem e corrigem documentos com o mouse, o dedo, o teclado ou um leito
 
 ## Teclado {#keyboard}
 
-Com o foco no visualizador:
+Com o foco dentro do visualizador:
 
 | Tecla                      | Ação                                                                                     |
 | -------------------------- | ---------------------------------------------------------------------------------------- |
 | `+` e `-`                  | Ampliar e reduzir                                                                        |
 | Setas                      | Mover                                                                                    |
-| `0`                        | Ajustar a imagem inteira                                                                 |
+| `0`                        | Encaixar a imagem inteira                                                                |
 | `Ctrl+Z`                   | Desfazer                                                                                 |
 | `Ctrl+Shift+Z` ou `Ctrl+Y` | Refazer                                                                                  |
 | `Enter`                    | Confirmar a ferramenta aberta, ou então aplicar as alterações                            |
 | `Esc`                      | Soltar um canto selecionado, fechar a ferramenta aberta, ou então cancelar as alterações |
 
-No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` pede confirmação. Com `toolbar: false`, ele as deixa para a sua interface.
+No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona esse botão. Antes de cancelar as alterações, `Esc` pede confirmação. Com `toolbar: false`, `Esc` continua fechando uma ferramenta, mas não cancela a edição: quem decide é a sua interface.
 
 - **Barra de ferramentas e barra de edição.** Tab chega a cada barra, e dentro dela as setas passam de um botão para outro, com `Home` e `End` para o primeiro e o último.
 - **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift.
@@ -38,7 +38,7 @@ No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` p
 
 - A imagem tem o papel de imagem, com `alt` como nome. Sem `alt`, os leitores de tela a ignoram.
 - A barra de ferramentas e a barra de edição têm nome próprio, como "Controles da imagem" e "Controles de edição".
-- Um anúncio informa cada mudança que o usuário não percebe só pelo foco: o nível de zoom, o início do modo de edição, a posição de um canto movido, o valor de uma régua e o resultado do Aplicar.
+- Um anúncio informa o que o usuário não percebe só pelo foco: o carregamento da imagem, o nível de zoom, o início do modo de edição, um canto selecionado e a posição de um canto movido, o valor de uma régua, o resultado do Aplicar e qualquer falha.
 - O interruptor do Limpar tem o papel de interruptor. Uma ferramenta em uso, que um ponto marca na tela, é descrita como "Em uso".
 
 ## Telas sensíveis ao toque
@@ -46,7 +46,7 @@ No macOS, `Cmd` funciona como `Ctrl`. Antes de cancelar as alterações, `Esc` p
 - Com `pointer: coarse`, botões e alças de canto medem pelo menos 44 pixels.
 - Enquanto um dedo arrasta um canto, uma lupa mostra a área embaixo dele.
 - Um canto também se move sem arrastar: pressione a alça dele e depois toque onde ele vai. Também funciona com mouse.
-- Enquanto a imagem está ajustada, um dedo rola a página, então o visualizador não prende ninguém. Com zoom, ele move a imagem.
+- Enquanto a imagem está encaixada, um dedo rola a página, então o visualizador não prende ninguém. Com zoom, ele move a imagem.
 
 ## Preferências
 

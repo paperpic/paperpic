@@ -57,7 +57,7 @@ const pic = new PaperPic(container, {
 | US Letter sheet, portrait | `8.5 / 11`     |
 | ID card, landscape        | `85.6 / 53.98` |
 
-For a sheet in landscape, swap the numbers, such as `297 / 210`.
+For a sheet in landscape, swap the numbers, such as `297 / 210`. The proportions apply to the page as it shows on screen, so turn a sideways photo with [Rotate left](./rotate-and-flip) before you straighten it.
 
 ## Corners cut off by the photo
 

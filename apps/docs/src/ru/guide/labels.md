@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## Следовать языку приложения
 
-Когда ваше приложение меняет язык, передайте новые подписи, и просмотрщик сразу обновит тексты. Создавайте объект только при смене языка, чтобы просмотрщик не получал новый при каждом рендере:
+Когда ваше приложение меняет язык, передайте подписи нового языка, и просмотрщик сразу обновит тексты. Держите по одному объекту подписей на язык, созданному один раз, чтобы каждый рендер передавал тот же объект:
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 
