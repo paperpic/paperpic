@@ -8,6 +8,9 @@
   --vp-button-brand-hover-bg: #0059b3;
   --vp-button-brand-active-bg: #004f9e;
 
+  /* The language in the corner of a code block, which the third text color left below 4.5:1 on its background */
+  --vp-code-lang-color: var(--vp-c-text-2);
+
   /* White "Paper" would vanish on the light theme, so it takes the navy of the logo's background */
   --vp-home-hero-name-color: #1a263c;
   --name-accent: linear-gradient(90deg, #0a84ff, #0b8f80);

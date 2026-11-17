@@ -18,13 +18,48 @@ const comparison = computed(() => frontmatter.value.comparison as Comparison | u
 
 /** How much of the width shows the photo, in percent. */
 const position = shallowRef(50)
+
+/** The widths of the smaller copies of each image, which sit next to it as `<name>-<width>.webp`. */
+const widths = [640, 960, 1280]
+
+/** The width of the images themselves. */
+const fullWidth = 1600
+
+/** The copies of an image for the browser to choose from, so a phone does not download the full width. */
+function srcset(src: string) {
+  return [
+    ...widths.map(width => `${src.replace(/\.webp$/, `-${width}.webp`)} ${width}w`),
+    `${src} ${fullWidth}w`,
+  ].join(', ')
+}
+
+/** The width that the frame takes at each width of the window, following the padding of `.comparison` and its border. */
+const sizes = '(min-width: 1280px) 1150px, (min-width: 960px) calc(100vw - 130px), (min-width: 640px) calc(100vw - 98px), calc(100vw - 50px)'
 </script>
 
 <template>
   <section v-if="comparison" class="comparison">
     <div class="frame" :style="{ '--position': `${position}%` }">
-      <img class="image" :src="comparison.before" :alt="comparison.beforeAlt" width="1600" height="893">
-      <img class="image after" :src="comparison.after" :alt="comparison.afterAlt" width="1600" height="893">
+      <!-- The photo is the largest content of the home, so the browser fetches it before it lays the page out -->
+      <img
+        class="image"
+        :src="comparison.before"
+        :srcset="srcset(comparison.before)"
+        :sizes="sizes"
+        :alt="comparison.beforeAlt"
+        width="1600"
+        height="893"
+        fetchpriority="high"
+      >
+      <img
+        class="image after"
+        :src="comparison.after"
+        :srcset="srcset(comparison.after)"
+        :sizes="sizes"
+        :alt="comparison.afterAlt"
+        width="1600"
+        height="893"
+      >
       <span class="badge badge-before" aria-hidden="true">{{ comparison.beforeLabel }}</span>
       <span class="badge badge-after" aria-hidden="true">{{ comparison.afterLabel }}</span>
       <span class="divider" aria-hidden="true" />
