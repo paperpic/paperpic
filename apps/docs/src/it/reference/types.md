@@ -61,7 +61,7 @@ Ciò che ricevono il costruttore e [`setOptions()`](./methods#setoptions). In Vu
 type PaperPicSource = string | Blob
 ```
 
-L’immagine di [`src`](./options#src): un URL della stessa origine, oppure un `File` o un `Blob` allegato nel client. Il `source` di [`PaperPicDownload`](#paperpicdownload) ha lo stesso tipo.
+L’immagine di [`src`](./options#src): un URL, oppure un `File` o un `Blob`. Il `source` di [`PaperPicDownload`](#paperpicdownload) ha lo stesso tipo.
 
 ### `PaperPicOutput`
 
@@ -188,7 +188,7 @@ interface PaperPicState {
 }
 ```
 
-Ciò che restituisce [`getState()`](./methods#getstate) e che porta l’evento [`change`](./events#change). [Stato](./state) spiega ogni campo.
+Ciò che restituisce [`getState()`](./methods#getstate) e che invia l’evento [`change`](./events#change). [Stato](./state) spiega ogni campo.
 
 ### `Fit`
 
@@ -215,7 +215,7 @@ interface Size {
 }
 ```
 
-Una larghezza e un’altezza in pixel, come l’`image` dello [stato](./state) o ciò che porta l’evento [`load`](./events#load).
+Una larghezza e un’altezza in pixel, come l’`image` dello [stato](./state) o ciò che invia l’evento [`load`](./events#load).
 
 ## Eventi
 
@@ -231,7 +231,7 @@ interface PaperPicEvents {
 }
 ```
 
-Ogni evento con ciò che porta, per [`on()`](./methods#on). [Eventi](./events) spiega ciascuno.
+Ogni evento con i suoi dati, per [`on()`](./methods#on). [Eventi](./events) spiega ciascuno.
 
 ### `ExportedImage`
 
@@ -244,7 +244,7 @@ interface ExportedImage {
 }
 ```
 
-L’immagine modificata, che porta l’evento [`apply`](./events#apply). `type` è il formato di `blob`, che sceglie [`output`](./options#output).
+L’immagine modificata, che consegna l’evento [`apply`](./events#apply). `type` è il formato di `blob`, che sceglie [`output`](./options#output).
 
 ### `PaperPicDownload`
 
@@ -256,7 +256,7 @@ interface PaperPicDownload {
 }
 ```
 
-Ciò che porta l’evento [`download`](./events#download). Chiama `preventDefault()` per salvare il file in un altro modo.
+I dati dell’evento [`download`](./events#download). Chiama `preventDefault()` per salvare il file in un altro modo.
 
 ## Metodi
 

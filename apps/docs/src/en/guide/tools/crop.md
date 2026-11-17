@@ -20,7 +20,7 @@ While Crop is open, the image looks as the result will, with Adjust and Clean up
 ## Corner handles
 
 - The handles stay inside the image, and the rectangle never turns inside out.
-- On a touch screen, a magnifier shows the area under the finger while it drags a corner, so the finger does not hide where the corner lands.
+- With a finger or a pen, a magnifier shows the area under it while it drags a corner, so it does not hide where the corner lands.
 - Without dragging, press a handle and then tap where its corner goes. The handle stays highlighted until then, the zoom buttons zoom toward its corner, and `Esc` lets go of it.
 - With the keyboard, Tab moves between the handles, and the arrow keys move the focused handle 1 screen pixel, or 10 with Shift. `+` and `-` zoom toward the focused handle. Screen readers announce each move.
 

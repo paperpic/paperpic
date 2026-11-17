@@ -18,31 +18,33 @@ I caratteri piccoli e gli scontrini lunghi sono difficili da leggere a colpo d�
 | Passare dall’adattamento al 100 % e viceversa | Doppio clic                       | Doppio tocco |           |
 | Adattare l’immagine intera                    |                                   |              | `0`       |
 
-La tastiera funziona con il focus sul visualizzatore. Finché non c’è nulla da spostare, le frecce scorrono la pagina. Un pizzico zooma attorno al punto tra le dita. Su uno schermo touch, un dito scorre la pagina finché l’immagine è adattata, e sposta l’immagine quando è ingrandita.
+I tasti funzionano finché il focus è nel visualizzatore. Su un pulsante, le frecce passano invece da un pulsante all’altro, e finché non c’è nulla da spostare, scorrono la pagina. Un pizzico zooma attorno al punto tra le dita. Su uno schermo touch, un dito scorre la pagina finché l’immagine è adattata, e sposta l’immagine quando è ingrandita.
 
 Lo zoom va dall’adattamento dell’immagine intera, o dal 100 % per un’immagine piccola, fino all’800 %. Un’immagine che ci sta resta centrata, e una che sborda si sposta fino ai suoi bordi.
 
 Quando si carica, l’immagine si adatta intera al visualizzatore, e mantiene il suo adattamento quando il visualizzatore cambia dimensione, finché l’utente non zooma a mano.
 
-In una pagina lunga, la rotellina zoomerebbe l’immagine invece di scorrere la pagina. Lì usa `wheelZoom: false`: i pulsanti, la tastiera e il pizzico su uno schermo touch continuano a zoomare.
+In una pagina lunga, la rotellina zoomerebbe l’immagine invece di scorrere la pagina. Lì usa `wheelZoom: false`: i pulsanti, la tastiera e il pizzico su uno schermo touch continuano a zoomare. Un pizzico su un trackpad non zooma più l’immagine, perché il browser lo tratta come la rotellina.
 
 ## La barra degli strumenti
 
 La barra degli strumenti sta a destra del visualizzatore, e scorre quando il visualizzatore è troppo basso per i suoi pulsanti. Si nasconde durante la modifica, così non copre mai un angolo di Ritaglia o di Raddrizza.
 
-| Pulsante                                  | Cosa fa                                                                    |
-| ----------------------------------------- | -------------------------------------------------------------------------- |
-| Modifica                                  | Avvia la [modalità di modifica](./editing). Nascosto con `editable: false` |
-| Ingrandisci, Riduci                       | Zoomano di un passo, attorno al centro                                     |
-| Adatta alla larghezza, Adatta all’altezza | Adattano la larghezza, comodo per i documenti lunghi, o l’altezza          |
-| Ruota a sinistra, Ruota a destra          | Solo in un visualizzatore di sola lettura: ruotano l’immagine visualizzata |
-| Scarica                                   | Solo con `download: true`: salva l’immagine visualizzata                   |
+| Pulsante                                  | Cosa fa                                                                                                    |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Modifica                                  | Avvia la [modalità di modifica](./editing). Appare quando l’immagine è pronta, e mai con `editable: false` |
+| Ingrandisci, Riduci                       | Zoomano di un passo del 25%, attorno al centro                                                             |
+| Adatta alla larghezza, Adatta all’altezza | Adattano la larghezza, comodo per i documenti lunghi, o l’altezza                                          |
+| Ruota a sinistra, Ruota a destra          | Solo in un visualizzatore di sola lettura: ruotano l’immagine visualizzata                                 |
+| Scarica                                   | Solo con `download: true`: salva l’immagine visualizzata                                                   |
+
+Adatta alla larghezza e Adatta all’altezza restano premuti finché il loro adattamento vale. Nessun pulsante adatta di nuovo l’immagine intera: premi `0`, o riduci lo zoom fino in fondo.
 
 Con `toolbar: false`, la barra degli strumenti e la barra di modifica sono nascoste, e puoi creare i tuoi controlli con i [metodi](../reference/methods).
 
 ## Visualizzatore di sola lettura {#read-only}
 
-Con `editable: false`, il pulsante Modifica sparisce, e la barra degli strumenti riceve due pulsanti che ruotano l’immagine. Quella rotazione cambia solo la visualizzazione, e non si salva nulla. Usalo per documenti da leggere ma non da modificare, come gli allegati di una pratica.
+Con `editable: false`, il pulsante Modifica sparisce, e la barra degli strumenti riceve due pulsanti che ruotano l’immagine. Quella rotazione cambia solo la visualizzazione, e non si salva nulla: Scarica salva l’immagine senza di essa. Usalo per documenti da leggere ma non da modificare, come gli allegati di una pratica.
 
 :::tabs key:framework
 == JavaScript

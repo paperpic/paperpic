@@ -96,7 +96,7 @@ core 也可以从原样提供包文件的 CDN 加载，例如 jsDelivr。在模�
 </script>
 ```
 
-浏览器只会从页面所在的源启动 worker，因此这种情况下编辑在主线程上运行：它能用，但应用大照片时页面会卡住片刻。如果想保留 worker，请从你自己的源提供这些文件，或者使用打包工具。Vue 和 React 组件需要打包工具。
+浏览器只会从页面所在的源启动 worker，因此从 CDN 加载包时，编辑在主线程上运行：它能用，但应用大照片时页面会卡住片刻。如果想保留 worker，请从你自己的源提供这些文件，或者使用打包工具。Vue 和 React 组件需要打包工具。
 
 ## 显示图片
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` 接受与页面同源的 URL，或用户选择的 `File`，例如来自 `<input type="file">`。`alt` 为屏幕阅读器描述图片。 [加载图片](./loading)介绍了其他源的图片、格式和加载错误。
+`src` 接受与页面同源的 URL、用户选择的 `File`（例如来自 `<input type="file">`），或 `Blob`。`alt` 为屏幕阅读器描述图片。 [加载图片](./loading)介绍了其他源的图片、格式和加载错误。
 
 ## 取回编辑后的图片
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-`blob` 保留原图的格式；如果用户清理了文档，则为 PNG。[`output`](../reference/options#output) 选项可以改变它。
+如果原图是 JPEG、PNG 或 WebP，`blob` 保留它的格式；如果用户清理了文档，则为 PNG。[格式和质量](./saving#format)说明了 PaperPic 如何判断格式，[`output`](../reference/options#output) 选项可以改变它。
 
 ## 移除查看器 {#destroy}
 

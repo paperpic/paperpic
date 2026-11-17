@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## Suivre la langue de votre application
 
-Quand votre application change de langue, passez les nouveaux libellés, et la visionneuse met ses textes à jour aussitôt. Ne créez l’objet que lorsque la langue change, pour que la visionneuse n’en reçoive pas un nouveau à chaque rendu :
+Quand votre application change de langue, passez les libellés de la nouvelle langue, et la visionneuse met ses textes à jour aussitôt. Gardez un objet de libellés par langue, créé une seule fois, pour que chaque rendu passe le même objet :
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

@@ -1,6 +1,6 @@
 ---
 title: 事件
-description: PaperPic 的事件 load、error、change、apply 和 download 及其携带的数据，以及如何在 JavaScript、Vue 和 React 中监听它们。
+description: PaperPic 的事件（load、error、change、apply 和 download）、每个事件携带的数据，以及如何在 JavaScript、Vue 和 React 中监听它们。
 ---
 
 # 事件
@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **载荷：** [`Size`](./types#size)
 
-图片已加载并显示。`width` 和 `height` 是它的像素尺寸。
+图片已加载并显示。`width` 和 `height` 是它的像素尺寸。每次加载 `src` 都会触发，使用 [`reload()`](./methods#reload) 时也会，但应用之后不会，应用的结果通过 [`apply`](#apply) 送达。
 
 ## `error`
 
@@ -48,13 +48,22 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **载荷：** [`PaperPicState`](./state)
 
-用户改变了查看或编辑，例如缩放、打开工具或撤销。它也会以 `busy: true` 报告应用开始。平移图片不会触发它，因为状态不包含图片的位置。`setOptions()` 和组件的 props 从不触发它。
+状态改变了，来自用户或方法，例如缩放、打开工具或撤销。它发送完整的状态，与此刻 [`getState()`](./methods#getstate) 返回的相同。应用会触发它两次：开始时带 `busy: true`，成功结束时在 [`apply`](#apply) 之后。
+
+以下情况会改变状态，但不触发 `change`：
+
+- 加载图片，由 [`load`](#load) 或 [`error`](#error) 报告。
+- 应用失败，由 [`error`](#error) 报告。`busy` 回到 `false`。
+- `setOptions()` 和组件的 props，这样双向绑定不会循环。
+- 查看器尺寸变化，在适合方式生效时会改变 `zoom`。
+
+平移图片不会触发任何事件，因为状态不包含图片的位置。[状态](./state#in-step)展示了如何让你自己的控件保持同步。
 
 ## `apply`
 
 - **载荷：** [`ExportedImage`](./types#exportedimage)
 
-用户应用了修改，结果已经显示。`blob` 是格式为 `type` 的图片，格式由 [`output`](./options#output) 决定。
+通过按钮、`Enter` 或 [`apply()`](./methods#apply) 完成了应用，结果已经显示。`blob` 是格式为 `type` 的图片，格式由 [`output`](./options#output) 决定。
 
 ## `download`
 

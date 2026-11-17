@@ -116,5 +116,6 @@ export function Form() {
 
 - Redresser enregistre les proportions quand l’utilisateur appuie sur Terminé, donc choisissez le type avant de redresser. Le changer ensuite n’affecte que le redressement suivant.
 - Pour un document en paysage, inversez les nombres, comme `297 / 210`.
+- Les proportions s’appliquent à la page telle qu’elle s’affiche à l’écran. Si la photo est de côté, faites-la pivoter avec Pivoter à gauche avant d’utiliser Redresser, sinon une feuille en portrait sort écrasée.
 - Omettez `aspectRatio` pour les documents sans taille fixe, comme les tickets de caisse, et Redresser les estime.
 - [Redresser](../guide/tools/straighten) explique l’estimation et que faire des coins qui sortent de la photo.

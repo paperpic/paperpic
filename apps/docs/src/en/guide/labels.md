@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## Follow the language of your app
 
-When your app changes language, pass new labels, and the viewer updates its texts at once. Build the object only when the language changes, so the viewer does not receive a new one on every render:
+When your app changes language, pass the labels of the new language, and the viewer updates its texts at once. Keep one object of labels for each language, created once, so that each render passes the same object:
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

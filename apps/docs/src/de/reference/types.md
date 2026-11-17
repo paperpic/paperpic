@@ -61,7 +61,7 @@ Was der Konstruktor und [`setOptions()`](./methods#setoptions) annehmen. In Vue 
 type PaperPicSource = string | Blob
 ```
 
-Das Bild in [`src`](./options#src): eine URL vom selben Ursprung oder eine `File` oder ein `Blob`, im Client angehängt. Das `source` von [`PaperPicDownload`](#paperpicdownload) hat denselben Typ.
+Das Bild in [`src`](./options#src): eine URL, oder eine `File` oder ein `Blob`. Das `source` von [`PaperPicDownload`](#paperpicdownload) hat denselben Typ.
 
 ### `PaperPicOutput`
 

@@ -61,7 +61,7 @@ interface PaperPicOptions {
 type PaperPicSource = string | Blob
 ```
 
-[`src`](./options#src) の画像。同じオリジンの URL か、クライアントで添付された `File` または `Blob` です。[`PaperPicDownload`](#paperpicdownload) の `source` も同じ型です。
+[`src`](./options#src) の画像。URL か、`File` または `Blob` です。[`PaperPicDownload`](#paperpicdownload) の `source` も同じ型です。
 
 ### `PaperPicOutput`
 

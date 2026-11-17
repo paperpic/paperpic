@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## Seguir o idioma do seu app
 
-Quando o seu app muda de idioma, passe os novos rótulos, e o visualizador atualiza os textos na hora. Crie o objeto só quando o idioma mudar, para que o visualizador não receba um novo a cada renderização:
+Quando o seu app muda de idioma, passe os rótulos do novo idioma, e o visualizador atualiza os textos na hora. Mantenha um objeto de rótulos por idioma, criado uma vez só, para que cada renderização passe o mesmo objeto:
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

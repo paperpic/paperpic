@@ -22,7 +22,7 @@ pic.setOptions({ editable: false })
 - **Tipo:** [`PaperPicSource`](./types#paperpicsource)
 - **Padrão:** nenhum
 
-A imagem a mostrar: uma URL da mesma origem, ou um `File` ou `Blob` anexado no cliente.
+A imagem a mostrar: uma URL, ou um `File` ou um `Blob`. Uma imagem de outra origem aparece, mas não pode ser editada: [Carregar imagens](../guide/loading#fetch) explica por quê, e o que fazer.
 
 Passar o mesmo valor de novo não recarrega a imagem, então o resultado de uma edição continua na tela. Chame [`reload()`](./methods#reload) para trazer de volta a original. Um valor novo durante a edição descarta as alterações.
 
@@ -70,14 +70,14 @@ As ferramentas que a barra de edição oferece. Elas mantêm a ordem desta tabel
 - **Tipo:** `boolean`
 - **Padrão:** `true`
 
-Se a roda do mouse dá zoom na imagem. Desative quando o visualizador estiver numa página longa, para que a roda role a página.
+Se a roda do mouse dá zoom na imagem. Desative quando o visualizador estiver numa página longa, para que a roda role a página. A pinça num trackpad também deixa de dar zoom na imagem, porque o navegador a trata como a roda.
 
 ### `download`
 
 - **Tipo:** `boolean`
 - **Padrão:** `false`
 
-Se a barra de ferramentas tem um botão que salva a imagem na tela: o resultado do último Aplicar, ou então a imagem original. O botão fica oculto durante a edição. O evento [`download`](./events#download) permite salvar o arquivo de outro jeito.
+Se a barra de ferramentas tem um botão que salva a imagem na tela: o resultado do último Aplicar, ou então a imagem original. O botão fica oculto durante a edição. O evento [`download`](./events#download) permite salvar o arquivo de outro jeito. Antes do primeiro Aplicar, um `src` de outra origem abre no navegador em vez de ser salvo: [Salvar o resultado](../guide/saving#download) explica o que fazer.
 
 ### `labels`
 
@@ -123,11 +123,11 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 ### `output`
 
 - **Tipo:** [`PaperPicOutput`](./types#paperpicoutput)
-- **Padrão:** o formato da imagem original
+- **Padrão:** o formato da imagem original, ou PNG
 
 O formato da imagem editada. `type` é `'image/jpeg'`, `'image/png'` ou `'image/webp'`, e `quality` vai de 0 a 1 para JPEG e WebP, com `0.92` como padrão.
 
-Sem `type`, uma imagem limpa sai em PNG, porque o JPEG estragaria as bordas nítidas dela, e qualquer outra imagem mantém o formato da original. Um formato que o navegador não consegue codificar resulta em PNG.
+Sem `type`, uma imagem limpa sai em PNG, porque o JPEG estragaria as bordas nítidas dela. Qualquer outra imagem mantém o formato da original quando é JPEG, PNG ou WebP, que o PaperPic tira da extensão da URL ou do tipo do `File` ou do `Blob`. Senão, o resultado é PNG, como quando o navegador não consegue codificar o formato.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ O lado mais longo da imagem editada, em pixels. Um resultado maior é reduzido.
 - **Tipo:** `string`
 - **Padrão:** o nome da imagem original
 
-O nome do arquivo salvo. A extensão segue o formato da imagem, então um `receipt.jpg` limpo é salvo como `receipt.png`. Quando a original não tem nome, como um `Blob`, o arquivo se chama `image`.
+O nome do arquivo salvo. Escreva-o sem extensão: o PaperPic adiciona a do formato, então um `receipt.jpg` limpo é salvo como `receipt.png`. Quando a original não tem nome, como um `Blob`, o arquivo se chama `image`. Antes do primeiro Aplicar, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
 
 ## Ferramentas
 
@@ -150,7 +150,7 @@ O nome do arquivo salvo. A extensão segue o formato da imagem, então um `recei
 - **Tipo:** `number`
 - **Padrão:** estimadas
 
-As proporções reais do documento, como largura dividida pela altura, por exemplo `210 / 297` para uma folha A4. Endireitar dá essas proporções ao resultado. Sem elas, ele as estima a partir da foto.
+As proporções reais do documento, como largura dividida pela altura, por exemplo `210 / 297` para uma folha A4. Endireitar dá essas proporções ao resultado. Sem elas, ele as estima a partir da foto. Recortar não as usa: o retângulo dele fica livre.
 
 ### `softness`
 

@@ -22,7 +22,7 @@ pic.setOptions({ editable: false })
 - **Tipo:** [`PaperPicSource`](./types#paperpicsource)
 - **Valore predefinito:** nessuno
 
-L’immagine da mostrare: un URL della stessa origine, oppure un `File` o un `Blob` allegato nel client.
+L’immagine da mostrare: un URL, oppure un `File` o un `Blob`. Un’immagine da un’altra origine si vede, ma non si può modificare: [Caricare le immagini](../guide/loading#fetch) spiega perché, e cosa fare.
 
 Passare di nuovo lo stesso valore non ricarica l’immagine, quindi il risultato di una modifica resta visibile. Chiama [`reload()`](./methods#reload) per riavere l’originale. Un valore nuovo durante la modifica scarta i cambiamenti.
 
@@ -70,14 +70,14 @@ Gli strumenti che offre la barra di modifica. Mantengono l’ordine di questa ta
 - **Tipo:** `boolean`
 - **Valore predefinito:** `true`
 
-Se la rotellina zooma l’immagine. Disattivala quando il visualizzatore sta in una pagina lunga, così la rotellina scorre la pagina.
+Se la rotellina zooma l’immagine. Disattivala quando il visualizzatore sta in una pagina lunga, così la rotellina scorre la pagina. Anche un pizzico su un trackpad smette di zoomare l’immagine, perché il browser lo tratta come la rotellina.
 
 ### `download`
 
 - **Tipo:** `boolean`
 - **Valore predefinito:** `false`
 
-Se la barra degli strumenti ha un pulsante che salva l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale. Il pulsante è nascosto durante la modifica. L’evento [`download`](./events#download) ti permette di salvare il file in un altro modo.
+Se la barra degli strumenti ha un pulsante che salva l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale. Il pulsante è nascosto durante la modifica. L’evento [`download`](./events#download) ti permette di salvare il file in un altro modo. Prima del primo Applica, uno `src` da un’altra origine si apre nel browser invece di salvarsi: [Salvare il risultato](../guide/saving#download) spiega cosa fare.
 
 ### `labels`
 
@@ -123,11 +123,11 @@ Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
 ### `output`
 
 - **Tipo:** [`PaperPicOutput`](./types#paperpicoutput)
-- **Valore predefinito:** il formato dell’immagine originale
+- **Valore predefinito:** il formato dell’immagine originale, o PNG
 
 Il formato dell’immagine modificata. `type` è `'image/jpeg'`, `'image/png'` o `'image/webp'`, e `quality` va da 0 a 1 per JPEG e WebP, con `0.92` come valore predefinito.
 
-Senza `type`, un’immagine pulita esce in PNG, perché il JPEG ne rovinerebbe i bordi netti, e ogni altra immagine mantiene il formato dell’originale. Un formato che il browser non sa codificare dà PNG.
+Senza `type`, un’immagine pulita esce in PNG, perché il JPEG ne rovinerebbe i bordi netti. Ogni altra immagine mantiene il formato dell’originale quando è JPEG, PNG o WebP, che PaperPic ricava dall’estensione dell’URL o dal tipo del `File` o del `Blob`. Altrimenti il risultato è PNG, come quando il browser non sa codificare il formato.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ Il lato più lungo dell’immagine modificata, in pixel. Un risultato più grand
 - **Tipo:** `string`
 - **Valore predefinito:** il nome dell’immagine originale
 
-Il nome del file salvato. La sua estensione segue il formato dell’immagine, quindi un `receipt.jpg` pulito si salva come `receipt.png`. Se l’originale non ha un nome, come un `Blob`, il file si chiama `image`.
+Il nome del file salvato. Scrivilo senza estensione: PaperPic aggiunge quella del formato, quindi un `receipt.jpg` pulito si salva come `receipt.png`. Se l’originale non ha un nome, come un `Blob`, il file si chiama `image`. Prima del primo Applica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
 
 ## Strumenti
 
@@ -150,7 +150,7 @@ Il nome del file salvato. La sua estensione segue il formato dell’immagine, qu
 - **Tipo:** `number`
 - **Valore predefinito:** stimate
 
-Le proporzioni reali del documento, come larghezza divisa per altezza, ad esempio `210 / 297` per un foglio A4. Raddrizza dà al suo risultato queste proporzioni. Senza di esse, le stima dalla foto.
+Le proporzioni reali del documento, come larghezza divisa per altezza, ad esempio `210 / 297` per un foglio A4. Raddrizza dà al suo risultato queste proporzioni. Senza di esse, le stima dalla foto. Ritaglia non le usa: il suo rettangolo resta libero.
 
 ### `softness`
 

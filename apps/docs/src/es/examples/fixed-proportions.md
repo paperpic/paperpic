@@ -116,5 +116,6 @@ export function Form() {
 
 - Enderezar guarda las proporciones cuando el usuario pulsa Hecho, así que elige el tipo antes de enderezar. Cambiarlo después solo afecta al siguiente enderezado.
 - Para un documento en horizontal, invierte los números, como en `297 / 210`.
+- Las proporciones se aplican a la página tal como se ve en pantalla. Si la foto está de lado, gírala con Girar a la izquierda antes de usar Enderezar, o una hoja en vertical saldrá aplastada.
 - Deja `aspectRatio` sin definir para documentos sin tamaño fijo, como los tiques, y Enderezar los estima.
 - [Enderezar](../guide/tools/straighten) explica la estimación y qué hacer con las esquinas que se salen de la foto.

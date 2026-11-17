@@ -19,6 +19,7 @@ Das Ereignis [`change`](../reference/events#change) liefert nach jeder Aktion de
   <button type="button" data-action="edit">Bearbeiten</button>
   <button type="button" data-action="straighten">Begradigen</button>
   <button type="button" data-action="confirmTool">Fertig</button>
+  <button type="button" data-action="cancelTool">Dieses Werkzeug abbrechen</button>
   <button type="button" data-action="undo">Rückgängig</button>
   <button type="button" data-action="cancel">Abbrechen</button>
   <button type="button" data-action="apply">Übernehmen</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         Fertig
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        Dieses Werkzeug abbrechen
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Bearbeiten</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>Fertig</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>Fertig</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>Dieses Werkzeug abbrechen</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## Hinweise
 
-- Mit `toolbar: false` ist auch die eingebaute Bearbeitungsleiste ausgeblendet, Zuschneiden und Begradigen zeigen also ihre Griffe, aber keine Schaltfläche Fertig. Deine Oberfläche bestätigt sie mit [`confirmTool()`](../reference/methods#confirmtool), wie `Enter`.
+- Mit `toolbar: false` ist auch die eingebaute Bearbeitungsleiste ausgeblendet, Zuschneiden und Begradigen zeigen also ihre Griffe, aber keine Schaltfläche Fertig. Deine Oberfläche bestätigt sie mit [`confirmTool()`](../reference/methods#confirmtool), wie `Enter`. Um sie ohne ihre Änderungen zu schließen, rufe [`cancelTool()`](../reference/methods#canceltool) auf, wie es `Esc` tut.
 - Eigene Regler können [`setThreshold()`](../reference/methods#setthreshold) und [`setAdjustments()`](../reference/methods#setadjustments) direkt aufrufen, was bei jedem Aufruf eine Änderung hinzufügt. Für eine einzige Änderung über ein ganzes Ziehen öffne das Werkzeug vorher mit [`openTool()`](../reference/methods#opentool): Dieselben Methoden ändern dann, was es zeigt, und `confirmTool()` behält es.
 - [`cancel()`](../reference/methods#cancel) fragt nicht nach, bevor es die Änderungen verwirft. Frag selbst nach, wenn es welche gibt, etwa wenn `canApply` wahr ist.
 - Die Tastenkürzel funktionieren weiter, wenn der Viewer den Fokus hat. Siehe [Barrierefreiheit](../guide/accessibility).

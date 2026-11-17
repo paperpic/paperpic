@@ -116,5 +116,6 @@ export function Form() {
 
 - Endireitar guarda as proporções quando o usuário toca em Concluído, então escolha o tipo antes de endireitar. Mudá-lo depois só afeta o próximo endireitamento.
 - Para um documento em paisagem, inverta os números, como `297 / 210`.
+- As proporções valem para a página como ela aparece na tela. Se a foto estiver de lado, gire-a com Girar para a esquerda antes de usar Endireitar, ou uma folha em retrato sai achatada.
 - Deixe `aspectRatio` sem valor para documentos sem tamanho fixo, como recibos, e Endireitar as estima.
 - [Endireitar](../guide/tools/straighten) explica a estimativa e o que fazer com cantos que ficam fora da foto.

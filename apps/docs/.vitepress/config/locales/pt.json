@@ -50,7 +50,9 @@
     "examples/upload": "Enviar para um servidor",
     "examples/read-only": "Visualizador somente leitura",
     "examples/custom-toolbar": "Barra de ferramentas própria",
-    "examples/fixed-proportions": "Proporções fixas"
+    "examples/fixed-proportions": "Proporções fixas",
+    "examples/dialog": "Editar num diálogo",
+    "examples/form": "Enviar com um formulário"
   },
   "search": {
     "button": {

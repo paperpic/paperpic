@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         文書の写真
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## 補足
 
 - `capture="environment"` はスマートフォンでは背面カメラを開き、パソコンでは無視されます。付けないと、スマートフォンはカメラと写真ライブラリの両方を選べるので、ユーザーが手元に持っている文書に向いています。
+- 選択のたびに input を空にすると、同じ写真をもう一度選べます。たとえば適用のあとでやり直す場合です。
 - 写真が読み込まれるとビューアーは編集モードになるので、ユーザーはすぐに傾き補正やクリーンアップを使えます。先に写真を見せたいときは `load` のリスナーを外してください。
 - `phase: 'load'` で、Safari 以外での HEIC の写真のようにブラウザーが開けないファイルと、編集の失敗を区別できます。形式の一覧は[画像の読み込み](../guide/loading#formats)にあります。
 - 適用が `upload` を呼ぶまで、写真はブラウザーの中にあります。PaperPic が自分から何かを送ることはありません。

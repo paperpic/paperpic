@@ -17,7 +17,7 @@ Begradige zuerst den Kassenbon, dann bereinige ihn.
 2. Ziehe die Skala. Höhere Empfindlichkeit macht mehr Pixel dunkel, was blassen oder abgenutzten Text zurückholt. Niedrigere Empfindlichkeit ergibt eine sauberere Seite, ohne das, was von der Rückseite durchscheint.
 3. Drücke Fertig, um es als eine Änderung zu behalten, oder Dieses Werkzeug abbrechen, um das Bild zu lassen, wie es war.
 
-Um ein Bereinigen auszuschalten, das schon eine Änderung ist, öffne es erneut: Ein Schalter neben der Skala schaltet es aus, und die Änderungen danach bleiben. Rückgängig würde zuerst diese Änderungen entfernen.
+Um ein Bereinigen auszuschalten, das schon eine Änderung ist, öffne es erneut: Ein Schalter neben der Skala schaltet es aus, und die Änderungen danach bleiben. Rückgängig würde dagegen auch diese Änderungen entfernen.
 
 Bereinigen läuft immer nach den übrigen Änderungen. Zuschneiden zeigt das Bild bereinigt, so wie es wird. Begradigen zeigt es ohne Bereinigen, weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind.
 

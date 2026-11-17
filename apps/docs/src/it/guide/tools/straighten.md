@@ -57,7 +57,7 @@ const pic = new PaperPic(container, {
 | Foglio US Letter, verticale   | `8.5 / 11`     |
 | Carta d’identità, orizzontale | `85.6 / 53.98` |
 
-Per un foglio in orizzontale, inverti i numeri, come `297 / 210`.
+Per un foglio in orizzontale, inverti i numeri, come `297 / 210`. Le proporzioni valgono per la pagina come appare sullo schermo, quindi, se la foto è di lato, ruotala con [Ruota a sinistra](./rotate-and-flip) prima di raddrizzarla.
 
 ## Angoli tagliati dalla foto
 

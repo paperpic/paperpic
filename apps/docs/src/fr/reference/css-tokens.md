@@ -87,7 +87,7 @@ Les boutons montrent leur état avec des attributs ARIA, que vous pouvez aussi s
 | Attribut                 | État                                                                                                             |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------- |
 | `[aria-disabled='true']` | Le bouton ne peut pas agir pour l’instant. Il garde le focus du clavier, donc il n’est pas `disabled`            |
-| `[aria-pressed='true']`  | L’ajustement en vigueur, Ajuster à la largeur ou Ajuster à la hauteur, ou le choix d’Ajuster que la règle change |
+| `[aria-pressed='true']`  | L’adaptation en vigueur, Ajuster à la largeur ou Ajuster à la hauteur, ou le choix d’Ajuster que la règle change |
 
 Le survol et ces états se peignent avec `box-shadow`, que les réinitialisations globales des boutons laissent intact. Pour les modifier, écrasez aussi `box-shadow`.
 

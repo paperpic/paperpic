@@ -61,7 +61,7 @@ interface PaperPicOptions {
 type PaperPicSource = string | Blob
 ```
 
-[`src`](./options#src) 中的图片：同源的 URL，或在客户端附加的 `File` 或 `Blob`。[`PaperPicDownload`](#paperpicdownload) 的 `source` 也是这个类型。
+[`src`](./options#src) 中的图片：URL，或 `File`、`Blob`。[`PaperPicDownload`](#paperpicdownload) 的 `source` 也是这个类型。
 
 ### `PaperPicOutput`
 

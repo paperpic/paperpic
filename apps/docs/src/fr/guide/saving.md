@@ -21,19 +21,19 @@ Appliquer calcule le résultat et émet [`apply`](../reference/events#apply) ave
 == JavaScript
 
 ```ts
-pic.on('apply', result => upload(result))
+pic.on('apply', ({ blob, type }) => upload(blob, type))
 ```
 
 == Vue
 
 ```vue
-<PaperPic src="/receipt.jpg" @apply="upload" />
+<PaperPic src="/receipt.jpg" @apply="({ blob, type }) => upload(blob, type)" />
 ```
 
 == React
 
 ```tsx
-<PaperPic src="/receipt.jpg" onApply={upload} />
+<PaperPic src="/receipt.jpg" onApply={({ blob, type }) => upload(blob, type)} />
 ```
 
 :::
@@ -45,7 +45,7 @@ Après Appliquer, le résultat est l’image affichée, l’historique est vide,
 Envoyez le `blob` comme fichier dans un formulaire :
 
 ```ts
-async function upload({ blob, type }: { blob: Blob, type: string }) {
+async function upload(blob: Blob, type: string) {
   const body = new FormData()
   body.append('image', blob, `document.${type.split('/')[1]}`)
   const response = await fetch('/api/documents', { method: 'POST', body })
@@ -57,9 +57,9 @@ async function upload({ blob, type }: { blob: Blob, type: string }) {
 
 La visionneuse affiche le résultat aussitôt, qu’il atteigne votre serveur ou non, donc prévenez l’utilisateur si l’envoi échoue.
 
-## Format et qualité
+## Format et qualité {#format}
 
-Sans option, le résultat garde le format de l’image source : JPEG, PNG ou WebP. Un document nettoyé est en PNG, car le JPEG ajouterait des artefacts autour de ses bords nets. Toute autre source, comme un GIF, donne du PNG.
+Sans option, le résultat garde le format de l’image source quand c’est du JPEG, du PNG ou du WebP. PaperPic le lit dans l’extension de l’URL, comme `.jpg`, ou dans le type du `File` ou du `Blob`. Un document nettoyé est en PNG, car le JPEG ajouterait des artefacts autour de ses bords nets. Toute autre source donne aussi du PNG, comme un GIF, ou une URL sans extension comme `/api/documents/42`, même si elle sert un JPEG.
 
 [`output`](../reference/options#output) choisit le format, et sa qualité de 0 à 1 pour JPEG et WebP, avec 0.92 par défaut :
 
@@ -127,7 +127,7 @@ const pic = new PaperPic(container, {
 
 :::
 
-L’aperçu pendant la modification fait toujours environ 2 mégapixels, donc `maxOutputSize` ne change que le résultat.
+L’aperçu pendant la modification fait au plus environ 2 mégapixels, donc `maxOutputSize` ne change que le résultat.
 
 Safari sur iOS limite un canvas à environ 16 mégapixels, et les iPhone récents prennent des photos de 24 mégapixels ou plus, donc Appliquer peut échouer en pleine résolution. Si vos utilisateurs modifient des photos depuis un iPhone, définissez `maxOutputSize`. 3000 pixels gardent les documents lisibles et restent bien en dessous de la limite. [Appliquer échoue avec une grande photo](./troubleshooting#too-large) montre l’erreur.
 
@@ -135,11 +135,13 @@ Safari sur iOS limite un canvas à environ 16 mégapixels, et les iPhone récent
 
 Le résultat d’Appliquer ne contient aucune métadonnée. PaperPic dessine l’image sur un canvas, donc les données EXIF de la photo, comme la position GPS, l’appareil et la date, disparaissent. Le bouton de téléchargement enregistre l’image source telle quelle jusqu’au premier Appliquer, avec ses métadonnées.
 
-## Le bouton de téléchargement
+## Le bouton de téléchargement {#download}
 
 [`download: true`](../reference/options#download) ajoute un bouton à la fin de la barre d’outils qui enregistre l’image affichée : le résultat du dernier Appliquer, ou sinon l’image source telle quelle. Il est masqué pendant la modification, car les changements ne sont pas encore appliqués. [`download()`](../reference/methods#download) fait de même depuis le code, avec ou sans le bouton. Le menu contextuel du navigateur ne s’ouvre pas sur la visionneuse, donc ce bouton est le moyen d’en enregistrer l’image.
 
-Le fichier garde le nom de la source et prend l’extension de son format, donc un `receipt.jpg` nettoyé s’enregistre en `receipt.png`. [`filename`](../reference/options#filename) choisit un autre nom. Sans aucun nom, comme pour un `Blob`, le fichier s’appelle `image`.
+Le fichier garde le nom de la source et prend l’extension de son format, donc un `receipt.jpg` nettoyé s’enregistre en `receipt.png`. [`filename`](../reference/options#filename) choisit un autre nom. Sans aucun nom, comme pour un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
+
+Avec un `src` d’une autre origine, les navigateurs n’enregistrent pas le fichier avant le premier Appliquer : ils ouvrent l’image à la place, et l’utilisateur quitte votre page. Passez l’image en `Blob`, comme le montre [Charger des images](./loading#fetch), ou enregistrez-la vous-même dans l’événement `download`.
 
 ### L’enregistrer autrement
 

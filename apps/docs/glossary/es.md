@@ -11,8 +11,10 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | dot, the mark of a tool in use                | punto                 |
 | edit bar, the bar at the bottom while editing | barra de edición      |
 | edit mode                                     | modo de edición       |
+| edit, one change in the edit mode             | cambio                |
 | editor                                        | editor                |
 | event                                         | evento                |
+| fit, of the image in the viewer               | encajar, encaje       |
 | guide                                         | Guía                  |
 | keyboard shortcut                             | atajo de teclado      |
 | label, a text of the interface                | texto de la interfaz  |
@@ -30,6 +32,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | ruler, the slider of Adjust and Clean up      | regla                 |
 | sample image                                  | imagen de ejemplo     |
 | screen reader                                 | lector de pantalla    |
+| scroll, the page                              | hacer scroll          |
 | softness, of the cleaned edges                | suavidad              |
 | source image                                  | imagen original       |
 | state                                         | estado                |
@@ -41,3 +44,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | viewer                                        | visor                 |
 | wrapper, such as `@paperpic/vue`              | wrapper               |
 | zoom                                          | hacer zoom            |
+
+The prose says encajar for a fit, so that it never mixes with Ajustar, the tool of brightness and contrast. The buttons keep their labels, Ajustar al ancho and Ajustar al alto.
+
+Tool names take the feminine, as la herramienta does: "con Recortar abierta", "mientras Limpiar está activada".

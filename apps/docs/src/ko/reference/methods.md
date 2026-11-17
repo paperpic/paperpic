@@ -5,7 +5,10 @@ description: PaperPic 클래스의 모든 메서드. 확대/축소, 맞추기, �
 
 # 메서드
 
-메서드로 코드에서 뷰어를 제어합니다. 예를 들어 [`toolbar: false`](./options#toolbar)로 두고 직접 만든 버튼에서 호출합니다. Vue와 React에서는 컴포넌트의 ref로 뷰어를 얻습니다. [Vue](./vue)와 [React](./react)를 참고하세요.
+메서드로 코드에서 뷰어를 제어합니다. 예를 들어 [`toolbar: false`](./options#toolbar)로 두고 직접 만든 버튼에서 호출합니다. core에서는 직접 만든 `PaperPic`에서 호출합니다. Vue에서는 컴포넌트가 뷰어를 `instance`로 노출하고, React에서는 `ref`가 받습니다. 둘 다 컴포넌트가 마운트되기 전에는 `null`입니다.
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    확대
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>확대</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+Vue와 React에서는 컴포넌트가 뷰어를 만들고 없애며, 옵션은 props로, 이벤트는 자체 이벤트로 받습니다. 그래서 그곳에서는 [`new PaperPic()`](#new-paperpic), [`destroy()`](#destroy), [`setOptions()`](#setoptions), [`on()`](#on)을 호출하지 마세요.
 
 ## 생성과 제거
 
@@ -29,6 +77,8 @@ class PaperPic {
 
 `container`가 요소가 아니면 `TypeError`를 던집니다. 요소가 만들어진 뒤에, 예를 들어 마운트할 때 뷰어를 만드세요. 옵션이 범위를 벗어나면 `RangeError`를 던집니다.
 
+core 전용: Vue와 React 컴포넌트는 마운트될 때 뷰어를 만듭니다.
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 뷰어를 제거하고 worker와 이미지 메모리 등 가진 것을 모두 해제합니다. 두 번 호출해도 문제없습니다.
+
+core 전용: Vue와 React 컴포넌트는 언마운트될 때 이를 호출합니다. 컴포넌트의 뷰어에 호출하면 컴포넌트가 비게 됩니다.
 
 ## 옵션과 상태
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 전달한 옵션을 바꾸고 나머지는 그대로 둡니다. `undefined`를 전달하면 기본값으로 돌아갑니다. `change`를 발생시키지 않으므로 양방향 바인딩이 반복되지 않습니다. 옵션이 범위를 벗어나면 `RangeError`를 던지고, 어떤 옵션도 바꾸지 않습니다.
 
+Vue와 React에서는 대신 props를 바꾸세요. 다음에 prop이 하나라도 바뀌면 모든 옵션을 다시 보내므로, `setOptions()`로 한 변경은 되돌려집니다.
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-확대/축소 배율, 모드, 적용할 변경 사항이 있는지 등 뷰어가 보여 주는 내용을 반환합니다. 각 필드는 [상태](./state)에서 설명합니다.
+확대/축소 배율, 모드, 적용할 변경 사항이 있는지 등 뷰어의 현재 상태를 반환합니다. 묻지 않고 변경될 때마다 알고 싶다면 [`change`](./events#change)를 수신하세요. 각 필드와 둘을 함께 쓰는 방법은 [상태](./state)에서 설명합니다.
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+Vue와 React에서는 대신 컴포넌트의 이벤트(`@apply`나 `onApply` 등)를 수신하세요.
 
 ## 보기
 
@@ -121,7 +177,7 @@ function edit(): void
 function rotate(direction?: 1 | -1): void
 ```
 
-이미지를 90도 회전합니다. 기본값인 `1`은 시계 방향, `-1`은 시계 반대 방향입니다. 편집 중에는 [`apply()`](#apply)로 확정되는 변경입니다. 읽기 전용 뷰어에서는 표시만 바꿉니다. 그 밖의 경우에는 아무것도 하지 않습니다.
+이미지를 90도 회전합니다. 기본값인 `1`은 시계 방향, `-1`은 시계 반대 방향입니다. 편집 중에는 [`apply()`](#apply)로 확정되는 변경을 더하며, 도구가 열려 있거나 적용 중이면 아무것도 하지 않습니다. 읽기 전용 뷰어에서는 표시만 바꿉니다. 그 밖의 경우에는 아무것도 하지 않습니다.
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-패널이 있는 도구를 엽니다. `'crop'`은 자르기, `'perspective'`는 기울기 보정, `'adjust'`는 조정, `'threshold'`는 정리이며, 정리는 열리면서 켜집니다. 도구는 [`confirmTool()`](#confirmtool)이나 [`cancelTool()`](#canceltool)까지 열려 있고, 그동안 다른 변경, 실행 취소, 다시 실행, 적용은 아무것도 하지 않습니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있을 때의 조정, 미리보기를 준비하는 동안의 자르기와 기울기 보정에서는 아무것도 하지 않습니다.
+패널이 있는 도구를 엽니다. 자르기(`'crop'`), 기울기 보정(`'perspective'`), 조정(`'adjust'`), 정리(`'threshold'`) 중 하나이며, 정리는 열리면서 켜집니다. 도구는 [`confirmTool()`](#confirmtool)이나 [`cancelTool()`](#canceltool)까지 열려 있습니다. 그동안에는 다른 변경을 시작할 수 없고, 실행 취소, 다시 실행, 적용은 아무것도 하지 않습니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있을 때의 조정, 미리보기를 준비하는 동안의 자르기와 기울기 보정에서는 아무것도 하지 않습니다.
 
 ### `confirmTool()`
 
@@ -171,7 +227,7 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음에 적용됩니다. 조정이 열려 있는 동안에는 그 패널에 보이는 값을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있으면 아무것도 하지 않습니다. 정리한 문서에는 고유한 색조가 있기 때문입니다.
+밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음에 적용됩니다. 조정이 열려 있는 동안에는 그 패널에 보이는 값을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있으면 아무것도 하지 않습니다. 정리는 각 픽셀을 주변과 비교하므로, 밝기와 대비는 그 결과를 거의 바꾸지 못하기 때문입니다.
 
 값이 -1부터 1 사이가 아니면 `RangeError`를 던집니다.
 
@@ -181,7 +237,7 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 function undo(): void
 ```
 
-마지막 변경을 실행 취소합니다.
+마지막 변경을 실행 취소합니다. 편집 모드가 아니거나, 도구가 열려 있거나, 적용 중이면 아무것도 하지 않습니다.
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ function undo(): void
 function redo(): void
 ```
 
-마지막으로 실행 취소한 변경을 다시 실행합니다.
+마지막으로 실행 취소한 변경을 다시 실행합니다. 편집 모드가 아니거나, 도구가 열려 있거나, 적용 중이면 아무것도 하지 않습니다.
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ function redo(): void
 function apply(): Promise<void>
 ```
 
-변경을 원본 해상도나 [`maxOutputSize`](./options#maxoutputsize)로 적용합니다. 결과가 화면의 이미지가 되고, 기록이 비워지고, 뷰어는 보기 모드로 돌아가며, [`apply`](./events#apply) 이벤트가 결과를 전달합니다. 적용은 중단할 수 없고, 진행 중에는 컨트롤이 잠깁니다.
+변경을 원본 해상도나 [`maxOutputSize`](./options#maxoutputsize)로 적용합니다. 결과가 화면의 이미지가 되고, 기록이 비워지고, 뷰어는 보기 모드로 돌아가며, [`apply`](./events#apply) 이벤트가 결과를 전달합니다. 적용은 중단할 수 없고, 진행 중에는 컨트롤이 잠깁니다. 편집 모드가 아니거나, 도구가 열려 있거나, 적용할 것이 없으면 아무것도 하지 않습니다.
 
-실패하면 [`error`](./events#error) 이벤트가 알리고, 편집은 열린 채로 남습니다.
+실패하면 [`error`](./events#error) 이벤트가 알리고, 편집은 열린 채로 남습니다. Promise는 적용이 끝나면 실패한 경우에도 이행됩니다. `try/catch`로는 잡히지 않으니 `error`를 수신하세요.
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ function apply(): Promise<void>
 function cancel(): void
 ```
 
-변경 사항을 버리고 보기 모드로 돌아갑니다. 묻지 않습니다. 묻는 것은 기본 제공 ‘취소’ 버튼과 `Esc`입니다.
+변경 사항을 버리고 보기 모드로 돌아갑니다. 묻지 않습니다. 묻는 것은 기본 제공 ‘취소’ 버튼과 `Esc`입니다. 적용 중에는 아무것도 하지 않습니다.
 
 ## 이미지
 
@@ -217,7 +273,7 @@ function cancel(): void
 function download(): void
 ```
 
-화면의 이미지를 파일로 저장합니다. 마지막 적용의 결과이고, 없으면 원본 이미지입니다. 버튼만 표시하는 [`download`](./options#download) 옵션이 없어도 동작합니다. [`download`](./events#download) 이벤트가 먼저 발생하며 저장을 막을 수 있습니다. 편집 중에는 변경이 아직 적용되지 않았으므로 아무것도 하지 않습니다.
+화면의 이미지를 파일로 저장합니다. 마지막 적용의 결과이고, 없으면 원본 이미지입니다. 버튼만 표시하는 [`download`](./options#download) 옵션이 없어도 동작합니다. [`download`](./events#download) 이벤트가 먼저 발생하며 저장을 막을 수 있습니다. 편집 중에는 변경이 아직 적용되지 않았으므로 아무것도 하지 않습니다. 첫 적용 전에는 다른 출처의 `src`가 브라우저에서 열립니다. [결과 저장](../guide/saving#download)을 참고하세요.
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ function download(): void
 function reload(): void
 ```
 
-현재 [`src`](./options#src)를 다시 불러옵니다. 적용한 뒤 원본으로 돌아갈 때 씁니다.
+현재 [`src`](./options#src)를 다시 불러옵니다. 적용한 뒤 원본으로 돌아갈 때 씁니다. 편집 중에는 변경을 버립니다. `src`가 없으면 아무것도 하지 않습니다.

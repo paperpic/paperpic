@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-Cinco textos son funciones, porque incluyen un valor. Crea el objeto una sola vez, y no en cada renderizado, para que el visor no lo reciba de nuevo cada vez.
+Cinco textos son funciones, porque incluyen un valor. Una función es nueva cada vez que se crea, y el visor la toma como un cambio, así que crea una sola vez los textos que contienen funciones, y no en cada renderizado.
 
 | Clave                  | Inglés                                       | Uso                                                                                                                          |
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ Cinco textos son funciones, porque incluyen un valor. Crea el objeto una sola ve
 | `adjustmentLevel`      | Brightness +30                               | Función del nombre y del valor de -100 a 100, que se anuncia al mover la regla de Ajustar                                    |
 | `applied`              | Changes applied                              | Se anuncia cuando se aplican los cambios                                                                                     |
 | `apply`                | Apply                                        | El botón que aplica los cambios                                                                                              |
-| `applyError`           | The changes could not be applied             | Se muestra cuando Aplicar falla                                                                                              |
+| `applyError`           | The changes could not be applied             | Se muestra cuando Aplicar falla, o cuando un cambio no se puede mostrar                                                      |
 | `brightness`           | Brightness                                   | La opción de brillo en Ajustar, y el nombre de su regla                                                                      |
 | `cancel`               | Cancel                                       | El botón que sale del modo de edición                                                                                        |
 | `cancelTool`           | Cancel this tool                             | El botón que cierra una herramienta y descarta sus cambios                                                                   |
@@ -46,8 +46,8 @@ Cinco textos son funciones, porque incluyen un valor. Crea el objeto una sola ve
 | `edit`                 | Edit                                         | El botón que empieza la edición                                                                                              |
 | `editBar`              | Editing controls                             | El nombre de la barra de edición, para los lectores de pantalla                                                              |
 | `editing`              | Editing                                      | Se anuncia cuando empieza el modo de edición                                                                                 |
-| `fitHeight`            | Fit to height                                | El botón que ajusta el alto de la imagen                                                                                     |
-| `fitWidth`             | Fit to width                                 | El botón que ajusta el ancho de la imagen                                                                                    |
+| `fitHeight`            | Fit to height                                | El botón que encaja la imagen a lo alto                                                                                      |
+| `fitWidth`             | Fit to width                                 | El botón que encaja la imagen a lo ancho                                                                                     |
 | `flip`                 | Flip                                         | El botón Voltear                                                                                                             |
 | `inUse`                | In use                                       | La descripción de Ajustar o Limpiar mientras su valor está en uso, que muestra un punto                                      |
 | `keepEditing`          | Keep editing                                 | El botón que vuelve a la edición en vez de perder los cambios                                                                |

@@ -9,7 +9,7 @@ PaperPic의 문제는 대부분 이미지가 아니라 설정에서 생깁니다
 
 ## 뷰어가 얇은 띠로 보이거나 보이지 않음 {#no-height}
 
-뷰어는 컨테이너를 채우며, 높이가 없는 컨테이너는 뷰어의 최소 높이로 줄어듭니다. 컨테이너에 `height: 480px` 같은 높이를 주거나, 높이를 정해 주는 flex나 grid 레이아웃에 넣으세요. 두 방법 모두 [스타일](./styling)에 있습니다.
+뷰어는 컨테이너를 채우며, 높이가 없는 컨테이너는 뷰어의 최소 높이인 16rem으로 줄어듭니다. 컨테이너에 `height: 480px` 같은 높이를 주거나, 높이를 정해 주는 flex나 grid 레이아웃에 넣으세요. 두 방법 모두 [스타일](./styling)에 있습니다.
 
 ## 버튼에 스타일이 없고 콘솔에 경고가 나옴 {#no-stylesheet}
 
@@ -38,7 +38,7 @@ worker가 시작되지 않아 편집이 메인 스레드에서 실행되고 있�
 
 ## 큰 사진에서 적용이 실패함 {#too-large}
 
-`error`에 `The browser could not read an image of …`이 나옵니다. 브라우저는 canvas 크기를 제한하며, iOS의 Safari가 가장 엄격합니다. [`maxOutputSize`](../reference/options#maxoutputsize)를 예를 들어 3000픽셀로 설정하세요. 문서는 충분히 읽힙니다.
+`error`에 `The browser could not read an image of …` 또는 `could not save an image of …`이 나옵니다. 브라우저는 canvas 크기를 제한하며, iOS의 Safari가 가장 엄격합니다. [`maxOutputSize`](../reference/options#maxoutputsize)를 예를 들어 3000픽셀로 설정하세요. 문서는 충분히 읽힙니다.
 
 ## 휠이 페이지를 스크롤하지 않고 이미지를 확대함 {#wheel}
 

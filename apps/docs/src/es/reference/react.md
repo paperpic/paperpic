@@ -50,9 +50,11 @@ Un objeto o array con el mismo contenido que antes, como `tools={['crop', 'rotat
 
 [Eventos](./events) describe cada uno. Una función nueva no vuelve a crear el visor, así que las funciones en línea están bien. Un cambio de props nunca llama a `onChange`.
 
-## Métodos
+`onChange` recibe el [estado](./state) del visor, no un evento del DOM. [Estado](./state#in-step) muestra cómo guardarlo con `useState`, `onChange`, `onLoad` y `onError`.
 
-`ref` recibe el visor, de tipo [`PaperPicInstance`](./types#paperpicinstance), con todos los [métodos](./methods). Es `null` hasta que el componente se monta:
+## Métodos {#methods}
+
+`ref` recibe el visor, de tipo [`PaperPicInstance`](./types#paperpicinstance), con los [métodos](./methods), como `zoomIn()` o `apply()`. Es `null` hasta que el componente se monta:
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -73,7 +75,9 @@ export function Viewer({ src }: { src: string }) {
 }
 ```
 
-Pasar el mismo `src` otra vez no recarga la imagen, así que conserva el resultado de una edición. Para recuperar la original, llama a `picRef.current.reload()`.
+El componente crea el visor al montarse y lo destruye al desmontarse, así que no llames a `destroy()`. Cambia las props en vez de llamar a `setOptions()`, que el siguiente cambio de una prop desharía, y usa las props de callback en vez de `on()`.
+
+Pasar el mismo `src` otra vez no recarga la imagen, así que conserva el resultado de Aplicar. Para recuperar la original, llama a `picRef.current.reload()`.
 
 ## Tipos {#types}
 

@@ -96,7 +96,7 @@ Der Core lädt auch von einem CDN, das die Dateien des Pakets unverändert ausli
 </script>
 ```
 
-Browser starten einen Worker nur vom Ursprung der Seite, also läuft die Bearbeitung dort im Hauptthread: Sie funktioniert, aber große Fotos lassen die Seite beim Übernehmen kurz einfrieren. Liefere die Dateien von deinem eigenen Ursprung aus oder nutze einen Bundler, um den Worker zu behalten. Die Komponenten für Vue und React brauchen einen Bundler.
+Browser starten einen Worker nur vom Ursprung der Seite, also läuft die Bearbeitung mit dem Paket auf einem CDN im Hauptthread: Sie funktioniert, aber große Fotos lassen die Seite beim Übernehmen kurz einfrieren. Liefere die Dateien von deinem eigenen Ursprung aus oder nutze einen Bundler, um den Worker zu behalten. Die Komponenten für Vue und React brauchen einen Bundler.
 
 ## Ein Bild anzeigen
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` nimmt eine URL vom selben Ursprung wie deine Seite, oder eine `File`, die der Nutzer auswählt, etwa über ein `<input type="file">`. `alt` beschreibt das Bild für Screenreader. [Bilder laden](./loading) erklärt Bilder von anderen Ursprüngen, Formate und Ladefehler.
+`src` nimmt eine URL vom selben Ursprung wie deine Seite, eine `File`, die der Nutzer auswählt, etwa über ein `<input type="file">`, oder einen `Blob`. `alt` beschreibt das Bild für Screenreader. [Bilder laden](./loading) erklärt Bilder von anderen Ursprüngen, Formate und Ladefehler.
 
 ## Das bearbeitete Bild erhalten
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-Der `blob` behält das Format des Quellbilds, oder ist PNG, wenn der Nutzer das Dokument bereinigt hat. Die Option [`output`](../reference/options#output) ändert es.
+Der `blob` behält das Format des Quellbilds, wenn es JPEG, PNG oder WebP ist, und ist PNG, wenn der Nutzer das Dokument bereinigt hat. [Format und Qualität](./saving#format) erklärt, wie PaperPic das Format erkennt, und die Option [`output`](../reference/options#output) ändert es.
 
 ## Den Viewer entfernen {#destroy}
 

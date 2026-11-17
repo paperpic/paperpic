@@ -15,7 +15,7 @@ La foto de un documento suele necesitar unos cuantos arreglos antes de merecer l
 
 Nada cambia la imagen hasta Aplicar. Antes, los cambios son una lista de la que el visor muestra una vista previa.
 
-La barra de edición tiene dos filas de la misma altura en todos sus estados: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Hecho, a la derecha. Así la imagen no se mueve al abrir una herramienta. En un visor de al menos 28rem de ancho, la barra cabe en una fila. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
+En un visor estrecho, la barra de edición tiene dos filas: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Hecho, a la derecha. Desde 28rem de ancho, todo cabe en una fila. En los dos casos, la barra mantiene su altura al abrir una herramienta, así que la imagen no se mueve. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
 
 ## Herramientas
 
@@ -70,23 +70,23 @@ export function Receipt() {
 
 :::
 
-Recortar, Enderezar, Ajustar y Limpiar abren un panel en lugar de las herramientas, así que el resto de la barra de edición espera mientras una de ellas está abierta. Hecho, o `Enter`, añade a los cambios lo que eligió la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
+Recortar, Enderezar, Ajustar y Limpiar abren un panel en lugar de las herramientas. Mientras una de ellas está abierta, las demás herramientas, Deshacer, Rehacer y Aplicar esperan. Hecho, o `Enter`, añade a los cambios lo que eligió la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
 
-Dentro de un panel, la imagen se ve como quedará el resultado, con Limpiar incluido. Enderezar es la excepción: muestra la foto sin Limpiar, para que los bordes del papel se sigan viendo.
+Dentro de un panel, la imagen se ve como quedará el resultado, con Limpiar incluida. Enderezar es la excepción: muestra la foto sin Limpiar, para que los bordes del papel se sigan viendo.
 
 ## Vista previa y Aplicar
 
-Durante la edición, el visor muestra los cambios sobre una copia de la imagen de unos 2 megapíxeles, para que siga siendo rápido con fotos grandes. Con mucho zoom, la vista previa se ve más suave que el resultado. Aplicar calcula todos los cambios a resolución completa, o a [`maxOutputSize`](../reference/options#maxoutputsize), en un Web Worker.
+Durante la edición, el visor muestra los cambios sobre una copia de la imagen de unos 2 megapíxeles, para que siga siendo rápido con fotos grandes. Con mucho zoom, la vista previa se ve menos nítida que el resultado. Aplicar calcula todos los cambios a resolución completa, o a [`maxOutputSize`](../reference/options#maxoutputsize), en un Web Worker.
 
 Aplicar no se puede interrumpir. Bloquea los controles y muestra un mensaje mientras dura. Después, el resultado sustituye a la imagen en pantalla, el historial se vacía y el visor vuelve al modo de visualización. Si Aplicar falla, la edición sigue abierta para que el usuario pueda volver a intentarlo.
 
 ## Qué recibe tu código
 
-| Evento   | Cuándo                                                                           |
-| -------- | -------------------------------------------------------------------------------- |
-| `apply`  | Cuando el resultado está listo, con `{ blob, width, height, type }`              |
-| `change` | Después de cada acción del usuario que cambia el [estado](../reference/state)    |
-| `error`  | Cuando la imagen no se puede cargar, o una edición no se puede mostrar o aplicar |
+| Evento   | Cuándo                                                                         |
+| -------- | ------------------------------------------------------------------------------ |
+| `apply`  | Cuando el resultado está listo, con `{ blob, width, height, type }`            |
+| `change` | Cada vez que el usuario o un método cambian el [estado](../reference/state)    |
+| `error`  | Cuando la imagen no se puede cargar, o un cambio no se puede mostrar o aplicar |
 
 :::tabs key:framework
 == JavaScript
@@ -121,7 +121,7 @@ pic.on('error', ({ error }) => console.error(error))
 ## Qué descarta los cambios
 
 - Cancelar, después de que el usuario confirme, o [`cancel()`](../reference/methods#cancel), que no pregunta.
-- Un `src` nuevo durante la edición.
+- Un `src` nuevo, o [`reload()`](../reference/methods#reload), durante la edición.
 - Un cambio de `editable` durante la edición.
 
 Después de Aplicar, pasar el mismo `src` otra vez no hace nada, así que el resultado sigue en pantalla. [`reload()`](../reference/methods#reload) recupera la imagen original.

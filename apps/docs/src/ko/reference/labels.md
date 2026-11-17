@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-레이블 5개는 텍스트에 값이 들어가므로 함수입니다. 객체는 렌더링할 때마다가 아니라 한 번만 만드세요. 그래야 뷰어가 매번 다시 받지 않습니다.
+레이블 5개는 텍스트에 값이 들어가므로 함수입니다. 함수는 만들 때마다 새것이 되고 뷰어는 새 함수를 변경으로 받아들이므로, 함수가 든 레이블은 렌더링할 때마다가 아니라 한 번만 만드세요.
 
 | 키                     | 영어                                         | 용도                                                                            |
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ const pic = new PaperPic(container, {
 | `adjustmentLevel`      | Brightness +30                               | 이름과 -100부터 100까지 값의 함수. ‘조정’ 눈금자를 움직인 뒤 읽어 줌            |
 | `applied`              | Changes applied                              | 변경이 적용되면 읽어 줌                                                         |
 | `apply`                | Apply                                        | 변경을 적용하는 버튼                                                            |
-| `applyError`           | The changes could not be applied             | 적용에 실패하면 표시                                                            |
+| `applyError`           | The changes could not be applied             | 적용에 실패하거나 변경을 표시할 수 없으면 표시                                  |
 | `brightness`           | Brightness                                   | ‘조정’에서 밝기를 고르는 버튼과 그 눈금자의 이름                                |
 | `cancel`               | Cancel                                       | 편집 모드를 끝내는 버튼                                                         |
 | `cancelTool`           | Cancel this tool                             | 도구를 닫고 변경을 버리는 버튼                                                  |

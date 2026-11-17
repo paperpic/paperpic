@@ -61,7 +61,7 @@ interface PaperPicOptions {
 type PaperPicSource = string | Blob
 ```
 
-Изображение в [`src`](./options#src): URL с того же источника или `File` либо `Blob`, прикреплённый на клиенте. У `source` в [`PaperPicDownload`](#paperpicdownload) тот же тип.
+Изображение в [`src`](./options#src): URL, `File` или `Blob`. У `source` в [`PaperPicDownload`](#paperpicdownload) тот же тип.
 
 ### `PaperPicOutput`
 

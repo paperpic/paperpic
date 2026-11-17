@@ -71,7 +71,7 @@ const labels: Partial<PaperPicLabels> = {
 
 ## Der Sprache deiner App folgen
 
-Wenn deine App die Sprache wechselt, übergib neue Beschriftungen, und der Viewer aktualisiert seine Texte sofort. Erstelle das Objekt nur, wenn sich die Sprache ändert, damit der Viewer nicht bei jedem Rendern ein neues bekommt:
+Wenn deine App die Sprache wechselt, übergib die Beschriftungen der neuen Sprache, und der Viewer aktualisiert seine Texte sofort. Halte ein Objekt mit Beschriftungen pro Sprache bereit, einmal erstellt, damit jedes Rendern dasselbe Objekt übergibt:
 
 :::tabs key:framework
 == JavaScript
@@ -103,11 +103,9 @@ const labels = computed(() => translations[locale.value])
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
-import { useMemo } from 'react'
 
 export function Receipt({ language }: { language: string }) {
-  const labels = useMemo(() => translations[language], [language])
-  return <PaperPic src="/receipt.jpg" labels={labels} />
+  return <PaperPic src="/receipt.jpg" labels={translations[language]} />
 }
 ```
 

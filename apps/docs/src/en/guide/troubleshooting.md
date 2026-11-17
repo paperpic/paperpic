@@ -9,7 +9,7 @@ Most problems with PaperPic come from its setup, and not from the image. Find wh
 
 ## The viewer is a thin strip, or does not show {#no-height}
 
-The viewer fills its container, and a container without a height collapses to the minimum height of the viewer. Give the container a height, such as `height: 480px`, or a place in a flex or grid layout that gives it one. [Styling](./styling) shows both.
+The viewer fills its container, and a container without a height collapses to the minimum height of the viewer, 16rem. Give the container a height, such as `height: 480px`, or a place in a flex or grid layout that gives it one. [Styling](./styling) shows both.
 
 ## The buttons have no style, and the console warns {#no-stylesheet}
 
@@ -38,7 +38,7 @@ The network panel of the browser shows whether the page requested the worker fil
 
 ## Apply fails with a large photo {#too-large}
 
-The `error` says `The browser could not read an image of …`. Browsers limit the size of a canvas, and Safari on iOS the most. Set [`maxOutputSize`](../reference/options#maxoutputsize), such as to 3000 pixels, which keeps documents readable.
+The `error` says `The browser could not read an image of …`, or `could not save an image of …`. Browsers limit the size of a canvas, and Safari on iOS the most. Set [`maxOutputSize`](../reference/options#maxoutputsize), such as to 3000 pixels, which keeps documents readable.
 
 ## The wheel zooms the image instead of scrolling the page {#wheel}
 

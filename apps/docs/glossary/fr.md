@@ -13,6 +13,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | edit mode                                     | mode d’édition        |
 | editor                                        | éditeur               |
 | event                                         | événement             |
+| fit, of the image in the viewer               | adapter, adaptation   |
 | guide                                         | Guide                 |
 | keyboard shortcut                             | raccourci clavier     |
 | label, a text of the interface                | libellé               |
@@ -41,3 +42,5 @@ Use these words in the French docs, so that each idea has one name on every page
 | viewer                                        | visionneuse           |
 | wrapper, such as `@paperpic/vue`              | wrapper               |
 | zoom                                          | zoomer                |
+
+The prose says adapter for a fit, so that it never mixes with Ajuster, the tool of brightness and contrast. The buttons keep their labels, Ajuster à la largeur and Ajuster à la hauteur.

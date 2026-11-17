@@ -50,9 +50,11 @@ Un objet ou un tableau au même contenu qu’avant, comme `tools={['crop', 'rota
 
 [Événements](./events) décrit chacun d’eux. Une nouvelle fonction ne recrée pas la visionneuse, donc les fonctions en ligne conviennent. Un changement de props n’appelle jamais `onChange`.
 
-## Méthodes
+`onChange` reçoit l’[état](./state) de la visionneuse, pas un événement du DOM. [État](./state#in-step) montre comment le garder avec `useState`, `onChange`, `onLoad` et `onError`.
 
-`ref` reçoit la visionneuse, de type [`PaperPicInstance`](./types#paperpicinstance), avec toutes les [méthodes](./methods). Elle vaut `null` jusqu’au montage du composant :
+## Méthodes {#methods}
+
+`ref` reçoit la visionneuse, de type [`PaperPicInstance`](./types#paperpicinstance), avec les [méthodes](./methods), comme `zoomIn()` ou `apply()`. Elle vaut `null` jusqu’au montage du composant :
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+Le composant crée la visionneuse à son montage et la détruit à son démontage, donc n’appelez pas `destroy()`. Changez les props au lieu d’appeler `setOptions()`, que le prochain changement d’une prop annulerait, et utilisez les props de callback au lieu d’`on()`.
 
 Passer le même `src` une nouvelle fois ne recharge pas l’image, donc elle garde le résultat d’une modification. Pour retrouver l’original, appelez `picRef.current.reload()`.
 

@@ -5,7 +5,10 @@ description: Alle Methoden der Klasse PaperPic, um den Viewer aus deinem Code zu
 
 # Methoden
 
-Die Methoden steuern den Viewer aus deinem Code, etwa über eigene Schaltflächen mit [`toolbar: false`](./options#toolbar). In Vue und React gibt dir die Ref der Komponente den Viewer: siehe [Vue](./vue) und [React](./react).
+Die Methoden steuern den Viewer aus deinem Code, etwa über eigene Schaltflächen mit [`toolbar: false`](./options#toolbar). Mit dem Core rufst du sie auf dem `PaperPic` auf, das du erstellst. In Vue stellt die Komponente den Viewer als `instance` bereit, und in React bekommt ihn `ref`. Beide sind `null`, bis die Komponente gemountet ist:
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    Vergrößern
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>Vergrößern</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+In Vue und React erstellt und zerstört die Komponente den Viewer und nimmt die Optionen als Props und die Ereignisse als eigene Ereignisse. Rufe dort also nicht [`new PaperPic()`](#new-paperpic), [`destroy()`](#destroy), [`setOptions()`](#setoptions) oder [`on()`](#on) auf.
 
 ## Erstellen und entfernen
 
@@ -29,6 +77,8 @@ Erstellt den Viewer in `container`, den er ausfüllt. Gib dem Container eine Hö
 
 Wirft einen `TypeError`, wenn `container` kein Element ist. Erstelle den Viewer, sobald das Element existiert, etwa beim Mounten. Wirft einen `RangeError`, wenn eine Option außerhalb ihres Bereichs liegt.
 
+Nur mit dem Core: Die Komponenten für Vue und React erstellen den Viewer, wenn sie gemountet werden.
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 Entfernt den Viewer und gibt alles frei, was er hält, etwa seinen Worker und den Speicher seiner Bilder. Ein zweiter Aufruf ist unbedenklich.
+
+Nur mit dem Core: Die Komponenten für Vue und React rufen es auf, wenn sie entfernt werden. Auf ihrem Viewer aufgerufen, ließe es die Komponente leer.
 
 ## Optionen und Zustand
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 Ändert die Optionen, die du übergibst, und behält die übrigen. `undefined` setzt eine Option auf ihren Standardwert zurück. Es löst nie `change` aus, damit Zwei-Wege-Bindungen keine Schleife bilden. Wirft einen `RangeError`, wenn eine Option außerhalb ihres Bereichs liegt, und ändert dann keine Option.
 
+In Vue und React änderst du stattdessen die Props. Die nächste Änderung einer Prop sendet alle Optionen erneut und würde eine Änderung mit `setOptions()` rückgängig machen.
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-Gibt zurück, was der Viewer zeigt, etwa den Zoom, den Modus und ob es Änderungen zum Übernehmen gibt. [Zustand](./state) beschreibt jedes Feld.
+Gibt den aktuellen Zustand des Viewers zurück, etwa den Zoom, den Modus und ob es Änderungen zum Übernehmen gibt. Um von jeder Änderung zu erfahren, ohne zu fragen, höre auf [`change`](./events#change). [Zustand](./state) beschreibt jedes Feld und wie beide zusammenspielen.
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+In Vue und React hörst du stattdessen auf die Ereignisse der Komponente, etwa `@apply` oder `onApply`.
 
 ## Ansicht
 
@@ -121,7 +177,7 @@ Startet die Bearbeitung. Tut nichts, wenn das Bild nicht bereit ist oder [`edita
 function rotate(direction?: 1 | -1): void
 ```
 
-Dreht das Bild um eine Vierteldrehung: im Uhrzeigersinn mit `1`, dem Standard, und gegen den Uhrzeigersinn mit `-1`. Während der Bearbeitung ist es eine Änderung, die [`apply()`](#apply) dauerhaft macht. In einem schreibgeschützten Viewer ändert es nur die Anzeige. Sonst tut es nichts.
+Dreht das Bild um eine Vierteldrehung: im Uhrzeigersinn mit `1`, dem Standard, und gegen den Uhrzeigersinn mit `-1`. Während der Bearbeitung fügt es eine Änderung hinzu, die [`apply()`](#apply) dauerhaft macht, und tut nichts, solange ein Werkzeug offen ist oder Übernehmen läuft. In einem schreibgeschützten Viewer ändert es nur die Anzeige. Sonst tut es nichts.
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vi
 function openTool(id: ToolId): void
 ```
 
-Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden mit `'crop'`, Begradigen mit `'perspective'`, Anpassen mit `'adjust'` oder Bereinigen mit `'threshold'`, das sich beim Öffnen einschaltet. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool), und solange tun die übrigen Änderungen, Rückgängig, Wiederholen und Übernehmen nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen bei eingeschaltetem Bereinigen und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
+Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'threshold'`), das sich beim Öffnen einschaltet. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen bei eingeschaltetem Bereinigen und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
 
 ### `confirmTool()`
 
@@ -171,7 +227,7 @@ Wirft einen `RangeError`, wenn `sensitivity` nicht zwischen 0 und 1 liegt.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder wenn Bereinigen eingeschaltet ist, weil ein bereinigtes Dokument eigene Töne hat.
+Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder wenn Bereinigen eingeschaltet ist: Bereinigen vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern.
 
 Wirft einen `RangeError`, wenn ein Wert nicht zwischen -1 und 1 liegt.
 
@@ -181,7 +237,7 @@ Wirft einen `RangeError`, wenn ein Wert nicht zwischen -1 und 1 liegt.
 function undo(): void
 ```
 
-Macht die letzte Änderung rückgängig.
+Macht die letzte Änderung rückgängig. Tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder solange Übernehmen läuft.
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ Macht die letzte Änderung rückgängig.
 function redo(): void
 ```
 
-Stellt die zuletzt rückgängig gemachte Änderung wieder her.
+Stellt die zuletzt rückgängig gemachte Änderung wieder her. Tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder solange Übernehmen läuft.
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ Stellt die zuletzt rückgängig gemachte Änderung wieder her.
 function apply(): Promise<void>
 ```
 
-Übernimmt die Änderungen in voller Auflösung oder in [`maxOutputSize`](./options#maxoutputsize). Das Ergebnis wird zum angezeigten Bild, der Verlauf leert sich, der Viewer kehrt in den Ansichtsmodus zurück, und das Ereignis [`apply`](./events#apply) liefert das Ergebnis. Übernehmen lässt sich nicht unterbrechen und sperrt die Bedienelemente, solange es läuft.
+Übernimmt die Änderungen in voller Auflösung oder in [`maxOutputSize`](./options#maxoutputsize). Das Ergebnis wird zum angezeigten Bild, der Verlauf leert sich, der Viewer kehrt in den Ansichtsmodus zurück, und das Ereignis [`apply`](./events#apply) liefert das Ergebnis. Übernehmen lässt sich nicht unterbrechen und sperrt die Bedienelemente, solange es läuft. Es tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder wenn es nichts zu übernehmen gibt.
 
-Schlägt es fehl, meldet das Ereignis [`error`](./events#error) den Fehler, und die Bearbeitung bleibt offen.
+Schlägt es fehl, meldet das Ereignis [`error`](./events#error) den Fehler, und die Bearbeitung bleibt offen. Das Promise wird aufgelöst, wenn Übernehmen endet, auch bei einem Fehler: Höre also auf `error`, statt ihn mit `try/catch` abzufangen.
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ Schlägt es fehl, meldet das Ereignis [`error`](./events#error) den Fehler, und 
 function cancel(): void
 ```
 
-Verwirft die Änderungen und kehrt in den Ansichtsmodus zurück. Es fragt nicht nach: Das tun die eingebaute Schaltfläche Abbrechen und `Esc`.
+Verwirft die Änderungen und kehrt in den Ansichtsmodus zurück. Es fragt nicht nach: Das tun die eingebaute Schaltfläche Abbrechen und `Esc`. Tut nichts, solange Übernehmen läuft.
 
 ## Bild
 
@@ -217,7 +273,7 @@ Verwirft die Änderungen und kehrt in den Ansichtsmodus zurück. Es fragt nicht 
 function download(): void
 ```
 
-Speichert das angezeigte Bild als Datei: das Ergebnis des letzten Übernehmens, sonst das Quellbild. Es funktioniert ohne die Option [`download`](./options#download), die nur eine Schaltfläche zeigt. Das Ereignis [`download`](./events#download) kommt vorher und kann es verhindern. Tut nichts während der Bearbeitung, weil die Änderungen noch nicht übernommen sind.
+Speichert das angezeigte Bild als Datei: das Ergebnis des letzten Übernehmens, sonst das Quellbild. Es funktioniert ohne die Option [`download`](./options#download), die nur eine Schaltfläche zeigt. Das Ereignis [`download`](./events#download) kommt vorher und kann es verhindern. Tut nichts während der Bearbeitung, weil die Änderungen noch nicht übernommen sind. Vor dem ersten Übernehmen öffnet sich ein `src` von einem anderen Ursprung stattdessen im Browser: siehe [Das Ergebnis speichern](../guide/saving#download).
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ Speichert das angezeigte Bild als Datei: das Ergebnis des letzten Übernehmens, 
 function reload(): void
 ```
 
-Lädt den aktuellen [`src`](./options#src) erneut, was nach einem Übernehmen das Original zurückholt.
+Lädt den aktuellen [`src`](./options#src) erneut, was nach einem Übernehmen das Original zurückholt. Während der Bearbeitung verwirft es die Änderungen. Ohne `src` tut es nichts.

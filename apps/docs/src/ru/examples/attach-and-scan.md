@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         Фото документа
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## Примечания
 
 - `capture="environment"` открывает заднюю камеру на телефонах, а компьютеры его игнорируют. Без него телефоны предлагают и камеру, и галерею, что подходит для документов, которые у пользователя уже есть.
+- Если очищать поле после каждого выбора, пользователь сможет снова выбрать то же фото, например чтобы начать заново после применения.
 - Как только фото загружено, просмотрщик открывает режим редактирования, и пользователь сразу переходит к инструментам «Выровнять» или «Очистить». Уберите слушатель `load`, чтобы сначала показать фото.
 - `phase: 'load'` отличает файл, который браузер не может открыть, например фото HEIC вне Safari, от неудачной правки. Форматы перечислены в разделе [Загрузка изображений](../guide/loading#formats).
 - Фото остаётся в браузере, пока кнопка «Применить» не вызовет `upload`. PaperPic сам ничего не отправляет.

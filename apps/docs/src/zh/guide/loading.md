@@ -19,7 +19,7 @@ PaperPic 显示你在 `src` 中传入的图片。本页介绍图片可以从哪�
 
 ## 来自其他源或需要登录的图片 {#fetch}
 
-PaperPic 需要读取图片的像素才能编辑。对于来自其他源的图片，浏览器只有在它带有 CORS 时才允许这样做，而 PaperPic 不会请求 CORS。这样的图片可以显示，但第一次编辑会失败，并触发一个说明原因的 [`error`](../reference/events#error)。
+PaperPic 需要读取图片的像素才能编辑。对于来自其他源的图片，浏览器只有在它带有 CORS 时才允许这样做，而 PaperPic 不会请求 CORS。这样的图片可以显示，但无法编辑：一旦某项修改需要它的像素，或在应用时，就会触发一个说明原因的 [`error`](../reference/events#error)。
 
 请自己获取图片，并把 `Blob` 作为 `src` 传入。这也适用于需要登录的图片，因为你的请求会带上用户的 cookie：
 
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+每次加载 `src` 都会触发 `load`，使用 [`reload()`](../reference/methods#reload) 时也会，但应用之后不会：结果通过 [`apply`](../reference/events#apply) 事件送达。
+
 [`getState()`](../reference/state) 的 `status` 随时给出同样的答案：`'empty'`、`'loading'`、`'ready'` 或 `'error'`。
 
 ## 更换或重新加载图片
 
 - **新的 `src`** 会加载新图片。如果用户正在编辑，会丢弃这些编辑。
 - **相同的 `src`** 不会有任何作用，因此应用的结果会继续显示。
-- **[`reload()`](../reference/methods#reload)** 会重新加载当前的 `src`，在应用之后可以恢复原图。
+- **[`reload()`](../reference/methods#reload)** 会重新加载当前的 `src`，在应用之后可以恢复原图。编辑时调用它也会放弃修改。

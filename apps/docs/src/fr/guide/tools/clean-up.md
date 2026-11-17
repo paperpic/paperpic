@@ -17,7 +17,7 @@ Redressez d’abord le ticket, puis nettoyez-le.
 2. Faites glisser la règle. Une sensibilité plus haute fonce plus de pixels, ce qui récupère le texte pâle ou usé. Une sensibilité plus basse donne une page plus propre, sans ce qui transparaît du verso.
 3. Appuyez sur Terminé pour le garder comme un seul changement, ou sur Annuler cet outil pour laisser l’image telle qu’elle était.
 
-Pour désactiver un Nettoyer qui est déjà un changement, rouvrez-le : un interrupteur à côté de la règle le désactive, et les changements qui ont suivi restent. Annuler la dernière action retirerait d’abord ces changements.
+Pour désactiver un Nettoyer qui est déjà un changement, rouvrez-le : un interrupteur à côté de la règle le désactive, et les changements qui ont suivi restent. Annuler la dernière action, en revanche, retirerait aussi ces changements.
 
 Nettoyer s’applique toujours après les autres changements. Recadrer montre l’image nettoyée, telle qu’elle sera. Redresser la montre sans Nettoyer, car les bords du papier sont difficiles à trouver sur une page nettoyée.
 

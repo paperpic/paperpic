@@ -7,7 +7,7 @@ description: Un esempio completo che nasconde la barra degli strumenti integrata
 
 Quando i controlli del visualizzatore devono accordarsi con il resto della tua interfaccia, nascondi quelli integrati con `toolbar: false` e chiama i [metodi](../reference/methods) da pulsanti tuoi. Questo esempio offre lo zoom, Raddrizza, Annulla l’ultima azione e Applica, e attiva ogni pulsante solo quando può agire.
 
-L’evento [`change`](../reference/events#change) porta lo [stato](../reference/state) dopo ogni azione, comprese quelle avviate dai tuoi pulsanti. `load` ed `error` segnalano l’arrivo dell’immagine o il fallimento di Applica.
+L’evento [`change`](../reference/events#change) invia lo [stato](../reference/state) dopo ogni azione, comprese quelle avviate dai tuoi pulsanti. `load` ed `error` segnalano l’arrivo dell’immagine o il fallimento di Applica.
 
 :::tabs key:framework
 == JavaScript
@@ -19,6 +19,7 @@ L’evento [`change`](../reference/events#change) porta lo [stato](../reference/
   <button type="button" data-action="edit">Modifica</button>
   <button type="button" data-action="straighten">Raddrizza</button>
   <button type="button" data-action="confirmTool">Fatto</button>
+  <button type="button" data-action="cancelTool">Annulla questo strumento</button>
   <button type="button" data-action="undo">Annulla l’ultima azione</button>
   <button type="button" data-action="cancel">Annulla</button>
   <button type="button" data-action="apply">Applica</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         Fatto
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        Annulla questo strumento
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Modifica</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>Fatto</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>Fatto</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>Annulla questo strumento</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## Note
 
-- Con `toolbar: false` si nasconde anche la barra di modifica integrata, quindi Ritaglia e Raddrizza mostrano le loro maniglie ma non il pulsante Fatto. La tua interfaccia li conferma con [`confirmTool()`](../reference/methods#confirmtool), come `Invio`.
+- Con `toolbar: false` si nasconde anche la barra di modifica integrata, quindi Ritaglia e Raddrizza mostrano le loro maniglie ma non il pulsante Fatto. La tua interfaccia li conferma con [`confirmTool()`](../reference/methods#confirmtool), come `Invio`. Per chiuderli senza i loro cambiamenti, chiama [`cancelTool()`](../reference/methods#canceltool), come fa `Esc`.
 - I tuoi cursori possono chiamare direttamente [`setThreshold()`](../reference/methods#setthreshold) e [`setAdjustments()`](../reference/methods#setadjustments), il che aggiunge un cambiamento a ogni chiamata. Per lasciare un solo cambiamento per tutto un trascinamento, apri prima lo strumento con [`openTool()`](../reference/methods#opentool): gli stessi metodi cambiano allora ciò che mostra, e `confirmTool()` lo conserva.
 - [`cancel()`](../reference/methods#cancel) non chiede conferma prima di scartare le modifiche. Chiedila tu all’utente se ce ne sono, ad esempio quando `canApply` è vero.
 - Le scorciatoie da tastiera continuano a funzionare con il focus sul visualizzatore. Vedi [Accessibilità](../guide/accessibility).

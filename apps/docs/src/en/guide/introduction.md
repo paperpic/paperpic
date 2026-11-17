@@ -9,7 +9,7 @@ Photos of documents arrive skewed, shadowed and full of background. PaperPic sho
 
 ## What it does
 
-- **View.** Zoom with the buttons, the wheel or a pinch, pan, and fit the whole image, its width or its height. A read-only viewer can also rotate the image.
+- **View.** Zoom with the buttons, the wheel, a pinch, a double click or the keyboard, pan, and fit the whole image, its width or its height. A read-only viewer can also rotate the image.
 - **Edit.** In the edit mode, the user can crop, straighten a photo taken at an angle, rotate, flip, adjust the brightness and the contrast, and clean up the document into black and white. Every edit can be undone until the user applies the changes.
 - **Deliver.** Apply computes the result at full resolution and hands it to your code as a `Blob`. A download button can also save it.
 

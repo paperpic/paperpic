@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-有五个标签是函数，因为它们的文本包含一个值。请只创建一次对象，而不是每次渲染都创建，这样查看器就不会每次都重新接收它。
+有五个标签是函数，因为它们的文本包含一个值。函数每次创建都是新的，查看器会把新函数当作一次变化，所以包含函数的标签请只创建一次，而不是每次渲染都创建。
 
 | 键                     | 英文                                         | 用途                                                       |
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------- |
@@ -26,7 +26,7 @@ const pic = new PaperPic(container, {
 | `adjustmentLevel`      | Brightness +30                               | 名称和 -100 到 100 的值的函数，移动“调整”的刻度尺后朗读    |
 | `applied`              | Changes applied                              | 修改应用后朗读                                             |
 | `apply`                | Apply                                        | 应用修改的按钮                                             |
-| `applyError`           | The changes could not be applied             | 应用失败时显示                                             |
+| `applyError`           | The changes could not be applied             | 应用失败或修改无法显示时显示                               |
 | `brightness`           | Brightness                                   | 在“调整”中选择亮度的按钮，以及它的刻度尺的名称             |
 | `cancel`               | Cancel                                       | 退出编辑模式的按钮                                         |
 | `cancelTool`           | Cancel this tool                             | 关闭工具并放弃其修改的按钮                                 |

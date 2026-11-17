@@ -21,19 +21,19 @@ Apply computes the result and fires [`apply`](../reference/events#apply) with:
 == JavaScript
 
 ```ts
-pic.on('apply', result => upload(result))
+pic.on('apply', ({ blob, type }) => upload(blob, type))
 ```
 
 == Vue
 
 ```vue
-<PaperPic src="/receipt.jpg" @apply="upload" />
+<PaperPic src="/receipt.jpg" @apply="({ blob, type }) => upload(blob, type)" />
 ```
 
 == React
 
 ```tsx
-<PaperPic src="/receipt.jpg" onApply={upload} />
+<PaperPic src="/receipt.jpg" onApply={({ blob, type }) => upload(blob, type)} />
 ```
 
 :::
@@ -45,7 +45,7 @@ After Apply, the result is the image on display, the history is empty, and the n
 Send the `blob` as a file in a form:
 
 ```ts
-async function upload({ blob, type }: { blob: Blob, type: string }) {
+async function upload(blob: Blob, type: string) {
   const body = new FormData()
   body.append('image', blob, `document.${type.split('/')[1]}`)
   const response = await fetch('/api/documents', { method: 'POST', body })
@@ -57,9 +57,9 @@ async function upload({ blob, type }: { blob: Blob, type: string }) {
 
 The viewer shows the result at once, whether or not it reaches your server, so tell the user when the upload fails.
 
-## Format and quality
+## Format and quality {#format}
 
-Without options, the result keeps the format of the source: JPEG, PNG or WebP. A cleaned up document is PNG, because JPEG would add artifacts around its sharp edges. Any other source, such as a GIF, gives PNG.
+Without options, the result keeps the format of the source when it is JPEG, PNG or WebP. PaperPic reads it from the extension of the URL, such as `.jpg`, or from the type of the `File` or `Blob`. A cleaned up document is PNG, because JPEG would add artifacts around its sharp edges. Any other source gives PNG too, such as a GIF, or a URL without an extension like `/api/documents/42`, even when it serves a JPEG.
 
 [`output`](../reference/options#output) chooses the format, and its quality from 0 to 1 for JPEG and WebP, with 0.92 by default:
 
@@ -127,7 +127,7 @@ const pic = new PaperPic(container, {
 
 :::
 
-The preview while editing is always about 2 megapixels, so `maxOutputSize` changes only the result.
+The preview while editing has at most about 2 megapixels, so `maxOutputSize` changes only the result.
 
 Safari on iOS limits a canvas to about 16 megapixels, and recent iPhones take photos of 24 megapixels or more, so Apply can fail at full resolution. If your users edit photos from an iPhone, set `maxOutputSize`. 3000 pixels keeps documents readable and stays well below the limit. [Apply fails with a large photo](./troubleshooting#too-large) shows the error.
 
@@ -135,11 +135,13 @@ Safari on iOS limits a canvas to about 16 megapixels, and recent iPhones take ph
 
 The result of Apply carries no metadata. PaperPic draws the image on a canvas, so the EXIF data of the photo, such as the GPS position, the camera and the date, is gone. The download button saves the source as it is until the first Apply, with its metadata.
 
-## The download button
+## The download button {#download}
 
 [`download: true`](../reference/options#download) adds a button at the end of the toolbar that saves the image on display: the result of the last Apply, or else the source as it is. It is hidden while editing, because the edits are not applied yet. [`download()`](../reference/methods#download) does the same from code, with or without the button. The browser's context menu does not open over the viewer, so this button is the way to save the image from it.
 
-The file keeps the name of the source and takes the extension of its format, so a cleaned up `receipt.jpg` saves as `receipt.png`. [`filename`](../reference/options#filename) sets another name. Without any name, such as for a `Blob`, the file is called `image`.
+The file keeps the name of the source and takes the extension of its format, so a cleaned up `receipt.jpg` saves as `receipt.png`. [`filename`](../reference/options#filename) sets another name. Without any name, such as for a `Blob`, the file is called `image`. Before the first Apply, a URL without an extension saves without one, because its format is unknown.
+
+With a `src` from another origin, browsers do not save the file before the first Apply: they open the image instead, and the user leaves your page. Pass the image as a `Blob`, as [Loading images](./loading#fetch) shows, or save it yourself in the `download` event.
 
 ### Save it another way
 

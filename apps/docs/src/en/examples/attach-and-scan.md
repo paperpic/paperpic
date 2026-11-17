@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         Photo of the document
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## Notes
 
 - `capture="environment"` opens the back camera on phones, and computers ignore it. Without it, phones offer the camera and the photo library, which suits documents the user already has.
+- Emptying the input after each choice lets the user pick the same photo again, such as to start over after Apply.
 - The viewer opens in the edit mode once the photo loads, so the user goes straight to Straighten or Clean up. Leave out the `load` listener to show the photo first.
 - `phase: 'load'` tells a file the browser cannot open, such as a HEIC photo outside Safari, from a failed edit. [Loading images](../guide/loading#formats) lists the formats.
 - The photo stays in the browser until Apply calls `upload`. PaperPic sends nothing on its own.

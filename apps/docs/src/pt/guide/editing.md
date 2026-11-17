@@ -5,7 +5,7 @@ description: Como funciona o modo de edição do PaperPic, do botão Editar até
 
 # Edição
 
-A foto de um documento costuma precisar de alguns ajustes antes de valer a pena guardá-la. O modo de edição os reúne: o usuário faz as alterações, confere e aplica todas de uma vez. No [playground](../playground) você pode experimentar o modo de edição completo.
+A foto de um documento costuma precisar de alguns retoques antes de valer a pena guardá-la. O modo de edição os reúne: o usuário faz as alterações, confere e aplica todas de uma vez. No [playground](../playground) você pode experimentar o modo de edição completo.
 
 ## O fluxo de edição
 
@@ -15,7 +15,7 @@ A foto de um documento costuma precisar de alguns ajustes antes de valer a pena 
 
 Nada muda a imagem antes do Aplicar. Até lá, as alterações são uma lista que o visualizador mostra em pré-visualização.
 
-A barra de edição tem duas linhas da mesma altura em todos os estados: em cima, as ferramentas ou o painel da ferramenta aberta, e embaixo, Cancelar à esquerda e Aplicar, ou Concluído, à direita. Assim a imagem fica no lugar quando uma ferramenta abre. Num visualizador com pelo menos 28rem de largura, a barra cabe numa linha. Um ponto marca Ajustar e Limpar enquanto o ajuste deles está em uso.
+Num visualizador estreito, a barra de edição tem duas linhas: em cima, as ferramentas ou o painel da ferramenta aberta, e embaixo, Cancelar à esquerda e Aplicar, ou Concluído, à direita. A partir de 28rem de largura, tudo cabe numa linha. Nos dois casos, a barra mantém a altura quando uma ferramenta abre, então a imagem fica no lugar. Um ponto marca Ajustar e Limpar enquanto o valor deles está em uso.
 
 ## Ferramentas
 
@@ -70,7 +70,7 @@ export function Receipt() {
 
 :::
 
-Recortar, Endireitar, Ajustar e Limpar abrem um painel no lugar das ferramentas, então o resto da barra de edição espera enquanto uma delas está aberta. Concluído, ou `Enter`, adiciona às alterações o que a ferramenta escolheu, e Cancelar esta ferramenta, ou `Esc`, o descarta.
+Recortar, Endireitar, Ajustar e Limpar abrem um painel no lugar das ferramentas. Enquanto uma delas está aberta, as outras ferramentas, Desfazer, Refazer e Aplicar esperam. Concluído, ou `Enter`, adiciona às alterações o que a ferramenta escolheu, e Cancelar esta ferramenta, ou `Esc`, o descarta.
 
 Dentro de um painel, a imagem aparece como o resultado vai ficar, com Limpar incluído. Endireitar é a exceção: mostra a foto sem Limpar, para que as bordas do papel continuem visíveis.
 
@@ -85,7 +85,7 @@ Aplicar não pode ser interrompido. Ele bloqueia os controles e mostra uma mensa
 | Evento   | Quando                                                                       |
 | -------- | ---------------------------------------------------------------------------- |
 | `apply`  | Quando o resultado está pronto, com `{ blob, width, height, type }`          |
-| `change` | Depois de cada ação do usuário que muda o [estado](../reference/state)       |
+| `change` | Toda vez que o usuário ou um método muda o [estado](../reference/state)      |
 | `error`  | Quando a imagem não carrega, ou uma edição não pode ser mostrada ou aplicada |
 
 :::tabs key:framework
@@ -121,7 +121,7 @@ pic.on('error', ({ error }) => console.error(error))
 ## O que descarta as alterações
 
 - Cancelar, depois que o usuário confirma, ou [`cancel()`](../reference/methods#cancel), que não pergunta.
-- Um `src` novo durante a edição.
+- Um `src` novo, ou [`reload()`](../reference/methods#reload), durante a edição.
 - Uma mudança de `editable` durante a edição.
 
 Depois do Aplicar, passar o mesmo `src` de novo não faz nada, então o resultado continua na tela. [`reload()`](../reference/methods#reload) traz de volta a original.

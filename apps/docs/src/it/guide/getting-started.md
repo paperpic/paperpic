@@ -96,7 +96,7 @@ Il core si carica anche da una CDN che serve i file del pacchetto così come son
 </script>
 ```
 
-I browser avviano un worker solo dall’origine della pagina, quindi lì la modifica gira sul thread principale: funziona, ma le foto grandi bloccano la pagina per un momento durante Applica. Servi i file dalla tua origine, o usa un bundler, per mantenere il worker. I componenti per Vue e React hanno bisogno di un bundler.
+I browser avviano un worker solo dall’origine della pagina, quindi con il pacchetto su un CDN la modifica gira sul thread principale: funziona, ma le foto grandi bloccano la pagina per un momento durante Applica. Servi i file dalla tua origine, o usa un bundler, per mantenere il worker. I componenti per Vue e React hanno bisogno di un bundler.
 
 ## Mostrare un’immagine
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` accetta un URL della stessa origine della tua pagina, o un `File` scelto dall’utente, ad esempio da un `<input type="file">`. `alt` descrive l’immagine per i lettori di schermo. [Caricare le immagini](./loading) spiega le immagini da altre origini, i formati e gli errori di caricamento.
+`src` accetta un URL della stessa origine della tua pagina, un `File` scelto dall’utente, ad esempio da un `<input type="file">`, o un `Blob`. `alt` descrive l’immagine per i lettori di schermo. [Caricare le immagini](./loading) spiega le immagini da altre origini, i formati e gli errori di caricamento.
 
 ## Ricevere l’immagine modificata
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-Il `blob` mantiene il formato dell’immagine originale, oppure è PNG quando l’utente ha pulito il documento. L’opzione [`output`](../reference/options#output) lo cambia.
+Il `blob` mantiene il formato dell’immagine originale quando è JPEG, PNG o WebP, ed è PNG quando l’utente ha pulito il documento. [Formato e qualità](./saving#format) spiega come PaperPic riconosce il formato, e l’opzione [`output`](../reference/options#output) lo cambia.
 
 ## Rimuovere il visualizzatore {#destroy}
 

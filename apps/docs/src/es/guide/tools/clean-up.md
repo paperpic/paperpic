@@ -17,7 +17,7 @@ Endereza primero el tique y después límpialo.
 2. Arrastra la regla. Más sensibilidad oscurece más píxeles, lo que recupera texto tenue o gastado. Menos sensibilidad da una página más limpia, sin lo que se transparenta desde el reverso.
 3. Pulsa Hecho para conservarlo como un solo cambio, o Cancelar esta herramienta para dejar la imagen como estaba.
 
-Para desactivar un Limpiar que ya es un cambio, ábrelo de nuevo: un interruptor junto a la regla lo desactiva, y los cambios que vinieron después se mantienen. Deshacer quitaría antes esos cambios.
+Para desactivar Limpiar cuando ya es un cambio, vuelve a abrirla: un interruptor junto a la regla la desactiva, y los cambios que vinieron después se mantienen. Deshacer, en cambio, quitaría también esos cambios.
 
 Limpiar siempre se aplica después de los demás cambios. Recortar muestra la imagen limpiada, como quedará. Enderezar la muestra sin Limpiar, porque en una página limpiada cuesta encontrar los bordes del papel.
 

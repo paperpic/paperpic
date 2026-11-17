@@ -1,11 +1,14 @@
 ---
 title: Métodos
-description: Todos los métodos de la clase PaperPic, para controlar el visor desde tu código, como hacer zoom, ajustar, girar, editar, aplicar, descargar y recargar.
+description: Todos los métodos de la clase PaperPic, para controlar el visor desde tu código, como hacer zoom, encajar, girar, editar, aplicar, descargar y recargar.
 ---
 
 # Métodos
 
-Los métodos controlan el visor desde tu código, por ejemplo desde tus propios botones con [`toolbar: false`](./options#toolbar). En Vue y React, la ref del componente te da el visor: consulta [Vue](./vue) y [React](./react).
+Los métodos controlan el visor desde tu código, por ejemplo desde tus propios botones con [`toolbar: false`](./options#toolbar). Con el core, llámalos sobre el `PaperPic` que creas. En Vue, el componente expone el visor como `instance`, y en React lo recibe `ref`. Los dos son `null` hasta que el componente se monta:
+
+:::tabs key:framework
+== JavaScript
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -14,6 +17,51 @@ const pic = new PaperPic(container, { src: '/receipt.jpg' })
 
 pic.zoomIn()
 ```
+
+== Vue
+
+```vue
+<script setup lang="ts">
+import { PaperPic } from '@paperpic/vue'
+import { useTemplateRef } from 'vue'
+
+const pic = useTemplateRef('pic')
+</script>
+
+<template>
+  <button type="button" @click="pic?.instance?.zoomIn()">
+    Acercar
+  </button>
+  <div style="height: 480px">
+    <PaperPic ref="pic" src="/receipt.jpg" />
+  </div>
+</template>
+```
+
+== React
+
+```tsx
+import type { PaperPicInstance } from '@paperpic/react'
+import { PaperPic } from '@paperpic/react'
+import { useRef } from 'react'
+
+export function Receipt() {
+  const picRef = useRef<PaperPicInstance>(null)
+
+  return (
+    <>
+      <button type="button" onClick={() => picRef.current?.zoomIn()}>Acercar</button>
+      <div style={{ height: 480 }}>
+        <PaperPic ref={picRef} src="/receipt.jpg" />
+      </div>
+    </>
+  )
+}
+```
+
+:::
+
+En Vue y React, el componente crea y destruye el visor, y recibe las opciones como props y los eventos como eventos propios. Así que ahí no llames a [`new PaperPic()`](#new-paperpic), [`destroy()`](#destroy), [`setOptions()`](#setoptions) ni [`on()`](#on).
 
 ## Crear y destruir
 
@@ -29,6 +77,8 @@ Crea el visor dentro de `container`, que llena por completo. Dale una altura al 
 
 Lanza un `TypeError` si `container` no es un elemento. Crea el visor cuando el elemento ya exista, por ejemplo al montarlo. Lanza un `RangeError` si una opción está fuera de su rango.
 
+Solo con el core: los componentes de Vue y React crean el visor al montarse.
+
 ### `destroy()`
 
 ```ts
@@ -36,6 +86,8 @@ function destroy(): void
 ```
 
 Quita el visor y libera todo lo que ocupa, como su worker y la memoria de sus imágenes. Llamarlo dos veces no da problemas.
+
+Solo con el core: los componentes de Vue y React lo llaman al desmontarse. Si lo llamas sobre su visor, el componente se queda vacío.
 
 ## Opciones y estado
 
@@ -47,13 +99,15 @@ function setOptions(options: PaperPicOptions): void
 
 Cambia las opciones que pasas y mantiene las demás. `undefined` devuelve una opción a su valor por defecto. Nunca emite `change`, así que los enlaces bidireccionales no entran en bucle. Lanza un `RangeError` si una opción está fuera de su rango, y entonces no cambia ninguna.
 
+En Vue y React, cambia las props en su lugar. El siguiente cambio de cualquier prop vuelve a enviar todas las opciones, y desharía un cambio hecho con `setOptions()`.
+
 ### `getState()`
 
 ```ts
 function getState(): PaperPicState
 ```
 
-Devuelve lo que muestra el visor, como el zoom, el modo y si hay cambios para aplicar. [Estado](./state) describe cada campo.
+Devuelve el estado actual del visor, como el zoom, el modo y si hay cambios para aplicar. Para enterarte de cada cambio sin preguntar, escucha [`change`](./events#change). [Estado](./state) describe cada campo, y cómo se combinan los dos.
 
 ### `on()`
 
@@ -68,6 +122,8 @@ const off = pic.on('apply', ({ blob }) => upload(blob))
 
 off()
 ```
+
+En Vue y React, escucha en su lugar los eventos del componente, como `@apply` u `onApply`.
 
 ## Vista
 
@@ -95,7 +151,7 @@ function zoomTo(zoom: number, point?: ViewPoint): void
 
 Fija el zoom, donde `1` muestra un píxel de la imagen por cada píxel de pantalla. [`point`](./types#viewpoint) se queda en su sitio: va en píxeles CSS desde la esquina superior izquierda del visor, y por defecto es su centro.
 
-El zoom va desde el ajuste de la imagen entera, o `1` si es menor, hasta `8`. Un valor fuera de ese rango se limita.
+El zoom va desde el que encaja la imagen entera, o `1` si es menor, hasta `8`. Un valor fuera de ese rango se limita.
 
 ### `fit()`
 
@@ -103,7 +159,7 @@ El zoom va desde el ajuste de la imagen entera, o `1` si es menor, hasta `8`. Un
 function fit(fit: Fit): void
 ```
 
-Ajusta al visor la imagen entera, su ancho o su alto. `fit` es un [`Fit`](./types#fit): `'image'`, `'width'` o `'height'`.
+Encaja en el visor la imagen entera, su ancho o su alto. `fit` es un [`Fit`](./types#fit): `'image'`, `'width'` o `'height'`.
 
 ## Edición
 
@@ -121,7 +177,7 @@ Empieza a editar. No hace nada si la imagen no está lista o si [`editable`](./o
 function rotate(direction?: 1 | -1): void
 ```
 
-Gira la imagen un cuarto de vuelta: en el sentido de las agujas del reloj con `1`, el valor por defecto, y en el contrario con `-1`. Durante la edición es un cambio que [`apply()`](#apply) hace permanente. En un visor de solo lectura, solo cambia lo que se ve. En otro caso, no hace nada.
+Gira la imagen un cuarto de vuelta: en el sentido de las agujas del reloj con `1`, el valor por defecto, y en el contrario con `-1`. Durante la edición añade un cambio que [`apply()`](#apply) hace permanente, y no hace nada con una herramienta abierta o mientras se aplica. En un visor de solo lectura, solo cambia lo que se ve. En otro caso, no hace nada.
 
 ### `flip()`
 
@@ -137,7 +193,7 @@ Voltea la imagen de izquierda a derecha tal como se ve, así que después de un 
 function openTool(id: ToolId): void
 ```
 
-Abre una herramienta con panel: Recortar, con `'crop'`, Enderezar, con `'perspective'`, Ajustar, con `'adjust'`, o Limpiar, con `'threshold'`, que se activa al abrirse. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool), y mientras tanto los demás cambios, Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar con Limpiar activado, ni para Recortar y Enderezar mientras llega una vista previa.
+Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'threshold'`), que se activa al abrirse. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar con Limpiar activada, ni para Recortar y Enderezar mientras llega una vista previa.
 
 ### `confirmTool()`
 
@@ -171,7 +227,7 @@ Lanza un `RangeError` si `sensitivity` no está entre 0 y 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Cambia el brillo o el contraste, cada uno de -1 a 1, donde 0 deja la imagen como está. Se aplican después de los demás cambios. Con Ajustar abierta, cambia lo que muestra Ajustar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición, con otra herramienta abierta ni con Limpiar activado, porque un documento limpiado tiene sus propios tonos.
+Cambia el brillo o el contraste, cada uno de -1 a 1, donde 0 deja la imagen como está. Se aplican después de los demás cambios. Con Ajustar abierta, cambia lo que muestra Ajustar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición, con otra herramienta abierta ni con Limpiar activada: Limpiar compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado.
 
 Lanza un `RangeError` si un valor no está entre -1 y 1.
 
@@ -181,7 +237,7 @@ Lanza un `RangeError` si un valor no está entre -1 y 1.
 function undo(): void
 ```
 
-Deshace el último cambio.
+Deshace el último cambio. No hace nada fuera del modo de edición, con una herramienta abierta o mientras se aplica.
 
 ### `redo()`
 
@@ -189,7 +245,7 @@ Deshace el último cambio.
 function redo(): void
 ```
 
-Recupera el último cambio deshecho.
+Recupera el último cambio deshecho. No hace nada fuera del modo de edición, con una herramienta abierta o mientras se aplica.
 
 ### `apply()`
 
@@ -197,9 +253,9 @@ Recupera el último cambio deshecho.
 function apply(): Promise<void>
 ```
 
-Aplica los cambios a resolución completa, o a [`maxOutputSize`](./options#maxoutputsize). El resultado pasa a ser la imagen en pantalla, el historial se vacía, el visor vuelve al modo de visualización y el evento [`apply`](./events#apply) lleva el resultado. Aplicar no se puede interrumpir, y bloquea los controles mientras dura.
+Aplica los cambios a resolución completa, o a [`maxOutputSize`](./options#maxoutputsize). El resultado pasa a ser la imagen en pantalla, el historial se vacía, el visor vuelve al modo de visualización y el evento [`apply`](./events#apply) entrega el resultado. Aplicar no se puede interrumpir, y bloquea los controles mientras dura. No hace nada fuera del modo de edición, con una herramienta abierta o cuando no hay nada que aplicar.
 
-Si falla, el evento [`error`](./events#error) lo notifica y la edición sigue abierta.
+Si falla, el evento [`error`](./events#error) lo notifica y la edición sigue abierta. La promesa se resuelve cuando Aplicar termina, también si falla, así que escucha `error`: un `try/catch` no lo detecta.
 
 ### `cancel()`
 
@@ -207,7 +263,7 @@ Si falla, el evento [`error`](./events#error) lo notifica y la edición sigue ab
 function cancel(): void
 ```
 
-Descarta los cambios y vuelve al modo de visualización. No pregunta antes: eso lo hacen el botón Cancelar integrado y `Esc`.
+Descarta los cambios y vuelve al modo de visualización. No pregunta antes: eso lo hacen el botón Cancelar integrado y `Esc`. No hace nada mientras se aplica.
 
 ## Imagen
 
@@ -217,7 +273,7 @@ Descarta los cambios y vuelve al modo de visualización. No pregunta antes: eso 
 function download(): void
 ```
 
-Guarda como archivo la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original. Funciona sin la opción [`download`](./options#download), que solo muestra un botón. El evento [`download`](./events#download) llega antes y puede impedirlo. No hace nada durante la edición, porque los cambios aún no se han aplicado.
+Guarda como archivo la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original. Funciona sin la opción [`download`](./options#download), que solo muestra un botón. El evento [`download`](./events#download) llega antes y puede impedirlo. No hace nada durante la edición, porque los cambios aún no se han aplicado. Antes del primer Aplicar, un `src` de otro origen se abre en el navegador: consulta [Guardar el resultado](../guide/saving#download).
 
 ### `reload()`
 
@@ -225,4 +281,4 @@ Guarda como archivo la imagen en pantalla: el resultado del último Aplicar, o s
 function reload(): void
 ```
 
-Vuelve a cargar el [`src`](./options#src) actual, lo que recupera la imagen original después de Aplicar.
+Vuelve a cargar el [`src`](./options#src) actual, lo que recupera la imagen original después de Aplicar. Durante la edición, descarta los cambios. Sin `src`, no hace nada.

@@ -15,7 +15,7 @@ La foto di un documento di solito ha bisogno di qualche ritocco prima di valere 
 
 Niente cambia l’immagine prima di Applica. Fino ad allora, i cambiamenti sono un elenco di cui il visualizzatore mostra l’anteprima.
 
-La barra di modifica ha due righe della stessa altezza in ogni stato: in alto gli strumenti, o il pannello dello strumento aperto, e in basso Annulla a sinistra e Applica, o Fatto, a destra. Così l’immagine resta al suo posto quando si apre uno strumento. In un visualizzatore largo almeno 28rem, la barra sta su una riga. Un punto segna Regola e Pulisci mentre la loro impostazione è in uso.
+In un visualizzatore stretto, la barra di modifica ha due righe: in alto gli strumenti, o il pannello dello strumento aperto, e in basso Annulla a sinistra e Applica, o Fatto, a destra. Da 28rem di larghezza, tutto sta su una riga. In entrambi i casi la barra mantiene la sua altezza quando si apre uno strumento, così l’immagine resta al suo posto. Un punto segna Regola e Pulisci mentre la loro impostazione è in uso.
 
 ## Strumenti
 
@@ -70,7 +70,7 @@ export function Receipt() {
 
 :::
 
-Ritaglia, Raddrizza, Regola e Pulisci aprono un pannello al posto degli strumenti, quindi il resto della barra di modifica aspetta mentre uno di loro è aperto. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
+Ritaglia, Raddrizza, Regola e Pulisci aprono un pannello al posto degli strumenti. Mentre uno di loro è aperto, gli altri strumenti, Annulla l’ultima azione, Ripeti e Applica aspettano. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
 
 Dentro un pannello, l’immagine appare come sarà il risultato, Pulisci compreso. Raddrizza è l’eccezione: mostra la foto senza Pulisci, così i bordi della carta restano visibili.
 
@@ -85,7 +85,7 @@ Applica non si può interrompere. Blocca i controlli e mostra un messaggio mentr
 | Evento   | Quando                                                                          |
 | -------- | ------------------------------------------------------------------------------- |
 | `apply`  | Quando il risultato è pronto, con `{ blob, width, height, type }`               |
-| `change` | Dopo ogni azione dell’utente che cambia lo [stato](../reference/state)          |
+| `change` | Ogni volta che l’utente o un metodo cambiano lo [stato](../reference/state)     |
 | `error`  | Quando l’immagine non si carica, o una modifica non si può mostrare o applicare |
 
 :::tabs key:framework
@@ -121,7 +121,7 @@ pic.on('error', ({ error }) => console.error(error))
 ## Cosa scarta i cambiamenti
 
 - Annulla, dopo che l’utente conferma, o [`cancel()`](../reference/methods#cancel), che non chiede conferma.
-- Un nuovo `src` durante la modifica.
+- Un nuovo `src`, o [`reload()`](../reference/methods#reload), durante la modifica.
 - Un cambio di `editable` durante la modifica.
 
 Dopo Applica, passare di nuovo lo stesso `src` non fa nulla, quindi il risultato resta visualizzato. [`reload()`](../reference/methods#reload) riporta l’originale.

@@ -18,7 +18,7 @@ const pic = new PaperPic(container, {
 })
 ```
 
-Cinco rótulos são funções, porque o texto deles inclui um valor. Crie o objeto uma vez só, e não a cada renderização, para que o visualizador não o receba de novo toda vez.
+Cinco rótulos são funções, porque o texto deles inclui um valor. Uma função é nova cada vez que é criada, e o visualizador a toma como uma mudança, então crie uma vez só os rótulos que contêm funções, e não a cada renderização.
 
 | Chave                  | Inglês                                       | Uso                                                                                                             |
 | ---------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -26,7 +26,7 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Crie o obje
 | `adjustmentLevel`      | Brightness +30                               | Função do nome e do valor de -100 a 100, anunciada depois de mover a régua de Ajustar                           |
 | `applied`              | Changes applied                              | Anunciado quando as alterações são aplicadas                                                                    |
 | `apply`                | Apply                                        | O botão que aplica as alterações                                                                                |
-| `applyError`           | The changes could not be applied             | Mostrado quando Aplicar falha                                                                                   |
+| `applyError`           | The changes could not be applied             | Mostrado quando Aplicar falha, ou quando uma alteração não pode ser mostrada                                    |
 | `brightness`           | Brightness                                   | A escolha do brilho em Ajustar, e o nome da régua dele                                                          |
 | `cancel`               | Cancel                                       | O botão que sai do modo de edição                                                                               |
 | `cancelTool`           | Cancel this tool                             | O botão que fecha uma ferramenta e descarta as alterações dela                                                  |
@@ -46,10 +46,10 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Crie o obje
 | `edit`                 | Edit                                         | O botão que começa a edição                                                                                     |
 | `editBar`              | Editing controls                             | O nome da barra de edição, para leitores de tela                                                                |
 | `editing`              | Editing                                      | Anunciado quando o modo de edição começa                                                                        |
-| `fitHeight`            | Fit to height                                | O botão que ajusta a altura da imagem                                                                           |
-| `fitWidth`             | Fit to width                                 | O botão que ajusta a largura da imagem                                                                          |
+| `fitHeight`            | Fit to height                                | O botão que encaixa a imagem na altura                                                                          |
+| `fitWidth`             | Fit to width                                 | O botão que encaixa a imagem na largura                                                                         |
 | `flip`                 | Flip                                         | O botão Espelhar                                                                                                |
-| `inUse`                | In use                                       | A descrição de Ajustar ou de Limpar enquanto o ajuste dele está em uso, que um ponto mostra                     |
+| `inUse`                | In use                                       | A descrição de Ajustar ou de Limpar enquanto o valor dele está em uso, que um ponto mostra                      |
 | `keepEditing`          | Keep editing                                 | O botão que volta à edição em vez de perder as alterações                                                       |
 | `loadError`            | The image could not be loaded                | Mostrado quando a imagem não carrega                                                                            |
 | `loading`              | Loading image                                | Mostrado enquanto a imagem carrega                                                                              |

@@ -29,7 +29,7 @@ Le composant remplit son élément parent : donnez une hauteur au parent.
 
 ## Props
 
-Chaque [option](./options) est une prop du même nom, comme `:editable="false"` ou `:aspect-ratio="210 / 297"`. Un changement de prop parvient à la visionneuse par `setOptions()`.
+Chaque [option](./options) est une prop du même nom, comme `:editable="false"` ou `:aspect-ratio="210 / 297"`. Un changement de prop parvient à la visionneuse par `setOptions()`. `class` et `style` vont à l’élément qui contient la visionneuse, qui a aussi la classe `paperpic-host`.
 
 Un objet ou un tableau au même contenu qu’avant, comme `:tools="['crop', 'rotate']"`, ne change rien, donc le template peut les construire. Une fonction est nouvelle à chaque rendu du parent, donc construisez avec `computed` les `labels` qui contiennent des fonctions, comme `zoomLevel`.
 
@@ -43,11 +43,11 @@ Un objet ou un tableau au même contenu qu’avant, comme `:tools="['crop', 'rot
 | `error`    | `{ error, phase }`                             |
 | `load`     | [`Size`](./types#size)                         |
 
-[Événements](./events) décrit chacun d’eux. Un changement de prop n’émet jamais `change`.
+[Événements](./events) décrit chacun d’eux. Un changement de prop n’émet jamais `change`. [État](./state#in-step) montre comment garder l’état dans un `shallowRef` avec `@change`, `@load` et `@error`.
 
-## Méthodes
+## Méthodes {#methods}
 
-Le composant expose la visionneuse sous le nom `instance`, avec toutes les [méthodes](./methods). Elle vaut `null` jusqu’au montage du composant :
+Le composant expose la visionneuse comme `instance`, avec les [méthodes](./methods), comme `zoomIn()` ou `apply()`. Elle vaut `null` jusqu’au montage du composant :
 
 ```vue
 <script setup lang="ts">
@@ -66,6 +66,8 @@ const pic = useTemplateRef('pic')
   </div>
 </template>
 ```
+
+Le composant crée la visionneuse à son montage et la détruit à son démontage, donc n’appelez pas `destroy()`. Changez les props au lieu d’appeler `setOptions()`, que le prochain changement d’une prop annulerait, et utilisez les événements du composant au lieu d’`on()`.
 
 Passer le même `src` une nouvelle fois ne recharge pas l’image, donc elle garde le résultat d’une modification. Pour retrouver l’original, appelez `instance.reload()`.
 

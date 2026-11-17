@@ -19,7 +19,7 @@ Für eine `File` oder einen `Blob` erstellt PaperPic die `blob:`-URL, die es bra
 
 ## Bilder von einem anderen Ursprung oder hinter einer Anmeldung {#fetch}
 
-PaperPic liest die Pixel des Bildes, um es zu bearbeiten. Browser erlauben das bei einem Bild von einem anderen Ursprung nur, wenn es mit CORS ankommt, was PaperPic nicht anfordert. Ein solches Bild wird angezeigt, aber die erste Bearbeitung schlägt mit einem [`error`](../reference/events#error) fehl, der das sagt.
+PaperPic liest die Pixel des Bildes, um es zu bearbeiten. Browser erlauben das bei einem Bild von einem anderen Ursprung nur, wenn es mit CORS ankommt, was PaperPic nicht anfordert. Ein solches Bild wird angezeigt, aber das Bearbeiten schlägt fehl: Ein [`error`](../reference/events#error) meldet es, sobald eine Änderung seine Pixel braucht, oder beim Übernehmen.
 
 Ruf das Bild selbst ab und übergib den `Blob` als `src`. Das deckt auch Bilder hinter einer Anmeldung ab, weil deine Anfrage die Cookies des Nutzers mitschickt:
 
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+`load` wird bei jedem Laden eines `src` ausgelöst, auch mit [`reload()`](../reference/methods#reload), aber nicht nach dem Übernehmen: Das Ergebnis kommt mit dem Ereignis [`apply`](../reference/events#apply).
+
 Der `status` von [`getState()`](../reference/state) gibt jederzeit dieselbe Antwort: `'empty'`, `'loading'`, `'ready'` oder `'error'`.
 
 ## Das Bild wechseln oder neu laden
 
 - **Ein neues `src`** lädt das neue Bild. Während der Nutzer bearbeitet, verwirft es die Bearbeitungen.
 - **Dasselbe `src`** tut nichts, sodass das Ergebnis von Übernehmen angezeigt bleibt.
-- **[`reload()`](../reference/methods#reload)** lädt das aktuelle `src` erneut, was nach Übernehmen das Original zurückbringt.
+- **[`reload()`](../reference/methods#reload)** lädt das aktuelle `src` erneut, was nach Übernehmen das Original zurückbringt. Während der Nutzer bearbeitet, verwirft es auch die Änderungen.

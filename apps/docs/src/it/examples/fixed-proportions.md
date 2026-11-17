@@ -116,5 +116,6 @@ export function Form() {
 
 - Raddrizza memorizza le proporzioni quando l’utente preme Fatto, quindi scegli il tipo prima di raddrizzare. Cambiarlo dopo vale solo per il raddrizzamento successivo.
 - Per un documento in orizzontale, inverti i numeri, come `297 / 210`.
+- Le proporzioni valgono per la pagina come appare sullo schermo. Se la foto è di lato, ruotala con Ruota a sinistra prima di usare Raddrizza, altrimenti un foglio in verticale esce schiacciato.
 - Lascia `aspectRatio` non impostato per i documenti senza dimensione fissa, come gli scontrini, e Raddrizza le stima.
 - [Raddrizza](../guide/tools/straighten) spiega la stima e cosa fare con gli angoli che escono dalla foto.

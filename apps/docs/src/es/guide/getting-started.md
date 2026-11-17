@@ -5,7 +5,7 @@ description: Instala PaperPic para JavaScript, Vue o React, muestra tu primera i
 
 # Primeros pasos
 
-Esta página te lleva desde instalar PaperPic hasta mostrar una imagen y recuperar el resultado editado. Elige tu framework en cualquier ejemplo, y los demás de la web lo siguen.
+Esta página te lleva desde instalar PaperPic hasta mostrar una imagen y recuperar el resultado editado. Elige tu framework en cualquier ejemplo, y el resto de la web lo usará también.
 
 ## Instalación
 
@@ -96,7 +96,7 @@ El core también carga desde un CDN que sirve los archivos del paquete tal cual,
 </script>
 ```
 
-Los navegadores solo arrancan un worker del origen de la página, así que ahí la edición va en el hilo principal: funciona, pero las fotos grandes congelan la página un momento al aplicar. Sirve los archivos desde tu propio origen, o usa un bundler, para conservar el worker. Los componentes de Vue y React necesitan un bundler.
+Los navegadores solo arrancan un worker del mismo origen que la página, así que con el paquete en un CDN la edición se hace en el hilo principal: funciona, pero las fotos grandes congelan la página un momento al aplicar. Sirve los archivos desde tu propio origen, o usa un bundler, para conservar el worker. Los componentes de Vue y React necesitan un bundler.
 
 ## Mostrar una imagen
 
@@ -151,7 +151,7 @@ export function Receipt() {
 
 :::
 
-`src` acepta una URL del mismo origen que tu página, o un `File` que elige el usuario, por ejemplo desde un `<input type="file">`. `alt` describe la imagen para los lectores de pantalla. [Cargar imágenes](./loading) explica las imágenes de otros orígenes, los formatos y los errores de carga.
+`src` acepta una URL del mismo origen que tu página, un `File` que elige el usuario, por ejemplo desde un `<input type="file">`, o un `Blob`. `alt` describe la imagen para los lectores de pantalla. [Cargar imágenes](./loading) explica las imágenes de otros orígenes, los formatos y los errores de carga.
 
 ## Recuperar la imagen editada
 
@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-El `blob` mantiene el formato de la imagen original, o es PNG cuando el usuario limpió el documento. La opción [`output`](../reference/options#output) lo cambia.
+El `blob` mantiene el formato de la imagen original cuando es JPEG, PNG o WebP, y es PNG cuando el usuario limpió el documento. [Formato y calidad](./saving#format) explica cómo sabe PaperPic el formato, y la opción [`output`](../reference/options#output) lo cambia.
 
 ## Quitar el visor {#destroy}
 
@@ -211,7 +211,7 @@ PaperPic funciona en los navegadores de [Baseline Widely Available](https://web.
 ## Siguientes pasos
 
 - [Cargar imágenes](./loading): de dónde viene la imagen y qué formatos se abren.
-- [Visor](./viewer): zoom, ajuste y uso de solo lectura.
+- [Visor](./viewer): zoom, encaje y uso de solo lectura.
 - [Edición](./editing): el modo de edición, las herramientas, Deshacer y Aplicar.
 - [Opciones](../reference/options): todo lo que puedes configurar.
 - [Solución de problemas](./troubleshooting): cuando el visor no se ve o no funciona como debería.

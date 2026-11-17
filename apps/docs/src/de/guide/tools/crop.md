@@ -20,7 +20,7 @@ Solange Zuschneiden offen ist, sieht das Bild so aus, wie das Ergebnis wird, mit
 ## Eckgriffe
 
 - Die Griffe bleiben im Bild, und das Rechteck stülpt sich nie um.
-- Auf einem Touchscreen zeigt eine Lupe den Bereich unter dem Finger, während er eine Ecke zieht, damit der Finger nicht verdeckt, wo die Ecke landet.
+- Mit dem Finger oder einem Stift zeigt eine Lupe den Bereich darunter, während eine Ecke gezogen wird, damit nichts verdeckt, wo die Ecke landet.
 - Ohne Ziehen: Drücke einen Griff und tippe dann auf die Stelle, an die seine Ecke soll. Bis dahin bleibt der Griff hervorgehoben, die Zoom-Schaltflächen zoomen zu seiner Ecke, und `Esc` lässt ihn los.
 - Mit der Tastatur wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten Griff um 1 Bildschirmpixel, mit Umschalt um 10. `+` und `-` zoomen zum fokussierten Griff. Screenreader sagen jede Bewegung an.
 

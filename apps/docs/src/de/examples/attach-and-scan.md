@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         Foto des Dokuments
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## Hinweise
 
 - `capture="environment"` öffnet auf Smartphones die Rückkamera, und Computer ignorieren es. Ohne das Attribut bieten Smartphones Kamera und Fotomediathek an, was zu Dokumenten passt, die der Nutzer schon hat.
+- Das Leeren des Eingabefelds nach jeder Auswahl erlaubt es, dasselbe Foto erneut zu wählen, etwa um nach dem Übernehmen neu anzufangen.
 - Der Viewer öffnet den Bearbeitungsmodus, sobald das Foto geladen ist, sodass der Nutzer direkt zu Begradigen oder Bereinigen kommt. Lass den Listener für `load` weg, um zuerst das Foto zu zeigen.
 - `phase: 'load'` unterscheidet eine Datei, die der Browser nicht öffnen kann, etwa ein HEIC-Foto außerhalb von Safari, von einer fehlgeschlagenen Bearbeitung. [Bilder laden](../guide/loading#formats) listet die Formate auf.
 - Das Foto bleibt im Browser, bis Übernehmen `upload` aufruft. PaperPic sendet von sich aus nichts.

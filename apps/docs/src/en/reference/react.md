@@ -50,9 +50,11 @@ An object or array with the same contents as before, such as `tools={['crop', 'r
 
 [Events](./events) describes each one. A new function does not recreate the viewer, so inline functions are fine. A change of props never calls `onChange`.
 
-## Methods
+`onChange` receives the [state](./state) of the viewer, not a DOM event. [State](./state#in-step) shows how to keep it with `useState`, `onChange`, `onLoad` and `onError`.
 
-`ref` receives the viewer, of type [`PaperPicInstance`](./types#paperpicinstance), with every [method](./methods). It is `null` until the component mounts:
+## Methods {#methods}
+
+`ref` receives the viewer, of type [`PaperPicInstance`](./types#paperpicinstance), with the [methods](./methods), such as `zoomIn()` or `apply()`. It is `null` until the component mounts:
 
 ```tsx
 import type { PaperPicInstance } from '@paperpic/react'
@@ -72,6 +74,8 @@ export function Viewer({ src }: { src: string }) {
   )
 }
 ```
+
+The component creates the viewer when it mounts and destroys it when it unmounts, so do not call `destroy()`. Change the props instead of calling `setOptions()`, which the next change of a prop would undo, and use the callback props instead of `on()`.
 
 Passing the same `src` again does not reload the image, so it keeps the result of an edit. To bring back the original, call `picRef.current.reload()`.
 

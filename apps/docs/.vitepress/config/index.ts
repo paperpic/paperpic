@@ -1,4 +1,5 @@
 import type { UserConfig } from 'vitepress'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import llmstxt from 'vitepress-plugin-llms'
@@ -9,6 +10,13 @@ import { hostname, transformHead } from './seo'
 type VitePlugins = NonNullable<NonNullable<UserConfig['vite']>['plugins']>
 
 const source = (path: string) => fileURLToPath(new URL(path, import.meta.url))
+
+/** The version of the packages as `major.minor`, which the CDN examples pin. */
+const pinnedVersion = (JSON.parse(readFileSync(source('../../../../packages/core/package.json'), 'utf8')) as { version: string })
+  .version
+  .split('.')
+  .slice(0, 2)
+  .join('.')
 
 export default defineConfig({
   title: 'PaperPic',
@@ -46,6 +54,14 @@ export default defineConfig({
     config(md) {
       // VitePress 1 bundles older types of markdown-it than the ones the plugin uses
       md.use(tabsMarkdownPlugin as unknown as Parameters<typeof md.use>[0])
+      // The CDN examples show the current version, whatever the pages say, so no release leaves them behind
+      md.core.ruler.push('paperpic-version', (state) => {
+        for (const token of state.tokens) {
+          if (token.type === 'fence') {
+            token.content = token.content.replace(/(@paperpic\/(?:core|vue|react))@\d+\.\d+(?![.\d])/g, `$1@${pinnedVersion}`)
+          }
+        }
+      })
     },
   },
   themeConfig: {

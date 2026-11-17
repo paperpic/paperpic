@@ -17,7 +17,7 @@ Raddrizza prima lo scontrino, poi puliscilo.
 2. Trascina il righello. Una sensibilità più alta scurisce più pixel, il che recupera il testo tenue o consumato. Una sensibilità più bassa dà una pagina più pulita, senza ciò che traspare dal retro.
 3. Premi Fatto per conservarlo come un solo cambiamento, o Annulla questo strumento per lasciare l’immagine com’era.
 
-Per disattivare un Pulisci che è già un cambiamento, riaprilo: un interruttore accanto al righello lo disattiva, e i cambiamenti venuti dopo restano. Annulla l’ultima azione toglierebbe prima quei cambiamenti.
+Per disattivare un Pulisci che è già un cambiamento, riaprilo: un interruttore accanto al righello lo disattiva, e i cambiamenti venuti dopo restano. Annulla l’ultima azione, invece, toglierebbe anche quei cambiamenti.
 
 Pulisci viene sempre dopo gli altri cambiamenti. Ritaglia mostra l’immagine pulita, come sarà. Raddrizza la mostra senza Pulisci, perché su una pagina pulita è difficile trovare i bordi della carta.
 

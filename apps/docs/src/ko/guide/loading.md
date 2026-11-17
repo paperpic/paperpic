@@ -19,7 +19,7 @@ PaperPic은 `src`로 전달한 이미지를 보여 줍니다. 이 페이지에�
 
 ## 다른 출처의 이미지나 로그인이 필요한 이미지 {#fetch}
 
-PaperPic은 이미지를 편집하려고 픽셀을 읽습니다. 다른 출처의 이미지는 CORS와 함께 도착할 때만 브라우저가 이를 허용하는데, PaperPic은 CORS를 요청하지 않습니다. 그런 이미지는 화면에 나오지만, 첫 편집이 실패하고 그 이유를 알리는 [`error`](../reference/events#error)가 옵니다.
+PaperPic은 이미지를 편집하려고 픽셀을 읽습니다. 다른 출처의 이미지는 CORS와 함께 도착할 때만 브라우저가 이를 허용하는데, PaperPic은 CORS를 요청하지 않습니다. 그런 이미지는 화면에 나오지만 편집할 수는 없습니다. 변경에 픽셀이 필요해지는 순간이나 적용할 때 그 이유를 알리는 [`error`](../reference/events#error)가 옵니다.
 
 이미지를 직접 가져와서 `Blob`을 `src`로 넘기세요. 요청에 사용자의 쿠키가 함께 가므로, 로그인이 필요한 이미지에도 쓸 수 있습니다.
 
@@ -119,10 +119,12 @@ export function Invoice() {
 
 :::
 
+`load`는 `src`를 불러올 때마다 발생하며 [`reload()`](../reference/methods#reload)에서도 발생하지만, 적용 뒤에는 발생하지 않습니다. 결과는 [`apply`](../reference/events#apply) 이벤트로 옵니다.
+
 [`getState()`](../reference/state)의 `status`도 언제든 같은 답을 줍니다. 값은 `'empty'`, `'loading'`, `'ready'`, `'error'` 중 하나입니다.
 
 ## 이미지 바꾸기와 다시 불러오기
 
 - **새 `src`**를 주면 새 이미지를 불러옵니다. 사용자가 편집 중이면 편집을 버립니다.
 - **같은 `src`**를 주면 아무 일도 일어나지 않으므로, 적용의 결과가 화면에 그대로 남습니다.
-- **[`reload()`](../reference/methods#reload)**는 현재 `src`를 다시 불러오며, 적용 뒤에 원본을 되돌립니다.
+- **[`reload()`](../reference/methods#reload)**는 현재 `src`를 다시 불러오며, 적용 뒤에 원본을 되돌립니다. 편집 중에 호출하면 변경도 버립니다.

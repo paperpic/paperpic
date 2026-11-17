@@ -9,7 +9,7 @@ PaperPic 的大多数问题来自配置，而不是图片本身。找到你看�
 
 ## 查看器只是一条细线，或者看不到 {#no-height}
 
-查看器会填满它的容器，而没有高度的容器会缩到查看器的最小高度。请给容器设置高度，例如 `height: 480px`，或者把它放进能给它高度的 flex 或 grid 布局中。[样式](./styling)展示了这两种做法。
+查看器会填满它的容器，而没有高度的容器会缩到查看器的最小高度 16rem。请给容器设置高度，例如 `height: 480px`，或者把它放进能给它高度的 flex 或 grid 布局中。[样式](./styling)展示了这两种做法。
 
 ## 按钮没有样式，控制台出现警告 {#no-stylesheet}
 
@@ -38,7 +38,7 @@ worker 没有启动，因此编辑在主线程上运行。它仍然能用，但�
 
 ## 处理大照片时应用失败 {#too-large}
 
-`error` 显示 `The browser could not read an image of …`。浏览器会限制 canvas 的尺寸，iOS 上的 Safari 限制最严。请设置 [`maxOutputSize`](../reference/options#maxoutputsize)，例如 3000 像素，这样文档仍然清晰可读。
+`error` 显示 `The browser could not read an image of …` 或 `could not save an image of …`。浏览器会限制 canvas 的尺寸，iOS 上的 Safari 限制最严。请设置 [`maxOutputSize`](../reference/options#maxoutputsize)，例如 3000 像素，这样文档仍然清晰可读。
 
 ## 滚轮缩放了图片，而不是滚动页面 {#wheel}
 

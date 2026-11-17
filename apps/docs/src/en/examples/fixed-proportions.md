@@ -116,5 +116,6 @@ export function Form() {
 
 - Straighten stores the proportions when the user presses Done, so choose the type before straightening. Changing it later affects only the next straightening.
 - For a document in landscape, swap the numbers, such as `297 / 210`.
+- The proportions apply to the page as it shows on screen. If the photo is sideways, turn it with Rotate left before you use Straighten, or a sheet in portrait comes out squashed.
 - Leave `aspectRatio` out for documents without a fixed size, such as receipts, and Straighten estimates them.
 - [Straighten](../guide/tools/straighten) explains the estimate and how to handle corners that fall outside the photo.

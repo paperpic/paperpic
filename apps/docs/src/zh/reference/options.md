@@ -22,7 +22,7 @@ pic.setOptions({ editable: false })
 - **类型：** [`PaperPicSource`](./types#paperpicsource)
 - **默认值：** 无
 
-要显示的图片：同源的 URL，或在客户端添加的 `File` 或 `Blob`。
+要显示的图片：URL，或 `File`、`Blob`。来自其他源的图片可以显示，但无法编辑：原因和解决办法见[加载图片](../guide/loading#fetch)。
 
 再次传入相同的值不会重新加载图片，因此编辑结果会继续显示。调用 [`reload()`](./methods#reload) 可以恢复原图。编辑时传入新值会放弃所做的修改。
 
@@ -70,14 +70,14 @@ pic.setOptions({ editable: false })
 - **类型：** `boolean`
 - **默认值：** `true`
 
-滚轮是否缩放图片。当查看器位于长页面中时将其关闭，滚轮就会滚动页面。
+滚轮是否缩放图片。当查看器位于长页面中时将其关闭，滚轮就会滚动页面。触控板上的双指缩放也不再缩放图片，因为浏览器把它当作滚轮。
 
 ### `download`
 
 - **类型：** `boolean`
 - **默认值：** `false`
 
-工具栏上是否有保存当前显示图片的按钮：保存的是上一次应用的结果，没有则是原图。编辑时按钮会隐藏。通过 [`download`](./events#download) 事件，你可以用其他方式保存文件。
+工具栏上是否有保存当前显示图片的按钮：保存的是上一次应用的结果，没有则是原图。编辑时按钮会隐藏。通过 [`download`](./events#download) 事件，你可以用其他方式保存文件。在第一次应用之前，来自其他源的 `src` 会在浏览器中打开，而不是被保存：解决办法见[保存结果](../guide/saving#download)。
 
 ### `labels`
 
@@ -123,11 +123,11 @@ pic.setOptions({ editable: false })
 ### `output`
 
 - **类型：** [`PaperPicOutput`](./types#paperpicoutput)
-- **默认值：** 原图的格式
+- **默认值：** 原图的格式，或 PNG
 
 编辑后图片的格式。`type` 为 `'image/jpeg'`、`'image/png'` 或 `'image/webp'`，`quality` 对 JPEG 和 WebP 取 0 到 1，默认为 `0.92`。
 
-没有 `type` 时，清理后的图片为 PNG，因为 JPEG 会破坏它清晰的边缘；其他图片保留原图的格式。浏览器无法编码的格式会得到 PNG。
+没有 `type` 时，清理后的图片为 PNG，因为 JPEG 会破坏它清晰的边缘。其他图片如果原图是 JPEG、PNG 或 WebP，则保留原图的格式；PaperPic 根据 URL 的扩展名或 `File`、`Blob` 的类型判断格式。否则结果为 PNG，浏览器无法编码的格式也是如此。
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ pic.setOptions({ editable: false })
 - **类型：** `string`
 - **默认值：** 原图的名称
 
-保存文件的名称。扩展名跟随图片格式，因此清理后的 `receipt.jpg` 会保存为 `receipt.png`。原图没有名称时（例如 `Blob`），文件名为 `image`。
+保存文件的名称。请不带扩展名填写：PaperPic 会加上格式对应的扩展名，因此清理后的 `receipt.jpg` 会保存为 `receipt.png`。原图没有名称时（例如 `Blob`），文件名为 `image`。在第一次应用之前，没有扩展名的 URL 因为格式未知，保存时也没有扩展名。
 
 ## 工具
 
@@ -150,7 +150,7 @@ pic.setOptions({ editable: false })
 - **类型：** `number`
 - **默认值：** 估算
 
-文档的真实宽高比，即宽度除以高度，例如 A4 纸为 `210 / 297`。矫正会让结果采用这个宽高比。没有它时，会根据照片估算。
+文档的真实宽高比，即宽度除以高度，例如 A4 纸为 `210 / 297`。矫正会让结果采用这个宽高比。没有它时，会根据照片估算。“裁剪”不使用它：它的矩形保持自由。
 
 ### `softness`
 

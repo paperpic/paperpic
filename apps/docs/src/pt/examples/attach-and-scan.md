@@ -35,6 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
 
 input.addEventListener('change', () => {
   const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.textContent = ''
     pic.setOptions({ src: file })
@@ -76,7 +77,9 @@ const photo = shallowRef<File>()
 const status = shallowRef('')
 
 function choose(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   if (file) {
     status.value = ''
     photo.value = file
@@ -136,7 +139,9 @@ export function AttachDocument() {
   const [photo, setPhoto] = useState<File>()
   const [status, setStatus] = useState('')
 
-  function choose(file: File | undefined) {
+  function choose(input: HTMLInputElement) {
+    const file = input.files?.[0]
+    input.value = ''
     if (file) {
       setStatus('')
       setPhoto(file)
@@ -164,7 +169,7 @@ export function AttachDocument() {
     <>
       <label>
         Foto do documento
-        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target.files?.[0])} />
+        <input type="file" accept="image/*" capture="environment" onChange={event => choose(event.target)} />
       </label>
       {photo && (
         <div style={{ height: 480 }}>
@@ -190,6 +195,7 @@ export function AttachDocument() {
 ## Observações
 
 - `capture="environment"` abre a câmera traseira nos celulares, e os computadores o ignoram. Sem ele, os celulares oferecem a câmera e a galeria, o que serve para documentos que o usuário já tem.
+- Esvaziar o campo depois de cada escolha permite escolher a mesma foto de novo, por exemplo para recomeçar depois do Aplicar.
 - O visualizador abre o modo de edição assim que a foto carrega, então o usuário vai direto para Endireitar ou Limpar. Tire o listener de `load` para mostrar a foto primeiro.
 - `phase: 'load'` separa um arquivo que o navegador não consegue abrir, como uma foto HEIC fora do Safari, de uma edição que falhou. [Carregar imagens](../guide/loading#formats) lista os formatos.
 - A foto fica no navegador até Aplicar chamar `upload`. O PaperPic não envia nada por conta própria.

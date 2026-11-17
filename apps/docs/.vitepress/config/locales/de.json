@@ -50,7 +50,9 @@
     "examples/upload": "Auf einen Server hochladen",
     "examples/read-only": "Schreibgeschützter Viewer",
     "examples/custom-toolbar": "Eigene Werkzeugleiste",
-    "examples/fixed-proportions": "Feste Seitenverhältnisse"
+    "examples/fixed-proportions": "Feste Seitenverhältnisse",
+    "examples/dialog": "In einem Dialog bearbeiten",
+    "examples/form": "Mit einem Formular senden"
   },
   "search": {
     "button": {

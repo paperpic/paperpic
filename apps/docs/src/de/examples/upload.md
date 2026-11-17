@@ -127,4 +127,4 @@ export function Invoice() {
 - `role="status"` lässt Screenreader das Ergebnis des Hochladens ansagen.
 - [`maxOutputSize`](../reference/options#maxoutputsize) hält die Datei klein. Dokumente bleiben mit 3000 Pixeln an der längsten Seite lesbar.
 - Nach dem Übernehmen ist der Verlauf leer, der Nutzer kann also nicht zum alten Bild zurück. Für eine Schaltfläche zum erneuten Versuchen behalte den letzten `blob` und `type` und rufe `upload` erneut auf.
-- Der Server bekommt PNG für ein bereinigtes Dokument und sonst das Format des Quellbilds. Unter [Das Ergebnis speichern](../guide/saving) wählst du ein anderes.
+- Der Server bekommt PNG für ein bereinigtes Dokument und sonst das Format des Quellbilds, wenn es JPEG, PNG oder WebP ist. Unter [Das Ergebnis speichern](../guide/saving#format) erfährst du, wie PaperPic das Format erkennt, und wählst ein anderes.

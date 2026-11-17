@@ -19,6 +19,7 @@ description: PaperPic の組み込みツールバーを隠し、ビューアー�
   <button type="button" data-action="edit">編集</button>
   <button type="button" data-action="straighten">傾き補正</button>
   <button type="button" data-action="confirmTool">完了</button>
+  <button type="button" data-action="cancelTool">このツールをキャンセル</button>
   <button type="button" data-action="undo">元に戻す</button>
   <button type="button" data-action="cancel">キャンセル</button>
   <button type="button" data-action="apply">適用</button>
@@ -43,6 +44,7 @@ const actions: Record<string, () => void> = {
   edit: () => pic.edit(),
   straighten: () => pic.openTool('perspective'),
   confirmTool: () => pic.confirmTool(),
+  cancelTool: () => pic.cancelTool(),
   undo: () => pic.undo(),
   cancel: () => pic.cancel(),
   apply: () => pic.apply(),
@@ -61,6 +63,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
     edit: !editing,
     straighten: editing && !activeTool,
     confirmTool: Boolean(activeTool),
+    cancelTool: Boolean(activeTool),
     undo: editing && !activeTool,
     cancel: editing && !activeTool,
     apply: editing && !activeTool,
@@ -114,6 +117,9 @@ function refresh() {
     <template v-else-if="state.activeTool">
       <button type="button" @click="viewer?.confirmTool()">
         完了
+      </button>
+      <button type="button" @click="viewer?.cancelTool()">
+        このツールをキャンセル
       </button>
     </template>
     <template v-else>
@@ -173,7 +179,10 @@ export function Receipt() {
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>編集</button>
           )}
           {state.mode === 'edit' && state.activeTool && (
-            <button type="button" onClick={() => viewer().confirmTool()}>完了</button>
+            <>
+              <button type="button" onClick={() => viewer().confirmTool()}>完了</button>
+              <button type="button" onClick={() => viewer().cancelTool()}>このツールをキャンセル</button>
+            </>
           )}
           {state.mode === 'edit' && !state.activeTool && (
             <>
@@ -313,6 +322,7 @@ function cancel() {
       :toolbar="false"
       @change="next => (state = next)"
       @load="state = viewer?.getState()"
+      @error="state = viewer?.getState()"
     />
   </div>
 </template>
@@ -377,6 +387,7 @@ export function CleanUpRuler() {
           toolbar={false}
           onChange={setState}
           onLoad={() => setState(viewer().getState())}
+          onError={() => setState(viewer().getState())}
         />
       </div>
     </>
@@ -388,7 +399,7 @@ export function CleanUpRuler() {
 
 ## 補足
 
-- `toolbar: false` では組み込みの編集バーも隠れるため、「切り抜き」と「傾き補正」はハンドルを表示しますが、「完了」ボタンはありません。あなたのインターフェースから、`Enter` と同じく [`confirmTool()`](../reference/methods#confirmtool) で確定してください。
+- `toolbar: false` では組み込みの編集バーも隠れるため、「切り抜き」と「傾き補正」はハンドルを表示しますが、「完了」ボタンはありません。あなたのインターフェースから、`Enter` と同じく [`confirmTool()`](../reference/methods#confirmtool) で確定してください。変更せずに閉じるには、`Esc` と同じように [`cancelTool()`](../reference/methods#canceltool) を呼び出します。
 - 独自のスライダーから [`setThreshold()`](../reference/methods#setthreshold) と [`setAdjustments()`](../reference/methods#setadjustments) を直接呼べます。呼ぶたびに変更が 1 つ加わります。ドラッグ全体を 1 つの変更にするには、先に [`openTool()`](../reference/methods#opentool) でツールを開いてください。すると同じメソッドがツールの表示を変え、`confirmTool()` がそれを残します。
 - [`cancel()`](../reference/methods#cancel) は変更を破棄する前に確認しません。`canApply` が true のときなど、変更がある場合はユーザーに確認してください。
 - ビューアーにフォーカスがあれば、キーボードショートカットは引き続き使えます。[アクセシビリティ](../guide/accessibility)を参照してください。
