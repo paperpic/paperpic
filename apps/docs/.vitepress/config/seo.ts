@@ -1,5 +1,8 @@
-import type { HeadConfig, TransformContext } from 'vitepress'
+import type { HeadConfig, TransformContext, UserConfig } from 'vitepress'
 import { translations } from './locales'
+
+/** The entries of the sitemap, as VitePress passes them to `transformItems`. */
+type SitemapItems = Parameters<NonNullable<NonNullable<UserConfig['sitemap']>['transformItems']>>[0]
 
 export const hostname = 'https://paperpic.dev'
 
@@ -127,4 +130,24 @@ export function transformHead({ pageData, siteConfig, title, description }: Tran
   }
 
   return head
+}
+
+/**
+ * Adds to each entry of the sitemap the `x-default` alternate that the head of its page has, the English page,
+ * so the sitemap and the pages give search engines the same alternates.
+ */
+export function addDefaultAlternate(items: SitemapItems): SitemapItems {
+  return items.map((item) => {
+    const english = item.links?.find(link => link.lang === translations.root!.lang)
+
+    return english
+      ? {
+          ...item,
+          links: [
+            ...item.links!,
+            { lang: 'x-default', url: english.url },
+          ],
+        }
+      : item
+  })
 }
