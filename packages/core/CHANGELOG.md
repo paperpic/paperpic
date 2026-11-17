@@ -1,5 +1,11 @@
 # @paperpic/core
 
+## 0.3.1
+
+### Patch Changes
+
+- [#86](https://github.com/paperpic/paperpic/pull/86) [`bc2c194`](https://github.com/paperpic/paperpic/commit/bc2c19498f5f946e89f39c1545b5fd29ed699b6d) Thanks [@Unlooper](https://github.com/Unlooper)! - Correct the descriptions that editors show for the events and the state. `change` also comes from the methods, `load` does not follow Apply, `apply()` resolves even when Apply fails, and `image` in the state leaves out the turn of `rotation`.
+
 ## 0.3.0
 
 ### Minor Changes
