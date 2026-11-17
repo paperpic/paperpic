@@ -4,8 +4,9 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import llmstxt from 'vitepress-plugin-llms'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
+import { codeContrast } from './code-contrast'
 import { locales, searchLocales } from './locales'
-import { hostname, transformHead } from './seo'
+import { addDefaultAlternate, hostname, transformHead } from './seo'
 
 type VitePlugins = NonNullable<NonNullable<UserConfig['vite']>['plugins']>
 
@@ -49,8 +50,10 @@ export default defineConfig({
   transformHead,
   sitemap: {
     hostname,
+    transformItems: addDefaultAlternate,
   },
   markdown: {
+    codeTransformers: [codeContrast],
     config(md) {
       // VitePress 1 bundles older types of markdown-it than the ones the plugin uses
       md.use(tabsMarkdownPlugin as unknown as Parameters<typeof md.use>[0])
