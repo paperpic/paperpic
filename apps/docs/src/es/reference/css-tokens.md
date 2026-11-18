@@ -65,22 +65,22 @@ Sus reglas están en la capa de cascada `paperpic`, así que cualquier CSS tuyo 
 
 Estas clases son públicas: sus nombres, y los elementos que marcan, se mantienen estables entre versiones. Las demás clases del componente sostienen su disposición y pueden cambiar en cualquier versión.
 
-| Clase                     | Elemento                                                                                                               |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | La raíz del visor                                                                                                      |
-| `paperpic-button`         | Cada botón de la barra de herramientas y de la barra de edición                                                        |
-| `paperpic-button-danger`  | Descartar, en la pregunta antes de descartar los cambios                                                               |
-| `paperpic-button-primary` | Aplicar, y Hecho en cada herramienta                                                                                   |
-| `paperpic-button-text`    | Los botones de la pregunta antes de descartar los cambios                                                              |
-| `paperpic-edit-bar`       | La barra de edición, una tarjeta abajo durante la edición                                                              |
-| `paperpic-editing`        | La raíz, durante la edición                                                                                            |
-| `paperpic-handle`         | Un tirador de esquina de Recortar y Enderezar                                                                          |
-| `paperpic-host`           | El elemento que los componentes de Vue y React crean alrededor del visor                                               |
-| `paperpic-icon`           | El icono de un botón                                                                                                   |
-| `paperpic-status`         | El mensaje para lectores de pantalla, que también se ve mientras la imagen carga o los cambios se aplican, y al fallar |
-| `paperpic-status-visible` | El mensaje, mientras se ve en el centro del visor                                                                      |
-| `paperpic-toolbar`        | La barra de herramientas, a la derecha, oculta durante la edición                                                      |
-| `paperpic-viewport`       | El área que muestra la imagen y recibe el foco del teclado                                                             |
+| Clase                     | Elemento                                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | La raíz del visor                                                                                                         |
+| `paperpic-button`         | Cada botón de la barra de herramientas y de la barra de edición                                                           |
+| `paperpic-button-danger`  | Descartar, en la pregunta antes de descartar los cambios                                                                  |
+| `paperpic-button-primary` | Aplicar, y Hecho en cada herramienta                                                                                      |
+| `paperpic-button-text`    | Los botones de la pregunta antes de descartar los cambios                                                                 |
+| `paperpic-edit-bar`       | La barra de edición, una tarjeta abajo durante la edición                                                                 |
+| `paperpic-editing`        | La raíz, durante la edición                                                                                               |
+| `paperpic-handle`         | Un tirador de esquina de Recortar y Enderezar                                                                             |
+| `paperpic-host`           | El elemento que los componentes de Vue y React crean alrededor del visor                                                  |
+| `paperpic-icon`           | El icono de un botón                                                                                                      |
+| `paperpic-status`         | El mensaje que se ve, y que oyen los lectores de pantalla, mientras la imagen carga o los cambios se aplican, y al fallar |
+| `paperpic-status-visible` | El mensaje, mientras se ve en el centro del visor                                                                         |
+| `paperpic-toolbar`        | La barra de herramientas, a la derecha, oculta durante la edición                                                         |
+| `paperpic-viewport`       | El área que muestra la imagen y recibe el foco del teclado                                                                |
 
 Los botones muestran su estado con atributos ARIA, que también puedes seleccionar:
 

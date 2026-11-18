@@ -126,7 +126,10 @@ export class PaperPic {
   private readonly viewportElement: HTMLElement
   private readonly canvas: HTMLCanvasElement
   private readonly handles: HTMLElement
+  /** The message on screen while the image loads or the changes apply, and on failure. Screen readers hear it too. */
   private readonly status: HTMLElement
+  /** What screen readers hear about the other changes, such as the zoom. It never shows, so it never hides the message. */
+  private readonly announcer: HTMLElement
   private readonly toolbar: Toolbar
   private readonly editBar: EditBar
   private readonly renderer: Renderer
@@ -222,6 +225,9 @@ export class PaperPic {
     this.status = document.createElement('div')
     this.status.className = 'paperpic-status'
     this.status.setAttribute('role', 'status')
+    this.announcer = document.createElement('div')
+    this.announcer.className = 'paperpic-announcement'
+    this.announcer.setAttribute('role', 'status')
 
     this.toolbar = new Toolbar(
       {
@@ -253,13 +259,13 @@ export class PaperPic {
         setThreshold: (setting, released) => {
           this.setThreshold(setting)
           if (released && setting.sensitivity !== undefined) {
-            this.status.textContent = this.labels.thresholdLevel(Math.round(setting.sensitivity * 100))
+            this.announce(this.labels.thresholdLevel(Math.round(setting.sensitivity * 100)))
           }
         },
         setAdjustment: (name, value, released) => {
           this.setAdjustments({ [name]: value })
           if (released) {
-            this.status.textContent = this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100))
+            this.announce(this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100)))
           }
         },
       },
@@ -267,7 +273,7 @@ export class PaperPic {
       this.labels,
     )
 
-    stage.append(this.viewportElement, this.toolbar.element, this.status)
+    stage.append(this.viewportElement, this.toolbar.element, this.status, this.announcer)
     this.root.append(stage, this.editBar.element)
     container.append(this.root)
 
@@ -446,8 +452,16 @@ export class PaperPic {
    *
    * @param zoom Screen pixels per image pixel.
    * @param point The position to keep in place, relative to the viewer. By default, its center.
+   * @throws {RangeError} If `zoom` is `NaN`, or if a coordinate of `point` is not a finite number. The view does not change then.
    */
   zoomTo(zoom: number, point?: ViewPoint): void {
+    // A zoom out of range is clamped, but NaN has no place in the range, and the image would vanish until a fit
+    if (Number.isNaN(zoom)) {
+      throw new RangeError(`zoom must be a number of screen pixels per image pixel, such as 1 for 100%, got ${zoom}`)
+    }
+    if (point && !(Number.isFinite(point.x) && Number.isFinite(point.y))) {
+      throw new RangeError(`point must have a finite x and y, in CSS pixels from the top left corner of the viewer, got ${point.x}, ${point.y}`)
+    }
     this.zoomAround(zoom, point ?? { x: this.viewport.width / 2, y: this.viewport.height / 2 })
   }
 
@@ -495,7 +509,7 @@ export class PaperPic {
     const hadFocus = this.hasFocus()
     this.mode = 'edit'
     this.refresh()
-    this.status.textContent = this.labels.editing
+    this.announce(this.labels.editing)
     if (hadFocus && this.options.toolbar) {
       this.editBar.focus()
     }
@@ -730,7 +744,7 @@ export class PaperPic {
       this.setImage(loaded, 'ready')
       this.setSaved(exported.blob)
       this.restoreFocus(hadFocus)
-      this.status.textContent = this.labels.applied
+      this.announce(this.labels.applied)
       this.emit('apply', exported)
       this.emit('change', this.getState())
     }
@@ -859,9 +873,7 @@ export class PaperPic {
       },
       requestPaint: () => this.renderer.requestPaint(),
       setHint: text => this.editBar.setHint(text),
-      announce: (text) => {
-        this.status.textContent = text
-      },
+      announce: text => this.announce(text),
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
@@ -933,6 +945,11 @@ export class PaperPic {
 
   private hasFocus(): boolean {
     return this.root.contains(document.activeElement)
+  }
+
+  /** Tells screen readers about a change that the focus alone does not show. The message on screen stays. */
+  private announce(text: string): void {
+    this.announcer.textContent = text
   }
 
   /** Puts the keyboard focus back on the toolbar, because the button that had it may be gone. */
@@ -1135,7 +1152,8 @@ export class PaperPic {
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')
-    this.root.setAttribute('aria-busy', String(this.busy || this.previewQueue.pending || this.loadStatus === 'loading'))
+    // Only the image is busy. Around the messages, it could make screen readers hold them back until the work ends
+    this.viewportElement.setAttribute('aria-busy', String(this.busy || this.previewQueue.pending || this.loadStatus === 'loading'))
   }
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
@@ -1271,7 +1289,7 @@ export class PaperPic {
       : undefined
     this.zoomTo(this.view.zoom * factor, anchor)
     if (this.measuredImage()) {
-      this.status.textContent = this.labels.zoomLevel(Math.round(this.view.zoom * 100))
+      this.announce(this.labels.zoomLevel(Math.round(this.view.zoom * 100)))
     }
   }
 

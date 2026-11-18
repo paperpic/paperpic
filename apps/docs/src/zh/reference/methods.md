@@ -153,6 +153,8 @@ function zoomTo(zoom: number, point?: ViewPoint): void
 
 缩放范围从适合整张图片的缩放（若它大于 `1` 则为 `1`）到 `8`。超出范围的值会被限制在范围内。
 
+如果 `zoom` 是 `NaN`，或 `point` 的某个坐标不是有限数，会抛出 `RangeError`，此时缩放不会改变。
+
 ### `fit()`
 
 ```ts

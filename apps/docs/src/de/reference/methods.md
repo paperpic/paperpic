@@ -153,6 +153,8 @@ Setzt den Zoom, wobei `1` ein Bildpixel pro Bildschirmpixel zeigt. [`point`](./t
 
 Der Zoom reicht von der Einpassung des ganzen Bildes, oder `1`, falls das kleiner ist, bis `8`. Ein Wert außerhalb wird begrenzt.
 
+Wirft einen `RangeError`, wenn `zoom` `NaN` ist oder eine Koordinate von `point` keine endliche Zahl ist, und der Zoom ändert sich dann nicht.
+
 ### `fit()`
 
 ```ts

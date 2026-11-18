@@ -70,6 +70,7 @@ describe('editing', () => {
 
   const button = (label: string) => container.querySelector<HTMLButtonElement>(`[aria-label="${label}"]`)!
   const bar = () => container.querySelector<HTMLElement>('.paperpic-edit-bar')!
+  const announcement = () => container.querySelector('.paperpic-announcement')!.textContent
   const press = (key: string, options = {}, target: Element = container.querySelector('.paperpic-viewport')!) => target.dispatchEvent(new KeyboardEvent('keydown', {
     key,
     bubbles: true,
@@ -134,7 +135,7 @@ describe('editing', () => {
     expect(button('Edit').hidden).toBe(true)
     expect(bar().hidden).toBe(false)
     expect(onChange).toHaveBeenCalledOnce()
-    expect(container.querySelector('[role="status"]')!.textContent).toBe('Editing')
+    expect(announcement()).toBe('Editing')
   })
 
   it('hides the toolbar while editing, so nothing covers the image', () => {
@@ -239,7 +240,7 @@ describe('editing', () => {
       canUndo: false,
     })
     expect(bar().hidden).toBe(true)
-    expect(container.querySelector('[role="status"]')!.textContent).toBe('Changes applied')
+    expect(announcement()).toBe('Changes applied')
   })
 
   it('keeps the announcement of Apply when a wrapper passes the same options again', async () => {
@@ -257,7 +258,7 @@ describe('editing', () => {
       output: undefined,
       labels: undefined,
     })
-    expect(container.querySelector('[role="status"]')!.textContent).toBe('Changes applied')
+    expect(announcement()).toBe('Changes applied')
 
     // Equal contents count, not the same object, so a changed label still reaches the buttons
     pic.setOptions({
@@ -323,6 +324,34 @@ describe('editing', () => {
 
     pic.undo()
     expect(container.querySelector('.paperpic-status-visible')).toBeNull()
+  })
+
+  it('keeps a failure on screen while it announces other changes, such as the zoom', async () => {
+    mocks.exportImage.mockRejectedValue(new Error('too large'))
+    pic.edit()
+    pic.rotate(1)
+    await pic.apply()
+
+    pic.zoomIn()
+
+    expect(container.querySelector('.paperpic-status-visible')!.textContent).toBe('The changes could not be applied')
+    expect(announcement()).toMatch(/^Zoom \d+%$/)
+  })
+
+  it('marks only the image busy, so screen readers do not hold back the message about the work', async () => {
+    const viewport = container.querySelector<HTMLElement>('.paperpic-viewport')!
+    pic.edit()
+    pic.rotate(1)
+
+    const applying = pic.apply()
+    expect(viewport.getAttribute('aria-busy')).toBe('true')
+    expect(container.querySelector('.paperpic')!.hasAttribute('aria-busy')).toBe(false)
+    expect(container.querySelector('[aria-busy="true"] [role="status"]')).toBeNull()
+
+    await flush()
+    await finishLoading()
+    await applying
+    expect(viewport.getAttribute('aria-busy')).toBe('false')
   })
 
   it('applies when an apply listener throws, because the Apply did not fail', async () => {
@@ -802,7 +831,6 @@ describe('editing', () => {
     describe('placing a corner without dragging', () => {
       const viewport = () => container.querySelector<HTMLElement>('.paperpic-viewport')!
       const hint = () => button('Done').parentElement!.textContent
-      const status = () => container.querySelector('[role="status"]')!.textContent
       const tap = (x: number, y: number, time: number) => {
         for (const type of ['pointerdown', 'pointerup']) {
           const event = new MouseEvent(type, { bubbles: true, clientX: x, clientY: y })
@@ -829,7 +857,7 @@ describe('editing', () => {
         tap(40, 40, 100)
         expect(handles()[0]!.getAttribute('style')).not.toBe(before)
         expect(handles()[0]!.getAttribute('aria-pressed')).toBe('false')
-        expect(status()).toMatch(/^Top left corner: \d+, \d+$/)
+        expect(announcement()).toMatch(/^Top left corner: \d+, \d+$/)
         expect(hint()).toContain('Drag the corners')
         expect(pic.getState()).toMatchObject({ activeTool: 'crop', fit: 'image' })
       })
@@ -934,7 +962,6 @@ describe('editing', () => {
       ruler().value = String(value)
       ruler().dispatchEvent(new Event(type, { bubbles: true }))
     }
-    const status = () => container.querySelector('[role="status"]')!.textContent
 
     beforeEach(() => {
       tint.mockClear()
@@ -1023,7 +1050,7 @@ describe('editing', () => {
       expect(onChange).toHaveBeenCalledTimes(2)
 
       move(70, 'change')
-      expect(status()).toBe('Sensitivity 70%')
+      expect(announcement()).toBe('Sensitivity 70%')
       button('Done').click()
       expect(pic.getState()).toMatchObject({
         threshold: { enabled: true, sensitivity: 0.7 },
@@ -1204,7 +1231,6 @@ describe('editing', () => {
       ruler(name).value = String(value)
       ruler(name).dispatchEvent(new Event(type, { bubbles: true }))
     }
-    const status = () => container.querySelector('[role="status"]')!.textContent
 
     beforeEach(() => {
       tint.mockClear()
@@ -1261,11 +1287,11 @@ describe('editing', () => {
       })
       expect(onChange).toHaveBeenCalledTimes(2)
       move('Brightness', 30, 'change')
-      expect(status()).toBe('Brightness +30')
+      expect(announcement()).toBe('Brightness +30')
 
       option('Contrast').click()
       move('Contrast', -20, 'change')
-      expect(status()).toBe('Contrast -20')
+      expect(announcement()).toBe('Contrast -20')
 
       button('Done').click()
       expect(pic.getState()).toMatchObject({

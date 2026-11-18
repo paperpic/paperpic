@@ -47,6 +47,10 @@ export function paintMagnifier(
   context.lineTo(center.x + 8, center.y)
   context.moveTo(center.x, center.y - 8)
   context.lineTo(center.x, center.y + 8)
+  // Dark under white, as the outline of a selection, so the cross shows on white paper and on a dark table
+  context.lineWidth = 4
+  context.strokeStyle = 'rgb(0 0 0 / 60%)'
+  context.stroke()
   context.lineWidth = 2
   context.strokeStyle = '#fff'
   context.stroke()

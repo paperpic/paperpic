@@ -628,8 +628,12 @@
     );
   }
 
-  /* Announces to screen readers without taking space, and shows only what the user must see */
-  .paperpic-status {
+  /*
+   * The message and the announcements reach screen readers without taking space. Only the message shows, while the
+   * user must see it, so an announcement never hides it
+   */
+  .paperpic-status,
+  .paperpic-announcement {
     position: absolute;
     overflow: hidden;
     inline-size: 1px;

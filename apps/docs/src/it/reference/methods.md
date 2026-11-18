@@ -153,6 +153,8 @@ Imposta lo zoom, dove `1` mostra un pixel dell’immagine per pixel dello scherm
 
 Lo zoom va dall’adattamento dell’immagine intera, o `1` se è più piccolo, fino a `8`. Un valore fuori da questo intervallo viene limitato.
 
+Lancia un `RangeError` se `zoom` è `NaN` o se una coordinata di `point` non è un numero finito, e lo zoom allora non cambia.
+
 ### `fit()`
 
 ```ts

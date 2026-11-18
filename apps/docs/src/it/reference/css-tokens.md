@@ -65,22 +65,22 @@ Le sue regole stanno nel livello di cascata `paperpic`, quindi qualsiasi tuo CSS
 
 Queste classi sono pubbliche: i loro nomi, e gli elementi che marcano, restano stabili tra una versione e l’altra. Le altre classi del componente tengono insieme la sua disposizione e possono cambiare in qualsiasi versione.
 
-| Classe                    | Elemento                                                                                                                              |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | La radice del visualizzatore                                                                                                          |
-| `paperpic-button`         | Ogni pulsante della barra degli strumenti e della barra di modifica                                                                   |
-| `paperpic-button-danger`  | Elimina, nella domanda prima di eliminare le modifiche                                                                                |
-| `paperpic-button-primary` | Applica, e Fatto in ogni strumento                                                                                                    |
-| `paperpic-button-text`    | I pulsanti della domanda prima di eliminare le modifiche                                                                              |
-| `paperpic-edit-bar`       | La barra di modifica, una scheda in basso durante la modifica                                                                         |
-| `paperpic-editing`        | La radice, durante la modifica                                                                                                        |
-| `paperpic-handle`         | Una maniglia d’angolo di Ritaglia e Raddrizza                                                                                         |
-| `paperpic-host`           | L’elemento che i componenti Vue e React creano attorno al visualizzatore                                                              |
-| `paperpic-icon`           | L’icona di un pulsante                                                                                                                |
-| `paperpic-status`         | Il messaggio per i lettori di schermo, che si vede anche mentre l’immagine si carica o le modifiche si applicano, e in caso di errore |
-| `paperpic-status-visible` | Il messaggio, mentre si vede al centro del visualizzatore                                                                             |
-| `paperpic-toolbar`        | La barra degli strumenti, a destra, nascosta durante la modifica                                                                      |
-| `paperpic-viewport`       | L’area che mostra l’immagine e riceve il focus della tastiera                                                                         |
+| Classe                    | Elemento                                                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `paperpic`                | La radice del visualizzatore                                                                                                               |
+| `paperpic-button`         | Ogni pulsante della barra degli strumenti e della barra di modifica                                                                        |
+| `paperpic-button-danger`  | Elimina, nella domanda prima di eliminare le modifiche                                                                                     |
+| `paperpic-button-primary` | Applica, e Fatto in ogni strumento                                                                                                         |
+| `paperpic-button-text`    | I pulsanti della domanda prima di eliminare le modifiche                                                                                   |
+| `paperpic-edit-bar`       | La barra di modifica, una scheda in basso durante la modifica                                                                              |
+| `paperpic-editing`        | La radice, durante la modifica                                                                                                             |
+| `paperpic-handle`         | Una maniglia d’angolo di Ritaglia e Raddrizza                                                                                              |
+| `paperpic-host`           | L’elemento che i componenti Vue e React creano attorno al visualizzatore                                                                   |
+| `paperpic-icon`           | L’icona di un pulsante                                                                                                                     |
+| `paperpic-status`         | Il messaggio che si vede, e che i lettori di schermo leggono, mentre l’immagine si carica o le modifiche si applicano, e in caso di errore |
+| `paperpic-status-visible` | Il messaggio, mentre si vede al centro del visualizzatore                                                                                  |
+| `paperpic-toolbar`        | La barra degli strumenti, a destra, nascosta durante la modifica                                                                           |
+| `paperpic-viewport`       | L’area che mostra l’immagine e riceve il focus della tastiera                                                                              |
 
 I pulsanti mostrano il loro stato con attributi ARIA, che puoi selezionare anche tu:
 

@@ -65,4 +65,20 @@ describe('paintMagnifier', () => {
     expect(context.moveTo).toHaveBeenCalledWith(42, 50)
     expect(context.lineTo).toHaveBeenCalledWith(58, 50)
   })
+
+  it('strokes the cross and the circle dark under white, so they show on white paper too', () => {
+    const context = recordingContext()
+    const strokes: { style: string, width: number }[] = []
+    context.stroke.mockImplementation(() => strokes.push({ style: context.strokeStyle, width: context.lineWidth }))
+    paintMagnifier(context as unknown as CanvasRenderingContext2D, {
+      point: { x: 0, y: 0 },
+      center: { x: 50, y: 50 },
+      radius: 20,
+    }, { view, image, viewport })
+
+    expect(strokes).toEqual([
+      { style: 'rgb(0 0 0 / 60%)', width: 4 },
+      { style: '#fff', width: 2 },
+    ])
+  })
 })

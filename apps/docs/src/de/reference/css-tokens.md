@@ -65,22 +65,22 @@ Seine Regeln liegen in der Kaskadenebene `paperpic`, also überschreibt jedes CS
 
 Diese Klassen sind öffentlich: Ihre Namen, und die Elemente, die sie markieren, bleiben zwischen Versionen stabil. Die anderen Klassen der Komponente halten ihr Layout zusammen und können sich in jeder Version ändern.
 
-| Klasse                    | Element                                                                                                                             |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | Die Wurzel des Viewers                                                                                                              |
-| `paperpic-button`         | Jede Schaltfläche der Werkzeugleiste und der Bearbeitungsleiste                                                                     |
-| `paperpic-button-danger`  | Verwerfen, in der Frage vor dem Verwerfen der Änderungen                                                                            |
-| `paperpic-button-primary` | Übernehmen, und Fertig in jedem Werkzeug                                                                                            |
-| `paperpic-button-text`    | Die Schaltflächen der Frage vor dem Verwerfen der Änderungen                                                                        |
-| `paperpic-edit-bar`       | Die Bearbeitungsleiste, eine Karte unten beim Bearbeiten                                                                            |
-| `paperpic-editing`        | Die Wurzel, während der Bearbeitung                                                                                                 |
-| `paperpic-handle`         | Ein Eckgriff von Zuschneiden und Begradigen                                                                                         |
-| `paperpic-host`           | Das Element, das die Vue- und React-Komponenten um den Viewer herum erzeugen                                                        |
-| `paperpic-icon`           | Das Icon einer Schaltfläche                                                                                                         |
-| `paperpic-status`         | Die Meldung für Screenreader, die auch erscheint, während das Bild lädt oder die Änderungen übernommen werden, und bei einem Fehler |
-| `paperpic-status-visible` | Die Meldung, solange sie in der Mitte des Viewers erscheint                                                                         |
-| `paperpic-toolbar`        | Die Werkzeugleiste rechts, beim Bearbeiten ausgeblendet                                                                             |
-| `paperpic-viewport`       | Der Bereich, der das Bild zeigt und den Tastaturfokus erhält                                                                        |
+| Klasse                    | Element                                                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | Die Wurzel des Viewers                                                                                                                      |
+| `paperpic-button`         | Jede Schaltfläche der Werkzeugleiste und der Bearbeitungsleiste                                                                             |
+| `paperpic-button-danger`  | Verwerfen, in der Frage vor dem Verwerfen der Änderungen                                                                                    |
+| `paperpic-button-primary` | Übernehmen, und Fertig in jedem Werkzeug                                                                                                    |
+| `paperpic-button-text`    | Die Schaltflächen der Frage vor dem Verwerfen der Änderungen                                                                                |
+| `paperpic-edit-bar`       | Die Bearbeitungsleiste, eine Karte unten beim Bearbeiten                                                                                    |
+| `paperpic-editing`        | Die Wurzel, während der Bearbeitung                                                                                                         |
+| `paperpic-handle`         | Ein Eckgriff von Zuschneiden und Begradigen                                                                                                 |
+| `paperpic-host`           | Das Element, das die Vue- und React-Komponenten um den Viewer herum erzeugen                                                                |
+| `paperpic-icon`           | Das Icon einer Schaltfläche                                                                                                                 |
+| `paperpic-status`         | Die Meldung, die erscheint und die Screenreader vorlesen, während das Bild lädt oder die Änderungen übernommen werden, und bei einem Fehler |
+| `paperpic-status-visible` | Die Meldung, solange sie in der Mitte des Viewers erscheint                                                                                 |
+| `paperpic-toolbar`        | Die Werkzeugleiste rechts, beim Bearbeiten ausgeblendet                                                                                     |
+| `paperpic-viewport`       | Der Bereich, der das Bild zeigt und den Tastaturfokus erhält                                                                                |
 
 Schaltflächen zeigen ihren Zustand mit ARIA-Attributen, die du ebenfalls auswählen kannst:
 

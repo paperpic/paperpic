@@ -153,6 +153,8 @@ function zoomTo(zoom: number, point?: ViewPoint): void
 
 ズームの範囲は、画像全体を収める倍率（それが `1` より大きい場合は `1`）から `8` までです。範囲外の値は範囲内に収められます。
 
+`zoom` が `NaN` の場合や、`point` の座標が有限の数でない場合は `RangeError` を投げ、ズームは変わりません。
+
 ### `fit()`
 
 ```ts

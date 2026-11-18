@@ -65,22 +65,22 @@ Its rules live in the `paperpic` cascade layer, so any CSS of yours outside a la
 
 These classes are public: their names, and the elements they mark, stay stable between releases. The other classes of the component hold its layout together and can change in any release.
 
-| Class                     | Element                                                                                                     |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | The root of the viewer                                                                                      |
-| `paperpic-button`         | Every button of the toolbar and the edit bar                                                                |
-| `paperpic-button-danger`  | Discard, in the question before discarding the changes                                                      |
-| `paperpic-button-primary` | Apply, and Done in every tool                                                                               |
-| `paperpic-button-text`    | The buttons of the question before discarding the changes                                                   |
-| `paperpic-edit-bar`       | The edit bar, a card at the bottom while editing                                                            |
-| `paperpic-editing`        | The root, while editing                                                                                     |
-| `paperpic-handle`         | A corner handle of Crop and Straighten                                                                      |
-| `paperpic-host`           | The element that the Vue and React components render around the viewer                                      |
-| `paperpic-icon`           | The icon of a button                                                                                        |
-| `paperpic-status`         | The message for screen readers, which also shows while the image loads or the changes apply, and on failure |
-| `paperpic-status-visible` | The message, while it shows in the middle of the viewer                                                     |
-| `paperpic-toolbar`        | The toolbar at the right, hidden while editing                                                              |
-| `paperpic-viewport`       | The area that shows the image and takes the keyboard focus                                                  |
+| Class                     | Element                                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | The root of the viewer                                                                                           |
+| `paperpic-button`         | Every button of the toolbar and the edit bar                                                                     |
+| `paperpic-button-danger`  | Discard, in the question before discarding the changes                                                           |
+| `paperpic-button-primary` | Apply, and Done in every tool                                                                                    |
+| `paperpic-button-text`    | The buttons of the question before discarding the changes                                                        |
+| `paperpic-edit-bar`       | The edit bar, a card at the bottom while editing                                                                 |
+| `paperpic-editing`        | The root, while editing                                                                                          |
+| `paperpic-handle`         | A corner handle of Crop and Straighten                                                                           |
+| `paperpic-host`           | The element that the Vue and React components render around the viewer                                           |
+| `paperpic-icon`           | The icon of a button                                                                                             |
+| `paperpic-status`         | The message that shows, and that screen readers hear, while the image loads or the changes apply, and on failure |
+| `paperpic-status-visible` | The message, while it shows in the middle of the viewer                                                          |
+| `paperpic-toolbar`        | The toolbar at the right, hidden while editing                                                                   |
+| `paperpic-viewport`       | The area that shows the image and takes the keyboard focus                                                       |
 
 Buttons show their state with ARIA attributes, which you can select too:
 

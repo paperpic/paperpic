@@ -153,6 +153,8 @@ Fija el zoom, donde `1` muestra un píxel de la imagen por cada píxel de pantal
 
 El zoom va desde el que encaja la imagen entera, o `1` si es menor, hasta `8`. Un valor fuera de ese rango se limita.
 
+Lanza un `RangeError` si `zoom` es `NaN` o una coordenada de `point` no es un número finito, y entonces el zoom no cambia.
+
 ### `fit()`
 
 ```ts
