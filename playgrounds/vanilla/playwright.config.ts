@@ -3,6 +3,11 @@ import { defineConfig, devices } from '@playwright/test'
 
 const DEV_PORT = 5180
 const PREVIEW_PORT = 5181
+/**
+ * One address for the servers and the browsers. With `localhost`, Vite can listen on `::1` alone while Firefox tries
+ * `127.0.0.1`, and the page fails to load now and then with NS_ERROR_CONNECTION_REFUSED.
+ */
+const HOST = '127.0.0.1'
 
 /**
  * Smoke tests in real browsers, against the built packages, as a consumer gets them. The unit tests run in happy-dom
@@ -42,17 +47,17 @@ export default defineConfig({
   },
   projects: servers.flatMap(server => browsers.map(browser => ({
     name: `${browser.name}-${server.name}`,
-    use: { ...browser.use, baseURL: `http://localhost:${server.port}` },
+    use: { ...browser.use, baseURL: `http://${HOST}:${server.port}` },
   }))),
   webServer: [
     {
-      command: `vite --mode dist --port ${DEV_PORT} --strictPort`,
-      url: `http://localhost:${DEV_PORT}`,
+      command: `vite --mode dist --host ${HOST} --port ${DEV_PORT} --strictPort`,
+      url: `http://${HOST}:${DEV_PORT}`,
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: `vite build --mode dist --outDir dist && vite preview --mode dist --outDir dist --port ${PREVIEW_PORT} --strictPort`,
-      url: `http://localhost:${PREVIEW_PORT}`,
+      command: `vite build --mode dist --outDir dist && vite preview --mode dist --outDir dist --host ${HOST} --port ${PREVIEW_PORT} --strictPort`,
+      url: `http://${HOST}:${PREVIEW_PORT}`,
       reuseExistingServer: !process.env.CI,
     },
   ],
