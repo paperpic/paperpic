@@ -217,6 +217,7 @@ describe('paperPic', () => {
       image: { width: 600, height: 250 },
       zoom: 0.5,
       fit: 'image',
+      hint: null,
       rotation: 0,
       canUndo: false,
       canRedo: false,

@@ -75,6 +75,11 @@ export interface PaperPicState {
   /** The fit in effect, or `null` once the user has zoomed by hand. */
   fit: Fit | null
   /**
+   * What the open tool asks of the user, as the built-in edit bar shows it, such as "Drag the corners", or `null`.
+   * An interface of your own shows it, because with `toolbar: false` nothing else does.
+   */
+  hint: string | null
+  /**
    * The size of the image in pixels, at full resolution and with the edits so far, but without the turn of `rotation`,
    * or `null` if there is none.
    */
@@ -175,6 +180,8 @@ export class PaperPic {
 
   /** The open tool with a selection of its own, such as Crop. */
   private session: { handle: ToolSession, tool: Tool } | null = null
+  /** What the open tool asks instead of its usual hint, such as the next step after pressing a corner. */
+  private hintOverride: string | null = null
   /** The open Adjust or Clean up. */
   private draft: PanelDraft | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
@@ -435,6 +442,7 @@ export class PaperPic {
       image: shown && { width: shown.width, height: shown.height },
       zoom: this.view.zoom,
       fit: this.view.fit,
+      hint: this.hint(),
       rotation: this.view.rotation,
       canUndo: this.history.done.length > 0,
       canRedo: this.history.undone.length > 0,
@@ -902,7 +910,15 @@ export class PaperPic {
         this.pan(distance(x, this.viewport.width), distance(y, this.viewport.height))
       },
       requestPaint: () => this.renderer.requestPaint(),
-      setHint: text => this.editBar.setHint(text),
+      setHint: (text) => {
+        const before = this.hint()
+        this.hintOverride = text
+        this.editBar.setHint(text)
+        // A tool that closes lets go of its corner too, and the close reports the new state itself
+        if (this.session && this.hint() !== before) {
+          this.emit('change', this.getState())
+        }
+      },
       announce: text => this.announce(text),
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
@@ -913,6 +929,14 @@ export class PaperPic {
         viewport: this.viewport,
       }),
     }
+  }
+
+  /** What the open tool asks of the user: its hint, or what replaces it. Only a tool with a selection has one. */
+  private hint(): string | null {
+    const key = this.session?.tool.hint
+    return this.session
+      ? this.hintOverride ?? (key ? this.labels[key] : null)
+      : null
   }
 
   /** The open tool, with a selection or a panel of settings of its own. */
@@ -949,8 +973,11 @@ export class PaperPic {
       return
     }
     const hadFocus = this.hasFocus()
-    this.session?.handle.deactivate()
+    // Gone before it deactivates, so the hint it clears on the way out does not report a state half closed
+    const session = this.session
     this.session = null
+    session?.handle.deactivate()
+    this.hintOverride = null
     this.draft = null
     this.editBar.setActiveTool(null)
     if (hadFocus && this.options.toolbar) {

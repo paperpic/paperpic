@@ -182,6 +182,7 @@ interface PaperPicState {
   canRedo: boolean
   canUndo: boolean
   fit: Fit | null
+  hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
   rotation: Rotation

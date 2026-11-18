@@ -24,6 +24,7 @@ Das Ereignis [`change`](../reference/events#change) liefert nach jeder Aktion de
   <button type="button" data-action="cancel">Abbrechen</button>
   <button type="button" data-action="apply">Übernehmen</button>
 </div>
+<p id="hint"></p>
 <div id="viewer" style="height: 480px"></div>
 ```
 
@@ -55,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +76,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
+  document.querySelector('#hint')!.textContent = hint ?? ''
 }
 
 pic.on('change', update)
@@ -115,6 +117,9 @@ function refresh() {
       </button>
     </template>
     <template v-else-if="state.activeTool">
+      <p v-if="state.hint">
+        {{ state.hint }}
+      </p>
       <button type="button" @click="viewer?.confirmTool()">
         Fertig
       </button>
@@ -178,6 +183,7 @@ export function Receipt() {
           {state.mode === 'view' && (
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Bearbeiten</button>
           )}
+          {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
               <button type="button" onClick={() => viewer().confirmTool()}>Fertig</button>
@@ -400,6 +406,7 @@ export function CleanUpRuler() {
 ## Hinweise
 
 - Mit `toolbar: false` ist auch die eingebaute Bearbeitungsleiste ausgeblendet, Zuschneiden und Begradigen zeigen also ihre Griffe, aber keine Schaltfläche Fertig. Deine Oberfläche bestätigt sie mit [`confirmTool()`](../reference/methods#confirmtool), wie `Enter`. Um sie ohne ihre Änderungen zu schließen, rufe [`cancelTool()`](../reference/methods#canceltool) auf, wie es `Esc` tut.
+- Solange Zuschneiden oder Begradigen offen ist, sagt `hint` im Zustand, was zu tun ist, etwa „Drag the corners“, wie die eingebaute Bearbeitungsleiste. Zeige es an, denn mit `toolbar: false` zeigt es sonst nichts. Ein neuer Hinweis, etwa nach dem Drücken einer Ecke, kommt mit `change`.
 - Eigene Regler können [`setThreshold()`](../reference/methods#setthreshold) und [`setAdjustments()`](../reference/methods#setadjustments) direkt aufrufen, was bei jedem Aufruf eine Änderung hinzufügt. Für eine einzige Änderung über ein ganzes Ziehen öffne das Werkzeug vorher mit [`openTool()`](../reference/methods#opentool): Dieselben Methoden ändern dann, was es zeigt, und `confirmTool()` behält es.
 - [`cancel()`](../reference/methods#cancel) fragt nicht nach, bevor es die Änderungen verwirft. Frag selbst nach, wenn es welche gibt, etwa wenn `canApply` wahr ist.
 - Die Tastenkürzel funktionieren weiter, wenn der Viewer den Fokus hat. Siehe [Barrierefreiheit](../guide/accessibility).

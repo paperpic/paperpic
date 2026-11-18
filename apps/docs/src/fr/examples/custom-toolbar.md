@@ -24,6 +24,7 @@ L’événement [`change`](../reference/events#change) envoie l’[état](../ref
   <button type="button" data-action="cancel">Annuler</button>
   <button type="button" data-action="apply">Appliquer</button>
 </div>
+<p id="hint"></p>
 <div id="viewer" style="height: 480px"></div>
 ```
 
@@ -55,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +76,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
+  document.querySelector('#hint')!.textContent = hint ?? ''
 }
 
 pic.on('change', update)
@@ -115,6 +117,9 @@ function refresh() {
       </button>
     </template>
     <template v-else-if="state.activeTool">
+      <p v-if="state.hint">
+        {{ state.hint }}
+      </p>
       <button type="button" @click="viewer?.confirmTool()">
         Terminé
       </button>
@@ -178,6 +183,7 @@ export function Receipt() {
           {state.mode === 'view' && (
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Modifier</button>
           )}
+          {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
               <button type="button" onClick={() => viewer().confirmTool()}>Terminé</button>
@@ -400,6 +406,7 @@ export function CleanUpRuler() {
 ## Remarques
 
 - Avec `toolbar: false`, la barre de modification intégrée est aussi masquée, donc Recadrer et Redresser affichent leurs poignées mais pas de bouton Terminé. Votre interface les valide avec [`confirmTool()`](../reference/methods#confirmtool), comme `Entrée`. Pour les fermer sans leurs changements, appelez [`cancelTool()`](../reference/methods#canceltool), comme le fait `Échap`.
+- Tant que Recadrer ou Redresser est ouvert, `hint` dans l’état dit quoi faire, par exemple « Drag the corners », comme la barre de modification intégrée. Affichez-le, car avec `toolbar: false` rien d’autre ne le montre. Un nouveau hint, comme après avoir appuyé sur un coin, arrive avec `change`.
 - Vos propres curseurs peuvent appeler directement [`setThreshold()`](../reference/methods#setthreshold) et [`setAdjustments()`](../reference/methods#setadjustments), ce qui ajoute un changement à chaque appel. Pour laisser un seul changement pour tout un glissement, ouvrez d’abord l’outil avec [`openTool()`](../reference/methods#opentool) : les mêmes méthodes changent alors ce qu’il montre, et `confirmTool()` le garde.
 - [`cancel()`](../reference/methods#cancel) ne demande rien avant d’abandonner les changements. Demandez à l’utilisateur s’il y en a, par exemple quand `canApply` est vrai.
 - Les raccourcis clavier fonctionnent toujours quand la visionneuse a le focus. Voir [Accessibilité](../guide/accessibility).
