@@ -24,9 +24,10 @@ Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält. Eine Fu
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | Die Schaltfläche, die die Skala für Helligkeit und Kontrast öffnet                                                     |
 | `adjustmentLevel`      | Brightness +30                               | Funktion von Name und Wert von -100 bis 100, angesagt nach dem Bewegen der Skala von Anpassen                          |
+| `adjustUnavailable`    | Not available while Clean up is on           | Die Beschreibung von Anpassen, solange Bereinigen eingeschaltet ist, was es deaktiviert                                |
 | `applied`              | Changes applied                              | Angesagt, wenn die Änderungen übernommen sind                                                                          |
 | `apply`                | Apply                                        | Die Schaltfläche, die die Änderungen übernimmt                                                                         |
-| `applyError`           | The changes could not be applied             | Angezeigt, wenn Übernehmen fehlschlägt oder eine Änderung nicht angezeigt werden kann                                  |
+| `applyError`           | The changes could not be applied             | Angezeigt, wenn Übernehmen fehlschlägt                                                                                 |
 | `brightness`           | Brightness                                   | Die Wahl der Helligkeit in Anpassen, und der Name ihrer Skala                                                          |
 | `cancel`               | Cancel                                       | Die Schaltfläche, die den Bearbeitungsmodus verlässt                                                                   |
 | `cancelTool`           | Cancel this tool                             | Die Schaltfläche, die ein Werkzeug schließt und seine Änderungen verwirft                                              |
@@ -55,6 +56,7 @@ Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält. Eine Fu
 | `loading`              | Loading image                                | Angezeigt, während das Bild lädt                                                                                       |
 | `perspective`          | Straighten                                   | Die Schaltfläche Begradigen                                                                                            |
 | `perspectiveHint`      | Drag each corner to a corner of the document | Was in Begradigen zu tun ist                                                                                           |
+| `previewError`         | The changes could not be shown               | Angezeigt, wenn eine Änderung nicht angezeigt werden kann                                                              |
 | `processing`           | Applying changes                             | Angezeigt, während Übernehmen läuft                                                                                    |
 | `redo`                 | Redo                                         | Die Schaltfläche Wiederholen                                                                                           |
 | `rotateLeft`           | Rotate left                                  | Die Drehen-Schaltfläche der Bearbeitungsleiste und eine der beiden eines schreibgeschützten Viewers                    |

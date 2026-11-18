@@ -24,9 +24,10 @@ const pic = new PaperPic(container, {
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------- |
 | `adjust`               | Adjust                                       | 打开亮度和对比度刻度尺的按钮                               |
 | `adjustmentLevel`      | Brightness +30                               | 名称和 -100 到 100 的值的函数，移动“调整”的刻度尺后朗读    |
+| `adjustUnavailable`    | Not available while Clean up is on           | 开启“清理”时“调整”的描述，此时“调整”不可用                 |
 | `applied`              | Changes applied                              | 修改应用后朗读                                             |
 | `apply`                | Apply                                        | 应用修改的按钮                                             |
-| `applyError`           | The changes could not be applied             | 应用失败或修改无法显示时显示                               |
+| `applyError`           | The changes could not be applied             | 应用失败时显示                                             |
 | `brightness`           | Brightness                                   | 在“调整”中选择亮度的按钮，以及它的刻度尺的名称             |
 | `cancel`               | Cancel                                       | 退出编辑模式的按钮                                         |
 | `cancelTool`           | Cancel this tool                             | 关闭工具并放弃其修改的按钮                                 |
@@ -55,6 +56,7 @@ const pic = new PaperPic(container, {
 | `loading`              | Loading image                                | 图片加载时显示                                             |
 | `perspective`          | Straighten                                   | “矫正”按钮                                                 |
 | `perspectiveHint`      | Drag each corner to a corner of the document | 在“矫正”中要做什么                                         |
+| `previewError`         | The changes could not be shown               | 修改无法显示时显示                                         |
 | `processing`           | Applying changes                             | 应用进行时显示                                             |
 | `redo`                 | Redo                                         | “重做”按钮                                                 |
 | `rotateLeft`           | Rotate left                                  | 编辑栏的旋转按钮，以及只读查看器两个旋转按钮之一           |

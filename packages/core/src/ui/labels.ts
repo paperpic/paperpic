@@ -8,6 +8,8 @@ export interface PaperPicLabels {
   adjust: string
   /** Announced after moving the ruler of Adjust, with the name of the tone and its value from -100 to 100. */
   adjustmentLevel: (name: string, value: number) => string
+  /** Describes Adjust to screen readers while Clean up is on, which keeps it disabled. */
+  adjustUnavailable: string
   /** Announced when the changes are applied. */
   applied: string
   apply: string
@@ -55,6 +57,8 @@ export interface PaperPicLabels {
   perspective: string
   /** What to do in the perspective tool. */
   perspectiveHint: string
+  /** Shown when the changes so far cannot be shown on screen. The edit stays open. */
+  previewError: string
   /** Shown while applying the changes. */
   processing: string
   redo: string
@@ -83,6 +87,7 @@ const SIGNED = new Intl.NumberFormat('en-US', { signDisplay: 'exceptZero' })
 export const DEFAULT_LABELS: PaperPicLabels = {
   adjust: 'Adjust',
   adjustmentLevel: (name, value) => `${name} ${SIGNED.format(value)}`,
+  adjustUnavailable: 'Not available while Clean up is on',
   applied: 'Changes applied',
   apply: 'Apply',
   applyError: 'The changes could not be applied',
@@ -114,6 +119,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   loading: 'Loading image',
   perspective: 'Straighten',
   perspectiveHint: 'Drag each corner to a corner of the document',
+  previewError: 'The changes could not be shown',
   processing: 'Applying changes',
   redo: 'Redo',
   rotateLeft: 'Rotate left',

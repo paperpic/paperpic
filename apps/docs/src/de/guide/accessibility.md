@@ -39,7 +39,7 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche
 - Das Bild hat die Rolle eines Bildes, mit `alt` als Namen. Ohne `alt` überspringen Screenreader es.
 - Werkzeugleiste und Bearbeitungsleiste haben eigene Namen, etwa „Bildsteuerung“ und „Bearbeitungssteuerung“.
 - Eine Ansage meldet, was der Nutzer nicht allein am Fokus erkennt: das Laden des Bildes, die Zoomstufe, den Beginn des Bearbeitungsmodus, eine ausgewählte Ecke und die Position einer verschobenen Ecke, den Wert einer Skala, das Ergebnis von Übernehmen und jeden Fehler.
-- Der Schalter von Bereinigen hat die Rolle eines Schalters. Ein Werkzeug in Verwendung, das auf dem Bildschirm ein Punkt markiert, wird als „Aktiv“ beschrieben.
+- Der Schalter von Bereinigen hat die Rolle eines Schalters. Ein Werkzeug in Verwendung, das auf dem Bildschirm ein Punkt markiert, wird als „Aktiv“ beschrieben. Solange Bereinigen eingeschaltet ist, wird Anpassen mit dem Grund beschrieben, warum es deaktiviert ist.
 
 ## Touchscreens
 

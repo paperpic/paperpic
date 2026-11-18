@@ -24,9 +24,10 @@ const pic = new PaperPic(container, {
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | 明るさとコントラストの目盛りを開くボタン                                     |
 | `adjustmentLevel`      | Brightness +30                               | 名前と -100 から 100 の値の関数。「調整」の目盛りを動かしたあとに読み上げ    |
+| `adjustUnavailable`    | Not available while Clean up is on           | 「クリーンアップ」がオンの間の「調整」の説明。その間「調整」は使えません     |
 | `applied`              | Changes applied                              | 変更が適用されたときに読み上げ                                               |
 | `apply`                | Apply                                        | 変更を適用するボタン                                                         |
-| `applyError`           | The changes could not be applied             | 適用に失敗したとき、または変更を表示できないときに表示                       |
+| `applyError`           | The changes could not be applied             | 適用に失敗したときに表示                                                     |
 | `brightness`           | Brightness                                   | 「調整」で明るさを選ぶボタンと、その目盛りの名前                             |
 | `cancel`               | Cancel                                       | 編集モードを終えるボタン                                                     |
 | `cancelTool`           | Cancel this tool                             | ツールを閉じて変更を破棄するボタン                                           |
@@ -55,6 +56,7 @@ const pic = new PaperPic(container, {
 | `loading`              | Loading image                                | 画像の読み込み中に表示                                                       |
 | `perspective`          | Straighten                                   | 「傾き補正」ボタン                                                           |
 | `perspectiveHint`      | Drag each corner to a corner of the document | 「傾き補正」での操作の説明                                                   |
+| `previewError`         | The changes could not be shown               | 変更を表示できないときに表示                                                 |
 | `processing`           | Applying changes                             | 適用の実行中に表示                                                           |
 | `redo`                 | Redo                                         | 「やり直す」ボタン                                                           |
 | `rotateLeft`           | Rotate left                                  | 編集バーの回転ボタン、および読み取り専用ビューアーの 2 つの回転ボタンの一方  |

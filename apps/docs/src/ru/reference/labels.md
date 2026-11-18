@@ -24,9 +24,10 @@ const pic = new PaperPic(container, {
 | ---------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | Кнопка, которая открывает шкалу яркости и контрастности                                                              |
 | `adjustmentLevel`      | Brightness +30                               | Функция имени и значения от -100 до 100, озвучивается после перемещения шкалы «Настроить»                            |
+| `adjustUnavailable`    | Not available while Clean up is on           | Описание «Настроить», пока включено «Очистить», из-за чего оно недоступно                                            |
 | `applied`              | Changes applied                              | Озвучивается, когда изменения применены                                                                              |
 | `apply`                | Apply                                        | Кнопка, которая применяет изменения                                                                                  |
-| `applyError`           | The changes could not be applied             | Показывается, когда применение не удалось или изменение не удаётся показать                                          |
+| `applyError`           | The changes could not be applied             | Показывается, когда применение не удалось                                                                            |
 | `brightness`           | Brightness                                   | Выбор яркости в «Настроить» и название её шкалы                                                                      |
 | `cancel`               | Cancel                                       | Кнопка, которая выходит из режима редактирования                                                                     |
 | `cancelTool`           | Cancel this tool                             | Кнопка, которая закрывает инструмент и отбрасывает его изменения                                                     |
@@ -55,6 +56,7 @@ const pic = new PaperPic(container, {
 | `loading`              | Loading image                                | Показывается, пока изображение загружается                                                                           |
 | `perspective`          | Straighten                                   | Кнопка «Выровнять»                                                                                                   |
 | `perspectiveHint`      | Drag each corner to a corner of the document | Что делать в «Выровнять»                                                                                             |
+| `previewError`         | The changes could not be shown               | Показывается, когда изменение не удаётся показать                                                                    |
 | `processing`           | Applying changes                             | Показывается, пока идёт применение                                                                                   |
 | `redo`                 | Redo                                         | Кнопка «Повторить»                                                                                                   |
 | `rotateLeft`           | Rotate left                                  | Кнопка поворота на панели редактирования и одна из двух в просмотрщике только для чтения                             |

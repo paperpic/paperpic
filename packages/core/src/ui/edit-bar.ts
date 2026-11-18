@@ -75,6 +75,8 @@ export class EditBar {
   private readonly optionButtons: Record<AdjustmentName, HTMLButtonElement>
   private readonly optionTexts: Record<AdjustmentName, HTMLElement>
   private readonly inUse: HTMLElement
+  /** Why Adjust cannot open while Clean up is on, for screen readers. */
+  private readonly adjustUnavailable: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
   private readonly toolButtons: { button: HTMLButtonElement, id: Tool['actions'][number]['id'], tool: Tool }[] = []
@@ -244,8 +246,12 @@ export class EditBar {
     this.inUse = document.createElement('span')
     this.inUse.id = `paperpic-in-use-${id}`
     this.inUse.hidden = true
+    // A disabled button that does not say why leaves screen reader users guessing
+    this.adjustUnavailable = document.createElement('span')
+    this.adjustUnavailable.id = `paperpic-adjust-unavailable-${id}`
+    this.adjustUnavailable.hidden = true
 
-    this.element.append(this.controls, this.toolControls, this.confirmation, this.inUse)
+    this.element.append(this.controls, this.toolControls, this.confirmation, this.inUse, this.adjustUnavailable)
 
     this.fixTabOrder = attachRovingFocus(this.controls, () => [
       this.cancelButton,
@@ -283,6 +289,7 @@ export class EditBar {
       this.optionTexts[name].textContent = labels[name]
     }
     this.inUse.textContent = labels.inUse
+    this.adjustUnavailable.textContent = labels.adjustUnavailable
     this.showHint()
     this.showPanel()
     nameButton(this.cancelButton, labels.cancel)
@@ -350,7 +357,7 @@ export class EditBar {
         || (tool.activate !== undefined && !canOpenTool)
         || (tool.id === 'adjust' && threshold.enabled)))
       if (tool.id === 'adjust') {
-        this.markInUse(button, adjusted)
+        this.markInUse(button, adjusted, threshold.enabled ? this.adjustUnavailable : null)
       }
       if (tool.id === 'threshold') {
         this.markInUse(button, threshold.enabled)
@@ -435,14 +442,18 @@ export class EditBar {
     }
   }
 
-  /** Shows the dot of a button whose setting is in effect, and describes it so to screen readers. */
-  private markInUse(button: HTMLButtonElement, inUse: boolean): void {
+  /**
+   * Shows the dot of a button whose setting is in effect, and describes it so to screen readers. A `reason` describes
+   * it instead, such as why it cannot open.
+   */
+  private markInUse(button: HTMLButtonElement, inUse: boolean, reason: HTMLElement | null = null): void {
     const dot = button.querySelector<HTMLElement>('.paperpic-edit-dot')
     if (dot) {
       dot.hidden = !inUse
     }
-    if (inUse) {
-      button.setAttribute('aria-describedby', this.inUse.id)
+    const description = reason ?? (inUse ? this.inUse : null)
+    if (description) {
+      button.setAttribute('aria-describedby', description.id)
     }
     else {
       button.removeAttribute('aria-describedby')

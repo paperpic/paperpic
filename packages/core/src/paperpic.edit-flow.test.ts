@@ -964,6 +964,8 @@ describe('editing', () => {
       })
       expect(pic.getState()).toMatchObject({ mode: 'edit', canUndo: true })
       expect(crop().getAttribute('aria-disabled')).toBe('false')
+      // Its own message, because nothing was applied
+      expect(container.querySelector('.paperpic-status-visible')!.textContent).toBe('The changes could not be shown')
     })
   })
 

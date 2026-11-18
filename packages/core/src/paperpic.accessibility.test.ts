@@ -165,6 +165,8 @@ describe('accessibility', () => {
     pic.setThreshold({ enabled: true })
     await flush()
     expect(button('Clean up').getAttribute('aria-describedby')).not.toBeNull()
+    // Adjust, disabled while Clean up is on, says why
+    expect(button('Adjust').getAttribute('aria-describedby')).not.toBeNull()
     expect(await audit()).toEqual([])
   })
 

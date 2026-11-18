@@ -186,7 +186,8 @@ export class PaperPic {
   private mode: PaperPicState['mode'] = 'view'
   private history: History<Operation> = createHistory()
   private busy = false
-  private applyFailed = false
+  /** What failed in the edit open, which the message on screen names until the next edit. */
+  private failure: 'apply' | 'preview' | null = null
   private destroyed = false
   /** Measured with the viewer, because reading it on every move of a pan would make the browser lay out the page each time. */
   private toolbarWidth = 0
@@ -740,7 +741,7 @@ export class PaperPic {
     const edit = this.editId
     const outdated = () => id !== this.loadId || edit !== this.editId
     this.busy = true
-    this.applyFailed = false
+    this.failure = null
     this.showStatus()
     this.refresh()
     this.emit('change', this.getState())
@@ -778,7 +779,7 @@ export class PaperPic {
         return
       }
       this.busy = false
-      this.applyFailed = true
+      this.failure = 'apply'
       this.showStatus()
       this.refresh()
       this.emit('error', {
@@ -1051,7 +1052,7 @@ export class PaperPic {
     this.closeTool()
     this.mode = 'view'
     this.busy = false
-    this.applyFailed = false
+    this.failure = null
     this.history = createHistory()
     this.setPreview(null)
     this.syncRotation()
@@ -1065,7 +1066,7 @@ export class PaperPic {
 
   private setHistory(history: History<Operation>): void {
     this.history = history
-    this.applyFailed = false
+    this.failure = null
     this.updatePreview()
     this.showStatus()
     this.refresh()
@@ -1135,7 +1136,7 @@ export class PaperPic {
 
   /** Keeps the edit open, and reports that its pixels could not be shown. */
   private previewFailed(cause: unknown): void {
-    this.applyFailed = true
+    this.failure = 'preview'
     this.showStatus()
     this.refresh()
     this.emit('error', {
@@ -1179,10 +1180,14 @@ export class PaperPic {
       loading: this.labels.loading,
       error: this.labels.loadError,
     }
+    const failures = {
+      apply: this.labels.applyError,
+      preview: this.labels.previewError,
+    }
     const text = this.busy
       ? this.labels.processing
-      : this.applyFailed
-        ? this.labels.applyError
+      : this.failure
+        ? failures[this.failure]
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')

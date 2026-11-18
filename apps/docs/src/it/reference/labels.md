@@ -24,9 +24,10 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Una fun
 | ---------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | Il pulsante che apre il righello di luminosità e contrasto                                                                       |
 | `adjustmentLevel`      | Brightness +30                               | Funzione del nome e del valore da -100 a 100, annunciata dopo aver spostato il righello di Regola                                |
+| `adjustUnavailable`    | Not available while Clean up is on           | La descrizione di Regola mentre Pulisci è attivo, che lo disattiva                                                               |
 | `applied`              | Changes applied                              | Annunciata quando i cambiamenti sono applicati                                                                                   |
 | `apply`                | Apply                                        | Il pulsante che applica i cambiamenti                                                                                            |
-| `applyError`           | The changes could not be applied             | Mostrata quando Applica fallisce, o quando un cambiamento non si può mostrare                                                    |
+| `applyError`           | The changes could not be applied             | Mostrata quando Applica fallisce                                                                                                 |
 | `brightness`           | Brightness                                   | La scelta della luminosità in Regola, e il nome del suo righello                                                                 |
 | `cancel`               | Cancel                                       | Il pulsante che esce dalla modalità di modifica                                                                                  |
 | `cancelTool`           | Cancel this tool                             | Il pulsante che chiude uno strumento e scarta i suoi cambiamenti                                                                 |
@@ -55,6 +56,7 @@ Cinque etichette sono funzioni, perché il loro testo include un valore. Una fun
 | `loading`              | Loading image                                | Mostrata mentre l’immagine si carica                                                                                             |
 | `perspective`          | Straighten                                   | Il pulsante Raddrizza                                                                                                            |
 | `perspectiveHint`      | Drag each corner to a corner of the document | Cosa fare in Raddrizza                                                                                                           |
+| `previewError`         | The changes could not be shown               | Mostrata quando un cambiamento non si può mostrare                                                                               |
 | `processing`           | Applying changes                             | Mostrata mentre Applica è in corso                                                                                               |
 | `redo`                 | Redo                                         | Il pulsante Ripeti                                                                                                               |
 | `rotateLeft`           | Rotate left                                  | Il pulsante di rotazione della barra di modifica, e uno dei due di un visualizzatore di sola lettura                             |

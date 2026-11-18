@@ -24,9 +24,10 @@ Cinco textos son funciones, porque incluyen un valor. Una función es nueva cada
 | ---------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | El botón que abre la regla de brillo y contraste                                                                             |
 | `adjustmentLevel`      | Brightness +30                               | Función del nombre y del valor de -100 a 100, que se anuncia al mover la regla de Ajustar                                    |
+| `adjustUnavailable`    | Not available while Clean up is on           | La descripción de Ajustar mientras Limpiar está activada, que la deja desactivada                                            |
 | `applied`              | Changes applied                              | Se anuncia cuando se aplican los cambios                                                                                     |
 | `apply`                | Apply                                        | El botón que aplica los cambios                                                                                              |
-| `applyError`           | The changes could not be applied             | Se muestra cuando Aplicar falla, o cuando un cambio no se puede mostrar                                                      |
+| `applyError`           | The changes could not be applied             | Se muestra cuando Aplicar falla                                                                                              |
 | `brightness`           | Brightness                                   | La opción de brillo en Ajustar, y el nombre de su regla                                                                      |
 | `cancel`               | Cancel                                       | El botón que sale del modo de edición                                                                                        |
 | `cancelTool`           | Cancel this tool                             | El botón que cierra una herramienta y descarta sus cambios                                                                   |
@@ -55,6 +56,7 @@ Cinco textos son funciones, porque incluyen un valor. Una función es nueva cada
 | `loading`              | Loading image                                | Se muestra mientras la imagen se carga                                                                                       |
 | `perspective`          | Straighten                                   | El botón Enderezar                                                                                                           |
 | `perspectiveHint`      | Drag each corner to a corner of the document | Qué hacer en Enderezar                                                                                                       |
+| `previewError`         | The changes could not be shown               | Se muestra cuando un cambio no se puede mostrar                                                                              |
 | `processing`           | Applying changes                             | Se muestra mientras Aplicar está en marcha                                                                                   |
 | `redo`                 | Redo                                         | El botón Rehacer                                                                                                             |
 | `rotateLeft`           | Rotate left                                  | El botón de girar de la barra de edición, y uno de los dos de un visor de solo lectura                                       |

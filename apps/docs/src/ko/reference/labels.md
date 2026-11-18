@@ -24,9 +24,10 @@ const pic = new PaperPic(container, {
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | 밝기와 대비 눈금자를 여는 버튼                                                  |
 | `adjustmentLevel`      | Brightness +30                               | 이름과 -100부터 100까지 값의 함수. ‘조정’ 눈금자를 움직인 뒤 읽어 줌            |
+| `adjustUnavailable`    | Not available while Clean up is on           | ‘정리’가 켜져 있는 동안의 ‘조정’ 설명. 그동안 ‘조정’은 쓸 수 없음               |
 | `applied`              | Changes applied                              | 변경이 적용되면 읽어 줌                                                         |
 | `apply`                | Apply                                        | 변경을 적용하는 버튼                                                            |
-| `applyError`           | The changes could not be applied             | 적용에 실패하거나 변경을 표시할 수 없으면 표시                                  |
+| `applyError`           | The changes could not be applied             | 적용에 실패하면 표시                                                            |
 | `brightness`           | Brightness                                   | ‘조정’에서 밝기를 고르는 버튼과 그 눈금자의 이름                                |
 | `cancel`               | Cancel                                       | 편집 모드를 끝내는 버튼                                                         |
 | `cancelTool`           | Cancel this tool                             | 도구를 닫고 변경을 버리는 버튼                                                  |
@@ -55,6 +56,7 @@ const pic = new PaperPic(container, {
 | `loading`              | Loading image                                | 이미지를 불러오는 동안 표시                                                     |
 | `perspective`          | Straighten                                   | ‘기울기 보정’ 버튼                                                              |
 | `perspectiveHint`      | Drag each corner to a corner of the document | ‘기울기 보정’에서 할 일                                                         |
+| `previewError`         | The changes could not be shown               | 변경을 표시할 수 없으면 표시                                                    |
 | `processing`           | Applying changes                             | 적용이 진행되는 동안 표시                                                       |
 | `redo`                 | Redo                                         | ‘다시 실행’ 버튼                                                                |
 | `rotateLeft`           | Rotate left                                  | 편집 바의 회전 버튼, 그리고 읽기 전용 뷰어의 회전 버튼 두 개 중 하나            |
