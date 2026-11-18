@@ -1,7 +1,7 @@
 {
   "name": "@paperpic/react",
   "type": "module",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "React component to view and edit document images with PaperPic: straighten, crop and clean up phone photos, scans and any image with text.",
   "author": "Marco Caparrós <hello@paperpic.dev>",
   "license": "MIT",
