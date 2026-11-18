@@ -31,7 +31,7 @@ Com o foco dentro do visualizador:
 No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona esse botão. Antes de cancelar as alterações, `Esc` pede confirmação. Com `toolbar: false`, `Esc` continua fechando uma ferramenta, mas não cancela a edição: quem decide é a sua interface.
 
 - **Barra de ferramentas e barra de edição.** Tab chega a cada barra, e dentro dela as setas passam de um botão para outro, com `Home` e `End` para o primeiro e o último.
-- **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift.
+- **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift. Os leitores de tela ouvem essas teclas, e que Enter conclui, na descrição de cada alça.
 - **Réguas.** As réguas do Ajustar e do Limpar são controles deslizantes nativos: as setas, `Page Up`, `Page Down`, `Home` e `End` as movem. `Enter` mantém o valor, como Concluído, e `Esc` fecha a ferramenta sem ele.
 
 ## Leitores de tela
@@ -39,11 +39,11 @@ No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona e
 - A imagem tem o papel de imagem, com `alt` como nome. Sem `alt`, os leitores de tela a ignoram.
 - A barra de ferramentas e a barra de edição têm nome próprio, como "Controles da imagem" e "Controles de edição".
 - Um anúncio informa o que o usuário não percebe só pelo foco: o carregamento da imagem, o nível de zoom, o início do modo de edição, um canto selecionado e a posição de um canto movido, o valor de uma régua, o resultado do Aplicar e qualquer falha.
-- O interruptor do Limpar tem o papel de interruptor. Uma ferramenta em uso, que um ponto marca na tela, é descrita como "Em uso".
+- O interruptor do Limpar tem o papel de interruptor. Uma ferramenta em uso, que um ponto marca na tela, é descrita como "Em uso". Enquanto Limpar está ligado, Ajustar é descrito com o motivo de estar desativado.
 
 ## Telas sensíveis ao toque
 
-- Com `pointer: coarse`, botões e alças de canto medem pelo menos 44 pixels.
+- Com `any-pointer: coarse`, botões e alças de canto medem pelo menos 44 pixels. Qualquer tela sensível ao toque atende a isso, também em um notebook com trackpad.
 - Enquanto um dedo arrasta um canto, uma lupa mostra a área embaixo dele.
 - Um canto também se move sem arrastar: pressione a alça dele e depois toque onde ele vai. Também funciona com mouse.
 - Enquanto a imagem está encaixada, um dedo rola a página, então o visualizador não prende ninguém. Com zoom, ele move a imagem.

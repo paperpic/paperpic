@@ -4,6 +4,7 @@ import type { Magnifier } from '../render/magnifier'
 import type { ViewPoint } from '../state/view'
 import type { ToolHost, ToolSession } from './types'
 import { TAP_MOVEMENT } from '../input/gestures'
+import { overlayColors } from '../render/colors'
 import { placeMagnifier } from './magnifier'
 
 /** Decides where the corners end up when the user moves one of them towards a point. */
@@ -25,6 +26,9 @@ const CORNER_LABELS = [
   'cornerBottomRight',
   'cornerBottomLeft',
 ] as const
+
+/** Numbers the description of the handles, so each viewer of a page has its own id. */
+let descriptions = 0
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value))
@@ -115,19 +119,20 @@ function drawSelection(context: CanvasRenderingContext2D, frame: readonly ViewPo
     context.closePath()
   }
 
+  const { dim, line, lineShadow } = overlayColors(context)
   context.beginPath()
   trace(frame)
   trace(selection)
-  context.fillStyle = 'rgb(0 0 0 / 50%)'
+  context.fillStyle = dim
   context.fill('evenodd')
 
   context.beginPath()
   trace(selection)
   context.lineWidth = 3
-  context.strokeStyle = 'rgb(0 0 0 / 60%)'
+  context.strokeStyle = lineShadow
   context.stroke()
   context.lineWidth = 1.5
-  context.strokeStyle = '#fff'
+  context.strokeStyle = line
   context.stroke()
 }
 
@@ -139,6 +144,8 @@ export class CornerEditor {
   private readonly host: ToolHost
   private readonly constrain: ConstrainCorner
   private readonly handles: HTMLButtonElement[]
+  /** What the keys do, which screen readers hear on each handle. The hint on screen speaks to a pointer. */
+  private readonly description: HTMLElement
   private corners: Quad
   private magnifier: Magnifier | null = null
   /** The corner that the next tap on the image moves. */
@@ -148,8 +155,12 @@ export class CornerEditor {
     this.host = host
     this.corners = corners
     this.constrain = constrain
+    this.description = document.createElement('span')
+    this.description.id = `paperpic-corner-keys-${++descriptions}`
+    this.description.hidden = true
+    this.description.textContent = host.labels().cornerKeys
     this.handles = CORNER_LABELS.map((label, index) => this.createHandle(label, index))
-    host.layer.append(...this.handles)
+    host.layer.append(this.description, ...this.handles)
     this.update()
   }
 
@@ -215,6 +226,7 @@ export class CornerEditor {
     for (const handle of this.handles) {
       handle.remove()
     }
+    this.description.remove()
   }
 
   /** Selects a corner, or none with `null`, and tells the user what to do next. */
@@ -253,6 +265,7 @@ export class CornerEditor {
     handle.dataset.paperpicControl = label
     handle.setAttribute('aria-label', this.host.labels()[label])
     handle.setAttribute('aria-pressed', 'false')
+    handle.setAttribute('aria-describedby', this.description.id)
 
     let grab: ViewPoint | null = null
     let last: ViewPoint = { x: 0, y: 0 }

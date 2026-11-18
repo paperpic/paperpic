@@ -14,13 +14,16 @@ Les jetons sont des propriétés personnalisées CSS qui changent l’apparence 
 }
 ```
 
-| Jeton                            | Clair     | Sombre    | Description                          |
-| -------------------------------- | --------- | --------- | ------------------------------------ |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Couleur d’accent de l’interface      |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Fond de l’interface                  |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Texte de l’interface                 |
-| `--paperpic-radius`              | `6px`     | `6px`     | Rayon des coins de l’interface       |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Durée des transitions de l’interface |
+| Jeton                            | Clair              | Sombre             | Description                                                                                       |
+| -------------------------------- | ------------------ | ------------------ | ------------------------------------------------------------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | Couleur d’accent de l’interface                                                                   |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | Assombrit l’image autour d’une sélection                                                          |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | Les lignes sur l’image : le contour d’une sélection, les poignées d’angle et la croix de la loupe |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | L’ombre sous chaque ligne, pour qu’elle se voie sur toute image                                   |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | Fond de l’interface                                                                               |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | Texte de l’interface                                                                              |
+| `--paperpic-radius`              | `6px`              | `6px`              | Rayon des coins de l’interface                                                                    |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | Durée des transitions de l’interface                                                              |
 
 ## Mode sombre
 
@@ -33,6 +36,8 @@ Pour choisir les deux valeurs d’un jeton, utilisez aussi `light-dark()` :
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+Les couleurs peintes sur l’image, `--paperpic-color-dim`, `--paperpic-color-line` et `--paperpic-color-line-shadow`, ont une seule valeur pour les deux modes, car elles sont sur la photo et non sur l’interface. Une ligne et son ombre vont ensemble : avec une ligne sombre, choisissez une ombre claire.
 
 ## Feuille de style
 
@@ -65,22 +70,22 @@ Ses règles se trouvent dans la couche de cascade `paperpic`, donc tout CSS à v
 
 Ces classes sont publiques : leurs noms, et les éléments qu’elles marquent, restent stables d’une version à l’autre. Les autres classes du composant tiennent sa disposition et peuvent changer dans n’importe quelle version.
 
-| Classe                    | Élément                                                                                                                                          |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `paperpic`                | La racine de la visionneuse                                                                                                                      |
-| `paperpic-button`         | Chaque bouton de la barre d’outils et de la barre de modification                                                                                |
-| `paperpic-button-danger`  | Abandonner, dans la question avant d’abandonner les modifications                                                                                |
-| `paperpic-button-primary` | Appliquer, et Terminé dans chaque outil                                                                                                          |
-| `paperpic-button-text`    | Les boutons de la question avant d’abandonner les modifications                                                                                  |
-| `paperpic-edit-bar`       | La barre de modification, une carte en bas pendant la modification                                                                               |
-| `paperpic-editing`        | La racine, pendant la modification                                                                                                               |
-| `paperpic-handle`         | Une poignée d’angle de Recadrer et Redresser                                                                                                     |
-| `paperpic-host`           | L’élément que les composants Vue et React créent autour de la visionneuse                                                                        |
-| `paperpic-icon`           | L’icône d’un bouton                                                                                                                              |
-| `paperpic-status`         | Le message pour les lecteurs d’écran, qui s’affiche aussi pendant le chargement de l’image ou l’application des modifications, et en cas d’échec |
-| `paperpic-status-visible` | Le message, quand il s’affiche au centre de la visionneuse                                                                                       |
-| `paperpic-toolbar`        | La barre d’outils, à droite, masquée pendant la modification                                                                                     |
-| `paperpic-viewport`       | La zone qui affiche l’image et reçoit le focus du clavier                                                                                        |
+| Classe                    | Élément                                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | La racine de la visionneuse                                                                                                                             |
+| `paperpic-button`         | Chaque bouton de la barre d’outils et de la barre de modification                                                                                       |
+| `paperpic-button-danger`  | Abandonner, dans la question avant d’abandonner les modifications                                                                                       |
+| `paperpic-button-primary` | Appliquer, et Terminé dans chaque outil                                                                                                                 |
+| `paperpic-button-text`    | Les boutons de la question avant d’abandonner les modifications                                                                                         |
+| `paperpic-edit-bar`       | La barre de modification, une carte en bas pendant la modification                                                                                      |
+| `paperpic-editing`        | La racine, pendant la modification                                                                                                                      |
+| `paperpic-handle`         | Une poignée d’angle de Recadrer et Redresser                                                                                                            |
+| `paperpic-host`           | L’élément que les composants Vue et React créent autour de la visionneuse                                                                               |
+| `paperpic-icon`           | L’icône d’un bouton                                                                                                                                     |
+| `paperpic-status`         | Le message qui s’affiche, et que les lecteurs d’écran entendent, pendant le chargement de l’image ou l’application des modifications, et en cas d’échec |
+| `paperpic-status-visible` | Le message, quand il s’affiche au centre de la visionneuse                                                                                              |
+| `paperpic-toolbar`        | La barre d’outils, à droite, masquée pendant la modification                                                                                            |
+| `paperpic-viewport`       | La zone qui affiche l’image et reçoit le focus du clavier                                                                                               |
 
 Les boutons montrent leur état avec des attributs ARIA, que vous pouvez aussi sélectionner :
 
@@ -90,6 +95,22 @@ Les boutons montrent leur état avec des attributs ARIA, que vous pouvez aussi s
 | `[aria-pressed='true']`  | L’adaptation en vigueur, Ajuster à la largeur ou Ajuster à la hauteur, ou le choix d’Ajuster que la règle change |
 
 Le survol et ces états se peignent avec `box-shadow`, que les réinitialisations globales des boutons laissent intact. Pour les modifier, écrasez aussi `box-shadow`.
+
+## États {#states}
+
+La racine, `.paperpic`, porte l’état de la visionneuse dans des attributs data, pour que le CSS puisse le suivre :
+
+| Attribut               | Valeurs                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| `data-paperpic-status` | `empty`, `loading`, `ready` ou `error`, comme `status` dans l’[état](./state)        |
+| `data-paperpic-mode`   | `view` ou `edit`                                                                     |
+| `data-paperpic-tool`   | L’id de l’outil ouvert, comme `crop`. Il est absent tant qu’aucun outil n’est ouvert |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## Contrôles {#controls}
 

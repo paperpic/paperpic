@@ -65,6 +65,15 @@ I token si ereditano, quindi una classe sul contenitore di un visualizzatore, o 
 }
 ```
 
+Altri tre token colorano ciò che il visualizzatore dipinge sulla foto mentre Ritaglia o Raddrizza è aperto: `--paperpic-color-dim` scurisce l’immagine intorno alla selezione, e `--paperpic-color-line` e `--paperpic-color-line-shadow` disegnano le linee e le maniglie d’angolo. Hanno un solo valore nelle pagine chiare e scure. Una linea e la sua ombra vanno in coppia, quindi dai a una linea scura un’ombra chiara:
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Usare i colori del tuo design system {#design-system}
 
 Se la tua app tiene i suoi colori in variabili CSS, fai puntare i token a quelle invece di copiarne i valori. Così il visualizzatore segue il tuo tema, modalità scura compresa:
@@ -252,6 +261,14 @@ Ogni pulsante, righello e maniglia d’angolo porta anche `data-paperpic-control
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+La radice, `.paperpic`, porta anche il suo stato in [`data-paperpic-status`, `data-paperpic-mode` e `data-paperpic-tool`](../reference/css-tokens#states), così il tuo CSS può seguire il caricamento, la modalità di modifica e lo strumento aperto:
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

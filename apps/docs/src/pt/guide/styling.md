@@ -65,6 +65,15 @@ Os tokens são herdados, então uma classe no contêiner de um visualizador, ou 
 }
 ```
 
+Outros três tokens colorem o que o visualizador pinta sobre a foto enquanto Recortar ou Endireitar está aberto: `--paperpic-color-dim` escurece a imagem em volta da seleção, e `--paperpic-color-line` e `--paperpic-color-line-shadow` desenham as linhas e as alças de canto. Eles têm um só valor em páginas claras e escuras. Uma linha e sua sombra andam juntas, então dê a uma linha escura uma sombra clara:
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Usar as cores do seu design system {#design-system}
 
 Se o seu app guarda as cores em variáveis CSS, aponte os tokens para elas em vez de copiar os valores. Assim o visualizador segue o seu tema, com o modo escuro incluído:
@@ -252,6 +261,14 @@ Cada botão, régua e alça de canto também leva `data-paperpic-control`, com a
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+A raiz, `.paperpic`, também leva seu estado em [`data-paperpic-status`, `data-paperpic-mode` e `data-paperpic-tool`](../reference/css-tokens#states), para que seu CSS acompanhe o carregamento, o modo de edição e a ferramenta aberta:
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

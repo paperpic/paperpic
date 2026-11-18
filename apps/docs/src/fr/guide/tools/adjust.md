@@ -27,7 +27,7 @@ Ajuster s’applique après les autres changements, donc Recadrer et Redresser m
 | Pour les formulaires en couleur, tampons et photos | Pour le texte sur papier                |
 | Garde le format de l’image source                  | Donne du PNG                            |
 
-Tant que Nettoyer est activé, Ajuster est désactivé. Nettoyer compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat.
+Tant que Nettoyer est activé, Ajuster est désactivé. Nettoyer compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat. Les lecteurs d’écran entendent pourquoi il est désactivé.
 
 ## Depuis le code
 

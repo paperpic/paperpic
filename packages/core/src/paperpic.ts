@@ -44,6 +44,13 @@ const NO_PREVIEW = JSON.stringify({ steps: [], tone: null })
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
 
+/** The `Error` that the `error` event carries, also when something threw another value, such as a string. */
+function asError(cause: unknown): Error {
+  return cause instanceof Error
+    ? cause
+    : new Error(String(cause), { cause })
+}
+
 /**
  * What the viewer is showing, which `getState()` returns and the `change` event carries.
  *
@@ -67,6 +74,11 @@ export interface PaperPicState {
   canUndo: boolean
   /** The fit in effect, or `null` once the user has zoomed by hand. */
   fit: Fit | null
+  /**
+   * What the open tool asks of the user, as the built-in edit bar shows it, such as "Drag the corners", or `null`.
+   * An interface of your own shows it, because with `toolbar: false` nothing else does.
+   */
+  hint: string | null
   /**
    * The size of the image in pixels, at full resolution and with the edits so far, but without the turn of `rotation`,
    * or `null` if there is none.
@@ -126,7 +138,10 @@ export class PaperPic {
   private readonly viewportElement: HTMLElement
   private readonly canvas: HTMLCanvasElement
   private readonly handles: HTMLElement
+  /** The message on screen while the image loads or the changes apply, and on failure. Screen readers hear it too. */
   private readonly status: HTMLElement
+  /** What screen readers hear about the other changes, such as the zoom. It never shows, so it never hides the message. */
+  private readonly announcer: HTMLElement
   private readonly toolbar: Toolbar
   private readonly editBar: EditBar
   private readonly renderer: Renderer
@@ -165,6 +180,8 @@ export class PaperPic {
 
   /** The open tool with a selection of its own, such as Crop. */
   private session: { handle: ToolSession, tool: Tool } | null = null
+  /** What the open tool asks instead of its usual hint, such as the next step after pressing a corner. */
+  private hintOverride: string | null = null
   /** The open Adjust or Clean up. */
   private draft: PanelDraft | null = null
   private loadStatus: PaperPicState['status'] = 'empty'
@@ -176,8 +193,14 @@ export class PaperPic {
   private mode: PaperPicState['mode'] = 'view'
   private history: History<Operation> = createHistory()
   private busy = false
-  private applyFailed = false
+  /** What failed in the edit open, which the message on screen names until the next edit. */
+  private failure: 'apply' | 'preview' | null = null
   private destroyed = false
+  /**
+   * Read once after each change of the interface, and kept during a pan, because reading it on every move would make
+   * the browser lay out the page each time. `null` until the next read.
+   */
+  private toolbarWidth: number | null = null
 
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
@@ -222,6 +245,9 @@ export class PaperPic {
     this.status = document.createElement('div')
     this.status.className = 'paperpic-status'
     this.status.setAttribute('role', 'status')
+    this.announcer = document.createElement('div')
+    this.announcer.className = 'paperpic-announcement'
+    this.announcer.setAttribute('role', 'status')
 
     this.toolbar = new Toolbar(
       {
@@ -253,13 +279,13 @@ export class PaperPic {
         setThreshold: (setting, released) => {
           this.setThreshold(setting)
           if (released && setting.sensitivity !== undefined) {
-            this.status.textContent = this.labels.thresholdLevel(Math.round(setting.sensitivity * 100))
+            this.announce(this.labels.thresholdLevel(Math.round(setting.sensitivity * 100)))
           }
         },
         setAdjustment: (name, value, released) => {
           this.setAdjustments({ [name]: value })
           if (released) {
-            this.status.textContent = this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100))
+            this.announce(this.labels.adjustmentLevel(this.labels[name], Math.round(value * 100)))
           }
         },
       },
@@ -267,7 +293,7 @@ export class PaperPic {
       this.labels,
     )
 
-    stage.append(this.viewportElement, this.toolbar.element, this.status)
+    stage.append(this.viewportElement, this.toolbar.element, this.status, this.announcer)
     this.root.append(stage, this.editBar.element)
     container.append(this.root)
 
@@ -306,6 +332,20 @@ export class PaperPic {
     })
     observer.observe(this.viewportElement)
     this.cleanups.push(() => observer.disconnect())
+
+    // A screen of another density changes no size, so the observer misses it when the window moves there. A query only
+    // matches the density it names, so each change asks again with the new one
+    if (typeof matchMedia === 'function') {
+      const densityWatch = new AbortController()
+      const watchDensity = (): void => {
+        matchMedia(`(resolution: ${globalThis.devicePixelRatio || 1}dppx)`).addEventListener('change', () => {
+          this.measure()
+          watchDensity()
+        }, { once: true, signal: densityWatch.signal })
+      }
+      watchDensity()
+      this.cleanups.push(() => densityWatch.abort())
+    }
 
     this.changeOptions(options, true)
     this.measure()
@@ -402,6 +442,7 @@ export class PaperPic {
       image: shown && { width: shown.width, height: shown.height },
       zoom: this.view.zoom,
       fit: this.view.fit,
+      hint: this.hint(),
       rotation: this.view.rotation,
       canUndo: this.history.done.length > 0,
       canRedo: this.history.undone.length > 0,
@@ -446,8 +487,16 @@ export class PaperPic {
    *
    * @param zoom Screen pixels per image pixel.
    * @param point The position to keep in place, relative to the viewer. By default, its center.
+   * @throws {RangeError} If `zoom` is `NaN`, or if a coordinate of `point` is not a finite number. The view does not change then.
    */
   zoomTo(zoom: number, point?: ViewPoint): void {
+    // A zoom out of range is clamped, but NaN has no place in the range, and the image would vanish until a fit
+    if (Number.isNaN(zoom)) {
+      throw new RangeError(`zoom must be a number of screen pixels per image pixel, such as 1 for 100%, got ${zoom}`)
+    }
+    if (point && !(Number.isFinite(point.x) && Number.isFinite(point.y))) {
+      throw new RangeError(`point must have a finite x and y, in CSS pixels from the top left corner of the viewer, got ${point.x}, ${point.y}`)
+    }
     this.zoomAround(zoom, point ?? { x: this.viewport.width / 2, y: this.viewport.height / 2 })
   }
 
@@ -495,7 +544,7 @@ export class PaperPic {
     const hadFocus = this.hasFocus()
     this.mode = 'edit'
     this.refresh()
-    this.status.textContent = this.labels.editing
+    this.announce(this.labels.editing)
     if (hadFocus && this.options.toolbar) {
       this.editBar.focus()
     }
@@ -701,7 +750,7 @@ export class PaperPic {
     const edit = this.editId
     const outdated = () => id !== this.loadId || edit !== this.editId
     this.busy = true
-    this.applyFailed = false
+    this.failure = null
     this.showStatus()
     this.refresh()
     this.emit('change', this.getState())
@@ -730,7 +779,7 @@ export class PaperPic {
       this.setImage(loaded, 'ready')
       this.setSaved(exported.blob)
       this.restoreFocus(hadFocus)
-      this.status.textContent = this.labels.applied
+      this.announce(this.labels.applied)
       this.emit('apply', exported)
       this.emit('change', this.getState())
     }
@@ -739,10 +788,13 @@ export class PaperPic {
         return
       }
       this.busy = false
-      this.applyFailed = true
+      this.failure = 'apply'
       this.showStatus()
       this.refresh()
-      this.emit('error', { error: cause as Error, phase: 'apply' })
+      this.emit('error', {
+        error: asError(cause),
+        phase: 'apply',
+      })
     }
   }
 
@@ -858,10 +910,16 @@ export class PaperPic {
         this.pan(distance(x, this.viewport.width), distance(y, this.viewport.height))
       },
       requestPaint: () => this.renderer.requestPaint(),
-      setHint: text => this.editBar.setHint(text),
-      announce: (text) => {
-        this.status.textContent = text
+      setHint: (text) => {
+        const before = this.hint()
+        this.hintOverride = text
+        this.editBar.setHint(text)
+        // A tool that closes lets go of its corner too, and the close reports the new state itself
+        if (this.session && this.hint() !== before) {
+          this.emit('change', this.getState())
+        }
       },
+      announce: text => this.announce(text),
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
@@ -871,6 +929,14 @@ export class PaperPic {
         viewport: this.viewport,
       }),
     }
+  }
+
+  /** What the open tool asks of the user: its hint, or what replaces it. Only a tool with a selection has one. */
+  private hint(): string | null {
+    const key = this.session?.tool.hint
+    return this.session
+      ? this.hintOverride ?? (key ? this.labels[key] : null)
+      : null
   }
 
   /** The open tool, with a selection or a panel of settings of its own. */
@@ -907,8 +973,11 @@ export class PaperPic {
       return
     }
     const hadFocus = this.hasFocus()
-    this.session?.handle.deactivate()
+    // Gone before it deactivates, so the hint it clears on the way out does not report a state half closed
+    const session = this.session
     this.session = null
+    session?.handle.deactivate()
+    this.hintOverride = null
     this.draft = null
     this.editBar.setActiveTool(null)
     if (hadFocus && this.options.toolbar) {
@@ -933,6 +1002,11 @@ export class PaperPic {
 
   private hasFocus(): boolean {
     return this.root.contains(document.activeElement)
+  }
+
+  /** Tells screen readers about a change that the focus alone does not show. The message on screen stays. */
+  private announce(text: string): void {
+    this.announcer.textContent = text
   }
 
   /** Puts the keyboard focus back on the toolbar, because the button that had it may be gone. */
@@ -974,7 +1048,10 @@ export class PaperPic {
         return
       }
       this.setImage(null, 'error')
-      this.emit('error', { error: cause as Error, phase: 'load' })
+      this.emit('error', {
+        error: asError(cause),
+        phase: 'load',
+      })
     }
   }
 
@@ -1003,7 +1080,7 @@ export class PaperPic {
     this.closeTool()
     this.mode = 'view'
     this.busy = false
-    this.applyFailed = false
+    this.failure = null
     this.history = createHistory()
     this.setPreview(null)
     this.syncRotation()
@@ -1017,7 +1094,7 @@ export class PaperPic {
 
   private setHistory(history: History<Operation>): void {
     this.history = history
-    this.applyFailed = false
+    this.failure = null
     this.updatePreview()
     this.showStatus()
     this.refresh()
@@ -1087,10 +1164,13 @@ export class PaperPic {
 
   /** Keeps the edit open, and reports that its pixels could not be shown. */
   private previewFailed(cause: unknown): void {
-    this.applyFailed = true
+    this.failure = 'preview'
     this.showStatus()
     this.refresh()
-    this.emit('error', { error: cause as Error, phase: 'preview' })
+    this.emit('error', {
+      error: asError(cause),
+      phase: 'preview',
+    })
   }
 
   /**
@@ -1128,21 +1208,28 @@ export class PaperPic {
       loading: this.labels.loading,
       error: this.labels.loadError,
     }
+    const failures = {
+      apply: this.labels.applyError,
+      preview: this.labels.previewError,
+    }
     const text = this.busy
       ? this.labels.processing
-      : this.applyFailed
-        ? this.labels.applyError
+      : this.failure
+        ? failures[this.failure]
         : texts[this.loadStatus]
     this.status.textContent = text
     this.status.classList.toggle('paperpic-status-visible', text !== '')
-    this.root.setAttribute('aria-busy', String(this.busy || this.previewQueue.pending || this.loadStatus === 'loading'))
+    // Only the image is busy. Around the messages, it could make screen readers hold them back until the work ends
+    this.viewportElement.setAttribute('aria-busy', String(this.busy || this.previewQueue.pending || this.loadStatus === 'loading'))
   }
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
   private toolbarClearance(): number {
-    return this.toolbar.element.hidden
-      ? 0
-      : this.toolbar.element.offsetWidth + TOOLBAR_GAP
+    if (this.toolbar.element.hidden) {
+      return 0
+    }
+    this.toolbarWidth ??= this.toolbar.element.offsetWidth
+    return this.toolbarWidth + TOOLBAR_GAP
   }
 
   private measure(): void {
@@ -1184,6 +1271,9 @@ export class PaperPic {
   private refresh(): void {
     const state = this.getState()
     const zoom = this.canZoom()
+    // The toolbar may change size with the interface, such as when it shows again after editing. Watching it with the
+    // observer of the viewer made the browser report a loop, because measuring the viewer changes the toolbar
+    this.toolbarWidth = null
 
     this.toolbar.update({
       fit: this.view.fit,
@@ -1202,6 +1292,15 @@ export class PaperPic {
       thresholdInEdits: thresholdSetting(this.history.done).enabled,
     })
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
+    // Public, so CSS can follow the state: `data-paperpic-status`, `data-paperpic-mode` and `data-paperpic-tool`
+    this.root.dataset.paperpicStatus = state.status
+    this.root.dataset.paperpicMode = state.mode
+    if (state.activeTool) {
+      this.root.dataset.paperpicTool = state.activeTool
+    }
+    else {
+      delete this.root.dataset.paperpicTool
+    }
     this.refreshView(zoom)
   }
 
@@ -1271,7 +1370,7 @@ export class PaperPic {
       : undefined
     this.zoomTo(this.view.zoom * factor, anchor)
     if (this.measuredImage()) {
-      this.status.textContent = this.labels.zoomLevel(Math.round(this.view.zoom * 100))
+      this.announce(this.labels.zoomLevel(Math.round(this.view.zoom * 100)))
     }
   }
 

@@ -143,15 +143,20 @@ describe('editBar', () => {
     const description = document.getElementById(button('adjust').getAttribute('aria-describedby')!)!
     expect(description.textContent).toBe(DEFAULT_LABELS.inUse)
 
-    // A cleaned document has tones of its own
+    // A cleaned document has tones of its own, so Adjust says why it cannot open instead
     bar.update({
       ...state,
       adjustments: { brightness: 0.2, contrast: 0 },
       threshold: { enabled: true, sensitivity: 0.5 },
     })
     expect(dot('adjust').hidden).toBe(true)
-    expect(button('adjust').hasAttribute('aria-describedby')).toBe(false)
+    const reason = document.getElementById(button('adjust').getAttribute('aria-describedby')!)!
+    expect(reason.textContent).toBe(DEFAULT_LABELS.adjustUnavailable)
+    expect(reason.hidden).toBe(true)
     expect(dot('threshold').hidden).toBe(false)
+
+    bar.update(state)
+    expect(button('adjust').hasAttribute('aria-describedby')).toBe(false)
     expect(button('crop').querySelector('.paperpic-edit-dot')).toBeNull()
   })
 
@@ -284,7 +289,9 @@ describe('editBar', () => {
       expect(commands.cancel).not.toHaveBeenCalled()
       expect(confirmation().hidden).toBe(false)
       expect(controls().hidden).toBe(true)
-      expect(confirmation().getAttribute('role')).toBe('alertdialog')
+      // A group named by the question, because the rest of the viewer stays usable, as it would not in a dialog
+      expect(confirmation().getAttribute('role')).toBe('group')
+      expect(document.getElementById(confirmation().getAttribute('aria-labelledby')!)!.textContent).toBe('Discard your changes?')
       expect(document.activeElement).toBe(button('keepEditing'))
     })
 
@@ -338,6 +345,14 @@ describe('editBar', () => {
     bar.focus('flip')
     expect(document.activeElement).toBe(button('flip'))
     bar.focus()
+    expect(document.activeElement?.getAttribute('tabindex')).toBe('0')
+  })
+
+  it('moves the focus to the bar when tools hides the button of the tool', () => {
+    bar.setTools(['flip'])
+    bar.focus('crop')
+    expect(document.activeElement).not.toBe(button('crop'))
+    expect((document.activeElement as HTMLElement).hidden).toBe(false)
     expect(document.activeElement?.getAttribute('tabindex')).toBe('0')
   })
 

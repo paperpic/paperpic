@@ -27,7 +27,7 @@ Regola viene dopo gli altri cambiamenti, quindi Ritaglia e Raddrizza mostrano l�
 | Per moduli a colori, timbri e foto          | Per testo su carta                      |
 | Mantiene il formato dell’immagine originale | Dà PNG                                  |
 
-Mentre Pulisci è attivo, Regola è disattivato. Pulisci confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato.
+Mentre Pulisci è attivo, Regola è disattivato. Pulisci confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato. I lettori di schermo dicono perché è disattivato.
 
 ## Dal codice
 

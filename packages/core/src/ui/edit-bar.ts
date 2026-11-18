@@ -10,8 +10,8 @@ export type AdjustmentName = 'brightness' | 'contrast'
 
 const ADJUSTMENTS: readonly AdjustmentName[] = ['brightness', 'contrast']
 
-/** Numbers the description of a tool in use, so each viewer of a page has its own id. */
-let descriptions = 0
+/** Numbers the elements that others refer to by id, so each viewer of a page has ids of its own. */
+let ids = 0
 
 /** What the edit bar can ask for. It only reaches the viewer through these. */
 export interface EditBarCommands {
@@ -75,6 +75,8 @@ export class EditBar {
   private readonly optionButtons: Record<AdjustmentName, HTMLButtonElement>
   private readonly optionTexts: Record<AdjustmentName, HTMLElement>
   private readonly inUse: HTMLElement
+  /** Why Adjust cannot open while Clean up is on, for screen readers. */
+  private readonly adjustUnavailable: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
   private readonly toolButtons: { button: HTMLButtonElement, id: Tool['actions'][number]['id'], tool: Tool }[] = []
@@ -214,12 +216,17 @@ export class EditBar {
       [this.optionButtons.contrast, 'contrast'],
     ]
 
+    const id = ++ids
     this.confirmation = document.createElement('div')
     this.confirmation.className = 'paperpic-edit-confirmation'
-    this.confirmation.setAttribute('role', 'alertdialog')
+    // A group and not a dialog: the question takes the place of the bar, and the rest of the viewer stays usable.
+    // Screen readers read its name, the question, as the focus enters it
+    this.confirmation.setAttribute('role', 'group')
     this.confirmation.hidden = true
     this.message = document.createElement('span')
     this.message.className = 'paperpic-edit-message'
+    this.message.id = `paperpic-question-${id}`
+    this.confirmation.setAttribute('aria-labelledby', this.message.id)
     this.keepButton = createButton('keepEditing', () => this.closeConfirmation(), 'paperpic-button paperpic-button-text')
     this.discardButton = createButton('discard', () => {
       this.closeConfirmation()
@@ -237,10 +244,14 @@ export class EditBar {
 
     // Screen readers hear the dot of a tool in use as its description
     this.inUse = document.createElement('span')
-    this.inUse.id = `paperpic-in-use-${++descriptions}`
+    this.inUse.id = `paperpic-in-use-${id}`
     this.inUse.hidden = true
+    // A disabled button that does not say why leaves screen reader users guessing
+    this.adjustUnavailable = document.createElement('span')
+    this.adjustUnavailable.id = `paperpic-adjust-unavailable-${id}`
+    this.adjustUnavailable.hidden = true
 
-    this.element.append(this.controls, this.toolControls, this.confirmation, this.inUse)
+    this.element.append(this.controls, this.toolControls, this.confirmation, this.inUse, this.adjustUnavailable)
 
     this.fixTabOrder = attachRovingFocus(this.controls, () => [
       this.cancelButton,
@@ -278,6 +289,7 @@ export class EditBar {
       this.optionTexts[name].textContent = labels[name]
     }
     this.inUse.textContent = labels.inUse
+    this.adjustUnavailable.textContent = labels.adjustUnavailable
     this.showHint()
     this.showPanel()
     nameButton(this.cancelButton, labels.cancel)
@@ -288,7 +300,6 @@ export class EditBar {
     for (const { id, button } of this.toolButtons) {
       nameButton(button, labels[id])
     }
-    this.confirmation.setAttribute('aria-label', labels.discardQuestion)
     this.message.textContent = labels.discardQuestion
     this.keepButton.textContent = labels.keepEditing
     this.discardButton.textContent = labels.discard
@@ -346,7 +357,7 @@ export class EditBar {
         || (tool.activate !== undefined && !canOpenTool)
         || (tool.id === 'adjust' && threshold.enabled)))
       if (tool.id === 'adjust') {
-        this.markInUse(button, adjusted)
+        this.markInUse(button, adjusted, threshold.enabled ? this.adjustUnavailable : null)
       }
       if (tool.id === 'threshold') {
         this.markInUse(button, threshold.enabled)
@@ -383,9 +394,12 @@ export class EditBar {
     this.keepButton.focus()
   }
 
-  /** Moves the keyboard focus to the bar, or to the button of a tool. */
+  /**
+   * Moves the keyboard focus to the button of a tool, or to the bar. A tool that a method opened can have its button
+   * hidden by `tools`, and a hidden button cannot take the focus, so the bar takes it then.
+   */
   focus(toolId?: ToolId): void {
-    const button = this.toolButtons.find(({ tool }) => tool.id === toolId)?.button
+    const button = this.toolButtons.find(({ tool, button: candidate }) => tool.id === toolId && !candidate.hidden)?.button
       ?? this.controls.querySelector<HTMLButtonElement>('button[tabindex="0"]')
     button?.focus()
   }
@@ -428,14 +442,18 @@ export class EditBar {
     }
   }
 
-  /** Shows the dot of a button whose setting is in effect, and describes it so to screen readers. */
-  private markInUse(button: HTMLButtonElement, inUse: boolean): void {
+  /**
+   * Shows the dot of a button whose setting is in effect, and describes it so to screen readers. A `reason` describes
+   * it instead, such as why it cannot open.
+   */
+  private markInUse(button: HTMLButtonElement, inUse: boolean, reason: HTMLElement | null = null): void {
     const dot = button.querySelector<HTMLElement>('.paperpic-edit-dot')
     if (dot) {
       dot.hidden = !inUse
     }
-    if (inUse) {
-      button.setAttribute('aria-describedby', this.inUse.id)
+    const description = reason ?? (inUse ? this.inUse : null)
+    if (description) {
+      button.setAttribute('aria-describedby', description.id)
     }
     else {
       button.removeAttribute('aria-describedby')

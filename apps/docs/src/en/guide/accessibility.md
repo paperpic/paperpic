@@ -31,7 +31,7 @@ With the focus inside the viewer:
 On macOS, `Cmd` works like `Ctrl`. With the focus on a button, `Enter` presses that button instead. Before cancelling changes, `Esc` asks for confirmation. With `toolbar: false`, `Esc` still closes a tool, but it does not cancel the edit: your interface decides.
 
 - **Toolbar and edit bar.** Tab reaches each bar, and inside it the arrow keys move between the buttons, with `Home` and `End` for the first and the last.
-- **Corner handles.** With Crop or Straighten open, Tab moves between the handles, and the arrow keys move the focused one 1 screen pixel, or 10 with Shift.
+- **Corner handles.** With Crop or Straighten open, Tab moves between the handles, and the arrow keys move the focused one 1 screen pixel, or 10 with Shift. Screen readers hear these keys, and that Enter finishes, in the description of each handle.
 - **Rulers.** The rulers of Adjust and Clean up are native ranges: the arrow keys, `Page Up`, `Page Down`, `Home` and `End` move them. `Enter` keeps the value, as Done does, and `Esc` closes the tool without it.
 
 ## Screen readers
@@ -39,11 +39,11 @@ On macOS, `Cmd` works like `Ctrl`. With the focus on a button, `Enter` presses t
 - The image has the role of an image, named by `alt`. Without `alt`, screen readers skip it.
 - The toolbar and the edit bar have their own names, such as "Image controls" and "Editing controls".
 - An announcement reports what the user cannot see by the focus alone: the loading of the image, the zoom level, the start of the edit mode, a selected corner and the position of a moved corner, the value of a ruler, the result of Apply, and any failure.
-- The switch of Clean up has the role of a switch. A tool in use, which a dot marks on screen, is described as "In use".
+- The switch of Clean up has the role of a switch. A tool in use, which a dot marks on screen, is described as "In use". While Clean up is on, Adjust is described with the reason it is disabled.
 
 ## Touch screens
 
-- With `pointer: coarse`, buttons and corner handles measure at least 44 pixels.
+- With `any-pointer: coarse`, buttons and corner handles measure at least 44 pixels. Any touch screen matches it, also on a laptop with a trackpad.
 - While a finger drags a corner, a magnifier shows the area under it.
 - A corner also moves without dragging: press its handle, and then tap where it goes. This works with a mouse too.
 - While the image is fitted, one finger scrolls the page, so the viewer does not trap people inside it. Once zoomed, it pans the image.

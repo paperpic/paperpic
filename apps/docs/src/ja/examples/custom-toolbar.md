@@ -24,6 +24,7 @@ description: PaperPic の組み込みツールバーを隠し、ビューアー�
   <button type="button" data-action="cancel">キャンセル</button>
   <button type="button" data-action="apply">適用</button>
 </div>
+<p id="hint"></p>
 <div id="viewer" style="height: 480px"></div>
 ```
 
@@ -55,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +76,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
+  document.querySelector('#hint')!.textContent = hint ?? ''
 }
 
 pic.on('change', update)
@@ -115,6 +117,9 @@ function refresh() {
       </button>
     </template>
     <template v-else-if="state.activeTool">
+      <p v-if="state.hint">
+        {{ state.hint }}
+      </p>
       <button type="button" @click="viewer?.confirmTool()">
         完了
       </button>
@@ -178,6 +183,7 @@ export function Receipt() {
           {state.mode === 'view' && (
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>編集</button>
           )}
+          {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
               <button type="button" onClick={() => viewer().confirmTool()}>完了</button>
@@ -400,6 +406,7 @@ export function CleanUpRuler() {
 ## 補足
 
 - `toolbar: false` では組み込みの編集バーも隠れるため、「切り抜き」と「傾き補正」はハンドルを表示しますが、「完了」ボタンはありません。あなたのインターフェースから、`Enter` と同じく [`confirmTool()`](../reference/methods#confirmtool) で確定してください。変更せずに閉じるには、`Esc` と同じように [`cancelTool()`](../reference/methods#canceltool) を呼び出します。
+- 「切り抜き」か「傾き補正」が開いている間、状態の `hint` が、内蔵の編集バーと同じく、たとえば「Drag the corners」のように何をすればよいかを示します。`toolbar: false` ではほかに表示するものがないので、表示してください。角を押したあとなど、新しいヒントは `change` で届きます。
 - 独自のスライダーから [`setThreshold()`](../reference/methods#setthreshold) と [`setAdjustments()`](../reference/methods#setadjustments) を直接呼べます。呼ぶたびに変更が 1 つ加わります。ドラッグ全体を 1 つの変更にするには、先に [`openTool()`](../reference/methods#opentool) でツールを開いてください。すると同じメソッドがツールの表示を変え、`confirmTool()` がそれを残します。
 - [`cancel()`](../reference/methods#cancel) は変更を破棄する前に確認しません。`canApply` が true のときなど、変更がある場合はユーザーに確認してください。
 - ビューアーにフォーカスがあれば、キーボードショートカットは引き続き使えます。[アクセシビリティ](../guide/accessibility)を参照してください。

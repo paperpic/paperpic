@@ -24,6 +24,7 @@ O evento [`change`](../reference/events#change) envia o [estado](../reference/st
   <button type="button" data-action="cancel">Cancelar</button>
   <button type="button" data-action="apply">Aplicar</button>
 </div>
+<p id="hint"></p>
 <div id="viewer" style="height: 480px"></div>
 ```
 
@@ -55,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +76,7 @@ function update({ status, mode, activeTool, canUndo, canApply, busy }: PaperPicS
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
+  document.querySelector('#hint')!.textContent = hint ?? ''
 }
 
 pic.on('change', update)
@@ -115,6 +117,9 @@ function refresh() {
       </button>
     </template>
     <template v-else-if="state.activeTool">
+      <p v-if="state.hint">
+        {{ state.hint }}
+      </p>
       <button type="button" @click="viewer?.confirmTool()">
         Concluído
       </button>
@@ -178,6 +183,7 @@ export function Receipt() {
           {state.mode === 'view' && (
             <button type="button" disabled={state.status !== 'ready'} onClick={() => viewer().edit()}>Editar</button>
           )}
+          {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
               <button type="button" onClick={() => viewer().confirmTool()}>Concluído</button>
@@ -400,6 +406,7 @@ export function CleanUpRuler() {
 ## Observações
 
 - Com `toolbar: false`, a barra de edição integrada também fica oculta, então Recortar e Endireitar mostram suas alças mas não o botão Concluído. A sua interface os confirma com [`confirmTool()`](../reference/methods#confirmtool), como faz o `Enter`. Para fechá-las sem as alterações, chame [`cancelTool()`](../reference/methods#canceltool), como faz o `Esc`.
+- Enquanto Recortar ou Endireitar está aberto, `hint` no estado diz o que fazer, por exemplo "Drag the corners", como faz a barra de edição integrada. Mostre-o, porque com `toolbar: false` nada mais o mostra. Um novo hint, como depois de pressionar um canto, chega com `change`.
 - Os seus próprios controles deslizantes podem chamar [`setThreshold()`](../reference/methods#setthreshold) e [`setAdjustments()`](../reference/methods#setadjustments) diretamente, o que adiciona uma alteração a cada chamada. Para deixar uma única alteração por um arraste inteiro, abra antes a ferramenta com [`openTool()`](../reference/methods#opentool): os mesmos métodos então mudam o que ela mostra, e `confirmTool()` o mantém.
 - [`cancel()`](../reference/methods#cancel) não pergunta antes de descartar as alterações. Pergunte você ao usuário se houver alguma, por exemplo quando `canApply` for verdadeiro.
 - Os atalhos de teclado continuam funcionando com o foco no visualizador. Veja [Acessibilidade](../guide/accessibility).

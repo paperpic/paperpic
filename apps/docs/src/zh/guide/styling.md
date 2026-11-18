@@ -65,6 +65,15 @@ import '@paperpic/react/style.css'
 }
 ```
 
+另外三个令牌决定打开“裁剪”或“矫正”时查看器画在照片上的颜色：`--paperpic-color-dim` 让选区周围的图片变暗，`--paperpic-color-line` 和 `--paperpic-color-line-shadow` 画出线条和角点手柄。它们在浅色和深色页面上使用同一个值。线和它的阴影成对使用，所以深色的线要配浅色的阴影：
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## 使用你的设计系统的颜色 {#design-system}
 
 如果你的应用把颜色放在 CSS 变量中，请让令牌指向这些变量，而不是复制它们的值。这样查看器会跟随你的主题，包括深色模式：
@@ -252,6 +261,14 @@ Tailwind CSS 4 也把规则放在层叠层中。在导入 Tailwind 和 PaperPic 
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+根元素 `.paperpic` 还在 [`data-paperpic-status`、`data-paperpic-mode` 和 `data-paperpic-tool`](../reference/css-tokens#states) 中保存状态，方便你的 CSS 跟随加载、编辑模式和打开的工具：
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

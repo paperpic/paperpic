@@ -12,6 +12,8 @@ interface FakeImage {
 /** The images created so far, each waiting for the test to finish its decoding. */
 let images: { image: FakeImage, reject: (reason: Error) => void, resolve: () => void }[]
 let resizeCallback: () => void
+/** The elements that the viewer asked the ResizeObserver to watch. */
+let observed: Element[]
 const disconnect = vi.fn()
 const revoke = vi.fn()
 
@@ -36,6 +38,7 @@ describe('paperPic', () => {
 
   beforeEach(() => {
     images = []
+    observed = []
     disconnect.mockClear()
     revoke.mockClear()
 
@@ -54,7 +57,10 @@ describe('paperPic', () => {
         resizeCallback = callback
       }
 
-      observe() {}
+      observe(element: Element) {
+        observed.push(element)
+      }
+
       disconnect = disconnect
     })
     vi.stubGlobal('requestAnimationFrame', () => 1)
@@ -148,6 +154,27 @@ describe('paperPic', () => {
     expect(container.querySelector('[role="status"]')).not.toBeNull()
   })
 
+  it('sizes the canvas again when the density of the screen changes, which no resize reports', () => {
+    const queries: { listener: () => void, media: string, signal?: AbortSignal }[] = []
+    vi.stubGlobal('matchMedia', (media: string) => ({
+      addEventListener: (_type: string, listener: () => void, options?: AddEventListenerOptions) => {
+        queries.push({ listener, media, signal: options?.signal })
+      },
+    }))
+    pic = new PaperPic(container)
+    const canvas = container.querySelector<HTMLCanvasElement>('.paperpic-canvas')!
+    expect(queries.at(-1)!.media).toBe('(resolution: 1dppx)')
+    expect(canvas.width).toBe(300)
+
+    vi.stubGlobal('devicePixelRatio', 2)
+    queries.at(-1)!.listener()
+    expect(canvas.width).toBe(600)
+    expect(queries.at(-1)!.media).toBe('(resolution: 2dppx)')
+
+    pic.destroy()
+    expect(queries.at(-1)!.signal!.aborted).toBe(true)
+  })
+
   it.each(['', '  '])('hides an image without a description from screen readers, with alt %j', (alt) => {
     pic = new PaperPic(container, { alt: 'A receipt' })
     pic.setOptions({ alt })
@@ -174,9 +201,15 @@ describe('paperPic', () => {
 
     expect(pic.getState().status).toBe('loading')
     expect(images[0]!.image.src).toBe('/receipt.jpg')
+    expect(viewportOf().getAttribute('aria-busy')).toBe('true')
+    const root = container.querySelector<HTMLElement>('.paperpic')!
+    expect(root.dataset).toMatchObject({ paperpicStatus: 'loading', paperpicMode: 'view' })
 
     await finishLoading()
 
+    expect(viewportOf().getAttribute('aria-busy')).toBe('false')
+    expect(root.dataset.paperpicStatus).toBe('ready')
+    expect(root.hasAttribute('data-paperpic-tool')).toBe(false)
     expect(onLoad).toHaveBeenCalledWith({ width: 600, height: 250 })
     expect(pic.getState()).toEqual({
       status: 'ready',
@@ -184,6 +217,7 @@ describe('paperPic', () => {
       image: { width: 600, height: 250 },
       zoom: 0.5,
       fit: 'image',
+      hint: null,
       rotation: 0,
       canUndo: false,
       canRedo: false,
@@ -365,6 +399,18 @@ describe('paperPic', () => {
       expect(pic.getState().zoom).toBeCloseTo(6.4)
       pic.fit('height')
       expect(pic.getState()).toMatchObject({ zoom: 0.6, fit: 'height' })
+      pic.zoomTo(Number.POSITIVE_INFINITY)
+      expect(pic.getState().zoom).toBe(8)
+    })
+
+    it('rejects a zoom that is not a number, or a point that is not finite, and keeps the view', () => {
+      expect(() => pic.zoomTo(Number.NaN)).toThrow(new RangeError('zoom must be a number of screen pixels per image pixel, such as 1 for 100%, got NaN'))
+      expect(() => pic.zoomTo(2, { x: Number.NaN, y: 0 })).toThrow(RangeError)
+      expect(() => pic.zoomTo(2, { x: 0, y: Number.POSITIVE_INFINITY })).toThrow('point must have a finite x and y')
+      expect(pic.getState()).toMatchObject({ zoom: 0.5, fit: 'image' })
+
+      pic.zoomIn()
+      expect(pic.getState().zoom).toBeCloseTo(0.625)
     })
 
     it('disables a zoom button at its limit', () => {
@@ -386,9 +432,28 @@ describe('paperPic', () => {
       expect(pic.getState().rotation).toBe(0)
     })
 
-    it('announces the zoom from the toolbar to screen readers', () => {
+    it('reads the toolbar width once after a change of the interface, and not on every move of a pan', () => {
+      const width = vi.fn(() => 40)
+      Object.defineProperty(toolbarOf(), 'offsetWidth', { configurable: true, get: width })
+      // Watching the toolbar too made the browser report a loop of the observer
+      expect(observed).not.toContain(toolbarOf())
+
+      pic.zoomTo(2)
+      const press = (key: string) => viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
+      press('ArrowLeft')
+      press('ArrowRight')
+      expect(width).toHaveBeenCalledOnce()
+
+      // A change of the interface, such as a new size, reads it again on the next pan
+      resizeCallback()
+      press('ArrowLeft')
+      expect(width).toHaveBeenCalledTimes(2)
+    })
+
+    it('announces the zoom from the toolbar to screen readers, without showing it', () => {
       button('Zoom in').click()
-      expect(container.querySelector('[role="status"]')!.textContent).toBe('Zoom 63%')
+      expect(container.querySelector('.paperpic-announcement[role="status"]')!.textContent).toBe('Zoom 63%')
+      expect(container.querySelector('.paperpic-status-visible')).toBeNull()
     })
 
     it('uses the keyboard', () => {

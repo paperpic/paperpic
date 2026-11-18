@@ -88,6 +88,7 @@ A tool of the edit bar, in [`tools`](./options#tools), [`openTool()`](./methods#
 interface PaperPicLabels {
   adjust: string
   adjustmentLevel: (name: string, value: number) => string
+  adjustUnavailable: string
   applied: string
   apply: string
   applyError: string
@@ -98,6 +99,7 @@ interface PaperPicLabels {
   contrast: string
   cornerBottomLeft: string
   cornerBottomRight: string
+  cornerKeys: string
   cornerMoved: (corner: string, x: number, y: number) => string
   cornerSelected: (corner: string) => string
   cornerTopLeft: string
@@ -119,6 +121,7 @@ interface PaperPicLabels {
   loading: string
   perspective: string
   perspectiveHint: string
+  previewError: string
   processing: string
   redo: string
   rotateLeft: string
@@ -179,6 +182,7 @@ interface PaperPicState {
   canRedo: boolean
   canUndo: boolean
   fit: Fit | null
+  hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
   rotation: Rotation

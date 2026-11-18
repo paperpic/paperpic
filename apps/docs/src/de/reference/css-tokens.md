@@ -14,13 +14,16 @@ Die Token sind CSS Custom Properties, die das Aussehen der Komponente ändern, o
 }
 ```
 
-| Token                            | Hell      | Dunkel    | Beschreibung                       |
-| -------------------------------- | --------- | --------- | ---------------------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Akzentfarbe der Oberfläche         |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Hintergrund der Oberfläche         |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Text der Oberfläche                |
-| `--paperpic-radius`              | `6px`     | `6px`     | Eckenradius der Oberfläche         |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Dauer der Übergänge der Oberfläche |
+| Token                            | Hell               | Dunkel             | Beschreibung                                                                         |
+| -------------------------------- | ------------------ | ------------------ | ------------------------------------------------------------------------------------ |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | Akzentfarbe der Oberfläche                                                           |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | Dunkelt das Bild um eine Auswahl ab                                                  |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | Linien über dem Bild: der Umriss einer Auswahl, die Eckgriffe und das Kreuz der Lupe |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | Der Schatten unter jeder Linie, damit sie auf jedem Bild sichtbar ist                |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | Hintergrund der Oberfläche                                                           |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | Text der Oberfläche                                                                  |
+| `--paperpic-radius`              | `6px`              | `6px`              | Eckenradius der Oberfläche                                                           |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | Dauer der Übergänge der Oberfläche                                                   |
 
 ## Dunkelmodus
 
@@ -33,6 +36,8 @@ Um beide Werte eines Tokens zu wählen, nutze ebenfalls `light-dark()`:
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+Die Farben, die über das Bild gemalt werden, `--paperpic-color-dim`, `--paperpic-color-line` und `--paperpic-color-line-shadow`, haben für beide Modi einen Wert, weil sie auf dem Foto liegen und nicht auf der Oberfläche. Eine Linie und ihr Schatten gehören zusammen: Wähle zu einer dunklen Linie einen hellen Schatten.
 
 ## Stylesheet
 
@@ -65,22 +70,22 @@ Seine Regeln liegen in der Kaskadenebene `paperpic`, also überschreibt jedes CS
 
 Diese Klassen sind öffentlich: Ihre Namen, und die Elemente, die sie markieren, bleiben zwischen Versionen stabil. Die anderen Klassen der Komponente halten ihr Layout zusammen und können sich in jeder Version ändern.
 
-| Klasse                    | Element                                                                                                                             |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | Die Wurzel des Viewers                                                                                                              |
-| `paperpic-button`         | Jede Schaltfläche der Werkzeugleiste und der Bearbeitungsleiste                                                                     |
-| `paperpic-button-danger`  | Verwerfen, in der Frage vor dem Verwerfen der Änderungen                                                                            |
-| `paperpic-button-primary` | Übernehmen, und Fertig in jedem Werkzeug                                                                                            |
-| `paperpic-button-text`    | Die Schaltflächen der Frage vor dem Verwerfen der Änderungen                                                                        |
-| `paperpic-edit-bar`       | Die Bearbeitungsleiste, eine Karte unten beim Bearbeiten                                                                            |
-| `paperpic-editing`        | Die Wurzel, während der Bearbeitung                                                                                                 |
-| `paperpic-handle`         | Ein Eckgriff von Zuschneiden und Begradigen                                                                                         |
-| `paperpic-host`           | Das Element, das die Vue- und React-Komponenten um den Viewer herum erzeugen                                                        |
-| `paperpic-icon`           | Das Icon einer Schaltfläche                                                                                                         |
-| `paperpic-status`         | Die Meldung für Screenreader, die auch erscheint, während das Bild lädt oder die Änderungen übernommen werden, und bei einem Fehler |
-| `paperpic-status-visible` | Die Meldung, solange sie in der Mitte des Viewers erscheint                                                                         |
-| `paperpic-toolbar`        | Die Werkzeugleiste rechts, beim Bearbeiten ausgeblendet                                                                             |
-| `paperpic-viewport`       | Der Bereich, der das Bild zeigt und den Tastaturfokus erhält                                                                        |
+| Klasse                    | Element                                                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | Die Wurzel des Viewers                                                                                                                      |
+| `paperpic-button`         | Jede Schaltfläche der Werkzeugleiste und der Bearbeitungsleiste                                                                             |
+| `paperpic-button-danger`  | Verwerfen, in der Frage vor dem Verwerfen der Änderungen                                                                                    |
+| `paperpic-button-primary` | Übernehmen, und Fertig in jedem Werkzeug                                                                                                    |
+| `paperpic-button-text`    | Die Schaltflächen der Frage vor dem Verwerfen der Änderungen                                                                                |
+| `paperpic-edit-bar`       | Die Bearbeitungsleiste, eine Karte unten beim Bearbeiten                                                                                    |
+| `paperpic-editing`        | Die Wurzel, während der Bearbeitung                                                                                                         |
+| `paperpic-handle`         | Ein Eckgriff von Zuschneiden und Begradigen                                                                                                 |
+| `paperpic-host`           | Das Element, das die Vue- und React-Komponenten um den Viewer herum erzeugen                                                                |
+| `paperpic-icon`           | Das Icon einer Schaltfläche                                                                                                                 |
+| `paperpic-status`         | Die Meldung, die erscheint und die Screenreader vorlesen, während das Bild lädt oder die Änderungen übernommen werden, und bei einem Fehler |
+| `paperpic-status-visible` | Die Meldung, solange sie in der Mitte des Viewers erscheint                                                                                 |
+| `paperpic-toolbar`        | Die Werkzeugleiste rechts, beim Bearbeiten ausgeblendet                                                                                     |
+| `paperpic-viewport`       | Der Bereich, der das Bild zeigt und den Tastaturfokus erhält                                                                                |
 
 Schaltflächen zeigen ihren Zustand mit ARIA-Attributen, die du ebenfalls auswählen kannst:
 
@@ -90,6 +95,22 @@ Schaltflächen zeigen ihren Zustand mit ARIA-Attributen, die du ebenfalls auswä
 | `[aria-pressed='true']`  | Die geltende Anpassung, An Breite anpassen oder An Höhe anpassen, oder die Wahl in Anpassen, die die Skala ändert |
 
 Hover und diese Zustände werden mit `box-shadow` gezeichnet, das globale Resets von Schaltflächen nicht anfassen. Um sie umzugestalten, überschreibe auch `box-shadow`.
+
+## Zustände {#states}
+
+Die Wurzel, `.paperpic`, trägt den Zustand des Viewers in Data-Attributen, damit CSS ihm folgen kann:
+
+| Attribut               | Werte                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| `data-paperpic-status` | `empty`, `loading`, `ready` oder `error`, wie `status` im [Zustand](./state)         |
+| `data-paperpic-mode`   | `view` oder `edit`                                                                   |
+| `data-paperpic-tool`   | Die ID des offenen Werkzeugs, etwa `crop`. Es fehlt, solange kein Werkzeug offen ist |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## Bedienelemente {#controls}
 

@@ -91,18 +91,18 @@ async function upload(blob: Blob) {
 
 ## Common tasks
 
-| Task                                   | How                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------ |
-| Show a document without editing        | `editable: false`. The toolbar then rotates the display only.            |
-| Fix the proportions of known documents | `aspectRatio: 210 / 297` for A4. Straighten gives its result that shape. |
-| Choose the format of the result        | `output: { type: 'image/jpeg', quality: 0.9 }`                           |
-| Limit the size of the result           | `maxOutputSize: 2000`, the longest side in pixels                        |
-| Offer only some tools                  | `tools: ['crop', 'perspective', 'rotate']`                               |
-| Build your own controls                | `toolbar: false`, then call the methods, such as `edit()` and `apply()`  |
-| Let the user save the image            | `download: true`. The `download` event can save it another way.          |
-| Translate the interface                | `labels: { ... }`, a partial object of texts                             |
-| Bring back the original after an edit  | `reload()`                                                               |
-| Let the wheel scroll a long page       | `wheelZoom: false`                                                       |
+| Task                                   | How                                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Show a document without editing        | `editable: false`. The toolbar then rotates the display only.                                                            |
+| Fix the proportions of known documents | `aspectRatio: 210 / 297` for A4. Straighten gives its result that shape.                                                 |
+| Choose the format of the result        | `output: { type: 'image/jpeg', quality: 0.9 }`                                                                           |
+| Limit the size of the result           | `maxOutputSize: 2000`, the longest side in pixels                                                                        |
+| Offer only some tools                  | `tools: ['crop', 'perspective', 'rotate']`                                                                               |
+| Build your own controls                | `toolbar: false`, then call the methods, such as `edit()` and `apply()`, and show `getState().hint` while a tool is open |
+| Let the user save the image            | `download: true`. The `download` event can save it another way.                                                          |
+| Translate the interface                | `labels: { ... }`, a partial object of texts                                                                             |
+| Bring back the original after an edit  | `reload()`                                                                                                               |
+| Let the wheel scroll a long page       | `wheelZoom: false`                                                                                                       |
 
 The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `'adjust'` and `'threshold'` (Clean up). `tools` only chooses the buttons of the edit bar: the methods work with every tool.
 
@@ -113,7 +113,7 @@ The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `
 - **The result format follows the source.** It keeps JPEG, PNG or WebP, read from the extension of the URL or the type of the `File` or `Blob`. A URL without an extension, or any other format, gives PNG. A cleaned up image is PNG, to keep the edges of the letters sharp, unless `output.type` says otherwise. The saved filename takes the matching extension.
 - **Props compare by contents.** An object or array with the same contents as before, such as an inline `tools` or `output`, changes nothing. A function is new on every render, so build `labels` that hold functions, such as `zoomLevel`, with `computed` in Vue, or outside the component or with `useMemo` in React. Inline event handlers are fine in both.
 - **`change` does not report everything.** The user and the methods emit it. `setOptions()`, prop changes and a pan never do. A loaded image comes with `load`, and a failed load or Apply with `error`, so read `getState()` again on those to keep controls in step.
-- **Options have ranges.** `softness` and `output.quality` go from 0 to 1, `aspectRatio` and `maxOutputSize` are positive, and `output.type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`. Anything else throws a `RangeError` that names the option, from the constructor, `setOptions()` or the props.
+- **Options have ranges.** `softness` and `output.quality` go from 0 to 1, `aspectRatio` and `maxOutputSize` are positive, and `output.type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`. Anything else throws a `RangeError` that names the option, from the constructor, `setOptions()` or the props. `setThreshold()` and `setAdjustments()` throw one too for a value out of range, and `zoomTo()` for `NaN`, which an empty number field gives.
 - **Errors arrive as an event.** `error` carries `{ error, phase }`. `phase` is `'load'` when the image fails to load, `'preview'` when an edit cannot be shown, and `'apply'` when Apply fails. After a failed preview or Apply, the edit stays open. `apply()` resolves even when Apply fails, so listen to `error` instead of catching it.
 - **Server-side rendering works with the components.** In Nuxt or Next.js, they render an empty element on the server and create the viewer in the browser. The React component is already marked `'use client'`.
 - **Content Security Policy:** allow `worker-src 'self'` and `img-src blob:`. If the policy restricts Trusted Types policies, add `paperpic` to `trusted-types`. Where it requires Trusted Types, the worker starts only with a `default` policy whose `createScriptURL` accepts its URL, and otherwise the editing runs on the main thread.

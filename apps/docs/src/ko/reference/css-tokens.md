@@ -14,13 +14,16 @@ description: PaperPic의 모양을 바꾸는 CSS 사용자 지정 속성과 라�
 }
 ```
 
-| 토큰                             | 라이트    | 다크      | 설명                   |
-| -------------------------------- | --------- | --------- | ---------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 인터페이스 강조 색     |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | 인터페이스 배경        |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | 인터페이스 텍스트      |
-| `--paperpic-radius`              | `6px`     | `6px`     | 인터페이스 모서리 반경 |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | 인터페이스 전환 시간   |
+| 토큰                             | 라이트             | 다크               | 설명                                                         |
+| -------------------------------- | ------------------ | ------------------ | ------------------------------------------------------------ |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | 인터페이스 강조 색                                           |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | 선택 영역 주변의 이미지를 어둡게 합니다                      |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | 이미지 위의 선: 선택 영역의 윤곽, 모서리 핸들, 돋보기의 십자 |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | 각 선 아래의 그림자. 어떤 이미지에서도 선이 보이게 합니다    |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | 인터페이스 배경                                              |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | 인터페이스 텍스트                                            |
+| `--paperpic-radius`              | `6px`              | `6px`              | 인터페이스 모서리 반경                                       |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | 인터페이스 전환 시간                                         |
 
 ## 다크 모드
 
@@ -33,6 +36,8 @@ description: PaperPic의 모양을 바꾸는 CSS 사용자 지정 속성과 라�
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+이미지 위에 그리는 색 `--paperpic-color-dim`, `--paperpic-color-line`, `--paperpic-color-line-shadow`는 인터페이스가 아니라 사진 위에 있으므로 두 모드에서 같은 값입니다. 선과 그 그림자는 짝을 이룹니다. 어두운 선에는 밝은 그림자를 고르세요.
 
 ## 스타일시트
 
@@ -65,22 +70,22 @@ import '@paperpic/react/style.css'
 
 이 클래스들은 공개되어 있습니다. 이름과, 클래스가 붙는 요소는 릴리스가 바뀌어도 그대로입니다. 컴포넌트의 다른 클래스는 배치를 받치는 것이라 어느 릴리스에서든 바뀔 수 있습니다.
 
-| 클래스                    | 요소                                                                                               |
-| ------------------------- | -------------------------------------------------------------------------------------------------- |
-| `paperpic`                | 뷰어의 루트                                                                                        |
-| `paperpic-button`         | 도구 모음과 편집 바의 모든 버튼                                                                    |
-| `paperpic-button-danger`  | 변경 사항을 버리기 전 질문에 있는 삭제                                                             |
-| `paperpic-button-primary` | 적용, 그리고 각 도구의 완료                                                                        |
-| `paperpic-button-text`    | 변경 사항을 버리기 전 질문에 있는 버튼                                                             |
-| `paperpic-edit-bar`       | 편집하는 동안 아래쪽에 나오는 카드 형태의 편집 바                                                  |
-| `paperpic-editing`        | 편집 중인 루트                                                                                     |
-| `paperpic-handle`         | 자르기와 기울기 보정의 모서리 핸들                                                                 |
-| `paperpic-host`           | Vue와 React 컴포넌트가 뷰어 바깥에 만드는 요소                                                     |
-| `paperpic-icon`           | 버튼의 아이콘                                                                                      |
-| `paperpic-status`         | 스크린 리더용 메시지. 이미지를 불러오거나 변경 사항을 적용하는 동안, 그리고 실패했을 때도 보입니다 |
-| `paperpic-status-visible` | 뷰어 가운데에 보이는 동안의 메시지                                                                 |
-| `paperpic-toolbar`        | 오른쪽의 도구 모음. 편집하는 동안 숨겨짐                                                           |
-| `paperpic-viewport`       | 이미지를 보여 주고 키보드 포커스를 받는 영역                                                       |
+| 클래스                    | 요소                                                                                                       |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | 뷰어의 루트                                                                                                |
+| `paperpic-button`         | 도구 모음과 편집 바의 모든 버튼                                                                            |
+| `paperpic-button-danger`  | 변경 사항을 버리기 전 질문에 있는 삭제                                                                     |
+| `paperpic-button-primary` | 적용, 그리고 각 도구의 완료                                                                                |
+| `paperpic-button-text`    | 변경 사항을 버리기 전 질문에 있는 버튼                                                                     |
+| `paperpic-edit-bar`       | 편집하는 동안 아래쪽에 나오는 카드 형태의 편집 바                                                          |
+| `paperpic-editing`        | 편집 중인 루트                                                                                             |
+| `paperpic-handle`         | 자르기와 기울기 보정의 모서리 핸들                                                                         |
+| `paperpic-host`           | Vue와 React 컴포넌트가 뷰어 바깥에 만드는 요소                                                             |
+| `paperpic-icon`           | 버튼의 아이콘                                                                                              |
+| `paperpic-status`         | 이미지를 불러오거나 변경 사항을 적용하는 동안, 그리고 실패했을 때 보이는 메시지. 스크린 리더도 읽어 줍니다 |
+| `paperpic-status-visible` | 뷰어 가운데에 보이는 동안의 메시지                                                                         |
+| `paperpic-toolbar`        | 오른쪽의 도구 모음. 편집하는 동안 숨겨짐                                                                   |
+| `paperpic-viewport`       | 이미지를 보여 주고 키보드 포커스를 받는 영역                                                               |
 
 버튼은 ARIA 속성으로 상태를 나타내며, 이것도 선택할 수 있습니다.
 
@@ -90,6 +95,22 @@ import '@paperpic/react/style.css'
 | `[aria-pressed='true']`  | 적용 중인 맞춤(너비에 맞추기, 높이에 맞추기), 또는 눈금자가 바꾸는 ‘조정’의 선택지 |
 
 호버와 이 상태들은 `box-shadow`로 그려지며, 버튼의 전역 리셋은 이를 건드리지 않습니다. 바꾸려면 `box-shadow`도 덮어쓰세요.
+
+## 상태 {#states}
+
+루트인 `.paperpic`은 CSS가 따를 수 있도록 뷰어의 상태를 data 속성으로 가집니다.
+
+| 속성                   | 값                                                                                  |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`, `loading`, `ready`, `error` 중 하나. [상태](./state)의 `status`와 같습니다 |
+| `data-paperpic-mode`   | `view` 또는 `edit`                                                                  |
+| `data-paperpic-tool`   | 열린 도구의 id(예: `crop`). 열린 도구가 없으면 없습니다                             |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## 컨트롤 {#controls}
 

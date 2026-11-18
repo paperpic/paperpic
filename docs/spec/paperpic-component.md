@@ -71,6 +71,10 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D57 | An arrow key that has nothing to move keeps its usual effect, so the page scrolls. The viewer listens to the wheel only while `wheelZoom` is on.                                                                                                                                                                                                                                                    | The keyboard must not trap the scroll of the page, as one finger does not (D29). A wheel listener that can stop the scroll makes the browser wait for it, which slows the scroll of the long pages that turn `wheelZoom` off. |
 | D58 | `error` carries a `phase`: `'load'`, `'preview'` or `'apply'`.                                                                                                                                                                                                                                                                                                                                      | A preview can fail too, and it leaves the edit open, as a failed Apply does. Without the phase, an app could not tell whether the image or an edit failed.                                                                    |
 | D59 | `setOptions()` compares each option with the one in use, one level into objects and arrays, and changes nothing when all are equal.                                                                                                                                                                                                                                                                 | Wrappers pass every prop on each render, often as new objects with the same contents. Each pass set labels, icons and tools again, and cleared the message of the live region, such as the one that announces Apply.          |
+| D60 | Announcements, such as the zoom, a moved corner or the value of a ruler, go to a live region of their own, which never shows. The status message keeps what the user must see: the loading, Apply and failures. `aria-busy` marks only the viewport.                                                                                                                                                | An announcement replaced a failure on screen, such as a zoom after a failed Apply. `aria-busy` on the root covered the live regions, so screen readers could hold back the message about the work until it ended.             |
+| D61 | `zoomTo()` throws a `RangeError` for a zoom of `NaN`, or a point with a coordinate that is not finite, and the zoom does not change. Any other zoom out of range is still clamped.                                                                                                                                                                                                                  | NaN cannot be clamped. It hid the image and disabled both zoom buttons until a fit, without an error. An empty number field gives NaN, so the mistake is easy to make.                                                        |
+| D62 | The canvas paints over the image with three tokens, `--paperpic-color-dim`, `--paperpic-color-line` and `--paperpic-color-line-shadow`, which have one value, without `light-dark()`. The root carries `data-paperpic-status`, `data-paperpic-mode` and `data-paperpic-tool`.                                                                                                                       | The overlay sits on the photo, so the scheme of the page says nothing about it, and a brand could not restyle it. CSS could not follow the status or the open tool. The prefix avoids the global CSS of apps.                 |
+| D63 | The state carries `hint`, the text that the edit bar shows for the open tool, or `null`. A new hint, such as after pressing a corner, emits `change`.                                                                                                                                                                                                                                               | With `toolbar: false`, nothing showed what the tool asks, and the tap that places a corner (D48) needs that instruction. A text through `labels` is enough, and a structured field can come later without a break.            |
 
 ## Public API
 
@@ -111,7 +115,7 @@ pic.cancel()
 pic.download() // emits a cancelable 'download' with { source, filename, preventDefault }
 pic.reload()
 pic.setOptions({ alt: 'A receipt' })
-pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy, activeTool, threshold, adjustments }
+pic.getState() // { status, mode, image, zoom, fit, hint, rotation, canUndo, canRedo, canApply, busy, activeTool, threshold, adjustments }
 const off = pic.on('change', listener) // also 'load', 'error', 'apply' and 'download'
 pic.destroy()
 ```
@@ -133,6 +137,7 @@ pic.destroy()
 - After Apply, the result is the image on display, the history is empty and the mode is View. Passing the same `src` again does nothing, because wrappers resend it. `reload()` brings back the original.
 - Changing `src` or `editable` while editing discards the edit, and so does changing them during an Apply, whose result is then ignored.
 - An option out of its range throws a `RangeError` from the constructor and from `setOptions()`, which then changes nothing (D56).
+- `zoomTo()` clamps a zoom out of range, and throws a `RangeError` for a zoom of `NaN` or a point that is not finite (D61).
 - `tools` chooses the buttons of the edit bar. Every method works with any tool (D55).
 - The saved file keeps the name of the source, or takes `filename`, and ends in the extension of its format, so a cleaned `receipt.jpg` saves as `receipt.png`. A URL source is saved through a link with `download`, which works because it comes from the same origin (D17).
 - `cancel()` does not ask. The built-in Cancel button and `Esc` ask first when there are changes to lose.
@@ -197,10 +202,12 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 
 - The canvas has `role="img"` and uses the `alt` the consumer passes. Without `alt`, it has `aria-hidden="true"` instead, as an `<img>` with an empty `alt`, because an image with no name breaks WCAG and the viewer around it already has a name.
 - The toolbar has `role="toolbar"` and arrow key navigation.
-- Corner handles take focus with Tab and move with the arrow keys: 1 screen pixel, or 10 with Shift. Each move is announced to screen readers.
+- Corner handles take focus with Tab and move with the arrow keys: 1 screen pixel, or 10 with Shift. Each move is announced to screen readers. The description of each handle (`cornerKeys`) says what the keys do, and that `Enter` finishes. `Enter` on a handle confirms the tool, as on the image and on a ruler, and `Space` selects the handle for a tap. A keyboard has no use for that selection, and `Enter` keeps the quick way to finish after the arrow keys.
 - A pointer moves a corner without dragging, as WCAG 2.5.7 asks (D48). Pressing a handle gives it `aria-pressed="true"`, and the hint of the tool and an announcement say what comes next.
-- An `aria-live` region announces processing, the active tool and results.
-- The rulers of Adjust and Clean up are native ranges, from -100 to 100 and from 0 to 100, so the arrow keys, `Page Up`, `Page Down`, `Home` and `End` move them, and screen readers read their value. The switch of Clean up has `role="switch"`, and the dot of a tool in use is read as its description.
+- Two live regions speak to screen readers (D60). The status message shows while the image loads or the changes apply, and on failure. The announcements never show, so they never replace it: the zoom, the edit mode, a selected or moved corner, the value of a ruler and the result of Apply.
+- `aria-busy` marks the viewport while the image loads, a preview is on its way or Apply runs. It stays off the live regions, so screen readers do not hold back their messages.
+- The rulers of Adjust and Clean up are native ranges, from -100 to 100 and from 0 to 100, so the arrow keys, `Page Up`, `Page Down`, `Home` and `End` move them, and screen readers read their value. The switch of Clean up has `role="switch"`, and the dot of a tool in use is read as its description. While Clean up is on, Adjust is disabled, and its description says why (`adjustUnavailable`).
+- A failed preview and a failed Apply show different messages, `previewError` and `applyError`, so the user knows whether anything was applied.
 - On the surface, the accent has a contrast of 3.65:1 in light mode and 7.56:1 in dark mode, above the 3:1 that controls and focus outlines need. It is never the color of text, which needs 4.5:1. The text has 15:1 in both modes.
 - `packages/core/src/paperpic.accessibility.test.ts` runs axe on each state of the interface. It skips contrast, which needs a real browser, so a change to a color token needs these figures checked again.
 
@@ -219,7 +226,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 - The component fills its container and adapts with `ResizeObserver` and container queries. It does not detect the device.
 - The main toolbar is always vertical, at the right. It scrolls when the container is too short for its buttons, and it hides while editing (D37).
 - The edit bar is a card at the bottom with two rows of fixed height, or one row from 28rem wide (D49).
-- Touch targets are at least 44 px with `pointer: coarse`.
+- Touch targets are at least 44 px with `any-pointer: coarse`, so a laptop with a touch screen and a trackpad gets them too.
 - Pinch zooms around the point between the fingers. Double tap toggles between fitted and 100%.
 
 ## Roadmap

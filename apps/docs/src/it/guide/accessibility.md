@@ -31,7 +31,7 @@ Con il focus nel visualizzatore:
 Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme invece quel pulsante. Prima di annullare le modifiche, `Esc` chiede conferma. Con `toolbar: false`, `Esc` chiude ancora uno strumento, ma non annulla la modifica: decide la tua interfaccia.
 
 - **Barra degli strumenti e barra di modifica.** Tab raggiunge ogni barra, e al suo interno le frecce passano da un pulsante all’altro, con `Home` e `Fine` per il primo e l’ultimo.
-- **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc.
+- **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc. I lettori di schermo sentono questi tasti, e che Invio termina, nella descrizione di ogni maniglia.
 - **Righelli.** I righelli di Regola e di Pulisci sono cursori nativi: le frecce, `Pag su`, `Pag giù`, `Home` e `Fine` li spostano. `Invio` conserva il valore, come Fatto, e `Esc` chiude lo strumento senza di esso.
 
 ## Lettori di schermo
@@ -39,11 +39,11 @@ Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme
 - L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
 - Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato di Applica e ogni errore.
-- L’interruttore di Pulisci ha il ruolo di un interruttore. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo».
+- L’interruttore di Pulisci ha il ruolo di un interruttore. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo». Mentre Pulisci è attivo, Regola è descritto con il motivo per cui è disattivato.
 
 ## Schermi touch
 
-- Con `pointer: coarse`, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel.
+- Con `any-pointer: coarse`, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel. Qualsiasi schermo touch lo soddisfa, anche su un portatile con touchpad.
 - Mentre un dito trascina un angolo, una lente d’ingrandimento mostra la zona sotto il dito.
 - Un angolo si sposta anche senza trascinare: premi la sua maniglia e poi tocca il punto in cui va. Funziona anche con il mouse.
 - Finché l’immagine è adattata, un dito scorre la pagina, così il visualizzatore non intrappola nessuno. Con lo zoom, sposta l’immagine.

@@ -14,13 +14,16 @@ The tokens are CSS custom properties that change the look of the component witho
 }
 ```
 
-| Token                            | Light     | Dark      | Description                           |
-| -------------------------------- | --------- | --------- | ------------------------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Accent of the interface               |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Background of the interface           |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Text of the interface                 |
-| `--paperpic-radius`              | `6px`     | `6px`     | Corner radius of the interface        |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Duration of the interface transitions |
+| Token                            | Light              | Dark               | Description                                                                                         |
+| -------------------------------- | ------------------ | ------------------ | --------------------------------------------------------------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | Accent of the interface                                                                             |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | Darkens the image around a selection                                                                |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | Lines over the image: the outline of a selection, the corner handles and the cross of the magnifier |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | The shadow under each line, so it shows on any image                                                |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | Background of the interface                                                                         |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | Text of the interface                                                                               |
+| `--paperpic-radius`              | `6px`              | `6px`              | Corner radius of the interface                                                                      |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | Duration of the interface transitions                                                               |
 
 ## Dark mode
 
@@ -33,6 +36,8 @@ To choose both values of a token, use `light-dark()` too:
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+The colors that paint over the image, `--paperpic-color-dim`, `--paperpic-color-line` and `--paperpic-color-line-shadow`, have one value for both, because they sit on the photo and not on the interface. A line and its shadow go in pairs: with a dark line, choose a light shadow.
 
 ## Stylesheet
 
@@ -65,22 +70,22 @@ Its rules live in the `paperpic` cascade layer, so any CSS of yours outside a la
 
 These classes are public: their names, and the elements they mark, stay stable between releases. The other classes of the component hold its layout together and can change in any release.
 
-| Class                     | Element                                                                                                     |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | The root of the viewer                                                                                      |
-| `paperpic-button`         | Every button of the toolbar and the edit bar                                                                |
-| `paperpic-button-danger`  | Discard, in the question before discarding the changes                                                      |
-| `paperpic-button-primary` | Apply, and Done in every tool                                                                               |
-| `paperpic-button-text`    | The buttons of the question before discarding the changes                                                   |
-| `paperpic-edit-bar`       | The edit bar, a card at the bottom while editing                                                            |
-| `paperpic-editing`        | The root, while editing                                                                                     |
-| `paperpic-handle`         | A corner handle of Crop and Straighten                                                                      |
-| `paperpic-host`           | The element that the Vue and React components render around the viewer                                      |
-| `paperpic-icon`           | The icon of a button                                                                                        |
-| `paperpic-status`         | The message for screen readers, which also shows while the image loads or the changes apply, and on failure |
-| `paperpic-status-visible` | The message, while it shows in the middle of the viewer                                                     |
-| `paperpic-toolbar`        | The toolbar at the right, hidden while editing                                                              |
-| `paperpic-viewport`       | The area that shows the image and takes the keyboard focus                                                  |
+| Class                     | Element                                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | The root of the viewer                                                                                           |
+| `paperpic-button`         | Every button of the toolbar and the edit bar                                                                     |
+| `paperpic-button-danger`  | Discard, in the question before discarding the changes                                                           |
+| `paperpic-button-primary` | Apply, and Done in every tool                                                                                    |
+| `paperpic-button-text`    | The buttons of the question before discarding the changes                                                        |
+| `paperpic-edit-bar`       | The edit bar, a card at the bottom while editing                                                                 |
+| `paperpic-editing`        | The root, while editing                                                                                          |
+| `paperpic-handle`         | A corner handle of Crop and Straighten                                                                           |
+| `paperpic-host`           | The element that the Vue and React components render around the viewer                                           |
+| `paperpic-icon`           | The icon of a button                                                                                             |
+| `paperpic-status`         | The message that shows, and that screen readers hear, while the image loads or the changes apply, and on failure |
+| `paperpic-status-visible` | The message, while it shows in the middle of the viewer                                                          |
+| `paperpic-toolbar`        | The toolbar at the right, hidden while editing                                                                   |
+| `paperpic-viewport`       | The area that shows the image and takes the keyboard focus                                                       |
 
 Buttons show their state with ARIA attributes, which you can select too:
 
@@ -90,6 +95,22 @@ Buttons show their state with ARIA attributes, which you can select too:
 | `[aria-pressed='true']`  | The fit in effect, Fit to width or Fit to height, or the choice of Adjust that the ruler changes |
 
 The hover and these states paint with `box-shadow`, which global resets of buttons leave alone. To restyle them, override `box-shadow` too.
+
+## States {#states}
+
+The root, `.paperpic`, carries the state of the viewer in data attributes, so CSS can follow it:
+
+| Attribute              | Values                                                                       |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`, `loading`, `ready` or `error`, as `status` in the [state](./state)  |
+| `data-paperpic-mode`   | `view` or `edit`                                                             |
+| `data-paperpic-tool`   | The id of the open tool, such as `crop`. It is missing while no tool is open |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## Controls {#controls}
 

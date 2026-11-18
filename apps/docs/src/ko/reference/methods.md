@@ -153,6 +153,8 @@ function zoomTo(zoom: number, point?: ViewPoint): void
 
 배율은 이미지 전체를 맞춘 배율(그 값이 `1`보다 크면 `1`)부터 `8`까지입니다. 범위를 벗어난 값은 범위 안으로 맞춰집니다.
 
+`zoom`이 `NaN`이거나 `point`의 좌표가 유한한 수가 아니면 `RangeError`를 던지며, 이때 배율은 바뀌지 않습니다.
+
 ### `fit()`
 
 ```ts

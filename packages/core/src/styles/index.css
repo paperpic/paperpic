@@ -263,8 +263,8 @@
     margin: auto;
     border: 2px solid var(--paperpic-color-accent);
     border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 60%);
+    background: var(--paperpic-color-line);
+    box-shadow: 0 0 0 1px var(--paperpic-color-line-shadow);
   }
 
   .paperpic-handle:focus-visible {
@@ -275,10 +275,10 @@
 
   /* The corner that the next tap on the image moves */
   .paperpic-handle[aria-pressed='true']::before {
-    border-color: #fff;
+    border-color: var(--paperpic-color-line);
     background: var(--paperpic-color-accent);
     box-shadow:
-      0 0 0 1px rgb(0 0 0 / 60%),
+      0 0 0 1px var(--paperpic-color-line-shadow),
       0 0 0 4px color-mix(in srgb, var(--paperpic-color-accent) 50%, transparent);
   }
 
@@ -628,8 +628,12 @@
     );
   }
 
-  /* Announces to screen readers without taking space, and shows only what the user must see */
-  .paperpic-status {
+  /*
+   * The message and the announcements reach screen readers without taking space. Only the message shows, while the
+   * user must see it, so an announcement never hides it
+   */
+  .paperpic-status,
+  .paperpic-announcement {
     position: absolute;
     overflow: hidden;
     inline-size: 1px;
@@ -638,20 +642,28 @@
     white-space: nowrap;
   }
 
+  /*
+   * As wide as its text, up to the viewer minus a margin, where a long text such as a translation wraps. The margins
+   * center it in either direction of writing
+   */
   .paperpic-status-visible {
     inset-block-start: 50%;
-    inset-inline-start: 50%;
+    inset-inline: 1rem;
     overflow: visible;
-    inline-size: auto;
+    inline-size: fit-content;
     block-size: auto;
+    margin-inline: auto;
     padding: 0.5rem 0.75rem;
     border-radius: var(--paperpic-radius);
     background: var(--paperpic-color-surface);
     clip-path: none;
-    translate: -50% -50%;
+    text-align: center;
+    white-space: normal;
+    translate: 0 -50%;
   }
 
-  @media (pointer: coarse) {
+  /* Any touch screen, even on a laptop whose main pointer is a mouse or a trackpad */
+  @media (any-pointer: coarse) {
     .paperpic-button {
       min-inline-size: 2.75rem;
       block-size: 2.75rem;

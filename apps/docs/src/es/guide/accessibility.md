@@ -31,7 +31,7 @@ Con el foco dentro del visor:
 En macOS, `Cmd` funciona como `Ctrl`. Con el foco en un botón, `Enter` pulsa ese botón. Antes de cancelar los cambios, `Esc` pide confirmación. Con `toolbar: false`, `Esc` sigue cerrando una herramienta, pero no cancela la edición: decide tu interfaz.
 
 - **Barra de herramientas y barra de edición.** Tab llega a cada barra, y dentro de ella las flechas pasan de un botón a otro, con `Inicio` y `Fin` para el primero y el último.
-- **Tiradores de esquina.** Con Recortar o Enderezar abierta, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús.
+- **Tiradores de esquina.** Con Recortar o Enderezar abierta, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús. Los lectores de pantalla oyen estas teclas, y que Intro termina, en la descripción de cada tirador.
 - **Reglas.** Las reglas de Ajustar y Limpiar son controles de rango nativos: las flechas, `Re Pág`, `Av Pág`, `Inicio` y `Fin` las mueven. `Enter` conserva el valor, como Hecho, y `Esc` cierra la herramienta sin él.
 
 ## Lectores de pantalla
@@ -39,11 +39,11 @@ En macOS, `Cmd` funciona como `Ctrl`. Con el foco en un botón, `Enter` pulsa es
 - La imagen tiene el rol de imagen, con `alt` como nombre. Sin `alt`, los lectores de pantalla la omiten.
 - La barra de herramientas y la barra de edición tienen nombre propio, como «Controles de la imagen» y «Controles de edición».
 - Un anuncio informa de lo que el usuario no puede ver solo con el foco: la carga de la imagen, el nivel de zoom, el inicio del modo de edición, una esquina seleccionada y la posición de una esquina movida, el valor de una regla, el resultado de Aplicar y cualquier fallo.
-- El interruptor de Limpiar tiene el rol de interruptor. Una herramienta en uso, que un punto marca en pantalla, se describe como «En uso».
+- El interruptor de Limpiar tiene el rol de interruptor. Una herramienta en uso, que un punto marca en pantalla, se describe como «En uso». Mientras Limpiar está activada, Ajustar se describe con el motivo por el que está desactivada.
 
 ## Pantallas táctiles
 
-- Con `pointer: coarse`, los botones y los tiradores de esquina miden al menos 44 píxeles.
+- Con `any-pointer: coarse`, los botones y los tiradores de esquina miden al menos 44 píxeles. Cualquier pantalla táctil lo cumple, también en un portátil con trackpad.
 - Mientras un dedo arrastra una esquina, una lupa muestra la zona que tapa.
 - Una esquina también se mueve sin arrastrar: pulsa su tirador y luego toca donde va. También funciona con ratón.
 - Mientras la imagen está encajada, un dedo hace scroll en la página, así que el visor no deja a nadie atrapado dentro. Con zoom, desplaza la imagen.

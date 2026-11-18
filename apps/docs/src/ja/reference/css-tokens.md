@@ -14,13 +14,16 @@ description: PaperPic の見た目を変える CSS カスタムプロパティ�
 }
 ```
 
-| トークン                         | ライト    | ダーク    | 説明                                 |
-| -------------------------------- | --------- | --------- | ------------------------------------ |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | インターフェースのアクセントカラー   |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | インターフェースの背景               |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | インターフェースのテキスト           |
-| `--paperpic-radius`              | `6px`     | `6px`     | インターフェースの角の半径           |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | インターフェースのトランジション時間 |
+| トークン                         | ライト             | ダーク             | 説明                                                     |
+| -------------------------------- | ------------------ | ------------------ | -------------------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | インターフェースのアクセントカラー                       |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | 選択範囲の周りの画像を暗くします                         |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | 画像の上の線。選択範囲の輪郭、角のハンドル、ルーペの十字 |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | 各線の下の影。どの画像の上でも線が見えるようにします     |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | インターフェースの背景                                   |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | インターフェースのテキスト                               |
+| `--paperpic-radius`              | `6px`              | `6px`              | インターフェースの角の半径                               |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | インターフェースのトランジション時間                     |
 
 ## ダークモード
 
@@ -33,6 +36,8 @@ description: PaperPic の見た目を変える CSS カスタムプロパティ�
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+画像の上に描く色、`--paperpic-color-dim`、`--paperpic-color-line`、`--paperpic-color-line-shadow` は、インターフェースではなく写真の上にあるため、両方のモードで同じ値です。線とその影は組で使います。暗い線には明るい影を選んでください。
 
 ## スタイルシート
 
@@ -65,22 +70,22 @@ import '@paperpic/react/style.css'
 
 これらのクラスは公開されています。名前と、それが付く要素は、リリースをまたいで変わりません。コンポーネントのほかのクラスはレイアウトを支えるもので、どのリリースでも変わる可能性があります。
 
-| クラス                    | 要素                                                                                             |
-| ------------------------- | ------------------------------------------------------------------------------------------------ |
-| `paperpic`                | ビューアーのルート                                                                               |
-| `paperpic-button`         | ツールバーと編集バーのすべてのボタン                                                             |
-| `paperpic-button-danger`  | 変更を破棄する前の確認にある破棄                                                                 |
-| `paperpic-button-primary` | 適用、および各ツールの完了                                                                       |
-| `paperpic-button-text`    | 変更を破棄する前の確認にあるボタン                                                               |
-| `paperpic-edit-bar`       | 編集中に下部に表示されるカード型の編集バー                                                       |
-| `paperpic-editing`        | 編集中のルート                                                                                   |
-| `paperpic-handle`         | 切り抜きと傾き補正の角のハンドル                                                                 |
-| `paperpic-host`           | Vue と React のコンポーネントがビューアーの周りに作る要素                                        |
-| `paperpic-icon`           | ボタンのアイコン                                                                                 |
-| `paperpic-status`         | スクリーンリーダー向けのメッセージ。画像の読み込み中や変更の適用中、失敗したときにも表示されます |
-| `paperpic-status-visible` | ビューアーの中央に表示されている間のメッセージ                                                   |
-| `paperpic-toolbar`        | 右側のツールバー。編集中は非表示                                                                 |
-| `paperpic-viewport`       | 画像を表示し、キーボードフォーカスを受ける領域                                                   |
+| クラス                    | 要素                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `paperpic`                | ビューアーのルート                                                                                   |
+| `paperpic-button`         | ツールバーと編集バーのすべてのボタン                                                                 |
+| `paperpic-button-danger`  | 変更を破棄する前の確認にある破棄                                                                     |
+| `paperpic-button-primary` | 適用、および各ツールの完了                                                                           |
+| `paperpic-button-text`    | 変更を破棄する前の確認にあるボタン                                                                   |
+| `paperpic-edit-bar`       | 編集中に下部に表示されるカード型の編集バー                                                           |
+| `paperpic-editing`        | 編集中のルート                                                                                       |
+| `paperpic-handle`         | 切り抜きと傾き補正の角のハンドル                                                                     |
+| `paperpic-host`           | Vue と React のコンポーネントがビューアーの周りに作る要素                                            |
+| `paperpic-icon`           | ボタンのアイコン                                                                                     |
+| `paperpic-status`         | 画像の読み込み中や変更の適用中、失敗したときに表示されるメッセージ。スクリーンリーダーも読み上げます |
+| `paperpic-status-visible` | ビューアーの中央に表示されている間のメッセージ                                                       |
+| `paperpic-toolbar`        | 右側のツールバー。編集中は非表示                                                                     |
+| `paperpic-viewport`       | 画像を表示し、キーボードフォーカスを受ける領域                                                       |
 
 ボタンは ARIA 属性で状態を示し、これも選択できます。
 
@@ -90,6 +95,22 @@ import '@paperpic/react/style.css'
 | `[aria-pressed='true']`  | 使用中の合わせ方（幅に合わせる、高さに合わせる）、または目盛りが変える「調整」の選択肢  |
 
 ホバーとこれらの状態は `box-shadow` で描かれ、ボタンのグローバルなリセットの影響を受けません。変更するときは `box-shadow` も上書きしてください。
+
+## 状態 {#states}
+
+ルートの `.paperpic` は、CSS が追えるようにビューアーの状態を data 属性で持ちます。
+
+| 属性                   | 値                                                                                     |
+| ---------------------- | -------------------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`、`loading`、`ready`、`error` のいずれか。[状態](./state)の `status` と同じです |
+| `data-paperpic-mode`   | `view` または `edit`                                                                   |
+| `data-paperpic-tool`   | 開いているツールの id（`crop` など）。ツールが開いていない間はありません               |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## コントロール {#controls}
 
