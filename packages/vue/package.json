@@ -14,12 +14,21 @@
   "bugs": "https://github.com/paperpic/paperpic/issues",
   "keywords": [
     "document",
+    "document-scanner",
+    "document-viewer",
     "image",
-    "perspective-correction",
-    "threshold",
+    "image-editor",
+    "image-viewer",
     "image-processing",
+    "perspective-correction",
+    "crop",
+    "deskew",
+    "threshold",
+    "web-worker",
+    "typescript",
     "vue",
-    "vue3"
+    "vue3",
+    "vue-component"
   ],
   "sideEffects": [
     "**/*.css"

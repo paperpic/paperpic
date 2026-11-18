@@ -1,6 +1,22 @@
 # @paperpic/core
 
+Clean, readable document images, right in the browser. Straighten, crop and clean up a phone photo, a scan or any image with text.
+
+**[Docs](https://paperpic.dev) · [Playground](https://paperpic.dev/playground) · [GitHub](https://github.com/paperpic/paperpic)**
+
+![A photo of a receipt taken at an angle, next to the straight black and white document that PaperPic made from it](https://paperpic.dev/og-image.jpg)
+
 Framework-agnostic document image viewer and editor, for use with plain JavaScript or through a PaperPic wrapper such as [`@paperpic/vue`](https://www.npmjs.com/package/@paperpic/vue) or [`@paperpic/react`](https://www.npmjs.com/package/@paperpic/react).
+
+## Features
+
+- **Nothing leaves the browser**: no server and no requests of its own, so the image stays on the device until your code sends it
+- **Straighten** photos taken at an angle, **crop**, **rotate** in 90° steps and **flip**
+- **Clean up** into crisp black and white, removing shadows, and adjust **brightness and contrast**
+- **Undo and redo** every edit until you apply, then get the result as a `Blob`
+- **Off the main thread**: image processing runs in a Web Worker
+- **Keyboard and screen readers**, dark mode that follows `color-scheme`, and CSS tokens for your own theme
+- **No runtime dependencies**
 
 ## Installation
 
