@@ -65,6 +65,15 @@ import '@paperpic/react/style.css'
 }
 ```
 
+다른 세 토큰은 ‘자르기’나 ‘기울기 보정’이 열려 있는 동안 뷰어가 사진 위에 그리는 것의 색을 정합니다. `--paperpic-color-dim`은 선택 영역 주변의 이미지를 어둡게 하고, `--paperpic-color-line`과 `--paperpic-color-line-shadow`는 선과 모서리 핸들을 그립니다. 밝은 페이지와 어두운 페이지에서 같은 값입니다. 선과 그림자는 짝을 이루므로, 어두운 선에는 밝은 그림자를 주세요.
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## 디자인 시스템의 색 쓰기 {#design-system}
 
 앱이 색을 CSS 변수에 두고 있다면, 값을 복사하지 말고 토큰이 그 변수를 가리키게 하세요. 그러면 뷰어가 다크 모드를 포함해 여러분의 테마를 따릅니다.
@@ -252,6 +261,14 @@ PaperPic의 스타일시트는 JavaScript가 아니라 여기, 여러분의 CSS�
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+루트인 `.paperpic`은 [`data-paperpic-status`, `data-paperpic-mode`, `data-paperpic-tool`](../reference/css-tokens#states)에도 상태를 담으므로, CSS가 불러오기, 편집 모드, 열린 도구를 따를 수 있습니다.
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

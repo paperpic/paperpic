@@ -65,6 +65,15 @@ Die Token werden vererbt, also ändert eine Klasse auf dem Container eines Viewe
 }
 ```
 
+Drei weitere Token färben, was der Viewer über das Foto malt, solange Zuschneiden oder Begradigen offen ist: `--paperpic-color-dim` dunkelt das Bild um die Auswahl ab, und `--paperpic-color-line` und `--paperpic-color-line-shadow` zeichnen die Linien und die Eckgriffe. Sie haben auf hellen und dunklen Seiten einen Wert. Eine Linie und ihr Schatten gehören zusammen, also gib einer dunklen Linie einen hellen Schatten:
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Die Farben deines Designsystems nutzen {#design-system}
 
 Wenn deine App ihre Farben in CSS-Variablen hält, lass die Token auf diese zeigen, statt ihre Werte zu kopieren. Dann folgt der Viewer deinem Design, samt Dunkelmodus:
@@ -252,6 +261,14 @@ Jede Schaltfläche, jede Skala und jeder Eckgriff trägt außerdem `data-paperpi
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+Die Wurzel, `.paperpic`, trägt ihren Zustand auch in [`data-paperpic-status`, `data-paperpic-mode` und `data-paperpic-tool`](../reference/css-tokens#states), damit dein CSS dem Laden, dem Bearbeitungsmodus und dem offenen Werkzeug folgen kann:
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

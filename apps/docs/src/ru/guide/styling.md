@@ -65,6 +65,15 @@ import '@paperpic/react/style.css'
 }
 ```
 
+Ещё три токена задают цвет того, что просмотрщик рисует поверх фото, пока открыт «Обрезать» или «Выровнять»: `--paperpic-color-dim` затемняет изображение вокруг выделения, а `--paperpic-color-line` и `--paperpic-color-line-shadow` рисуют линии и угловые маркеры. У них одно значение на светлых и тёмных страницах. Линия и её тень идут в паре, поэтому тёмной линии дайте светлую тень:
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Цвета вашей дизайн-системы {#design-system}
 
 Если ваше приложение хранит цвета в CSS-переменных, направьте токены на них, а не копируйте значения. Тогда просмотрщик следует вашей теме, включая тёмную:
@@ -252,6 +261,14 @@ Tailwind CSS 4 тоже держит свои правила в каскадны
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+Корневой элемент, `.paperpic`, также передаёт состояние в [`data-paperpic-status`, `data-paperpic-mode` и `data-paperpic-tool`](../reference/css-tokens#states), чтобы ваш CSS следовал за загрузкой, режимом редактирования и открытым инструментом:
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 
