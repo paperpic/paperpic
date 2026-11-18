@@ -17,7 +17,7 @@ Un documento fotografiado en ángulo parece un trapecio: el borde lejano es más
 
 Los tiradores funcionan como en [Recortar](./crop): una lupa en pantallas táctiles, pulsar y tocar en lugar de arrastrar, y Tab y las flechas con el teclado. Las cuatro esquinas siempre forman una figura convexa, así que la página siempre se puede aplanar.
 
-Enderezar muestra la foto sin [Limpiar](./clean-up), porque en una página limpiada cuesta encontrar los bordes del papel. Limpiar vuelve después de Hecho.
+Enderezar muestra la foto sin el blanco y negro de [Limpiar](./clean-up), porque en una página limpiada cuesta encontrar los bordes del papel. El blanco y negro vuelve después de Hecho, y el gris se queda.
 
 ## Proporciones
 

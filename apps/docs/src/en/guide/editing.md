@@ -19,14 +19,14 @@ In a narrow viewer, the edit bar has two rows: the tools, or the panel of the op
 
 ## Tools
 
-| Tool                                   | What it does                                                   | Id            |
-| -------------------------------------- | -------------------------------------------------------------- | ------------- |
-| [Crop](./tools/crop)                   | Keeps the part of the image inside four corners                | `crop`        |
-| [Straighten](./tools/straighten)       | Turns a photo taken at an angle into a flat page               | `perspective` |
-| [Rotate left](./tools/rotate-and-flip) | Turns the image a quarter turn to the left                     | `rotate`      |
-| [Flip](./tools/rotate-and-flip)        | Mirrors the image left to right                                | `flip`        |
-| [Adjust](./tools/adjust)               | Changes the brightness and the contrast                        | `adjust`      |
-| [Clean up](./tools/clean-up)           | Turns the document into crisp black and white, without shadows | `threshold`   |
+| Tool                                   | What it does                                                           | Id            |
+| -------------------------------------- | ---------------------------------------------------------------------- | ------------- |
+| [Crop](./tools/crop)                   | Keeps the part of the image inside four corners                        | `crop`        |
+| [Straighten](./tools/straighten)       | Turns a photo taken at an angle into a flat page                       | `perspective` |
+| [Rotate left](./tools/rotate-and-flip) | Turns the image a quarter turn to the left                             | `rotate`      |
+| [Flip](./tools/rotate-and-flip)        | Mirrors the image left to right                                        | `flip`        |
+| [Adjust](./tools/adjust)               | Changes the brightness and the contrast                                | `adjust`      |
+| [Clean up](./tools/clean-up)           | Turns the document gray, or into crisp black and white without shadows | `finish`      |
 
 The [`tools`](../reference/options#tools) option chooses which ones the edit bar offers:
 
@@ -72,7 +72,7 @@ export function Receipt() {
 
 Crop, Straighten, Adjust and Clean up open a panel in place of the tools. While one of them is open, the other tools, Undo, Redo and Apply wait. Done, or `Enter`, adds what the tool chose to the edits, and Cancel this tool, or `Esc`, discards it.
 
-Inside a panel, the image looks as the result will, Clean up included. Straighten is the exception: it shows the photo without Clean up, so the edges of the paper stay visible.
+Inside a panel, the image looks as the result will, Clean up included. Straighten is the exception: it shows the photo without black and white, so the edges of the paper stay visible.
 
 ## Preview and Apply
 

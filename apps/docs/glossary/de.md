@@ -13,6 +13,7 @@ Use these words in the German docs, so that each idea has one name on every page
 | edit mode                                     | Bearbeitungsmodus  |
 | editor                                        | Editor             |
 | event                                         | Ereignis           |
+| finish, of Clean up                           | Finish             |
 | guide                                         | Anleitung          |
 | keyboard shortcut                             | Tastenkürzel       |
 | label, a text of the interface                | Beschriftung       |
@@ -33,7 +34,6 @@ Use these words in the German docs, so that each idea has one name on every page
 | softness, of the cleaned edges                | Weichheit          |
 | source image                                  | Quellbild          |
 | state                                         | Zustand            |
-| switch, of Clean up                           | Schalter           |
 | tool                                          | Werkzeug           |
 | toolbar, the bar of buttons at the right      | Werkzeugleiste     |
 | type, of TypeScript                           | Typ                |

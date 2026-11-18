@@ -14,6 +14,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | edit, one change in the edit mode             | cambio                |
 | editor                                        | editor                |
 | event                                         | evento                |
+| finish, of Clean up                           | acabado               |
 | fit, of the image in the viewer               | encajar, encaje       |
 | guide                                         | Guía                  |
 | keyboard shortcut                             | atajo de teclado      |
@@ -36,7 +37,6 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | softness, of the cleaned edges                | suavidad              |
 | source image                                  | imagen original       |
 | state                                         | estado                |
-| switch, of Clean up                           | interruptor           |
 | tool                                          | herramienta           |
 | toolbar, the bar of buttons at the right      | barra de herramientas |
 | type, of TypeScript                           | tipo                  |

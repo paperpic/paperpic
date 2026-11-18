@@ -151,6 +151,6 @@ export function ExpenseForm() {
 
 - Apply puts the edited image in the file field with a [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), so the form sends it under the same name. Before any Apply, the form sends the photo as the user picked it.
 - Changing the files of the field from code does not fire its `change` event, so the viewer keeps the result on display.
-- The file keeps the name of the photo, with the extension of the result, such as `receipt.png` after Clean up.
+- The file keeps the name of the photo, with the extension of the result, such as `receipt.png` after Clean up in black and white.
 - The buttons of the viewer never submit the form.
 - [`maxOutputSize`](../reference/options#maxoutputsize) keeps the form light. Phone photos have 12 megapixels or more, and documents stay readable at 3000 pixels on the longest side.

@@ -19,14 +19,14 @@ In einem schmalen Viewer hat die Bearbeitungsleiste zwei Zeilen: oben die Werkze
 
 ## Werkzeuge
 
-| Werkzeug                                     | Was es tut                                                  | Id            |
-| -------------------------------------------- | ----------------------------------------------------------- | ------------- |
-| [Zuschneiden](./tools/crop)                  | Behält den Teil des Bildes innerhalb von vier Ecken         | `crop`        |
-| [Begradigen](./tools/straighten)             | Macht aus einem schräg aufgenommenen Foto eine flache Seite | `perspective` |
-| [Nach links drehen](./tools/rotate-and-flip) | Dreht das Bild um eine Vierteldrehung nach links            | `rotate`      |
-| [Spiegeln](./tools/rotate-and-flip)          | Spiegelt das Bild von links nach rechts                     | `flip`        |
-| [Anpassen](./tools/adjust)                   | Ändert Helligkeit und Kontrast                              | `adjust`      |
-| [Bereinigen](./tools/clean-up)               | Macht aus dem Dokument klares Schwarzweiß, ohne Schatten    | `threshold`   |
+| Werkzeug                                     | Was es tut                                                       | Id            |
+| -------------------------------------------- | ---------------------------------------------------------------- | ------------- |
+| [Zuschneiden](./tools/crop)                  | Behält den Teil des Bildes innerhalb von vier Ecken              | `crop`        |
+| [Begradigen](./tools/straighten)             | Macht aus einem schräg aufgenommenen Foto eine flache Seite      | `perspective` |
+| [Nach links drehen](./tools/rotate-and-flip) | Dreht das Bild um eine Vierteldrehung nach links                 | `rotate`      |
+| [Spiegeln](./tools/rotate-and-flip)          | Spiegelt das Bild von links nach rechts                          | `flip`        |
+| [Anpassen](./tools/adjust)                   | Ändert Helligkeit und Kontrast                                   | `adjust`      |
+| [Bereinigen](./tools/clean-up)               | Macht das Dokument grau oder zu klarem Schwarzweiß ohne Schatten | `finish`      |
 
 Die Option [`tools`](../reference/options#tools) wählt aus, welche die Bearbeitungsleiste anbietet:
 
@@ -72,7 +72,7 @@ export function Receipt() {
 
 Zuschneiden, Begradigen, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge. Solange eines davon offen ist, warten die anderen Werkzeuge, Rückgängig, Wiederholen und Übernehmen. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
 
-In einem Bedienfeld sieht das Bild so aus, wie das Ergebnis wird, mit Bereinigen. Begradigen ist die Ausnahme: Es zeigt das Foto ohne Bereinigen, damit die Ränder des Papiers sichtbar bleiben.
+In einem Bedienfeld sieht das Bild so aus, wie das Ergebnis wird, mit Bereinigen. Begradigen ist die Ausnahme: Es zeigt das Foto ohne Schwarzweiß, damit die Ränder des Papiers sichtbar bleiben.
 
 ## Vorschau und Übernehmen
 

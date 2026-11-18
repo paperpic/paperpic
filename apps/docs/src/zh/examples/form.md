@@ -151,6 +151,6 @@ export function ExpenseForm() {
 
 - 应用会通过 [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer) 把编辑后的图片放进文件字段，因此表单会用同一个名称发送它。在任何一次应用之前，表单发送的是用户选择的原照片。
 - 用代码修改字段中的文件不会触发它的 `change` 事件，因此查看器会继续显示结果。
-- 文件保留照片的名称，只把扩展名换成结果的格式，例如清理后是 `receipt.png`。
+- 文件保留照片的名称，只把扩展名换成结果的格式，例如清理成黑白后是 `receipt.png`。
 - 查看器的按钮永远不会提交表单。
 - [`maxOutputSize`](../reference/options#maxoutputsize) 让表单保持轻量。手机照片有 1200 万像素或更多，而文档在长边 3000 像素时仍然清晰可读。

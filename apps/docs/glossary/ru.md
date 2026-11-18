@@ -13,6 +13,7 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 | edit mode                                     | режим редактирования            |
 | editor                                        | редактор                        |
 | event                                         | событие                         |
+| finish, of Clean up                           | обработка                       |
 | guide                                         | Руководство                     |
 | keyboard shortcut                             | сочетание клавиш                |
 | label, a text of the interface                | подпись                         |
@@ -33,7 +34,6 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 | softness, of the cleaned edges                | мягкость                        |
 | source image                                  | исходное изображение            |
 | state                                         | состояние                       |
-| switch, of Clean up                           | переключатель                   |
 | tool                                          | инструмент                      |
 | toolbar, the bar of buttons at the right      | панель инструментов             |
 | type, of TypeScript                           | тип                             |

@@ -77,7 +77,7 @@ Das Format des bearbeiteten Bildes, in [`output`](./options#output).
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'threshold'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
 ```
 
 Ein Werkzeug der Bearbeitungsleiste, in [`tools`](./options#tools), [`openTool()`](./methods#opentool) und im `activeTool` des [Zustands](./state). [`tools`](./options#tools) nennt die Schaltfläche jedes Werkzeugs.
@@ -112,6 +112,12 @@ interface PaperPicLabels {
   edit: string
   editBar: string
   editing: string
+  finish: string
+  finishGray: string
+  finishLevel: (percent: number) => string
+  finishMono: string
+  finishOriginal: string
+  finishSensitivity: string
   fitHeight: string
   fitWidth: string
   flip: string
@@ -126,9 +132,6 @@ interface PaperPicLabels {
   redo: string
   rotateLeft: string
   rotateRight: string
-  threshold: string
-  thresholdLevel: (percent: number) => string
-  thresholdSensitivity: string
   toolbar: string
   undo: string
   viewer: string
@@ -152,6 +155,7 @@ interface PaperPicIcons {
   crop: string
   download: string
   edit: string
+  finish: string
   fitHeight: string
   fitWidth: string
   flip: string
@@ -160,7 +164,6 @@ interface PaperPicIcons {
   rotateDocument: string
   rotateLeft: string
   rotateRight: string
-  threshold: string
   undo: string
   zoomIn: string
   zoomOut: string
@@ -181,18 +184,26 @@ interface PaperPicState {
   canApply: boolean
   canRedo: boolean
   canUndo: boolean
+  finish: { mode: FinishMode, sensitivity: number }
   fit: Fit | null
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
-  threshold: { enabled: boolean, sensitivity: number }
   zoom: number
 }
 ```
 
 Was [`getState()`](./methods#getstate) zurückgibt und das Ereignis [`change`](./events#change) mitliefert. [Zustand](./state) erklärt jedes Feld.
+
+### `FinishMode`
+
+```ts
+type FinishMode = 'original' | 'gray' | 'mono'
+```
+
+Das Finish von [Bereinigen](../guide/tools/clean-up): die ursprünglichen Töne, Graustufen oder Schwarzweiß mit `'mono'`. [`setFinish()`](./methods#setfinish) nimmt es an, und das `finish` des [Zustands](./state) enthält es.
 
 ### `Fit`
 

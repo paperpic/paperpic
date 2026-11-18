@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## Uno slider tutto tuo {#slider}
 
-Uno slider tutto tuo per Pulisci apre prima lo strumento. Ogni movimento chiama poi `setThreshold()`, che cambia quello che mostra Pulisci, e `confirmTool()` tiene l’ultimo valore come una sola modifica. Qui Fatto applica anche il risultato, e Annulla esce dalla modalità di modifica, così questi controlli sono tutta l’interfaccia.
+Uno slider tutto tuo per Pulisci apre prima lo strumento. Ogni movimento chiama poi `setFinish()`, che cambia quello che mostra Pulisci, e `confirmTool()` tiene l’ultimo valore come una sola modifica. Qui Fatto applica anche il risultato, e Annulla esce dalla modalità di modifica, così questi controlli sono tutta l’interfaccia.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       Sensibilità
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       Fatto
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>Fatto</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - Con `toolbar: false` si nasconde anche la barra di modifica integrata, quindi Ritaglia e Raddrizza mostrano le loro maniglie ma non il pulsante Fatto. La tua interfaccia li conferma con [`confirmTool()`](../reference/methods#confirmtool), come `Invio`. Per chiuderli senza i loro cambiamenti, chiama [`cancelTool()`](../reference/methods#canceltool), come fa `Esc`.
 - Mentre Ritaglia o Raddrizza è aperto, `hint` nello stato dice cosa fare, per esempio «Drag the corners», come fa la barra di modifica integrata. Mostralo, perché con `toolbar: false` nient’altro lo mostra. Un nuovo hint, come dopo aver premuto un angolo, arriva con `change`.
-- I tuoi cursori possono chiamare direttamente [`setThreshold()`](../reference/methods#setthreshold) e [`setAdjustments()`](../reference/methods#setadjustments), il che aggiunge un cambiamento a ogni chiamata. Per lasciare un solo cambiamento per tutto un trascinamento, apri prima lo strumento con [`openTool()`](../reference/methods#opentool): gli stessi metodi cambiano allora ciò che mostra, e `confirmTool()` lo conserva.
+- I tuoi cursori possono chiamare direttamente [`setFinish()`](../reference/methods#setfinish) e [`setAdjustments()`](../reference/methods#setadjustments), il che aggiunge un cambiamento a ogni chiamata. Per lasciare un solo cambiamento per tutto un trascinamento, apri prima lo strumento con [`openTool()`](../reference/methods#opentool): gli stessi metodi cambiano allora ciò che mostra, e `confirmTool()` lo conserva.
 - [`cancel()`](../reference/methods#cancel) non chiede conferma prima di scartare le modifiche. Chiedila tu all’utente se ce ne sono, ad esempio quando `canApply` è vero.
 - Le scorciatoie da tastiera continuano a funzionare con il focus sul visualizzatore. Vedi [Accessibilità](../guide/accessibility).

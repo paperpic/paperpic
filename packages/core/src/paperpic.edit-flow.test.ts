@@ -960,7 +960,7 @@ describe('editing', () => {
     it('renders only the latest edits after the preview on its way, and skips the ones between', async () => {
       mocks.renderPreview.mockClear()
       pic.flip()
-      pic.setThreshold({ enabled: true })
+      pic.setFinish({ mode: 'mono' })
       pic.undo()
       expect(mocks.renderPreview).toHaveBeenCalledOnce()
 
@@ -1006,7 +1006,7 @@ describe('editing', () => {
   describe('cleaning up the document', () => {
     const cleanUp = () => bar().querySelector<HTMLButtonElement>('.paperpic-edit-tools [aria-label="Clean up"]')!
     const ruler = () => bar().querySelector<HTMLInputElement>('input[aria-label="Sensitivity"]')!
-    const toggle = () => bar().querySelector<HTMLButtonElement>('[role="switch"]')!
+    const finish = (name: string) => bar().querySelector<HTMLButtonElement>(`[data-paperpic-control="${name}"]`)!
     const dot = () => cleanUp().querySelector<HTMLElement>('.paperpic-edit-dot')!
     const move = (value: number, type: 'input' | 'change') => {
       ruler().value = String(value)
@@ -1024,22 +1024,21 @@ describe('editing', () => {
       pic.edit()
     })
 
-    it('opens a panel that turns it on, with a preview and a ruler, and no edit yet', () => {
+    it('opens a panel in black and white, with a preview, the finishes and a ruler, and no edit yet', () => {
       expect(dot().hidden).toBe(true)
 
       cleanUp().click()
 
       expect(pic.getState()).toMatchObject({
-        activeTool: 'threshold',
-        threshold: { enabled: true, sensitivity: 0.5 },
+        activeTool: 'finish',
+        finish: { mode: 'mono', sensitivity: 0.5 },
         canUndo: false,
         canApply: false,
       })
       expect(ruler().closest<HTMLElement>('.paperpic-ruler')!.hidden).toBe(false)
       expect(ruler().value).toBe('50')
-      // Cancel this tool already undoes a Clean up that was off, so there is no switch, and its name takes the place
-      expect(toggle().hidden).toBe(true)
-      expect(bar().querySelector<HTMLElement>('.paperpic-edit-title')).toMatchObject({ hidden: false, textContent: 'Clean up' })
+      expect(finish('finishMono').getAttribute('aria-pressed')).toBe('true')
+      expect(bar().querySelector<HTMLElement>('.paperpic-edit-title')!.hidden).toBe(true)
       expect(button('Apply').parentElement!.hidden).toBe(true)
       expect(mocks.renderPreview.mock.calls[0]!.slice(1, 3)).toEqual([
         [],
@@ -1054,7 +1053,7 @@ describe('editing', () => {
 
       expect(pic.getState()).toMatchObject({
         activeTool: null,
-        threshold: { enabled: true, sensitivity: 0.5 },
+        finish: { mode: 'mono', sensitivity: 0.5 },
         canUndo: true,
         canApply: true,
       })
@@ -1063,7 +1062,7 @@ describe('editing', () => {
       expect(mocks.renderPreview).toHaveBeenCalledOnce()
 
       pic.undo()
-      expect(pic.getState().threshold.enabled).toBe(false)
+      expect(pic.getState().finish.mode).toBe('original')
       expect(dot().hidden).toBe(true)
       expect(cleanUp().hasAttribute('aria-describedby')).toBe(false)
     })
@@ -1074,7 +1073,7 @@ describe('editing', () => {
       button('Cancel this tool').click()
       expect(pic.getState()).toMatchObject({
         activeTool: null,
-        threshold: { enabled: false },
+        finish: { mode: 'original' },
         canUndo: false,
       })
       expect(releasePreview).toHaveBeenCalledOnce()
@@ -1094,7 +1093,7 @@ describe('editing', () => {
       expect(tint).toHaveBeenCalledOnce()
       expect(tint).toHaveBeenLastCalledWith({ type: 'threshold', sensitivity: 0.7, softness: 0.25 })
       expect(pic.getState()).toMatchObject({
-        threshold: { enabled: true, sensitivity: 0.7 },
+        finish: { mode: 'mono', sensitivity: 0.7 },
         canUndo: false,
       })
       expect(onChange).toHaveBeenCalledTimes(2)
@@ -1103,32 +1102,69 @@ describe('editing', () => {
       expect(announcement()).toBe('Sensitivity 70%')
       button('Done').click()
       expect(pic.getState()).toMatchObject({
-        threshold: { enabled: true, sensitivity: 0.7 },
+        finish: { mode: 'mono', sensitivity: 0.7 },
         canUndo: true,
       })
       expect(mocks.renderPreview).toHaveBeenCalledOnce()
 
       pic.undo()
-      expect(pic.getState().threshold).toEqual({ enabled: false, sensitivity: 0.5 })
+      expect(pic.getState().finish).toEqual({ mode: 'original', sensitivity: 0.5 })
     })
 
-    it('turns off with its switch once it is an edit, which keeps the edits after it', async () => {
-      pic.setThreshold({ enabled: true })
-      pic.rotate(1)
-      await flush()
+    it('turns gray, and switches between gray and the original by repainting only', async () => {
       cleanUp().click()
-      expect(toggle().hidden).toBe(false)
-      expect(toggle().getAttribute('aria-checked')).toBe('true')
-
-      toggle().click()
-      expect(toggle().getAttribute('aria-checked')).toBe('false')
+      await flush()
+      finish('finishGray').click()
+      expect(pic.getState().finish.mode).toBe('gray')
+      expect(finish('finishGray').getAttribute('aria-pressed')).toBe('true')
       expect(ruler().disabled).toBe(true)
-      expect(pic.getState().threshold.enabled).toBe(false)
-      expect(releasePreview).toHaveBeenCalledOnce()
+      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
+      expect(mocks.renderPreview.mock.calls[1]![2]).toEqual({
+        type: 'adjust',
+        brightness: 0,
+        contrast: 0,
+        gray: true,
+      })
+      await flush()
+      tint.mockClear()
+
+      finish('finishOriginal').click()
+      runFrames()
+      expect(tint).toHaveBeenLastCalledWith({ type: 'adjust', brightness: 0, contrast: 0 })
+      finish('finishGray').click()
+      runFrames()
+      expect(tint).toHaveBeenLastCalledWith({
+        type: 'adjust',
+        brightness: 0,
+        contrast: 0,
+        gray: true,
+      })
+      expect(mocks.renderPreview).toHaveBeenCalledTimes(2)
 
       button('Done').click()
       expect(pic.getState()).toMatchObject({
-        threshold: { enabled: false },
+        activeTool: null,
+        finish: { mode: 'gray' },
+        canUndo: true,
+        canApply: true,
+      })
+      expect(dot().hidden).toBe(false)
+    })
+
+    it('keeps its finish when it opens again, and the original turns it off and keeps the edits after it', async () => {
+      pic.setFinish({ mode: 'gray' })
+      pic.rotate(1)
+      await flush()
+      cleanUp().click()
+      expect(pic.getState().finish.mode).toBe('gray')
+
+      finish('finishOriginal').click()
+      expect(finish('finishOriginal').getAttribute('aria-pressed')).toBe('true')
+      expect(pic.getState().finish.mode).toBe('original')
+
+      button('Done').click()
+      expect(pic.getState()).toMatchObject({
+        finish: { mode: 'original' },
         rotation: 90,
         canUndo: true,
         canApply: true,
@@ -1149,17 +1185,22 @@ describe('editing', () => {
       press('Escape', {}, ruler())
       expect(pic.getState()).toMatchObject({
         activeTool: null,
-        threshold: { enabled: true },
+        finish: { mode: 'mono' },
       })
       expect(onKey).toHaveBeenCalledTimes(2)
     })
 
-    it('moves the focus to its ruler, and back to its button', () => {
+    it('moves the focus to its ruler, or to its finish in gray, and back to its button', () => {
       cleanUp().focus()
       cleanUp().click()
       expect(document.activeElement).toBe(ruler())
       button('Cancel this tool').click()
       expect(document.activeElement).toBe(cleanUp())
+
+      pic.setFinish({ mode: 'gray' })
+      cleanUp().focus()
+      cleanUp().click()
+      expect(document.activeElement).toBe(finish('finishGray'))
     })
 
     it('keeps the zoom when it changes', async () => {
@@ -1184,7 +1225,7 @@ describe('editing', () => {
       expect(mocks.renderPreview.mock.calls[0]![2]).toMatchObject({ softness: 0 })
     })
 
-    it('exports with the threshold last', async () => {
+    it('exports with the finish last', async () => {
       cleanUp().click()
       await flush()
       button('Done').click()
@@ -1197,11 +1238,26 @@ describe('editing', () => {
       ])
       await finishLoading()
       await applying
-      expect(pic.getState().threshold.enabled).toBe(false)
+      expect(pic.getState().finish.mode).toBe('original')
+    })
+
+    it('exports gray after brightness and contrast', async () => {
+      pic.setAdjustments({ brightness: 0.2 })
+      pic.setFinish({ mode: 'gray' })
+      void pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps).toEqual([
+        {
+          type: 'adjust',
+          brightness: 0.2,
+          contrast: 0,
+          gray: true,
+        },
+      ])
     })
 
     it('shows in Crop, so the image keeps its look, but not in Straighten, which needs the edges of the paper', async () => {
-      pic.setThreshold({ enabled: true })
+      pic.setFinish({ mode: 'mono' })
       await flush()
 
       pic.openTool('crop')
@@ -1219,38 +1275,50 @@ describe('editing', () => {
       expect(mocks.renderPreview.mock.calls[1]![2]).toMatchObject({ sensitivity: 0.5 })
     })
 
-    it('changes what its open panel shows from setThreshold, which confirmTool keeps', () => {
-      pic.openTool('threshold')
-      pic.setThreshold({ sensitivity: 0.8 })
+    it('shows gray in Straighten, which keeps the edges of the paper', async () => {
+      pic.setFinish({ mode: 'gray' })
+      await flush()
+      pic.openTool('perspective')
+      expect(pic.getState().activeTool).toBe('perspective')
+      expect(mocks.renderPreview).toHaveBeenCalledOnce()
+      expect(releasePreview).not.toHaveBeenCalled()
+    })
+
+    it('changes what its open panel shows from setFinish, which confirmTool keeps', () => {
+      pic.openTool('finish')
+      pic.setFinish({ sensitivity: 0.8 })
       expect(pic.getState()).toMatchObject({
-        activeTool: 'threshold',
-        threshold: { enabled: true, sensitivity: 0.8 },
+        activeTool: 'finish',
+        finish: { mode: 'mono', sensitivity: 0.8 },
         canUndo: false,
       })
       expect(ruler().value).toBe('80')
 
+      pic.setFinish({ mode: 'gray' })
+      expect(finish('finishGray').getAttribute('aria-pressed')).toBe('true')
+
       pic.confirmTool()
       expect(pic.getState()).toMatchObject({
         activeTool: null,
-        threshold: { enabled: true, sensitivity: 0.8 },
+        finish: { mode: 'gray', sensitivity: 0.8 },
         canUndo: true,
       })
     })
 
     it('does nothing outside the edit mode or while another tool is open', () => {
       pic.openTool('crop')
-      pic.setThreshold({ enabled: true })
-      pic.openTool('threshold')
+      pic.setFinish({ mode: 'mono' })
+      pic.openTool('finish')
       expect(pic.getState()).toMatchObject({
         activeTool: 'crop',
-        threshold: { enabled: false },
+        finish: { mode: 'original' },
       })
       pic.cancel()
-      pic.setThreshold({ enabled: true })
-      pic.openTool('threshold')
+      pic.setFinish({ mode: 'mono' })
+      pic.openTool('finish')
       expect(pic.getState()).toMatchObject({
         activeTool: null,
-        threshold: { enabled: false },
+        finish: { mode: 'original' },
       })
     })
 
@@ -1258,14 +1326,16 @@ describe('editing', () => {
       pic.setOptions({
         tools: ['crop'],
       })
-      pic.setThreshold({ enabled: true })
-      expect(pic.getState().threshold.enabled).toBe(true)
-      pic.openTool('threshold')
-      expect(pic.getState().activeTool).toBe('threshold')
+      pic.setFinish({ mode: 'mono' })
+      expect(pic.getState().finish.mode).toBe('mono')
+      pic.openTool('finish')
+      expect(pic.getState().activeTool).toBe('finish')
     })
 
-    it('explains a sensitivity out of range', () => {
-      expect(() => pic.setThreshold({ sensitivity: 2 })).toThrow('between 0 and 1')
+    it('explains a finish or a sensitivity out of range', () => {
+      expect(() => pic.setFinish({ sensitivity: 2 })).toThrow('between 0 and 1')
+      expect(() => pic.setFinish({ mode: 'sepia' as never })).toThrow(`mode must be 'original', 'gray', 'mono', got sepia`)
+      expect(pic.getState().finish.mode).toBe('original')
     })
   })
 
@@ -1384,10 +1454,10 @@ describe('editing', () => {
       expect(pic.getState()).toMatchObject({ canUndo: true, canApply: false })
     })
 
-    it('cannot open while the document is cleaned up, which leaves its tones out', async () => {
+    it('cannot open in black and white, which leaves its tones out', async () => {
       pic.setAdjustments({ contrast: 0.5 })
       expect(dot(adjust()).hidden).toBe(false)
-      pic.setThreshold({ enabled: true })
+      pic.setFinish({ mode: 'mono' })
 
       expect(adjust().getAttribute('aria-disabled')).toBe('true')
       expect(dot(adjust()).hidden).toBe(true)
@@ -1399,7 +1469,7 @@ describe('editing', () => {
       await flush()
       expect(mocks.renderPreview.mock.calls.at(-1)![2]).toMatchObject({ type: 'threshold' })
 
-      pic.setThreshold({ enabled: false })
+      pic.setFinish({ mode: 'original' })
       expect(adjust().getAttribute('aria-disabled')).toBe('false')
       await flush()
       expect(mocks.renderPreview.mock.calls.at(-1)![2]).toEqual({ type: 'adjust', brightness: 0, contrast: 0.5 })

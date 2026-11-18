@@ -151,6 +151,6 @@ export function ExpenseForm() {
 
 - Übernehmen legt das bearbeitete Bild mit einem [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer) in das Dateifeld, sodass das Formular es unter demselben Namen sendet. Vor dem ersten Übernehmen sendet das Formular das Foto so, wie der Nutzer es gewählt hat.
 - Ändert Code die Dateien des Felds, löst das sein Ereignis `change` nicht aus, also zeigt der Viewer weiter das Ergebnis.
-- Die Datei behält den Namen des Fotos mit der Endung des Ergebnisses, etwa `receipt.png` nach Bereinigen.
+- Die Datei behält den Namen des Fotos mit der Endung des Ergebnisses, etwa `receipt.png` nach Bereinigen in Schwarzweiß.
 - Die Schaltflächen des Viewers senden das Formular nie ab.
 - [`maxOutputSize`](../reference/options#maxoutputsize) hält das Formular leicht. Handyfotos haben 12 Megapixel oder mehr, und Dokumente bleiben bei 3000 Pixeln auf der längsten Seite lesbar.

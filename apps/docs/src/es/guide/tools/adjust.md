@@ -21,13 +21,13 @@ Ajustar se aplica después de los demás cambios, así que Recortar y Enderezar 
 
 ## ¿Ajustar o Limpiar?
 
-| Ajustar                                   | [Limpiar](./clean-up)                    |
-| ----------------------------------------- | ---------------------------------------- |
-| Conserva los colores y los grises         | Convierte el documento en blanco y negro |
-| Para formularios en color, sellos y fotos | Para texto sobre papel                   |
-| Mantiene el formato de la imagen original | Da PNG                                   |
+| Ajustar                                   | [Limpiar](./clean-up)                               |
+| ----------------------------------------- | --------------------------------------------------- |
+| Conserva los colores y los grises         | Convierte el documento en gris, o en blanco y negro |
+| Para formularios en color, sellos y fotos | Para texto sobre papel                              |
+| Mantiene el formato de la imagen original | Da PNG                                              |
 
-Mientras Limpiar está activada, Ajustar está desactivada. Limpiar compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado. Los lectores de pantalla oyen por qué está desactivada.
+En blanco y negro, Ajustar está desactivada. El blanco y negro compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado. Los lectores de pantalla oyen por qué está desactivada. Con el gris, Ajustar funciona, y el gris va después.
 
 ## Desde el código
 

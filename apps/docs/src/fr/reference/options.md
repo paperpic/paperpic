@@ -63,7 +63,7 @@ Les outils que propose la barre de modification. Ils gardent l’ordre de ce tab
 | `'rotate'`      | Pivoter à gauche                            |
 | `'flip'`        | Retourner                                   |
 | `'adjust'`      | Ajuster, pour la luminosité et le contraste |
-| `'threshold'`   | Nettoyer                                    |
+| `'finish'`      | Nettoyer                                    |
 
 ### `wheelZoom`
 
@@ -105,6 +105,7 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 | `crop`           | Recadrer                                                                    |
 | `download`       | Télécharger                                                                 |
 | `edit`           | Modifier                                                                    |
+| `finish`         | Nettoyer                                                                    |
 | `fitHeight`      | Ajuster à la hauteur                                                        |
 | `fitWidth`       | Ajuster à la largeur                                                        |
 | `flip`           | Retourner                                                                   |
@@ -113,7 +114,6 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 | `rotateDocument` | Pivoter à gauche, dans la barre de modification                             |
 | `rotateLeft`     | Pivoter à gauche, dans la barre d’outils d’une visionneuse en lecture seule |
 | `rotateRight`    | Pivoter à droite, dans la barre d’outils d’une visionneuse en lecture seule |
-| `threshold`      | Nettoyer                                                                    |
 | `undo`           | Annuler la dernière action                                                  |
 | `zoomIn`         | Zoom avant                                                                  |
 | `zoomOut`        | Zoom arrière                                                                |
@@ -127,7 +127,7 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 
 Le format de l’image modifiée. `type` vaut `'image/jpeg'`, `'image/png'` ou `'image/webp'`, et `quality` va de 0 à 1 pour JPEG et WebP, avec `0.92` par défaut.
 
-Sans `type`, une image nettoyée est en PNG, car le JPEG abîmerait ses bords nets. Toute autre image garde le format de la source quand c’est du JPEG, du PNG ou du WebP, que PaperPic lit dans l’extension de l’URL ou le type du `File` ou du `Blob`. Sinon, le résultat est en PNG, comme quand le navigateur ne sait pas encoder le format.
+Sans `type`, une image en noir et blanc est en PNG, car le JPEG abîmerait ses bords nets. Toute autre image garde le format de la source quand c’est du JPEG, du PNG ou du WebP, que PaperPic lit dans l’extension de l’URL ou le type du `File` ou du `Blob`. Sinon, le résultat est en PNG, comme quand le navigateur ne sait pas encoder le format.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ Le plus grand côté de l’image modifiée, en pixels. Un résultat plus grand 
 - **Type :** `string`
 - **Valeur par défaut :** le nom de l’image source
 
-Le nom du fichier enregistré. Donnez-le sans extension : PaperPic ajoute celle du format, donc un `receipt.jpg` nettoyé s’enregistre en `receipt.png`. Quand la source n’a pas de nom, comme un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
+Le nom du fichier enregistré. Donnez-le sans extension : PaperPic ajoute celle du format, donc un `receipt.jpg` en noir et blanc s’enregistre en `receipt.png`. Quand la source n’a pas de nom, comme un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
 
 ## Outils
 
@@ -157,4 +157,4 @@ Les proportions réelles du document, en largeur divisée par hauteur, comme `21
 - **Type :** `number`, de 0 à 1
 - **Valeur par défaut :** `0.25`
 
-La quantité de gris que Nettoyer garde au bord des lettres, ce qui les rend plus faciles à lire. Utilisez `0` pour un noir et blanc strict, qui donne des fichiers plus petits mais casse les traits fins.
+La quantité de gris que le noir et blanc garde au bord des lettres, ce qui les rend plus faciles à lire. Utilisez `0` pour un noir et blanc strict, qui donne des fichiers plus petits mais casse les traits fins.

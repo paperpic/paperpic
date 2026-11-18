@@ -2,10 +2,10 @@ import type { PreparedThreshold } from '../processing/threshold'
 import type { PixelBuffer } from '../processing/types'
 import type { LoadedImage } from './load-image'
 import type { PipelineStep, ToneStep } from './steps'
-import { adjustPixels } from '../processing/adjust'
 import { applyThreshold } from '../processing/threshold'
 import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 import { planRead, resultSize } from './read-plan'
+import { adjustTones } from './steps'
 
 /** The size of the copy that previews work on. It keeps each step well under a second on a phone. */
 const PREVIEW_PIXELS = 2_000_000
@@ -60,10 +60,10 @@ export async function renderPreview(
       : pixels
     if (tone?.type === 'adjust') {
       // The shaped pixels stay, so a ruler only runs the table of tones on them
-      canvas = pixelsToCanvas(adjustPixels(shaped, tone))
+      canvas = pixelsToCanvas(adjustTones(shaped, tone))
       tint = (next) => {
         if (next.type === 'adjust') {
-          paint(adjustPixels(shaped, next))
+          paint(adjustTones(shaped, next))
         }
       }
     }

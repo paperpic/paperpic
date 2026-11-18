@@ -53,7 +53,7 @@ const allTools: ToolId[] = [
   'rotate',
   'flip',
   'adjust',
-  'threshold',
+  'finish',
 ]
 const checkedTools = shallowRef<ToolId[]>([...allTools])
 const tools = computed(() => allTools.filter(tool => checkedTools.value.includes(tool)))

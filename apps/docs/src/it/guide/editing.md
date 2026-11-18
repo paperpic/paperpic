@@ -19,14 +19,14 @@ In un visualizzatore stretto, la barra di modifica ha due righe: in alto gli str
 
 ## Strumenti
 
-| Strumento                                   | Cosa fa                                                        | Id            |
-| ------------------------------------------- | -------------------------------------------------------------- | ------------- |
-| [Ritaglia](./tools/crop)                    | Tiene la parte dell’immagine dentro quattro angoli             | `crop`        |
-| [Raddrizza](./tools/straighten)             | Trasforma una foto scattata di sbieco in una pagina piatta     | `perspective` |
-| [Ruota a sinistra](./tools/rotate-and-flip) | Ruota l’immagine di un quarto di giro a sinistra               | `rotate`      |
-| [Capovolgi](./tools/rotate-and-flip)        | Capovolge l’immagine da sinistra a destra                      | `flip`        |
-| [Regola](./tools/adjust)                    | Cambia la luminosità e il contrasto                            | `adjust`      |
-| [Pulisci](./tools/clean-up)                 | Trasforma il documento in un bianco e nero nitido, senza ombre | `threshold`   |
+| Strumento                                   | Cosa fa                                                                    | Id            |
+| ------------------------------------------- | -------------------------------------------------------------------------- | ------------- |
+| [Ritaglia](./tools/crop)                    | Tiene la parte dell’immagine dentro quattro angoli                         | `crop`        |
+| [Raddrizza](./tools/straighten)             | Trasforma una foto scattata di sbieco in una pagina piatta                 | `perspective` |
+| [Ruota a sinistra](./tools/rotate-and-flip) | Ruota l’immagine di un quarto di giro a sinistra                           | `rotate`      |
+| [Capovolgi](./tools/rotate-and-flip)        | Capovolge l’immagine da sinistra a destra                                  | `flip`        |
+| [Regola](./tools/adjust)                    | Cambia la luminosità e il contrasto                                        | `adjust`      |
+| [Pulisci](./tools/clean-up)                 | Trasforma il documento in grigio, o in un bianco e nero nitido senza ombre | `finish`      |
 
 L’opzione [`tools`](../reference/options#tools) sceglie quali offre la barra di modifica:
 
@@ -72,7 +72,7 @@ export function Receipt() {
 
 Ritaglia, Raddrizza, Regola e Pulisci aprono un pannello al posto degli strumenti. Mentre uno di loro è aperto, gli altri strumenti, Annulla l’ultima azione, Ripeti e Applica aspettano. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
 
-Dentro un pannello, l’immagine appare come sarà il risultato, Pulisci compreso. Raddrizza è l’eccezione: mostra la foto senza Pulisci, così i bordi della carta restano visibili.
+Dentro un pannello, l’immagine appare come sarà il risultato, Pulisci compreso. Raddrizza è l’eccezione: mostra la foto senza il bianco e nero, così i bordi della carta restano visibili.
 
 ## Anteprima e Applica
 

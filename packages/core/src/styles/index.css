@@ -431,8 +431,7 @@
     gap: 0.125rem;
   }
 
-  .paperpic-edit-option,
-  .paperpic-edit-switch {
+  .paperpic-edit-option {
     display: inline-flex;
     gap: 0.375rem;
     align-items: center;
@@ -443,9 +442,7 @@
 
   /* The space at the sides, which a global reset of padding cannot remove */
   .paperpic-edit-option::before,
-  .paperpic-edit-option::after,
-  .paperpic-edit-switch::before,
-  .paperpic-edit-switch::after {
+  .paperpic-edit-option::after {
     content: '';
     flex: none;
     inline-size: 0.125rem;
@@ -454,39 +451,6 @@
   .paperpic-edit-option .paperpic-icon {
     inline-size: 1rem;
     block-size: 1rem;
-  }
-
-  .paperpic-edit-switch {
-    font-weight: 600;
-  }
-
-  .paperpic-edit-switch-track {
-    position: relative;
-    flex: none;
-    inline-size: 1.875rem;
-    block-size: 1.125rem;
-    border-radius: 0.5625rem;
-    background: color-mix(in srgb, var(--paperpic-color-text) 55%, transparent);
-    transition: background-color var(--paperpic-transition-duration) ease;
-  }
-
-  .paperpic-edit-switch-thumb {
-    position: absolute;
-    inset-block-start: 0.125rem;
-    inset-inline-start: 0.125rem;
-    inline-size: 0.875rem;
-    block-size: 0.875rem;
-    border-radius: 50%;
-    background: var(--paperpic-color-surface);
-    transition: translate var(--paperpic-transition-duration) ease;
-  }
-
-  .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-track {
-    background: var(--paperpic-color-accent);
-  }
-
-  .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-thumb {
-    translate: 0.75rem 0;
   }
 
   /*
@@ -703,9 +667,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .paperpic-button,
-    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-track,
-    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-thumb {
+    .paperpic-button {
       transition: none;
     }
   }
@@ -717,7 +679,7 @@
       outline-offset: -2px;
     }
 
-    /* The marks and the needle of a ruler, the dot of a tool in use and the switch paint with backgrounds */
+    /* The marks and the needle of a ruler, and the dot of a tool in use, paint with backgrounds */
     .paperpic-ruler {
       forced-color-adjust: none;
     }
@@ -763,25 +725,6 @@
     .paperpic-button .paperpic-edit-dot {
       background: Highlight;
       forced-color-adjust: none;
-    }
-
-    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-track {
-      outline: 1px solid ButtonText;
-      background: Canvas;
-      forced-color-adjust: none;
-    }
-
-    .paperpic-edit-switch[aria-checked] .paperpic-edit-switch-thumb {
-      background: ButtonText;
-      forced-color-adjust: none;
-    }
-
-    .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-track {
-      background: Highlight;
-    }
-
-    .paperpic-edit-switch[aria-checked='true'] .paperpic-edit-switch-thumb {
-      background: HighlightText;
     }
 
     .paperpic-button-primary,

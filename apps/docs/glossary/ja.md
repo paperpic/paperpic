@@ -13,6 +13,7 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | edit mode                                     | 編集モード               |
 | editor                                        | エディター               |
 | event                                         | イベント                 |
+| finish, of Clean up                           | 仕上げ                   |
 | guide                                         | ガイド                   |
 | keyboard shortcut                             | キーボードショートカット |
 | label, a text of the interface                | ラベル                   |
@@ -33,7 +34,6 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | softness, of the cleaned edges                | 柔らかさ                 |
 | source image                                  | 元画像                   |
 | state                                         | 状態                     |
-| switch, of Clean up                           | スイッチ                 |
 | tool                                          | ツール                   |
 | toolbar, the bar of buttons at the right      | ツールバー               |
 | type, of TypeScript                           | 型                       |

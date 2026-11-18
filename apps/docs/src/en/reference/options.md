@@ -63,7 +63,7 @@ The tools the edit bar offers. They keep the order of this table, whatever the o
 | `'rotate'`      | Rotate left                         |
 | `'flip'`        | Flip                                |
 | `'adjust'`      | Adjust, for brightness and contrast |
-| `'threshold'`   | Clean up                            |
+| `'finish'`      | Clean up                            |
 
 ### `wheelZoom`
 
@@ -105,6 +105,7 @@ Each key names an icon, and some icons appear on two buttons:
 | `crop`           | Crop                                               |
 | `download`       | Download                                           |
 | `edit`           | Edit                                               |
+| `finish`         | Clean up                                           |
 | `fitHeight`      | Fit to height                                      |
 | `fitWidth`       | Fit to width                                       |
 | `flip`           | Flip                                               |
@@ -113,7 +114,6 @@ Each key names an icon, and some icons appear on two buttons:
 | `rotateDocument` | Rotate left, in the edit bar                       |
 | `rotateLeft`     | Rotate left, in the toolbar of a read-only viewer  |
 | `rotateRight`    | Rotate right, in the toolbar of a read-only viewer |
-| `threshold`      | Clean up                                           |
 | `undo`           | Undo                                               |
 | `zoomIn`         | Zoom in                                            |
 | `zoomOut`        | Zoom out                                           |
@@ -127,7 +127,7 @@ Each key names an icon, and some icons appear on two buttons:
 
 The format of the edited image. `type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`, and `quality` goes from 0 to 1 for JPEG and WebP, with `0.92` by default.
 
-Without a `type`, a cleaned up image is PNG, because JPEG would damage its sharp edges. Any other image keeps the format of the source when it is JPEG, PNG or WebP, which PaperPic reads from the extension of the URL or the type of the `File` or `Blob`. Otherwise, the result is PNG, as it is when the browser cannot encode the format.
+Without a `type`, an image in black and white is PNG, because JPEG would damage its sharp edges. Any other image keeps the format of the source when it is JPEG, PNG or WebP, which PaperPic reads from the extension of the URL or the type of the `File` or `Blob`. Otherwise, the result is PNG, as it is when the browser cannot encode the format.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ The longest side of the edited image, in pixels. A larger result is scaled down.
 - **Type:** `string`
 - **Default:** the name of the source
 
-The name of the saved file. Give it without an extension: PaperPic adds the one of the format, so a cleaned up `receipt.jpg` saves as `receipt.png`. When the source has no name, such as a `Blob`, the file is called `image`. Before the first Apply, a URL without an extension saves without one, because its format is unknown.
+The name of the saved file. Give it without an extension: PaperPic adds the one of the format, so a `receipt.jpg` in black and white saves as `receipt.png`. When the source has no name, such as a `Blob`, the file is called `image`. Before the first Apply, a URL without an extension saves without one, because its format is unknown.
 
 ## Tools
 
@@ -157,4 +157,4 @@ The real proportions of the document, as width divided by height, such as `210 /
 - **Type:** `number`, from 0 to 1
 - **Default:** `0.25`
 
-How much gray Clean up keeps at the edges of the letters, which makes them easier to read. Use `0` for strict black and white, which gives smaller files but breaks thin strokes.
+How much gray black and white keeps at the edges of the letters, which makes them easier to read. Use `0` for strict black and white, which gives smaller files but breaks thin strokes.

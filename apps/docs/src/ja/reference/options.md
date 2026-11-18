@@ -63,7 +63,7 @@ pic.setOptions({ editable: false })
 | `'rotate'`      | 左に回転                     |
 | `'flip'`        | 反転                         |
 | `'adjust'`      | 調整（明るさとコントラスト） |
-| `'threshold'`   | クリーンアップ               |
+| `'finish'`      | クリーンアップ               |
 
 ### `wheelZoom`
 
@@ -105,6 +105,7 @@ pic.setOptions({ editable: false })
 | `crop`           | 切り抜き                                           |
 | `download`       | ダウンロード                                       |
 | `edit`           | 編集                                               |
+| `finish`         | クリーンアップ                                     |
 | `fitHeight`      | 高さに合わせる                                     |
 | `fitWidth`       | 幅に合わせる                                       |
 | `flip`           | 反転                                               |
@@ -113,7 +114,6 @@ pic.setOptions({ editable: false })
 | `rotateDocument` | 編集バーの左に回転                                 |
 | `rotateLeft`     | 読み取り専用のビューアーのツールバーにある左に回転 |
 | `rotateRight`    | 読み取り専用のビューアーのツールバーにある右に回転 |
-| `threshold`      | クリーンアップ                                     |
 | `undo`           | 元に戻す                                           |
 | `zoomIn`         | 拡大                                               |
 | `zoomOut`        | 縮小                                               |
@@ -127,7 +127,7 @@ pic.setOptions({ editable: false })
 
 編集後の画像の形式です。`type` は `'image/jpeg'`、`'image/png'`、`'image/webp'` のいずれかで、`quality` は JPEG と WebP で 0 から 1、デフォルトは `0.92` です。
 
-`type` がない場合、クリーンアップした画像は PNG になります。JPEG だとくっきりした輪郭が崩れるためです。それ以外の画像は、元画像が JPEG、PNG、WebP ならその形式を保ちます。PaperPic は形式を URL の拡張子か、`File` や `Blob` の type から判断します。それ以外の場合や、ブラウザーがエンコードできない形式は PNG になります。
+`type` がない場合、白黒の画像は PNG になります。JPEG だとくっきりした輪郭が崩れるためです。それ以外の画像は、元画像が JPEG、PNG、WebP ならその形式を保ちます。PaperPic は形式を URL の拡張子か、`File` や `Blob` の type から判断します。それ以外の場合や、ブラウザーがエンコードできない形式は PNG になります。
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ pic.setOptions({ editable: false })
 - **型:** `string`
 - **デフォルト:** 元画像の名前
 
-保存するファイルの名前です。拡張子は付けずに指定してください。PaperPic が形式の拡張子を付けるので、クリーンアップした `receipt.jpg` は `receipt.png` として保存されます。`Blob` のように元画像に名前がない場合、ファイル名は `image` になります。最初の適用より前は、拡張子のない URL は形式がわからないため、拡張子なしで保存されます。
+保存するファイルの名前です。拡張子は付けずに指定してください。PaperPic が形式の拡張子を付けるので、白黒の `receipt.jpg` は `receipt.png` として保存されます。`Blob` のように元画像に名前がない場合、ファイル名は `image` になります。最初の適用より前は、拡張子のない URL は形式がわからないため、拡張子なしで保存されます。
 
 ## ツール
 
@@ -157,4 +157,4 @@ pic.setOptions({ editable: false })
 - **型:** `number`（0 から 1）
 - **デフォルト:** `0.25`
 
-クリーンアップが文字の輪郭に残すグレーの量です。グレーが残ると文字が読みやすくなります。`0` にすると厳密な白黒になり、ファイルは小さくなりますが細い線が途切れます。
+白黒が文字の輪郭に残すグレーの量です。グレーが残ると文字が読みやすくなります。`0` にすると厳密な白黒になり、ファイルは小さくなりますが細い線が途切れます。

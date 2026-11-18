@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## Свой ползунок {#slider}
 
-Свой ползунок для инструмента «Очистить» сначала открывает его. Затем каждое движение вызывает `setThreshold()`, который меняет то, что показывает «Очистить», а `confirmTool()` сохраняет последнее значение как одну правку. Здесь «Готово» ещё и применяет результат, а «Отмена» выходит из режима редактирования, так что эти элементы и есть весь интерфейс.
+Свой ползунок для инструмента «Очистить» сначала открывает его. Затем каждое движение вызывает `setFinish()`, который меняет то, что показывает «Очистить», а `confirmTool()` сохраняет последнее значение как одну правку. Здесь «Готово» ещё и применяет результат, а «Отмена» выходит из режима редактирования, так что эти элементы и есть весь интерфейс.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       Чувствительность
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       Готово
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>Готово</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - С `toolbar: false` скрыта и встроенная панель редактирования, поэтому «Обрезать» и «Выровнять» показывают маркеры, но не кнопку «Готово». Ваш интерфейс подтверждает их через [`confirmTool()`](../reference/methods#confirmtool), как `Enter`. Чтобы закрыть их без изменений, вызовите [`cancelTool()`](../reference/methods#canceltool), как это делает `Esc`.
 - Пока открыт «Обрезать» или «Выровнять», `hint` в состоянии говорит, что делать, например «Drag the corners», как встроенная панель редактирования. Покажите его, потому что с `toolbar: false` больше ничто его не показывает. Новая подсказка, например после нажатия на угол, приходит с `change`.
-- Ваши собственные ползунки могут напрямую вызывать [`setThreshold()`](../reference/methods#setthreshold) и [`setAdjustments()`](../reference/methods#setadjustments), и каждый вызов добавляет изменение. Чтобы всё перетаскивание дало одно изменение, сначала откройте инструмент через [`openTool()`](../reference/methods#opentool): тогда те же методы меняют то, что он показывает, а `confirmTool()` сохраняет это.
+- Ваши собственные ползунки могут напрямую вызывать [`setFinish()`](../reference/methods#setfinish) и [`setAdjustments()`](../reference/methods#setadjustments), и каждый вызов добавляет изменение. Чтобы всё перетаскивание дало одно изменение, сначала откройте инструмент через [`openTool()`](../reference/methods#opentool): тогда те же методы меняют то, что он показывает, а `confirmTool()` сохраняет это.
 - [`cancel()`](../reference/methods#cancel) не спрашивает перед отменой изменений. Если они есть, спросите пользователя сами, например когда `canApply` равно true.
 - Сочетания клавиш продолжают работать, когда фокус на просмотрщике. См. [Доступность](../guide/accessibility).

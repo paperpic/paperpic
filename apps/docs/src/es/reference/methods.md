@@ -195,7 +195,7 @@ Voltea la imagen de izquierda a derecha tal como se ve, así que después de un 
 function openTool(id: ToolId): void
 ```
 
-Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'threshold'`), que se activa al abrirse. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar con Limpiar activada, ni para Recortar y Enderezar mientras llega una vista previa.
+Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'finish'`), que al abrirse elige blanco y negro cuando el acabado es el original. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar en blanco y negro, ni para Recortar y Enderezar mientras llega una vista previa.
 
 ### `confirmTool()`
 
@@ -213,15 +213,15 @@ function cancelTool(): void
 
 Cierra la herramienta abierta y descarta sus cambios, como hace `Esc`.
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-Activa o desactiva Limpiar, o cambia su sensibilidad, de 0 a 1. Limpiar siempre se aplica después de los demás cambios. Con Limpiar abierta, cambia lo que muestra Limpiar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición ni con otra herramienta abierta.
+Elige el acabado de [Limpiar](../guide/tools/clean-up): `'original'`, `'gray'` o `'mono'` para blanco y negro. También cambia la sensibilidad del blanco y negro, de 0 a 1. El acabado siempre se aplica después de los demás cambios. Con Limpiar abierta, cambia lo que muestra Limpiar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición ni con otra herramienta abierta.
 
-Lanza un `RangeError` si `sensitivity` no está entre 0 y 1.
+Lanza un `RangeError` si `mode` no es un [`FinishMode`](./types#finishmode), o si `sensitivity` no está entre 0 y 1.
 
 ### `setAdjustments()`
 
@@ -229,7 +229,7 @@ Lanza un `RangeError` si `sensitivity` no está entre 0 y 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Cambia el brillo o el contraste, cada uno de -1 a 1, donde 0 deja la imagen como está. Se aplican después de los demás cambios. Con Ajustar abierta, cambia lo que muestra Ajustar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición, con otra herramienta abierta ni con Limpiar activada: Limpiar compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado.
+Cambia el brillo o el contraste, cada uno de -1 a 1, donde 0 deja la imagen como está. Se aplican después de los demás cambios, y antes del gris. Con Ajustar abierta, cambia lo que muestra Ajustar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición, con otra herramienta abierta ni en blanco y negro: el blanco y negro compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado.
 
 Lanza un `RangeError` si un valor no está entre -1 y 1.
 

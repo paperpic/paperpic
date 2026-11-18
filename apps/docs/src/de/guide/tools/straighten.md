@@ -17,7 +17,7 @@ Ein schräg fotografiertes Dokument sieht wie ein Trapez aus: Die hintere Kante 
 
 Die Griffe funktionieren wie bei [Zuschneiden](./crop): eine Lupe auf Touchscreens, Drücken und Tippen statt Ziehen, Tab und Pfeiltasten auf der Tastatur. Die vier Ecken bilden immer eine konvexe Form, damit sich die Seite immer flach machen lässt.
 
-Begradigen zeigt das Foto ohne [Bereinigen](./clean-up), weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind. Bereinigen kommt nach Fertig zurück.
+Begradigen zeigt das Foto ohne das Schwarzweiß von [Bereinigen](./clean-up), weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind. Schwarzweiß kommt nach Fertig zurück, und Graustufen bleiben.
 
 ## Seitenverhältnis
 

@@ -77,7 +77,7 @@ interface PaperPicOutput {
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'threshold'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
 ```
 
 編集バーのツール。[`tools`](./options#tools)、[`openTool()`](./methods#opentool)、[状態](./state)の `activeTool` で使います。各ツールのボタンは [`tools`](./options#tools) にあります。
@@ -112,6 +112,12 @@ interface PaperPicLabels {
   edit: string
   editBar: string
   editing: string
+  finish: string
+  finishGray: string
+  finishLevel: (percent: number) => string
+  finishMono: string
+  finishOriginal: string
+  finishSensitivity: string
   fitHeight: string
   fitWidth: string
   flip: string
@@ -126,9 +132,6 @@ interface PaperPicLabels {
   redo: string
   rotateLeft: string
   rotateRight: string
-  threshold: string
-  thresholdLevel: (percent: number) => string
-  thresholdSensitivity: string
   toolbar: string
   undo: string
   viewer: string
@@ -152,6 +155,7 @@ interface PaperPicIcons {
   crop: string
   download: string
   edit: string
+  finish: string
   fitHeight: string
   fitWidth: string
   flip: string
@@ -160,7 +164,6 @@ interface PaperPicIcons {
   rotateDocument: string
   rotateLeft: string
   rotateRight: string
-  threshold: string
   undo: string
   zoomIn: string
   zoomOut: string
@@ -181,18 +184,26 @@ interface PaperPicState {
   canApply: boolean
   canRedo: boolean
   canUndo: boolean
+  finish: { mode: FinishMode, sensitivity: number }
   fit: Fit | null
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
-  threshold: { enabled: boolean, sensitivity: number }
   zoom: number
 }
 ```
 
 [`getState()`](./methods#getstate) が返し、[`change`](./events#change) イベントが渡すもの。各フィールドは[状態](./state)で説明しています。
+
+### `FinishMode`
+
+```ts
+type FinishMode = 'original' | 'gray' | 'mono'
+```
+
+[クリーンアップ](../guide/tools/clean-up)の仕上げ。元の色調、グレー、または `'mono'` の白黒です。[`setFinish()`](./methods#setfinish) が受け取り、[状態](./state)の `finish` が保持します。
 
 ### `Fit`
 

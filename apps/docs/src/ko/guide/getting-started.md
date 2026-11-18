@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-`blob`은 원본 이미지가 JPEG, PNG, WebP이면 그 형식을 유지하고, 사용자가 문서를 정리했다면 PNG가 됩니다. PaperPic이 형식을 판단하는 방법은 [형식과 품질](./saving#format)에서 설명하며, [`output`](../reference/options#output) 옵션으로 바꿀 수 있습니다.
+`blob`은 원본 이미지가 JPEG, PNG, WebP이면 그 형식을 유지하고, 사용자가 문서를 흑백으로 만들었다면 PNG가 됩니다. PaperPic이 형식을 판단하는 방법은 [형식과 품질](./saving#format)에서 설명하며, [`output`](../reference/options#output) 옵션으로 바꿀 수 있습니다.
 
 ## 뷰어 제거하기 {#destroy}
 

@@ -12,3 +12,16 @@ export function toGrayscale({ data, width, height }: PixelBuffer): Uint8Array {
   }
   return gray
 }
+
+/** Turns an image gray, with the weights of `toGrayscale()`. It keeps four bytes per pixel and the transparency. */
+export function grayPixels({ data, width, height }: PixelBuffer): PixelBuffer {
+  const output = new Uint8ClampedArray(data.length)
+  for (let offset = 0; offset < data.length; offset += 4) {
+    const gray = (54 * data[offset]! + 183 * data[offset + 1]! + 19 * data[offset + 2]!) >> 8
+    output[offset] = gray
+    output[offset + 1] = gray
+    output[offset + 2] = gray
+    output[offset + 3] = data[offset + 3]!
+  }
+  return { data: output, width, height }
+}

@@ -108,18 +108,18 @@ Vue と React では、ビューアーはコンポーネントがマウントさ
 | フィールド    | 型                                           | 説明                                                                                                                                                                         |
 | ------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeTool`  | [`ToolId \| null`](./types#toolid)           | 開いているツール（`'crop'` や `'adjust'` など）、または `null`                                                                                                               |
-| `adjustments` | `{ brightness, contrast }`                   | 明るさとコントラスト（それぞれ -1 から 1）。クリーンアップがオンの間は使われません。調整が開いている間は、そのパネルの値                                                     |
+| `adjustments` | `{ brightness, contrast }`                   | 明るさとコントラスト（それぞれ -1 から 1）。白黒の間は使われません。調整が開いている間は、そのパネルの値                                                                     |
 | `busy`        | `boolean`                                    | 適用の実行中か                                                                                                                                                               |
 | `canApply`    | `boolean`                                    | 適用できる変更があるか。打ち消し合う回転と反転は変更に数えません                                                                                                             |
 | `canRedo`     | `boolean`                                    | やり直せる変更があるか                                                                                                                                                       |
 | `canUndo`     | `boolean`                                    | 元に戻せる変更があるか                                                                                                                                                       |
+| `finish`      | `{ mode, sensitivity }`                      | クリーンアップの仕上げ（[`FinishMode`](./types#finishmode)）と、0 から 1 の白黒の感度。クリーンアップが開いている間は、そのパネルの値                                        |
 | `fit`         | [`Fit \| null`](./types#fit)                 | 現在のフィット。ユーザーが手動でズームすると `null`                                                                                                                          |
 | `hint`        | `string \| null`                             | 開いているツールがユーザーに求めること。内蔵の編集バーの表示と同じで、たとえば「Drag the corners」。なければ `null`。`toolbar: false` では独自のインターフェースに表示します |
 | `image`       | [`Size \| null`](./types#size)               | フル解像度で、これまでの変更を含み、`rotation` の回転を含まない画像のピクセルサイズ。画像がなければ `null`                                                                   |
 | `mode`        | `'view' \| 'edit'`                           | ユーザーが画像を見ているか、編集しているか                                                                                                                                   |
 | `rotation`    | [`Rotation`](./types#rotation)               | `image` に対する表示中の画像の回転角度（時計回り、度単位）                                                                                                                   |
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `src` がなければ `'empty'`、読み込み中は `'loading'`、表示されると `'ready'`、読み込めなければ `'error'`                                                                     |
-| `threshold`   | `{ enabled, sensitivity }`                   | クリーンアップがオンか、と 0 から 1 の感度。クリーンアップが開いている間は、そのパネルの値                                                                                   |
 | `zoom`        | `number`                                     | 画像の 1 ピクセルあたりの画面のピクセル数                                                                                                                                    |
 
 `rotation` が 90 か 270 のとき、表示中の画像と適用の結果は、`image` の幅と高さが入れ替わります。[`maxOutputSize`](./options#maxoutputsize) で結果が小さくなることもあります。

@@ -63,7 +63,7 @@ pic.setOptions({ editable: false })
 | `'rotate'`      | 왼쪽으로 회전      |
 | `'flip'`        | 뒤집기             |
 | `'adjust'`      | 조정 (밝기와 대비) |
-| `'threshold'`   | 정리               |
+| `'finish'`      | 정리               |
 
 ### `wheelZoom`
 
@@ -105,6 +105,7 @@ pic.setOptions({ editable: false })
 | `crop`           | 자르기                                            |
 | `download`       | 다운로드                                          |
 | `edit`           | 편집                                              |
+| `finish`         | 정리                                              |
 | `fitHeight`      | 높이에 맞추기                                     |
 | `fitWidth`       | 너비에 맞추기                                     |
 | `flip`           | 뒤집기                                            |
@@ -113,7 +114,6 @@ pic.setOptions({ editable: false })
 | `rotateDocument` | 편집 바의 왼쪽으로 회전                           |
 | `rotateLeft`     | 읽기 전용 뷰어의 도구 모음에 있는 왼쪽으로 회전   |
 | `rotateRight`    | 읽기 전용 뷰어의 도구 모음에 있는 오른쪽으로 회전 |
-| `threshold`      | 정리                                              |
 | `undo`           | 실행 취소                                         |
 | `zoomIn`         | 확대                                              |
 | `zoomOut`        | 축소                                              |
@@ -127,7 +127,7 @@ pic.setOptions({ editable: false })
 
 편집한 이미지의 형식입니다. `type`은 `'image/jpeg'`, `'image/png'`, `'image/webp'` 중 하나이고, `quality`는 JPEG와 WebP에서 0부터 1까지이며 기본값은 `0.92`입니다.
 
-`type`이 없으면 정리한 이미지는 PNG가 됩니다. JPEG는 선명한 가장자리를 망가뜨리기 때문입니다. 그 밖의 이미지는 원본이 JPEG, PNG, WebP이면 그 형식을 유지하며, PaperPic은 형식을 URL의 확장자나 `File` 또는 `Blob`의 type으로 판단합니다. 그렇지 않거나 브라우저가 인코딩할 수 없는 형식이면 PNG가 됩니다.
+`type`이 없으면 흑백 이미지는 PNG가 됩니다. JPEG는 선명한 가장자리를 망가뜨리기 때문입니다. 그 밖의 이미지는 원본이 JPEG, PNG, WebP이면 그 형식을 유지하며, PaperPic은 형식을 URL의 확장자나 `File` 또는 `Blob`의 type으로 판단합니다. 그렇지 않거나 브라우저가 인코딩할 수 없는 형식이면 PNG가 됩니다.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ pic.setOptions({ editable: false })
 - **타입:** `string`
 - **기본값:** 원본 이미지의 이름
 
-저장되는 파일의 이름입니다. 확장자 없이 지정하세요. PaperPic이 형식에 맞는 확장자를 붙이므로, 정리한 `receipt.jpg`는 `receipt.png`로 저장됩니다. `Blob`처럼 원본에 이름이 없으면 파일 이름은 `image`입니다. 첫 적용 전에는 확장자가 없는 URL은 형식을 알 수 없어서 확장자 없이 저장됩니다.
+저장되는 파일의 이름입니다. 확장자 없이 지정하세요. PaperPic이 형식에 맞는 확장자를 붙이므로, 흑백인 `receipt.jpg`는 `receipt.png`로 저장됩니다. `Blob`처럼 원본에 이름이 없으면 파일 이름은 `image`입니다. 첫 적용 전에는 확장자가 없는 URL은 형식을 알 수 없어서 확장자 없이 저장됩니다.
 
 ## 도구
 
@@ -157,4 +157,4 @@ pic.setOptions({ editable: false })
 - **타입:** `number`, 0부터 1까지
 - **기본값:** `0.25`
 
-정리가 글자 가장자리에 남기는 회색의 양입니다. 회색이 남으면 글자를 읽기 쉬워집니다. `0`은 엄격한 흑백으로, 파일은 작아지지만 가는 획이 끊깁니다.
+흑백이 글자 가장자리에 남기는 회색의 양입니다. 회색이 남으면 글자를 읽기 쉬워집니다. `0`은 엄격한 흑백으로, 파일은 작아지지만 가는 획이 끊깁니다.

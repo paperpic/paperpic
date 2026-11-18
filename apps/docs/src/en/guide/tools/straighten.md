@@ -17,7 +17,7 @@ A document photographed at an angle looks like a trapezoid: the far edge is shor
 
 The handles work as in [Crop](./crop): a magnifier on touch screens, press and tap instead of dragging, and Tab and the arrow keys on the keyboard. The four corners always keep a convex shape, so the page can always be flattened.
 
-Straighten shows the photo without [Clean up](./clean-up), because the edges of the paper are hard to find on a cleaned up page. Clean up comes back after Done.
+Straighten shows the photo without the black and white of [Clean up](./clean-up), because the edges of the paper are hard to find on a cleaned up page. Black and white comes back after Done, and gray stays.
 
 ## Proportions
 

@@ -13,6 +13,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | edit mode                                     | modo de edição       |
 | editor                                        | editor               |
 | event                                         | evento               |
+| finish, of Clean up                           | acabamento           |
 | fit, of the image in the viewer               | encaixar, encaixe    |
 | guide                                         | Guia                 |
 | keyboard shortcut                             | atalho de teclado    |
@@ -34,7 +35,6 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | softness, of the cleaned edges                | suavidade            |
 | source image                                  | imagem original      |
 | state                                         | estado               |
-| switch, of Clean up                           | interruptor          |
 | tool                                          | ferramenta           |
 | toolbar, the bar of buttons at the right      | barra de ferramentas |
 | type, of TypeScript                           | tipo                 |

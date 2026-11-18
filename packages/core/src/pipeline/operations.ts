@@ -6,27 +6,38 @@ import { normalizeRotation } from '../state/view'
 import { mirrorOrientation, orientationSteps, UPRIGHT } from './steps'
 
 /**
+ * The finish of the image: `'original'` keeps its tones, `'gray'` turns it gray, and `'mono'` cleans up the document
+ * in black and white.
+ *
+ * @see https://paperpic.dev/reference/types#finishmode
+ */
+export type FinishMode = 'original' | 'gray' | 'mono'
+
+/** Every finish of Clean up, in the order its panel offers them. */
+export const FINISH_MODES: readonly FinishMode[] = ['original', 'gray', 'mono']
+
+/** The finish in effect. `sensitivity` and `softness` only change `'mono'`. */
+export interface FinishSetting {
+  mode: FinishMode
+  sensitivity: number
+  softness: number
+}
+
+/**
  * One edit, as the history stores it.
- * A rectangle refers to the image as the user saw it at that moment, with the earlier edits done. Straighten and
- * Adjust store the same fields as their step.
+ * A rectangle refers to the image as the user saw it at that moment, with the earlier edits done. Straighten
+ * stores the same fields as its step.
  */
 export type Operation
   = | { direction: 1 | -1, type: 'rotate' }
     | { type: 'flip' }
     | { rect: NormalizedRect, type: 'crop' }
     | PerspectiveStep
-    | { enabled: boolean, sensitivity: number, softness: number, type: 'threshold' }
-    | AdjustStep
+    | FinishSetting & { type: 'finish' }
+    | Omit<AdjustStep, 'gray'>
 
 /** The brightness and contrast in effect. */
-export type AdjustSetting = Omit<AdjustStep, 'type'>
-
-/** The threshold in effect. */
-export interface ThresholdSetting {
-  enabled: boolean
-  sensitivity: number
-  softness: number
-}
+export type AdjustSetting = Omit<AdjustStep, 'gray' | 'type'>
 
 /** The steps that change the shape of the image. Turns and flips next to each other merge or cancel out. */
 function geometrySteps(operations: readonly Operation[]): PipelineStep[] {
@@ -48,20 +59,20 @@ function geometrySteps(operations: readonly Operation[]): PipelineStep[] {
   return steps
 }
 
-/** The threshold in effect: its last edit decides, wherever it is in the list. */
-export function thresholdSetting(operations: readonly Operation[]): ThresholdSetting {
+/** The finish in effect: its last edit decides, wherever it is in the list. */
+export function finishSetting(operations: readonly Operation[]): FinishSetting {
   for (let index = operations.length - 1; index >= 0; index--) {
     const operation = operations[index]!
-    if (operation.type === 'threshold') {
+    if (operation.type === 'finish') {
       return {
-        enabled: operation.enabled,
+        mode: operation.mode,
         sensitivity: operation.sensitivity,
         softness: operation.softness,
       }
     }
   }
   return {
-    enabled: false,
+    mode: 'original',
     sensitivity: DEFAULT_SENSITIVITY,
     softness: DEFAULT_SOFTNESS,
   }
@@ -85,17 +96,23 @@ export function adjustSetting(operations: readonly Operation[]): AdjustSetting {
 }
 
 /**
- * The step that changes the tones, or `null` if there is none. A cleaned document has tones of its own,
- * so the threshold leaves out the brightness and contrast.
+ * The step that changes the tones, or `null` if there is none. A document in black and white has tones of its own,
+ * so it leaves out the brightness and contrast. A gray finish runs after them.
  */
 export function toneStep(operations: readonly Operation[]): ToneStep | null {
-  const { enabled, sensitivity, softness } = thresholdSetting(operations)
-  if (enabled) {
+  const { mode, sensitivity, softness } = finishSetting(operations)
+  if (mode === 'mono') {
     return { type: 'threshold', sensitivity, softness }
   }
   const { brightness, contrast } = adjustSetting(operations)
-  return brightness !== 0 || contrast !== 0
-    ? { type: 'adjust', brightness, contrast }
+  const gray = mode === 'gray'
+  return brightness !== 0 || contrast !== 0 || gray
+    ? {
+        type: 'adjust',
+        brightness,
+        contrast,
+        ...(gray && { gray }),
+      }
     : null
 }
 

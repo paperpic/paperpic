@@ -127,4 +127,4 @@ export function Invoice() {
 - `role="status"` hace que los lectores de pantalla anuncien el resultado de la subida.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene el archivo pequeño. Los documentos siguen siendo legibles con 3000 píxeles en el lado más largo.
 - Después de Aplicar, el historial está vacío, así que el usuario no puede deshacer hasta la imagen anterior. Para ofrecer un botón de reintentar, guarda el último `blob` y `type` y vuelve a llamar a `upload`.
-- El servidor recibe PNG si el documento se limpió, y si no, el formato de la imagen original cuando es JPEG, PNG o WebP. Consulta [Guardar el resultado](../guide/saving#format) para saber cómo reconoce PaperPic el formato y para elegir otro.
+- El servidor recibe PNG si el documento está en blanco y negro, y si no, el formato de la imagen original cuando es JPEG, PNG o WebP. Consulta [Guardar el resultado](../guide/saving#format) para saber cómo reconoce PaperPic el formato y para elegir otro.

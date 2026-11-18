@@ -17,7 +17,7 @@ Passez seulement les textes à changer. Les autres gardent leur texte anglais :
 ```ts
 const pic = new PaperPic(container, {
   src: '/receipt.jpg',
-  labels: { apply: 'Enregistrer', threshold: 'Noir et blanc' },
+  labels: { apply: 'Enregistrer', finish: 'Améliorer' },
 })
 ```
 
@@ -28,7 +28,7 @@ const pic = new PaperPic(container, {
 import type { PaperPicLabels } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 
-const labels: Partial<PaperPicLabels> = { apply: 'Enregistrer', threshold: 'Noir et blanc' }
+const labels: Partial<PaperPicLabels> = { apply: 'Enregistrer', finish: 'Améliorer' }
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const labels: Partial<PaperPicLabels> = { apply: 'Enregistrer', threshold: 'Noir
 import type { PaperPicLabels } from '@paperpic/react'
 import { PaperPic } from '@paperpic/react'
 
-const labels: Partial<PaperPicLabels> = { apply: 'Enregistrer', threshold: 'Noir et blanc' }
+const labels: Partial<PaperPicLabels> = { apply: 'Enregistrer', finish: 'Améliorer' }
 
 export function Receipt() {
   return <PaperPic src="/receipt.jpg" labels={labels} />
@@ -62,7 +62,7 @@ const signed = new Intl.NumberFormat('fr', { signDisplay: 'exceptZero' })
 
 const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `Zoom ${percent} %`,
-  thresholdLevel: percent => `Sensibilité ${percent} %`,
+  finishLevel: percent => `Sensibilité ${percent} %`,
   cornerMoved: (corner, x, y) => `${corner} : ${x}, ${y}`,
   cornerSelected: corner => `${corner} : touchez son nouvel emplacement`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,
