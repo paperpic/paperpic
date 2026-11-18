@@ -26,6 +26,8 @@ export interface PaperPicLabels {
   contrast: string
   cornerBottomLeft: string
   cornerBottomRight: string
+  /** Describes each corner handle to screen readers: what the keys do, and that Enter finishes. */
+  cornerKeys: string
   /** Announced after moving a corner, with its position in image pixels. */
   cornerMoved: (corner: string, x: number, y: number) => string
   /** Shown and announced after pressing a corner, which the next tap on the image moves, with the name of the corner. */
@@ -98,6 +100,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   contrast: 'Contrast',
   cornerBottomLeft: 'Bottom left corner',
   cornerBottomRight: 'Bottom right corner',
+  cornerKeys: 'Arrow keys move it, 10 times further with Shift. Enter finishes.',
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
   cornerSelected: corner => `${corner}: tap where it goes`,
   cornerTopLeft: 'Top left corner',

@@ -128,6 +128,15 @@ describe('cornerEditor', () => {
     expect([handles()[2]!.style.left, handles()[2]!.style.top]).toEqual(['150px', '150px'])
   })
 
+  it('describes the keys on every handle, for screen readers, since the hint on screen speaks to a pointer', () => {
+    editor()
+    const ids = new Set(handles().map(handle => handle.getAttribute('aria-describedby')))
+    expect(ids.size).toBe(1)
+    const description = document.getElementById([...ids][0]!)!
+    expect(description.textContent).toBe(DEFAULT_LABELS.cornerKeys)
+    expect(description.hidden).toBe(true)
+  })
+
   it('takes the focus without scrolling', () => {
     const focus = vi.spyOn(HTMLElement.prototype, 'focus')
     editor().focus()
@@ -329,8 +338,9 @@ describe('cornerEditor', () => {
     })
   })
 
-  it('removes its handles', () => {
+  it('removes its handles and their description', () => {
     editor().deactivate()
     expect(handles()).toEqual([])
+    expect(layer.children).toHaveLength(0)
   })
 })

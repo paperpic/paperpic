@@ -201,7 +201,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 
 - The canvas has `role="img"` and uses the `alt` the consumer passes. Without `alt`, it has `aria-hidden="true"` instead, as an `<img>` with an empty `alt`, because an image with no name breaks WCAG and the viewer around it already has a name.
 - The toolbar has `role="toolbar"` and arrow key navigation.
-- Corner handles take focus with Tab and move with the arrow keys: 1 screen pixel, or 10 with Shift. Each move is announced to screen readers.
+- Corner handles take focus with Tab and move with the arrow keys: 1 screen pixel, or 10 with Shift. Each move is announced to screen readers. The description of each handle (`cornerKeys`) says what the keys do, and that `Enter` finishes. `Enter` on a handle confirms the tool, as on the image and on a ruler, and `Space` selects the handle for a tap. A keyboard has no use for that selection, and `Enter` keeps the quick way to finish after the arrow keys.
 - A pointer moves a corner without dragging, as WCAG 2.5.7 asks (D48). Pressing a handle gives it `aria-pressed="true"`, and the hint of the tool and an announcement say what comes next.
 - Two live regions speak to screen readers (D60). The status message shows while the image loads or the changes apply, and on failure. The announcements never show, so they never replace it: the zoom, the edit mode, a selected or moved corner, the value of a ruler and the result of Apply.
 - `aria-busy` marks the viewport while the image loads, a preview is on its way or Apply runs. It stays off the live regions, so screen readers do not hold back their messages.
