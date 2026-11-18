@@ -1,5 +1,29 @@
 # @paperpic/vue
 
+## 0.4.0
+
+### Minor Changes
+
+- [#98](https://github.com/paperpic/paperpic/pull/98) [`17f7186`](https://github.com/paperpic/paperpic/commit/17f71869e4fd3de861f5575259965a038578f681) Thanks [@Unlooper](https://github.com/Unlooper)! - Screen readers now hear how to move a corner handle of Crop and Straighten with the keyboard. The new label `cornerKeys`, "Arrow keys move it, 10 times further with Shift. Enter finishes.", describes each handle. If your app translates the labels, add it.
+
+- [#99](https://github.com/paperpic/paperpic/pull/99) [`b3c0aa6`](https://github.com/paperpic/paperpic/commit/b3c0aa6a39ecfb9d8eb6feddf0eea04e1bc25ef7) Thanks [@Unlooper](https://github.com/Unlooper)! - `PaperPicState` has a new `hint`: what the open tool asks of the user, as the edit bar shows it, such as "Drag the corners", or `null`. With `toolbar: false`, show it in your own interface. A new hint, such as after pressing a corner handle, emits `change`.
+
+- [#96](https://github.com/paperpic/paperpic/pull/96) [`16d9d8a`](https://github.com/paperpic/paperpic/commit/16d9d8a317fdb1e22e08fb9fcd5a9a99367a81b5) Thanks [@Unlooper](https://github.com/Unlooper)! - Three new tokens restyle what the viewer paints over the image: `--paperpic-color-dim` darkens the image around a selection, `--paperpic-color-line` colors the outline, the corner handles and the cross of the magnifier, and `--paperpic-color-line-shadow` the shadow that keeps those lines visible. The root `.paperpic` also carries `data-paperpic-status`, `data-paperpic-mode` and `data-paperpic-tool`, so CSS can follow the load status, the edit mode and the open tool.
+
+- [#95](https://github.com/paperpic/paperpic/pull/95) [`360e6f7`](https://github.com/paperpic/paperpic/commit/360e6f7c1c2c4d7090b3cc3adbfaadd2d75349c1) Thanks [@Unlooper](https://github.com/Unlooper)! - `labels` has two new keys. `previewError`, "The changes could not be shown", is the message when an edit cannot be shown, which showed `applyError` before although nothing was applied. `adjustUnavailable`, "Not available while Clean up is on", tells screen readers why Adjust is disabled while Clean up is on. If your app translates the labels, add both.
+
+### Patch Changes
+
+- [#93](https://github.com/paperpic/paperpic/pull/93) [`d70ee01`](https://github.com/paperpic/paperpic/commit/d70ee01b53676ef5aa6185a8ede7b48eb98f41f8) Thanks [@Unlooper](https://github.com/Unlooper)! - A message in the middle of the viewer, such as the one of a failed Apply, now stays on screen when the viewer announces another change, such as the zoom. Only the image is marked busy now, so screen readers no longer risk holding back "Applying changes" and "Loading image". `zoomTo()` throws a `RangeError` for a zoom of `NaN`, which left the viewer blank, and the cross and the ring of the magnifier have a dark outline, so they show on white paper.
+
+- [#94](https://github.com/paperpic/paperpic/pull/94) [`d2b98ab`](https://github.com/paperpic/paperpic/commit/d2b98aba86007ce9dad7e69e7e0aa7265fa51fa2) Thanks [@Unlooper](https://github.com/Unlooper)! - A long message in the middle of the viewer, such as a translated failure, now wraps instead of being cut off, and stays centered on pages written right to left. Buttons and corner handles measure 44 pixels on any device with a touch screen, also on a laptop whose main pointer is a trackpad. Closing a tool whose button `tools` hides no longer loses the keyboard focus, and screen readers hear the question before discarding the changes as a group named by it, not as a dialog. The `error` event always carries an `Error`, the canvas stays sharp when the window moves to a screen of another density, and a pan no longer measures the toolbar on every move.
+
+- [#91](https://github.com/paperpic/paperpic/pull/91) [`8f1e793`](https://github.com/paperpic/paperpic/commit/8f1e793593305ece4fc27f6a1c9eedbdf2587b1e) Thanks [@Unlooper](https://github.com/Unlooper)! - Show the features, a before and after image and links to the docs and playground on the npm page of each package, and add search keywords. Nothing changes in the code you install.
+
+- [#96](https://github.com/paperpic/paperpic/pull/96) [`16d9d8a`](https://github.com/paperpic/paperpic/commit/16d9d8a317fdb1e22e08fb9fcd5a9a99367a81b5) Thanks [@Unlooper](https://github.com/Unlooper)! - The viewer no longer makes the browser report "ResizeObserver loop completed with undelivered notifications", which it could do on load since it also watched the size of its toolbar.
+- Updated dependencies [[`d70ee01`](https://github.com/paperpic/paperpic/commit/d70ee01b53676ef5aa6185a8ede7b48eb98f41f8), [`17f7186`](https://github.com/paperpic/paperpic/commit/17f71869e4fd3de861f5575259965a038578f681), [`d2b98ab`](https://github.com/paperpic/paperpic/commit/d2b98aba86007ce9dad7e69e7e0aa7265fa51fa2), [`b3c0aa6`](https://github.com/paperpic/paperpic/commit/b3c0aa6a39ecfb9d8eb6feddf0eea04e1bc25ef7), [`8f1e793`](https://github.com/paperpic/paperpic/commit/8f1e793593305ece4fc27f6a1c9eedbdf2587b1e), [`16d9d8a`](https://github.com/paperpic/paperpic/commit/16d9d8a317fdb1e22e08fb9fcd5a9a99367a81b5), [`360e6f7`](https://github.com/paperpic/paperpic/commit/360e6f7c1c2c4d7090b3cc3adbfaadd2d75349c1), [`16d9d8a`](https://github.com/paperpic/paperpic/commit/16d9d8a317fdb1e22e08fb9fcd5a9a99367a81b5)]:
+  - @paperpic/core@0.4.0
+
 ## 0.3.1
 
 ### Patch Changes

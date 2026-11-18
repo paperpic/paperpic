@@ -1,7 +1,7 @@
 {
   "name": "@paperpic/core",
   "type": "module",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Document image viewer and editor for the browser: straighten, crop, rotate and clean up phone photos, scans and any image with text. Use it with plain JavaScript or through a PaperPic wrapper.",
   "author": "Marco Caparrós <hello@paperpic.dev>",
   "license": "MIT",
