@@ -127,4 +127,4 @@ export function Invoice() {
 - `role="status"` makes screen readers announce the result of the upload.
 - [`maxOutputSize`](../reference/options#maxoutputsize) keeps the file small. Documents stay readable at 3000 pixels on the longest side.
 - After Apply, the history is empty, so the user cannot undo into the old image. To offer a retry button, keep the last `blob` and `type` and call `upload` again.
-- The server receives PNG for a cleaned up document, and otherwise the format of the source when it is JPEG, PNG or WebP. Read [Saving the result](../guide/saving#format) to learn how PaperPic tells the format, and to choose another one.
+- The server receives PNG for a document in black and white, and otherwise the format of the source when it is JPEG, PNG or WebP. Read [Saving the result](../guide/saving#format) to learn how PaperPic tells the format, and to choose another one.

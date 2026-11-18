@@ -63,7 +63,7 @@ As ferramentas que a barra de edição oferece. Elas mantêm a ordem desta tabel
 | `'rotate'`      | Girar para a esquerda                |
 | `'flip'`        | Espelhar                             |
 | `'adjust'`      | Ajustar, para o brilho e o contraste |
-| `'threshold'`   | Limpar                               |
+| `'finish'`      | Limpar                               |
 
 ### `wheelZoom`
 
@@ -105,6 +105,7 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 | `crop`           | Recortar                                                                          |
 | `download`       | Baixar                                                                            |
 | `edit`           | Editar                                                                            |
+| `finish`         | Limpar                                                                            |
 | `fitHeight`      | Ajustar à altura                                                                  |
 | `fitWidth`       | Ajustar à largura                                                                 |
 | `flip`           | Espelhar                                                                          |
@@ -113,7 +114,6 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 | `rotateDocument` | Girar para a esquerda, na barra de edição                                         |
 | `rotateLeft`     | Girar para a esquerda, na barra de ferramentas de um visualizador somente leitura |
 | `rotateRight`    | Girar para a direita, na barra de ferramentas de um visualizador somente leitura  |
-| `threshold`      | Limpar                                                                            |
 | `undo`           | Desfazer                                                                          |
 | `zoomIn`         | Ampliar                                                                           |
 | `zoomOut`        | Reduzir                                                                           |
@@ -127,7 +127,7 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 
 O formato da imagem editada. `type` é `'image/jpeg'`, `'image/png'` ou `'image/webp'`, e `quality` vai de 0 a 1 para JPEG e WebP, com `0.92` como padrão.
 
-Sem `type`, uma imagem limpa sai em PNG, porque o JPEG estragaria as bordas nítidas dela. Qualquer outra imagem mantém o formato da original quando é JPEG, PNG ou WebP, que o PaperPic tira da extensão da URL ou do tipo do `File` ou do `Blob`. Senão, o resultado é PNG, como quando o navegador não consegue codificar o formato.
+Sem `type`, uma imagem em preto e branco sai em PNG, porque o JPEG estragaria as bordas nítidas dela. Qualquer outra imagem mantém o formato da original quando é JPEG, PNG ou WebP, que o PaperPic tira da extensão da URL ou do tipo do `File` ou do `Blob`. Senão, o resultado é PNG, como quando o navegador não consegue codificar o formato.
 
 ### `maxOutputSize`
 
@@ -141,7 +141,7 @@ O lado mais longo da imagem editada, em pixels. Um resultado maior é reduzido.
 - **Tipo:** `string`
 - **Padrão:** o nome da imagem original
 
-O nome do arquivo salvo. Escreva-o sem extensão: o PaperPic adiciona a do formato, então um `receipt.jpg` limpo é salvo como `receipt.png`. Quando a original não tem nome, como um `Blob`, o arquivo se chama `image`. Antes do primeiro Aplicar, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
+O nome do arquivo salvo. Escreva-o sem extensão: o PaperPic adiciona a do formato, então um `receipt.jpg` em preto e branco é salvo como `receipt.png`. Quando a original não tem nome, como um `Blob`, o arquivo se chama `image`. Antes do primeiro Aplicar, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
 
 ## Ferramentas
 
@@ -157,4 +157,4 @@ As proporções reais do documento, como largura dividida pela altura, por exemp
 - **Tipo:** `number`, de 0 a 1
 - **Padrão:** `0.25`
 
-Quanto cinza Limpar mantém nas bordas das letras, o que as deixa mais fáceis de ler. Use `0` para um preto e branco estrito, que gera arquivos menores mas quebra traços finos.
+Quanto cinza o preto e branco mantém nas bordas das letras, o que as deixa mais fáceis de ler. Use `0` para um preto e branco estrito, que gera arquivos menores mas quebra traços finos.

@@ -59,7 +59,7 @@ La visionneuse affiche le résultat aussitôt, qu’il atteigne votre serveur ou
 
 ## Format et qualité {#format}
 
-Sans option, le résultat garde le format de l’image source quand c’est du JPEG, du PNG ou du WebP. PaperPic le lit dans l’extension de l’URL, comme `.jpg`, ou dans le type du `File` ou du `Blob`. Un document nettoyé est en PNG, car le JPEG ajouterait des artefacts autour de ses bords nets. Toute autre source donne aussi du PNG, comme un GIF, ou une URL sans extension comme `/api/documents/42`, même si elle sert un JPEG.
+Sans option, le résultat garde le format de l’image source quand c’est du JPEG, du PNG ou du WebP. PaperPic le lit dans l’extension de l’URL, comme `.jpg`, ou dans le type du `File` ou du `Blob`. Un document en noir et blanc est en PNG, car le JPEG ajouterait des artefacts autour de ses bords nets. Toute autre source donne aussi du PNG, comme un GIF, ou une URL sans extension comme `/api/documents/42`, même si elle sert un JPEG.
 
 [`output`](../reference/options#output) choisit le format, et sa qualité de 0 à 1 pour JPEG et WebP, avec 0.92 par défaut :
 
@@ -93,7 +93,7 @@ export function Receipt() {
 
 | Format       | Convient à                                                         |
 | ------------ | ------------------------------------------------------------------ |
-| `image/png`  | Documents nettoyés et texte, sans perte                            |
+| `image/png`  | Documents en noir et blanc, et texte, sans perte                   |
 | `image/jpeg` | Photos et documents en couleur, en petits fichiers                 |
 | `image/webp` | Photos et documents en couleur, en fichiers plus petits qu’en JPEG |
 
@@ -139,7 +139,7 @@ Le résultat d’Appliquer ne contient aucune métadonnée. PaperPic dessine l�
 
 [`download: true`](../reference/options#download) ajoute un bouton à la fin de la barre d’outils qui enregistre l’image affichée : le résultat du dernier Appliquer, ou sinon l’image source telle quelle. Il est masqué pendant la modification, car les changements ne sont pas encore appliqués. [`download()`](../reference/methods#download) fait de même depuis le code, avec ou sans le bouton. Le menu contextuel du navigateur ne s’ouvre pas sur la visionneuse, donc ce bouton est le moyen d’en enregistrer l’image.
 
-Le fichier garde le nom de la source et prend l’extension de son format, donc un `receipt.jpg` nettoyé s’enregistre en `receipt.png`. [`filename`](../reference/options#filename) choisit un autre nom. Sans aucun nom, comme pour un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
+Le fichier garde le nom de la source et prend l’extension de son format, donc un `receipt.jpg` en noir et blanc s’enregistre en `receipt.png`. [`filename`](../reference/options#filename) choisit un autre nom. Sans aucun nom, comme pour un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
 
 Avec un `src` d’une autre origine, les navigateurs n’enregistrent pas le fichier avant le premier Appliquer : ils ouvrent l’image à la place, et l’utilisateur quitte votre page. Passez l’image en `Blob`, comme le montre [Charger des images](./loading#fetch), ou enregistrez-la vous-même dans l’événement `download`.
 

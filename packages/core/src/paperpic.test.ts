@@ -224,7 +224,7 @@ describe('paperPic', () => {
       canApply: false,
       busy: false,
       activeTool: null,
-      threshold: { enabled: false, sensitivity: 0.5 },
+      finish: { mode: 'original', sensitivity: 0.5 },
       adjustments: { brightness: 0, contrast: 0 },
     })
   })

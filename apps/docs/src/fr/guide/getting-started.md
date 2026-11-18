@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-Le `blob` garde le format de l’image source quand c’est du JPEG, du PNG ou du WebP, et est en PNG quand l’utilisateur a nettoyé le document. [Format et qualité](./saving#format) explique comment PaperPic reconnaît le format, et l’option [`output`](../reference/options#output) le change.
+Le `blob` garde le format de l’image source quand c’est du JPEG, du PNG ou du WebP, et est en PNG quand l’utilisateur a passé le document en noir et blanc. [Format et qualité](./saving#format) explique comment PaperPic reconnaît le format, et l’option [`output`](../reference/options#output) le change.
 
 ## Retirer la visionneuse {#destroy}
 

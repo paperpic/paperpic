@@ -10,7 +10,7 @@ Le foto dei documenti arrivano storte, con ombre e piene di sfondo. PaperPic le 
 ## Cosa fa
 
 - **Visualizzare.** Zoomare con i pulsanti, la rotellina, il pizzico, un doppio clic o la tastiera, spostare l’immagine e adattare l’immagine intera, la sua larghezza o la sua altezza. Un visualizzatore di sola lettura può anche ruotare l’immagine.
-- **Modificare.** Nella modalità di modifica, l’utente può ritagliare, raddrizzare una foto scattata di sbieco, ruotare, capovolgere, regolare luminosità e contrasto, e pulire il documento in bianco e nero. Ogni cambiamento si può annullare finché l’utente non applica le modifiche.
+- **Modificare.** Nella modalità di modifica, l’utente può ritagliare, raddrizzare una foto scattata di sbieco, ruotare, capovolgere, regolare luminosità e contrasto, e pulire il documento in grigio o in bianco e nero. Ogni cambiamento si può annullare finché l’utente non applica le modifiche.
 - **Consegnare.** Applica calcola il risultato alla risoluzione piena e lo passa al tuo codice come `Blob`. Un pulsante di download può anche salvarlo.
 
 Ogni passo avviene solo quando l’utente lo chiede. Niente cambia la foto da solo.

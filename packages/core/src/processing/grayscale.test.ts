@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { toGrayscale } from './grayscale'
+import { grayPixels, toGrayscale } from './grayscale'
 
 function onePixel(red: number, green: number, blue: number) {
   return {
@@ -29,5 +29,26 @@ describe('toGrayscale', () => {
     expect([
       ...toGrayscale(image),
     ]).toEqual([0, 255])
+  })
+})
+
+describe('grayPixels', () => {
+  it('sets the three channels to the luminance, and keeps the transparency and the size', () => {
+    const image = {
+      data: new Uint8ClampedArray([255, 0, 0, 128, 0, 255, 0, 255]),
+      width: 2,
+      height: 1,
+    }
+    expect(grayPixels(image)).toEqual({
+      data: new Uint8ClampedArray([53, 53, 53, 128, 182, 182, 182, 255]),
+      width: 2,
+      height: 1,
+    })
+  })
+
+  it('does not change the source', () => {
+    const image = onePixel(255, 0, 0)
+    grayPixels(image)
+    expect([...image.data]).toEqual([255, 0, 0, 255])
   })
 })

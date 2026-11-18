@@ -39,7 +39,7 @@ Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme
 - L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
 - Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato di Applica e ogni errore.
-- L’interruttore di Pulisci ha il ruolo di un interruttore. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo». Mentre Pulisci è attivo, Regola è descritto con il motivo per cui è disattivato.
+- Le finiture di Pulisci sono pulsanti che dicono se sono premuti. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo». In bianco e nero, Regola è descritto con il motivo per cui è disattivato.
 
 ## Schermi touch
 

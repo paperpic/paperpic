@@ -1,6 +1,6 @@
 import type { AdjustSetting, Operation } from '../pipeline/operations'
 import type { Tool } from './types'
-import { adjustSetting, thresholdSetting } from '../pipeline/operations'
+import { adjustSetting, finishSetting } from '../pipeline/operations'
 
 /**
  * Changes the brightness and contrast. They are a setting that runs after the shape, so its button opens a panel that
@@ -16,9 +16,9 @@ export const adjustTool: Tool = {
   ],
 }
 
-/** Whether the brightness and contrast can change. A cleaned document has tones of its own, so they cannot. */
+/** Whether the brightness and contrast can change. A document in black and white has tones of its own, so they cannot. */
 export function canAdjust(operations: readonly Operation[]): boolean {
-  return !thresholdSetting(operations).enabled
+  return finishSetting(operations).mode !== 'mono'
 }
 
 /** The edit that leaves the brightness and contrast at `setting`, or `null` if they already are. */

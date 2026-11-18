@@ -15,14 +15,14 @@ describe('ruler', () => {
   const shown = (ruler: Ruler) => ruler.element.querySelector('.paperpic-ruler-value')!.textContent
 
   it('is a range from 0 to 100, which names its control', () => {
-    const ruler = new Ruler('thresholdSensitivity', false, onChange)
+    const ruler = new Ruler('finishSensitivity', false, onChange)
     expect(ruler.input).toMatchObject({
       type: 'range',
       min: '0',
       max: '100',
       step: '1',
     })
-    expect(ruler.input.dataset.paperpicControl).toBe('thresholdSensitivity')
+    expect(ruler.input.dataset.paperpicControl).toBe('finishSensitivity')
     expect(ruler.element.className).toBe('paperpic-ruler')
     expect(ruler.element.querySelector('.paperpic-ruler-middle')).toBeNull()
   })
@@ -35,7 +35,7 @@ describe('ruler', () => {
   })
 
   it('reports each value as a fraction while it moves, and once more when the user lets go', () => {
-    const ruler = new Ruler('thresholdSensitivity', false, onChange)
+    const ruler = new Ruler('finishSensitivity', false, onChange)
     move(ruler, 40)
     ruler.input.dispatchEvent(new Event('change'))
     expect(onChange.mock.calls).toEqual([
@@ -56,7 +56,7 @@ describe('ruler', () => {
   })
 
   it('does not catch the needle when it is not centered', () => {
-    const ruler = new Ruler('thresholdSensitivity', false, onChange)
+    const ruler = new Ruler('finishSensitivity', false, onChange)
     move(ruler, 2)
     expect(onChange).toHaveBeenCalledWith(0.02, false)
   })
@@ -73,20 +73,20 @@ describe('ruler', () => {
     expect(shown(ruler)).toBe('0')
     expect(value.style.left).toContain('calc(0.5 *')
 
-    const plain = new Ruler('thresholdSensitivity', false, onChange)
+    const plain = new Ruler('finishSensitivity', false, onChange)
     plain.set(0.3)
     expect(shown(plain)).toBe('30')
   })
 
   it('moves the needle without reporting it', () => {
-    const ruler = new Ruler('thresholdSensitivity', false, onChange)
+    const ruler = new Ruler('finishSensitivity', false, onChange)
     ruler.set(0.555)
     expect(ruler.input.value).toBe('56')
     expect(onChange).not.toHaveBeenCalled()
   })
 
   it('keeps the arrow keys for itself, and lets Enter and Esc reach the viewer', () => {
-    const ruler = new Ruler('thresholdSensitivity', false, onChange)
+    const ruler = new Ruler('finishSensitivity', false, onChange)
     const parent = document.createElement('div')
     parent.append(ruler.element)
     const reached = vi.fn()
@@ -101,7 +101,7 @@ describe('ruler', () => {
   })
 
   it('takes a name and can be disabled', () => {
-    const ruler = new Ruler('thresholdSensitivity', false, onChange)
+    const ruler = new Ruler('finishSensitivity', false, onChange)
     ruler.setName('Sensitivity')
     ruler.setDisabled(true)
     expect(ruler.input.getAttribute('aria-label')).toBe('Sensitivity')

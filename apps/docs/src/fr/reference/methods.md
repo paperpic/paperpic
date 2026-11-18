@@ -195,7 +195,7 @@ Retourne l’image de gauche à droite telle qu’elle est affichée, donc aprè
 function openTool(id: ToolId): void
 ```
 
-Ouvre un outil avec un panneau : Recadrer (`'crop'`), Redresser (`'perspective'`), Ajuster (`'adjust'`) ou Nettoyer (`'threshold'`), qui s’active en s’ouvrant. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Pendant ce temps, aucun autre changement ne peut commencer, et Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition, avec un autre outil ouvert, pour Ajuster quand Nettoyer est activé, ni pour Recadrer et Redresser pendant qu’un aperçu est en route.
+Ouvre un outil avec un panneau : Recadrer (`'crop'`), Redresser (`'perspective'`), Ajuster (`'adjust'`) ou Nettoyer (`'finish'`), qui choisit le noir et blanc en s’ouvrant quand la finition est l’original. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Pendant ce temps, aucun autre changement ne peut commencer, et Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition, avec un autre outil ouvert, pour Ajuster en noir et blanc, ni pour Recadrer et Redresser pendant qu’un aperçu est en route.
 
 ### `confirmTool()`
 
@@ -213,15 +213,15 @@ function cancelTool(): void
 
 Ferme l’outil ouvert et abandonne ses changements, comme `Échap`.
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-Active ou désactive Nettoyer, ou change sa sensibilité, de 0 à 1. Nettoyer s’applique toujours après les autres changements. Tant que Nettoyer est ouvert, change ce que montre Nettoyer, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition ou avec un autre outil ouvert.
+Choisit la finition de [Nettoyer](../guide/tools/clean-up) : `'original'`, `'gray'` ou `'mono'` pour le noir et blanc. Change aussi la sensibilité du noir et blanc, de 0 à 1. La finition s’applique toujours après les autres changements. Tant que Nettoyer est ouvert, change ce que montre Nettoyer, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition ou avec un autre outil ouvert.
 
-Elle lève une `RangeError` si `sensitivity` n’est pas entre 0 et 1.
+Elle lève une `RangeError` si `mode` n’est pas un [`FinishMode`](./types#finishmode), ou si `sensitivity` n’est pas entre 0 et 1.
 
 ### `setAdjustments()`
 
@@ -229,7 +229,7 @@ Elle lève une `RangeError` si `sensitivity` n’est pas entre 0 et 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Change la luminosité ou le contraste, chacun de -1 à 1, où 0 laisse l’image telle quelle. Ils s’appliquent après les autres changements. Tant qu’Ajuster est ouvert, change ce que montre Ajuster, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition, avec un autre outil ouvert ou quand Nettoyer est activé : Nettoyer compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat.
+Change la luminosité ou le contraste, chacun de -1 à 1, où 0 laisse l’image telle quelle. Ils s’appliquent après les autres changements, et avant le gris. Tant qu’Ajuster est ouvert, change ce que montre Ajuster, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition, avec un autre outil ouvert ou en noir et blanc : le noir et blanc compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat.
 
 Elle lève une `RangeError` si une valeur n’est pas entre -1 et 1.
 

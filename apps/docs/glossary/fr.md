@@ -13,6 +13,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | edit mode                                     | mode d’édition        |
 | editor                                        | éditeur               |
 | event                                         | événement             |
+| finish, of Clean up                           | finition              |
 | fit, of the image in the viewer               | adapter, adaptation   |
 | guide                                         | Guide                 |
 | keyboard shortcut                             | raccourci clavier     |
@@ -34,7 +35,6 @@ Use these words in the French docs, so that each idea has one name on every page
 | softness, of the cleaned edges                | douceur               |
 | source image                                  | image source          |
 | state                                         | état                  |
-| switch, of Clean up                           | interrupteur          |
 | tool                                          | outil                 |
 | toolbar, the bar of buttons at the right      | barre d’outils        |
 | type, of TypeScript                           | type                  |

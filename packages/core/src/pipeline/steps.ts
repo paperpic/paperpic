@@ -3,16 +3,22 @@ import type { NormalizedRect, PixelBuffer, Quad } from '../processing/types'
 import { adjustPixels } from '../processing/adjust'
 import { cropPixels } from '../processing/crop'
 import { flipPixels } from '../processing/flip'
+import { grayPixels } from '../processing/grayscale'
 import { estimateOutputSize, scaleQuad } from '../processing/homography'
 import { rotatePixels } from '../processing/rotate'
 import { adaptiveThreshold } from '../processing/threshold'
 import { warpPerspective } from '../processing/warp'
 import { normalizeRotation } from '../state/view'
 
-/** Changes the brightness and contrast, each from -1 to 1, where 0 leaves the image as it is. */
+/**
+ * Changes the tones of an image that keeps its own: the brightness and contrast, each from -1 to 1, where 0 leaves the
+ * image as it is, and then the gray finish.
+ */
 export interface AdjustStep {
   brightness: number
   contrast: number
+  /** Turns the image gray after the brightness and contrast. */
+  gray?: boolean
   type: 'adjust'
 }
 
@@ -94,8 +100,18 @@ function applyStep(pixels: PixelBuffer, step: PipelineStep): PixelBuffer {
     case 'threshold':
       return adaptiveThreshold(pixels, { sensitivity: step.sensitivity, softness: step.softness })
     case 'adjust':
-      return adjustPixels(pixels, { brightness: step.brightness, contrast: step.contrast })
+      return adjustTones(pixels, step)
   }
+}
+
+/** Runs an adjust step: the brightness and contrast, if they change anything, and then the gray finish. */
+export function adjustTones(pixels: PixelBuffer, { brightness, contrast, gray }: AdjustStep): PixelBuffer {
+  const adjusted = brightness !== 0 || contrast !== 0
+    ? adjustPixels(pixels, { brightness, contrast })
+    : pixels
+  return gray
+    ? grayPixels(adjusted)
+    : adjusted
 }
 
 /** Runs the steps in order. It has no DOM, so the worker and the main thread share it. */

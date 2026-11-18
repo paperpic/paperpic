@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-如果原图是 JPEG、PNG 或 WebP，`blob` 保留它的格式；如果用户清理了文档，则为 PNG。[格式和质量](./saving#format)说明了 PaperPic 如何判断格式，[`output`](../reference/options#output) 选项可以改变它。
+如果原图是 JPEG、PNG 或 WebP，`blob` 保留它的格式；如果用户把文档变成了黑白，则为 PNG。[格式和质量](./saving#format)说明了 PaperPic 如何判断格式，[`output`](../reference/options#output) 选项可以改变它。
 
 ## 移除查看器 {#destroy}
 

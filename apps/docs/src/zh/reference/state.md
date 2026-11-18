@@ -108,18 +108,18 @@ export function Receipt() {
 | 字段          | 类型                                         | 说明                                                                                                                                        |
 | ------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeTool`  | [`ToolId \| null`](./types#toolid)           | 打开的工具，例如 `'crop'` 或 `'adjust'`，或 `null`                                                                                          |
-| `adjustments` | `{ brightness, contrast }`                   | 亮度和对比度，各自从 -1 到 1。清理开启时不生效。调整打开时，是它面板上的值                                                                  |
+| `adjustments` | `{ brightness, contrast }`                   | 亮度和对比度，各自从 -1 到 1。黑白模式下不生效。调整打开时，是它面板上的值                                                                  |
 | `busy`        | `boolean`                                    | 应用是否正在进行                                                                                                                            |
 | `canApply`    | `boolean`                                    | 是否有可应用的修改。相互抵消的旋转和翻转不算修改                                                                                            |
 | `canRedo`     | `boolean`                                    | 是否有可重做的修改                                                                                                                          |
 | `canUndo`     | `boolean`                                    | 是否有可撤销的修改                                                                                                                          |
+| `finish`      | `{ mode, sensitivity }`                      | 清理的效果，即 [`FinishMode`](./types#finishmode)，以及 0 到 1 的黑白灵敏度。清理打开时，是它面板上的值                                     |
 | `fit`         | [`Fit \| null`](./types#fit)                 | 当前的适合方式，用户手动缩放后为 `null`                                                                                                     |
 | `hint`        | `string \| null`                             | 打开的工具要求用户做的事，与内置编辑栏显示的一致，例如“Drag the corners”，否则为 `null`。使用 `toolbar: false` 时，请在你自己的界面中显示它 |
 | `image`       | [`Size \| null`](./types#size)               | 完整分辨率下、包含已做修改但不含 `rotation` 旋转的图片像素尺寸，没有图片时为 `null`                                                         |
 | `mode`        | `'view' \| 'edit'`                           | 用户是在查看还是在编辑图片                                                                                                                  |
 | `rotation`    | [`Rotation`](./types#rotation)               | 显示的图片相对于 `image` 顺时针旋转的角度                                                                                                   |
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | 没有 `src` 时为 `'empty'`，加载中为 `'loading'`，显示后为 `'ready'`，无法加载时为 `'error'`                                                 |
-| `threshold`   | `{ enabled, sensitivity }`                   | 清理是否开启，以及 0 到 1 的灵敏度。清理打开时，是它面板上的值                                                                              |
 | `zoom`        | `number`                                     | 每个图片像素对应的屏幕像素数                                                                                                                |
 
 当 `rotation` 为 90 或 270 时，显示的图片和应用的结果会交换 `image` 的宽度和高度。[`maxOutputSize`](./options#maxoutputsize) 可能让结果更小。

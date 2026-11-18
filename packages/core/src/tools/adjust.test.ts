@@ -18,12 +18,12 @@ const crop = {
 const brighter: Operation = { type: 'adjust', brightness: 0.2, contrast: 0 }
 const sharper: Operation = { type: 'adjust', brightness: 0.2, contrast: 0.5 }
 const neutral: Operation = { type: 'adjust', brightness: 0, contrast: 0 }
-const cleanUp: Operation = {
-  type: 'threshold',
-  enabled: true,
+const mono = {
+  type: 'finish',
+  mode: 'mono',
   sensitivity: 0.5,
   softness: 0.25,
-}
+} as const satisfies Operation
 const step: PipelineStep = { type: 'adjust', brightness: 0.2, contrast: 0.5 }
 
 /** One pixel per value, with the same value in red, green and blue. */
@@ -51,15 +51,24 @@ describe('adjustments in the operations', () => {
     expect(toPipelineSteps([brighter, neutral])).toEqual([])
   })
 
-  it('are left out while the document is cleaned up, and come back after', () => {
-    expect(toPipelineSteps([sharper, cleanUp])).toEqual([
+  it('are left out in black and white, and come back after', () => {
+    expect(toPipelineSteps([sharper, mono])).toEqual([
       { type: 'threshold', sensitivity: 0.5, softness: 0.25 },
     ])
     expect(toPipelineSteps([
       sharper,
-      cleanUp,
-      { ...cleanUp, enabled: false },
+      mono,
+      { ...mono, mode: 'original' },
     ])).toEqual([step])
+  })
+
+  it('stay in gray', () => {
+    expect(toPipelineSteps([
+      sharper,
+      { ...mono, mode: 'gray' },
+    ])).toEqual([
+      { ...step, gray: true },
+    ])
   })
 
   it('stay out of the shape that a preview computes', () => {
@@ -158,16 +167,12 @@ describe('renderPreview with adjustments', () => {
 })
 
 describe('the panel of Adjust', () => {
-  it('cannot change the tones of a cleaned document', () => {
+  it('cannot change the tones in black and white, and can in gray', () => {
     expect(canAdjust([])).toBe(true)
+    expect(canAdjust([mono])).toBe(false)
     expect(canAdjust([
-      {
-        type: 'threshold',
-        enabled: true,
-        sensitivity: 0.5,
-        softness: 0.25,
-      },
-    ])).toBe(false)
+      { ...mono, mode: 'gray' },
+    ])).toBe(true)
   })
 
   it('leaves an edit only when the brightness or the contrast changes', () => {

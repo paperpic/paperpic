@@ -17,7 +17,7 @@ PaperPic はボタン、ヒント、メッセージを英語で表示し、ス�
 ```ts
 const pic = new PaperPic(container, {
   src: '/receipt.jpg',
-  labels: { apply: '保存', threshold: '白黒' },
+  labels: { apply: '保存', finish: '補正' },
 })
 ```
 
@@ -28,7 +28,7 @@ const pic = new PaperPic(container, {
 import type { PaperPicLabels } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 
-const labels: Partial<PaperPicLabels> = { apply: '保存', threshold: '白黒' }
+const labels: Partial<PaperPicLabels> = { apply: '保存', finish: '補正' }
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const labels: Partial<PaperPicLabels> = { apply: '保存', threshold: '白黒' }
 import type { PaperPicLabels } from '@paperpic/react'
 import { PaperPic } from '@paperpic/react'
 
-const labels: Partial<PaperPicLabels> = { apply: '保存', threshold: '白黒' }
+const labels: Partial<PaperPicLabels> = { apply: '保存', finish: '補正' }
 
 export function Receipt() {
   return <PaperPic src="/receipt.jpg" labels={labels} />
@@ -62,7 +62,7 @@ const signed = new Intl.NumberFormat('ja', { signDisplay: 'exceptZero' })
 
 const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `ズーム ${percent}%`,
-  thresholdLevel: percent => `感度 ${percent}%`,
+  finishLevel: percent => `感度 ${percent}%`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
   cornerSelected: corner => `${corner}: 移動先をタップします`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,

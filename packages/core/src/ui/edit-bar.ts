@@ -1,6 +1,8 @@
+import type { FinishMode } from '../pipeline/operations'
 import type { Tool, ToolId } from '../tools/types'
 import type { PaperPicIcons } from './icons'
 import type { PaperPicLabels } from './labels'
+import { FINISH_MODES } from '../pipeline/operations'
 import { attachRovingFocus, createButton, nameButton, setIcon } from './button'
 import { DEFAULT_ICONS } from './icons'
 import { Ruler } from './ruler'
@@ -9,6 +11,37 @@ import { Ruler } from './ruler'
 export type AdjustmentName = 'brightness' | 'contrast'
 
 const ADJUSTMENTS: readonly AdjustmentName[] = ['brightness', 'contrast']
+
+/** The key of `PaperPicLabels` that names each finish, which its button also carries in `data-paperpic-control`. */
+const FINISH_LABELS = {
+  original: 'finishOriginal',
+  gray: 'finishGray',
+  mono: 'finishMono',
+} as const satisfies Record<FinishMode, keyof PaperPicLabels>
+
+/** A row of buttons that chooses one of its names, each with a text. */
+interface Choice<Name extends string> {
+  buttons: Record<Name, HTMLButtonElement>
+  element: HTMLElement
+  texts: Record<Name, HTMLElement>
+}
+
+function createChoice<Name extends string>(names: readonly Name[], control: (name: Name) => keyof PaperPicLabels, choose: (name: Name) => void): Choice<Name> {
+  const element = document.createElement('div')
+  element.className = 'paperpic-edit-options'
+  element.setAttribute('role', 'group')
+  const buttons = {} as Record<Name, HTMLButtonElement>
+  const texts = {} as Record<Name, HTMLElement>
+  for (const name of names) {
+    const button = createButton(control(name), () => choose(name), 'paperpic-button paperpic-edit-option')
+    const text = document.createElement('span')
+    button.append(text)
+    element.append(button)
+    buttons[name] = button
+    texts[name] = text
+  }
+  return { element, buttons, texts }
+}
 
 /** Numbers the elements that others refer to by id, so each viewer of a page has ids of its own. */
 let ids = 0
@@ -23,8 +56,8 @@ export interface EditBarCommands {
   runTool: (run: Tool['actions'][number]['run']) => void
   /** Changes the brightness or the contrast that Adjust shows. `released` once the user lets go of the ruler. */
   setAdjustment: (name: AdjustmentName, value: number, released: boolean) => void
-  /** Changes what Clean up shows. `released` once the user lets go of the ruler. */
-  setThreshold: (setting: { enabled?: boolean, sensitivity?: number }, released: boolean) => void
+  /** Changes what Clean up shows. `released` once the user lets go of the ruler, or chooses a finish. */
+  setFinish: (setting: { mode?: FinishMode, sensitivity?: number }, released: boolean) => void
   undo: () => void
   zoomIn: () => void
   zoomOut: () => void
@@ -42,10 +75,8 @@ export interface EditBarState {
   canUndo: boolean
   canZoomIn: boolean
   canZoomOut: boolean
-  /** The clean up on display, which an open Clean up may still change. */
-  threshold: { enabled: boolean, sensitivity: number }
-  /** Whether the edits already clean up the document, so an open Clean up offers its switch to turn it off. */
-  thresholdInEdits: boolean
+  /** The finish on display, which an open Clean up may still change. */
+  finish: { mode: FinishMode, sensitivity: number }
 }
 
 /** Creates a dot that marks a button whose setting is in effect. */
@@ -69,13 +100,10 @@ export class EditBar {
   private readonly hint: HTMLElement
   private readonly title: HTMLElement
   private readonly rulers: Record<AdjustmentName | 'sensitivity', Ruler>
-  private readonly switchButton: HTMLButtonElement
-  private readonly switchText: HTMLElement
-  private readonly options: HTMLElement
-  private readonly optionButtons: Record<AdjustmentName, HTMLButtonElement>
-  private readonly optionTexts: Record<AdjustmentName, HTMLElement>
+  private readonly adjustments: Choice<AdjustmentName>
+  private readonly finishes: Choice<FinishMode>
   private readonly inUse: HTMLElement
-  /** Why Adjust cannot open while Clean up is on, for screen readers. */
+  /** Why Adjust cannot open in black and white, for screen readers. */
   private readonly adjustUnavailable: HTMLElement
   private readonly confirmation: HTMLElement
   private readonly message: HTMLElement
@@ -100,7 +128,6 @@ export class EditBar {
   private adjustment: AdjustmentName = 'brightness'
   /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
   private hintOverride: string | null = null
-  private thresholdInEdits = false
   private canApply = false
   private busy = false
 
@@ -127,7 +154,7 @@ export class EditBar {
     for (const tool of tools) {
       for (const action of tool.actions) {
         const button = createButton(action.id, () => commands.runTool(action.run))
-        if (tool.id === 'adjust' || tool.id === 'threshold') {
+        if (tool.id === 'adjust' || tool.id === 'finish') {
           button.append(createDot())
         }
         this.toolButtons.push({ tool, id: action.id, button })
@@ -160,7 +187,7 @@ export class EditBar {
     this.zoomInButton = createButton('zoomIn', commands.zoomIn)
     this.corners.append(this.hint, this.zoomOutButton, this.zoomInButton)
     this.rulers = {
-      sensitivity: new Ruler('thresholdSensitivity', false, (value, released) => commands.setThreshold({ sensitivity: value }, released)),
+      sensitivity: new Ruler('finishSensitivity', false, (value, released) => commands.setFinish({ sensitivity: value }, released)),
       brightness: new Ruler('brightness', true, (value, released) => commands.setAdjustment('brightness', value, released)),
       contrast: new Ruler('contrast', true, (value, released) => commands.setAdjustment('contrast', value, released)),
     }
@@ -170,35 +197,10 @@ export class EditBar {
     choice.className = 'paperpic-edit-choice'
     this.title = document.createElement('span')
     this.title.className = 'paperpic-edit-title'
-    // Clean up turns on when it opens, so Cancel undoes it. Once it is an edit, its switch turns it off without undoing what came after
-    this.switchButton = createButton('threshold', () => commands.setThreshold({
-      enabled: this.switchButton.getAttribute('aria-checked') !== 'true',
-    }, true), 'paperpic-button paperpic-edit-switch')
-    this.switchButton.setAttribute('role', 'switch')
-    this.switchText = document.createElement('span')
-    const track = document.createElement('span')
-    track.className = 'paperpic-edit-switch-track'
-    const thumb = document.createElement('span')
-    thumb.className = 'paperpic-edit-switch-thumb'
-    track.append(thumb)
-    this.switchButton.append(this.switchText, track)
-
-    this.options = document.createElement('div')
-    this.options.className = 'paperpic-edit-options'
-    this.options.setAttribute('role', 'group')
-    const optionButtons: Partial<Record<AdjustmentName, HTMLButtonElement>> = {}
-    const optionTexts: Partial<Record<AdjustmentName, HTMLElement>> = {}
-    for (const name of ADJUSTMENTS) {
-      const button = createButton(name, () => this.chooseAdjustment(name), 'paperpic-button paperpic-edit-option')
-      const text = document.createElement('span')
-      button.append(text)
-      this.options.append(button)
-      optionButtons[name] = button
-      optionTexts[name] = text
-    }
-    this.optionButtons = optionButtons as Record<AdjustmentName, HTMLButtonElement>
-    this.optionTexts = optionTexts as Record<AdjustmentName, HTMLElement>
-    choice.append(this.title, this.switchButton, this.options)
+    this.adjustments = createChoice(ADJUSTMENTS, name => name, name => this.chooseAdjustment(name))
+    // The original turns Clean up off without undoing what came after
+    this.finishes = createChoice(FINISH_MODES, mode => FINISH_LABELS[mode], mode => commands.setFinish({ mode }, true))
+    choice.append(this.title, this.adjustments.element, this.finishes.element)
 
     this.toolControls.append(this.cancelToolButton, panel, choice, this.confirmToolButton)
 
@@ -212,8 +214,8 @@ export class EditBar {
       [this.confirmToolButton, 'apply'],
       [this.zoomOutButton, 'zoomOut'],
       [this.zoomInButton, 'zoomIn'],
-      [this.optionButtons.brightness, 'brightness'],
-      [this.optionButtons.contrast, 'contrast'],
+      [this.adjustments.buttons.brightness, 'brightness'],
+      [this.adjustments.buttons.contrast, 'contrast'],
     ]
 
     const id = ++ids
@@ -281,12 +283,15 @@ export class EditBar {
     nameButton(this.confirmToolButton, labels.confirm)
     nameButton(this.zoomInButton, labels.zoomIn)
     nameButton(this.zoomOutButton, labels.zoomOut)
-    this.rulers.sensitivity.setName(labels.thresholdSensitivity)
-    this.switchText.textContent = labels.threshold
-    this.options.setAttribute('aria-label', labels.adjust)
+    this.rulers.sensitivity.setName(labels.finishSensitivity)
+    this.adjustments.element.setAttribute('aria-label', labels.adjust)
     for (const name of ADJUSTMENTS) {
       this.rulers[name].setName(labels[name])
-      this.optionTexts[name].textContent = labels[name]
+      this.adjustments.texts[name].textContent = labels[name]
+    }
+    this.finishes.element.setAttribute('aria-label', labels.finish)
+    for (const mode of FINISH_MODES) {
+      this.finishes.texts[mode].textContent = labels[FINISH_LABELS[mode]]
     }
     this.inUse.textContent = labels.inUse
     this.adjustUnavailable.textContent = labels.adjustUnavailable
@@ -341,31 +346,34 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow, and what the panel of an open tool shows. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, thresholdInEdits, threshold, adjustments }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
-    this.thresholdInEdits = thresholdInEdits
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
     this.updateView({ canZoomIn, canZoomOut })
-    // A cleaned document has tones of its own, so brightness and contrast are not in effect
-    const adjusted = !threshold.enabled && (adjustments.brightness !== 0 || adjustments.contrast !== 0)
+    // A document in black and white has tones of its own, so brightness and contrast are not in effect
+    const mono = finish.mode === 'mono'
+    const adjusted = !mono && (adjustments.brightness !== 0 || adjustments.contrast !== 0)
     for (const { tool, button } of this.toolButtons) {
       button.setAttribute('aria-disabled', String(busy
         || (tool.activate !== undefined && !canOpenTool)
-        || (tool.id === 'adjust' && threshold.enabled)))
+        || (tool.id === 'adjust' && mono)))
       if (tool.id === 'adjust') {
-        this.markInUse(button, adjusted, threshold.enabled ? this.adjustUnavailable : null)
+        this.markInUse(button, adjusted, mono ? this.adjustUnavailable : null)
       }
-      if (tool.id === 'threshold') {
-        this.markInUse(button, threshold.enabled)
+      if (tool.id === 'finish') {
+        this.markInUse(button, finish.mode !== 'original')
       }
     }
-    this.switchButton.setAttribute('aria-checked', String(threshold.enabled))
-    this.rulers.sensitivity.set(threshold.sensitivity)
-    this.rulers.sensitivity.setDisabled(busy || !threshold.enabled)
+    for (const mode of FINISH_MODES) {
+      this.finishes.buttons[mode].setAttribute('aria-pressed', String(mode === finish.mode))
+      this.finishes.buttons[mode].setAttribute('aria-disabled', String(busy))
+    }
+    this.rulers.sensitivity.set(finish.sensitivity)
+    this.rulers.sensitivity.setDisabled(busy || !mono)
     for (const name of ADJUSTMENTS) {
       this.rulers[name].set(adjustments[name])
       this.rulers[name].setDisabled(busy)
@@ -404,9 +412,18 @@ export class EditBar {
     button?.focus()
   }
 
-  /** Moves the keyboard focus to the ruler of the open tool, if it has one. */
+  /**
+   * Moves the keyboard focus to the ruler of the open tool, if it has one, or else to its chosen finish, since a finish
+   * other than black and white disables the ruler.
+   */
   focusRuler(): void {
-    Object.values(this.rulers).find(ruler => !ruler.element.hidden)?.input.focus()
+    const ruler = Object.values(this.rulers).find(candidate => !candidate.element.hidden)
+    if (ruler && !ruler.input.disabled) {
+      ruler.input.focus()
+    }
+    else if (this.activeTool?.id === 'finish') {
+      this.finishes.element.querySelector<HTMLButtonElement>('[aria-pressed="true"]')?.focus()
+    }
   }
 
   private chooseAdjustment(name: AdjustmentName): void {
@@ -414,31 +431,24 @@ export class EditBar {
     this.showPanel()
   }
 
-  /** Shows the controls of the open tool: its corners or its ruler, and its name, its switch or its choice. */
+  /** Shows the controls of the open tool: its corners or its ruler, and its name or its choice. */
   private showPanel(): void {
     const id = this.activeTool?.id
     const name = this.activeTool
       ? this.labels[this.activeTool.actions[0]!.id]
       : ''
     const hasCorners = id === 'crop' || id === 'perspective'
-    const hasSwitch = id === 'threshold' && this.thresholdInEdits
     this.toolControls.setAttribute('aria-label', name)
     this.corners.hidden = !hasCorners
-    // A tool without a switch or a choice shows its name in their place
-    this.title.hidden = !hasCorners && !(id === 'threshold' && !hasSwitch)
+    // A tool without a choice shows its name in its place
+    this.title.hidden = !hasCorners
     this.title.textContent = name
-    this.rulers.sensitivity.element.hidden = id !== 'threshold'
-    this.switchButton.hidden = !hasSwitch
-    this.options.hidden = id !== 'adjust'
+    this.rulers.sensitivity.element.hidden = id !== 'finish'
+    this.finishes.element.hidden = id !== 'finish'
+    this.adjustments.element.hidden = id !== 'adjust'
     for (const name of ADJUSTMENTS) {
       this.rulers[name].element.hidden = id !== 'adjust' || name !== this.adjustment
-    }
-    this.showOptions()
-  }
-
-  private showOptions(): void {
-    for (const name of ADJUSTMENTS) {
-      this.optionButtons[name].setAttribute('aria-pressed', String(name === this.adjustment))
+      this.adjustments.buttons[name].setAttribute('aria-pressed', String(name === this.adjustment))
     }
   }
 

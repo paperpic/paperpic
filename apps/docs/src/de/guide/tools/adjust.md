@@ -21,13 +21,13 @@ Anpassen läuft nach den übrigen Änderungen, deshalb zeigen Zuschneiden und Be
 
 ## Anpassen oder Bereinigen?
 
-| Anpassen                                 | [Bereinigen](./clean-up)       |
-| ---------------------------------------- | ------------------------------ |
-| Behält Farben und Grautöne               | Macht das Dokument schwarzweiß |
-| Für farbige Formulare, Stempel und Fotos | Für Text auf Papier            |
-| Behält das Format des Quellbilds         | Ergibt PNG                     |
+| Anpassen                                 | [Bereinigen](./clean-up)                 |
+| ---------------------------------------- | ---------------------------------------- |
+| Behält Farben und Grautöne               | Macht das Dokument grau oder schwarzweiß |
+| Für farbige Formulare, Stempel und Fotos | Für Text auf Papier                      |
+| Behält das Format des Quellbilds         | Ergibt PNG                               |
 
-Solange Bereinigen eingeschaltet ist, ist Anpassen deaktiviert. Bereinigen vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern. Screenreader nennen den Grund, warum es deaktiviert ist.
+In Schwarzweiß ist Anpassen deaktiviert. Schwarzweiß vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern. Screenreader nennen den Grund, warum es deaktiviert ist. Mit Graustufen funktioniert Anpassen, und Graustufen kommen danach.
 
 ## Aus dem Code
 

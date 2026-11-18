@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## Ein eigener Schieberegler {#slider}
 
-Ein eigener Schieberegler für Bereinigen öffnet zuerst das Werkzeug. Jede Bewegung ruft dann `setThreshold()` auf, was ändert, was Bereinigen zeigt, und `confirmTool()` behält den letzten Wert als eine Bearbeitung. Hier übernimmt Fertig auch das Ergebnis, und Abbrechen verlässt den Bearbeitungsmodus, sodass diese Bedienelemente die ganze Oberfläche sind.
+Ein eigener Schieberegler für Bereinigen öffnet zuerst das Werkzeug. Jede Bewegung ruft dann `setFinish()` auf, was ändert, was Bereinigen zeigt, und `confirmTool()` behält den letzten Wert als eine Bearbeitung. Hier übernimmt Fertig auch das Ergebnis, und Abbrechen verlässt den Bearbeitungsmodus, sodass diese Bedienelemente die ganze Oberfläche sind.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       Empfindlichkeit
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       Fertig
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>Fertig</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - Mit `toolbar: false` ist auch die eingebaute Bearbeitungsleiste ausgeblendet, Zuschneiden und Begradigen zeigen also ihre Griffe, aber keine Schaltfläche Fertig. Deine Oberfläche bestätigt sie mit [`confirmTool()`](../reference/methods#confirmtool), wie `Enter`. Um sie ohne ihre Änderungen zu schließen, rufe [`cancelTool()`](../reference/methods#canceltool) auf, wie es `Esc` tut.
 - Solange Zuschneiden oder Begradigen offen ist, sagt `hint` im Zustand, was zu tun ist, etwa „Drag the corners“, wie die eingebaute Bearbeitungsleiste. Zeige es an, denn mit `toolbar: false` zeigt es sonst nichts. Ein neuer Hinweis, etwa nach dem Drücken einer Ecke, kommt mit `change`.
-- Eigene Regler können [`setThreshold()`](../reference/methods#setthreshold) und [`setAdjustments()`](../reference/methods#setadjustments) direkt aufrufen, was bei jedem Aufruf eine Änderung hinzufügt. Für eine einzige Änderung über ein ganzes Ziehen öffne das Werkzeug vorher mit [`openTool()`](../reference/methods#opentool): Dieselben Methoden ändern dann, was es zeigt, und `confirmTool()` behält es.
+- Eigene Regler können [`setFinish()`](../reference/methods#setfinish) und [`setAdjustments()`](../reference/methods#setadjustments) direkt aufrufen, was bei jedem Aufruf eine Änderung hinzufügt. Für eine einzige Änderung über ein ganzes Ziehen öffne das Werkzeug vorher mit [`openTool()`](../reference/methods#opentool): Dieselben Methoden ändern dann, was es zeigt, und `confirmTool()` behält es.
 - [`cancel()`](../reference/methods#cancel) fragt nicht nach, bevor es die Änderungen verwirft. Frag selbst nach, wenn es welche gibt, etwa wenn `canApply` wahr ist.
 - Die Tastenkürzel funktionieren weiter, wenn der Viewer den Fokus hat. Siehe [Barrierefreiheit](../guide/accessibility).

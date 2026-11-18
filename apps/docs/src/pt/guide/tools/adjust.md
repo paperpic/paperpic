@@ -21,13 +21,13 @@ Ajustar vem depois das outras alterações, então Recortar e Endireitar mostram
 
 ## Ajustar ou Limpar?
 
-| Ajustar                                      | [Limpar](./clean-up)                     |
-| -------------------------------------------- | ---------------------------------------- |
-| Mantém as cores e os cinzas                  | Transforma o documento em preto e branco |
-| Para formulários coloridos, carimbos e fotos | Para texto em papel                      |
-| Mantém o formato da imagem original          | Gera PNG                                 |
+| Ajustar                                      | [Limpar](./clean-up)                                  |
+| -------------------------------------------- | ----------------------------------------------------- |
+| Mantém as cores e os cinzas                  | Transforma o documento em cinza, ou em preto e branco |
+| Para formulários coloridos, carimbos e fotos | Para texto em papel                                   |
+| Mantém o formato da imagem original          | Gera PNG                                              |
 
-Enquanto Limpar está ligado, Ajustar fica desativado. Limpar compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado. Os leitores de tela informam por que ele está desativado.
+Em preto e branco, Ajustar fica desativado. O preto e branco compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado. Os leitores de tela ouvem por que está desativado. Com o cinza, Ajustar funciona, e o cinza vem depois.
 
 ## Pelo código
 

@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## A slider of your own {#slider}
 
-A slider of your own for Clean up opens the tool first. Each move then calls `setThreshold()`, which changes what Clean up shows, and `confirmTool()` keeps the last value as one edit. Here Done also applies the result, and Cancel leaves the edit mode, so these controls are the whole interface.
+A slider of your own for Clean up opens the tool first. Each move then calls `setFinish()`, which changes what Clean up shows, and `confirmTool()` keeps the last value as one edit. Here Done also applies the result, and Cancel leaves the edit mode, so these controls are the whole interface.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       Sensitivity
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       Done
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>Done</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - With `toolbar: false`, the built-in edit bar is hidden too, so Crop and Straighten show their handles but no Done button. Your interface confirms them with [`confirmTool()`](../reference/methods#confirmtool), as `Enter` does. To close them without their changes, call [`cancelTool()`](../reference/methods#canceltool), as `Esc` does.
 - While Crop or Straighten is open, `hint` in the state says what to do, such as "Drag the corners", as the built-in edit bar does. Show it, because with `toolbar: false` nothing else does. A new hint, such as after pressing a corner, comes with `change`.
-- Sliders of your own can call [`setThreshold()`](../reference/methods#setthreshold) and [`setAdjustments()`](../reference/methods#setadjustments) directly, which adds one edit for each call. To leave one edit for a whole drag, open the tool with [`openTool()`](../reference/methods#opentool) first: the same methods then change what it shows, and `confirmTool()` keeps it.
+- Sliders of your own can call [`setFinish()`](../reference/methods#setfinish) and [`setAdjustments()`](../reference/methods#setadjustments) directly, which adds one edit for each call. To leave one edit for a whole drag, open the tool with [`openTool()`](../reference/methods#opentool) first: the same methods then change what it shows, and `confirmTool()` keeps it.
 - [`cancel()`](../reference/methods#cancel) does not ask before discarding the edits. Ask the user first if there are some, such as when `canApply` is true.
 - The keyboard shortcuts keep working with the focus on the viewer. See [Accessibility](../guide/accessibility).

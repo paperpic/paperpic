@@ -9,7 +9,7 @@ Fotos de celular têm 12 megapixels ou mais, e editá-las dá trabalho de verdad
 
 ## Um Web Worker faz o trabalho
 
-Limpar e Endireitar levam cerca de um segundo e meio em uma foto de 12 megapixels num celular recente, como mostram os [tempos medidos](#measurements). Na thread principal, a página travaria esse tempo todo. Por isso o PaperPic os roda em um Web Worker, e a página continua respondendo enquanto o Aplicar roda.
+O preto e branco e Endireitar levam cerca de um segundo e meio em uma foto de 12 megapixels num celular recente, como mostram os [tempos medidos](#measurements). Na thread principal, a página travaria esse tempo todo. Por isso o PaperPic os roda em um Web Worker, e a página continua respondendo enquanto o Aplicar roda.
 
 O worker vem dentro do pacote e inicia com o padrão `new Worker(new URL(…, import.meta.url))`, que bundlers como Vite e webpack 5 reconhecem sozinhos, sem configuração. Se o worker não conseguir iniciar, a edição roda na thread principal: continua funcionando, mas a página pode travar por um instante com imagens grandes.
 
@@ -34,14 +34,14 @@ Cada etapa do Aplicar, no worker, em um Pixel 10 Pro com Chrome 156:
 
 | Etapa                             | 2 MP   | 12 MP  | 37,5 MP |
 | --------------------------------- | ------ | ------ | ------- |
-| Limpar                            | 256 ms | 1,5 s  | 4,8 s   |
+| Preto e branco                    | 256 ms | 1,5 s  | 4,8 s   |
 | Endireitar                        | 251 ms | 1,6 s  | 5,0 s   |
 | Exportar para PNG                 | 92 ms  | 378 ms | 979 ms  |
 | Exportar para JPEG, qualidade 0,9 | 33 ms  | 142 ms | 525 ms  |
 
 - Mover a régua do Limpar leva cerca de 40 ms no mesmo celular, porque trabalha sobre a pré-visualização de cerca de 2 MP.
 - Um computador de mesa com 8 núcleos faz cada etapa cerca de seis vezes mais rápido.
-- Com 37,5 MP, o Limpar precisa de cerca de 340 MB de memória no pico.
+- Com 37,5 MP, o preto e branco precisa de cerca de 340 MB de memória no pico.
 - Celulares Android intermediários e iPhones ainda não foram medidos.
 
 ## Renderização no servidor

@@ -17,7 +17,7 @@ Un documento fotografato di sbieco sembra un trapezio: il bordo lontano è più 
 
 Le maniglie funzionano come in [Ritaglia](./crop): una lente d’ingrandimento sugli schermi touch, premere e toccare invece di trascinare, e Tab e le frecce con la tastiera. I quattro angoli formano sempre una figura convessa, così la pagina si può sempre rendere piatta.
 
-Raddrizza mostra la foto senza [Pulisci](./clean-up), perché su una pagina pulita è difficile trovare i bordi della carta. Pulisci torna dopo Fatto.
+Raddrizza mostra la foto senza il bianco e nero di [Pulisci](./clean-up), perché i bordi della carta sono difficili da trovare su una pagina pulita. Il bianco e nero torna dopo Fatto, e il grigio resta.
 
 ## Proporzioni
 

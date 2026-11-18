@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-The `blob` keeps the format of the source when it is JPEG, PNG or WebP, and is PNG when the user cleaned up the document. [Format and quality](./saving#format) explains how PaperPic tells the format, and the [`output`](../reference/options#output) option changes it.
+The `blob` keeps the format of the source when it is JPEG, PNG or WebP, and is PNG when the user cleaned up the document into black and white. [Format and quality](./saving#format) explains how PaperPic tells the format, and the [`output`](../reference/options#output) option changes it.
 
 ## Remove the viewer {#destroy}
 

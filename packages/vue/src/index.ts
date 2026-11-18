@@ -6,6 +6,7 @@ export type { PaperPicInstance, PaperPicProps } from './types'
 // With strict installs, consumers cannot reach the types of @paperpic/core, so every one of them is here
 export type {
   ExportedImage,
+  FinishMode,
   Fit,
   PaperPicDownload,
   PaperPicEvents,

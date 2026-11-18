@@ -39,7 +39,7 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Quand un bouton a le focus, `Entrée` 
 - L’image a le rôle d’une image, nommée par `alt`. Sans `alt`, les lecteurs d’écran l’ignorent.
 - La barre d’outils et la barre de modification ont leur propre nom, comme « Commandes de l’image » et « Commandes de modification ».
 - Une annonce signale ce que l’utilisateur ne peut pas voir avec le seul focus : le chargement de l’image, le niveau de zoom, le début du mode d’édition, un coin sélectionné et la position d’un coin déplacé, la valeur d’une règle, le résultat d’Appliquer et tout échec.
-- L’interrupteur de Nettoyer a le rôle d’un interrupteur. Un outil en usage, qu’un point marque à l’écran, est décrit comme « Actif ». Tant que Nettoyer est activé, Ajuster est décrit avec la raison pour laquelle il est désactivé.
+- Les finitions de Nettoyer sont des boutons qui disent s’ils sont enfoncés. Un outil en usage, qu’un point marque à l’écran, est décrit comme « Actif ». En noir et blanc, Ajuster est décrit avec la raison pour laquelle il est désactivé.
 
 ## Écrans tactiles
 

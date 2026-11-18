@@ -10,7 +10,7 @@ Fotos von Dokumenten kommen schief, mit Schatten und viel Hintergrund an. PaperP
 ## Was es kann
 
 - **Ansehen.** Zoomen mit den Schaltflächen, dem Mausrad, zwei Fingern, einem Doppelklick oder der Tastatur, das Bild verschieben und das ganze Bild, seine Breite oder seine Höhe einpassen. Ein schreibgeschützter Viewer kann das Bild auch drehen.
-- **Bearbeiten.** Im Bearbeitungsmodus kann der Nutzer zuschneiden, ein schräg aufgenommenes Foto begradigen, drehen, spiegeln, Helligkeit und Kontrast anpassen und das Dokument zu Schwarzweiß bereinigen. Jede Änderung lässt sich rückgängig machen, bis der Nutzer die Änderungen übernimmt.
+- **Bearbeiten.** Im Bearbeitungsmodus kann der Nutzer zuschneiden, ein schräg aufgenommenes Foto begradigen, drehen, spiegeln, Helligkeit und Kontrast anpassen und das Dokument zu Graustufen oder Schwarzweiß bereinigen. Jede Änderung lässt sich rückgängig machen, bis der Nutzer die Änderungen übernimmt.
 - **Liefern.** Übernehmen berechnet das Ergebnis in voller Auflösung und übergibt es deinem Code als `Blob`. Eine Download-Schaltfläche kann es auch speichern.
 
 Jeder Schritt passiert nur, wenn der Nutzer ihn anstößt. Nichts verändert das Foto von selbst.

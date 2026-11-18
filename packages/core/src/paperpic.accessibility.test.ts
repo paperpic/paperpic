@@ -141,13 +141,12 @@ describe('accessibility', () => {
     expect(await audit()).toEqual([])
   })
 
-  it('has no violations with the switch of Clean up, which shows once it is an edit', async () => {
+  it('has no violations with the finishes and the ruler of Clean up', async () => {
     await finishLoading()
     pic.edit()
-    pic.setThreshold({ enabled: true })
-    await flush()
     button('Clean up').click()
-    expect(container.querySelector<HTMLElement>('[role="switch"]')!.hidden).toBe(false)
+    await flush()
+    expect(container.querySelector<HTMLElement>('[data-paperpic-control="finishMono"]')!.getAttribute('aria-pressed')).toBe('true')
     expect(await audit()).toEqual([])
   })
 
@@ -162,10 +161,10 @@ describe('accessibility', () => {
   it('has no violations with a tool in use, whose dot has a description', async () => {
     await finishLoading()
     pic.edit()
-    pic.setThreshold({ enabled: true })
+    pic.setFinish({ mode: 'mono' })
     await flush()
     expect(button('Clean up').getAttribute('aria-describedby')).not.toBeNull()
-    // Adjust, disabled while Clean up is on, says why
+    // Adjust, disabled in black and white, says why
     expect(button('Adjust').getAttribute('aria-describedby')).not.toBeNull()
     expect(await audit()).toEqual([])
   })

@@ -21,13 +21,13 @@ Regola viene dopo gli altri cambiamenti, quindi Ritaglia e Raddrizza mostrano l�
 
 ## Regola o Pulisci?
 
-| Regola                                      | [Pulisci](./clean-up)                   |
-| ------------------------------------------- | --------------------------------------- |
-| Conserva i colori e i grigi                 | Trasforma il documento in bianco e nero |
-| Per moduli a colori, timbri e foto          | Per testo su carta                      |
-| Mantiene il formato dell’immagine originale | Dà PNG                                  |
+| Regola                                      | [Pulisci](./clean-up)                                |
+| ------------------------------------------- | ---------------------------------------------------- |
+| Conserva i colori e i grigi                 | Trasforma il documento in grigio, o in bianco e nero |
+| Per moduli a colori, timbri e foto          | Per testo su carta                                   |
+| Mantiene il formato dell’immagine originale | Dà PNG                                               |
 
-Mentre Pulisci è attivo, Regola è disattivato. Pulisci confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato. I lettori di schermo dicono perché è disattivato.
+In bianco e nero, Regola è disattivato. Il bianco e nero confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato. I lettori di schermo sentono perché è disattivato. Con il grigio, Regola funziona, e il grigio viene dopo.
 
 ## Dal codice
 

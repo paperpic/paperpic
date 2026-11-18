@@ -17,7 +17,7 @@ Un document photographié de biais ressemble à un trapèze : le bord éloigné 
 
 Les poignées fonctionnent comme dans [Recadrer](./crop) : une loupe sur les écrans tactiles, appuyer puis toucher au lieu de faire glisser, et Tab et les flèches au clavier. Les quatre coins gardent toujours une forme convexe, donc la page peut toujours être mise à plat.
 
-Redresser montre la photo sans [Nettoyer](./clean-up), car les bords du papier sont difficiles à trouver sur une page nettoyée. Nettoyer revient après Terminé.
+Redresser montre la photo sans le noir et blanc de [Nettoyer](./clean-up), car les bords du papier sont difficiles à trouver sur une page nettoyée. Le noir et blanc revient après Terminé, et le gris reste.
 
 ## Proportions
 
