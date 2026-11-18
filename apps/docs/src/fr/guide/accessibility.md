@@ -43,7 +43,7 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Quand un bouton a le focus, `Entrée` 
 
 ## Écrans tactiles
 
-- Avec `pointer: coarse`, les boutons et les poignées d’angle mesurent au moins 44 pixels.
+- Avec `any-pointer: coarse`, les boutons et les poignées d’angle mesurent au moins 44 pixels. Tout écran tactile y répond, même sur un ordinateur portable avec pavé tactile.
 - Pendant qu’un doigt fait glisser un coin, une loupe montre la zone sous le doigt.
 - Un coin se déplace aussi sans faire glisser : appuyez sur sa poignée, puis touchez l’endroit où il va. Cela fonctionne aussi à la souris.
 - Tant que l’image est adaptée, un doigt fait défiler la page, donc la visionneuse ne retient personne prisonnier. Une fois zoomée, il déplace l’image.

@@ -43,7 +43,7 @@ No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona e
 
 ## Telas sensíveis ao toque
 
-- Com `pointer: coarse`, botões e alças de canto medem pelo menos 44 pixels.
+- Com `any-pointer: coarse`, botões e alças de canto medem pelo menos 44 pixels. Qualquer tela sensível ao toque atende a isso, também em um notebook com trackpad.
 - Enquanto um dedo arrasta um canto, uma lupa mostra a área embaixo dele.
 - Um canto também se move sem arrastar: pressione a alça dele e depois toque onde ele vai. Também funciona com mouse.
 - Enquanto a imagem está encaixada, um dedo rola a página, então o visualizador não prende ninguém. Com zoom, ele move a imagem.

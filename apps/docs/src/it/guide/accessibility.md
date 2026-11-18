@@ -43,7 +43,7 @@ Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme
 
 ## Schermi touch
 
-- Con `pointer: coarse`, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel.
+- Con `any-pointer: coarse`, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel. Qualsiasi schermo touch lo soddisfa, anche su un portatile con touchpad.
 - Mentre un dito trascina un angolo, una lente d’ingrandimento mostra la zona sotto il dito.
 - Un angolo si sposta anche senza trascinare: premi la sua maniglia e poi tocca il punto in cui va. Funziona anche con il mouse.
 - Finché l’immagine è adattata, un dito scorre la pagina, così il visualizzatore non intrappola nessuno. Con lo zoom, sposta l’immagine.

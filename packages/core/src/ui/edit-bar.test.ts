@@ -284,7 +284,9 @@ describe('editBar', () => {
       expect(commands.cancel).not.toHaveBeenCalled()
       expect(confirmation().hidden).toBe(false)
       expect(controls().hidden).toBe(true)
-      expect(confirmation().getAttribute('role')).toBe('alertdialog')
+      // A group named by the question, because the rest of the viewer stays usable, as it would not in a dialog
+      expect(confirmation().getAttribute('role')).toBe('group')
+      expect(document.getElementById(confirmation().getAttribute('aria-labelledby')!)!.textContent).toBe('Discard your changes?')
       expect(document.activeElement).toBe(button('keepEditing'))
     })
 
@@ -338,6 +340,14 @@ describe('editBar', () => {
     bar.focus('flip')
     expect(document.activeElement).toBe(button('flip'))
     bar.focus()
+    expect(document.activeElement?.getAttribute('tabindex')).toBe('0')
+  })
+
+  it('moves the focus to the bar when tools hides the button of the tool', () => {
+    bar.setTools(['flip'])
+    bar.focus('crop')
+    expect(document.activeElement).not.toBe(button('crop'))
+    expect((document.activeElement as HTMLElement).hidden).toBe(false)
     expect(document.activeElement?.getAttribute('tabindex')).toBe('0')
   })
 

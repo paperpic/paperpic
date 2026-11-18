@@ -326,6 +326,20 @@ describe('editing', () => {
     expect(container.querySelector('.paperpic-status-visible')).toBeNull()
   })
 
+  it('reports a failure as an Error, also when something threw another value', async () => {
+    const onError = vi.fn()
+    pic.on('error', onError)
+    mocks.exportImage.mockRejectedValue('out of memory')
+    pic.edit()
+    pic.rotate(1)
+
+    await pic.apply()
+
+    const { error } = onError.mock.calls[0]![0]
+    expect(error).toBeInstanceOf(Error)
+    expect(error).toMatchObject({ message: 'out of memory', cause: 'out of memory' })
+  })
+
   it('keeps a failure on screen while it announces other changes, such as the zoom', async () => {
     mocks.exportImage.mockRejectedValue(new Error('too large'))
     pic.edit()

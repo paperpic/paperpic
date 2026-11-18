@@ -12,6 +12,8 @@ interface FakeImage {
 /** The images created so far, each waiting for the test to finish its decoding. */
 let images: { image: FakeImage, reject: (reason: Error) => void, resolve: () => void }[]
 let resizeCallback: () => void
+/** The elements that the viewer asked the ResizeObserver to watch. */
+let observed: Element[]
 const disconnect = vi.fn()
 const revoke = vi.fn()
 
@@ -36,6 +38,7 @@ describe('paperPic', () => {
 
   beforeEach(() => {
     images = []
+    observed = []
     disconnect.mockClear()
     revoke.mockClear()
 
@@ -54,7 +57,10 @@ describe('paperPic', () => {
         resizeCallback = callback
       }
 
-      observe() {}
+      observe(element: Element) {
+        observed.push(element)
+      }
+
       disconnect = disconnect
     })
     vi.stubGlobal('requestAnimationFrame', () => 1)
@@ -146,6 +152,27 @@ describe('paperPic', () => {
     expect(viewportOf().tabIndex).toBe(0)
     expect(viewportOf().getAttribute('aria-label')).toBe('Image viewer')
     expect(container.querySelector('[role="status"]')).not.toBeNull()
+  })
+
+  it('sizes the canvas again when the density of the screen changes, which no resize reports', () => {
+    const queries: { listener: () => void, media: string, signal?: AbortSignal }[] = []
+    vi.stubGlobal('matchMedia', (media: string) => ({
+      addEventListener: (_type: string, listener: () => void, options?: AddEventListenerOptions) => {
+        queries.push({ listener, media, signal: options?.signal })
+      },
+    }))
+    pic = new PaperPic(container)
+    const canvas = container.querySelector<HTMLCanvasElement>('.paperpic-canvas')!
+    expect(queries.at(-1)!.media).toBe('(resolution: 1dppx)')
+    expect(canvas.width).toBe(300)
+
+    vi.stubGlobal('devicePixelRatio', 2)
+    queries.at(-1)!.listener()
+    expect(canvas.width).toBe(600)
+    expect(queries.at(-1)!.media).toBe('(resolution: 2dppx)')
+
+    pic.destroy()
+    expect(queries.at(-1)!.signal!.aborted).toBe(true)
   })
 
   it.each(['', '  '])('hides an image without a description from screen readers, with alt %j', (alt) => {
@@ -398,6 +425,21 @@ describe('paperPic', () => {
       pic.setOptions({ src: '/another.jpg' })
       await finishLoading()
       expect(pic.getState().rotation).toBe(0)
+    })
+
+    it('measures the toolbar with the viewer, and not on every move of a pan', () => {
+      const width = vi.fn(() => 40)
+      Object.defineProperty(toolbarOf(), 'offsetWidth', { configurable: true, get: width })
+      expect(observed).toContain(toolbarOf())
+      resizeCallback()
+      expect(width).toHaveBeenCalled()
+      width.mockClear()
+
+      pic.zoomTo(2)
+      const press = (key: string) => viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
+      press('ArrowLeft')
+      press('ArrowRight')
+      expect(width).not.toHaveBeenCalled()
     })
 
     it('announces the zoom from the toolbar to screen readers, without showing it', () => {

@@ -223,7 +223,7 @@ The target is WCAG 2.2 AA, including `prefers-reduced-motion` and `forced-colors
 - The component fills its container and adapts with `ResizeObserver` and container queries. It does not detect the device.
 - The main toolbar is always vertical, at the right. It scrolls when the container is too short for its buttons, and it hides while editing (D37).
 - The edit bar is a card at the bottom with two rows of fixed height, or one row from 28rem wide (D49).
-- Touch targets are at least 44 px with `pointer: coarse`.
+- Touch targets are at least 44 px with `any-pointer: coarse`, so a laptop with a touch screen and a trackpad gets them too.
 - Pinch zooms around the point between the fingers. Double tap toggles between fitted and 100%.
 
 ## Roadmap
