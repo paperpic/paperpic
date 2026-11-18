@@ -74,6 +74,7 @@ The architecture and style rules in [CONTRIBUTING](../../.github/CONTRIBUTING.md
 | D60 | Announcements, such as the zoom, a moved corner or the value of a ruler, go to a live region of their own, which never shows. The status message keeps what the user must see: the loading, Apply and failures. `aria-busy` marks only the viewport.                                                                                                                                                | An announcement replaced a failure on screen, such as a zoom after a failed Apply. `aria-busy` on the root covered the live regions, so screen readers could hold back the message about the work until it ended.             |
 | D61 | `zoomTo()` throws a `RangeError` for a zoom of `NaN`, or a point with a coordinate that is not finite, and the zoom does not change. Any other zoom out of range is still clamped.                                                                                                                                                                                                                  | NaN cannot be clamped. It hid the image and disabled both zoom buttons until a fit, without an error. An empty number field gives NaN, so the mistake is easy to make.                                                        |
 | D62 | The canvas paints over the image with three tokens, `--paperpic-color-dim`, `--paperpic-color-line` and `--paperpic-color-line-shadow`, which have one value, without `light-dark()`. The root carries `data-paperpic-status`, `data-paperpic-mode` and `data-paperpic-tool`.                                                                                                                       | The overlay sits on the photo, so the scheme of the page says nothing about it, and a brand could not restyle it. CSS could not follow the status or the open tool. The prefix avoids the global CSS of apps.                 |
+| D63 | The state carries `hint`, the text that the edit bar shows for the open tool, or `null`. A new hint, such as after pressing a corner, emits `change`.                                                                                                                                                                                                                                               | With `toolbar: false`, nothing showed what the tool asks, and the tap that places a corner (D48) needs that instruction. A text through `labels` is enough, and a structured field can come later without a break.            |
 
 ## Public API
 
@@ -114,7 +115,7 @@ pic.cancel()
 pic.download() // emits a cancelable 'download' with { source, filename, preventDefault }
 pic.reload()
 pic.setOptions({ alt: 'A receipt' })
-pic.getState() // { status, mode, image, zoom, fit, rotation, canUndo, canRedo, canApply, busy, activeTool, threshold, adjustments }
+pic.getState() // { status, mode, image, zoom, fit, hint, rotation, canUndo, canRedo, canApply, busy, activeTool, threshold, adjustments }
 const off = pic.on('change', listener) // also 'load', 'error', 'apply' and 'download'
 pic.destroy()
 ```

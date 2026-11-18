@@ -65,6 +65,15 @@ The tokens are inherited, so a class on the container of one viewer, or on the V
 }
 ```
 
+Three more tokens color what the viewer paints over the photo while Crop or Straighten is open: `--paperpic-color-dim` darkens the image around the selection, and `--paperpic-color-line` and `--paperpic-color-line-shadow` draw the lines and the corner handles. They keep one value on light and dark pages. A line and its shadow go in pairs, so give a dark line a light shadow:
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Use the colors of your design system {#design-system}
 
 If your app keeps its colors in CSS variables, point the tokens at them instead of copying their values. The viewer then follows your theme, dark mode included:
@@ -252,6 +261,14 @@ Every button, ruler and corner handle also carries `data-paperpic-control`, with
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+The root, `.paperpic`, also carries its state in [`data-paperpic-status`, `data-paperpic-mode` and `data-paperpic-tool`](../reference/css-tokens#states), so your CSS can follow the load, the edit mode and the open tool:
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

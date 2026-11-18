@@ -65,6 +65,15 @@ Los tokens se heredan, así que una clase en el contenedor de un visor, o en el 
 }
 ```
 
+Otros tres tokens colorean lo que el visor pinta sobre la foto mientras Recortar o Enderezar está abierta: `--paperpic-color-dim` oscurece la imagen alrededor de la selección, y `--paperpic-color-line` y `--paperpic-color-line-shadow` dibujan las líneas y los tiradores de esquina. Tienen un solo valor en páginas claras y oscuras. Una línea y su sombra van en pareja, así que a una línea oscura dale una sombra clara:
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Usar los colores de tu sistema de diseño {#design-system}
 
 Si tu app guarda sus colores en variables CSS, apunta los tokens a ellas en lugar de copiar sus valores. Así el visor sigue tu tema, modo oscuro incluido:
@@ -252,6 +261,14 @@ Cada botón, regla y tirador de esquina lleva además `data-paperpic-control`, c
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+La raíz, `.paperpic`, también lleva su estado en [`data-paperpic-status`, `data-paperpic-mode` y `data-paperpic-tool`](../reference/css-tokens#states), para que tu CSS pueda seguir la carga, el modo de edición y la herramienta abierta:
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

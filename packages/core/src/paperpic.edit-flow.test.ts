@@ -892,6 +892,24 @@ describe('editing', () => {
         expect(pic.getState()).toMatchObject({ activeTool: 'crop', fit: 'image' })
       })
 
+      it('reports the hint in the state, for an interface of its own, and emits change when it changes', () => {
+        expect(pic.getState().hint).toBe('Drag the corners')
+        onChange.mockClear()
+
+        ;(handles()[0] as HTMLElement).click()
+        expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ hint: 'Top left corner: tap where it goes' }))
+
+        tap(40, 40, 0)
+        expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ hint: 'Drag the corners' }))
+
+        // The close reports the state once, without the hint
+        ;(handles()[1] as HTMLElement).click()
+        onChange.mockClear()
+        button('Cancel this tool').click()
+        expect(onChange).toHaveBeenCalledOnce()
+        expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ activeTool: null, hint: null }))
+      })
+
       it('leaves a tap alone when no corner is selected', () => {
         const before = handles().map(handle => handle.getAttribute('style'))
         tap(40, 40, 0)

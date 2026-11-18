@@ -91,18 +91,18 @@ async function upload(blob: Blob) {
 
 ## Common tasks
 
-| Task                                   | How                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------ |
-| Show a document without editing        | `editable: false`. The toolbar then rotates the display only.            |
-| Fix the proportions of known documents | `aspectRatio: 210 / 297` for A4. Straighten gives its result that shape. |
-| Choose the format of the result        | `output: { type: 'image/jpeg', quality: 0.9 }`                           |
-| Limit the size of the result           | `maxOutputSize: 2000`, the longest side in pixels                        |
-| Offer only some tools                  | `tools: ['crop', 'perspective', 'rotate']`                               |
-| Build your own controls                | `toolbar: false`, then call the methods, such as `edit()` and `apply()`  |
-| Let the user save the image            | `download: true`. The `download` event can save it another way.          |
-| Translate the interface                | `labels: { ... }`, a partial object of texts                             |
-| Bring back the original after an edit  | `reload()`                                                               |
-| Let the wheel scroll a long page       | `wheelZoom: false`                                                       |
+| Task                                   | How                                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Show a document without editing        | `editable: false`. The toolbar then rotates the display only.                                                            |
+| Fix the proportions of known documents | `aspectRatio: 210 / 297` for A4. Straighten gives its result that shape.                                                 |
+| Choose the format of the result        | `output: { type: 'image/jpeg', quality: 0.9 }`                                                                           |
+| Limit the size of the result           | `maxOutputSize: 2000`, the longest side in pixels                                                                        |
+| Offer only some tools                  | `tools: ['crop', 'perspective', 'rotate']`                                                                               |
+| Build your own controls                | `toolbar: false`, then call the methods, such as `edit()` and `apply()`, and show `getState().hint` while a tool is open |
+| Let the user save the image            | `download: true`. The `download` event can save it another way.                                                          |
+| Translate the interface                | `labels: { ... }`, a partial object of texts                                                                             |
+| Bring back the original after an edit  | `reload()`                                                                                                               |
+| Let the wheel scroll a long page       | `wheelZoom: false`                                                                                                       |
 
 The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `'adjust'` and `'threshold'` (Clean up). `tools` only chooses the buttons of the edit bar: the methods work with every tool.
 

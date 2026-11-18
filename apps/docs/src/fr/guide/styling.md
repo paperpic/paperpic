@@ -65,6 +65,15 @@ Les jetons s’héritent, donc une classe sur le conteneur d’une visionneuse, 
 }
 ```
 
+Trois autres jetons colorent ce que la visionneuse peint sur la photo tant que Recadrer ou Redresser est ouvert : `--paperpic-color-dim` assombrit l’image autour de la sélection, et `--paperpic-color-line` et `--paperpic-color-line-shadow` dessinent les lignes et les poignées d’angle. Ils gardent une seule valeur sur les pages claires et sombres. Une ligne et son ombre vont ensemble, donc donnez une ombre claire à une ligne sombre :
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## Utiliser les couleurs de votre design system {#design-system}
 
 Si votre application garde ses couleurs dans des variables CSS, faites pointer les jetons vers elles au lieu de copier leurs valeurs. La visionneuse suit alors votre thème, mode sombre compris :
@@ -252,6 +261,14 @@ Chaque bouton, règle et poignée d’angle porte aussi `data-paperpic-control`,
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+La racine, `.paperpic`, porte aussi son état dans [`data-paperpic-status`, `data-paperpic-mode` et `data-paperpic-tool`](../reference/css-tokens#states), pour que votre CSS suive le chargement, le mode de modification et l’outil ouvert :
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 

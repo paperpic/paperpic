@@ -65,6 +65,15 @@ import '@paperpic/react/style.css'
 }
 ```
 
+ほかの 3 つのトークンは、「切り抜き」か「傾き補正」が開いている間にビューアーが写真の上に描くものの色を決めます。`--paperpic-color-dim` は選択範囲の周りの画像を暗くし、`--paperpic-color-line` と `--paperpic-color-line-shadow` は線と角のハンドルを描きます。明るいページでも暗いページでも同じ値です。線とその影は組で使うので、暗い線には明るい影を指定します。
+
+```css
+:root {
+  --paperpic-color-line: #111;
+  --paperpic-color-line-shadow: rgb(255 255 255 / 70%);
+}
+```
+
 ## デザインシステムの色を使う {#design-system}
 
 アプリが色を CSS 変数に持っているなら、値をコピーせず、トークンをその変数に向けてください。ビューアーはダークモードも含めてあなたのテーマに従います。
@@ -252,6 +261,14 @@ PaperPic のスタイルシートは JavaScript からではなく、ここで C
 ```css
 .paperpic-button[data-paperpic-control='edit'] {
   color: var(--paperpic-color-accent);
+}
+```
+
+ルートの `.paperpic` は、[`data-paperpic-status`、`data-paperpic-mode`、`data-paperpic-tool`](../reference/css-tokens#states) にも状態を持つので、CSS で読み込み、編集モード、開いているツールに合わせられます。
+
+```css
+.paperpic[data-paperpic-mode='edit'] {
+  outline: 2px solid var(--paperpic-color-accent);
 }
 ```
 
