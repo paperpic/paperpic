@@ -31,7 +31,7 @@ Con el foco dentro del visor:
 En macOS, `Cmd` funciona como `Ctrl`. Con el foco en un botón, `Enter` pulsa ese botón. Antes de cancelar los cambios, `Esc` pide confirmación. Con `toolbar: false`, `Esc` sigue cerrando una herramienta, pero no cancela la edición: decide tu interfaz.
 
 - **Barra de herramientas y barra de edición.** Tab llega a cada barra, y dentro de ella las flechas pasan de un botón a otro, con `Inicio` y `Fin` para el primero y el último.
-- **Tiradores de esquina.** Con Recortar o Enderezar abierta, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús.
+- **Tiradores de esquina.** Con Recortar o Enderezar abierta, Tab pasa de un tirador a otro, y las flechas mueven el que tiene el foco 1 píxel de pantalla, o 10 con Mayús. Los lectores de pantalla oyen estas teclas, y que Intro termina, en la descripción de cada tirador.
 - **Reglas.** Las reglas de Ajustar y Limpiar son controles de rango nativos: las flechas, `Re Pág`, `Av Pág`, `Inicio` y `Fin` las mueven. `Enter` conserva el valor, como Hecho, y `Esc` cierra la herramienta sin él.
 
 ## Lectores de pantalla

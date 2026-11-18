@@ -31,7 +31,7 @@ Con il focus nel visualizzatore:
 Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme invece quel pulsante. Prima di annullare le modifiche, `Esc` chiede conferma. Con `toolbar: false`, `Esc` chiude ancora uno strumento, ma non annulla la modifica: decide la tua interfaccia.
 
 - **Barra degli strumenti e barra di modifica.** Tab raggiunge ogni barra, e al suo interno le frecce passano da un pulsante all’altro, con `Home` e `Fine` per il primo e l’ultimo.
-- **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc.
+- **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc. I lettori di schermo sentono questi tasti, e che Invio termina, nella descrizione di ogni maniglia.
 - **Righelli.** I righelli di Regola e di Pulisci sono cursori nativi: le frecce, `Pag su`, `Pag giù`, `Home` e `Fine` li spostano. `Invio` conserva il valore, come Fatto, e `Esc` chiude lo strumento senza di esso.
 
 ## Lettori di schermo

@@ -31,7 +31,7 @@ Quand le focus est dans la visionneuse :
 Sur macOS, `Cmd` fonctionne comme `Ctrl`. Quand un bouton a le focus, `Entrée` appuie plutôt sur ce bouton. Avant d’annuler les changements, `Échap` demande confirmation. Avec `toolbar: false`, `Échap` ferme toujours un outil, mais n’annule pas la modification : c’est votre interface qui décide.
 
 - **Barre d’outils et barre de modification.** Tab atteint chaque barre, et dans la barre les flèches passent d’un bouton à l’autre, avec `Début` et `Fin` pour le premier et le dernier.
-- **Poignées d’angle.** Avec Recadrer ou Redresser ouvert, Tab passe d’une poignée à l’autre, et les flèches déplacent celle qui a le focus de 1 pixel d’écran, ou de 10 avec Maj.
+- **Poignées d’angle.** Avec Recadrer ou Redresser ouvert, Tab passe d’une poignée à l’autre, et les flèches déplacent celle qui a le focus de 1 pixel d’écran, ou de 10 avec Maj. Les lecteurs d’écran entendent ces touches, et qu’Entrée termine, dans la description de chaque poignée.
 - **Règles.** Les règles d’Ajuster et de Nettoyer sont des curseurs natifs : les flèches, `Pg préc`, `Pg suiv`, `Début` et `Fin` les déplacent. `Entrée` garde la valeur, comme Terminé, et `Échap` ferme l’outil sans elle.
 
 ## Lecteurs d’écran

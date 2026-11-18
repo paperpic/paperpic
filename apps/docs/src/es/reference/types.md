@@ -99,6 +99,7 @@ interface PaperPicLabels {
   contrast: string
   cornerBottomLeft: string
   cornerBottomRight: string
+  cornerKeys: string
   cornerMoved: (corner: string, x: number, y: number) => string
   cornerSelected: (corner: string) => string
   cornerTopLeft: string

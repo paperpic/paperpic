@@ -31,7 +31,7 @@ Com o foco dentro do visualizador:
 No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona esse botão. Antes de cancelar as alterações, `Esc` pede confirmação. Com `toolbar: false`, `Esc` continua fechando uma ferramenta, mas não cancela a edição: quem decide é a sua interface.
 
 - **Barra de ferramentas e barra de edição.** Tab chega a cada barra, e dentro dela as setas passam de um botão para outro, com `Home` e `End` para o primeiro e o último.
-- **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift.
+- **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift. Os leitores de tela ouvem essas teclas, e que Enter conclui, na descrição de cada alça.
 - **Réguas.** As réguas do Ajustar e do Limpar são controles deslizantes nativos: as setas, `Page Up`, `Page Down`, `Home` e `End` as movem. `Enter` mantém o valor, como Concluído, e `Esc` fecha a ferramenta sem ele.
 
 ## Leitores de tela

@@ -31,7 +31,7 @@ Wenn der Fokus im Viewer liegt:
 Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche drückt `Enter` stattdessen diese Schaltfläche. Bevor `Esc` Änderungen abbricht, fragt es nach. Mit `toolbar: false` schließt `Esc` weiterhin ein Werkzeug, bricht die Bearbeitung aber nicht ab: Das entscheidet deine Oberfläche.
 
 - **Werkzeugleiste und Bearbeitungsleiste.** Tab erreicht jede Leiste, und darin wechseln die Pfeiltasten zwischen den Schaltflächen, mit `Pos1` und `Ende` für die erste und die letzte.
-- **Eckgriffe.** Bei offenem Zuschneiden oder Begradigen wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten um 1 Bildschirmpixel, mit Umschalt um 10.
+- **Eckgriffe.** Bei offenem Zuschneiden oder Begradigen wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten um 1 Bildschirmpixel, mit Umschalt um 10. Screenreader hören diese Tasten, und dass die Eingabetaste abschließt, in der Beschreibung jedes Griffs.
 - **Skalen.** Die Skalen von Anpassen und Bereinigen sind native Schieberegler: Die Pfeiltasten, `Bild auf`, `Bild ab`, `Pos1` und `Ende` bewegen sie. `Enter` behält den Wert, wie Fertig, und `Esc` schließt das Werkzeug ohne ihn.
 
 ## Screenreader
