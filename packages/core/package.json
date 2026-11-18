@@ -14,10 +14,18 @@
   "bugs": "https://github.com/paperpic/paperpic/issues",
   "keywords": [
     "document",
+    "document-scanner",
+    "document-viewer",
     "image",
+    "image-editor",
+    "image-viewer",
+    "image-processing",
     "perspective-correction",
+    "crop",
+    "deskew",
     "threshold",
-    "image-processing"
+    "web-worker",
+    "typescript"
   ],
   "sideEffects": [
     "**/*.css"
