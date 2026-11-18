@@ -65,22 +65,22 @@ Ses règles se trouvent dans la couche de cascade `paperpic`, donc tout CSS à v
 
 Ces classes sont publiques : leurs noms, et les éléments qu’elles marquent, restent stables d’une version à l’autre. Les autres classes du composant tiennent sa disposition et peuvent changer dans n’importe quelle version.
 
-| Classe                    | Élément                                                                                                                                          |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `paperpic`                | La racine de la visionneuse                                                                                                                      |
-| `paperpic-button`         | Chaque bouton de la barre d’outils et de la barre de modification                                                                                |
-| `paperpic-button-danger`  | Abandonner, dans la question avant d’abandonner les modifications                                                                                |
-| `paperpic-button-primary` | Appliquer, et Terminé dans chaque outil                                                                                                          |
-| `paperpic-button-text`    | Les boutons de la question avant d’abandonner les modifications                                                                                  |
-| `paperpic-edit-bar`       | La barre de modification, une carte en bas pendant la modification                                                                               |
-| `paperpic-editing`        | La racine, pendant la modification                                                                                                               |
-| `paperpic-handle`         | Une poignée d’angle de Recadrer et Redresser                                                                                                     |
-| `paperpic-host`           | L’élément que les composants Vue et React créent autour de la visionneuse                                                                        |
-| `paperpic-icon`           | L’icône d’un bouton                                                                                                                              |
-| `paperpic-status`         | Le message pour les lecteurs d’écran, qui s’affiche aussi pendant le chargement de l’image ou l’application des modifications, et en cas d’échec |
-| `paperpic-status-visible` | Le message, quand il s’affiche au centre de la visionneuse                                                                                       |
-| `paperpic-toolbar`        | La barre d’outils, à droite, masquée pendant la modification                                                                                     |
-| `paperpic-viewport`       | La zone qui affiche l’image et reçoit le focus du clavier                                                                                        |
+| Classe                    | Élément                                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | La racine de la visionneuse                                                                                                                             |
+| `paperpic-button`         | Chaque bouton de la barre d’outils et de la barre de modification                                                                                       |
+| `paperpic-button-danger`  | Abandonner, dans la question avant d’abandonner les modifications                                                                                       |
+| `paperpic-button-primary` | Appliquer, et Terminé dans chaque outil                                                                                                                 |
+| `paperpic-button-text`    | Les boutons de la question avant d’abandonner les modifications                                                                                         |
+| `paperpic-edit-bar`       | La barre de modification, une carte en bas pendant la modification                                                                                      |
+| `paperpic-editing`        | La racine, pendant la modification                                                                                                                      |
+| `paperpic-handle`         | Une poignée d’angle de Recadrer et Redresser                                                                                                            |
+| `paperpic-host`           | L’élément que les composants Vue et React créent autour de la visionneuse                                                                               |
+| `paperpic-icon`           | L’icône d’un bouton                                                                                                                                     |
+| `paperpic-status`         | Le message qui s’affiche, et que les lecteurs d’écran entendent, pendant le chargement de l’image ou l’application des modifications, et en cas d’échec |
+| `paperpic-status-visible` | Le message, quand il s’affiche au centre de la visionneuse                                                                                              |
+| `paperpic-toolbar`        | La barre d’outils, à droite, masquée pendant la modification                                                                                            |
+| `paperpic-viewport`       | La zone qui affiche l’image et reçoit le focus du clavier                                                                                               |
 
 Les boutons montrent leur état avec des attributs ARIA, que vous pouvez aussi sélectionner :
 

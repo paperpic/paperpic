@@ -65,22 +65,22 @@ import '@paperpic/react/style.css'
 
 이 클래스들은 공개되어 있습니다. 이름과, 클래스가 붙는 요소는 릴리스가 바뀌어도 그대로입니다. 컴포넌트의 다른 클래스는 배치를 받치는 것이라 어느 릴리스에서든 바뀔 수 있습니다.
 
-| 클래스                    | 요소                                                                                               |
-| ------------------------- | -------------------------------------------------------------------------------------------------- |
-| `paperpic`                | 뷰어의 루트                                                                                        |
-| `paperpic-button`         | 도구 모음과 편집 바의 모든 버튼                                                                    |
-| `paperpic-button-danger`  | 변경 사항을 버리기 전 질문에 있는 삭제                                                             |
-| `paperpic-button-primary` | 적용, 그리고 각 도구의 완료                                                                        |
-| `paperpic-button-text`    | 변경 사항을 버리기 전 질문에 있는 버튼                                                             |
-| `paperpic-edit-bar`       | 편집하는 동안 아래쪽에 나오는 카드 형태의 편집 바                                                  |
-| `paperpic-editing`        | 편집 중인 루트                                                                                     |
-| `paperpic-handle`         | 자르기와 기울기 보정의 모서리 핸들                                                                 |
-| `paperpic-host`           | Vue와 React 컴포넌트가 뷰어 바깥에 만드는 요소                                                     |
-| `paperpic-icon`           | 버튼의 아이콘                                                                                      |
-| `paperpic-status`         | 스크린 리더용 메시지. 이미지를 불러오거나 변경 사항을 적용하는 동안, 그리고 실패했을 때도 보입니다 |
-| `paperpic-status-visible` | 뷰어 가운데에 보이는 동안의 메시지                                                                 |
-| `paperpic-toolbar`        | 오른쪽의 도구 모음. 편집하는 동안 숨겨짐                                                           |
-| `paperpic-viewport`       | 이미지를 보여 주고 키보드 포커스를 받는 영역                                                       |
+| 클래스                    | 요소                                                                                                       |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | 뷰어의 루트                                                                                                |
+| `paperpic-button`         | 도구 모음과 편집 바의 모든 버튼                                                                            |
+| `paperpic-button-danger`  | 변경 사항을 버리기 전 질문에 있는 삭제                                                                     |
+| `paperpic-button-primary` | 적용, 그리고 각 도구의 완료                                                                                |
+| `paperpic-button-text`    | 변경 사항을 버리기 전 질문에 있는 버튼                                                                     |
+| `paperpic-edit-bar`       | 편집하는 동안 아래쪽에 나오는 카드 형태의 편집 바                                                          |
+| `paperpic-editing`        | 편집 중인 루트                                                                                             |
+| `paperpic-handle`         | 자르기와 기울기 보정의 모서리 핸들                                                                         |
+| `paperpic-host`           | Vue와 React 컴포넌트가 뷰어 바깥에 만드는 요소                                                             |
+| `paperpic-icon`           | 버튼의 아이콘                                                                                              |
+| `paperpic-status`         | 이미지를 불러오거나 변경 사항을 적용하는 동안, 그리고 실패했을 때 보이는 메시지. 스크린 리더도 읽어 줍니다 |
+| `paperpic-status-visible` | 뷰어 가운데에 보이는 동안의 메시지                                                                         |
+| `paperpic-toolbar`        | 오른쪽의 도구 모음. 편집하는 동안 숨겨짐                                                                   |
+| `paperpic-viewport`       | 이미지를 보여 주고 키보드 포커스를 받는 영역                                                               |
 
 버튼은 ARIA 속성으로 상태를 나타내며, 이것도 선택할 수 있습니다.
 

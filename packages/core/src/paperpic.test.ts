@@ -174,9 +174,11 @@ describe('paperPic', () => {
 
     expect(pic.getState().status).toBe('loading')
     expect(images[0]!.image.src).toBe('/receipt.jpg')
+    expect(viewportOf().getAttribute('aria-busy')).toBe('true')
 
     await finishLoading()
 
+    expect(viewportOf().getAttribute('aria-busy')).toBe('false')
     expect(onLoad).toHaveBeenCalledWith({ width: 600, height: 250 })
     expect(pic.getState()).toEqual({
       status: 'ready',
@@ -365,6 +367,18 @@ describe('paperPic', () => {
       expect(pic.getState().zoom).toBeCloseTo(6.4)
       pic.fit('height')
       expect(pic.getState()).toMatchObject({ zoom: 0.6, fit: 'height' })
+      pic.zoomTo(Number.POSITIVE_INFINITY)
+      expect(pic.getState().zoom).toBe(8)
+    })
+
+    it('rejects a zoom that is not a number, or a point that is not finite, and keeps the view', () => {
+      expect(() => pic.zoomTo(Number.NaN)).toThrow(new RangeError('zoom must be a number of screen pixels per image pixel, such as 1 for 100%, got NaN'))
+      expect(() => pic.zoomTo(2, { x: Number.NaN, y: 0 })).toThrow(RangeError)
+      expect(() => pic.zoomTo(2, { x: 0, y: Number.POSITIVE_INFINITY })).toThrow('point must have a finite x and y')
+      expect(pic.getState()).toMatchObject({ zoom: 0.5, fit: 'image' })
+
+      pic.zoomIn()
+      expect(pic.getState().zoom).toBeCloseTo(0.625)
     })
 
     it('disables a zoom button at its limit', () => {
@@ -386,9 +400,10 @@ describe('paperPic', () => {
       expect(pic.getState().rotation).toBe(0)
     })
 
-    it('announces the zoom from the toolbar to screen readers', () => {
+    it('announces the zoom from the toolbar to screen readers, without showing it', () => {
       button('Zoom in').click()
-      expect(container.querySelector('[role="status"]')!.textContent).toBe('Zoom 63%')
+      expect(container.querySelector('.paperpic-announcement[role="status"]')!.textContent).toBe('Zoom 63%')
+      expect(container.querySelector('.paperpic-status-visible')).toBeNull()
     })
 
     it('uses the keyboard', () => {

@@ -65,22 +65,22 @@ As regras dela ficam na camada de cascata `paperpic`, então qualquer CSS seu fo
 
 Estas classes são públicas: os nomes delas, e os elementos que marcam, ficam estáveis entre versões. As outras classes do componente sustentam a disposição dele e podem mudar em qualquer versão.
 
-| Classe                    | Elemento                                                                                                                           |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `paperpic`                | A raiz do visualizador                                                                                                             |
-| `paperpic-button`         | Cada botão da barra de ferramentas e da barra de edição                                                                            |
-| `paperpic-button-danger`  | Descartar, na pergunta antes de descartar as alterações                                                                            |
-| `paperpic-button-primary` | Aplicar, e Concluído em cada ferramenta                                                                                            |
-| `paperpic-button-text`    | Os botões da pergunta antes de descartar as alterações                                                                             |
-| `paperpic-edit-bar`       | A barra de edição, um cartão embaixo durante a edição                                                                              |
-| `paperpic-editing`        | A raiz, durante a edição                                                                                                           |
-| `paperpic-handle`         | Uma alça de canto de Recortar e Endireitar                                                                                         |
-| `paperpic-host`           | O elemento que os componentes Vue e React criam em volta do visualizador                                                           |
-| `paperpic-icon`           | O ícone de um botão                                                                                                                |
-| `paperpic-status`         | A mensagem para leitores de tela, que também aparece enquanto a imagem carrega ou as alterações são aplicadas, e quando algo falha |
-| `paperpic-status-visible` | A mensagem, enquanto aparece no centro do visualizador                                                                             |
-| `paperpic-toolbar`        | A barra de ferramentas, à direita, escondida durante a edição                                                                      |
-| `paperpic-viewport`       | A área que mostra a imagem e recebe o foco do teclado                                                                              |
+| Classe                    | Elemento                                                                                                                              |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `paperpic`                | A raiz do visualizador                                                                                                                |
+| `paperpic-button`         | Cada botão da barra de ferramentas e da barra de edição                                                                               |
+| `paperpic-button-danger`  | Descartar, na pergunta antes de descartar as alterações                                                                               |
+| `paperpic-button-primary` | Aplicar, e Concluído em cada ferramenta                                                                                               |
+| `paperpic-button-text`    | Os botões da pergunta antes de descartar as alterações                                                                                |
+| `paperpic-edit-bar`       | A barra de edição, um cartão embaixo durante a edição                                                                                 |
+| `paperpic-editing`        | A raiz, durante a edição                                                                                                              |
+| `paperpic-handle`         | Uma alça de canto de Recortar e Endireitar                                                                                            |
+| `paperpic-host`           | O elemento que os componentes Vue e React criam em volta do visualizador                                                              |
+| `paperpic-icon`           | O ícone de um botão                                                                                                                   |
+| `paperpic-status`         | A mensagem que aparece, e que os leitores de tela leem, enquanto a imagem carrega ou as alterações são aplicadas, e quando algo falha |
+| `paperpic-status-visible` | A mensagem, enquanto aparece no centro do visualizador                                                                                |
+| `paperpic-toolbar`        | A barra de ferramentas, à direita, escondida durante a edição                                                                         |
+| `paperpic-viewport`       | A área que mostra a imagem e recebe o foco do teclado                                                                                 |
 
 Os botões mostram o estado com atributos ARIA, que você também pode selecionar:
 

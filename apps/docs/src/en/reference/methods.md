@@ -153,6 +153,8 @@ Sets the zoom, where `1` shows one pixel of the image per screen pixel. [`point`
 
 The zoom goes from the fit of the whole image, or `1` if that is smaller, up to `8`. A value out of range is clamped.
 
+It throws a `RangeError` if `zoom` is `NaN` or a coordinate of `point` is not a finite number, and then the zoom does not change.
+
 ### `fit()`
 
 ```ts
