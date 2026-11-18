@@ -14,13 +14,16 @@ Os tokens são propriedades personalizadas CSS que mudam a aparência do compone
 }
 ```
 
-| Token                            | Claro     | Escuro    | Descrição                           |
-| -------------------------------- | --------- | --------- | ----------------------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Cor de destaque da interface        |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Fundo da interface                  |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Texto da interface                  |
-| `--paperpic-radius`              | `6px`     | `6px`     | Raio dos cantos da interface        |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Duração das transições da interface |
+| Token                            | Claro              | Escuro             | Descrição                                                                               |
+| -------------------------------- | ------------------ | ------------------ | --------------------------------------------------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | Cor de destaque da interface                                                            |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | Escurece a imagem em volta de uma seleção                                               |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | As linhas sobre a imagem: o contorno de uma seleção, as alças de canto e a cruz da lupa |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | A sombra sob cada linha, para que ela apareça em qualquer imagem                        |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | Fundo da interface                                                                      |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | Texto da interface                                                                      |
+| `--paperpic-radius`              | `6px`              | `6px`              | Raio dos cantos da interface                                                            |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | Duração das transições da interface                                                     |
 
 ## Modo escuro
 
@@ -33,6 +36,8 @@ Para escolher os dois valores de um token, use também `light-dark()`:
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+As cores pintadas sobre a imagem, `--paperpic-color-dim`, `--paperpic-color-line` e `--paperpic-color-line-shadow`, têm um só valor para os dois modos, porque ficam sobre a foto e não sobre a interface. Uma linha e sua sombra andam juntas: com uma linha escura, escolha uma sombra clara.
 
 ## Folha de estilo
 
@@ -90,6 +95,22 @@ Os botões mostram o estado com atributos ARIA, que você também pode seleciona
 | `[aria-pressed='true']`  | O encaixe em uso, Ajustar à largura ou Ajustar à altura, ou a escolha de Ajustar que a régua muda |
 
 O estado ao passar o ponteiro e esses estados são pintados com `box-shadow`, que os resets globais de botões não tocam. Para mudá-los, sobrescreva também `box-shadow`.
+
+## Estados {#states}
+
+A raiz, `.paperpic`, leva o estado do visualizador em atributos data, para que o CSS possa acompanhá-lo:
+
+| Atributo               | Valores                                                                                        |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`, `loading`, `ready` ou `error`, como `status` no [estado](./state)                     |
+| `data-paperpic-mode`   | `view` ou `edit`                                                                               |
+| `data-paperpic-tool`   | O id da ferramenta aberta, como `crop`. Ele não existe enquanto nenhuma ferramenta está aberta |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## Controles {#controls}
 

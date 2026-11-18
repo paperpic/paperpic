@@ -2,6 +2,7 @@ import type { LoadedImage } from '../pipeline/load-image'
 import type { Point, Size } from '../processing/types'
 import type { View, ViewPoint } from '../state/view'
 import { frameToViewport } from '../state/view'
+import { overlayColors } from './colors'
 import { computeTransform } from './transform'
 
 /** What a magnifier shows and where. */
@@ -47,11 +48,12 @@ export function paintMagnifier(
   context.lineTo(center.x + 8, center.y)
   context.moveTo(center.x, center.y - 8)
   context.lineTo(center.x, center.y + 8)
-  // Dark under white, as the outline of a selection, so the cross shows on white paper and on a dark table
+  // A shadow under the line, as the outline of a selection, so the cross shows on white paper and on a dark table
+  const { line, lineShadow } = overlayColors(context)
   context.lineWidth = 4
-  context.strokeStyle = 'rgb(0 0 0 / 60%)'
+  context.strokeStyle = lineShadow
   context.stroke()
   context.lineWidth = 2
-  context.strokeStyle = '#fff'
+  context.strokeStyle = line
   context.stroke()
 }

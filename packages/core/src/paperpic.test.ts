@@ -202,10 +202,14 @@ describe('paperPic', () => {
     expect(pic.getState().status).toBe('loading')
     expect(images[0]!.image.src).toBe('/receipt.jpg')
     expect(viewportOf().getAttribute('aria-busy')).toBe('true')
+    const root = container.querySelector<HTMLElement>('.paperpic')!
+    expect(root.dataset).toMatchObject({ paperpicStatus: 'loading', paperpicMode: 'view' })
 
     await finishLoading()
 
     expect(viewportOf().getAttribute('aria-busy')).toBe('false')
+    expect(root.dataset.paperpicStatus).toBe('ready')
+    expect(root.hasAttribute('data-paperpic-tool')).toBe(false)
     expect(onLoad).toHaveBeenCalledWith({ width: 600, height: 250 })
     expect(pic.getState()).toEqual({
       status: 'ready',
@@ -427,19 +431,22 @@ describe('paperPic', () => {
       expect(pic.getState().rotation).toBe(0)
     })
 
-    it('measures the toolbar with the viewer, and not on every move of a pan', () => {
+    it('reads the toolbar width once after a change of the interface, and not on every move of a pan', () => {
       const width = vi.fn(() => 40)
       Object.defineProperty(toolbarOf(), 'offsetWidth', { configurable: true, get: width })
-      expect(observed).toContain(toolbarOf())
-      resizeCallback()
-      expect(width).toHaveBeenCalled()
-      width.mockClear()
+      // Watching the toolbar too made the browser report a loop of the observer
+      expect(observed).not.toContain(toolbarOf())
 
       pic.zoomTo(2)
       const press = (key: string) => viewportOf().dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
       press('ArrowLeft')
       press('ArrowRight')
-      expect(width).not.toHaveBeenCalled()
+      expect(width).toHaveBeenCalledOnce()
+
+      // A change of the interface, such as a new size, reads it again on the next pan
+      resizeCallback()
+      press('ArrowLeft')
+      expect(width).toHaveBeenCalledTimes(2)
     })
 
     it('announces the zoom from the toolbar to screen readers, without showing it', () => {
