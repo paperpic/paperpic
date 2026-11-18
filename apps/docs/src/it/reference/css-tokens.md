@@ -14,13 +14,16 @@ I token sono proprietà personalizzate CSS che cambiano l’aspetto del componen
 }
 ```
 
-| Token                            | Chiaro    | Scuro     | Descrizione                               |
-| -------------------------------- | --------- | --------- | ----------------------------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Colore d’accento dell’interfaccia         |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Sfondo dell’interfaccia                   |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Testo dell’interfaccia                    |
-| `--paperpic-radius`              | `6px`     | `6px`     | Raggio degli angoli dell’interfaccia      |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Durata delle transizioni dell’interfaccia |
+| Token                            | Chiaro             | Scuro              | Descrizione                                                                                                       |
+| -------------------------------- | ------------------ | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | Colore d’accento dell’interfaccia                                                                                 |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | Scurisce l’immagine intorno a una selezione                                                                       |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | Le linee sull’immagine: il contorno di una selezione, le maniglie d’angolo e la croce della lente d’ingrandimento |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | L’ombra sotto ogni linea, perché si veda su qualsiasi immagine                                                    |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | Sfondo dell’interfaccia                                                                                           |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | Testo dell’interfaccia                                                                                            |
+| `--paperpic-radius`              | `6px`              | `6px`              | Raggio degli angoli dell’interfaccia                                                                              |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | Durata delle transizioni dell’interfaccia                                                                         |
 
 ## Modalità scura
 
@@ -33,6 +36,8 @@ Per scegliere entrambi i valori di un token, usa anche tu `light-dark()`:
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+I colori dipinti sull’immagine, `--paperpic-color-dim`, `--paperpic-color-line` e `--paperpic-color-line-shadow`, hanno un solo valore per entrambe le modalità, perché stanno sulla foto e non sull’interfaccia. Una linea e la sua ombra vanno in coppia: con una linea scura, scegli un’ombra chiara.
 
 ## Foglio di stile
 
@@ -90,6 +95,22 @@ I pulsanti mostrano il loro stato con attributi ARIA, che puoi selezionare anche
 | `[aria-pressed='true']`  | L’adattamento in uso, Adatta alla larghezza o Adatta all’altezza, o la scelta di Regola che il righello cambia |
 
 Il passaggio del puntatore e questi stati si disegnano con `box-shadow`, che i reset globali dei pulsanti non toccano. Per cambiarli, sovrascrivi anche `box-shadow`.
+
+## Stati {#states}
+
+La radice, `.paperpic`, porta lo stato del visualizzatore in attributi data, così il CSS può seguirlo:
+
+| Attributo              | Valori                                                                            |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`, `loading`, `ready` o `error`, come `status` nello [stato](./state)       |
+| `data-paperpic-mode`   | `view` o `edit`                                                                   |
+| `data-paperpic-tool`   | L’id dello strumento aperto, come `crop`. Manca finché nessuno strumento è aperto |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## Controlli {#controls}
 

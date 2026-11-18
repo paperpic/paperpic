@@ -326,6 +326,22 @@ describe('editing', () => {
     expect(container.querySelector('.paperpic-status-visible')).toBeNull()
   })
 
+  it('shows the mode and the open tool to CSS, in public data attributes', () => {
+    const root = container.querySelector<HTMLElement>('.paperpic')!
+    pic.edit()
+    expect(root.getAttribute('data-paperpic-mode')).toBe('edit')
+    expect(root.hasAttribute('data-paperpic-tool')).toBe(false)
+
+    pic.openTool('adjust')
+    expect(root.getAttribute('data-paperpic-tool')).toBe('adjust')
+    pic.cancelTool()
+    expect(root.hasAttribute('data-paperpic-tool')).toBe(false)
+
+    pic.cancel()
+    expect(root.getAttribute('data-paperpic-mode')).toBe('view')
+    expect(root.getAttribute('data-paperpic-status')).toBe('ready')
+  })
+
   it('reports a failure as an Error, also when something threw another value', async () => {
     const onError = vi.fn()
     pic.on('error', onError)

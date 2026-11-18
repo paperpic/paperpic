@@ -4,6 +4,7 @@ import type { Magnifier } from '../render/magnifier'
 import type { ViewPoint } from '../state/view'
 import type { ToolHost, ToolSession } from './types'
 import { TAP_MOVEMENT } from '../input/gestures'
+import { overlayColors } from '../render/colors'
 import { placeMagnifier } from './magnifier'
 
 /** Decides where the corners end up when the user moves one of them towards a point. */
@@ -115,19 +116,20 @@ function drawSelection(context: CanvasRenderingContext2D, frame: readonly ViewPo
     context.closePath()
   }
 
+  const { dim, line, lineShadow } = overlayColors(context)
   context.beginPath()
   trace(frame)
   trace(selection)
-  context.fillStyle = 'rgb(0 0 0 / 50%)'
+  context.fillStyle = dim
   context.fill('evenodd')
 
   context.beginPath()
   trace(selection)
   context.lineWidth = 3
-  context.strokeStyle = 'rgb(0 0 0 / 60%)'
+  context.strokeStyle = lineShadow
   context.stroke()
   context.lineWidth = 1.5
-  context.strokeStyle = '#fff'
+  context.strokeStyle = line
   context.stroke()
 }
 

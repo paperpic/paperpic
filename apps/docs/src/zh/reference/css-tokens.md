@@ -14,13 +14,16 @@ description: 为 PaperPic 设置样式的 CSS 自定义属性及其浅色和深�
 }
 ```
 
-| 令牌                             | 浅色      | 深色      | 说明           |
-| -------------------------------- | --------- | --------- | -------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 界面的强调色   |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | 界面的背景     |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | 界面的文字     |
-| `--paperpic-radius`              | `6px`     | `6px`     | 界面的圆角半径 |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | 界面过渡的时长 |
+| 令牌                             | 浅色               | 深色               | 说明                                           |
+| -------------------------------- | ------------------ | ------------------ | ---------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | 界面的强调色                                   |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | 让选区周围的图片变暗                           |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | 图片上的线：选区的轮廓、角点手柄和放大镜的十字 |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | 每条线下面的阴影，让线在任何图片上都看得见     |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | 界面的背景                                     |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | 界面的文字                                     |
+| `--paperpic-radius`              | `6px`              | `6px`              | 界面的圆角半径                                 |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | 界面过渡的时长                                 |
 
 ## 深色模式
 
@@ -33,6 +36,8 @@ description: 为 PaperPic 设置样式的 CSS 自定义属性及其浅色和深�
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+画在图片上的颜色 `--paperpic-color-dim`、`--paperpic-color-line` 和 `--paperpic-color-line-shadow` 位于照片上而不是界面上，所以两种模式使用同一个值。线和它的阴影成对使用：深色的线要配浅色的阴影。
 
 ## 样式表
 
@@ -90,6 +95,22 @@ import '@paperpic/react/style.css'
 | `[aria-pressed='true']`  | 正在生效的适合方式（适合宽度或适合高度），或刻度尺所修改的“调整”选项 |
 
 悬停和这些状态都用 `box-shadow` 绘制，按钮的全局重置不会影响它。要修改它们，也请覆盖 `box-shadow`。
+
+## 状态 {#states}
+
+根元素 `.paperpic` 用 data 属性保存查看器的状态，方便 CSS 跟随：
+
+| 属性                   | 值                                                                          |
+| ---------------------- | --------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`、`loading`、`ready` 或 `error`，与[状态](./state)中的 `status` 相同 |
+| `data-paperpic-mode`   | `view` 或 `edit`                                                            |
+| `data-paperpic-tool`   | 打开的工具的 id，例如 `crop`。没有打开的工具时不存在                        |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## 控件 {#controls}
 

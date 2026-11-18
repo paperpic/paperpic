@@ -189,8 +189,11 @@ export class PaperPic {
   /** What failed in the edit open, which the message on screen names until the next edit. */
   private failure: 'apply' | 'preview' | null = null
   private destroyed = false
-  /** Measured with the viewer, because reading it on every move of a pan would make the browser lay out the page each time. */
-  private toolbarWidth = 0
+  /**
+   * Read once after each change of the interface, and kept during a pan, because reading it on every move would make
+   * the browser lay out the page each time. `null` until the next read.
+   */
+  private toolbarWidth: number | null = null
 
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
@@ -321,8 +324,6 @@ export class PaperPic {
       this.measure()
     })
     observer.observe(this.viewportElement)
-    // The toolbar changes size without the viewer, such as when it shows again after editing
-    observer.observe(this.toolbar.element)
     this.cleanups.push(() => observer.disconnect())
 
     // A screen of another density changes no size, so the observer misses it when the window moves there. A query only
@@ -1197,9 +1198,11 @@ export class PaperPic {
 
   /** How far past its sides the image can go, so the part under the toolbar can come out from behind it. Editing hides the toolbar. */
   private toolbarClearance(): number {
-    return this.toolbar.element.hidden
-      ? 0
-      : this.toolbarWidth + TOOLBAR_GAP
+    if (this.toolbar.element.hidden) {
+      return 0
+    }
+    this.toolbarWidth ??= this.toolbar.element.offsetWidth
+    return this.toolbarWidth + TOOLBAR_GAP
   }
 
   private measure(): void {
@@ -1207,7 +1210,6 @@ export class PaperPic {
       return
     }
     this.viewport = { width: this.viewportElement.clientWidth, height: this.viewportElement.clientHeight }
-    this.toolbarWidth = this.toolbar.element.offsetWidth
     this.renderer.resize(this.viewport, globalThis.devicePixelRatio || 1)
     this.applyViewport()
     this.renderer.paintNow()
@@ -1242,6 +1244,9 @@ export class PaperPic {
   private refresh(): void {
     const state = this.getState()
     const zoom = this.canZoom()
+    // The toolbar may change size with the interface, such as when it shows again after editing. Watching it with the
+    // observer of the viewer made the browser report a loop, because measuring the viewer changes the toolbar
+    this.toolbarWidth = null
 
     this.toolbar.update({
       fit: this.view.fit,
@@ -1260,6 +1265,15 @@ export class PaperPic {
       thresholdInEdits: thresholdSetting(this.history.done).enabled,
     })
     this.root.classList.toggle('paperpic-editing', this.mode === 'edit')
+    // Public, so CSS can follow the state: `data-paperpic-status`, `data-paperpic-mode` and `data-paperpic-tool`
+    this.root.dataset.paperpicStatus = state.status
+    this.root.dataset.paperpicMode = state.mode
+    if (state.activeTool) {
+      this.root.dataset.paperpicTool = state.activeTool
+    }
+    else {
+      delete this.root.dataset.paperpicTool
+    }
     this.refreshView(zoom)
   }
 

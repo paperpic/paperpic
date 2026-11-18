@@ -14,13 +14,16 @@ The tokens are CSS custom properties that change the look of the component witho
 }
 ```
 
-| Token                            | Light     | Dark      | Description                           |
-| -------------------------------- | --------- | --------- | ------------------------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | Accent of the interface               |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | Background of the interface           |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | Text of the interface                 |
-| `--paperpic-radius`              | `6px`     | `6px`     | Corner radius of the interface        |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | Duration of the interface transitions |
+| Token                            | Light              | Dark               | Description                                                                                         |
+| -------------------------------- | ------------------ | ------------------ | --------------------------------------------------------------------------------------------------- |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | Accent of the interface                                                                             |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | Darkens the image around a selection                                                                |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | Lines over the image: the outline of a selection, the corner handles and the cross of the magnifier |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | The shadow under each line, so it shows on any image                                                |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | Background of the interface                                                                         |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | Text of the interface                                                                               |
+| `--paperpic-radius`              | `6px`              | `6px`              | Corner radius of the interface                                                                      |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | Duration of the interface transitions                                                               |
 
 ## Dark mode
 
@@ -33,6 +36,8 @@ To choose both values of a token, use `light-dark()` too:
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+The colors that paint over the image, `--paperpic-color-dim`, `--paperpic-color-line` and `--paperpic-color-line-shadow`, have one value for both, because they sit on the photo and not on the interface. A line and its shadow go in pairs: with a dark line, choose a light shadow.
 
 ## Stylesheet
 
@@ -90,6 +95,22 @@ Buttons show their state with ARIA attributes, which you can select too:
 | `[aria-pressed='true']`  | The fit in effect, Fit to width or Fit to height, or the choice of Adjust that the ruler changes |
 
 The hover and these states paint with `box-shadow`, which global resets of buttons leave alone. To restyle them, override `box-shadow` too.
+
+## States {#states}
+
+The root, `.paperpic`, carries the state of the viewer in data attributes, so CSS can follow it:
+
+| Attribute              | Values                                                                       |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`, `loading`, `ready` or `error`, as `status` in the [state](./state)  |
+| `data-paperpic-mode`   | `view` or `edit`                                                             |
+| `data-paperpic-tool`   | The id of the open tool, such as `crop`. It is missing while no tool is open |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## Controls {#controls}
 

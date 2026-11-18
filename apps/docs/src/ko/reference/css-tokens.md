@@ -14,13 +14,16 @@ description: PaperPic의 모양을 바꾸는 CSS 사용자 지정 속성과 라�
 }
 ```
 
-| 토큰                             | 라이트    | 다크      | 설명                   |
-| -------------------------------- | --------- | --------- | ---------------------- |
-| `--paperpic-color-accent`        | `#0a84ff` | `#5cb5ff` | 인터페이스 강조 색     |
-| `--paperpic-color-surface`       | `#fff`    | `#151e2e` | 인터페이스 배경        |
-| `--paperpic-color-text`          | `#1a263c` | `#f2f5f9` | 인터페이스 텍스트      |
-| `--paperpic-radius`              | `6px`     | `6px`     | 인터페이스 모서리 반경 |
-| `--paperpic-transition-duration` | `0.2s`    | `0.2s`    | 인터페이스 전환 시간   |
+| 토큰                             | 라이트             | 다크               | 설명                                                         |
+| -------------------------------- | ------------------ | ------------------ | ------------------------------------------------------------ |
+| `--paperpic-color-accent`        | `#0a84ff`          | `#5cb5ff`          | 인터페이스 강조 색                                           |
+| `--paperpic-color-dim`           | `rgb(0 0 0 / 50%)` | `rgb(0 0 0 / 50%)` | 선택 영역 주변의 이미지를 어둡게 합니다                      |
+| `--paperpic-color-line`          | `#fff`             | `#fff`             | 이미지 위의 선: 선택 영역의 윤곽, 모서리 핸들, 돋보기의 십자 |
+| `--paperpic-color-line-shadow`   | `rgb(0 0 0 / 60%)` | `rgb(0 0 0 / 60%)` | 각 선 아래의 그림자. 어떤 이미지에서도 선이 보이게 합니다    |
+| `--paperpic-color-surface`       | `#fff`             | `#151e2e`          | 인터페이스 배경                                              |
+| `--paperpic-color-text`          | `#1a263c`          | `#f2f5f9`          | 인터페이스 텍스트                                            |
+| `--paperpic-radius`              | `6px`              | `6px`              | 인터페이스 모서리 반경                                       |
+| `--paperpic-transition-duration` | `0.2s`             | `0.2s`             | 인터페이스 전환 시간                                         |
 
 ## 다크 모드
 
@@ -33,6 +36,8 @@ description: PaperPic의 모양을 바꾸는 CSS 사용자 지정 속성과 라�
   --paperpic-color-accent: light-dark(#c2410c, #fb923c);
 }
 ```
+
+이미지 위에 그리는 색 `--paperpic-color-dim`, `--paperpic-color-line`, `--paperpic-color-line-shadow`는 인터페이스가 아니라 사진 위에 있으므로 두 모드에서 같은 값입니다. 선과 그 그림자는 짝을 이룹니다. 어두운 선에는 밝은 그림자를 고르세요.
 
 ## 스타일시트
 
@@ -90,6 +95,22 @@ import '@paperpic/react/style.css'
 | `[aria-pressed='true']`  | 적용 중인 맞춤(너비에 맞추기, 높이에 맞추기), 또는 눈금자가 바꾸는 ‘조정’의 선택지 |
 
 호버와 이 상태들은 `box-shadow`로 그려지며, 버튼의 전역 리셋은 이를 건드리지 않습니다. 바꾸려면 `box-shadow`도 덮어쓰세요.
+
+## 상태 {#states}
+
+루트인 `.paperpic`은 CSS가 따를 수 있도록 뷰어의 상태를 data 속성으로 가집니다.
+
+| 속성                   | 값                                                                                  |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| `data-paperpic-status` | `empty`, `loading`, `ready`, `error` 중 하나. [상태](./state)의 `status`와 같습니다 |
+| `data-paperpic-mode`   | `view` 또는 `edit`                                                                  |
+| `data-paperpic-tool`   | 열린 도구의 id(예: `crop`). 열린 도구가 없으면 없습니다                             |
+
+```css
+.paperpic[data-paperpic-status='error'] .paperpic-status-visible {
+  color: #b91c1c;
+}
+```
 
 ## 컨트롤 {#controls}
 

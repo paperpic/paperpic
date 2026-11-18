@@ -263,8 +263,8 @@
     margin: auto;
     border: 2px solid var(--paperpic-color-accent);
     border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 60%);
+    background: var(--paperpic-color-line);
+    box-shadow: 0 0 0 1px var(--paperpic-color-line-shadow);
   }
 
   .paperpic-handle:focus-visible {
@@ -275,10 +275,10 @@
 
   /* The corner that the next tap on the image moves */
   .paperpic-handle[aria-pressed='true']::before {
-    border-color: #fff;
+    border-color: var(--paperpic-color-line);
     background: var(--paperpic-color-accent);
     box-shadow:
-      0 0 0 1px rgb(0 0 0 / 60%),
+      0 0 0 1px var(--paperpic-color-line-shadow),
       0 0 0 4px color-mix(in srgb, var(--paperpic-color-accent) 50%, transparent);
   }
 
