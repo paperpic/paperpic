@@ -43,7 +43,7 @@ On macOS, `Cmd` works like `Ctrl`. With the focus on a button, `Enter` presses t
 
 ## Touch screens
 
-- With `pointer: coarse`, buttons and corner handles measure at least 44 pixels.
+- With `any-pointer: coarse`, buttons and corner handles measure at least 44 pixels. Any touch screen matches it, also on a laptop with a trackpad.
 - While a finger drags a corner, a magnifier shows the area under it.
 - A corner also moves without dragging: press its handle, and then tap where it goes. This works with a mouse too.
 - While the image is fitted, one finger scrolls the page, so the viewer does not trap people inside it. Once zoomed, it pans the image.

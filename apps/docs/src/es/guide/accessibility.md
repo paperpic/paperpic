@@ -43,7 +43,7 @@ En macOS, `Cmd` funciona como `Ctrl`. Con el foco en un botón, `Enter` pulsa es
 
 ## Pantallas táctiles
 
-- Con `pointer: coarse`, los botones y los tiradores de esquina miden al menos 44 píxeles.
+- Con `any-pointer: coarse`, los botones y los tiradores de esquina miden al menos 44 píxeles. Cualquier pantalla táctil lo cumple, también en un portátil con trackpad.
 - Mientras un dedo arrastra una esquina, una lupa muestra la zona que tapa.
 - Una esquina también se mueve sin arrastrar: pulsa su tirador y luego toca donde va. También funciona con ratón.
 - Mientras la imagen está encajada, un dedo hace scroll en la página, así que el visor no deja a nadie atrapado dentro. Con zoom, desplaza la imagen.

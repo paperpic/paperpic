@@ -43,7 +43,7 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche
 
 ## Touchscreens
 
-- Mit `pointer: coarse` sind Schaltflächen und Eckgriffe mindestens 44 Pixel groß.
+- Mit `any-pointer: coarse` sind Schaltflächen und Eckgriffe mindestens 44 Pixel groß. Jeder Touchscreen erfüllt das, auch an einem Laptop mit Touchpad.
 - Während ein Finger eine Ecke zieht, zeigt eine Lupe den Bereich darunter.
 - Eine Ecke lässt sich auch ohne Ziehen verschieben: Drücke ihren Griff und tippe dann auf die neue Stelle. Das geht auch mit der Maus.
 - Solange das Bild eingepasst ist, scrollt ein Finger die Seite, der Viewer hält also niemanden gefangen. Ist es vergrößert, verschiebt er das Bild.

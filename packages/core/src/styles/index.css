@@ -642,20 +642,28 @@
     white-space: nowrap;
   }
 
+  /*
+   * As wide as its text, up to the viewer minus a margin, where a long text such as a translation wraps. The margins
+   * center it in either direction of writing
+   */
   .paperpic-status-visible {
     inset-block-start: 50%;
-    inset-inline-start: 50%;
+    inset-inline: 1rem;
     overflow: visible;
-    inline-size: auto;
+    inline-size: fit-content;
     block-size: auto;
+    margin-inline: auto;
     padding: 0.5rem 0.75rem;
     border-radius: var(--paperpic-radius);
     background: var(--paperpic-color-surface);
     clip-path: none;
-    translate: -50% -50%;
+    text-align: center;
+    white-space: normal;
+    translate: 0 -50%;
   }
 
-  @media (pointer: coarse) {
+  /* Any touch screen, even on a laptop whose main pointer is a mouse or a trackpad */
+  @media (any-pointer: coarse) {
     .paperpic-button {
       min-inline-size: 2.75rem;
       block-size: 2.75rem;

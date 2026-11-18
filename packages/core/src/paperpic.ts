@@ -44,6 +44,13 @@ const NO_PREVIEW = JSON.stringify({ steps: [], tone: null })
 /** How close to the edge of the viewer a point can be and still count as on screen. */
 const REVEAL_MARGIN = 24
 
+/** The `Error` that the `error` event carries, also when something threw another value, such as a string. */
+function asError(cause: unknown): Error {
+  return cause instanceof Error
+    ? cause
+    : new Error(String(cause), { cause })
+}
+
 /**
  * What the viewer is showing, which `getState()` returns and the `change` event carries.
  *
@@ -181,6 +188,8 @@ export class PaperPic {
   private busy = false
   private applyFailed = false
   private destroyed = false
+  /** Measured with the viewer, because reading it on every move of a pan would make the browser lay out the page each time. */
+  private toolbarWidth = 0
 
   /**
    * @param container The element to fill. It needs a height, or the viewer stays at its minimum height.
@@ -311,7 +320,23 @@ export class PaperPic {
       this.measure()
     })
     observer.observe(this.viewportElement)
+    // The toolbar changes size without the viewer, such as when it shows again after editing
+    observer.observe(this.toolbar.element)
     this.cleanups.push(() => observer.disconnect())
+
+    // A screen of another density changes no size, so the observer misses it when the window moves there. A query only
+    // matches the density it names, so each change asks again with the new one
+    if (typeof matchMedia === 'function') {
+      const densityWatch = new AbortController()
+      const watchDensity = (): void => {
+        matchMedia(`(resolution: ${globalThis.devicePixelRatio || 1}dppx)`).addEventListener('change', () => {
+          this.measure()
+          watchDensity()
+        }, { once: true, signal: densityWatch.signal })
+      }
+      watchDensity()
+      this.cleanups.push(() => densityWatch.abort())
+    }
 
     this.changeOptions(options, true)
     this.measure()
@@ -756,7 +781,10 @@ export class PaperPic {
       this.applyFailed = true
       this.showStatus()
       this.refresh()
-      this.emit('error', { error: cause as Error, phase: 'apply' })
+      this.emit('error', {
+        error: asError(cause),
+        phase: 'apply',
+      })
     }
   }
 
@@ -991,7 +1019,10 @@ export class PaperPic {
         return
       }
       this.setImage(null, 'error')
-      this.emit('error', { error: cause as Error, phase: 'load' })
+      this.emit('error', {
+        error: asError(cause),
+        phase: 'load',
+      })
     }
   }
 
@@ -1107,7 +1138,10 @@ export class PaperPic {
     this.applyFailed = true
     this.showStatus()
     this.refresh()
-    this.emit('error', { error: cause as Error, phase: 'preview' })
+    this.emit('error', {
+      error: asError(cause),
+      phase: 'preview',
+    })
   }
 
   /**
@@ -1160,7 +1194,7 @@ export class PaperPic {
   private toolbarClearance(): number {
     return this.toolbar.element.hidden
       ? 0
-      : this.toolbar.element.offsetWidth + TOOLBAR_GAP
+      : this.toolbarWidth + TOOLBAR_GAP
   }
 
   private measure(): void {
@@ -1168,6 +1202,7 @@ export class PaperPic {
       return
     }
     this.viewport = { width: this.viewportElement.clientWidth, height: this.viewportElement.clientHeight }
+    this.toolbarWidth = this.toolbar.element.offsetWidth
     this.renderer.resize(this.viewport, globalThis.devicePixelRatio || 1)
     this.applyViewport()
     this.renderer.paintNow()
