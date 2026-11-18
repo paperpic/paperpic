@@ -143,15 +143,20 @@ describe('editBar', () => {
     const description = document.getElementById(button('adjust').getAttribute('aria-describedby')!)!
     expect(description.textContent).toBe(DEFAULT_LABELS.inUse)
 
-    // A cleaned document has tones of its own
+    // A cleaned document has tones of its own, so Adjust says why it cannot open instead
     bar.update({
       ...state,
       adjustments: { brightness: 0.2, contrast: 0 },
       threshold: { enabled: true, sensitivity: 0.5 },
     })
     expect(dot('adjust').hidden).toBe(true)
-    expect(button('adjust').hasAttribute('aria-describedby')).toBe(false)
+    const reason = document.getElementById(button('adjust').getAttribute('aria-describedby')!)!
+    expect(reason.textContent).toBe(DEFAULT_LABELS.adjustUnavailable)
+    expect(reason.hidden).toBe(true)
     expect(dot('threshold').hidden).toBe(false)
+
+    bar.update(state)
+    expect(button('adjust').hasAttribute('aria-describedby')).toBe(false)
     expect(button('crop').querySelector('.paperpic-edit-dot')).toBeNull()
   })
 

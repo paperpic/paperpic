@@ -24,9 +24,10 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | ---------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | O botão que abre a régua de brilho e contraste                                                                  |
 | `adjustmentLevel`      | Brightness +30                               | Função do nome e do valor de -100 a 100, anunciada depois de mover a régua de Ajustar                           |
+| `adjustUnavailable`    | Not available while Clean up is on           | A descrição de Ajustar enquanto Limpar está ligado, que o deixa desativado                                      |
 | `applied`              | Changes applied                              | Anunciado quando as alterações são aplicadas                                                                    |
 | `apply`                | Apply                                        | O botão que aplica as alterações                                                                                |
-| `applyError`           | The changes could not be applied             | Mostrado quando Aplicar falha, ou quando uma alteração não pode ser mostrada                                    |
+| `applyError`           | The changes could not be applied             | Mostrado quando Aplicar falha                                                                                   |
 | `brightness`           | Brightness                                   | A escolha do brilho em Ajustar, e o nome da régua dele                                                          |
 | `cancel`               | Cancel                                       | O botão que sai do modo de edição                                                                               |
 | `cancelTool`           | Cancel this tool                             | O botão que fecha uma ferramenta e descarta as alterações dela                                                  |
@@ -55,6 +56,7 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | `loading`              | Loading image                                | Mostrado enquanto a imagem carrega                                                                              |
 | `perspective`          | Straighten                                   | O botão Endireitar                                                                                              |
 | `perspectiveHint`      | Drag each corner to a corner of the document | O que fazer em Endireitar                                                                                       |
+| `previewError`         | The changes could not be shown               | Mostrado quando uma alteração não pode ser mostrada                                                             |
 | `processing`           | Applying changes                             | Mostrado enquanto Aplicar está em andamento                                                                     |
 | `redo`                 | Redo                                         | O botão Refazer                                                                                                 |
 | `rotateLeft`           | Rotate left                                  | O botão de girar da barra de edição, e um dos dois de um visualizador somente leitura                           |

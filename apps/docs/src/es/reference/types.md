@@ -88,6 +88,7 @@ Una herramienta de la barra de edición, en [`tools`](./options#tools), [`openTo
 interface PaperPicLabels {
   adjust: string
   adjustmentLevel: (name: string, value: number) => string
+  adjustUnavailable: string
   applied: string
   apply: string
   applyError: string
@@ -119,6 +120,7 @@ interface PaperPicLabels {
   loading: string
   perspective: string
   perspectiveHint: string
+  previewError: string
   processing: string
   redo: string
   rotateLeft: string

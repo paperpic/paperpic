@@ -24,9 +24,10 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Une fonct
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | Le bouton qui ouvre la règle de luminosité et de contraste                                                                            |
 | `adjustmentLevel`      | Brightness +30                               | Fonction du nom et de la valeur de -100 à 100, annoncée après avoir déplacé la règle d’Ajuster                                        |
+| `adjustUnavailable`    | Not available while Clean up is on           | La description d’Ajuster tant que Nettoyer est activé, ce qui le désactive                                                            |
 | `applied`              | Changes applied                              | Annoncé quand les changements sont appliqués                                                                                          |
 | `apply`                | Apply                                        | Le bouton qui applique les changements                                                                                                |
-| `applyError`           | The changes could not be applied             | Affiché quand Appliquer échoue, ou quand un changement ne peut pas s’afficher                                                         |
+| `applyError`           | The changes could not be applied             | Affiché quand Appliquer échoue                                                                                                        |
 | `brightness`           | Brightness                                   | Le choix de la luminosité dans Ajuster, et le nom de sa règle                                                                         |
 | `cancel`               | Cancel                                       | Le bouton qui quitte le mode d’édition                                                                                                |
 | `cancelTool`           | Cancel this tool                             | Le bouton qui ferme un outil et abandonne ses changements                                                                             |
@@ -55,6 +56,7 @@ Cinq libellés sont des fonctions, car leur texte contient une valeur. Une fonct
 | `loading`              | Loading image                                | Affiché pendant le chargement de l’image                                                                                              |
 | `perspective`          | Straighten                                   | Le bouton Redresser                                                                                                                   |
 | `perspectiveHint`      | Drag each corner to a corner of the document | Ce qu’il faut faire dans Redresser                                                                                                    |
+| `previewError`         | The changes could not be shown               | Affiché quand un changement ne peut pas s’afficher                                                                                    |
 | `processing`           | Applying changes                             | Affiché pendant qu’Appliquer s’exécute                                                                                                |
 | `redo`                 | Redo                                         | Le bouton Rétablir                                                                                                                    |
 | `rotateLeft`           | Rotate left                                  | Le bouton de rotation de la barre de modification, et l’un des deux d’une visionneuse en lecture seule                                |

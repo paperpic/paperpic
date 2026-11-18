@@ -27,7 +27,7 @@ Ajustar se aplica después de los demás cambios, así que Recortar y Enderezar 
 | Para formularios en color, sellos y fotos | Para texto sobre papel                   |
 | Mantiene el formato de la imagen original | Da PNG                                   |
 
-Mientras Limpiar está activada, Ajustar está desactivada. Limpiar compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado.
+Mientras Limpiar está activada, Ajustar está desactivada. Limpiar compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado. Los lectores de pantalla oyen por qué está desactivada.
 
 ## Desde el código
 

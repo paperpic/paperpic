@@ -27,7 +27,7 @@ Adjust runs after the other edits, so Crop and Straighten show the image with it
 | For colored forms, stamps and photos | For text on paper                       |
 | Keeps the format of the source       | Gives PNG                               |
 
-While Clean up is on, Adjust is disabled. Clean up compares each pixel with its surroundings, so brightness and contrast would barely change its result.
+While Clean up is on, Adjust is disabled. Clean up compares each pixel with its surroundings, so brightness and contrast would barely change its result. Screen readers hear why it is disabled.
 
 ## From code
 

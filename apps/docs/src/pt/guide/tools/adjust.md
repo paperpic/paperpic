@@ -27,7 +27,7 @@ Ajustar vem depois das outras alterações, então Recortar e Endireitar mostram
 | Para formulários coloridos, carimbos e fotos | Para texto em papel                      |
 | Mantém o formato da imagem original          | Gera PNG                                 |
 
-Enquanto Limpar está ligado, Ajustar fica desativado. Limpar compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado.
+Enquanto Limpar está ligado, Ajustar fica desativado. Limpar compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado. Os leitores de tela informam por que ele está desativado.
 
 ## Pelo código
 

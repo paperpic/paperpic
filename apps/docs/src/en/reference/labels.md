@@ -24,9 +24,10 @@ Five labels are functions, because their text includes a value. A function is ne
 | ---------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `adjust`               | Adjust                                       | The button that opens the ruler of brightness and contrast                                                    |
 | `adjustmentLevel`      | Brightness +30                               | Function of the name and the value from -100 to 100, announced after moving the ruler of Adjust               |
+| `adjustUnavailable`    | Not available while Clean up is on           | The description of Adjust while Clean up is on, which keeps it disabled                                       |
 | `applied`              | Changes applied                              | Announced when the changes are applied                                                                        |
 | `apply`                | Apply                                        | The button that applies the changes                                                                           |
-| `applyError`           | The changes could not be applied             | Shown when Apply fails, or when an edit cannot be shown                                                       |
+| `applyError`           | The changes could not be applied             | Shown when Apply fails                                                                                        |
 | `brightness`           | Brightness                                   | The choice of brightness in Adjust, and the name of its ruler                                                 |
 | `cancel`               | Cancel                                       | The button that leaves the edit mode                                                                          |
 | `cancelTool`           | Cancel this tool                             | The button that closes a tool and discards its changes                                                        |
@@ -55,6 +56,7 @@ Five labels are functions, because their text includes a value. A function is ne
 | `loading`              | Loading image                                | Shown while the image loads                                                                                   |
 | `perspective`          | Straighten                                   | The Straighten button                                                                                         |
 | `perspectiveHint`      | Drag each corner to a corner of the document | What to do in Straighten                                                                                      |
+| `previewError`         | The changes could not be shown               | Shown when an edit cannot be shown                                                                            |
 | `processing`           | Applying changes                             | Shown while Apply runs                                                                                        |
 | `redo`                 | Redo                                         | The Redo button                                                                                               |
 | `rotateLeft`           | Rotate left                                  | The rotate button of the edit bar, and one of the two of a read-only viewer                                   |
