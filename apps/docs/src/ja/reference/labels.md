@@ -65,6 +65,14 @@ const pic = new PaperPic(container, {
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | 「傾き補正」での操作の説明                                                   |
 | `previewError`      | The changes could not be shown                                   | 変更を表示できないときに表示                                                 |
 | `processing`        | Applying changes                                                 | 適用の実行中に表示                                                           |
+| `redact`            | Redact                                                           | 「塗りつぶし」ボタンと、その色の選択の名前                                   |
+| `redactAngle`       | Angle 12°                                                        | 角度 (度) の関数。「塗りつぶし」の領域を回転したあとに読み上げます           |
+| `redactArea`        | Area                                                             | 「塗りつぶし」の領域。全体を動かします                                       |
+| `redactBlack`       | Black                                                            | 「塗りつぶし」で黒を選びます                                                 |
+| `redactHint`        | Drag the area over what to hide                                  | 「塗りつぶし」ですること                                                     |
+| `redactTurn`        | Turn                                                             | 「塗りつぶし」の領域を回転するハンドル                                       |
+| `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | 領域を回転するハンドルの説明。キーの働きと、Enter で完了すること             |
+| `redactWhite`       | White                                                            | 「塗りつぶし」で白を選びます                                                 |
 | `redo`              | Redo                                                             | 「やり直す」ボタン                                                           |
 | `rotateLeft`        | Rotate left                                                      | 編集バーの回転ボタン、および読み取り専用ビューアーの 2 つの回転ボタンの一方  |
 | `rotateRight`       | Rotate right                                                     | 読み取り専用ビューアーのもう一方の回転ボタン                                 |

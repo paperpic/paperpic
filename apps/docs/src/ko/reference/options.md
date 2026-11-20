@@ -64,6 +64,7 @@ pic.setOptions({ editable: false })
 | `'flip'`        | 뒤집기             |
 | `'adjust'`      | 조정 (밝기와 대비) |
 | `'finish'`      | 정리               |
+| `'redact'`      | 가리기             |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ pic.setOptions({ editable: false })
 | `fitWidth`       | 너비에 맞추기                                     |
 | `flip`           | 뒤집기                                            |
 | `perspective`    | 기울기 보정                                       |
+| `redact`         | 가리기                                            |
 | `redo`           | 다시 실행                                         |
 | `rotateDocument` | 편집 바의 왼쪽으로 회전                           |
 | `rotateLeft`     | 읽기 전용 뷰어의 도구 모음에 있는 왼쪽으로 회전   |

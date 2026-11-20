@@ -27,6 +27,7 @@ export const sidebar = [
       'guide/tools/rotate-and-flip',
       'guide/tools/adjust',
       'guide/tools/clean-up',
+      'guide/tools/redact',
     ],
   },
   {

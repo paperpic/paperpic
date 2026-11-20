@@ -77,7 +77,7 @@ interface PaperPicOutput {
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 编辑栏中的一个工具，用于 [`tools`](./options#tools)、[`openTool()`](./methods#opentool) 和[状态](./state)的 `activeTool`。[`tools`](./options#tools) 列出了每个工具对应的按钮。
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 [清理](../guide/tools/clean-up)的效果：原始色调、灰度，或 `'mono'` 的黑白。[`setFinish()`](./methods#setfinish) 接收它，[状态](./state)的 `finish` 保存它。
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+[遮盖](../guide/tools/redact)使用的颜色。[`setRedaction()`](./methods#setredaction) 接收它，[状态](./state)的 `redaction` 保存它。
 
 ### `Fit`
 

@@ -122,13 +122,14 @@ import '@paperpic/react/style.css'
 }
 ```
 
-| 位置         | 值                                                                                                                                      |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 工具栏       | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`                                           |
-| 编辑栏       | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`finish`、`undo`、`redo`、`apply`                                      |
-| 调整和清理   | `brightness` 和 `contrast`（选项及其刻度尺）、`finishOriginal`、`finishGray` 和 `finishMono`（效果）、`finishSensitivity`（它的刻度尺） |
-| 每个工具     | `cancelTool`、`confirm`                                                                                                                 |
-| 裁剪和矫正   | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                                         |
-| 放弃前的提问 | `keepEditing`、`discard`                                                                                                                |
+| 位置             | 值                                                                                                                                      |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 工具栏           | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`                                           |
+| 编辑栏           | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`finish`、`redact`、`undo`、`redo`、`apply`                            |
+| 调整和清理       | `brightness` 和 `contrast`（选项及其刻度尺）、`finishOriginal`、`finishGray` 和 `finishMono`（效果）、`finishSensitivity`（它的刻度尺） |
+| 每个工具         | `cancelTool`、`confirm`                                                                                                                 |
+| 裁剪、矫正和遮盖 | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                                         |
+| 遮盖             | `redactArea`、`redactTurn`、`redactBlack`、`redactWhite`                                                                                |
+| 放弃前的提问     | `keepEditing`、`discard`                                                                                                                |
 
 `rotateLeft` 对应两个不会同时显示的按钮：只旋转显示的只读查看器的按钮，以及旋转图片本身的编辑栏按钮。`zoomIn` 和 `zoomOut`（工具栏和面板中）也是如此。`brightness` 和 `contrast` 对应一个选项及其刻度尺，两者同时显示：在选择器中加上 `button` 或 `input` 即可区分。

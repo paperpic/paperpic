@@ -65,6 +65,14 @@ Five labels are functions, because their text includes a value. A function is ne
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | What to do in Straighten                                                                                      |
 | `previewError`      | The changes could not be shown                                   | Shown when an edit cannot be shown                                                                            |
 | `processing`        | Applying changes                                                 | Shown while Apply runs                                                                                        |
+| `redact`            | Redact                                                           | The Redact button, and the name of its choice of color                                                        |
+| `redactAngle`       | Angle 12°                                                        | Function of the angle in degrees, announced after turning the area of Redact                                  |
+| `redactArea`        | Area                                                             | The area of Redact, which moves it as a whole                                                                 |
+| `redactBlack`       | Black                                                            | Chooses black in Redact                                                                                       |
+| `redactHint`        | Drag the area over what to hide                                  | What to do in Redact                                                                                          |
+| `redactTurn`        | Turn                                                             | The handle that turns the area of Redact                                                                      |
+| `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | The description of the handle that turns the area: what the keys do, and that Enter finishes                  |
+| `redactWhite`       | White                                                            | Chooses white in Redact                                                                                       |
 | `redo`              | Redo                                                             | The Redo button                                                                                               |
 | `rotateLeft`        | Rotate left                                                      | The rotate button of the edit bar, and one of the two of a read-only viewer                                   |
 | `rotateRight`       | Rotate right                                                     | The other rotate button of a read-only viewer                                                                 |

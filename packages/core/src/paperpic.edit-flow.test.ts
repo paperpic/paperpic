@@ -1605,6 +1605,93 @@ describe('editing', () => {
     })
   })
 
+  describe('redacting', () => {
+    const redact = () => bar().querySelector<HTMLButtonElement>('.paperpic-edit-tools [aria-label="Redact"]')!
+    const color = (name: string) => bar().querySelector<HTMLButtonElement>(`[data-paperpic-control="${name}"]`)!
+    const handles = () => [
+      ...container.querySelectorAll('.paperpic-handle'),
+    ]
+
+    beforeEach(() => {
+      releasePreview.mockClear()
+      mocks.renderPreview.mockImplementation(async () => ({
+        ...preview(),
+        width: 600,
+        height: 250,
+      }))
+      pic.edit()
+    })
+
+    it('opens with corners, a hint and the choice of color, and no edit yet', () => {
+      redact().click()
+      expect(pic.getState()).toMatchObject({
+        activeTool: 'redact',
+        hint: 'Drag the area over what to hide',
+        redaction: { color: 'black' },
+        canUndo: false,
+      })
+      expect(handles()).toHaveLength(5)
+      expect(container.querySelector('.paperpic-area[data-paperpic-control="redactArea"]')).not.toBeNull()
+      expect(color('redactBlack').getAttribute('aria-pressed')).toBe('true')
+      expect(color('redactBlack').parentElement!.hidden).toBe(false)
+      expect(bar().querySelector<HTMLElement>('.paperpic-edit-title')!.hidden).toBe(true)
+      expect(mocks.renderPreview).not.toHaveBeenCalled()
+    })
+
+    it('leaves one area with Done, which the preview covers over the tones', () => {
+      redact().click()
+      color('redactWhite').click()
+      expect(pic.getState().redaction.color).toBe('white')
+      expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({
+        redaction: { color: 'white' },
+      }))
+      button('Done').click()
+
+      expect(pic.getState()).toMatchObject({ activeTool: null, canUndo: true, canApply: true })
+      const [, steps, tone, redaction] = mocks.renderPreview.mock.calls[0]!
+      expect(steps).toEqual([])
+      expect(tone).toBeNull()
+      expect(redaction).toEqual({
+        type: 'redact',
+        areas: [
+          expect.objectContaining({ color: 'white' }),
+        ],
+      })
+    })
+
+    it('keeps its color for the next area, and goes back to the image with Undo', async () => {
+      pic.setRedaction({ color: 'white' })
+      pic.openTool('redact')
+      expect(color('redactWhite').getAttribute('aria-pressed')).toBe('true')
+      pic.confirmTool()
+      await flush()
+
+      pic.undo()
+      expect(releasePreview).toHaveBeenCalledOnce()
+      expect(pic.getState()).toMatchObject({
+        canApply: false,
+        redaction: { color: 'white' },
+      })
+    })
+
+    it('exports the areas last, after black and white', async () => {
+      pic.openTool('redact')
+      pic.confirmTool()
+      pic.setFinish({ mode: 'mono' })
+      void pic.apply()
+      await flush()
+      expect(mocks.exportImage.mock.calls[0]![0].steps.map(({ type }: { type: string }) => type)).toEqual(['threshold', 'redact'])
+    })
+
+    it('rejects a color it does not know, and reports no change for the same one', () => {
+      expect(() => pic.setRedaction({ color: 'red' as 'black' })).toThrow(/color must be 'black' or 'white', got red/)
+      onChange.mockClear()
+      pic.setRedaction({ color: 'black' })
+      pic.setRedaction({})
+      expect(onChange).not.toHaveBeenCalled()
+    })
+  })
+
   it('offers only the chosen tools', () => {
     pic.edit()
     pic.setOptions({ tools: [] })

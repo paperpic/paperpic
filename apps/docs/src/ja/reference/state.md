@@ -118,6 +118,7 @@ Vue と React では、ビューアーはコンポーネントがマウントさ
 | `hint`        | `string \| null`                             | 開いているツールがユーザーに求めること。内蔵の編集バーの表示と同じで、たとえば「Drag the corners」。なければ `null`。`toolbar: false` では独自のインターフェースに表示します |
 | `image`       | [`Size \| null`](./types#size)               | フル解像度で、これまでの変更を含み、`rotation` の回転を含まない画像のピクセルサイズ。画像がなければ `null`                                                                   |
 | `mode`        | `'view' \| 'edit'`                           | ユーザーが画像を見ているか、編集しているか                                                                                                                                   |
+| `redaction`   | `{ color }`                                  | 「塗りつぶし」の色。[`RedactColor`](./types#redactcolor) で、開いている間はパネルの色、それ以外は次の領域の色です                                                            |
 | `rotation`    | [`Rotation`](./types#rotation)               | `image` に対する表示中の画像の回転角度（時計回り、度単位）                                                                                                                   |
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `src` がなければ `'empty'`、読み込み中は `'loading'`、表示されると `'ready'`、読み込めなければ `'error'`                                                                     |
 | `zoom`        | `number`                                     | 画像の 1 ピクセルあたりの画面のピクセル数                                                                                                                                    |

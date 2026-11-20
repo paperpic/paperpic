@@ -11,6 +11,7 @@ import fitHeight from './icons/fit-height.svg?raw'
 import fitWidth from './icons/fit-width.svg?raw'
 import flip from './icons/flip.svg?raw'
 import perspective from './icons/perspective.svg?raw'
+import redact from './icons/redact.svg?raw'
 import redo from './icons/redo.svg?raw'
 import rotateDocument from './icons/rotate-document.svg?raw'
 import rotateLeft from './icons/rotate-left.svg?raw'
@@ -46,6 +47,8 @@ export interface PaperPicIcons {
   flip: string
   /** Straighten. */
   perspective: string
+  /** Redact. */
+  redact: string
   redo: string
   /** Rotate left in the edit bar, which turns the image itself. */
   rotateDocument: string
@@ -73,6 +76,7 @@ export const DEFAULT_ICONS: PaperPicIcons = {
   fitWidth,
   flip,
   perspective,
+  redact,
   redo,
   rotateDocument,
   rotateLeft,

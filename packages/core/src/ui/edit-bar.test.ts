@@ -16,6 +16,7 @@ const state: EditBarState = {
   canZoomIn: true,
   canZoomOut: true,
   finish: { mode: 'original', sensitivity: 0.5 },
+  redaction: { color: 'black' },
 }
 
 const tool = (id: string) => TOOLS.find(candidate => candidate.id === id)!
@@ -45,6 +46,7 @@ describe('editBar', () => {
       runTool: vi.fn(),
       setAdjustment: vi.fn(),
       setFinish: vi.fn(),
+      setRedaction: vi.fn(),
       undo: vi.fn(),
       zoomIn: vi.fn(),
       zoomOut: vi.fn(),
@@ -219,6 +221,32 @@ describe('editBar', () => {
       expect(commands.zoomOut).toHaveBeenCalledOnce()
       expect(commands.cancelTool).toHaveBeenCalledOnce()
       expect(commands.confirmTool).toHaveBeenCalledOnce()
+    })
+
+    it('shows the corners of Redact with its colors in place of its name, the one in use pressed', () => {
+      const pressed = (name: string) => option(name).getAttribute('aria-pressed')
+      const colors = () => option('redactBlack').parentElement!
+      bar.setActiveTool(tool('crop'))
+      expect(colors().hidden).toBe(true)
+
+      bar.setActiveTool(tool('redact'))
+      expect(part('paperpic-edit-corners').hidden).toBe(false)
+      expect(part('paperpic-edit-corners').textContent).toBe(DEFAULT_LABELS.redactHint)
+      expect(part('paperpic-edit-title').hidden).toBe(true)
+      expect(colors().hidden).toBe(false)
+      expect(colors().getAttribute('aria-label')).toBe(DEFAULT_LABELS.redact)
+      expect(option('redactWhite').textContent).toBe(DEFAULT_LABELS.redactWhite)
+      expect(pressed('redactBlack')).toBe('true')
+
+      bar.update({
+        ...state,
+        redaction: { color: 'white' },
+      })
+      expect(pressed('redactBlack')).toBe('false')
+      expect(pressed('redactWhite')).toBe('true')
+
+      option('redactBlack').click()
+      expect(commands.setRedaction).toHaveBeenCalledWith('black')
     })
 
     it('shows the finishes of Clean up, named, with the one on display pressed, and its ruler', () => {

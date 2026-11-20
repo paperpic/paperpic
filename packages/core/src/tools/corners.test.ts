@@ -1,8 +1,10 @@
 import type { Mock } from 'vitest'
 import type { ToolHost } from './types'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { rectangleCorners } from '../processing/homography'
+import { toolHost } from '../test/tool-host'
 import { DEFAULT_LABELS } from '../ui/labels'
-import { constrainToConvex, constrainToRectangle, CornerEditor, initialCorners, rectangleCorners } from './corners'
+import { boxCorners, boxOf, constrainToConvex, constrainToRectangle, constrainToTurnedRectangle, CornerEditor, initialCorners } from './corners'
 
 const frame = { width: 1000, height: 500 }
 
@@ -63,6 +65,50 @@ describe('constrainToConvex', () => {
   })
 })
 
+describe('constrainToTurnedRectangle', () => {
+  const turned = boxCorners({
+    center: { x: 500, y: 250 },
+    width: 200,
+    height: 100,
+    angle: Math.PI / 6,
+  })
+
+  it('resizes along the turned sides, and the opposite corner stays', () => {
+    const across = {
+      x: Math.cos(Math.PI / 6),
+      y: Math.sin(Math.PI / 6),
+    }
+    const down = {
+      x: -Math.sin(Math.PI / 6),
+      y: Math.cos(Math.PI / 6),
+    }
+    // 50 more across and 20 more down, plus a little that the turned sides throw away
+    const target = {
+      x: turned[2].x + across.x * 50 + down.x * 20,
+      y: turned[2].y + across.y * 50 + down.y * 20,
+    }
+    const resized = constrainToTurnedRectangle(turned, 2, target, frame)
+    const box = boxOf(resized)
+    expect(resized[0].x).toBeCloseTo(turned[0].x)
+    expect(resized[0].y).toBeCloseTo(turned[0].y)
+    expect(box.angle).toBeCloseTo(Math.PI / 6)
+    expect(box.width).toBeCloseTo(250)
+    expect(box.height).toBeCloseTo(120)
+  })
+
+  it('never turns inside out, and keeps the smallest size', () => {
+    const box = boxOf(constrainToTurnedRectangle(turned, 2, turned[0], frame))
+    expect(box.width).toBeCloseTo(16)
+    expect(box.height).toBeCloseTo(16)
+    expect(box.angle).toBeCloseTo(Math.PI / 6)
+  })
+
+  it('keeps the dragged corner inside the image', () => {
+    const level = rectangleCorners(100, 100, 300, 200)
+    expect(constrainToTurnedRectangle(level, 2, { x: 5000, y: 5000 }, frame)[2]).toEqual({ x: 1000, y: 500 })
+  })
+})
+
 describe('cornerEditor', () => {
   let host: ToolHost & {
     announce: Mock<ToolHost['announce']>
@@ -93,23 +139,16 @@ describe('cornerEditor', () => {
     }) as DOMRect
     document.body.replaceChildren(layer)
     // Half a screen pixel per image pixel
-    host = {
+    host = toolHost(frame, {
       layer,
-      frameSize: () => frame,
       frameToViewport: ({ x, y }) => ({ x: x / 2, y: y / 2 }),
       viewportToFrame: ({ x, y }) => ({ x: x * 2, y: y * 2 }),
       reveal: vi.fn(),
       requestPaint: vi.fn(),
       setHint: vi.fn(),
       announce: vi.fn(),
-      labels: () => DEFAULT_LABELS,
-      photoFrame: () => ({
-        photo: frame,
-        origin: { x: 0, y: 0 },
-      }),
-      aspectRatio: () => undefined,
       paintMagnifier: vi.fn(),
-    }
+    }) as typeof host
   })
 
   const editor = () => new CornerEditor(host, rectangleCorners(100, 100, 300, 300), constrainToRectangle)

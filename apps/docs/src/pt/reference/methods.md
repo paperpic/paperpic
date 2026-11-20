@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'finish'`), que ao abrir escolhe preto e branco quando o acabamento é o original. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar em preto e branco, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
 
+Ocultar (`'redact'`) também abre com cantos, como Recortar.
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Muda o brilho ou o contraste, cada um de -1 a 1, em que 0 deixa a imagem como está. Eles vêm depois das outras alterações, e antes do cinza. Enquanto Ajustar está aberto, muda o que Ajustar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição, com outra ferramenta aberta ou em preto e branco: o preto e branco compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado.
 
 Lança um `RangeError` se um valor não estiver entre -1 e 1.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Escolhe a cor com que [Ocultar](../guide/tools/redact) cobre: `'black'`, o padrão, ou `'white'`. Enquanto Ocultar está aberto, muda a área na tela, e [`confirmTool()`](#confirmtool) a mantém. Senão, é a cor da próxima área. Funciona em qualquer modo.
+
+Lança um `RangeError` se `color` não for uma [`RedactColor`](./types#redactcolor).
 
 ### `undo()`
 

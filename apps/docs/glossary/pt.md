@@ -4,6 +4,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 
 | English                                       | Português (Brasil)   |
 | --------------------------------------------- | -------------------- |
+| area, what Redact covers                      | área                 |
 | container                                     | contêiner            |
 | corner handle                                 | alça de canto        |
 | CSS token                                     | token CSS            |

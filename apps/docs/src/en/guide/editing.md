@@ -27,6 +27,7 @@ In a narrow viewer, the edit bar has two rows: the tools, or the panel of the op
 | [Flip](./tools/rotate-and-flip)        | Mirrors the image left to right                                        | `flip`        |
 | [Adjust](./tools/adjust)               | Changes the brightness and the contrast                                | `adjust`      |
 | [Clean up](./tools/clean-up)           | Turns the document gray, or into crisp black and white without shadows | `finish`      |
+| [Redact](./tools/redact)               | Covers an area with solid black or white                               | `redact`      |
 
 The [`tools`](../reference/options#tools) option chooses which ones the edit bar offers:
 
@@ -70,7 +71,7 @@ export function Receipt() {
 
 :::
 
-Crop, Straighten, Adjust and Clean up open a panel in place of the tools. While one of them is open, the other tools, Undo, Redo and Apply wait. Done, or `Enter`, adds what the tool chose to the edits, and Cancel this tool, or `Esc`, discards it.
+Crop, Straighten, Redact, Adjust and Clean up open a panel in place of the tools. While one of them is open, the other tools, Undo, Redo and Apply wait. Done, or `Enter`, adds what the tool chose to the edits, and Cancel this tool, or `Esc`, discards it.
 
 Inside a panel, the image looks as the result will, Clean up included. Straighten is the exception: it shows the photo without black and white, so the edges of the paper stay visible.
 

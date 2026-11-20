@@ -226,6 +226,7 @@ describe('paperPic', () => {
       activeTool: null,
       finish: { mode: 'original', sensitivity: 0.5 },
       adjustments: { brightness: 0, contrast: 0 },
+      redaction: { color: 'black' },
     })
   })
 

@@ -64,6 +64,7 @@ pic.setOptions({ editable: false })
 | `'flip'`        | Отразить                               |
 | `'adjust'`      | Настроить, для яркости и контрастности |
 | `'finish'`      | Очистить                               |
+| `'redact'`      | Закрасить                              |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ pic.setOptions({ editable: false })
 | `fitWidth`       | По ширине                                                               |
 | `flip`           | Отразить                                                                |
 | `perspective`    | Выровнять                                                               |
+| `redact`         | Закрасить                                                               |
 | `redo`           | Повторить                                                               |
 | `rotateDocument` | Повернуть влево, на панели редактирования                               |
 | `rotateLeft`     | Повернуть влево, на панели инструментов просмотрщика только для чтения  |

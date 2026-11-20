@@ -122,13 +122,14 @@ Cada botão, régua e alça de canto leva `data-paperpic-control`, com a chave d
 }
 ```
 
-| Lugar                       | Valores                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Barra de ferramentas        | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                                |
-| Barra de edição             | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `undo`, `redo`, `apply`                                                           |
-| Ajustar e Limpar            | `brightness` e `contrast`, as escolhas e as réguas delas, `finishOriginal`, `finishGray` e `finishMono`, os acabamentos, e `finishSensitivity`, a régua dele |
-| Cada ferramenta             | `cancelTool`, `confirm`                                                                                                                                      |
-| Recortar e Endireitar       | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                              |
-| Pergunta antes de descartar | `keepEditing`, `discard`                                                                                                                                     |
+| Lugar                          | Valores                                                                                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Barra de ferramentas           | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                                |
+| Barra de edição                | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                                 |
+| Ajustar e Limpar               | `brightness` e `contrast`, as escolhas e as réguas delas, `finishOriginal`, `finishGray` e `finishMono`, os acabamentos, e `finishSensitivity`, a régua dele |
+| Cada ferramenta                | `cancelTool`, `confirm`                                                                                                                                      |
+| Recortar, Endireitar e Ocultar | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                              |
+| Ocultar                        | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                     |
+| Pergunta antes de descartar    | `keepEditing`, `discard`                                                                                                                                     |
 
 `rotateLeft` nomeia dois botões que nunca aparecem ao mesmo tempo: o de um visualizador somente leitura, que gira a exibição, e o da barra de edição, que gira a imagem. O mesmo vale para `zoomIn` e `zoomOut`, na barra de ferramentas e num painel. `brightness` e `contrast` nomeiam uma escolha e a régua dela, que aparecem juntas: adicione `button` ou `input` ao seletor para distingui-las.

@@ -4,6 +4,7 @@ import { cropTool } from './crop'
 import { finishTool } from './finish'
 import { flipTool } from './flip'
 import { perspectiveTool } from './perspective'
+import { redactTool } from './redact'
 import { rotateTool } from './rotate'
 
 /** Every tool, in the order the edit bar shows them. */
@@ -14,6 +15,7 @@ export const TOOLS: readonly Tool[] = [
   flipTool,
   adjustTool,
   finishTool,
+  redactTool,
 ]
 
 /** The tools offered when the consumer does not choose. */

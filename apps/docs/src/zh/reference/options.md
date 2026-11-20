@@ -64,6 +64,7 @@ pic.setOptions({ editable: false })
 | `'flip'`        | 翻转                   |
 | `'adjust'`      | 调整，用于亮度和对比度 |
 | `'finish'`      | 清理                   |
+| `'redact'`      | 遮盖                   |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ pic.setOptions({ editable: false })
 | `fitWidth`       | 适合宽度                     |
 | `flip`           | 翻转                         |
 | `perspective`    | 矫正                         |
+| `redact`         | 遮盖                         |
 | `redo`           | 重做                         |
 | `rotateDocument` | 编辑栏中的向左旋转           |
 | `rotateLeft`     | 只读查看器工具栏中的向左旋转 |

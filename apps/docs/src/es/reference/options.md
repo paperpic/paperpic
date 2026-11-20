@@ -64,6 +64,7 @@ Las herramientas que ofrece la barra de edición. Mantienen el orden de esta tab
 | `'flip'`        | Voltear                                |
 | `'adjust'`      | Ajustar, para el brillo y el contraste |
 | `'finish'`      | Limpiar                                |
+| `'redact'`      | Tapar                                  |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 | `fitWidth`       | Ajustar al ancho                                                              |
 | `flip`           | Voltear                                                                       |
 | `perspective`    | Enderezar                                                                     |
+| `redact`         | Tapar                                                                         |
 | `redo`           | Rehacer                                                                       |
 | `rotateDocument` | Girar a la izquierda, en la barra de edición                                  |
 | `rotateLeft`     | Girar a la izquierda, en la barra de herramientas de un visor de solo lectura |

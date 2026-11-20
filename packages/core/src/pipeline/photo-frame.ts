@@ -41,6 +41,7 @@ export function photoFrame(image: Size, steps: readonly PipelineStep[]): PhotoFr
         break
       case 'threshold':
       case 'adjust':
+      case 'redact':
         break
     }
   }

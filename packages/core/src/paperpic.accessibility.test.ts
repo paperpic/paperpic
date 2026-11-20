@@ -117,7 +117,7 @@ describe('accessibility', () => {
     expect(await audit()).toEqual([])
   })
 
-  it.each(['crop', 'perspective'] as const)('has no violations with the corner handles of %s', async (tool) => {
+  it.each(['crop', 'perspective', 'redact'] as const)('has no violations with the corner handles of %s', async (tool) => {
     await finishLoading()
     pic.edit()
     pic.openTool(tool)

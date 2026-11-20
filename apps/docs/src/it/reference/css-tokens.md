@@ -122,13 +122,14 @@ Ogni pulsante, righello e maniglia d’angolo porta `data-paperpic-control`, con
 }
 ```
 
-| Posizione                  | Valori                                                                                                                                                     |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Barra degli strumenti      | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                              |
-| Barra di modifica          | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `undo`, `redo`, `apply`                                                         |
-| Regola e Pulisci           | `brightness` e `contrast`, le scelte e i loro righelli, `finishOriginal`, `finishGray` e `finishMono`, le finiture, e `finishSensitivity`, il suo righello |
-| Ogni strumento             | `cancelTool`, `confirm`                                                                                                                                    |
-| Ritaglia e Raddrizza       | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                            |
-| Domanda prima di eliminare | `keepEditing`, `discard`                                                                                                                                   |
+| Posizione                   | Valori                                                                                                                                                     |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Barra degli strumenti       | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                              |
+| Barra di modifica           | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                               |
+| Regola e Pulisci            | `brightness` e `contrast`, le scelte e i loro righelli, `finishOriginal`, `finishGray` e `finishMono`, le finiture, e `finishSensitivity`, il suo righello |
+| Ogni strumento              | `cancelTool`, `confirm`                                                                                                                                    |
+| Ritaglia, Raddrizza e Copri | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                            |
+| Copri                       | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                   |
+| Domanda prima di eliminare  | `keepEditing`, `discard`                                                                                                                                   |
 
 `rotateLeft` indica due pulsanti che non si vedono mai insieme: quello di un visualizzatore di sola lettura, che ruota la vista, e quello della barra di modifica, che ruota l’immagine. Lo stesso vale per `zoomIn` e `zoomOut`, nella barra degli strumenti e in un pannello. `brightness` e `contrast` indicano una scelta e il suo righello, che si vedono insieme: aggiungi `button` o `input` al selettore per distinguerli.

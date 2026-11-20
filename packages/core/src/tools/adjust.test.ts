@@ -1,7 +1,8 @@
 import type { Operation } from '../pipeline/operations'
 import type { PipelineStep } from '../pipeline/steps'
 import type { PixelBuffer } from '../processing/types'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { CanvasMocks } from '../test/canvas'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { resolveOutputType } from '../pipeline/export'
 import { adjustSetting, toneStep, toPipelineSteps, toPreviewSteps } from '../pipeline/operations'
 import { photoFrame } from '../pipeline/photo-frame'
@@ -9,6 +10,8 @@ import { renderPreview } from '../pipeline/preview'
 import { planRead, resultSize } from '../pipeline/read-plan'
 import { applySteps } from '../pipeline/steps'
 import { adjustPixels } from '../processing/adjust'
+import { stubCanvas } from '../test/canvas'
+import { loadedImage } from '../test/images'
 import { adjustEdit, canAdjust } from './adjust'
 
 const crop = {
@@ -102,46 +105,27 @@ describe('adjustments in the pipeline', () => {
 })
 
 describe('renderPreview with adjustments', () => {
-  const putImageData = vi.fn()
+  let putImageData: CanvasMocks['putImageData']
 
-  const stubCanvas = () => {
-    vi.stubGlobal('ImageData', class {
-      data: Uint8ClampedArray
-      constructor(data: Uint8ClampedArray) {
-        this.data = data
-      }
-    })
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
-      drawImage: vi.fn(),
-      getImageData: (_x: number, _y: number, width: number, height: number) => ({
-        data: new Uint8ClampedArray(width * height * 4).fill(100),
-      }),
-      putImageData,
-    } as unknown as CanvasRenderingContext2D)
-  }
+  beforeEach(() => {
+    putImageData = stubCanvas((width, height) => new Uint8ClampedArray(width * height * 4).fill(100)).putImageData
+  })
 
   afterEach(() => {
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
-    putImageData.mockClear()
   })
 
-  const image = {
-    element: {} as CanvasImageSource,
-    width: 8,
-    height: 8,
-    release: () => {},
-  }
+  const image = loadedImage(8, 8)
 
   it('shapes the image once and repaints its tones without the worker', async () => {
-    stubCanvas()
     const runner = {
       run: vi.fn(async (source: PixelBuffer) => source),
       prepare: vi.fn(),
     }
     const preview = await renderPreview(image, [
       { type: 'rotate', rotation: 90 },
-    ], step, runner)
+    ], step, null, runner)
     expect(runner.run).toHaveBeenCalledOnce()
     expect(runner.prepare).not.toHaveBeenCalled()
     expect(putImageData.mock.calls[0]![0].data[0]).toBe(adjustPixels(grays(100), step).data[0])
@@ -154,12 +138,11 @@ describe('renderPreview with adjustments', () => {
   })
 
   it('ignores a threshold, which needs a preview of its own', async () => {
-    stubCanvas()
     const runner = {
       run: vi.fn(),
       prepare: vi.fn(),
     }
-    const preview = await renderPreview(image, [], step, runner)
+    const preview = await renderPreview(image, [], step, null, runner)
     expect(runner.run).not.toHaveBeenCalled()
     preview.tint!({ type: 'threshold', sensitivity: 0.5, softness: 0.25 })
     expect(putImageData).toHaveBeenCalledTimes(1)

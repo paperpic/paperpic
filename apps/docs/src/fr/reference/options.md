@@ -64,6 +64,7 @@ Les outils que propose la barre de modification. Ils gardent l’ordre de ce tab
 | `'flip'`        | Retourner                                   |
 | `'adjust'`      | Ajuster, pour la luminosité et le contraste |
 | `'finish'`      | Nettoyer                                    |
+| `'redact'`      | Masquer                                     |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ Chaque clé nomme une icône, et certaines icônes apparaissent sur deux boutons
 | `fitWidth`       | Ajuster à la largeur                                                        |
 | `flip`           | Retourner                                                                   |
 | `perspective`    | Redresser                                                                   |
+| `redact`         | Masquer                                                                     |
 | `redo`           | Rétablir                                                                    |
 | `rotateDocument` | Pivoter à gauche, dans la barre de modification                             |
 | `rotateLeft`     | Pivoter à gauche, dans la barre d’outils d’une visionneuse en lecture seule |

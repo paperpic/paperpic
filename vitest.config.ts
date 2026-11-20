@@ -6,7 +6,8 @@ export default defineConfig({
     coverage: {
       // Without include, files no test imports are left out of the report
       include: ['packages/*/src/**/*.{ts,tsx,vue}'],
-      exclude: ['**/*.d.ts'],
+      // The helpers of the tests are not code that ships
+      exclude: ['**/*.d.ts', 'packages/*/src/test/**'],
       reporter: ['text', 'html', 'json-summary'],
       // A little under the current figures, so a pull request with untested code fails and a small refactor does not
       thresholds: {

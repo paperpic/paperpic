@@ -122,13 +122,14 @@ Jede Schaltfläche, jede Skala und jeder Eckgriff trägt `data-paperpic-control`
 }
 ```
 
-| Ort                        | Werte                                                                                                                                                       |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Werkzeugleiste             | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                               |
-| Bearbeitungsleiste         | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `undo`, `redo`, `apply`                                                          |
-| Anpassen und Bereinigen    | `brightness` und `contrast`, die Wahlen und ihre Skalen, `finishOriginal`, `finishGray` und `finishMono`, die Finishs, und `finishSensitivity`, seine Skala |
-| Jedes Werkzeug             | `cancelTool`, `confirm`                                                                                                                                     |
-| Zuschneiden und Begradigen | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                             |
-| Frage vor dem Verwerfen    | `keepEditing`, `discard`                                                                                                                                    |
+| Ort                                  | Werte                                                                                                                                                       |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Werkzeugleiste                       | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                               |
+| Bearbeitungsleiste                   | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                                |
+| Anpassen und Bereinigen              | `brightness` und `contrast`, die Wahlen und ihre Skalen, `finishOriginal`, `finishGray` und `finishMono`, die Finishs, und `finishSensitivity`, seine Skala |
+| Jedes Werkzeug                       | `cancelTool`, `confirm`                                                                                                                                     |
+| Zuschneiden, Begradigen und Abdecken | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                             |
+| Abdecken                             | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                    |
+| Frage vor dem Verwerfen              | `keepEditing`, `discard`                                                                                                                                    |
 
 `rotateLeft` benennt zwei Schaltflächen, die nie gleichzeitig erscheinen: die eines schreibgeschützten Viewers, die die Anzeige dreht, und die der Bearbeitungsleiste, die das Bild dreht. Ebenso `zoomIn` und `zoomOut`, in der Werkzeugleiste und in einem Bedienfeld. `brightness` und `contrast` benennen eine Wahl und ihre Skala, die gleichzeitig zu sehen sind: Ergänze `button` oder `input` im Selektor, um sie zu unterscheiden.

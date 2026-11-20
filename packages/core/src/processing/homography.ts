@@ -62,6 +62,25 @@ export function solveHomography(from: Quad, to: Quad): Matrix3 {
   ]
 }
 
+/** The corners of a rectangle, from its top left one, clockwise. */
+export function rectangleCorners(left: number, top: number, right: number, bottom: number): Quad {
+  return [
+    { x: left, y: top },
+    { x: right, y: top },
+    { x: right, y: bottom },
+    { x: left, y: bottom },
+  ]
+}
+
+/** Sends a point through a projective transform. */
+export function projectPoint([a, b, c, d, e, f, g, h, i]: Matrix3, { x, y }: Point): Point {
+  const scale = g * x + h * y + i
+  return {
+    x: (a * x + b * y + c) / scale,
+    y: (d * x + e * y + f) / scale,
+  }
+}
+
 /** Turns corners given as fractions of an image into its pixels. */
 export function scaleQuad(quad: Quad, width: number, height: number): Quad {
   return quad.map(({ x, y }) => ({ x: x * width, y: y * height })) as unknown as Quad

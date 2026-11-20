@@ -77,7 +77,7 @@ interface PaperPicOutput {
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 編集バーのツール。[`tools`](./options#tools)、[`openTool()`](./methods#opentool)、[状態](./state)の `activeTool` で使います。各ツールのボタンは [`tools`](./options#tools) にあります。
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 [クリーンアップ](../guide/tools/clean-up)の仕上げ。元の色調、グレー、または `'mono'` の白黒です。[`setFinish()`](./methods#setfinish) が受け取り、[状態](./state)の `finish` が保持します。
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+[塗りつぶし](../guide/tools/redact)で覆う色。[`setRedaction()`](./methods#setredaction) が受け取り、[状態](./state)の `redaction` が保持します。
 
 ### `Fit`
 

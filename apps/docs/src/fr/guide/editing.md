@@ -27,6 +27,7 @@ Dans une visionneuse étroite, la barre de modification a deux lignes : en haut,
 | [Retourner](./tools/rotate-and-flip)        | Retourne l’image de gauche à droite                                 | `flip`        |
 | [Ajuster](./tools/adjust)                   | Change la luminosité et le contraste                                | `adjust`      |
 | [Nettoyer](./tools/clean-up)                | Transforme le document en gris, ou en noir et blanc net sans ombres | `finish`      |
+| [Masquer](./tools/redact)                   | Recouvre une zone de noir ou de blanc opaque                        | `redact`      |
 
 L’option [`tools`](../reference/options#tools) choisit ceux que propose la barre de modification :
 
@@ -70,7 +71,7 @@ export function Receipt() {
 
 :::
 
-Recadrer, Redresser, Ajuster et Nettoyer ouvrent un panneau à la place des outils. Tant que l’un d’eux est ouvert, les autres outils, Annuler la dernière action, Rétablir et Appliquer attendent. Terminé, ou `Entrée`, ajoute aux changements ce que l’outil a choisi, et Annuler cet outil, ou `Échap`, l’abandonne.
+Recadrer, Redresser, Masquer, Ajuster et Nettoyer ouvrent un panneau à la place des outils. Tant que l’un d’eux est ouvert, les autres outils, Annuler la dernière action, Rétablir et Appliquer attendent. Terminé, ou `Entrée`, ajoute aux changements ce que l’outil a choisi, et Annuler cet outil, ou `Échap`, l’abandonne.
 
 Dans un panneau, l’image apparaît telle que sera le résultat, Nettoyer compris. Redresser fait exception : il montre la photo sans le noir et blanc, pour que les bords du papier restent visibles.
 

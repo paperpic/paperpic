@@ -1,4 +1,6 @@
+import type { CanvasMocks } from '../test/canvas'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { stubCanvas } from '../test/canvas'
 import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 
 const plan = {
@@ -14,27 +16,17 @@ const plan = {
 }
 
 describe('pixels', () => {
-  const drawImage = vi.fn()
-  const getImageData = vi.fn()
-  const putImageData = vi.fn()
+  let drawImage: CanvasMocks['drawImage']
+  let getImageData: CanvasMocks['getImageData']
+  let putImageData: CanvasMocks['putImageData']
   const canvases: HTMLCanvasElement[] = []
 
   beforeEach(() => {
     canvases.length = 0
-    drawImage.mockReset()
-    putImageData.mockReset()
-    getImageData.mockReset()
-    getImageData.mockImplementation((_x: number, _y: number, width: number, height: number) => ({
-      data: new Uint8ClampedArray(width * height * 4),
-    }))
-    vi.stubGlobal('ImageData', class {
-      constructor(readonly data: Uint8ClampedArray, readonly width: number, readonly height: number) {}
-    })
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
-      drawImage,
-      getImageData,
-      putImageData,
-    } as unknown as CanvasRenderingContext2D)
+    const canvas = stubCanvas()
+    drawImage = canvas.drawImage
+    getImageData = canvas.getImageData
+    putImageData = canvas.putImageData
     const createElement = document.createElement.bind(document)
     vi.spyOn(document, 'createElement').mockImplementation((name: string) => {
       const element = createElement(name)

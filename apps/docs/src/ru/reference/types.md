@@ -77,7 +77,7 @@ interface PaperPicOutput {
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 Инструмент панели редактирования в [`tools`](./options#tools), [`openTool()`](./methods#opentool) и в `activeTool` [состояния](./state). В [`tools`](./options#tools) указана кнопка каждого из них.
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 Обработка в [«Очистить»](../guide/tools/clean-up): исходные тона, серый или чёрно-белый с `'mono'`. Её принимает [`setFinish()`](./methods#setfinish), а хранит `finish` [состояния](./state).
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+Цвет, которым закрашивает [«Закрасить»](../guide/tools/redact). Его принимает [`setRedaction()`](./methods#setredaction), а хранит `redaction` [состояния](./state).
 
 ### `Fit`
 

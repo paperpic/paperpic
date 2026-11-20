@@ -4,6 +4,7 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 
 | English                                       | Italiano                    |
 | --------------------------------------------- | --------------------------- |
+| area, what Redact covers                      | area                        |
 | container                                     | contenitore                 |
 | corner handle                                 | maniglia d’angolo           |
 | CSS token                                     | token CSS                   |

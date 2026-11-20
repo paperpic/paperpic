@@ -4,6 +4,7 @@ Use these words in the French docs, so that each idea has one name on every page
 
 | English                                       | Français              |
 | --------------------------------------------- | --------------------- |
+| area, what Redact covers                      | zone                  |
 | container                                     | conteneur             |
 | corner handle                                 | poignée d’angle       |
 | CSS token                                     | jeton CSS             |
