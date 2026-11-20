@@ -1,5 +1,27 @@
 # @paperpic/react
 
+## 0.5.0
+
+### Minor Changes
+
+- [#101](https://github.com/paperpic/paperpic/pull/101) [`8035456`](https://github.com/paperpic/paperpic/commit/8035456714aab681e3d2805e6293d923d14f8008) Thanks [@Unlooper](https://github.com/Unlooper)! - Clean up now chooses a finish: the original, gray or black and white. Gray keeps brightness and contrast, so Adjust is disabled only in black and white. This release renames the API of Clean up, so code that uses it needs these changes:
+  
+  - `setThreshold({ enabled, sensitivity })` is now `setFinish({ mode, sensitivity })`, where `mode` is `'original'`, `'gray'` or `'mono'`. Replace `enabled: true` with `mode: 'mono'`, and `enabled: false` with `mode: 'original'`.
+  - `getState().threshold` is now `getState().finish`, with `{ mode, sensitivity }` in place of `{ enabled, sensitivity }`.
+  - The tool id `'threshold'` is now `'finish'`, in `tools`, `openTool()` and `getState().activeTool`, and in the `data-paperpic-tool` attribute of the root.
+  - The `labels` keys `threshold`, `thresholdLevel` and `thresholdSensitivity` are now `finish`, `finishLevel` and `finishSensitivity`, with three new keys for the finishes: `finishOriginal`, `finishGray` and `finishMono`. The `data-paperpic-control` values follow them.
+  - The `icons` key `threshold` is now `finish`.
+  - The switch of Clean up is gone, and the original finish turns it off. Its classes, `paperpic-edit-switch`, `paperpic-edit-switch-track` and `paperpic-edit-switch-thumb`, are gone too.
+  
+  The `FinishMode` type names the finishes.
+
+- [#103](https://github.com/paperpic/paperpic/pull/103) [`721d632`](https://github.com/paperpic/paperpic/commit/721d632ddb12ba6d0e2b872aac3666469def0416) Thanks [@Unlooper](https://github.com/Unlooper)! - Add Redact, a tool that covers an area with solid black or white, such as an account number or a signature. The area is a rectangle that moves as a whole, turns by a handle to lean with a line of text, and resizes by its corners. Each Done leaves one area, which follows the edits after it and runs after Adjust and Clean up, and Apply writes it into the pixels of the result. `setRedaction({ color })` chooses the color, `getState().redaction` reports it, and the new type `RedactColor` names it. The tool id is `'redact'`, and it joins the edit bar by default: pass `tools` without it to leave it out.
+
+### Patch Changes
+
+- Updated dependencies [[`8035456`](https://github.com/paperpic/paperpic/commit/8035456714aab681e3d2805e6293d923d14f8008), [`721d632`](https://github.com/paperpic/paperpic/commit/721d632ddb12ba6d0e2b872aac3666469def0416)]:
+  - @paperpic/core@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes
