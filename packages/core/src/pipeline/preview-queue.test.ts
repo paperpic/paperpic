@@ -1,6 +1,6 @@
 import type { Preview } from './preview'
 import type { PreviewQueueHost } from './preview-queue'
-import type { PipelineStep, ToneStep } from './steps'
+import type { ShapeStep, ToneStep } from './steps'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PreviewQueue } from './preview-queue'
 
@@ -8,10 +8,10 @@ import { PreviewQueue } from './preview-queue'
 interface Pending {
   fail: (cause: unknown) => void
   finish: () => Preview
-  steps: PipelineStep[]
+  steps: ShapeStep[]
 }
 
-function crop(x: number): PipelineStep[] {
+function crop(x: number): ShapeStep[] {
   return [
     {
       type: 'crop',
@@ -60,7 +60,7 @@ describe('previewQueue', () => {
   })
 
   it('renders a preview and hands it over', async () => {
-    queue.request(crop(0), null)
+    queue.request(crop(0), null, null)
     expect(queue.pending).toBe(true)
     const preview = renders[0]!.finish()
     await settle()
@@ -69,9 +69,9 @@ describe('previewQueue', () => {
   })
 
   it('renders one at a time, and only the latest of those that waited', async () => {
-    queue.request(crop(0), null)
-    queue.request(crop(0.1), null)
-    queue.request(crop(0.2), null)
+    queue.request(crop(0), null, null)
+    queue.request(crop(0.1), null, null)
+    queue.request(crop(0.2), null, null)
     expect(renders).toHaveLength(1)
 
     const outdated = renders[0]!.finish()
@@ -93,8 +93,8 @@ describe('previewQueue', () => {
   })
 
   it('reports only the failure of the latest preview', async () => {
-    queue.request(crop(0), null)
-    queue.request(crop(0.1), null)
+    queue.request(crop(0), null, null)
+    queue.request(crop(0.1), null, null)
     renders[0]!.fail(new Error('outdated'))
     await settle()
     expect(host.failed).not.toHaveBeenCalled()
@@ -107,8 +107,8 @@ describe('previewQueue', () => {
   })
 
   it('hands over nothing that was asked for before forget, and frees it', async () => {
-    queue.request(crop(0), null)
-    queue.request(crop(0.1), null)
+    queue.request(crop(0), null, null)
+    queue.request(crop(0.1), null, null)
     queue.forget()
     expect(queue.pending).toBe(false)
 

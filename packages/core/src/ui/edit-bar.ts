@@ -1,8 +1,9 @@
 import type { FinishMode } from '../pipeline/operations'
+import type { RedactColor } from '../processing/redact'
 import type { Tool, ToolId } from '../tools/types'
 import type { PaperPicIcons } from './icons'
 import type { PaperPicLabels } from './labels'
-import { FINISH_MODES } from '../pipeline/operations'
+import { FINISH_MODES, REDACT_COLORS } from '../pipeline/operations'
 import { attachRovingFocus, createButton, nameButton, setIcon } from './button'
 import { DEFAULT_ICONS } from './icons'
 import { Ruler } from './ruler'
@@ -18,6 +19,12 @@ const FINISH_LABELS = {
   gray: 'finishGray',
   mono: 'finishMono',
 } as const satisfies Record<FinishMode, keyof PaperPicLabels>
+
+/** The key of `PaperPicLabels` that names each color of Redact, which its button also carries in `data-paperpic-control`. */
+const REDACT_LABELS = {
+  black: 'redactBlack',
+  white: 'redactWhite',
+} as const satisfies Record<RedactColor, keyof PaperPicLabels>
 
 /** A row of buttons that chooses one of its names, each with a text. */
 interface Choice<Name extends string> {
@@ -58,6 +65,8 @@ export interface EditBarCommands {
   setAdjustment: (name: AdjustmentName, value: number, released: boolean) => void
   /** Changes what Clean up shows. `released` once the user lets go of the ruler, or chooses a finish. */
   setFinish: (setting: { mode?: FinishMode, sensitivity?: number }, released: boolean) => void
+  /** Chooses the color that Redact covers with. */
+  setRedaction: (color: RedactColor) => void
   undo: () => void
   zoomIn: () => void
   zoomOut: () => void
@@ -77,6 +86,8 @@ export interface EditBarState {
   canZoomOut: boolean
   /** The finish on display, which an open Clean up may still change. */
   finish: { mode: FinishMode, sensitivity: number }
+  /** The color that Redact covers with. */
+  redaction: { color: RedactColor }
 }
 
 /** Creates a dot that marks a button whose setting is in effect. */
@@ -102,6 +113,7 @@ export class EditBar {
   private readonly rulers: Record<AdjustmentName | 'sensitivity', Ruler>
   private readonly adjustments: Choice<AdjustmentName>
   private readonly finishes: Choice<FinishMode>
+  private readonly colors: Choice<RedactColor>
   private readonly inUse: HTMLElement
   /** Why Adjust cannot open in black and white, for screen readers. */
   private readonly adjustUnavailable: HTMLElement
@@ -200,7 +212,8 @@ export class EditBar {
     this.adjustments = createChoice(ADJUSTMENTS, name => name, name => this.chooseAdjustment(name))
     // The original turns Clean up off without undoing what came after
     this.finishes = createChoice(FINISH_MODES, mode => FINISH_LABELS[mode], mode => commands.setFinish({ mode }, true))
-    choice.append(this.title, this.adjustments.element, this.finishes.element)
+    this.colors = createChoice(REDACT_COLORS, color => REDACT_LABELS[color], color => commands.setRedaction(color))
+    choice.append(this.title, this.adjustments.element, this.finishes.element, this.colors.element)
 
     this.toolControls.append(this.cancelToolButton, panel, choice, this.confirmToolButton)
 
@@ -293,6 +306,10 @@ export class EditBar {
     for (const mode of FINISH_MODES) {
       this.finishes.texts[mode].textContent = labels[FINISH_LABELS[mode]]
     }
+    this.colors.element.setAttribute('aria-label', labels.redact)
+    for (const color of REDACT_COLORS) {
+      this.colors.texts[color].textContent = labels[REDACT_LABELS[color]]
+    }
     this.inUse.textContent = labels.inUse
     this.adjustUnavailable.textContent = labels.adjustUnavailable
     this.showHint()
@@ -346,7 +363,7 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow, and what the panel of an open tool shows. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments, redaction }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
@@ -371,6 +388,9 @@ export class EditBar {
     for (const mode of FINISH_MODES) {
       this.finishes.buttons[mode].setAttribute('aria-pressed', String(mode === finish.mode))
       this.finishes.buttons[mode].setAttribute('aria-disabled', String(busy))
+    }
+    for (const color of REDACT_COLORS) {
+      this.colors.buttons[color].setAttribute('aria-pressed', String(color === redaction.color))
     }
     this.rulers.sensitivity.set(finish.sensitivity)
     this.rulers.sensitivity.setDisabled(busy || !mono)
@@ -437,15 +457,22 @@ export class EditBar {
     const name = this.activeTool
       ? this.labels[this.activeTool.actions[0]!.id]
       : ''
-    const hasCorners = id === 'crop' || id === 'perspective'
+    // A tool with a selection has its corners in the panel, and a choice of its own, or else its name
+    const hasCorners = this.activeTool?.activate !== undefined
+    const choices: Partial<Record<ToolId, HTMLElement>> = {
+      adjust: this.adjustments.element,
+      finish: this.finishes.element,
+      redact: this.colors.element,
+    }
+    const choice = id && choices[id]
     this.toolControls.setAttribute('aria-label', name)
     this.corners.hidden = !hasCorners
-    // A tool without a choice shows its name in its place
-    this.title.hidden = !hasCorners
+    this.title.hidden = !hasCorners || Boolean(choice)
     this.title.textContent = name
+    for (const element of Object.values(choices)) {
+      element.hidden = element !== choice
+    }
     this.rulers.sensitivity.element.hidden = id !== 'finish'
-    this.finishes.element.hidden = id !== 'finish'
-    this.adjustments.element.hidden = id !== 'adjust'
     for (const name of ADJUSTMENTS) {
       this.rulers[name].element.hidden = id !== 'adjust' || name !== this.adjustment
       this.adjustments.buttons[name].setAttribute('aria-pressed', String(name === this.adjustment))

@@ -1,6 +1,6 @@
 import type { ToolContext, ToolHost } from './types'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { DEFAULT_LABELS } from '../ui/labels'
+import { toolHost } from '../test/tool-host'
 import { cropTool } from './crop'
 
 const frame = { width: 1000, height: 500 }
@@ -21,25 +21,8 @@ describe('crop tool', () => {
   }
 
   beforeEach(() => {
-    const layer = document.createElement('div')
-    document.body.replaceChildren(layer)
-    host = {
-      layer,
-      frameSize: () => frame,
-      frameToViewport: point => point,
-      viewportToFrame: point => point,
-      reveal: () => {},
-      requestPaint: () => {},
-      setHint: () => {},
-      announce: () => {},
-      labels: () => DEFAULT_LABELS,
-      photoFrame: () => ({
-        photo: frame,
-        origin: { x: 0, y: 0 },
-      }),
-      aspectRatio: () => undefined,
-      paintMagnifier: () => {},
-    }
+    host = toolHost(frame)
+    document.body.replaceChildren(host.layer)
   })
 
   it('opens itself from its button', () => {

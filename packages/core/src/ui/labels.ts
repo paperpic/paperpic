@@ -75,6 +75,22 @@ export interface PaperPicLabels {
   previewError: string
   /** Shown while applying the changes. */
   processing: string
+  /** Opens Redact, which covers an area with black or white, and names its choice of color. */
+  redact: string
+  /** Announced after turning the area of Redact, with its angle in degrees, clockwise. */
+  redactAngle: (degrees: number) => string
+  /** The area of Redact, which moves it as a whole. */
+  redactArea: string
+  /** Chooses black in Redact. */
+  redactBlack: string
+  /** What to do in Redact. */
+  redactHint: string
+  /** The handle that turns the area of Redact. */
+  redactTurn: string
+  /** Describes the handle that turns the area of Redact to screen readers: what the keys do, and that Enter finishes. */
+  redactTurnKeys: string
+  /** Chooses white in Redact. */
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -136,6 +152,14 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   perspectiveHint: 'Drag each corner to a corner of the document',
   previewError: 'The changes could not be shown',
   processing: 'Applying changes',
+  redact: 'Redact',
+  redactAngle: degrees => `Angle ${degrees}°`,
+  redactArea: 'Area',
+  redactBlack: 'Black',
+  redactHint: 'Drag the area over what to hide',
+  redactTurn: 'Turn',
+  redactTurnKeys: 'Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.',
+  redactWhite: 'White',
   redo: 'Redo',
   rotateLeft: 'Rotate left',
   rotateRight: 'Rotate right',

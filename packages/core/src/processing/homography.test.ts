@@ -1,14 +1,6 @@
-import type { Matrix3 } from './homography'
-import type { Point, Quad } from './types'
+import type { Quad } from './types'
 import { describe, expect, it } from 'vitest'
-import { estimateOutputSize, solveHomography } from './homography'
-
-/** Applies a projective transform to a point, as the warp does to each pixel. */
-function applyHomography(matrix: Matrix3, { x, y }: Point): Point {
-  const [a, b, c, d, e, f, g, h, i] = matrix
-  const w = g * x + h * y + i
-  return { x: (a * x + b * y + c) / w, y: (d * x + e * y + f) / w }
-}
+import { estimateOutputSize, projectPoint, solveHomography } from './homography'
 
 const square: Quad = [
   { x: 0, y: 0 },
@@ -34,7 +26,7 @@ describe('solveHomography', () => {
   it('sends every corner to its target', () => {
     const matrix = solveHomography(square, skewed)
     square.forEach((corner, index) => {
-      const mapped = applyHomography(matrix, corner)
+      const mapped = projectPoint(matrix, corner)
       expect(mapped.x).toBeCloseTo(skewed[index]!.x, 8)
       expect(mapped.y).toBeCloseTo(skewed[index]!.y, 8)
     })
@@ -44,7 +36,7 @@ describe('solveHomography', () => {
     const forward = solveHomography(square, skewed)
     const backward = solveHomography(skewed, square)
     const point = { x: 37, y: 81 }
-    const result = applyHomography(backward, applyHomography(forward, point))
+    const result = projectPoint(backward, projectPoint(forward, point))
     expect(result.x).toBeCloseTo(point.x, 8)
     expect(result.y).toBeCloseTo(point.y, 8)
   })

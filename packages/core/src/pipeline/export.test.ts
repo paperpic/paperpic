@@ -1,5 +1,7 @@
 import type { PixelBuffer } from '../processing/types'
+import type { CanvasMocks } from '../test/canvas'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { stubCanvas } from '../test/canvas'
 import { exportImage, resolveOutputType } from './export'
 
 const steps = [
@@ -35,15 +37,7 @@ describe('resolveOutputType', () => {
 
 describe('exportImage with a crop', () => {
   it('reads only that part, and has nothing left to run', async () => {
-    const drawImage = vi.fn()
-    vi.stubGlobal('ImageData', class {})
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
-      drawImage,
-      getImageData: (_x: number, _y: number, width: number, height: number) => ({
-        data: new Uint8ClampedArray(width * height * 4),
-      }),
-      putImageData: vi.fn(),
-    } as unknown as CanvasRenderingContext2D)
+    const { drawImage } = stubCanvas()
     HTMLCanvasElement.prototype.toBlob = (done, type) => done(new Blob(['x'], { type }))
     const image = {} as CanvasImageSource
     const run = vi.fn()
@@ -76,21 +70,14 @@ describe('exportImage with a crop', () => {
 })
 
 describe('exportImage', () => {
-  const drawImage = vi.fn()
-  const getImageData = vi.fn()
-  const putImageData = vi.fn()
+  let drawImage: CanvasMocks['drawImage']
+  let getImageData: CanvasMocks['getImageData']
   const toBlob = vi.fn()
   const image = {} as CanvasImageSource
   const run = vi.fn()
 
   beforeEach(() => {
-    drawImage.mockReset()
-    putImageData.mockReset()
     run.mockReset()
-    getImageData.mockReset()
-    getImageData.mockImplementation((_x: number, _y: number, width: number, height: number) => ({
-      data: new Uint8ClampedArray(width * height * 4),
-    }))
     toBlob.mockReset()
     toBlob.mockImplementation((done: (blob: Blob) => void, type: string) => done(new Blob(['x'], { type })))
     run.mockImplementation(async ({ width, height }: PixelBuffer) => ({
@@ -98,12 +85,9 @@ describe('exportImage', () => {
       width: height,
       height: width,
     }))
-    vi.stubGlobal('ImageData', class {})
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
-      drawImage,
-      getImageData,
-      putImageData,
-    } as unknown as CanvasRenderingContext2D)
+    const canvas = stubCanvas()
+    drawImage = canvas.drawImage
+    getImageData = canvas.getImageData
     HTMLCanvasElement.prototype.toBlob = toBlob
   })
 

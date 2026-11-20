@@ -254,6 +254,32 @@
     display: none;
   }
 
+  /* The area of Redact, which moves as a whole. The canvas paints it, so the element only takes the pointer and the focus */
+  .paperpic-area {
+    position: absolute;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: move;
+    translate: -50% -50%;
+    pointer-events: auto;
+    touch-action: none;
+  }
+
+  .paperpic-area[hidden] {
+    display: none;
+  }
+
+  .paperpic-area:focus-visible {
+    outline: 2px solid var(--paperpic-color-accent);
+    outline-offset: 2px;
+  }
+
+  .paperpic-handle[data-paperpic-control='redactTurn'] {
+    cursor: grab;
+  }
+
   .paperpic-handle::before {
     content: '';
     display: block;

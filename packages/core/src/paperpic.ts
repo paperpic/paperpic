@@ -7,6 +7,7 @@ import type { LoadedImage, PaperPicSource } from './pipeline/load-image'
 import type { FinishMode, Operation } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
 import type { ToneStep } from './pipeline/steps'
+import type { RedactColor } from './processing/redact'
 import type { Size } from './processing/types'
 import type { Scene } from './render/renderer'
 import type { History } from './state/history'
@@ -19,7 +20,7 @@ import { DEFAULT_OPTIONS, mergeOptions, OPTION_NAMES, sameOption, validateOption
 import { downloadName, saveFile } from './pipeline/download'
 import { exportImage } from './pipeline/export'
 import { loadImage } from './pipeline/load-image'
-import { adjustSetting, FINISH_MODES, finishSetting, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
+import { adjustSetting, FINISH_MODES, finishSetting, previewRedaction, REDACT_COLORS, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './pipeline/operations'
 import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PreviewQueue } from './pipeline/preview-queue'
@@ -91,6 +92,8 @@ export interface PaperPicState {
   image: Size | null
   /** Whether the user is viewing or editing the image. */
   mode: 'view' | 'edit'
+  /** The color that Redact covers with: the one it shows while open, and the next one otherwise. */
+  redaction: { color: RedactColor }
   /** How far the image on display is turned from `image`, in degrees clockwise. */
   rotation: Rotation
   /** Whether there is an image, and whether it loaded. */
@@ -170,7 +173,7 @@ export class PaperPic {
   private preview: Preview | null = null
   private previewKey = NO_PREVIEW
   private readonly previewQueue = new PreviewQueue({
-    render: (steps, tone) => renderPreview(this.image!, steps, tone, this.runner),
+    render: (steps, tone, redaction) => renderPreview(this.image!, steps, tone, redaction, this.runner),
     ready: preview => this.showPreview(preview),
     failed: cause => this.previewFailed(cause),
     tint: (tone) => {
@@ -187,6 +190,8 @@ export class PaperPic {
   private hintOverride: string | null = null
   /** The open Adjust or Clean up. */
   private draft: PanelDraft | null = null
+  /** The color of Redact, which stays for the next area. */
+  private redactColor: RedactColor = 'black'
   private loadStatus: PaperPicState['status'] = 'empty'
   private loadId = 0
   /** Changes when an edit ends without a trace, so an Apply that finishes afterwards knows that its edit is gone. */
@@ -285,6 +290,7 @@ export class PaperPic {
             this.announce(this.labels.finishLevel(Math.round(setting.sensitivity * 100)))
           }
         },
+        setRedaction: color => this.setRedaction({ color }),
         setAdjustment: (name, value, released) => {
           this.setAdjustments({ [name]: value })
           if (released) {
@@ -454,6 +460,7 @@ export class PaperPic {
       activeTool: this.openToolId(),
       finish: { mode, sensitivity },
       adjustments: { brightness, contrast },
+      redaction: { color: this.redactColor },
     }
   }
 
@@ -569,10 +576,10 @@ export class PaperPic {
   }
 
   /**
-   * Opens a tool: `crop` or `perspective`, with their corners, or `adjust` or `finish`, with their panel. It stays open
+   * Opens a tool: `crop`, `perspective` or `redact`, with their corners, or `adjust` or `finish`, with their panel. It stays open
    * until `confirmTool()` or `cancelTool()`. Opening `finish` from the original chooses black and white, so the preview
    * shows what it does.
-   * It does nothing outside the edit mode, while another tool is open, or for Crop and Straighten while a preview is on its way.
+   * It does nothing outside the edit mode, while another tool is open, or for Crop, Straighten and Redact while a preview is on its way.
    *
    * @example
    * pic.edit()
@@ -729,6 +736,34 @@ export class PaperPic {
     if (edit) {
       this.addOperation(edit)
     }
+  }
+
+  /**
+   * Chooses the color that Redact covers with, `'black'` or `'white'`. While Redact is open, it changes the area it
+   * shows, which `confirmTool()` keeps. Otherwise it is the color of the next area. Black is the default.
+   *
+   * @throws {RangeError} If `color` is not `'black'` or `'white'`.
+   *
+   * @example
+   * pic.edit()
+   * pic.openTool('redact')
+   * pic.setRedaction({ color: 'white' })
+   * pic.confirmTool()
+   */
+  setRedaction({ color }: { color?: RedactColor }): void {
+    if (color === undefined) {
+      return
+    }
+    if (!REDACT_COLORS.includes(color)) {
+      throw new RangeError(`color must be ${REDACT_COLORS.map(name => `'${name}'`).join(' or ')}, got ${String(color)}`)
+    }
+    if (color === this.redactColor) {
+      return
+    }
+    this.redactColor = color
+    this.renderer.requestPaint()
+    this.refresh()
+    this.emit('change', this.getState())
   }
 
   /** Discards the edits and goes back to viewing. It does not ask: the built-in Cancel button does that. */
@@ -935,6 +970,7 @@ export class PaperPic {
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
+      redactColor: () => this.redactColor,
       paintMagnifier: (context, magnifier) => paintMagnifier(context, magnifier, {
         view: this.view,
         image: shown(),
@@ -1152,19 +1188,20 @@ export class PaperPic {
   private updatePreview(): void {
     const steps = toPreviewSteps(this.history.done)
     const tone = this.previewTone()
-    const key = JSON.stringify({ steps, tone: tone?.type ?? null })
+    const redaction = previewRedaction(this.history.done)
+    const key = JSON.stringify({ steps, tone: tone?.type ?? null, redaction })
     if (key === this.previewKey) {
       this.syncRotation()
       if (tone) {
         this.previewQueue.scheduleTint(tone)
       }
     }
-    else if (steps.length === 0 && !tone) {
+    else if (steps.length === 0 && !tone && !redaction) {
       this.setPreview(null)
     }
     else {
       this.previewKey = key
-      this.previewQueue.request(steps, tone)
+      this.previewQueue.request(steps, tone, redaction)
     }
   }
 
