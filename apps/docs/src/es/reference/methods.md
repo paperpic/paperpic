@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'finish'`), que al abrirse elige blanco y negro cuando el acabado es el original. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar en blanco y negro, ni para Recortar y Enderezar mientras llega una vista previa.
 
+Tapar (`'redact'`) también se abre con esquinas, como Recortar.
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Cambia el brillo o el contraste, cada uno de -1 a 1, donde 0 deja la imagen como está. Se aplican después de los demás cambios, y antes del gris. Con Ajustar abierta, cambia lo que muestra Ajustar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición, con otra herramienta abierta ni en blanco y negro: el blanco y negro compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado.
 
 Lanza un `RangeError` si un valor no está entre -1 y 1.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Elige el color con el que cubre [Tapar](../guide/tools/redact): `'black'`, el valor por defecto, o `'white'`. Con Tapar abierta, cambia la zona en pantalla, y [`confirmTool()`](#confirmtool) la conserva. Si no, es el color de la próxima zona. Funciona en cualquier modo.
+
+Lanza un `RangeError` si `color` no es un [`RedactColor`](./types#redactcolor).
 
 ### `undo()`
 

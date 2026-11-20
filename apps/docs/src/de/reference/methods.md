@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'finish'`), das beim Öffnen Schwarzweiß wählt, wenn das Finish das Original ist. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen in Schwarzweiß und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
 
+Abdecken (`'redact'`) öffnet sich ebenfalls mit Ecken, wie Zuschneiden.
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen und vor Graustufen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder in Schwarzweiß: Schwarzweiß vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern.
 
 Wirft einen `RangeError`, wenn ein Wert nicht zwischen -1 und 1 liegt.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Wählt die Farbe, mit der [Abdecken](../guide/tools/redact) überdeckt: `'black'`, die Voreinstellung, oder `'white'`. Solange Abdecken offen ist, ändert es den angezeigten Bereich, und [`confirmTool()`](#confirmtool) behält ihn. Sonst ist es die Farbe des nächsten Bereichs. Es funktioniert in jedem Modus.
+
+Wirft einen `RangeError`, wenn `color` keine [`RedactColor`](./types#redactcolor) ist.
 
 ### `undo()`
 

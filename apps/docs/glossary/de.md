@@ -4,6 +4,7 @@ Use these words in the German docs, so that each idea has one name on every page
 
 | English                                       | Deutsch            |
 | --------------------------------------------- | ------------------ |
+| area, what Redact covers                      | Bereich            |
 | container                                     | Container          |
 | corner handle                                 | Eckgriff           |
 | CSS token                                     | CSS-Token          |

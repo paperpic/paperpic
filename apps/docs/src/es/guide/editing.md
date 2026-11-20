@@ -27,6 +27,7 @@ En un visor estrecho, la barra de edición tiene dos filas: arriba, las herramie
 | [Voltear](./tools/rotate-and-flip)              | Voltea la imagen de izquierda a derecha                                   | `flip`        |
 | [Ajustar](./tools/adjust)                       | Cambia el brillo y el contraste                                           | `adjust`      |
 | [Limpiar](./tools/clean-up)                     | Convierte el documento en gris, o en un blanco y negro nítido sin sombras | `finish`      |
+| [Tapar](./tools/redact)                         | Cubre una zona con negro o blanco sólidos                                 | `redact`      |
 
 La opción [`tools`](../reference/options#tools) elige cuáles ofrece la barra de edición:
 
@@ -70,7 +71,7 @@ export function Receipt() {
 
 :::
 
-Recortar, Enderezar, Ajustar y Limpiar abren un panel en lugar de las herramientas. Mientras una de ellas está abierta, las demás herramientas, Deshacer, Rehacer y Aplicar esperan. Hecho, o `Enter`, añade a los cambios lo que eligió la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
+Recortar, Enderezar, Tapar, Ajustar y Limpiar abren un panel en lugar de las herramientas. Mientras una de ellas está abierta, las demás herramientas, Deshacer, Rehacer y Aplicar esperan. Hecho, o `Enter`, añade a los cambios lo que eligió la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
 
 Dentro de un panel, la imagen se ve como quedará el resultado, con Limpiar incluida. Enderezar es la excepción: muestra la foto sin blanco y negro, para que los bordes del papel se sigan viendo.
 

@@ -4,6 +4,7 @@ Use these words in the Korean docs, so that each idea has one name on every page
 
 | English                                       | 한국어         |
 | --------------------------------------------- | -------------- |
+| area, what Redact covers                      | 영역           |
 | container                                     | 컨테이너       |
 | corner handle                                 | 모서리 핸들    |
 | CSS token                                     | CSS 토큰       |

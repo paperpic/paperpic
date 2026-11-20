@@ -27,6 +27,7 @@ In einem schmalen Viewer hat die Bearbeitungsleiste zwei Zeilen: oben die Werkze
 | [Spiegeln](./tools/rotate-and-flip)          | Spiegelt das Bild von links nach rechts                          | `flip`        |
 | [Anpassen](./tools/adjust)                   | Ändert Helligkeit und Kontrast                                   | `adjust`      |
 | [Bereinigen](./tools/clean-up)               | Macht das Dokument grau oder zu klarem Schwarzweiß ohne Schatten | `finish`      |
+| [Abdecken](./tools/redact)                   | Überdeckt einen Bereich mit deckendem Schwarz oder Weiß          | `redact`      |
 
 Die Option [`tools`](../reference/options#tools) wählt aus, welche die Bearbeitungsleiste anbietet:
 
@@ -70,7 +71,7 @@ export function Receipt() {
 
 :::
 
-Zuschneiden, Begradigen, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge. Solange eines davon offen ist, warten die anderen Werkzeuge, Rückgängig, Wiederholen und Übernehmen. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
+Zuschneiden, Begradigen, Abdecken, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge. Solange eines davon offen ist, warten die anderen Werkzeuge, Rückgängig, Wiederholen und Übernehmen. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
 
 In einem Bedienfeld sieht das Bild so aus, wie das Ergebnis wird, mit Bereinigen. Begradigen ist die Ausnahme: Es zeigt das Foto ohne Schwarzweiß, damit die Ränder des Papiers sichtbar bleiben.
 

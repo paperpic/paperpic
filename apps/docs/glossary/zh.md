@@ -4,6 +4,7 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 
 | English                                       | 简体中文   |
 | --------------------------------------------- | ---------- |
+| area, what Redact covers                      | 区域       |
 | container                                     | 容器       |
 | corner handle                                 | 角点手柄   |
 | CSS token                                     | CSS 令牌   |

@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 Opens a tool with a panel: Crop (`'crop'`), Straighten (`'perspective'`), Adjust (`'adjust'`) or Clean up (`'finish'`), which chooses black and white as it opens when the finish is the original. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool). Meanwhile, no other edit can start, and Undo, Redo and Apply do nothing. It does nothing outside the edit mode, while another tool is open, for Adjust in black and white, and for Crop and Straighten while a preview is on its way.
 
+Redact (`'redact'`) opens with corners too, as Crop does.
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits, and before gray. While Adjust is open, it changes what Adjust shows, and [`confirmTool()`](#confirmtool) keeps it as one edit. It does nothing outside the edit mode, while another tool is open or in black and white: black and white compares each pixel with its surroundings, so brightness and contrast would barely change its result.
 
 It throws a `RangeError` if a value is not between -1 and 1.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Chooses the color that [Redact](../guide/tools/redact) covers with: `'black'`, the default, or `'white'`. While Redact is open, it changes the area on display, and [`confirmTool()`](#confirmtool) keeps it. Otherwise it is the color of the next area. It works in any mode.
+
+It throws a `RangeError` if `color` is not a [`RedactColor`](./types#redactcolor).
 
 ### `undo()`
 

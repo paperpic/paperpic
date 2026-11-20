@@ -64,6 +64,7 @@ The tools the edit bar offers. They keep the order of this table, whatever the o
 | `'flip'`        | Flip                                |
 | `'adjust'`      | Adjust, for brightness and contrast |
 | `'finish'`      | Clean up                            |
+| `'redact'`      | Redact                              |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ Each key names an icon, and some icons appear on two buttons:
 | `fitWidth`       | Fit to width                                       |
 | `flip`           | Flip                                               |
 | `perspective`    | Straighten                                         |
+| `redact`         | Redact                                             |
 | `redo`           | Redo                                               |
 | `rotateDocument` | Rotate left, in the edit bar                       |
 | `rotateLeft`     | Rotate left, in the toolbar of a read-only viewer  |

@@ -4,6 +4,7 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 
 | English                                       | 日本語                   |
 | --------------------------------------------- | ------------------------ |
+| area, what Redact covers                      | 領域                     |
 | container                                     | コンテナー               |
 | corner handle                                 | 角のハンドル             |
 | CSS token                                     | CSS トークン             |

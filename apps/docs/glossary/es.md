@@ -4,6 +4,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 
 | English                                       | Español               |
 | --------------------------------------------- | --------------------- |
+| area, what Redact covers                      | zona                  |
 | container                                     | contenedor            |
 | corner handle                                 | tirador de esquina    |
 | CSS token                                     | token CSS             |

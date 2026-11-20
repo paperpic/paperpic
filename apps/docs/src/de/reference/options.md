@@ -64,6 +64,7 @@ Die Werkzeuge, die die Bearbeitungsleiste anbietet. Sie behalten die Reihenfolge
 | `'flip'`        | Spiegeln                              |
 | `'adjust'`      | Anpassen, für Helligkeit und Kontrast |
 | `'finish'`      | Bereinigen                            |
+| `'redact'`      | Abdecken                              |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltfläch
 | `fitWidth`       | An Breite anpassen                                                         |
 | `flip`           | Spiegeln                                                                   |
 | `perspective`    | Begradigen                                                                 |
+| `redact`         | Abdecken                                                                   |
 | `redo`           | Wiederholen                                                                |
 | `rotateDocument` | Nach links drehen, in der Bearbeitungsleiste                               |
 | `rotateLeft`     | Nach links drehen, in der Werkzeugleiste eines schreibgeschützten Viewers  |

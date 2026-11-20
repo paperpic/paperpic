@@ -77,7 +77,7 @@ Das Format des bearbeiteten Bildes, in [`output`](./options#output).
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 Ein Werkzeug der Bearbeitungsleiste, in [`tools`](./options#tools), [`openTool()`](./methods#opentool) und im `activeTool` des [Zustands](./state). [`tools`](./options#tools) nennt die Schaltfläche jedes Werkzeugs.
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 Das Finish von [Bereinigen](../guide/tools/clean-up): die ursprünglichen Töne, Graustufen oder Schwarzweiß mit `'mono'`. [`setFinish()`](./methods#setfinish) nimmt es an, und das `finish` des [Zustands](./state) enthält es.
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+Die Farbe, mit der [Abdecken](../guide/tools/redact) überdeckt. [`setRedaction()`](./methods#setredaction) nimmt sie an, und `redaction` im [Zustand](./state) enthält sie.
 
 ### `Fit`
 

@@ -4,6 +4,7 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 
 | English                                       | Русский                         |
 | --------------------------------------------- | ------------------------------- |
+| area, what Redact covers                      | область                         |
 | container                                     | контейнер                       |
 | corner handle                                 | угловой маркер                  |
 | CSS token                                     | CSS-токен                       |

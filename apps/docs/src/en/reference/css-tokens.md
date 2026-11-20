@@ -122,13 +122,14 @@ Every button, ruler and corner handle carries `data-paperpic-control`, with the 
 }
 ```
 
-| Place                      | Values                                                                                                                                                       |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Toolbar                    | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                                |
-| Edit bar                   | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `undo`, `redo`, `apply`                                                           |
-| Adjust and Clean up        | `brightness` and `contrast`, the choices and their rulers, `finishOriginal`, `finishGray` and `finishMono`, the finishes, and `finishSensitivity`, its ruler |
-| Every tool                 | `cancelTool`, `confirm`                                                                                                                                      |
-| Crop and Straighten        | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                              |
-| Question before discarding | `keepEditing`, `discard`                                                                                                                                     |
+| Place                       | Values                                                                                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Toolbar                     | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                                |
+| Edit bar                    | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                                 |
+| Adjust and Clean up         | `brightness` and `contrast`, the choices and their rulers, `finishOriginal`, `finishGray` and `finishMono`, the finishes, and `finishSensitivity`, its ruler |
+| Every tool                  | `cancelTool`, `confirm`                                                                                                                                      |
+| Crop, Straighten and Redact | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                              |
+| Redact                      | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                     |
+| Question before discarding  | `keepEditing`, `discard`                                                                                                                                     |
 
 `rotateLeft` names two buttons that never show at the same time: the one of a read-only viewer, which turns the display, and the one of the edit bar, which turns the image. So do `zoomIn` and `zoomOut`, in the toolbar and in a panel. `brightness` and `contrast` name a choice and its ruler, which show together: add `button` or `input` to the selector to tell them apart.

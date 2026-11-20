@@ -32,6 +32,7 @@
     "guide/tools/rotate-and-flip": "回転と反転",
     "guide/tools/adjust": "調整",
     "guide/tools/clean-up": "クリーンアップ",
+    "guide/tools/redact": "塗りつぶし",
     "guide/styling": "スタイル",
     "guide/labels": "インターフェースの翻訳",
     "guide/accessibility": "アクセシビリティ",
