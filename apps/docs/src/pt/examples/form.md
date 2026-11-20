@@ -151,6 +151,6 @@ export function ExpenseForm() {
 
 - O Aplicar coloca a imagem editada no campo de arquivo com um [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), então o formulário a envia com o mesmo nome. Antes de qualquer Aplicar, o formulário envia a foto como o usuário a escolheu.
 - Mudar os arquivos do campo pelo código não emite o evento `change` dele, então o visualizador mantém o resultado na tela.
-- O arquivo mantém o nome da foto, com a extensão do resultado, como `receipt.png` depois do Limpar.
+- O arquivo mantém o nome da foto, com a extensão do resultado, como `receipt.png` depois do Limpar em preto e branco.
 - Os botões do visualizador nunca enviam o formulário.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantém o formulário leve. Fotos de celular têm 12 megapixels ou mais, e os documentos continuam legíveis com 3000 pixels no lado maior.

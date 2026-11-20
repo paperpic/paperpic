@@ -195,7 +195,9 @@ Espelha a imagem da esquerda para a direita como ela aparece, então depois de u
 function openTool(id: ToolId): void
 ```
 
-Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'threshold'`), que liga ao abrir. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar com Limpar ligado, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
+Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'finish'`), que ao abrir escolhe preto e branco quando o acabamento é o original. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar em preto e branco, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
+
+Ocultar (`'redact'`) também abre com cantos, como Recortar.
 
 ### `confirmTool()`
 
@@ -213,15 +215,15 @@ function cancelTool(): void
 
 Fecha a ferramenta aberta e descarta as alterações dela, como faz o `Esc`.
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-Liga ou desliga Limpar, ou muda a sensibilidade, de 0 a 1. Limpar sempre vem depois das outras alterações. Enquanto Limpar está aberto, muda o que Limpar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição ou com outra ferramenta aberta.
+Escolhe o acabamento de [Limpar](../guide/tools/clean-up): `'original'`, `'gray'` ou `'mono'` para preto e branco. Também muda a sensibilidade do preto e branco, de 0 a 1. O acabamento sempre vem depois das outras alterações. Enquanto Limpar está aberto, muda o que Limpar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição ou com outra ferramenta aberta.
 
-Lança um `RangeError` se `sensitivity` não estiver entre 0 e 1.
+Lança um `RangeError` se `mode` não for um [`FinishMode`](./types#finishmode), ou se `sensitivity` não estiver entre 0 e 1.
 
 ### `setAdjustments()`
 
@@ -229,9 +231,19 @@ Lança um `RangeError` se `sensitivity` não estiver entre 0 e 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Muda o brilho ou o contraste, cada um de -1 a 1, em que 0 deixa a imagem como está. Eles vêm depois das outras alterações. Enquanto Ajustar está aberto, muda o que Ajustar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição, com outra ferramenta aberta ou com Limpar ligado: Limpar compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado.
+Muda o brilho ou o contraste, cada um de -1 a 1, em que 0 deixa a imagem como está. Eles vêm depois das outras alterações, e antes do cinza. Enquanto Ajustar está aberto, muda o que Ajustar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição, com outra ferramenta aberta ou em preto e branco: o preto e branco compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado.
 
 Lança um `RangeError` se um valor não estiver entre -1 e 1.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Escolhe a cor com que [Ocultar](../guide/tools/redact) cobre: `'black'`, o padrão, ou `'white'`. Enquanto Ocultar está aberto, muda a área na tela, e [`confirmTool()`](#confirmtool) a mantém. Senão, é a cor da próxima área. Funciona em qualquer modo.
+
+Lança um `RangeError` se `color` não for uma [`RedactColor`](./types#redactcolor).
 
 ### `undo()`
 

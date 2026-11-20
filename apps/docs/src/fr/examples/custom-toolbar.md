@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## Un curseur à vous {#slider}
 
-Un curseur à vous pour Nettoyer ouvre d’abord l’outil. Chaque mouvement appelle alors `setThreshold()`, qui change ce que Nettoyer affiche, et `confirmTool()` garde la dernière valeur comme une seule modification. Ici, Terminé applique aussi le résultat, et Annuler quitte le mode d’édition, si bien que ces contrôles forment toute l’interface.
+Un curseur à vous pour Nettoyer ouvre d’abord l’outil. Chaque mouvement appelle alors `setFinish()`, qui change ce que Nettoyer affiche, et `confirmTool()` garde la dernière valeur comme une seule modification. Ici, Terminé applique aussi le résultat, et Annuler quitte le mode d’édition, si bien que ces contrôles forment toute l’interface.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       Sensibilité
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       Terminé
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>Terminé</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - Avec `toolbar: false`, la barre de modification intégrée est aussi masquée, donc Recadrer et Redresser affichent leurs poignées mais pas de bouton Terminé. Votre interface les valide avec [`confirmTool()`](../reference/methods#confirmtool), comme `Entrée`. Pour les fermer sans leurs changements, appelez [`cancelTool()`](../reference/methods#canceltool), comme le fait `Échap`.
 - Tant que Recadrer ou Redresser est ouvert, `hint` dans l’état dit quoi faire, par exemple « Drag the corners », comme la barre de modification intégrée. Affichez-le, car avec `toolbar: false` rien d’autre ne le montre. Un nouveau hint, comme après avoir appuyé sur un coin, arrive avec `change`.
-- Vos propres curseurs peuvent appeler directement [`setThreshold()`](../reference/methods#setthreshold) et [`setAdjustments()`](../reference/methods#setadjustments), ce qui ajoute un changement à chaque appel. Pour laisser un seul changement pour tout un glissement, ouvrez d’abord l’outil avec [`openTool()`](../reference/methods#opentool) : les mêmes méthodes changent alors ce qu’il montre, et `confirmTool()` le garde.
+- Vos propres curseurs peuvent appeler directement [`setFinish()`](../reference/methods#setfinish) et [`setAdjustments()`](../reference/methods#setadjustments), ce qui ajoute un changement à chaque appel. Pour laisser un seul changement pour tout un glissement, ouvrez d’abord l’outil avec [`openTool()`](../reference/methods#opentool) : les mêmes méthodes changent alors ce qu’il montre, et `confirmTool()` le garde.
 - [`cancel()`](../reference/methods#cancel) ne demande rien avant d’abandonner les changements. Demandez à l’utilisateur s’il y en a, par exemple quand `canApply` est vrai.
 - Les raccourcis clavier fonctionnent toujours quand la visionneuse a le focus. Voir [Accessibilité](../guide/accessibility).

@@ -122,13 +122,14 @@ Cada botón, regla y tirador de esquina lleva `data-paperpic-control`, con la cl
 }
 ```
 
-| Lugar                       | Valores                                                                                                               |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Barra de herramientas       | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                         |
-| Barra de edición            | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                 |
-| Ajustar y Limpiar           | `brightness` y `contrast`, las opciones y sus reglas, `threshold`, el interruptor, y `thresholdSensitivity`, su regla |
-| Cada herramienta            | `cancelTool`, `confirm`                                                                                               |
-| Recortar y Enderezar        | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                       |
-| Pregunta antes de descartar | `keepEditing`, `discard`                                                                                              |
+| Lugar                       | Valores                                                                                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Barra de herramientas       | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                      |
+| Barra de edición            | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                       |
+| Ajustar y Limpiar           | `brightness` y `contrast`, las opciones y sus reglas, `finishOriginal`, `finishGray` y `finishMono`, los acabados, y `finishSensitivity`, su regla |
+| Cada herramienta            | `cancelTool`, `confirm`                                                                                                                            |
+| Recortar, Enderezar y Tapar | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                    |
+| Tapar                       | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                           |
+| Pregunta antes de descartar | `keepEditing`, `discard`                                                                                                                           |
 
-`rotateLeft` nombra dos botones que nunca se ven a la vez: el de un visor de solo lectura, que gira la vista, y el de la barra de edición, que gira la imagen. Lo mismo ocurre con `zoomIn` y `zoomOut`, en la barra de herramientas y en un panel, y con `threshold`, el botón de Limpiar y su interruptor. `brightness` y `contrast` nombran una opción y su regla, que se ven a la vez: añade `button` o `input` al selector para distinguirlas.
+`rotateLeft` nombra dos botones que nunca se ven a la vez: el de un visor de solo lectura, que gira la vista, y el de la barra de edición, que gira la imagen. Lo mismo ocurre con `zoomIn` y `zoomOut`, en la barra de herramientas y en un panel. `brightness` y `contrast` nombran una opción y su regla, que se ven a la vez: añade `button` o `input` al selector para distinguirlas.

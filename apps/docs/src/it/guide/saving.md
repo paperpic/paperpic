@@ -59,7 +59,7 @@ Il visualizzatore mostra subito il risultato, che arrivi o no al tuo server, qui
 
 ## Formato e qualità {#format}
 
-Senza opzioni, il risultato mantiene il formato dell’immagine originale quando è JPEG, PNG o WebP. PaperPic lo ricava dall’estensione dell’URL, come `.jpg`, o dal tipo del `File` o del `Blob`. Un documento pulito esce in PNG, perché il JPEG aggiungerebbe artefatti intorno ai suoi bordi netti. Anche qualsiasi altra immagine originale dà PNG, come una GIF, o un URL senza estensione come `/api/documents/42`, anche se serve un JPEG.
+Senza opzioni, il risultato mantiene il formato dell’immagine originale quando è JPEG, PNG o WebP. PaperPic lo ricava dall’estensione dell’URL, come `.jpg`, o dal tipo del `File` o del `Blob`. Un documento in bianco e nero esce in PNG, perché il JPEG aggiungerebbe artefatti intorno ai suoi bordi netti. Anche qualsiasi altra immagine originale dà PNG, come una GIF, o un URL senza estensione come `/api/documents/42`, anche se serve un JPEG.
 
 [`output`](../reference/options#output) sceglie il formato e la sua qualità da 0 a 1 per JPEG e WebP, con 0.92 come valore predefinito:
 
@@ -93,7 +93,7 @@ export function Receipt() {
 
 | Formato      | Adatto a                                                |
 | ------------ | ------------------------------------------------------- |
-| `image/png`  | Documenti puliti e testo, senza perdita                 |
+| `image/png`  | Documenti in bianco e nero, e testo, senza perdita      |
 | `image/jpeg` | Foto e documenti a colori, in file piccoli              |
 | `image/webp` | Foto e documenti a colori, in file più piccoli del JPEG |
 
@@ -139,7 +139,7 @@ Il risultato di Applica non contiene metadati. PaperPic disegna l’immagine su 
 
 [`download: true`](../reference/options#download) aggiunge in fondo alla barra degli strumenti un pulsante che salva l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale così com’è. È nascosto durante la modifica, perché le modifiche non sono ancora applicate. [`download()`](../reference/methods#download) fa lo stesso dal codice, con o senza il pulsante. Il menu contestuale del browser non si apre sul visualizzatore, quindi questo pulsante è il modo per salvarne l’immagine.
 
-Il file mantiene il nome dell’originale e prende l’estensione del suo formato, quindi un `receipt.jpg` pulito si salva come `receipt.png`. [`filename`](../reference/options#filename) imposta un altro nome. Senza alcun nome, come per un `Blob`, il file si chiama `image`. Prima del primo Applica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
+Il file mantiene il nome dell’originale e prende l’estensione del suo formato, quindi un `receipt.jpg` in bianco e nero si salva come `receipt.png`. [`filename`](../reference/options#filename) imposta un altro nome. Senza alcun nome, come per un `Blob`, il file si chiama `image`. Prima del primo Applica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
 
 Con uno `src` da un’altra origine, i browser non salvano il file prima del primo Applica: aprono invece l’immagine, e l’utente lascia la tua pagina. Passa l’immagine come `Blob`, come mostra [Caricare le immagini](./loading#fetch), o salvala tu nell’evento `download`.
 

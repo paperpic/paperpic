@@ -34,7 +34,7 @@ const proportions: Record<string, number | undefined> = {
 const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/scans/form.jpg',
   alt: 'Подписанная форма',
-  tools: ['perspective', 'rotate', 'threshold'],
+  tools: ['perspective', 'rotate', 'finish'],
   aspectRatio: proportions.a4,
 })
 
@@ -59,7 +59,7 @@ const types = [
   { name: 'Удостоверение личности', aspectRatio: 85.6 / 53.98 },
   { name: 'Другое', aspectRatio: undefined },
 ]
-const tools: ToolId[] = ['perspective', 'rotate', 'threshold']
+const tools: ToolId[] = ['perspective', 'rotate', 'finish']
 
 const type = shallowRef(types[0]!)
 </script>
@@ -90,7 +90,7 @@ const types = [
   { name: 'Удостоверение личности', aspectRatio: 85.6 / 53.98 },
   { name: 'Другое', aspectRatio: undefined },
 ]
-const tools: ToolId[] = ['perspective', 'rotate', 'threshold']
+const tools: ToolId[] = ['perspective', 'rotate', 'finish']
 
 export function Form() {
   const [index, setIndex] = useState(0)

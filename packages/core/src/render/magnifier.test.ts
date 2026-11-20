@@ -1,6 +1,6 @@
-import type { LoadedImage } from '../pipeline/load-image'
 import { describe, expect, it, vi } from 'vitest'
 import { createView } from '../state/view'
+import { loadedImage } from '../test/images'
 import { paintMagnifier } from './magnifier'
 import { computeTransform } from './transform'
 
@@ -24,12 +24,7 @@ function recordingContext() {
 }
 
 describe('paintMagnifier', () => {
-  const image: LoadedImage = {
-    element: {} as CanvasImageSource,
-    width: 600,
-    height: 250,
-    release: () => {},
-  }
+  const image = loadedImage(600, 250)
   const view = {
     ...createView(),
     zoom: 0.5,

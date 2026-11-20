@@ -195,7 +195,9 @@ Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un qu
 function openTool(id: ToolId): void
 ```
 
-Apre uno strumento con un pannello: Ritaglia (`'crop'`), Raddrizza (`'perspective'`), Regola (`'adjust'`) o Pulisci (`'threshold'`), che si attiva quando si apre. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Nel frattempo non può cominciare nessun altro cambiamento, e Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola con Pulisci attivo, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo.
+Apre uno strumento con un pannello: Ritaglia (`'crop'`), Raddrizza (`'perspective'`), Regola (`'adjust'`) o Pulisci (`'finish'`), che quando si apre sceglie il bianco e nero se la finitura è l’originale. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Nel frattempo non può cominciare nessun altro cambiamento, e Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola in bianco e nero, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo.
+
+Anche Copri (`'redact'`) si apre con gli angoli, come Ritaglia.
 
 ### `confirmTool()`
 
@@ -213,15 +215,15 @@ function cancelTool(): void
 
 Chiude lo strumento aperto e scarta i suoi cambiamenti, come `Esc`.
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-Attiva o disattiva Pulisci, o ne cambia la sensibilità, da 0 a 1. Pulisci viene sempre dopo gli altri cambiamenti. Mentre Pulisci è aperto, cambia ciò che mostra Pulisci, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica o con un altro strumento aperto.
+Sceglie la finitura di [Pulisci](../guide/tools/clean-up): `'original'`, `'gray'` o `'mono'` per il bianco e nero. Cambia anche la sensibilità del bianco e nero, da 0 a 1. La finitura viene sempre dopo gli altri cambiamenti. Mentre Pulisci è aperto, cambia ciò che mostra Pulisci, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica o con un altro strumento aperto.
 
-Lancia un `RangeError` se `sensitivity` non è tra 0 e 1.
+Lancia un `RangeError` se `mode` non è un [`FinishMode`](./types#finishmode), o se `sensitivity` non è tra 0 e 1.
 
 ### `setAdjustments()`
 
@@ -229,9 +231,19 @@ Lancia un `RangeError` se `sensitivity` non è tra 0 e 1.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti. Mentre Regola è aperto, cambia ciò che mostra Regola, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto o con Pulisci attivo: Pulisci confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato.
+Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti, e prima del grigio. Mentre Regola è aperto, cambia ciò che mostra Regola, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto o in bianco e nero: il bianco e nero confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato.
 
 Lancia un `RangeError` se un valore non è tra -1 e 1.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Sceglie il colore con cui [Copri](../guide/tools/redact) copre: `'black'`, il predefinito, o `'white'`. Mentre Copri è aperto, cambia l’area sullo schermo, e [`confirmTool()`](#confirmtool) la conserva. Altrimenti è il colore della prossima area. Funziona in qualsiasi modalità.
+
+Lancia un `RangeError` se `color` non è un [`RedactColor`](./types#redactcolor).
 
 ### `undo()`
 

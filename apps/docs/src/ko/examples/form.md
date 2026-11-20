@@ -151,6 +151,6 @@ export function ExpenseForm() {
 
 - 적용하면 [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer)로 편집한 이미지를 파일 필드에 넣으므로, 폼은 같은 이름으로 보냅니다. 한 번도 적용하지 않았다면 사용자가 고른 사진을 그대로 보냅니다.
 - 코드에서 필드의 파일을 바꿔도 필드의 `change` 이벤트는 발생하지 않으므로, 뷰어는 결과를 계속 보여 줍니다.
-- 파일은 사진의 이름을 유지하고 확장자만 결과에 맞춥니다. 예를 들어 정리한 뒤에는 `receipt.png`입니다.
+- 파일은 사진의 이름을 유지하고 확장자만 결과에 맞춥니다. 예를 들어 흑백으로 정리한 뒤에는 `receipt.png`입니다.
 - 뷰어의 버튼은 폼을 제출하지 않습니다.
 - [`maxOutputSize`](../reference/options#maxoutputsize)로 폼을 가볍게 유지합니다. 휴대폰 사진은 1200만 화소 이상이지만, 문서는 긴 변 3000픽셀에서도 충분히 읽힙니다.

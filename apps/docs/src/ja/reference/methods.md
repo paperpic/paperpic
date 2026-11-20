@@ -195,7 +195,9 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-パネルを持つツールを開きます。切り抜き（`'crop'`）、傾き補正（`'perspective'`）、調整（`'adjust'`）、クリーンアップ（`'threshold'`）のどれかで、クリーンアップは開くとオンになります。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままです。その間はほかの変更を始められず、元に戻す、やり直す、適用は何もしません。編集モード以外、ほかのツールが開いている間、クリーンアップがオンのときの調整、プレビューの準備中の切り抜きと傾き補正では何もしません。
+パネルを持つツールを開きます。切り抜き（`'crop'`）、傾き補正（`'perspective'`）、調整（`'adjust'`）、クリーンアップ（`'finish'`）のどれかで、クリーンアップは仕上げがオリジナルのとき、開くと白黒を選びます。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままです。その間はほかの変更を始められず、元に戻す、やり直す、適用は何もしません。編集モード以外、ほかのツールが開いている間、白黒のときの調整、プレビューの準備中の切り抜きと傾き補正では何もしません。
+
+「塗りつぶし」(`'redact'`) も「切り抜き」と同じく角付きで開きます。
 
 ### `confirmTool()`
 
@@ -213,15 +215,15 @@ function cancelTool(): void
 
 開いているツールを閉じ、その変更を破棄します。`Esc` と同じです。
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-クリーンアップのオンとオフを切り替えるか、感度を 0 から 1 で変更します。クリーンアップは常にほかの変更のあとに適用されます。クリーンアップが開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外やほかのツールが開いている間は何もしません。
+[クリーンアップ](../guide/tools/clean-up)の仕上げを選びます。`'original'`、`'gray'`、白黒の `'mono'` のどれかです。白黒の感度も 0 から 1 で変更します。仕上げは常にほかの変更のあとに適用されます。クリーンアップが開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外やほかのツールが開いている間は何もしません。
 
-`sensitivity` が 0 から 1 の範囲外なら `RangeError` を投げます。
+`mode` が [`FinishMode`](./types#finishmode) でないか、`sensitivity` が 0 から 1 の範囲外なら `RangeError` を投げます。
 
 ### `setAdjustments()`
 
@@ -229,9 +231,19 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあとに適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、クリーンアップがオンの間は何もしません。クリーンアップは各ピクセルを周囲と比べるので、明るさとコントラストは結果をほとんど変えないためです。
+明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあと、グレーの前に適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、白黒の間は何もしません。白黒は各ピクセルを周囲と比べるので、明るさとコントラストは結果をほとんど変えないためです。
 
 値が -1 から 1 の範囲外なら `RangeError` を投げます。
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+[塗りつぶし](../guide/tools/redact)で覆う色を選びます。既定の `'black'` か `'white'` です。「塗りつぶし」が開いている間は表示中の領域を変え、[`confirmTool()`](#confirmtool) がそれを残します。それ以外のときは次の領域の色になります。どのモードでも動作します。
+
+`color` が [`RedactColor`](./types#redactcolor) でなければ `RangeError` を投げます。
 
 ### `undo()`
 

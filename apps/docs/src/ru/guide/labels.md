@@ -17,7 +17,7 @@ PaperPic показывает кнопки, подсказки и сообщен
 ```ts
 const pic = new PaperPic(container, {
   src: '/receipt.jpg',
-  labels: { apply: 'Сохранить', threshold: 'Чёрно-белое' },
+  labels: { apply: 'Сохранить', finish: 'Улучшить' },
 })
 ```
 
@@ -28,7 +28,7 @@ const pic = new PaperPic(container, {
 import type { PaperPicLabels } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 
-const labels: Partial<PaperPicLabels> = { apply: 'Сохранить', threshold: 'Чёрно-белое' }
+const labels: Partial<PaperPicLabels> = { apply: 'Сохранить', finish: 'Улучшить' }
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const labels: Partial<PaperPicLabels> = { apply: 'Сохранить', threshold
 import type { PaperPicLabels } from '@paperpic/react'
 import { PaperPic } from '@paperpic/react'
 
-const labels: Partial<PaperPicLabels> = { apply: 'Сохранить', threshold: 'Чёрно-белое' }
+const labels: Partial<PaperPicLabels> = { apply: 'Сохранить', finish: 'Улучшить' }
 
 export function Receipt() {
   return <PaperPic src="/receipt.jpg" labels={labels} />
@@ -62,7 +62,7 @@ const signed = new Intl.NumberFormat('ru', { signDisplay: 'exceptZero' })
 
 const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `Масштаб ${percent} %`,
-  thresholdLevel: percent => `Чувствительность ${percent} %`,
+  finishLevel: percent => `Чувствительность ${percent} %`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
   cornerSelected: corner => `${corner}: коснитесь нового места`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS } from '../processing/threshold'
-import { adjustSetting, thresholdSetting, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './operations'
+import { adjustSetting, finishSetting, toneStep, toPipelineSteps, toPreviewSteps, trailingRotation } from './operations'
 
 const half = { x: 0, y: 0, width: 0.5, height: 0.5 }
 const right = { type: 'rotate', direction: 1 } as const
@@ -36,16 +36,18 @@ describe('operations with pixels', () => {
 })
 
 describe('settings of the tones', () => {
-  const threshold = {
-    type: 'threshold',
-    enabled: true,
+  const mono = {
+    type: 'finish',
+    mode: 'mono',
     sensitivity: 0.3,
     softness: 0.1,
   } as const
+  const gray = { ...mono, mode: 'gray' } as const
+  const original = { ...mono, mode: 'original' } as const
   const adjust = { type: 'adjust', brightness: 0.2, contrast: -0.1 } as const
 
   it('start with nothing in effect', () => {
-    expect(thresholdSetting([])).toEqual({ enabled: false, sensitivity: DEFAULT_SENSITIVITY, softness: DEFAULT_SOFTNESS })
+    expect(finishSetting([])).toEqual({ mode: 'original', sensitivity: DEFAULT_SENSITIVITY, softness: DEFAULT_SOFTNESS })
     expect(adjustSetting([])).toEqual({ brightness: 0, contrast: 0 })
     expect(toneStep([right, crop])).toBeNull()
   })
@@ -53,20 +55,32 @@ describe('settings of the tones', () => {
   it('take their last edit, wherever it is in the list', () => {
     const later = { ...adjust, brightness: 0.5 }
     expect(adjustSetting([adjust, right, later, crop])).toEqual({ brightness: 0.5, contrast: -0.1 })
-    expect(thresholdSetting([
-      threshold,
-      crop,
-      { ...threshold, enabled: false },
-    ]).enabled).toBe(false)
+    expect(finishSetting([mono, crop, original]).mode).toBe('original')
   })
 
-  it('leave out brightness and contrast while the document is cleaned up', () => {
-    expect(toneStep([adjust, threshold])).toEqual({ type: 'threshold', sensitivity: 0.3, softness: 0.1 })
-    expect(toneStep([
-      adjust,
-      threshold,
-      { ...threshold, enabled: false },
-    ])).toEqual(adjust)
+  it('leave out brightness and contrast in black and white', () => {
+    expect(toneStep([adjust, mono])).toEqual({ type: 'threshold', sensitivity: 0.3, softness: 0.1 })
+    expect(toneStep([adjust, mono, original])).toEqual(adjust)
+  })
+
+  it('turn the image gray after brightness and contrast', () => {
+    expect(toneStep([adjust, gray])).toEqual({ ...adjust, gray: true })
+    expect(toneStep([gray])).toEqual({
+      type: 'adjust',
+      brightness: 0,
+      contrast: 0,
+      gray: true,
+    })
+    expect(toPipelineSteps([gray, crop])).toEqual([
+      crop,
+      {
+        type: 'adjust',
+        brightness: 0,
+        contrast: 0,
+        gray: true,
+      },
+    ])
+    expect(toneStep([gray, original])).toBeNull()
   })
 
   it('count a ruler moved back to 0 as no change', () => {

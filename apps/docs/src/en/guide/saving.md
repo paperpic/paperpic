@@ -59,7 +59,7 @@ The viewer shows the result at once, whether or not it reaches your server, so t
 
 ## Format and quality {#format}
 
-Without options, the result keeps the format of the source when it is JPEG, PNG or WebP. PaperPic reads it from the extension of the URL, such as `.jpg`, or from the type of the `File` or `Blob`. A cleaned up document is PNG, because JPEG would add artifacts around its sharp edges. Any other source gives PNG too, such as a GIF, or a URL without an extension like `/api/documents/42`, even when it serves a JPEG.
+Without options, the result keeps the format of the source when it is JPEG, PNG or WebP. PaperPic reads it from the extension of the URL, such as `.jpg`, or from the type of the `File` or `Blob`. A document in black and white is PNG, because JPEG would add artifacts around its sharp edges. Any other source gives PNG too, such as a GIF, or a URL without an extension like `/api/documents/42`, even when it serves a JPEG.
 
 [`output`](../reference/options#output) chooses the format, and its quality from 0 to 1 for JPEG and WebP, with 0.92 by default:
 
@@ -93,7 +93,7 @@ export function Receipt() {
 
 | Format       | Suits                                                    |
 | ------------ | -------------------------------------------------------- |
-| `image/png`  | Cleaned up documents and text, with no loss              |
+| `image/png`  | Documents in black and white, and text, with no loss     |
 | `image/jpeg` | Photos and colored documents, in small files             |
 | `image/webp` | Photos and colored documents, in smaller files than JPEG |
 
@@ -139,7 +139,7 @@ The result of Apply carries no metadata. PaperPic draws the image on a canvas, s
 
 [`download: true`](../reference/options#download) adds a button at the end of the toolbar that saves the image on display: the result of the last Apply, or else the source as it is. It is hidden while editing, because the edits are not applied yet. [`download()`](../reference/methods#download) does the same from code, with or without the button. The browser's context menu does not open over the viewer, so this button is the way to save the image from it.
 
-The file keeps the name of the source and takes the extension of its format, so a cleaned up `receipt.jpg` saves as `receipt.png`. [`filename`](../reference/options#filename) sets another name. Without any name, such as for a `Blob`, the file is called `image`. Before the first Apply, a URL without an extension saves without one, because its format is unknown.
+The file keeps the name of the source and takes the extension of its format, so a `receipt.jpg` in black and white saves as `receipt.png`. [`filename`](../reference/options#filename) sets another name. Without any name, such as for a `Blob`, the file is called `image`. Before the first Apply, a URL without an extension saves without one, because its format is unknown.
 
 With a `src` from another origin, browsers do not save the file before the first Apply: they open the image instead, and the user leaves your page. Pass the image as a `Blob`, as [Loading images](./loading#fetch) shows, or save it yourself in the `download` event.
 

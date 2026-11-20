@@ -4,6 +4,7 @@ Use these words in the Korean docs, so that each idea has one name on every page
 
 | English                                       | 한국어         |
 | --------------------------------------------- | -------------- |
+| area, what Redact covers                      | 영역           |
 | container                                     | 컨테이너       |
 | corner handle                                 | 모서리 핸들    |
 | CSS token                                     | CSS 토큰       |
@@ -13,6 +14,7 @@ Use these words in the Korean docs, so that each idea has one name on every page
 | edit mode                                     | 편집 모드      |
 | editor                                        | 편집기         |
 | event                                         | 이벤트         |
+| finish, of Clean up                           | 마무리         |
 | guide                                         | 가이드         |
 | keyboard shortcut                             | 키보드 단축키  |
 | label, a text of the interface                | 레이블         |
@@ -33,7 +35,6 @@ Use these words in the Korean docs, so that each idea has one name on every page
 | softness, of the cleaned edges                | 부드러움       |
 | source image                                  | 원본 이미지    |
 | state                                         | 상태           |
-| switch, of Clean up                           | 스위치         |
 | tool                                          | 도구           |
 | toolbar, the bar of buttons at the right      | 도구 모음      |
 | type, of TypeScript                           | 타입           |

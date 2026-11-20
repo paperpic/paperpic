@@ -63,7 +63,8 @@ pic.setOptions({ editable: false })
 | `'rotate'`      | 向左旋转               |
 | `'flip'`        | 翻转                   |
 | `'adjust'`      | 调整，用于亮度和对比度 |
-| `'threshold'`   | 清理                   |
+| `'finish'`      | 清理                   |
+| `'redact'`      | 遮盖                   |
 
 ### `wheelZoom`
 
@@ -105,15 +106,16 @@ pic.setOptions({ editable: false })
 | `crop`           | 裁剪                         |
 | `download`       | 下载                         |
 | `edit`           | 编辑                         |
+| `finish`         | 清理                         |
 | `fitHeight`      | 适合高度                     |
 | `fitWidth`       | 适合宽度                     |
 | `flip`           | 翻转                         |
 | `perspective`    | 矫正                         |
+| `redact`         | 遮盖                         |
 | `redo`           | 重做                         |
 | `rotateDocument` | 编辑栏中的向左旋转           |
 | `rotateLeft`     | 只读查看器工具栏中的向左旋转 |
 | `rotateRight`    | 只读查看器工具栏中的向右旋转 |
-| `threshold`      | 清理                         |
 | `undo`           | 撤销                         |
 | `zoomIn`         | 放大                         |
 | `zoomOut`        | 缩小                         |
@@ -127,7 +129,7 @@ pic.setOptions({ editable: false })
 
 编辑后图片的格式。`type` 为 `'image/jpeg'`、`'image/png'` 或 `'image/webp'`，`quality` 对 JPEG 和 WebP 取 0 到 1，默认为 `0.92`。
 
-没有 `type` 时，清理后的图片为 PNG，因为 JPEG 会破坏它清晰的边缘。其他图片如果原图是 JPEG、PNG 或 WebP，则保留原图的格式；PaperPic 根据 URL 的扩展名或 `File`、`Blob` 的类型判断格式。否则结果为 PNG，浏览器无法编码的格式也是如此。
+没有 `type` 时，黑白图片为 PNG，因为 JPEG 会破坏它清晰的边缘。其他图片如果原图是 JPEG、PNG 或 WebP，则保留原图的格式；PaperPic 根据 URL 的扩展名或 `File`、`Blob` 的类型判断格式。否则结果为 PNG，浏览器无法编码的格式也是如此。
 
 ### `maxOutputSize`
 
@@ -141,7 +143,7 @@ pic.setOptions({ editable: false })
 - **类型：** `string`
 - **默认值：** 原图的名称
 
-保存文件的名称。请不带扩展名填写：PaperPic 会加上格式对应的扩展名，因此清理后的 `receipt.jpg` 会保存为 `receipt.png`。原图没有名称时（例如 `Blob`），文件名为 `image`。在第一次应用之前，没有扩展名的 URL 因为格式未知，保存时也没有扩展名。
+保存文件的名称。请不带扩展名填写：PaperPic 会加上格式对应的扩展名，因此黑白的 `receipt.jpg` 会保存为 `receipt.png`。原图没有名称时（例如 `Blob`），文件名为 `image`。在第一次应用之前，没有扩展名的 URL 因为格式未知，保存时也没有扩展名。
 
 ## 工具
 
@@ -157,4 +159,4 @@ pic.setOptions({ editable: false })
 - **类型：** `number`，从 0 到 1
 - **默认值：** `0.25`
 
-清理在字母边缘保留多少灰色，这让文字更易读。使用 `0` 得到严格的黑白，文件更小，但细笔画会断开。
+黑白在字母边缘保留多少灰色，这让文字更易读。使用 `0` 得到严格的黑白，文件更小，但细笔画会断开。

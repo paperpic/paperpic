@@ -21,13 +21,13 @@ Ajuster s’applique après les autres changements, donc Recadrer et Redresser m
 
 ## Ajuster ou Nettoyer ?
 
-| Ajuster                                            | [Nettoyer](./clean-up)                  |
-| -------------------------------------------------- | --------------------------------------- |
-| Garde les couleurs et les gris                     | Transforme le document en noir et blanc |
-| Pour les formulaires en couleur, tampons et photos | Pour le texte sur papier                |
-| Garde le format de l’image source                  | Donne du PNG                            |
+| Ajuster                                            | [Nettoyer](./clean-up)                              |
+| -------------------------------------------------- | --------------------------------------------------- |
+| Garde les couleurs et les gris                     | Transforme le document en gris, ou en noir et blanc |
+| Pour les formulaires en couleur, tampons et photos | Pour le texte sur papier                            |
+| Garde le format de l’image source                  | Donne du PNG                                        |
 
-Tant que Nettoyer est activé, Ajuster est désactivé. Nettoyer compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat. Les lecteurs d’écran entendent pourquoi il est désactivé.
+En noir et blanc, Ajuster est désactivé. Le noir et blanc compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat. Les lecteurs d’écran entendent pourquoi il est désactivé. Avec le gris, Ajuster fonctionne, et le gris vient après.
 
 ## Depuis le code
 

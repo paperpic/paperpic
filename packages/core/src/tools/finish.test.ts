@@ -1,15 +1,19 @@
 import type { Operation } from '../pipeline/operations'
 import type { PipelineStep } from '../pipeline/steps'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { CanvasMocks } from '../test/canvas'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { resolveOutputType } from '../pipeline/export'
-import { thresholdSetting, toPipelineSteps, toPreviewSteps, trailingRotation } from '../pipeline/operations'
+import { finishSetting, toPipelineSteps, toPreviewSteps, trailingRotation } from '../pipeline/operations'
 import { photoFrame } from '../pipeline/photo-frame'
 import { renderPreview } from '../pipeline/preview'
 import { planRead, resultSize } from '../pipeline/read-plan'
 import { PipelineRunner } from '../pipeline/runner'
 import { applySteps } from '../pipeline/steps'
+import { grayPixels } from '../processing/grayscale'
 import { adaptiveThreshold, prepareThreshold } from '../processing/threshold'
-import { confirmThreshold, openThreshold, thresholdEdit, thresholdOperation } from './threshold'
+import { stubCanvas } from '../test/canvas'
+import { loadedImage } from '../test/images'
+import { confirmFinish, finishEdit, finishOperation, openFinish } from './finish'
 
 const right = { type: 'rotate', direction: 1 } as const
 const left = { type: 'rotate', direction: -1 } as const
@@ -17,19 +21,21 @@ const crop = {
   type: 'crop',
   rect: { x: 0, y: 0, width: 0.5, height: 0.5 },
 } as const
-const on: Operation = {
-  type: 'threshold',
-  enabled: true,
+const mono = {
+  type: 'finish',
+  mode: 'mono',
   sensitivity: 0.7,
   softness: 0.25,
-}
-const off: Operation = {
-  type: 'threshold',
-  enabled: false,
-  sensitivity: 0.7,
-  softness: 0.25,
-}
+} as const satisfies Operation
+const gray = { ...mono, mode: 'gray' } as const satisfies Operation
+const original = { ...mono, mode: 'original' } as const satisfies Operation
 const step: PipelineStep = { type: 'threshold', sensitivity: 0.7, softness: 0.25 }
+const grayStep: PipelineStep = {
+  type: 'adjust',
+  brightness: 0,
+  contrast: 0,
+  gray: true,
+}
 
 function pixels(size = 8) {
   return {
@@ -39,51 +45,77 @@ function pixels(size = 8) {
   }
 }
 
-describe('threshold in the operations', () => {
-  it('always runs last, wherever the user turned it on', () => {
-    expect(toPipelineSteps([on, crop, right])).toEqual([
+/** Red, green and blue pixels, which a gray finish changes. */
+function colors() {
+  return {
+    data: new Uint8ClampedArray([
+      255,
+      0,
+      0,
+      255,
+      0,
+      255,
+      0,
+      255,
+      0,
+      0,
+      255,
+      255,
+    ]),
+    width: 3,
+    height: 1,
+  }
+}
+
+describe('the finish in the operations', () => {
+  it('always runs last, wherever the user chose it', () => {
+    expect(toPipelineSteps([mono, crop, right])).toEqual([
       crop,
       { type: 'rotate', rotation: 90 },
       step,
     ])
-    expect(toPipelineSteps([crop, on, right])).toEqual([
+    expect(toPipelineSteps([crop, gray, right])).toEqual([
       crop,
       { type: 'rotate', rotation: 90 },
-      step,
+      grayStep,
     ])
   })
 
   it('takes the setting of its last edit', () => {
-    expect(thresholdSetting([])).toEqual({ enabled: false, sensitivity: 0.5, softness: 0.25 })
-    expect(thresholdSetting([on, crop])).toEqual({ enabled: true, sensitivity: 0.7, softness: 0.25 })
-    expect(thresholdSetting([on, off])).toMatchObject({ enabled: false })
-    expect(toPipelineSteps([on, off])).toEqual([])
+    expect(finishSetting([])).toEqual({ mode: 'original', sensitivity: 0.5, softness: 0.25 })
+    expect(finishSetting([mono, crop])).toEqual({ mode: 'mono', sensitivity: 0.7, softness: 0.25 })
+    expect(finishSetting([mono, gray])).toMatchObject({ mode: 'gray' })
+    expect(toPipelineSteps([mono, original])).toEqual([])
   })
 
   it('does not break rotations that cancel out', () => {
-    expect(toPipelineSteps([right, on, left])).toEqual([step])
+    expect(toPipelineSteps([right, mono, left])).toEqual([step])
   })
 
   it('leaves a rotation after it to the view matrix', () => {
-    expect(trailingRotation([on, right])).toBe(90)
-    expect(trailingRotation([right, on])).toBe(90)
-    expect(trailingRotation([crop, on, right])).toBe(90)
-    expect(toPreviewSteps([on, right])).toEqual([])
+    expect(trailingRotation([mono, right])).toBe(90)
+    expect(trailingRotation([right, gray])).toBe(90)
+    expect(trailingRotation([crop, mono, right])).toBe(90)
+    expect(toPreviewSteps([mono, right])).toEqual([])
   })
 
   it('stays out of the shape that a preview computes', () => {
-    expect(toPreviewSteps([right, crop, on])).toEqual([
+    expect(toPreviewSteps([right, crop, mono])).toEqual([
       { type: 'rotate', rotation: 90 },
       crop,
     ])
-    expect(toPreviewSteps([crop, on, crop])).toEqual([crop, crop])
+    expect(toPreviewSteps([crop, gray, crop])).toEqual([crop, crop])
   })
 })
 
-describe('threshold in the pipeline', () => {
-  it('cleans the image', () => {
+describe('the finish in the pipeline', () => {
+  it('cleans the image in black and white', () => {
     const source = pixels()
     expect(applySteps(source, [step]).data).toEqual(adaptiveThreshold(pixels(), { sensitivity: 0.7, softness: 0.25 }).data)
+  })
+
+  it('turns the image gray', () => {
+    expect(applySteps(colors(), [grayStep])).toEqual(grayPixels(colors()))
   })
 
   it('stays a step after reading, and keeps the size', () => {
@@ -91,6 +123,7 @@ describe('threshold in the pipeline', () => {
     expect(plan.region).toEqual({ x: 0, y: 0, width: 50, height: 25 })
     expect(plan.steps).toEqual([step])
     expect(resultSize({ width: 100, height: 50 }, [crop, step])).toEqual({ width: 50, height: 25 })
+    expect(resultSize({ width: 100, height: 50 }, [crop, grayStep])).toEqual({ width: 50, height: 25 })
   })
 
   it('reads the region of the crops before it, and keeps rotation before it', () => {
@@ -168,39 +201,27 @@ describe('pipelineRunner.prepare', () => {
 })
 
 describe('renderPreview', () => {
-  const putImageData = vi.fn()
+  let putImageData: CanvasMocks['putImageData']
 
-  const stubCanvas = () => {
-    vi.stubGlobal('ImageData', class {})
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
-      drawImage: vi.fn(),
-      getImageData: (_x: number, _y: number, width: number, height: number) => ({
-        data: new Uint8ClampedArray(width * height * 4),
-      }),
-      putImageData,
-    } as unknown as CanvasRenderingContext2D)
-  }
+  beforeEach(() => {
+    putImageData = stubCanvas((width, height) => new Uint8ClampedArray(width * height * 4).map((_, index) => index % 4 === 0
+      ? 255
+      : 0)).putImageData
+  })
 
   afterEach(() => {
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
-    putImageData.mockClear()
   })
 
-  const image = {
-    element: {} as CanvasImageSource,
-    width: 8,
-    height: 8,
-    release: () => {},
-  }
+  const image = loadedImage(8, 8)
 
-  it('with a threshold, prepares it once and repaints without the worker', async () => {
-    stubCanvas()
+  it('with black and white, prepares it once and repaints without the worker', async () => {
     const runner = {
       run: vi.fn(),
       prepare: vi.fn(async () => prepareThreshold(pixels())),
     }
-    const preview = await renderPreview(image, [], step, runner)
+    const preview = await renderPreview(image, [], step, null, runner)
     expect(runner.prepare).toHaveBeenCalledOnce()
     expect(putImageData).toHaveBeenCalledTimes(1)
 
@@ -210,50 +231,66 @@ describe('renderPreview', () => {
     expect(putImageData).toHaveBeenCalledTimes(2)
   })
 
-  it('with a threshold, ignores brightness and contrast', async () => {
-    stubCanvas()
+  it('with black and white, ignores brightness and contrast', async () => {
     const runner = {
       run: vi.fn(),
       prepare: vi.fn(async () => prepareThreshold(pixels())),
     }
-    const preview = await renderPreview(image, [], step, runner)
+    const preview = await renderPreview(image, [], step, null, runner)
     preview.tint!({ type: 'adjust', brightness: 0.5, contrast: 0 })
     expect(putImageData).toHaveBeenCalledTimes(1)
+  })
+
+  it('switches between the original and gray without the worker', async () => {
+    const runner = {
+      run: vi.fn(),
+      prepare: vi.fn(),
+    }
+    const preview = await renderPreview(image, [], { type: 'adjust', brightness: 0, contrast: 0 }, null, runner)
+    // Red stays red in the original
+    expect([
+      ...putImageData.mock.calls[0]![0].data.slice(0, 4),
+    ]).toEqual([255, 0, 0, 0])
+
+    preview.tint!(grayStep)
+
+    expect(runner.run).not.toHaveBeenCalled()
+    expect(putImageData).toHaveBeenCalledTimes(2)
+    expect([
+      ...putImageData.mock.calls[1]![0].data.slice(0, 4),
+    ]).toEqual([53, 53, 53, 0])
   })
 })
 
 describe('the panel of Clean up', () => {
-  const on: Operation = {
-    type: 'threshold',
-    enabled: true,
-    sensitivity: 0.6,
-    softness: 0.25,
-  }
-
-  it('opens turned on, with the sensitivity of the edits', () => {
-    expect(openThreshold([])).toEqual({ enabled: true, sensitivity: 0.5 })
-    expect(openThreshold([on])).toEqual({ enabled: true, sensitivity: 0.6 })
+  it('opens in black and white from the original, and with the finish of the edits otherwise', () => {
+    expect(openFinish([])).toEqual({ mode: 'mono', sensitivity: 0.5 })
+    expect(openFinish([mono])).toEqual({ mode: 'mono', sensitivity: 0.7 })
+    expect(openFinish([gray])).toEqual({ mode: 'gray', sensitivity: 0.7 })
+    expect(openFinish([mono, original])).toEqual({ mode: 'mono', sensitivity: 0.7 })
   })
 
-  it('leaves no edit on Done when nothing on display changes, even if the sensitivity moved while it stayed off', () => {
-    expect(confirmThreshold({ enabled: false, sensitivity: 0.9 }, [], undefined)).toBeNull()
-    expect(confirmThreshold({ enabled: true, sensitivity: 0.6 }, [on], undefined)).toBeNull()
-    expect(confirmThreshold({ enabled: false, sensitivity: 0.6 }, [on], undefined)).toEqual({ ...on, enabled: false })
+  it('leaves no edit on Done when nothing on display changes, even if the sensitivity moved out of black and white', () => {
+    expect(confirmFinish({ mode: 'original', sensitivity: 0.9 }, [], undefined)).toBeNull()
+    expect(confirmFinish({ mode: 'gray', sensitivity: 0.9 }, [gray], undefined)).toBeNull()
+    expect(confirmFinish({ mode: 'mono', sensitivity: 0.7 }, [mono], undefined)).toBeNull()
+    expect(confirmFinish({ mode: 'original', sensitivity: 0.7 }, [mono], undefined)).toEqual(original)
+    expect(confirmFinish({ mode: 'gray', sensitivity: 0.7 }, [mono], undefined)).toEqual(gray)
   })
 
-  it('keeps a sensitivity set from code while it is off, for when it turns on', () => {
-    expect(thresholdEdit({ enabled: false, sensitivity: 0.9 }, [], undefined)).toEqual({
-      type: 'threshold',
-      enabled: false,
+  it('keeps a sensitivity set from code out of black and white, for when it comes', () => {
+    expect(finishEdit({ mode: 'original', sensitivity: 0.9 }, [], undefined)).toEqual({
+      type: 'finish',
+      mode: 'original',
       sensitivity: 0.9,
       softness: 0.25,
     })
   })
 
   it('takes the softness of the option over the one of the edits', () => {
-    expect(thresholdOperation({ enabled: true, sensitivity: 0.5 }, [on], 0)).toMatchObject({ softness: 0 })
-    expect(thresholdOperation({ enabled: true, sensitivity: 0.5 }, [
-      { ...on, softness: 0.4 },
+    expect(finishOperation({ mode: 'mono', sensitivity: 0.5 }, [mono], 0)).toMatchObject({ softness: 0 })
+    expect(finishOperation({ mode: 'mono', sensitivity: 0.5 }, [
+      { ...mono, softness: 0.4 },
     ], undefined)).toMatchObject({ softness: 0.4 })
   })
 })

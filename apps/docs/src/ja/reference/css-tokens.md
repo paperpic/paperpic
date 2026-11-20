@@ -122,13 +122,14 @@ import '@paperpic/react/style.css'
 }
 ```
 
-| 場所                 | 値                                                                                                              |
-| -------------------- | --------------------------------------------------------------------------------------------------------------- |
-| ツールバー           | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`                   |
-| 編集バー             | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`threshold`、`undo`、`redo`、`apply`           |
-| 調整とクリーンアップ | `brightness` と `contrast`（選択肢とその目盛り）、`threshold`（スイッチ）、`thresholdSensitivity`（その目盛り） |
-| 各ツール             | `cancelTool`、`confirm`                                                                                         |
-| 切り抜きと傾き補正   | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                 |
-| 破棄する前の確認     | `keepEditing`、`discard`                                                                                        |
+| 場所                           | 値                                                                                                                                          |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| ツールバー                     | `edit`、`zoomIn`、`zoomOut`、`fitWidth`、`fitHeight`、`rotateLeft`、`rotateRight`、`download`                                               |
+| 編集バー                       | `cancel`、`crop`、`perspective`、`rotateLeft`、`flip`、`adjust`、`finish`、`redact`、`undo`、`redo`、`apply`                                |
+| 調整とクリーンアップ           | `brightness` と `contrast`（選択肢とその目盛り）、`finishOriginal`、`finishGray`、`finishMono`（仕上げ）、`finishSensitivity`（その目盛り） |
+| 各ツール                       | `cancelTool`、`confirm`                                                                                                                     |
+| 切り抜き、傾き補正、塗りつぶし | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                                             |
+| 塗りつぶし                     | `redactArea`、`redactTurn`、`redactBlack`、`redactWhite`                                                                                    |
+| 破棄する前の確認               | `keepEditing`、`discard`                                                                                                                    |
 
-`rotateLeft` は、同時には表示されない 2 つのボタンを指します。表示だけを回す読み取り専用のビューアーのボタンと、画像そのものを回す編集バーのボタンです。`zoomIn` と `zoomOut`（ツールバーとパネル）、`threshold`（「クリーンアップ」のボタンとそのスイッチ）も同じです。`brightness` と `contrast` は選択肢とその目盛りを指し、両方が同時に表示されます。区別するには、セレクターに `button` か `input` を加えてください。
+`rotateLeft` は、同時には表示されない 2 つのボタンを指します。表示だけを回す読み取り専用のビューアーのボタンと、画像そのものを回す編集バーのボタンです。`zoomIn` と `zoomOut`（ツールバーとパネル）も同じです。`brightness` と `contrast` は選択肢とその目盛りを指し、両方が同時に表示されます。区別するには、セレクターに `button` か `input` を加えてください。

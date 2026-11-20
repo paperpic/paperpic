@@ -8,7 +8,7 @@ export interface PaperPicLabels {
   adjust: string
   /** Announced after moving the ruler of Adjust, with the name of the tone and its value from -100 to 100. */
   adjustmentLevel: (name: string, value: number) => string
-  /** Describes Adjust to screen readers while Clean up is on, which keeps it disabled. */
+  /** Describes Adjust to screen readers while the finish is black and white, which keeps it disabled. */
   adjustUnavailable: string
   /** Announced when the changes are applied. */
   applied: string
@@ -46,6 +46,18 @@ export interface PaperPicLabels {
   editBar: string
   /** Announced when the edit mode starts. */
   editing: string
+  /** Opens Clean up, and names its choice of finish. */
+  finish: string
+  /** Chooses gray in Clean up. */
+  finishGray: string
+  /** Announced after moving the ruler of Clean up, with its value in percent. */
+  finishLevel: (percent: number) => string
+  /** Chooses black and white in Clean up. */
+  finishMono: string
+  /** Chooses the original tones in Clean up, which turns it off. */
+  finishOriginal: string
+  /** Name of the ruler of Clean up, which changes black and white. */
+  finishSensitivity: string
   fitHeight: string
   fitWidth: string
   /** Mirrors the image left to right. */
@@ -63,15 +75,25 @@ export interface PaperPicLabels {
   previewError: string
   /** Shown while applying the changes. */
   processing: string
+  /** Opens Redact, which covers an area with black or white, and names its choice of color. */
+  redact: string
+  /** Announced after turning the area of Redact, with its angle in degrees, clockwise. */
+  redactAngle: (degrees: number) => string
+  /** The area of Redact, which moves it as a whole. */
+  redactArea: string
+  /** Chooses black in Redact. */
+  redactBlack: string
+  /** What to do in Redact. */
+  redactHint: string
+  /** The handle that turns the area of Redact. */
+  redactTurn: string
+  /** Describes the handle that turns the area of Redact to screen readers: what the keys do, and that Enter finishes. */
+  redactTurnKeys: string
+  /** Chooses white in Redact. */
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
-  /** Opens Clean up, and names its switch. */
-  threshold: string
-  /** Announced after moving the ruler of Clean up, with its value in percent. */
-  thresholdLevel: (percent: number) => string
-  /** Name of the ruler of Clean up. */
-  thresholdSensitivity: string
   /** Name of the toolbar, for screen readers. */
   toolbar: string
   undo: string
@@ -89,7 +111,7 @@ const SIGNED = new Intl.NumberFormat('en-US', { signDisplay: 'exceptZero' })
 export const DEFAULT_LABELS: PaperPicLabels = {
   adjust: 'Adjust',
   adjustmentLevel: (name, value) => `${name} ${SIGNED.format(value)}`,
-  adjustUnavailable: 'Not available while Clean up is on',
+  adjustUnavailable: 'Not available in black and white',
   applied: 'Changes applied',
   apply: 'Apply',
   applyError: 'The changes could not be applied',
@@ -113,6 +135,12 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   edit: 'Edit',
   editBar: 'Editing controls',
   editing: 'Editing',
+  finish: 'Clean up',
+  finishGray: 'Gray',
+  finishLevel: percent => `Sensitivity ${percent}%`,
+  finishMono: 'Black and white',
+  finishOriginal: 'Original',
+  finishSensitivity: 'Sensitivity',
   fitHeight: 'Fit to height',
   fitWidth: 'Fit to width',
   flip: 'Flip',
@@ -124,12 +152,17 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   perspectiveHint: 'Drag each corner to a corner of the document',
   previewError: 'The changes could not be shown',
   processing: 'Applying changes',
+  redact: 'Redact',
+  redactAngle: degrees => `Angle ${degrees}°`,
+  redactArea: 'Area',
+  redactBlack: 'Black',
+  redactHint: 'Drag the area over what to hide',
+  redactTurn: 'Turn',
+  redactTurnKeys: 'Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.',
+  redactWhite: 'White',
   redo: 'Redo',
   rotateLeft: 'Rotate left',
   rotateRight: 'Rotate right',
-  threshold: 'Clean up',
-  thresholdLevel: percent => `Sensitivity ${percent}%`,
-  thresholdSensitivity: 'Sensitivity',
   toolbar: 'Image controls',
   undo: 'Undo',
   viewer: 'Image viewer',

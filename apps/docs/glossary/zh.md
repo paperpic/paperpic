@@ -4,6 +4,7 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 
 | English                                       | 简体中文   |
 | --------------------------------------------- | ---------- |
+| area, what Redact covers                      | 区域       |
 | container                                     | 容器       |
 | corner handle                                 | 角点手柄   |
 | CSS token                                     | CSS 令牌   |
@@ -13,6 +14,7 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 | edit mode                                     | 编辑模式   |
 | editor                                        | 编辑器     |
 | event                                         | 事件       |
+| finish, of Clean up                           | 效果       |
 | guide                                         | 指南       |
 | keyboard shortcut                             | 键盘快捷键 |
 | label, a text of the interface                | 标签       |
@@ -33,7 +35,6 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 | softness, of the cleaned edges                | 柔和度     |
 | source image                                  | 原图       |
 | state                                         | 状态       |
-| switch, of Clean up                           | 开关       |
 | tool                                          | 工具       |
 | toolbar, the bar of buttons at the right      | 工具栏     |
 | type, of TypeScript                           | 类型       |

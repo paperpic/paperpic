@@ -122,13 +122,14 @@ import '@paperpic/react/style.css'
 }
 ```
 
-| 위치                 | 값                                                                                                    |
-| -------------------- | ----------------------------------------------------------------------------------------------------- |
-| 도구 모음            | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`         |
-| 편집 바              | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply` |
-| 조정과 정리          | `brightness`와 `contrast`(선택지와 그 눈금자), `threshold`(스위치), `thresholdSensitivity`(그 눈금자) |
-| 각 도구              | `cancelTool`, `confirm`                                                                               |
-| 자르기와 기울기 보정 | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`       |
-| 버리기 전 질문       | `keepEditing`, `discard`                                                                              |
+| 위치                        | 값                                                                                                                                  |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 도구 모음                   | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                       |
+| 편집 바                     | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                        |
+| 조정과 정리                 | `brightness`와 `contrast`(선택지와 그 눈금자), `finishOriginal`, `finishGray`, `finishMono`(마무리), `finishSensitivity`(그 눈금자) |
+| 각 도구                     | `cancelTool`, `confirm`                                                                                                             |
+| 자르기, 기울기 보정, 가리기 | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                     |
+| 가리기                      | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                            |
+| 버리기 전 질문              | `keepEditing`, `discard`                                                                                                            |
 
-`rotateLeft`는 동시에 보이지 않는 두 버튼을 가리킵니다. 화면 표시만 돌리는 읽기 전용 뷰어의 버튼과, 이미지 자체를 돌리는 편집 바의 버튼입니다. `zoomIn`과 `zoomOut`(도구 모음과 패널), `threshold`(‘정리’ 버튼과 그 스위치)도 마찬가지입니다. `brightness`와 `contrast`는 선택지와 그 눈금자를 가리키며, 둘이 함께 보입니다. 구분하려면 선택자에 `button`이나 `input`을 더하세요.
+`rotateLeft`는 동시에 보이지 않는 두 버튼을 가리킵니다. 화면 표시만 돌리는 읽기 전용 뷰어의 버튼과, 이미지 자체를 돌리는 편집 바의 버튼입니다. `zoomIn`과 `zoomOut`(도구 모음과 패널)도 마찬가지입니다. `brightness`와 `contrast`는 선택지와 그 눈금자를 가리키며, 둘이 함께 보입니다. 구분하려면 선택자에 `button`이나 `input`을 더하세요.

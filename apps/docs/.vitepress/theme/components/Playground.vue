@@ -53,7 +53,8 @@ const allTools: ToolId[] = [
   'rotate',
   'flip',
   'adjust',
-  'threshold',
+  'finish',
+  'redact',
 ]
 const checkedTools = shallowRef<ToolId[]>([...allTools])
 const tools = computed(() => allTools.filter(tool => checkedTools.value.includes(tool)))
@@ -349,7 +350,7 @@ onBeforeUnmount(() => setResult(null))
   accent-color: var(--vp-c-brand-1);
 }
 
-/* The tools wrap under their name, because six of them do not fit in one line of the panel */
+/* The tools wrap under their name, because seven of them do not fit in one line of the panel */
 .options .field-block {
   flex-wrap: wrap;
   justify-content: flex-start;

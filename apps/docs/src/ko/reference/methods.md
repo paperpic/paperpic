@@ -195,7 +195,9 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-패널이 있는 도구를 엽니다. 자르기(`'crop'`), 기울기 보정(`'perspective'`), 조정(`'adjust'`), 정리(`'threshold'`) 중 하나이며, 정리는 열리면서 켜집니다. 도구는 [`confirmTool()`](#confirmtool)이나 [`cancelTool()`](#canceltool)까지 열려 있습니다. 그동안에는 다른 변경을 시작할 수 없고, 실행 취소, 다시 실행, 적용은 아무것도 하지 않습니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있을 때의 조정, 미리보기를 준비하는 동안의 자르기와 기울기 보정에서는 아무것도 하지 않습니다.
+패널이 있는 도구를 엽니다. 자르기(`'crop'`), 기울기 보정(`'perspective'`), 조정(`'adjust'`), 정리(`'finish'`) 중 하나이며, 정리는 마무리가 원본일 때 열리면서 흑백을 고릅니다. 도구는 [`confirmTool()`](#confirmtool)이나 [`cancelTool()`](#canceltool)까지 열려 있습니다. 그동안에는 다른 변경을 시작할 수 없고, 실행 취소, 다시 실행, 적용은 아무것도 하지 않습니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 흑백일 때의 조정, 미리보기를 준비하는 동안의 자르기와 기울기 보정에서는 아무것도 하지 않습니다.
+
+‘가리기’(`'redact'`)도 ‘자르기’처럼 모서리와 함께 열립니다.
 
 ### `confirmTool()`
 
@@ -213,15 +215,15 @@ function cancelTool(): void
 
 열린 도구를 닫고 그 변경을 버립니다. `Esc`와 같습니다.
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-정리를 켜거나 끄고, 민감도를 0부터 1까지로 바꿉니다. 정리는 항상 다른 변경 다음에 적용됩니다. 정리가 열려 있는 동안에는 그 패널에 보이는 내용을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나 다른 도구가 열려 있으면 아무것도 하지 않습니다.
+[정리](../guide/tools/clean-up)의 마무리를 고릅니다. `'original'`, `'gray'`, 흑백인 `'mono'` 중 하나입니다. 흑백의 민감도도 0부터 1까지로 바꿉니다. 마무리는 항상 다른 변경 다음에 적용됩니다. 정리가 열려 있는 동안에는 그 패널에 보이는 내용을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나 다른 도구가 열려 있으면 아무것도 하지 않습니다.
 
-`sensitivity`가 0부터 1 사이가 아니면 `RangeError`를 던집니다.
+`mode`가 [`FinishMode`](./types#finishmode)가 아니거나 `sensitivity`가 0부터 1 사이가 아니면 `RangeError`를 던집니다.
 
 ### `setAdjustments()`
 
@@ -229,9 +231,19 @@ function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): voi
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음에 적용됩니다. 조정이 열려 있는 동안에는 그 패널에 보이는 값을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 정리가 켜져 있으면 아무것도 하지 않습니다. 정리는 각 픽셀을 주변과 비교하므로, 밝기와 대비는 그 결과를 거의 바꾸지 못하기 때문입니다.
+밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음, 회색 전에 적용됩니다. 조정이 열려 있는 동안에는 그 패널에 보이는 값을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 흑백이면 아무것도 하지 않습니다. 흑백은 각 픽셀을 주변과 비교하므로, 밝기와 대비는 그 결과를 거의 바꾸지 못하기 때문입니다.
 
 값이 -1부터 1 사이가 아니면 `RangeError`를 던집니다.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+[가리기](../guide/tools/redact)가 덮을 색을 고릅니다. 기본값인 `'black'` 또는 `'white'`입니다. ‘가리기’가 열려 있는 동안에는 화면의 영역을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 남깁니다. 그 밖에는 다음 영역의 색이 됩니다. 어느 모드에서나 동작합니다.
+
+`color`가 [`RedactColor`](./types#redactcolor)가 아니면 `RangeError`를 던집니다.
 
 ### `undo()`
 

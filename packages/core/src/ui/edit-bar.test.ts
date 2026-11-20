@@ -15,8 +15,8 @@ const state: EditBarState = {
   canUndo: false,
   canZoomIn: true,
   canZoomOut: true,
-  threshold: { enabled: false, sensitivity: 0.5 },
-  thresholdInEdits: false,
+  finish: { mode: 'original', sensitivity: 0.5 },
+  redaction: { color: 'black' },
 }
 
 const tool = (id: string) => TOOLS.find(candidate => candidate.id === id)!
@@ -45,7 +45,8 @@ describe('editBar', () => {
       redo: vi.fn(),
       runTool: vi.fn(),
       setAdjustment: vi.fn(),
-      setThreshold: vi.fn(),
+      setFinish: vi.fn(),
+      setRedaction: vi.fn(),
       undo: vi.fn(),
       zoomIn: vi.fn(),
       zoomOut: vi.fn(),
@@ -122,12 +123,17 @@ describe('editBar', () => {
     expect(disabled('flip')).toBe(false)
   })
 
-  it('disables Adjust while the document is cleaned up', () => {
+  it('disables Adjust in black and white, and not in gray', () => {
     bar.update({
       ...state,
-      threshold: { enabled: true, sensitivity: 0.5 },
+      finish: { mode: 'mono', sensitivity: 0.5 },
     })
     expect(disabled('adjust')).toBe(true)
+    bar.update({
+      ...state,
+      finish: { mode: 'gray', sensitivity: 0.5 },
+    })
+    expect(disabled('adjust')).toBe(false)
   })
 
   it('marks the tools whose setting is in effect, for the eyes and for screen readers', () => {
@@ -143,17 +149,23 @@ describe('editBar', () => {
     const description = document.getElementById(button('adjust').getAttribute('aria-describedby')!)!
     expect(description.textContent).toBe(DEFAULT_LABELS.inUse)
 
-    // A cleaned document has tones of its own, so Adjust says why it cannot open instead
+    // Black and white has tones of its own, so Adjust says why it cannot open instead
     bar.update({
       ...state,
       adjustments: { brightness: 0.2, contrast: 0 },
-      threshold: { enabled: true, sensitivity: 0.5 },
+      finish: { mode: 'mono', sensitivity: 0.5 },
     })
     expect(dot('adjust').hidden).toBe(true)
     const reason = document.getElementById(button('adjust').getAttribute('aria-describedby')!)!
     expect(reason.textContent).toBe(DEFAULT_LABELS.adjustUnavailable)
     expect(reason.hidden).toBe(true)
-    expect(dot('threshold').hidden).toBe(false)
+    expect(dot('finish').hidden).toBe(false)
+
+    bar.update({
+      ...state,
+      finish: { mode: 'gray', sensitivity: 0.5 },
+    })
+    expect(dot('finish').hidden).toBe(false)
 
     bar.update(state)
     expect(button('adjust').hasAttribute('aria-describedby')).toBe(false)
@@ -178,7 +190,7 @@ describe('editBar', () => {
       expect(part('paperpic-edit-corners').textContent).toBe(DEFAULT_LABELS.cropHint)
       expect(part('paperpic-edit-title').hidden).toBe(false)
       expect(ruler('brightness').hidden).toBe(true)
-      expect(ruler('thresholdSensitivity').hidden).toBe(true)
+      expect(ruler('finishSensitivity').hidden).toBe(true)
 
       bar.setActiveTool(null)
       expect(controls().hidden).toBe(false)
@@ -211,41 +223,75 @@ describe('editBar', () => {
       expect(commands.confirmTool).toHaveBeenCalledOnce()
     })
 
-    it('shows the ruler of Clean up, with its name, and the switch once it is an edit', () => {
-      const toggle = () => panel().querySelector<HTMLButtonElement>('[role="switch"]')!
-      bar.setActiveTool(tool('threshold'))
-      expect(ruler('thresholdSensitivity').hidden).toBe(false)
-      expect(part('paperpic-edit-title').hidden).toBe(false)
-      expect(toggle().hidden).toBe(true)
-      expect(part('paperpic-edit-corners').hidden).toBe(true)
+    it('shows the corners of Redact with its colors in place of its name, the one in use pressed', () => {
+      const pressed = (name: string) => option(name).getAttribute('aria-pressed')
+      const colors = () => option('redactBlack').parentElement!
+      bar.setActiveTool(tool('crop'))
+      expect(colors().hidden).toBe(true)
+
+      bar.setActiveTool(tool('redact'))
+      expect(part('paperpic-edit-corners').hidden).toBe(false)
+      expect(part('paperpic-edit-corners').textContent).toBe(DEFAULT_LABELS.redactHint)
+      expect(part('paperpic-edit-title').hidden).toBe(true)
+      expect(colors().hidden).toBe(false)
+      expect(colors().getAttribute('aria-label')).toBe(DEFAULT_LABELS.redact)
+      expect(option('redactWhite').textContent).toBe(DEFAULT_LABELS.redactWhite)
+      expect(pressed('redactBlack')).toBe('true')
 
       bar.update({
         ...state,
-        thresholdInEdits: true,
-        threshold: { enabled: true, sensitivity: 0.7 },
+        redaction: { color: 'white' },
       })
-      expect(toggle().hidden).toBe(false)
-      expect(part('paperpic-edit-title').hidden).toBe(true)
-      expect(toggle().getAttribute('aria-checked')).toBe('true')
-      expect((control('thresholdSensitivity') as HTMLInputElement).value).toBe('70')
+      expect(pressed('redactBlack')).toBe('false')
+      expect(pressed('redactWhite')).toBe('true')
 
-      toggle().click()
-      expect(commands.setThreshold).toHaveBeenCalledWith({ enabled: false }, true)
+      option('redactBlack').click()
+      expect(commands.setRedaction).toHaveBeenCalledWith('black')
     })
 
-    it('keeps the ruler of Clean up still while it is off', () => {
-      const input = control('thresholdSensitivity') as HTMLInputElement
-      bar.setActiveTool(tool('threshold'))
+    it('shows the finishes of Clean up, named, with the one on display pressed, and its ruler', () => {
+      const pressed = (name: string) => option(name).getAttribute('aria-pressed')
+      const finishes = () => option('finishOriginal').parentElement!
+      bar.setActiveTool(tool('finish'))
+      expect(ruler('finishSensitivity').hidden).toBe(false)
+      expect(part('paperpic-edit-title').hidden).toBe(true)
+      expect(part('paperpic-edit-corners').hidden).toBe(true)
+      expect(finishes().hidden).toBe(false)
+      expect(finishes().getAttribute('role')).toBe('group')
+      expect(finishes().getAttribute('aria-label')).toBe(DEFAULT_LABELS.finish)
+      expect(option('finishGray').textContent).toBe(DEFAULT_LABELS.finishGray)
+      expect(option('brightness').parentElement!.hidden).toBe(true)
+
+      bar.update({
+        ...state,
+        finish: { mode: 'mono', sensitivity: 0.7 },
+      })
+      expect(pressed('finishMono')).toBe('true')
+      expect(pressed('finishOriginal')).toBe('false')
+      expect((control('finishSensitivity') as HTMLInputElement).value).toBe('70')
+
+      option('finishOriginal').click()
+      expect(commands.setFinish).toHaveBeenCalledWith({ mode: 'original' }, true)
+    })
+
+    it('keeps the ruler of Clean up still out of black and white', () => {
+      const input = control('finishSensitivity') as HTMLInputElement
+      bar.setActiveTool(tool('finish'))
       expect(input.disabled).toBe(true)
       bar.update({
         ...state,
-        threshold: { enabled: true, sensitivity: 0.5 },
+        finish: { mode: 'gray', sensitivity: 0.5 },
+      })
+      expect(input.disabled).toBe(true)
+      bar.update({
+        ...state,
+        finish: { mode: 'mono', sensitivity: 0.5 },
       })
       expect(input.disabled).toBe(false)
 
       input.value = '30'
       input.dispatchEvent(new Event('input'))
-      expect(commands.setThreshold).toHaveBeenCalledWith({ sensitivity: 0.3 }, false)
+      expect(commands.setFinish).toHaveBeenCalledWith({ sensitivity: 0.3 }, false)
     })
 
     it('chooses between brightness and contrast in Adjust, starting with brightness', () => {
@@ -273,6 +319,16 @@ describe('editBar', () => {
       bar.setActiveTool(tool('adjust'))
       bar.focusRuler()
       expect(document.activeElement).toBe(shownRuler())
+    })
+
+    it('moves the focus to the chosen finish while the ruler of Clean up is still', () => {
+      bar.setActiveTool(tool('finish'))
+      bar.update({
+        ...state,
+        finish: { mode: 'gray', sensitivity: 0.5 },
+      })
+      bar.focusRuler()
+      expect(document.activeElement).toBe(option('finishGray'))
     })
   })
 

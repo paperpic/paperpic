@@ -6,9 +6,8 @@ import { photoFrame } from '../pipeline/photo-frame'
 import { planRead, resultSize } from '../pipeline/read-plan'
 import { applySteps } from '../pipeline/steps'
 import { cropPixels } from '../processing/crop'
-import { estimateAspectRatio, scaleQuad } from '../processing/homography'
-import { DEFAULT_LABELS } from '../ui/labels'
-import { rectangleCorners } from './corners'
+import { estimateAspectRatio, rectangleCorners, scaleQuad } from '../processing/homography'
+import { toolHost } from '../test/tool-host'
 import { perspectiveTool } from './perspective'
 
 const frame = { width: 1000, height: 500 }
@@ -223,24 +222,7 @@ describe('photoFrame', () => {
 })
 
 describe('perspective tool', () => {
-  const host = (overrides: Partial<ToolHost> = {}): ToolHost => ({
-    layer: document.createElement('div'),
-    frameSize: () => frame,
-    frameToViewport: point => point,
-    viewportToFrame: point => point,
-    reveal: () => {},
-    requestPaint: () => {},
-    setHint: () => {},
-    announce: () => {},
-    labels: () => DEFAULT_LABELS,
-    photoFrame: () => ({
-      photo: frame,
-      origin: { x: 0, y: 0 },
-    }),
-    aspectRatio: () => undefined,
-    paintMagnifier: () => {},
-    ...overrides,
-  })
+  const host = (overrides: Partial<ToolHost> = {}) => toolHost(frame, overrides)
 
   it('gives the corners as fractions of the image', () => {
     const edit = perspectiveTool.activate!(host()).confirm() as PerspectiveStep

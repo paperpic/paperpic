@@ -14,7 +14,8 @@ const tools = [
   'rotate',
   'flip',
   'adjust',
-  'threshold',
+  'finish',
+  'redact',
 ] as const
 
 type PlaygroundTool = typeof tools[number]

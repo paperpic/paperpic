@@ -122,13 +122,14 @@ Chaque bouton, règle et poignée d’angle porte `data-paperpic-control`, avec 
 }
 ```
 
-| Emplacement                 | Valeurs                                                                                                                 |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Barre d’outils              | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                           |
-| Barre de modification       | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`                   |
-| Ajuster et Nettoyer         | `brightness` et `contrast`, les choix et leurs règles, `threshold`, l’interrupteur, et `thresholdSensitivity`, sa règle |
-| Chaque outil                | `cancelTool`, `confirm`                                                                                                 |
-| Recadrer et Redresser       | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                         |
-| Question avant d’abandonner | `keepEditing`, `discard`                                                                                                |
+| Emplacement                    | Valeurs                                                                                                                                                |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Barre d’outils                 | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                          |
+| Barre de modification          | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                           |
+| Ajuster et Nettoyer            | `brightness` et `contrast`, les choix et leurs règles, `finishOriginal`, `finishGray` et `finishMono`, les finitions, et `finishSensitivity`, sa règle |
+| Chaque outil                   | `cancelTool`, `confirm`                                                                                                                                |
+| Recadrer, Redresser et Masquer | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                        |
+| Masquer                        | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                               |
+| Question avant d’abandonner    | `keepEditing`, `discard`                                                                                                                               |
 
-`rotateLeft` nomme deux boutons qui ne s’affichent jamais en même temps : celui d’une visionneuse en lecture seule, qui fait pivoter l’affichage, et celui de la barre de modification, qui fait pivoter l’image. De même pour `zoomIn` et `zoomOut`, dans la barre d’outils et dans un panneau, et pour `threshold`, le bouton de Nettoyer et son interrupteur. `brightness` et `contrast` nomment un choix et sa règle, qui s’affichent ensemble : ajoutez `button` ou `input` au sélecteur pour les distinguer.
+`rotateLeft` nomme deux boutons qui ne s’affichent jamais en même temps : celui d’une visionneuse en lecture seule, qui fait pivoter l’affichage, et celui de la barre de modification, qui fait pivoter l’image. De même pour `zoomIn` et `zoomOut`, dans la barre d’outils et dans un panneau. `brightness` et `contrast` nomment un choix et sa règle, qui s’affichent ensemble : ajoutez `button` ou `input` au sélecteur pour les distinguer.

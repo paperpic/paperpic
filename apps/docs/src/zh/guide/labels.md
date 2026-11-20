@@ -17,7 +17,7 @@ PaperPic 用英文显示按钮、提示和消息，屏幕阅读器朗读的变�
 ```ts
 const pic = new PaperPic(container, {
   src: '/receipt.jpg',
-  labels: { apply: '保存', threshold: '黑白' },
+  labels: { apply: '保存', finish: '增强' },
 })
 ```
 
@@ -28,7 +28,7 @@ const pic = new PaperPic(container, {
 import type { PaperPicLabels } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 
-const labels: Partial<PaperPicLabels> = { apply: '保存', threshold: '黑白' }
+const labels: Partial<PaperPicLabels> = { apply: '保存', finish: '增强' }
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const labels: Partial<PaperPicLabels> = { apply: '保存', threshold: '黑白' }
 import type { PaperPicLabels } from '@paperpic/react'
 import { PaperPic } from '@paperpic/react'
 
-const labels: Partial<PaperPicLabels> = { apply: '保存', threshold: '黑白' }
+const labels: Partial<PaperPicLabels> = { apply: '保存', finish: '增强' }
 
 export function Receipt() {
   return <PaperPic src="/receipt.jpg" labels={labels} />
@@ -62,7 +62,7 @@ const signed = new Intl.NumberFormat('zh', { signDisplay: 'exceptZero' })
 
 const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `缩放 ${percent}%`,
-  thresholdLevel: percent => `灵敏度 ${percent}%`,
+  finishLevel: percent => `灵敏度 ${percent}%`,
   cornerMoved: (corner, x, y) => `${corner}：${x}, ${y}`,
   cornerSelected: corner => `${corner}：点按新位置`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,

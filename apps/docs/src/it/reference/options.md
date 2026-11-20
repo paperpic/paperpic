@@ -63,7 +63,8 @@ Gli strumenti che offre la barra di modifica. Mantengono l’ordine di questa ta
 | `'rotate'`      | Ruota a sinistra                         |
 | `'flip'`        | Capovolgi                                |
 | `'adjust'`      | Regola, per la luminosità e il contrasto |
-| `'threshold'`   | Pulisci                                  |
+| `'finish'`      | Pulisci                                  |
+| `'redact'`      | Copri                                    |
 
 ### `wheelZoom`
 
@@ -105,15 +106,16 @@ Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
 | `crop`           | Ritaglia                                                                           |
 | `download`       | Scarica                                                                            |
 | `edit`           | Modifica                                                                           |
+| `finish`         | Pulisci                                                                            |
 | `fitHeight`      | Adatta all’altezza                                                                 |
 | `fitWidth`       | Adatta alla larghezza                                                              |
 | `flip`           | Capovolgi                                                                          |
 | `perspective`    | Raddrizza                                                                          |
+| `redact`         | Copri                                                                              |
 | `redo`           | Ripeti                                                                             |
 | `rotateDocument` | Ruota a sinistra, nella barra di modifica                                          |
 | `rotateLeft`     | Ruota a sinistra, nella barra degli strumenti di un visualizzatore di sola lettura |
 | `rotateRight`    | Ruota a destra, nella barra degli strumenti di un visualizzatore di sola lettura   |
-| `threshold`      | Pulisci                                                                            |
 | `undo`           | Annulla l’ultima azione                                                            |
 | `zoomIn`         | Ingrandisci                                                                        |
 | `zoomOut`        | Riduci                                                                             |
@@ -127,7 +129,7 @@ Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
 
 Il formato dell’immagine modificata. `type` è `'image/jpeg'`, `'image/png'` o `'image/webp'`, e `quality` va da 0 a 1 per JPEG e WebP, con `0.92` come valore predefinito.
 
-Senza `type`, un’immagine pulita esce in PNG, perché il JPEG ne rovinerebbe i bordi netti. Ogni altra immagine mantiene il formato dell’originale quando è JPEG, PNG o WebP, che PaperPic ricava dall’estensione dell’URL o dal tipo del `File` o del `Blob`. Altrimenti il risultato è PNG, come quando il browser non sa codificare il formato.
+Senza `type`, un’immagine in bianco e nero esce in PNG, perché il JPEG ne rovinerebbe i bordi netti. Ogni altra immagine mantiene il formato dell’originale quando è JPEG, PNG o WebP, che PaperPic ricava dall’estensione dell’URL o dal tipo del `File` o del `Blob`. Altrimenti il risultato è PNG, come quando il browser non sa codificare il formato.
 
 ### `maxOutputSize`
 
@@ -141,7 +143,7 @@ Il lato più lungo dell’immagine modificata, in pixel. Un risultato più grand
 - **Tipo:** `string`
 - **Valore predefinito:** il nome dell’immagine originale
 
-Il nome del file salvato. Scrivilo senza estensione: PaperPic aggiunge quella del formato, quindi un `receipt.jpg` pulito si salva come `receipt.png`. Se l’originale non ha un nome, come un `Blob`, il file si chiama `image`. Prima del primo Applica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
+Il nome del file salvato. Scrivilo senza estensione: PaperPic aggiunge quella del formato, quindi un `receipt.jpg` in bianco e nero si salva come `receipt.png`. Se l’originale non ha un nome, come un `Blob`, il file si chiama `image`. Prima del primo Applica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
 
 ## Strumenti
 
@@ -157,4 +159,4 @@ Le proporzioni reali del documento, come larghezza divisa per altezza, ad esempi
 - **Tipo:** `number`, da 0 a 1
 - **Valore predefinito:** `0.25`
 
-Quanto grigio conserva Pulisci ai bordi delle lettere, il che le rende più facili da leggere. Usa `0` per un bianco e nero rigoroso, che dà file più piccoli ma spezza i tratti sottili.
+Quanto grigio conserva il bianco e nero ai bordi delle lettere, il che le rende più facili da leggere. Usa `0` per un bianco e nero rigoroso, che dà file più piccoli ma spezza i tratti sottili.

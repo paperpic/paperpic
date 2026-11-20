@@ -17,7 +17,7 @@ PaperPic은 버튼, 힌트, 메시지를 영어로 보여 주고, 스크린 리�
 ```ts
 const pic = new PaperPic(container, {
   src: '/receipt.jpg',
-  labels: { apply: '저장', threshold: '흑백' },
+  labels: { apply: '저장', finish: '보정' },
 })
 ```
 
@@ -28,7 +28,7 @@ const pic = new PaperPic(container, {
 import type { PaperPicLabels } from '@paperpic/vue'
 import { PaperPic } from '@paperpic/vue'
 
-const labels: Partial<PaperPicLabels> = { apply: '저장', threshold: '흑백' }
+const labels: Partial<PaperPicLabels> = { apply: '저장', finish: '보정' }
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const labels: Partial<PaperPicLabels> = { apply: '저장', threshold: '흑백' }
 import type { PaperPicLabels } from '@paperpic/react'
 import { PaperPic } from '@paperpic/react'
 
-const labels: Partial<PaperPicLabels> = { apply: '저장', threshold: '흑백' }
+const labels: Partial<PaperPicLabels> = { apply: '저장', finish: '보정' }
 
 export function Receipt() {
   return <PaperPic src="/receipt.jpg" labels={labels} />
@@ -62,7 +62,7 @@ const signed = new Intl.NumberFormat('ko', { signDisplay: 'exceptZero' })
 
 const labels: Partial<PaperPicLabels> = {
   zoomLevel: percent => `확대/축소 ${percent}%`,
-  thresholdLevel: percent => `민감도 ${percent}%`,
+  finishLevel: percent => `민감도 ${percent}%`,
   cornerMoved: (corner, x, y) => `${corner}: ${x}, ${y}`,
   cornerSelected: corner => `${corner}: 옮길 위치를 탭하세요`,
   adjustmentLevel: (name, value) => `${name} ${signed.format(value)}`,

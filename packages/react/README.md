@@ -12,7 +12,8 @@ React component to view and edit document images with PaperPic.
 
 - **Nothing leaves the browser**: no server and no requests of its own, so the image stays on the device until your code sends it
 - **Straighten** photos taken at an angle, **crop**, **rotate** in 90° steps and **flip**
-- **Clean up** into crisp black and white, removing shadows, and adjust **brightness and contrast**
+- **Clean up** into gray, or into crisp black and white without shadows, and adjust **brightness and contrast**
+- **Redact** what must not be shared with solid black or white, written into the pixels of the result
 - **Undo and redo** every edit until you apply, then get the result as a `Blob`
 - **Off the main thread**: image processing runs in a Web Worker
 - **Keyboard and screen readers**, dark mode that follows `color-scheme`, and CSS tokens for your own theme

@@ -188,7 +188,7 @@ async function upload(blob: Blob) {
 }
 ```
 
-`blob` は元画像が JPEG、PNG、WebP ならその形式のままですが、ユーザーが文書をクリーンアップした場合は PNG になります。PaperPic が形式をどう判断するかは[形式と品質](./saving#format)で説明しています。[`output`](../reference/options#output) オプションで変更できます。
+`blob` は元画像が JPEG、PNG、WebP ならその形式のままですが、ユーザーが文書を白黒にした場合は PNG になります。PaperPic が形式をどう判断するかは[形式と品質](./saving#format)で説明しています。[`output`](../reference/options#output) オプションで変更できます。
 
 ## ビューアーを取り除く {#destroy}
 

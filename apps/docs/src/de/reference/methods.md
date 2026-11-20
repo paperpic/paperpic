@@ -195,7 +195,9 @@ Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vi
 function openTool(id: ToolId): void
 ```
 
-Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'threshold'`), das sich beim Öffnen einschaltet. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen bei eingeschaltetem Bereinigen und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
+Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'finish'`), das beim Öffnen Schwarzweiß wählt, wenn das Finish das Original ist. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen in Schwarzweiß und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
+
+Abdecken (`'redact'`) öffnet sich ebenfalls mit Ecken, wie Zuschneiden.
 
 ### `confirmTool()`
 
@@ -213,15 +215,15 @@ function cancelTool(): void
 
 Schließt das offene Werkzeug und verwirft seine Änderungen, wie `Esc`.
 
-### `setThreshold()`
+### `setFinish()`
 
 ```ts
-function setThreshold(setting: { enabled?: boolean, sensitivity?: number }): void
+function setFinish(setting: { mode?: FinishMode, sensitivity?: number }): void
 ```
 
-Schaltet Bereinigen ein oder aus, oder ändert seine Empfindlichkeit, von 0 bis 1. Bereinigen läuft immer nach den übrigen Änderungen. Solange Bereinigen offen ist, ändert es, was Bereinigen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus oder bei einem anderen offenen Werkzeug.
+Wählt das Finish von [Bereinigen](../guide/tools/clean-up): `'original'`, `'gray'` oder `'mono'` für Schwarzweiß. Es ändert auch die Empfindlichkeit von Schwarzweiß, von 0 bis 1. Das Finish läuft immer nach den übrigen Änderungen. Solange Bereinigen offen ist, ändert es, was Bereinigen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus oder bei einem anderen offenen Werkzeug.
 
-Wirft einen `RangeError`, wenn `sensitivity` nicht zwischen 0 und 1 liegt.
+Wirft einen `RangeError`, wenn `mode` kein [`FinishMode`](./types#finishmode) ist oder `sensitivity` nicht zwischen 0 und 1 liegt.
 
 ### `setAdjustments()`
 
@@ -229,9 +231,19 @@ Wirft einen `RangeError`, wenn `sensitivity` nicht zwischen 0 und 1 liegt.
 function setAdjustments(setting: { brightness?: number, contrast?: number }): void
 ```
 
-Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder wenn Bereinigen eingeschaltet ist: Bereinigen vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern.
+Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen und vor Graustufen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder in Schwarzweiß: Schwarzweiß vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern.
 
 Wirft einen `RangeError`, wenn ein Wert nicht zwischen -1 und 1 liegt.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Wählt die Farbe, mit der [Abdecken](../guide/tools/redact) überdeckt: `'black'`, die Voreinstellung, oder `'white'`. Solange Abdecken offen ist, ändert es den angezeigten Bereich, und [`confirmTool()`](#confirmtool) behält ihn. Sonst ist es die Farbe des nächsten Bereichs. Es funktioniert in jedem Modus.
+
+Wirft einen `RangeError`, wenn `color` keine [`RedactColor`](./types#redactcolor) ist.
 
 ### `undo()`
 

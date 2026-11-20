@@ -151,6 +151,6 @@ export function ExpenseForm() {
 
 - Applica mette l’immagine modificata nel campo file con un [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), così il modulo la invia con lo stesso nome. Prima di qualsiasi Applica, il modulo invia la foto così come l’utente l’ha scelta.
 - Cambiare i file del campo dal codice non emette il suo evento `change`, quindi il visualizzatore continua a mostrare il risultato.
-- Il file mantiene il nome della foto, con l’estensione del risultato, come `receipt.png` dopo Pulisci.
+- Il file mantiene il nome della foto, con l’estensione del risultato, come `receipt.png` dopo Pulisci in bianco e nero.
 - I pulsanti del visualizzatore non inviano mai il modulo.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene leggero il modulo. Le foto del telefono hanno 12 megapixel o più, e i documenti restano leggibili a 3000 pixel sul lato più lungo.

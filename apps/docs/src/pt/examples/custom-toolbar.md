@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## Um slider próprio {#slider}
 
-Um slider próprio para o Limpar abre a ferramenta antes. Cada movimento então chama `setThreshold()`, que muda o que o Limpar mostra, e `confirmTool()` guarda o último valor como uma única edição. Aqui o Concluído também aplica o resultado, e o Cancelar sai do modo de edição, então esses controles são toda a interface.
+Um slider próprio para o Limpar abre a ferramenta antes. Cada movimento então chama `setFinish()`, que muda o que o Limpar mostra, e `confirmTool()` guarda o último valor como uma única edição. Aqui o Concluído também aplica o resultado, e o Cancelar sai do modo de edição, então esses controles são toda a interface.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       Sensibilidade
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       Concluído
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>Concluído</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - Com `toolbar: false`, a barra de edição integrada também fica oculta, então Recortar e Endireitar mostram suas alças mas não o botão Concluído. A sua interface os confirma com [`confirmTool()`](../reference/methods#confirmtool), como faz o `Enter`. Para fechá-las sem as alterações, chame [`cancelTool()`](../reference/methods#canceltool), como faz o `Esc`.
 - Enquanto Recortar ou Endireitar está aberto, `hint` no estado diz o que fazer, por exemplo "Drag the corners", como faz a barra de edição integrada. Mostre-o, porque com `toolbar: false` nada mais o mostra. Um novo hint, como depois de pressionar um canto, chega com `change`.
-- Os seus próprios controles deslizantes podem chamar [`setThreshold()`](../reference/methods#setthreshold) e [`setAdjustments()`](../reference/methods#setadjustments) diretamente, o que adiciona uma alteração a cada chamada. Para deixar uma única alteração por um arraste inteiro, abra antes a ferramenta com [`openTool()`](../reference/methods#opentool): os mesmos métodos então mudam o que ela mostra, e `confirmTool()` o mantém.
+- Os seus próprios controles deslizantes podem chamar [`setFinish()`](../reference/methods#setfinish) e [`setAdjustments()`](../reference/methods#setadjustments) diretamente, o que adiciona uma alteração a cada chamada. Para deixar uma única alteração por um arraste inteiro, abra antes a ferramenta com [`openTool()`](../reference/methods#opentool): os mesmos métodos então mudam o que ela mostra, e `confirmTool()` o mantém.
 - [`cancel()`](../reference/methods#cancel) não pergunta antes de descartar as alterações. Pergunte você ao usuário se houver alguma, por exemplo quando `canApply` for verdadeiro.
 - Os atalhos de teclado continuam funcionando com o foco no visualizador. Veja [Acessibilidade](../guide/accessibility).

@@ -63,7 +63,8 @@ Die Werkzeuge, die die Bearbeitungsleiste anbietet. Sie behalten die Reihenfolge
 | `'rotate'`      | Nach links drehen                     |
 | `'flip'`        | Spiegeln                              |
 | `'adjust'`      | Anpassen, für Helligkeit und Kontrast |
-| `'threshold'`   | Bereinigen                            |
+| `'finish'`      | Bereinigen                            |
+| `'redact'`      | Abdecken                              |
 
 ### `wheelZoom`
 
@@ -105,15 +106,16 @@ Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltfläch
 | `crop`           | Zuschneiden                                                                |
 | `download`       | Herunterladen                                                              |
 | `edit`           | Bearbeiten                                                                 |
+| `finish`         | Bereinigen                                                                 |
 | `fitHeight`      | An Höhe anpassen                                                           |
 | `fitWidth`       | An Breite anpassen                                                         |
 | `flip`           | Spiegeln                                                                   |
 | `perspective`    | Begradigen                                                                 |
+| `redact`         | Abdecken                                                                   |
 | `redo`           | Wiederholen                                                                |
 | `rotateDocument` | Nach links drehen, in der Bearbeitungsleiste                               |
 | `rotateLeft`     | Nach links drehen, in der Werkzeugleiste eines schreibgeschützten Viewers  |
 | `rotateRight`    | Nach rechts drehen, in der Werkzeugleiste eines schreibgeschützten Viewers |
-| `threshold`      | Bereinigen                                                                 |
 | `undo`           | Rückgängig                                                                 |
 | `zoomIn`         | Vergrößern                                                                 |
 | `zoomOut`        | Verkleinern                                                                |
@@ -127,7 +129,7 @@ Jeder Schlüssel benennt ein Icon, und manche Icons stehen auf zwei Schaltfläch
 
 Das Format des bearbeiteten Bildes. `type` ist `'image/jpeg'`, `'image/png'` oder `'image/webp'`, und `quality` reicht von 0 bis 1 für JPEG und WebP, standardmäßig `0.92`.
 
-Ohne `type` wird ein bereinigtes Bild zu PNG, weil JPEG seine scharfen Kanten beschädigen würde. Jedes andere Bild behält das Format der Quelle, wenn es JPEG, PNG oder WebP ist, was PaperPic aus der Endung der URL oder dem Typ der `File` oder des `Blob` liest. Sonst ist das Ergebnis PNG, wie auch, wenn der Browser das Format nicht kodieren kann.
+Ohne `type` wird ein Bild in Schwarzweiß zu PNG, weil JPEG seine scharfen Kanten beschädigen würde. Jedes andere Bild behält das Format der Quelle, wenn es JPEG, PNG oder WebP ist, was PaperPic aus der Endung der URL oder dem Typ der `File` oder des `Blob` liest. Sonst ist das Ergebnis PNG, wie auch, wenn der Browser das Format nicht kodieren kann.
 
 ### `maxOutputSize`
 
@@ -141,7 +143,7 @@ Die längste Seite des bearbeiteten Bildes in Pixeln. Ein größeres Ergebnis wi
 - **Typ:** `string`
 - **Standard:** der Name des Quellbilds
 
-Der Name der gespeicherten Datei. Gib ihn ohne Endung an: PaperPic hängt die des Formats an, ein bereinigtes `receipt.jpg` wird also als `receipt.png` gespeichert. Hat die Quelle keinen Namen, etwa ein `Blob`, heißt die Datei `image`. Vor dem ersten Übernehmen bekommt eine URL ohne Endung auch beim Speichern keine, weil ihr Format unbekannt ist.
+Der Name der gespeicherten Datei. Gib ihn ohne Endung an: PaperPic hängt die des Formats an, ein `receipt.jpg` in Schwarzweiß wird also als `receipt.png` gespeichert. Hat die Quelle keinen Namen, etwa ein `Blob`, heißt die Datei `image`. Vor dem ersten Übernehmen bekommt eine URL ohne Endung auch beim Speichern keine, weil ihr Format unbekannt ist.
 
 ## Werkzeuge
 
@@ -157,4 +159,4 @@ Das echte Seitenverhältnis des Dokuments, als Breite geteilt durch Höhe, etwa 
 - **Typ:** `number`, von 0 bis 1
 - **Standard:** `0.25`
 
-Wie viel Grau Bereinigen an den Rändern der Buchstaben behält, was sie leichter lesbar macht. Nimm `0` für strenges Schwarzweiß, das kleinere Dateien ergibt, aber dünne Striche zerbricht.
+Wie viel Grau Schwarzweiß an den Rändern der Buchstaben behält, was sie leichter lesbar macht. Nimm `0` für strenges Schwarzweiß, das kleinere Dateien ergibt, aber dünne Striche zerbricht.

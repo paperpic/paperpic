@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## 직접 만든 슬라이더 {#slider}
 
-정리용 슬라이더를 직접 만들 때는 먼저 도구를 엽니다. 그다음 움직일 때마다 `setThreshold()`를 호출하면 정리가 보여 주는 내용이 바뀌고, `confirmTool()`이 마지막 값을 하나의 편집으로 남깁니다. 여기서는 완료가 결과도 적용하고 취소가 편집 모드를 끝내므로, 이 컨트롤만으로 인터페이스가 완성됩니다.
+정리용 슬라이더를 직접 만들 때는 먼저 도구를 엽니다. 그다음 움직일 때마다 `setFinish()`를 호출하면 정리가 보여 주는 내용이 바뀌고, `confirmTool()`이 마지막 값을 하나의 편집으로 남깁니다. 여기서는 완료가 결과도 적용하고 취소가 편집 모드를 끝내므로, 이 컨트롤만으로 인터페이스가 완성됩니다.
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       민감도
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       완료
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>완료</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - `toolbar: false`에서는 기본 편집 바도 숨겨지므로, ‘자르기’와 ‘기울기 보정’은 핸들은 보여 주지만 ‘완료’ 버튼은 없습니다. 여러분의 인터페이스에서 `Enter`처럼 [`confirmTool()`](../reference/methods#confirmtool)로 확정하세요. 변경 없이 닫으려면 `Esc`처럼 [`cancelTool()`](../reference/methods#canceltool)을 호출하세요.
 - ‘자르기’나 ‘기울기 보정’이 열려 있는 동안 상태의 `hint`는 내장 편집 바처럼 할 일을 알려 줍니다. 예: ‘Drag the corners’. `toolbar: false`에서는 달리 보여 주는 곳이 없으므로 표시하세요. 모서리를 누른 뒤처럼 새 힌트는 `change`로 옵니다.
-- 여러분의 슬라이더는 [`setThreshold()`](../reference/methods#setthreshold)와 [`setAdjustments()`](../reference/methods#setadjustments)를 직접 호출할 수 있으며, 호출할 때마다 변경이 하나 더해집니다. 끌기 전체를 변경 하나로 남기려면 먼저 [`openTool()`](../reference/methods#opentool)로 도구를 여세요. 그러면 같은 메서드가 도구에 보이는 내용을 바꾸고, `confirmTool()`이 이를 남깁니다.
+- 여러분의 슬라이더는 [`setFinish()`](../reference/methods#setfinish)와 [`setAdjustments()`](../reference/methods#setadjustments)를 직접 호출할 수 있으며, 호출할 때마다 변경이 하나 더해집니다. 끌기 전체를 변경 하나로 남기려면 먼저 [`openTool()`](../reference/methods#opentool)로 도구를 여세요. 그러면 같은 메서드가 도구에 보이는 내용을 바꾸고, `confirmTool()`이 이를 남깁니다.
 - [`cancel()`](../reference/methods#cancel)은 변경을 버리기 전에 묻지 않습니다. `canApply`가 true일 때처럼 변경이 있으면 사용자에게 먼저 물어보세요.
 - 뷰어에 포커스가 있으면 키보드 단축키는 계속 동작합니다. [접근성](../guide/accessibility)을 참고하세요.

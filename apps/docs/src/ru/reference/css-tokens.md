@@ -122,13 +122,14 @@ import '@paperpic/react/style.css'
 }
 ```
 
-| Место                          | Значения                                                                                                         |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Панель инструментов            | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                    |
-| Панель редактирования          | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `threshold`, `undo`, `redo`, `apply`            |
-| Настроить и Очистить           | `brightness` и `contrast` — варианты и их шкалы, `threshold` — переключатель, `thresholdSensitivity` — его шкала |
-| Каждый инструмент              | `cancelTool`, `confirm`                                                                                          |
-| Обрезать и Выровнять           | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                  |
-| Вопрос перед отменой изменений | `keepEditing`, `discard`                                                                                         |
+| Место                           | Значения                                                                                                                                             |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Панель инструментов             | `edit`, `zoomIn`, `zoomOut`, `fitWidth`, `fitHeight`, `rotateLeft`, `rotateRight`, `download`                                                        |
+| Панель редактирования           | `cancel`, `crop`, `perspective`, `rotateLeft`, `flip`, `adjust`, `finish`, `redact`, `undo`, `redo`, `apply`                                         |
+| Настроить и Очистить            | `brightness` и `contrast` — варианты и их шкалы, `finishOriginal`, `finishGray` и `finishMono` — варианты обработки, `finishSensitivity` — его шкала |
+| Каждый инструмент               | `cancelTool`, `confirm`                                                                                                                              |
+| Обрезать, Выровнять и Закрасить | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                      |
+| Закрасить                       | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                             |
+| Вопрос перед отменой изменений  | `keepEditing`, `discard`                                                                                                                             |
 
-`rotateLeft` называет две кнопки, которые никогда не видны одновременно: кнопку просмотрщика только для чтения, которая поворачивает отображение, и кнопку панели редактирования, которая поворачивает само изображение. То же верно для `zoomIn` и `zoomOut` — на панели инструментов и в элементах управления инструмента, и для `threshold` — кнопки «Очистить» и его переключателя. `brightness` и `contrast` называют вариант и его шкалу, которые видны одновременно: добавьте в селектор `button` или `input`, чтобы их различить.
+`rotateLeft` называет две кнопки, которые никогда не видны одновременно: кнопку просмотрщика только для чтения, которая поворачивает отображение, и кнопку панели редактирования, которая поворачивает само изображение. То же верно для `zoomIn` и `zoomOut` — на панели инструментов и в элементах управления инструмента. `brightness` и `contrast` называют вариант и его шкалу, которые видны одновременно: добавьте в селектор `button` или `input`, чтобы их различить.

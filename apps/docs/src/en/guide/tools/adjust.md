@@ -21,13 +21,13 @@ Adjust runs after the other edits, so Crop and Straighten show the image with it
 
 ## Adjust or Clean up?
 
-| Adjust                               | [Clean up](./clean-up)                  |
-| ------------------------------------ | --------------------------------------- |
-| Keeps the colors and the grays       | Turns the document into black and white |
-| For colored forms, stamps and photos | For text on paper                       |
-| Keeps the format of the source       | Gives PNG                               |
+| Adjust                               | [Clean up](./clean-up)                           |
+| ------------------------------------ | ------------------------------------------------ |
+| Keeps the colors and the grays       | Turns the document gray, or into black and white |
+| For colored forms, stamps and photos | For text on paper                                |
+| Keeps the format of the source       | Gives PNG                                        |
 
-While Clean up is on, Adjust is disabled. Clean up compares each pixel with its surroundings, so brightness and contrast would barely change its result. Screen readers hear why it is disabled.
+In black and white, Adjust is disabled. Black and white compares each pixel with its surroundings, so brightness and contrast would barely change its result. Screen readers hear why it is disabled. With gray, Adjust works, and gray comes after it.
 
 ## From code
 

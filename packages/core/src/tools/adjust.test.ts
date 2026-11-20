@@ -1,7 +1,8 @@
 import type { Operation } from '../pipeline/operations'
 import type { PipelineStep } from '../pipeline/steps'
 import type { PixelBuffer } from '../processing/types'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { CanvasMocks } from '../test/canvas'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { resolveOutputType } from '../pipeline/export'
 import { adjustSetting, toneStep, toPipelineSteps, toPreviewSteps } from '../pipeline/operations'
 import { photoFrame } from '../pipeline/photo-frame'
@@ -9,6 +10,8 @@ import { renderPreview } from '../pipeline/preview'
 import { planRead, resultSize } from '../pipeline/read-plan'
 import { applySteps } from '../pipeline/steps'
 import { adjustPixels } from '../processing/adjust'
+import { stubCanvas } from '../test/canvas'
+import { loadedImage } from '../test/images'
 import { adjustEdit, canAdjust } from './adjust'
 
 const crop = {
@@ -18,12 +21,12 @@ const crop = {
 const brighter: Operation = { type: 'adjust', brightness: 0.2, contrast: 0 }
 const sharper: Operation = { type: 'adjust', brightness: 0.2, contrast: 0.5 }
 const neutral: Operation = { type: 'adjust', brightness: 0, contrast: 0 }
-const cleanUp: Operation = {
-  type: 'threshold',
-  enabled: true,
+const mono = {
+  type: 'finish',
+  mode: 'mono',
   sensitivity: 0.5,
   softness: 0.25,
-}
+} as const satisfies Operation
 const step: PipelineStep = { type: 'adjust', brightness: 0.2, contrast: 0.5 }
 
 /** One pixel per value, with the same value in red, green and blue. */
@@ -51,15 +54,24 @@ describe('adjustments in the operations', () => {
     expect(toPipelineSteps([brighter, neutral])).toEqual([])
   })
 
-  it('are left out while the document is cleaned up, and come back after', () => {
-    expect(toPipelineSteps([sharper, cleanUp])).toEqual([
+  it('are left out in black and white, and come back after', () => {
+    expect(toPipelineSteps([sharper, mono])).toEqual([
       { type: 'threshold', sensitivity: 0.5, softness: 0.25 },
     ])
     expect(toPipelineSteps([
       sharper,
-      cleanUp,
-      { ...cleanUp, enabled: false },
+      mono,
+      { ...mono, mode: 'original' },
     ])).toEqual([step])
+  })
+
+  it('stay in gray', () => {
+    expect(toPipelineSteps([
+      sharper,
+      { ...mono, mode: 'gray' },
+    ])).toEqual([
+      { ...step, gray: true },
+    ])
   })
 
   it('stay out of the shape that a preview computes', () => {
@@ -93,46 +105,27 @@ describe('adjustments in the pipeline', () => {
 })
 
 describe('renderPreview with adjustments', () => {
-  const putImageData = vi.fn()
+  let putImageData: CanvasMocks['putImageData']
 
-  const stubCanvas = () => {
-    vi.stubGlobal('ImageData', class {
-      data: Uint8ClampedArray
-      constructor(data: Uint8ClampedArray) {
-        this.data = data
-      }
-    })
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
-      drawImage: vi.fn(),
-      getImageData: (_x: number, _y: number, width: number, height: number) => ({
-        data: new Uint8ClampedArray(width * height * 4).fill(100),
-      }),
-      putImageData,
-    } as unknown as CanvasRenderingContext2D)
-  }
+  beforeEach(() => {
+    putImageData = stubCanvas((width, height) => new Uint8ClampedArray(width * height * 4).fill(100)).putImageData
+  })
 
   afterEach(() => {
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
-    putImageData.mockClear()
   })
 
-  const image = {
-    element: {} as CanvasImageSource,
-    width: 8,
-    height: 8,
-    release: () => {},
-  }
+  const image = loadedImage(8, 8)
 
   it('shapes the image once and repaints its tones without the worker', async () => {
-    stubCanvas()
     const runner = {
       run: vi.fn(async (source: PixelBuffer) => source),
       prepare: vi.fn(),
     }
     const preview = await renderPreview(image, [
       { type: 'rotate', rotation: 90 },
-    ], step, runner)
+    ], step, null, runner)
     expect(runner.run).toHaveBeenCalledOnce()
     expect(runner.prepare).not.toHaveBeenCalled()
     expect(putImageData.mock.calls[0]![0].data[0]).toBe(adjustPixels(grays(100), step).data[0])
@@ -145,12 +138,11 @@ describe('renderPreview with adjustments', () => {
   })
 
   it('ignores a threshold, which needs a preview of its own', async () => {
-    stubCanvas()
     const runner = {
       run: vi.fn(),
       prepare: vi.fn(),
     }
-    const preview = await renderPreview(image, [], step, runner)
+    const preview = await renderPreview(image, [], step, null, runner)
     expect(runner.run).not.toHaveBeenCalled()
     preview.tint!({ type: 'threshold', sensitivity: 0.5, softness: 0.25 })
     expect(putImageData).toHaveBeenCalledTimes(1)
@@ -158,16 +150,12 @@ describe('renderPreview with adjustments', () => {
 })
 
 describe('the panel of Adjust', () => {
-  it('cannot change the tones of a cleaned document', () => {
+  it('cannot change the tones in black and white, and can in gray', () => {
     expect(canAdjust([])).toBe(true)
+    expect(canAdjust([mono])).toBe(false)
     expect(canAdjust([
-      {
-        type: 'threshold',
-        enabled: true,
-        sensitivity: 0.5,
-        softness: 0.25,
-      },
-    ])).toBe(false)
+      { ...mono, mode: 'gray' },
+    ])).toBe(true)
   })
 
   it('leaves an edit only when the brightness or the contrast changes', () => {

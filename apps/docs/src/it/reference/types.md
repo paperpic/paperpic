@@ -77,7 +77,7 @@ Il formato dell’immagine modificata, in [`output`](./options#output).
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'threshold'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 Uno strumento della barra di modifica, in [`tools`](./options#tools), [`openTool()`](./methods#opentool) e nell’`activeTool` dello [stato](./state). [`tools`](./options#tools) indica il pulsante di ciascuno.
@@ -112,6 +112,12 @@ interface PaperPicLabels {
   edit: string
   editBar: string
   editing: string
+  finish: string
+  finishGray: string
+  finishLevel: (percent: number) => string
+  finishMono: string
+  finishOriginal: string
+  finishSensitivity: string
   fitHeight: string
   fitWidth: string
   flip: string
@@ -123,12 +129,17 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
-  threshold: string
-  thresholdLevel: (percent: number) => string
-  thresholdSensitivity: string
   toolbar: string
   undo: string
   viewer: string
@@ -152,15 +163,16 @@ interface PaperPicIcons {
   crop: string
   download: string
   edit: string
+  finish: string
   fitHeight: string
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
   rotateRight: string
-  threshold: string
   undo: string
   zoomIn: string
   zoomOut: string
@@ -181,18 +193,35 @@ interface PaperPicState {
   canApply: boolean
   canRedo: boolean
   canUndo: boolean
+  finish: { mode: FinishMode, sensitivity: number }
   fit: Fit | null
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
-  threshold: { enabled: boolean, sensitivity: number }
   zoom: number
 }
 ```
 
 Ciò che restituisce [`getState()`](./methods#getstate) e che invia l’evento [`change`](./events#change). [Stato](./state) spiega ogni campo.
+
+### `FinishMode`
+
+```ts
+type FinishMode = 'original' | 'gray' | 'mono'
+```
+
+La finitura di [Pulisci](../guide/tools/clean-up): i toni originali, il grigio, o il bianco e nero con `'mono'`. [`setFinish()`](./methods#setfinish) la riceve, e il `finish` dello [stato](./state) la contiene.
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+Il colore con cui [Copri](../guide/tools/redact) copre. [`setRedaction()`](./methods#setredaction) lo riceve, e il `redaction` dello [stato](./state) lo contiene.
 
 ### `Fit`
 

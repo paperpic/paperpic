@@ -24,7 +24,8 @@ Straighten, crop and clean up a phone photo, a scan or any image with text.
 - 📐 **Straighten** photos taken at an angle: drag four corners and get a flat page with its proportions estimated
 - 🔄 **Rotate** in 90° steps, and **flip**
 - ☀️ **Brightness and contrast** with a live ruler
-- 🧼 **Clean up** into crisp black & white, removing shadows, with an adjustable sensitivity
+- 🧼 **Clean up** into gray, or into crisp black & white without shadows, with an adjustable sensitivity
+- ⬛ **Redact** an account number or a signature with solid black or white, written into the pixels of the result
 - ↩️ **Undo and redo** every edit until you apply, then get the result as a `Blob`
 - 💾 **Download** the image on display with an optional button
 - ⚡ **Off the main thread**: image processing runs in a Web Worker

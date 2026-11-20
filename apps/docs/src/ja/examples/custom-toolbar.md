@@ -220,7 +220,7 @@ export function Receipt() {
 
 ## 自前のスライダー {#slider}
 
-クリーンアップ用の自前のスライダーでは、先にツールを開きます。そのあとは動かすたびに `setThreshold()` を呼ぶと、クリーンアップの表示が変わり、`confirmTool()` で最後の値が 1 つの編集として残ります。この例では完了で結果も適用し、キャンセルで編集モードを抜けるので、これらのコントロールだけで操作が完結します。
+クリーンアップ用の自前のスライダーでは、先にツールを開きます。そのあとは動かすたびに `setFinish()` を呼ぶと、クリーンアップの表示が変わり、`confirmTool()` で最後の値が 1 つの編集として残ります。この例では完了で結果も適用し、キャンセルで編集モードを抜けるので、これらのコントロールだけで操作が完結します。
 
 :::tabs key:framework
 == JavaScript
@@ -251,9 +251,9 @@ const slider = document.querySelector<HTMLInputElement>('#sensitivity')!
 
 document.querySelector('#clean-up')!.addEventListener('click', () => {
   pic.edit()
-  pic.openTool('threshold')
+  pic.openTool('finish')
 })
-slider.addEventListener('input', () => pic.setThreshold({ sensitivity: slider.valueAsNumber }))
+slider.addEventListener('input', () => pic.setFinish({ sensitivity: slider.valueAsNumber }))
 document.querySelector('#done')!.addEventListener('click', () => {
   pic.confirmTool()
   pic.apply()
@@ -263,11 +263,11 @@ document.querySelector('#cancel')!.addEventListener('click', () => {
   pic.cancel()
 })
 
-pic.on('change', ({ activeTool, threshold }) => {
-  const open = activeTool === 'threshold'
+pic.on('change', ({ activeTool, finish }) => {
+  const open = activeTool === 'finish'
   document.querySelector<HTMLElement>('#ruler')!.hidden = !open
   document.querySelector<HTMLElement>('#clean-up')!.hidden = open
-  slider.value = String(threshold.sensitivity)
+  slider.value = String(finish.sensitivity)
 })
 ```
 
@@ -286,11 +286,11 @@ const state = shallowRef<PaperPicState>()
 
 function open() {
   viewer.value?.edit()
-  viewer.value?.openTool('threshold')
+  viewer.value?.openTool('finish')
 }
 
 function slide(event: Event) {
-  viewer.value?.setThreshold({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
+  viewer.value?.setFinish({ sensitivity: (event.target as HTMLInputElement).valueAsNumber })
 }
 
 function done() {
@@ -305,10 +305,10 @@ function cancel() {
 </script>
 
 <template>
-  <div v-if="state?.activeTool === 'threshold'">
+  <div v-if="state?.activeTool === 'finish'">
     <label>
       感度
-      <input type="range" min="0" max="1" step="0.05" :value="state.threshold.sensitivity" @input="slide">
+      <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
       完了
@@ -349,7 +349,7 @@ export function CleanUpRuler() {
 
   function open() {
     viewer().edit()
-    viewer().openTool('threshold')
+    viewer().openTool('finish')
   }
 
   function done() {
@@ -364,7 +364,7 @@ export function CleanUpRuler() {
 
   return (
     <>
-      {state?.activeTool === 'threshold'
+      {state?.activeTool === 'finish'
         ? (
             <div>
               <label>
@@ -374,8 +374,8 @@ export function CleanUpRuler() {
                   min="0"
                   max="1"
                   step="0.05"
-                  value={state.threshold.sensitivity}
-                  onChange={event => viewer().setThreshold({ sensitivity: event.target.valueAsNumber })}
+                  value={state.finish.sensitivity}
+                  onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
               <button type="button" onClick={done}>完了</button>
@@ -407,6 +407,6 @@ export function CleanUpRuler() {
 
 - `toolbar: false` では組み込みの編集バーも隠れるため、「切り抜き」と「傾き補正」はハンドルを表示しますが、「完了」ボタンはありません。あなたのインターフェースから、`Enter` と同じく [`confirmTool()`](../reference/methods#confirmtool) で確定してください。変更せずに閉じるには、`Esc` と同じように [`cancelTool()`](../reference/methods#canceltool) を呼び出します。
 - 「切り抜き」か「傾き補正」が開いている間、状態の `hint` が、内蔵の編集バーと同じく、たとえば「Drag the corners」のように何をすればよいかを示します。`toolbar: false` ではほかに表示するものがないので、表示してください。角を押したあとなど、新しいヒントは `change` で届きます。
-- 独自のスライダーから [`setThreshold()`](../reference/methods#setthreshold) と [`setAdjustments()`](../reference/methods#setadjustments) を直接呼べます。呼ぶたびに変更が 1 つ加わります。ドラッグ全体を 1 つの変更にするには、先に [`openTool()`](../reference/methods#opentool) でツールを開いてください。すると同じメソッドがツールの表示を変え、`confirmTool()` がそれを残します。
+- 独自のスライダーから [`setFinish()`](../reference/methods#setfinish) と [`setAdjustments()`](../reference/methods#setadjustments) を直接呼べます。呼ぶたびに変更が 1 つ加わります。ドラッグ全体を 1 つの変更にするには、先に [`openTool()`](../reference/methods#opentool) でツールを開いてください。すると同じメソッドがツールの表示を変え、`confirmTool()` がそれを残します。
 - [`cancel()`](../reference/methods#cancel) は変更を破棄する前に確認しません。`canApply` が true のときなど、変更がある場合はユーザーに確認してください。
 - ビューアーにフォーカスがあれば、キーボードショートカットは引き続き使えます。[アクセシビリティ](../guide/accessibility)を参照してください。

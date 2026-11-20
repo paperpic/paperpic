@@ -4,6 +4,7 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 
 | English                                       | Italiano                    |
 | --------------------------------------------- | --------------------------- |
+| area, what Redact covers                      | area                        |
 | container                                     | contenitore                 |
 | corner handle                                 | maniglia d’angolo           |
 | CSS token                                     | token CSS                   |
@@ -13,6 +14,7 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 | edit mode                                     | modalità di modifica        |
 | editor                                        | editor                      |
 | event                                         | evento                      |
+| finish, of Clean up                           | finitura                    |
 | guide                                         | Guida                       |
 | keyboard shortcut                             | scorciatoia da tastiera     |
 | label, a text of the interface                | etichetta                   |
@@ -33,7 +35,6 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 | softness, of the cleaned edges                | morbidezza                  |
 | source image                                  | immagine originale          |
 | state                                         | stato                       |
-| switch, of Clean up                           | interruttore                |
 | tool                                          | strumento                   |
 | toolbar, the bar of buttons at the right      | barra degli strumenti       |
 | type, of TypeScript                           | tipo                        |

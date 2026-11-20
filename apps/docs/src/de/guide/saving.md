@@ -59,7 +59,7 @@ Der Viewer zeigt das Ergebnis sofort, ob es deinen Server erreicht oder nicht, a
 
 ## Format und Qualität {#format}
 
-Ohne Optionen behält das Ergebnis das Format des Quellbilds, wenn es JPEG, PNG oder WebP ist. PaperPic liest es aus der Endung der URL, etwa `.jpg`, oder aus dem Typ der `File` oder des `Blob`. Ein bereinigtes Dokument ist PNG, weil JPEG Artefakte um seine scharfen Kanten erzeugen würde. Jede andere Quelle ergibt ebenfalls PNG, etwa ein GIF oder eine URL ohne Endung wie `/api/documents/42`, auch wenn sie ein JPEG liefert.
+Ohne Optionen behält das Ergebnis das Format des Quellbilds, wenn es JPEG, PNG oder WebP ist. PaperPic liest es aus der Endung der URL, etwa `.jpg`, oder aus dem Typ der `File` oder des `Blob`. Ein Dokument in Schwarzweiß ist PNG, weil JPEG Artefakte um seine scharfen Kanten erzeugen würde. Jede andere Quelle ergibt ebenfalls PNG, etwa ein GIF oder eine URL ohne Endung wie `/api/documents/42`, auch wenn sie ein JPEG liefert.
 
 [`output`](../reference/options#output) wählt das Format und seine Qualität von 0 bis 1 für JPEG und WebP, standardmäßig 0.92:
 
@@ -93,7 +93,7 @@ export function Receipt() {
 
 | Format       | Geeignet für                                               |
 | ------------ | ---------------------------------------------------------- |
-| `image/png`  | Bereinigte Dokumente und Text, verlustfrei                 |
+| `image/png`  | Dokumente in Schwarzweiß und Text, verlustfrei             |
 | `image/jpeg` | Fotos und farbige Dokumente, in kleinen Dateien            |
 | `image/webp` | Fotos und farbige Dokumente, in kleineren Dateien als JPEG |
 
@@ -139,7 +139,7 @@ Das Ergebnis von Übernehmen enthält keine Metadaten. PaperPic zeichnet das Bil
 
 [`download: true`](../reference/options#download) fügt am Ende der Werkzeugleiste eine Schaltfläche hinzu, die das angezeigte Bild speichert: das Ergebnis des letzten Übernehmens, sonst das Quellbild, wie es ist. Während der Bearbeitung ist sie ausgeblendet, weil die Änderungen noch nicht übernommen sind. [`download()`](../reference/methods#download) tut dasselbe aus dem Code, mit oder ohne Schaltfläche. Das Kontextmenü des Browsers öffnet sich nicht über dem Viewer, daher ist diese Schaltfläche der Weg, das Bild aus ihm zu speichern.
 
-Die Datei behält den Namen der Quelle und bekommt die Endung ihres Formats, ein bereinigtes `receipt.jpg` wird also als `receipt.png` gespeichert. [`filename`](../reference/options#filename) setzt einen anderen Namen. Ganz ohne Namen, etwa bei einem `Blob`, heißt die Datei `image`. Vor dem ersten Übernehmen bekommt eine URL ohne Endung auch beim Speichern keine, weil ihr Format unbekannt ist.
+Die Datei behält den Namen der Quelle und bekommt die Endung ihres Formats, ein `receipt.jpg` in Schwarzweiß wird also als `receipt.png` gespeichert. [`filename`](../reference/options#filename) setzt einen anderen Namen. Ganz ohne Namen, etwa bei einem `Blob`, heißt die Datei `image`. Vor dem ersten Übernehmen bekommt eine URL ohne Endung auch beim Speichern keine, weil ihr Format unbekannt ist.
 
 Bei einem `src` von einem anderen Ursprung speichern Browser die Datei vor dem ersten Übernehmen nicht: Sie öffnen stattdessen das Bild, und der Nutzer verlässt deine Seite. Übergib das Bild als `Blob`, wie [Bilder laden](./loading#fetch) zeigt, oder speichere es selbst im Ereignis `download`.
 

@@ -9,7 +9,7 @@ Handyfotos haben 12 Megapixel oder mehr, und ihre Bearbeitung ist echte Arbeit. 
 
 ## Ein Web Worker erledigt die Arbeit
 
-Bereinigen und Begradigen brauchen bei einem Foto mit 12 Megapixeln auf einem aktuellen Smartphone etwa anderthalb Sekunden, wie die [gemessenen Zeiten](#measurements) zeigen. Im Hauptthread würde die Seite so lange einfrieren. PaperPic führt sie deshalb in einem Web Worker aus, sodass die Seite reagiert, während Übernehmen läuft.
+Schwarzweiß und Begradigen brauchen bei einem Foto mit 12 Megapixeln auf einem aktuellen Smartphone etwa anderthalb Sekunden, wie die [gemessenen Zeiten](#measurements) zeigen. Im Hauptthread würde die Seite so lange einfrieren. PaperPic führt sie deshalb in einem Web Worker aus, sodass die Seite reagiert, während Übernehmen läuft.
 
 Der Worker steckt im Paket und startet mit dem Standard `new Worker(new URL(…, import.meta.url))`, den Bundler wie Vite und webpack 5 von selbst erkennen, ohne Konfiguration. Kann der Worker nicht starten, läuft die Bearbeitung im Hauptthread: Sie funktioniert weiter, aber die Seite kann bei großen Bildern kurz einfrieren.
 
@@ -34,14 +34,14 @@ Jeder Schritt von Übernehmen, im Worker, auf einem Pixel 10 Pro mit Chrome 156:
 
 | Schritt                       | 2 MP   | 12 MP  | 37,5 MP |
 | ----------------------------- | ------ | ------ | ------- |
-| Bereinigen                    | 256 ms | 1,5 s  | 4,8 s   |
+| Schwarzweiß                   | 256 ms | 1,5 s  | 4,8 s   |
 | Begradigen                    | 251 ms | 1,6 s  | 5,0 s   |
 | Export als PNG                | 92 ms  | 378 ms | 979 ms  |
 | Export als JPEG, Qualität 0,9 | 33 ms  | 142 ms | 525 ms  |
 
 - Eine Bewegung des Lineals von Bereinigen dauert auf demselben Smartphone etwa 40 ms, weil sie auf der Vorschau mit etwa 2 MP arbeitet.
 - Ein Desktop-Computer mit 8 Kernen erledigt jeden Schritt etwa sechsmal schneller.
-- Bei 37,5 MP braucht Bereinigen in der Spitze etwa 340 MB Speicher.
+- Bei 37,5 MP braucht Schwarzweiß in der Spitze etwa 340 MB Speicher.
 - Android-Geräte der Mittelklasse und iPhones sind noch nicht gemessen.
 
 ## Serverseitiges Rendern

@@ -1,5 +1,5 @@
 import type { Preview } from './preview'
-import type { PipelineStep, ToneStep } from './steps'
+import type { RedactStep, ShapeStep, ToneStep } from './steps'
 
 /** What the queue asks of the viewer. */
 export interface PreviewQueueHost {
@@ -7,8 +7,8 @@ export interface PreviewQueueHost {
   failed: (cause: unknown) => void
   /** Receives the latest preview. A result that newer edits replaced never arrives here. */
   ready: (preview: Preview) => void
-  /** Computes a preview of the steps and the tones. */
-  render: (steps: PipelineStep[], tone: ToneStep | null) => Promise<Preview>
+  /** Computes a preview of the steps, the tones and the areas that Redact covers. */
+  render: (steps: ShapeStep[], tone: ToneStep | null, redaction: RedactStep | null) => Promise<Preview>
   /** Repaints the tones of the preview on display. */
   tint: (tone: ToneStep) => void
 }
@@ -22,7 +22,7 @@ export class PreviewQueue {
   private readonly host: PreviewQueueHost
   private id = 0
   private running = false
-  private waiting: { id: number, steps: PipelineStep[], tone: ToneStep | null } | null = null
+  private waiting: { id: number, redaction: RedactStep | null, steps: ShapeStep[], tone: ToneStep | null } | null = null
   private tintFrame: number | null = null
   private pendingTone: ToneStep | null = null
   /** Whether a preview was asked for and has not arrived yet. */
@@ -33,14 +33,14 @@ export class PreviewQueue {
   }
 
   /** Asks for the preview of these edits, which replaces any asked for before. */
-  request(steps: PipelineStep[], tone: ToneStep | null): void {
+  request(steps: ShapeStep[], tone: ToneStep | null, redaction: RedactStep | null): void {
     const id = ++this.id
     this.pending = true
     if (this.running) {
-      this.waiting = { id, steps, tone }
+      this.waiting = { id, steps, tone, redaction }
       return
     }
-    void this.run(id, steps, tone)
+    void this.run(id, steps, tone, redaction)
   }
 
   /** Forgets every preview asked for, so none arrives, and any tones waiting for a frame. */
@@ -72,25 +72,25 @@ export class PreviewQueue {
   }
 
   /** Renders one preview, and then the one that waits, unless newer edits or `forget()` made it outdated. */
-  private async run(id: number, steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
+  private async run(id: number, steps: ShapeStep[], tone: ToneStep | null, redaction: RedactStep | null): Promise<void> {
     this.running = true
     try {
-      await this.render(id, steps, tone)
+      await this.render(id, steps, tone, redaction)
     }
     finally {
       this.running = false
       const waiting = this.waiting
       this.waiting = null
       if (waiting?.id === this.id) {
-        void this.run(waiting.id, waiting.steps, waiting.tone)
+        void this.run(waiting.id, waiting.steps, waiting.tone, waiting.redaction)
       }
     }
   }
 
-  private async render(id: number, steps: PipelineStep[], tone: ToneStep | null): Promise<void> {
+  private async render(id: number, steps: ShapeStep[], tone: ToneStep | null, redaction: RedactStep | null): Promise<void> {
     let preview: Preview
     try {
-      preview = await this.host.render(steps, tone)
+      preview = await this.host.render(steps, tone, redaction)
     }
     catch (cause) {
       if (id === this.id) {

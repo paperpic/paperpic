@@ -1,16 +1,17 @@
-import type { AdjustSetting, Operation, ThresholdSetting } from '../pipeline/operations'
+import type { AdjustSetting, FinishSetting, Operation } from '../pipeline/operations'
 import type { PhotoFrame } from '../pipeline/photo-frame'
+import type { RedactColor } from '../processing/redact'
 import type { Point, Size } from '../processing/types'
 import type { Magnifier } from '../render/magnifier'
 import type { ViewPoint } from '../state/view'
 import type { PaperPicLabels } from '../ui/labels'
 
 /**
- * The tools the edit bar can offer. `perspective` is Straighten, and `threshold` is Clean up.
+ * The tools the edit bar can offer. `perspective` is Straighten, and `finish` is Clean up.
  *
  * @see https://paperpic.dev/reference/options#tools
  */
-export type ToolId = 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotate' | 'threshold'
+export type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 
 /** What a button of a tool can do to the edit in progress. */
 export interface ToolContext {
@@ -24,7 +25,7 @@ export interface ToolAction {
   /** Its icon, when it is not the one named by `id`. */
   icon?: 'rotateDocument'
   /** Its key in `PaperPicLabels`, which its `data-paperpic-control` also holds, and in `PaperPicIcons`. */
-  id: 'adjust' | 'crop' | 'flip' | 'perspective' | 'rotateLeft' | 'threshold'
+  id: 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotateLeft'
   run: (context: ToolContext) => void
 }
 
@@ -44,6 +45,8 @@ export interface ToolHost {
   paintMagnifier: (context: CanvasRenderingContext2D, magnifier: Magnifier) => void
   /** Where the image on display sits in the photo it comes from. */
   photoFrame: () => PhotoFrame
+  /** The color that Redact covers with. */
+  redactColor: () => RedactColor
   requestPaint: () => void
   /** Moves the image, if it can, until a point of the frame is on screen. */
   reveal: (point: Point) => void
@@ -77,12 +80,12 @@ export interface Tool {
   /** Only for a tool with a selection of its own, such as corners. */
   activate?: (host: ToolHost) => ToolSession
   /** Tells the user what to do in the tool. */
-  hint?: 'cropHint' | 'perspectiveHint'
+  hint?: 'cropHint' | 'perspectiveHint' | 'redactHint'
   id: ToolId
 }
 
-/** What Clean up shows: whether it is on, and its sensitivity. */
-export type ThresholdPanelSetting = Pick<ThresholdSetting, 'enabled' | 'sensitivity'>
+/** What Clean up shows: the finish, and the sensitivity of black and white. */
+export type FinishPanelSetting = Pick<FinishSetting, 'mode' | 'sensitivity'>
 
 /**
  * What an open Adjust or Clean up shows, before Done turns it into one edit. These tools have a panel of settings
@@ -90,4 +93,4 @@ export type ThresholdPanelSetting = Pick<ThresholdSetting, 'enabled' | 'sensitiv
  */
 export type PanelDraft
   = | { setting: AdjustSetting, tool: 'adjust' }
-    | { setting: ThresholdPanelSetting, tool: 'threshold' }
+    | { setting: FinishPanelSetting, tool: 'finish' }

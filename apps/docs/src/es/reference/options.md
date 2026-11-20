@@ -63,7 +63,8 @@ Las herramientas que ofrece la barra de edición. Mantienen el orden de esta tab
 | `'rotate'`      | Girar a la izquierda                   |
 | `'flip'`        | Voltear                                |
 | `'adjust'`      | Ajustar, para el brillo y el contraste |
-| `'threshold'`   | Limpiar                                |
+| `'finish'`      | Limpiar                                |
+| `'redact'`      | Tapar                                  |
 
 ### `wheelZoom`
 
@@ -105,15 +106,16 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 | `crop`           | Recortar                                                                      |
 | `download`       | Descargar                                                                     |
 | `edit`           | Editar                                                                        |
+| `finish`         | Limpiar                                                                       |
 | `fitHeight`      | Ajustar al alto                                                               |
 | `fitWidth`       | Ajustar al ancho                                                              |
 | `flip`           | Voltear                                                                       |
 | `perspective`    | Enderezar                                                                     |
+| `redact`         | Tapar                                                                         |
 | `redo`           | Rehacer                                                                       |
 | `rotateDocument` | Girar a la izquierda, en la barra de edición                                  |
 | `rotateLeft`     | Girar a la izquierda, en la barra de herramientas de un visor de solo lectura |
 | `rotateRight`    | Girar a la derecha, en la barra de herramientas de un visor de solo lectura   |
-| `threshold`      | Limpiar                                                                       |
 | `undo`           | Deshacer                                                                      |
 | `zoomIn`         | Acercar                                                                       |
 | `zoomOut`        | Alejar                                                                        |
@@ -127,7 +129,7 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 
 El formato de la imagen editada. `type` es `'image/jpeg'`, `'image/png'` o `'image/webp'`, y `quality` va de 0 a 1 para JPEG y WebP, con `0.92` por defecto.
 
-Sin `type`, una imagen limpiada sale en PNG, porque JPEG dañaría sus bordes nítidos. Cualquier otra imagen mantiene el formato de la original cuando es JPEG, PNG o WebP, que PaperPic saca de la extensión de la URL o del tipo del `File` o del `Blob`. Si no, el resultado es PNG, igual que cuando el navegador no sabe codificar el formato.
+Sin `type`, una imagen en blanco y negro sale en PNG, porque JPEG dañaría sus bordes nítidos. Cualquier otra imagen mantiene el formato de la original cuando es JPEG, PNG o WebP, que PaperPic saca de la extensión de la URL o del tipo del `File` o del `Blob`. Si no, el resultado es PNG, igual que cuando el navegador no sabe codificar el formato.
 
 ### `maxOutputSize`
 
@@ -141,7 +143,7 @@ El lado más largo de la imagen editada, en píxeles. Un resultado mayor se redu
 - **Tipo:** `string`
 - **Valor por defecto:** el nombre de la imagen original
 
-El nombre del archivo guardado. Escríbelo sin extensión: PaperPic añade la del formato, así que un `receipt.jpg` limpiado se guarda como `receipt.png`. Si la imagen original no tiene nombre, como un `Blob`, el archivo se llama `image`. Antes del primer Aplicar, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
+El nombre del archivo guardado. Escríbelo sin extensión: PaperPic añade la del formato, así que un `receipt.jpg` en blanco y negro se guarda como `receipt.png`. Si la imagen original no tiene nombre, como un `Blob`, el archivo se llama `image`. Antes del primer Aplicar, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
 
 ## Herramientas
 
@@ -157,4 +159,4 @@ Las proporciones reales del documento, como ancho dividido por alto, por ejemplo
 - **Tipo:** `number`, de 0 a 1
 - **Valor por defecto:** `0.25`
 
-Cuánto gris conserva Limpiar en los bordes de las letras, lo que las hace más fáciles de leer. Usa `0` para un blanco y negro estricto, que da archivos más pequeños pero rompe los trazos finos.
+Cuánto gris conserva el blanco y negro en los bordes de las letras, lo que las hace más fáciles de leer. Usa `0` para un blanco y negro estricto, que da archivos más pequeños pero rompe los trazos finos.

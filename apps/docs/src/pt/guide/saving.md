@@ -59,7 +59,7 @@ O visualizador mostra o resultado na hora, chegue ele ou não ao seu servidor, e
 
 ## Formato e qualidade {#format}
 
-Sem opções, o resultado mantém o formato da imagem original quando é JPEG, PNG ou WebP. O PaperPic o tira da extensão da URL, como `.jpg`, ou do tipo do `File` ou do `Blob`. Um documento limpo sai em PNG, porque o JPEG adicionaria artefatos em volta das bordas nítidas dele. Qualquer outra imagem original também gera PNG, como um GIF, ou uma URL sem extensão como `/api/documents/42`, mesmo que sirva um JPEG.
+Sem opções, o resultado mantém o formato da imagem original quando é JPEG, PNG ou WebP. O PaperPic o tira da extensão da URL, como `.jpg`, ou do tipo do `File` ou do `Blob`. Um documento em preto e branco sai em PNG, porque o JPEG adicionaria artefatos em volta das bordas nítidas dele. Qualquer outra imagem original também gera PNG, como um GIF, ou uma URL sem extensão como `/api/documents/42`, mesmo que sirva um JPEG.
 
 [`output`](../reference/options#output) escolhe o formato e a qualidade dele de 0 a 1 para JPEG e WebP, com 0.92 como padrão:
 
@@ -93,7 +93,7 @@ export function Receipt() {
 
 | Formato      | Serve para                                                 |
 | ------------ | ---------------------------------------------------------- |
-| `image/png`  | Documentos limpos e texto, sem perda                       |
+| `image/png`  | Documentos em preto e branco, e texto, sem perda           |
 | `image/jpeg` | Fotos e documentos coloridos, em arquivos pequenos         |
 | `image/webp` | Fotos e documentos coloridos, em arquivos menores que JPEG |
 
@@ -139,7 +139,7 @@ O resultado do Aplicar não traz metadados. O PaperPic desenha a imagem em um ca
 
 [`download: true`](../reference/options#download) adiciona um botão no fim da barra de ferramentas que salva a imagem na tela: o resultado do último Aplicar, ou então a imagem original como está. Ele fica oculto durante a edição, porque as alterações ainda não foram aplicadas. [`download()`](../reference/methods#download) faz o mesmo pelo código, com ou sem o botão. O menu de contexto do navegador não abre sobre o visualizador, então esse botão é a forma de salvar a imagem a partir dele.
 
-O arquivo mantém o nome da imagem original e recebe a extensão do formato dela, então um `receipt.jpg` limpo é salvo como `receipt.png`. [`filename`](../reference/options#filename) define outro nome. Sem nenhum nome, como num `Blob`, o arquivo se chama `image`. Antes do primeiro Aplicar, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
+O arquivo mantém o nome da imagem original e recebe a extensão do formato dela, então um `receipt.jpg` em preto e branco é salvo como `receipt.png`. [`filename`](../reference/options#filename) define outro nome. Sem nenhum nome, como num `Blob`, o arquivo se chama `image`. Antes do primeiro Aplicar, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
 
 Com um `src` de outra origem, os navegadores não salvam o arquivo antes do primeiro Aplicar: abrem a imagem no lugar, e o usuário sai da sua página. Passe a imagem como `Blob`, como mostra [Carregar imagens](./loading#fetch), ou salve-a você mesmo no evento `download`.
 
