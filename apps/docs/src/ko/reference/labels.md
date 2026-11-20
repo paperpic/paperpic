@@ -65,6 +65,14 @@ const pic = new PaperPic(container, {
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | ‘기울기 보정’에서 할 일                                                         |
 | `previewError`      | The changes could not be shown                                   | 변경을 표시할 수 없으면 표시                                                    |
 | `processing`        | Applying changes                                                 | 적용이 진행되는 동안 표시                                                       |
+| `redact`            | Redact                                                           | ‘가리기’ 버튼과, 색 선택의 이름                                                 |
+| `redactAngle`       | Angle 12°                                                        | 각도(도)의 함수로, ‘가리기’ 영역을 회전한 뒤 읽어 줍니다                        |
+| `redactArea`        | Area                                                             | ‘가리기’ 영역으로, 전체를 옮깁니다                                              |
+| `redactBlack`       | Black                                                            | ‘가리기’에서 검정을 고릅니다                                                    |
+| `redactHint`        | Drag the area over what to hide                                  | ‘가리기’에서 할 일                                                              |
+| `redactTurn`        | Turn                                                             | ‘가리기’ 영역을 회전하는 핸들                                                   |
+| `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | 영역을 회전하는 핸들의 설명으로, 키가 하는 일과 Enter로 마친다는 것             |
+| `redactWhite`       | White                                                            | ‘가리기’에서 흰색을 고릅니다                                                    |
 | `redo`              | Redo                                                             | ‘다시 실행’ 버튼                                                                |
 | `rotateLeft`        | Rotate left                                                      | 편집 바의 회전 버튼, 그리고 읽기 전용 뷰어의 회전 버튼 두 개 중 하나            |
 | `rotateRight`       | Rotate right                                                     | 읽기 전용 뷰어의 다른 회전 버튼                                                 |

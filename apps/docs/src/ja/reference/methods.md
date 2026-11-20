@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 パネルを持つツールを開きます。切り抜き（`'crop'`）、傾き補正（`'perspective'`）、調整（`'adjust'`）、クリーンアップ（`'finish'`）のどれかで、クリーンアップは仕上げがオリジナルのとき、開くと白黒を選びます。ツールは [`confirmTool()`](#confirmtool) か [`cancelTool()`](#canceltool) まで開いたままです。その間はほかの変更を始められず、元に戻す、やり直す、適用は何もしません。編集モード以外、ほかのツールが開いている間、白黒のときの調整、プレビューの準備中の切り抜きと傾き補正では何もしません。
 
+「塗りつぶし」(`'redact'`) も「切り抜き」と同じく角付きで開きます。
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあと、グレーの前に適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、白黒の間は何もしません。白黒は各ピクセルを周囲と比べるので、明るさとコントラストは結果をほとんど変えないためです。
 
 値が -1 から 1 の範囲外なら `RangeError` を投げます。
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+[塗りつぶし](../guide/tools/redact)で覆う色を選びます。既定の `'black'` か `'white'` です。「塗りつぶし」が開いている間は表示中の領域を変え、[`confirmTool()`](#confirmtool) がそれを残します。それ以外のときは次の領域の色になります。どのモードでも動作します。
+
+`color` が [`RedactColor`](./types#redactcolor) でなければ `RangeError` を投げます。
 
 ### `undo()`
 

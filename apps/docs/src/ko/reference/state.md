@@ -118,6 +118,7 @@ Vue와 React에서는 컴포넌트가 마운트된 뒤에야 뷰어가 생깁니
 | `hint`        | `string \| null`                             | 열린 도구가 사용자에게 요청하는 것. 내장 편집 바에 표시되는 그대로이며 예: ‘Drag the corners’, 없으면 `null`. `toolbar: false`에서는 직접 만든 인터페이스에 표시하세요 |
 | `image`       | [`Size \| null`](./types#size)               | 원본 해상도에서 지금까지의 변경을 반영하되 `rotation`의 회전은 뺀 이미지의 픽셀 크기. 이미지가 없으면 `null`                                                           |
 | `mode`        | `'view' \| 'edit'`                           | 사용자가 이미지를 보고 있는지, 편집하고 있는지                                                                                                                         |
+| `redaction`   | `{ color }`                                  | ‘가리기’의 색으로, [`RedactColor`](./types#redactcolor)입니다. 열려 있는 동안에는 패널의 색, 그 밖에는 다음 영역의 색입니다                                            |
 | `rotation`    | [`Rotation`](./types#rotation)               | 화면 이미지가 `image`에서 시계 방향으로 회전한 각도                                                                                                                    |
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `src`가 없으면 `'empty'`, 불러오는 동안 `'loading'`, 화면에 보이면 `'ready'`, 불러오지 못하면 `'error'`                                                                |
 | `zoom`        | `number`                                     | 이미지 1픽셀당 화면 픽셀 수                                                                                                                                            |

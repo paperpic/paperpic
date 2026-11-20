@@ -27,6 +27,7 @@ In un visualizzatore stretto, la barra di modifica ha due righe: in alto gli str
 | [Capovolgi](./tools/rotate-and-flip)        | Capovolge l’immagine da sinistra a destra                                  | `flip`        |
 | [Regola](./tools/adjust)                    | Cambia la luminosità e il contrasto                                        | `adjust`      |
 | [Pulisci](./tools/clean-up)                 | Trasforma il documento in grigio, o in un bianco e nero nitido senza ombre | `finish`      |
+| [Copri](./tools/redact)                     | Copre un’area con nero o bianco pieni                                      | `redact`      |
 
 L’opzione [`tools`](../reference/options#tools) sceglie quali offre la barra di modifica:
 
@@ -70,7 +71,7 @@ export function Receipt() {
 
 :::
 
-Ritaglia, Raddrizza, Regola e Pulisci aprono un pannello al posto degli strumenti. Mentre uno di loro è aperto, gli altri strumenti, Annulla l’ultima azione, Ripeti e Applica aspettano. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
+Ritaglia, Raddrizza, Copri, Regola e Pulisci aprono un pannello al posto degli strumenti. Mentre uno di loro è aperto, gli altri strumenti, Annulla l’ultima azione, Ripeti e Applica aspettano. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
 
 Dentro un pannello, l’immagine appare come sarà il risultato, Pulisci compreso. Raddrizza è l’eccezione: mostra la foto senza il bianco e nero, così i bordi della carta restano visibili.
 

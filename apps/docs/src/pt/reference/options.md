@@ -64,6 +64,7 @@ As ferramentas que a barra de edição oferece. Elas mantêm a ordem desta tabel
 | `'flip'`        | Espelhar                             |
 | `'adjust'`      | Ajustar, para o brilho e o contraste |
 | `'finish'`      | Limpar                               |
+| `'redact'`      | Ocultar                              |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ Cada chave nomeia um ícone, e alguns ícones aparecem em dois botões:
 | `fitWidth`       | Ajustar à largura                                                                 |
 | `flip`           | Espelhar                                                                          |
 | `perspective`    | Endireitar                                                                        |
+| `redact`         | Ocultar                                                                           |
 | `redo`           | Refazer                                                                           |
 | `rotateDocument` | Girar para a esquerda, na barra de edição                                         |
 | `rotateLeft`     | Girar para a esquerda, na barra de ferramentas de um visualizador somente leitura |

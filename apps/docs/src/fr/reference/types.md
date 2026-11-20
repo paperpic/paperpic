@@ -77,7 +77,7 @@ Le format de l’image modifiée, dans [`output`](./options#output).
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 Un outil de la barre de modification, dans [`tools`](./options#tools), [`openTool()`](./methods#opentool) et le `activeTool` de l’[état](./state). [`tools`](./options#tools) indique le bouton de chacun.
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 La finition de [Nettoyer](../guide/tools/clean-up) : les tons d’origine, le gris, ou le noir et blanc avec `'mono'`. [`setFinish()`](./methods#setfinish) la prend, et le `finish` de l’[état](./state) la contient.
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+La couleur dont [Masquer](../guide/tools/redact) recouvre. [`setRedaction()`](./methods#setredaction) la prend, et le `redaction` de l’[état](./state) la contient.
 
 ### `Fit`
 

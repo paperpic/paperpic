@@ -65,6 +65,14 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | O que fazer em Endireitar                                                                                       |
 | `previewError`      | The changes could not be shown                                   | Mostrado quando uma alteração não pode ser mostrada                                                             |
 | `processing`        | Applying changes                                                 | Mostrado enquanto Aplicar está em andamento                                                                     |
+| `redact`            | Redact                                                           | O botão Ocultar, e o nome da sua escolha de cor                                                                 |
+| `redactAngle`       | Angle 12°                                                        | Função do ângulo em graus, anunciada depois de girar a área de Ocultar                                          |
+| `redactArea`        | Area                                                             | A área de Ocultar, que a move inteira                                                                           |
+| `redactBlack`       | Black                                                            | Escolhe preto em Ocultar                                                                                        |
+| `redactHint`        | Drag the area over what to hide                                  | O que fazer em Ocultar                                                                                          |
+| `redactTurn`        | Turn                                                             | A alça que gira a área de Ocultar                                                                               |
+| `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | A descrição da alça que gira a área: o que as teclas fazem, e que Enter conclui                                 |
+| `redactWhite`       | White                                                            | Escolhe branco em Ocultar                                                                                       |
 | `redo`              | Redo                                                             | O botão Refazer                                                                                                 |
 | `rotateLeft`        | Rotate left                                                      | O botão de girar da barra de edição, e um dos dois de um visualizador somente leitura                           |
 | `rotateRight`       | Rotate right                                                     | O outro botão de girar de um visualizador somente leitura                                                       |

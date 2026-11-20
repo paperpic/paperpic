@@ -77,7 +77,7 @@ O formato da imagem editada, em [`output`](./options#output).
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 Uma ferramenta da barra de edição, em [`tools`](./options#tools), [`openTool()`](./methods#opentool) e no `activeTool` do [estado](./state). [`tools`](./options#tools) indica o botão de cada uma.
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 O acabamento de [Limpar](../guide/tools/clean-up): os tons originais, cinza, ou preto e branco com `'mono'`. [`setFinish()`](./methods#setfinish) o recebe, e o `finish` do [estado](./state) o guarda.
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+A cor com que [Ocultar](../guide/tools/redact) cobre. [`setRedaction()`](./methods#setredaction) a recebe, e o `redaction` do [estado](./state) a guarda.
 
 ### `Fit`
 

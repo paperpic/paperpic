@@ -64,6 +64,7 @@ pic.setOptions({ editable: false })
 | `'flip'`        | 反転                         |
 | `'adjust'`      | 調整（明るさとコントラスト） |
 | `'finish'`      | クリーンアップ               |
+| `'redact'`      | 塗りつぶし                   |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ pic.setOptions({ editable: false })
 | `fitWidth`       | 幅に合わせる                                       |
 | `flip`           | 反転                                               |
 | `perspective`    | 傾き補正                                           |
+| `redact`         | 塗りつぶし                                         |
 | `redo`           | やり直す                                           |
 | `rotateDocument` | 編集バーの左に回転                                 |
 | `rotateLeft`     | 読み取り専用のビューアーのツールバーにある左に回転 |

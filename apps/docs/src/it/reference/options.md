@@ -64,6 +64,7 @@ Gli strumenti che offre la barra di modifica. Mantengono l’ordine di questa ta
 | `'flip'`        | Capovolgi                                |
 | `'adjust'`      | Regola, per la luminosità e il contrasto |
 | `'finish'`      | Pulisci                                  |
+| `'redact'`      | Copri                                    |
 
 ### `wheelZoom`
 
@@ -110,6 +111,7 @@ Ogni chiave indica un’icona, e alcune icone compaiono su due pulsanti:
 | `fitWidth`       | Adatta alla larghezza                                                              |
 | `flip`           | Capovolgi                                                                          |
 | `perspective`    | Raddrizza                                                                          |
+| `redact`         | Copri                                                                              |
 | `redo`           | Ripeti                                                                             |
 | `rotateDocument` | Ruota a sinistra, nella barra di modifica                                          |
 | `rotateLeft`     | Ruota a sinistra, nella barra degli strumenti di un visualizzatore di sola lettura |

@@ -77,7 +77,7 @@ interface PaperPicOutput {
 ### `ToolId`
 
 ```ts
-type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'rotate'
+type ToolId = 'adjust' | 'crop' | 'finish' | 'flip' | 'perspective' | 'redact' | 'rotate'
 ```
 
 편집 바의 도구입니다. [`tools`](./options#tools), [`openTool()`](./methods#opentool), [상태](./state)의 `activeTool`에서 쓰입니다. 각 도구의 버튼은 [`tools`](./options#tools)에 나와 있습니다.
@@ -129,6 +129,14 @@ interface PaperPicLabels {
   perspectiveHint: string
   previewError: string
   processing: string
+  redact: string
+  redactAngle: (degrees: number) => string
+  redactArea: string
+  redactBlack: string
+  redactHint: string
+  redactTurn: string
+  redactTurnKeys: string
+  redactWhite: string
   redo: string
   rotateLeft: string
   rotateRight: string
@@ -160,6 +168,7 @@ interface PaperPicIcons {
   fitWidth: string
   flip: string
   perspective: string
+  redact: string
   redo: string
   rotateDocument: string
   rotateLeft: string
@@ -189,6 +198,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
   zoom: number
@@ -204,6 +214,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 [정리](../guide/tools/clean-up)의 마무리입니다. 원래 색조, 회색, 또는 `'mono'`의 흑백 중 하나입니다. [`setFinish()`](./methods#setfinish)가 받고, [상태](./state)의 `finish`에 담깁니다.
+
+### `RedactColor`
+
+```ts
+type RedactColor = 'black' | 'white'
+```
+
+[가리기](../guide/tools/redact)가 덮는 색입니다. [`setRedaction()`](./methods#setredaction)이 받고, [상태](./state)의 `redaction`에 담깁니다.
 
 ### `Fit`
 

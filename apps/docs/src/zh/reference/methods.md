@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 打开带面板的工具：裁剪（`'crop'`）、矫正（`'perspective'`）、调整（`'adjust'`）或清理（`'finish'`）。当效果为原图时，清理在打开时会选择黑白。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)。在此期间，不能开始其他修改，撤销、重做和应用也都不起作用。在编辑模式之外、有其他工具打开时、黑白模式下的调整，以及预览准备期间的裁剪和矫正，什么也不做。
 
+“遮盖”（`'redact'`）也像“裁剪”一样带着角点打开。
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 修改亮度或对比度，各自范围为 -1 到 1，0 表示保持原样。它们在其他修改之后、灰度之前进行。调整打开时，它会改变调整显示的值，[`confirmTool()`](#confirmtool) 会把它作为一项修改保留。在编辑模式之外、有其他工具打开时或黑白模式下什么也不做：黑白会把每个像素与周围比较，所以亮度和对比度几乎不会改变它的结果。
 
 如果某个值不在 -1 到 1 之间，会抛出 `RangeError`。
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+选择[遮盖](../guide/tools/redact)使用的颜色：默认的 `'black'` 或 `'white'`。“遮盖”打开时，它会改变显示中的区域，[`confirmTool()`](#confirmtool) 会保留它。否则它是下一个区域的颜色。在任何模式下都有效。
+
+如果 `color` 不是 [`RedactColor`](./types#redactcolor)，会抛出 `RangeError`。
 
 ### `undo()`
 

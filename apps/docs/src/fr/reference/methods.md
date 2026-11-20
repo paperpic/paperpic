@@ -197,6 +197,8 @@ function openTool(id: ToolId): void
 
 Ouvre un outil avec un panneau : Recadrer (`'crop'`), Redresser (`'perspective'`), Ajuster (`'adjust'`) ou Nettoyer (`'finish'`), qui choisit le noir et blanc en s’ouvrant quand la finition est l’original. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Pendant ce temps, aucun autre changement ne peut commencer, et Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition, avec un autre outil ouvert, pour Ajuster en noir et blanc, ni pour Recadrer et Redresser pendant qu’un aperçu est en route.
 
+Masquer (`'redact'`) s’ouvre aussi avec des coins, comme Recadrer.
+
 ### `confirmTool()`
 
 ```ts
@@ -232,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Change la luminosité ou le contraste, chacun de -1 à 1, où 0 laisse l’image telle quelle. Ils s’appliquent après les autres changements, et avant le gris. Tant qu’Ajuster est ouvert, change ce que montre Ajuster, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition, avec un autre outil ouvert ou en noir et blanc : le noir et blanc compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat.
 
 Elle lève une `RangeError` si une valeur n’est pas entre -1 et 1.
+
+### `setRedaction()`
+
+```ts
+function setRedaction(setting: { color?: RedactColor }): void
+```
+
+Choisit la couleur dont [Masquer](../guide/tools/redact) recouvre : `'black'`, par défaut, ou `'white'`. Tant que Masquer est ouvert, change la zone affichée, et [`confirmTool()`](#confirmtool) la garde. Sinon, c’est la couleur de la prochaine zone. Fonctionne dans tous les modes.
+
+Elle lève une `RangeError` si `color` n’est pas une [`RedactColor`](./types#redactcolor).
 
 ### `undo()`
 

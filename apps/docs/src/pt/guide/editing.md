@@ -27,6 +27,7 @@ Num visualizador estreito, a barra de edição tem duas linhas: em cima, as ferr
 | [Espelhar](./tools/rotate-and-flip)              | Espelha a imagem da esquerda para a direita                               | `flip`        |
 | [Ajustar](./tools/adjust)                        | Muda o brilho e o contraste                                               | `adjust`      |
 | [Limpar](./tools/clean-up)                       | Transforma o documento em cinza, ou num preto e branco nítido sem sombras | `finish`      |
+| [Ocultar](./tools/redact)                        | Cobre uma área com preto ou branco sólidos                                | `redact`      |
 
 A opção [`tools`](../reference/options#tools) escolhe quais a barra de edição oferece:
 
@@ -70,7 +71,7 @@ export function Receipt() {
 
 :::
 
-Recortar, Endireitar, Ajustar e Limpar abrem um painel no lugar das ferramentas. Enquanto uma delas está aberta, as outras ferramentas, Desfazer, Refazer e Aplicar esperam. Concluído, ou `Enter`, adiciona às alterações o que a ferramenta escolheu, e Cancelar esta ferramenta, ou `Esc`, o descarta.
+Recortar, Endireitar, Ocultar, Ajustar e Limpar abrem um painel no lugar das ferramentas. Enquanto uma delas está aberta, as outras ferramentas, Desfazer, Refazer e Aplicar esperam. Concluído, ou `Enter`, adiciona às alterações o que a ferramenta escolheu, e Cancelar esta ferramenta, ou `Esc`, o descarta.
 
 Dentro de um painel, a imagem aparece como o resultado vai ficar, com Limpar incluído. Endireitar é a exceção: mostra a foto sem o preto e branco, para que as bordas do papel continuem visíveis.
 
