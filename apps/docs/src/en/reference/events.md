@@ -48,7 +48,7 @@ Something failed, and `phase` says what:
 
 - **Payload:** [`PaperPicState`](./state)
 
-The state changed, through the user or through a method, such as by zooming, opening a tool or undoing. It carries the whole state, the same that [`getState()`](./methods#getstate) would return at that moment. Apply emits it twice: when it starts, with `busy: true`, and when it ends well, after [`apply`](#apply).
+The state changed, through the user or through a method, such as by zooming, opening a tool or undoing, or because Straighten [found the document](../guide/tools/straighten#finding-the-document). It carries the whole state, the same that [`getState()`](./methods#getstate) would return at that moment. Apply emits it twice: when it starts, with `busy: true`, and when it ends well, after [`apply`](#apply).
 
 These change the state without emitting `change`:
 

@@ -26,7 +26,7 @@ features:
     link: /fr/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Redresser et recadrer"
-    details: "Faites glisser quatre coins pour transformer une photo prise de biais en page à plat, avec ses proportions estimées ou fixées."
+    details: "Transformez une photo prise de biais en page à plat, avec ses proportions estimées ou fixées. La visionneuse trouve les coins, et vous pouvez les faire glisser."
     link: /fr/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Nettoyer"

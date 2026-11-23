@@ -14,6 +14,7 @@ Use these words in the German docs, so that each idea has one name on every page
 | edit mode                                     | Bearbeitungsmodus  |
 | editor                                        | Editor             |
 | event                                         | Ereignis           |
+| find, the document in the photo               | finden             |
 | finish, of Clean up                           | Finish             |
 | guide                                         | Anleitung          |
 | keyboard shortcut                             | Tastenkürzel       |
@@ -23,6 +24,7 @@ Use these words in the German docs, so that each idea has one name on every page
 | option                                        | Option             |
 | pan, move a zoomed image                      | verschieben        |
 | panel, the controls of an open tool           | Bedienfeld         |
+| paper size, of Straighten                     | Papierformat       |
 | parent element                                | Elternelement      |
 | playground                                    | Playground         |
 | preview                                       | Vorschau           |

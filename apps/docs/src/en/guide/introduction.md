@@ -19,7 +19,7 @@ Each step happens only when the user asks for it. Nothing changes the photo on i
 
 - It does not upload anything. Your app decides what to do with the result.
 - It does not open PDF files, only images.
-- It does not find the edges of the document on its own: the user drags the corners.
+- It does not always find the document on its own: when it is not sure, the user drags the corners.
 
 ## Packages
 

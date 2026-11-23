@@ -56,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, canConfirm, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +75,7 @@ function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: Pap
   }
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
+  document.querySelector<HTMLButtonElement>('[data-action="confirmTool"]')!.disabled = !canConfirm
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
   document.querySelector('#hint')!.textContent = hint ?? ''
 }
@@ -120,7 +121,7 @@ function refresh() {
       <p v-if="state.hint">
         {{ state.hint }}
       </p>
-      <button type="button" @click="viewer?.confirmTool()">
+      <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
         完成
       </button>
       <button type="button" @click="viewer?.cancelTool()">
@@ -186,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" onClick={() => viewer().confirmTool()}>完成</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>完成</button>
               <button type="button" onClick={() => viewer().cancelTool()}>取消此工具</button>
             </>
           )}
@@ -406,7 +407,8 @@ export function CleanUpRuler() {
 ## 说明
 
 - 设置 `toolbar: false` 时内置编辑栏也会隐藏，因此“裁剪”和“矫正”会显示手柄，但没有“完成”按钮。你的界面用 [`confirmTool()`](../reference/methods#confirmtool) 确认它们，与 `Enter` 相同。要不保留修改就关闭它们，请像 `Esc` 一样调用 [`cancelTool()`](../reference/methods#canceltool)。
-- 打开“裁剪”或“矫正”时，状态中的 `hint` 会像内置编辑栏一样说明要做什么，例如“Drag the corners”。使用 `toolbar: false` 时没有其他地方显示它，所以请显示它。新的提示（例如按下角之后）会随 `change` 一起到来。
+- 打开“裁剪”或“矫正”时，状态中的 `hint` 会像内置编辑栏一样说明要做什么，例如“Drag the corners”。使用 `toolbar: false` 时没有其他地方显示它，所以请显示它。新的提示（例如按下角之后，或“矫正”找到文档时）会随 `change` 一起到来。
+- 状态中的 `canConfirm` 说明 `confirmTool()` 能否保留工具所显示的内容。“矫正”会等到找到文档或用户移动某个角，因此在那之前请禁用你的“完成”按钮。
 - 你自己的滑块可以直接调用 [`setFinish()`](../reference/methods#setfinish) 和 [`setAdjustments()`](../reference/methods#setadjustments)，每次调用都会添加一项修改。若要让整次拖动只留下一项修改，请先用 [`openTool()`](../reference/methods#opentool) 打开工具：这样同样的方法会改变工具显示的内容，`confirmTool()` 再把它保留下来。
 - [`cancel()`](../reference/methods#cancel) 在放弃修改前不会询问。如果有修改，请先询问用户，例如在 `canApply` 为 true 时。
 - 焦点在查看器上时，键盘快捷键依然有效。参见[无障碍](../guide/accessibility)。

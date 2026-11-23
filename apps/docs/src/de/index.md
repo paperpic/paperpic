@@ -26,7 +26,7 @@ features:
     link: /de/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Begradigen und zuschneiden"
-    details: "Ziehe vier Ecken, um aus einem schrägen Foto eine flache Seite zu machen, mit geschätztem oder festem Seitenverhältnis."
+    details: "Mach aus einem schrägen Foto eine flache Seite, mit geschätztem oder festem Seitenverhältnis. Der Viewer findet die Ecken, und du kannst sie ziehen."
     link: /de/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Bereinigen"

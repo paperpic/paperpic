@@ -195,7 +195,7 @@ Espelha a imagem da esquerda para a direita como ela aparece, então depois de u
 function openTool(id: ToolId): void
 ```
 
-Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'finish'`), que ao abrir escolhe preto e branco quando o acabamento é o original. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar em preto e branco, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
+Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'finish'`), que ao abrir escolhe preto e branco quando o acabamento é o original. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar em preto e branco, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho. Endireitar procura o documento ao abrir, e posiciona os cantos sobre ele [se o encontrar](../guide/tools/straighten#finding-the-document).
 
 Ocultar (`'redact'`) também abre com cantos, como Recortar.
 
@@ -205,7 +205,7 @@ Ocultar (`'redact'`) também abre com cantos, como Recortar.
 function confirmTool(): void
 ```
 
-Fecha a ferramenta aberta e adiciona o que ela escolheu às alterações, como faz o `Enter`: a seleção de Recortar ou de Endireitar, ou os valores de Ajustar ou de Limpar, como uma única alteração.
+Fecha a ferramenta aberta e adiciona o que ela escolheu às alterações, como faz o `Enter`: a seleção de Recortar ou de Endireitar, ou os valores de Ajustar ou de Limpar, como uma única alteração. Em Endireitar não faz nada até que o visualizador encontre o documento ou um canto se mova, e o `canConfirm` do [estado](./state) diz quando pode.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Muda o brilho ou o contraste, cada um de -1 a 1, em que 0 deixa a imagem como está. Eles vêm depois das outras alterações, e antes do cinza. Enquanto Ajustar está aberto, muda o que Ajustar mostra, e [`confirmTool()`](#confirmtool) o mantém como uma única alteração. Não faz nada fora do modo de edição, com outra ferramenta aberta ou em preto e branco: o preto e branco compara cada pixel com o que está em volta, então o brilho e o contraste quase não mudariam o resultado.
 
 Lança um `RangeError` se um valor não estiver entre -1 e 1.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+Escolhe o papel que dá suas proporções ao resultado de [Endireitar](../guide/tools/straighten#paper-size): `'a4'`, `'letter'`, `'card'` para um documento de identidade ou cartão bancário, ou `'auto'`, o padrão, que usa [`aspectRatio`](./options#aspectratio) ou, senão, uma estimativa. O papel fica em retrato ou em paisagem conforme os cantos. Não faz nada se Endireitar não está aberto, e cada abertura começa em `'auto'`.
+
+Lança um `RangeError` se `size` não for um [`PaperSize`](./types#papersize).
 
 ### `setRedaction()`
 

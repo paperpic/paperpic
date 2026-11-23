@@ -10,12 +10,15 @@ const state: EditBarState = {
   adjustments: { brightness: 0, contrast: 0 },
   busy: false,
   canApply: false,
+  canConfirm: true,
   canOpenTool: true,
   canRedo: false,
   canUndo: false,
   canZoomIn: true,
   canZoomOut: true,
   finish: { mode: 'original', sensitivity: 0.5 },
+  hint: null,
+  paper: { size: 'auto' },
   redaction: { color: 'black' },
 }
 
@@ -46,6 +49,7 @@ describe('editBar', () => {
       runTool: vi.fn(),
       setAdjustment: vi.fn(),
       setFinish: vi.fn(),
+      setPaper: vi.fn(),
       setRedaction: vi.fn(),
       undo: vi.fn(),
       zoomIn: vi.fn(),
@@ -187,7 +191,6 @@ describe('editBar', () => {
       expect(panel().hidden).toBe(false)
       expect(panel().getAttribute('aria-label')).toBe(DEFAULT_LABELS.crop)
       expect(part('paperpic-edit-corners').hidden).toBe(false)
-      expect(part('paperpic-edit-corners').textContent).toBe(DEFAULT_LABELS.cropHint)
       expect(part('paperpic-edit-title').hidden).toBe(false)
       expect(ruler('brightness').hidden).toBe(true)
       expect(ruler('finishSensitivity').hidden).toBe(true)
@@ -197,17 +200,15 @@ describe('editBar', () => {
       expect(panel().hidden).toBe(true)
     })
 
-    it('replaces the hint until it is brought back or the tool closes', () => {
+    it('shows the hint of the state, until another replaces it', () => {
       const hint = () => part('paperpic-edit-corners').querySelector('.paperpic-edit-message')!.textContent
       bar.setActiveTool(tool('perspective'))
+      bar.update({ ...state, hint: DEFAULT_LABELS.perspectiveHint })
       expect(hint()).toBe(DEFAULT_LABELS.perspectiveHint)
       bar.setHint('Tap where it goes')
       expect(hint()).toBe('Tap where it goes')
       bar.setHint(null)
-      expect(hint()).toBe(DEFAULT_LABELS.perspectiveHint)
-      bar.setHint('Tap where it goes')
-      bar.setActiveTool(tool('crop'))
-      expect(hint()).toBe(DEFAULT_LABELS.cropHint)
+      expect(hint()).toBe('')
     })
 
     it('runs the zoom buttons while they are allowed, and Cancel and Done', () => {
@@ -231,7 +232,6 @@ describe('editBar', () => {
 
       bar.setActiveTool(tool('redact'))
       expect(part('paperpic-edit-corners').hidden).toBe(false)
-      expect(part('paperpic-edit-corners').textContent).toBe(DEFAULT_LABELS.redactHint)
       expect(part('paperpic-edit-title').hidden).toBe(true)
       expect(colors().hidden).toBe(false)
       expect(colors().getAttribute('aria-label')).toBe(DEFAULT_LABELS.redact)
@@ -247,6 +247,48 @@ describe('editBar', () => {
 
       option('redactBlack').click()
       expect(commands.setRedaction).toHaveBeenCalledWith('black')
+    })
+
+    it('shows the corners of Straighten with the paper sizes in place of its name, the one in use pressed', () => {
+      const pressed = () => [
+        ...panel().querySelectorAll<HTMLElement>('[data-paperpic-control^="paper"][aria-pressed="true"]'),
+      ].map(element => element.dataset.paperpicControl)
+      const papers = () => option('paperAuto').parentElement!
+      bar.setActiveTool(tool('crop'))
+      expect(papers().hidden).toBe(true)
+
+      bar.setActiveTool(tool('perspective'))
+      expect(part('paperpic-edit-title').hidden).toBe(true)
+      expect(papers().hidden).toBe(false)
+      expect(papers().getAttribute('role')).toBe('group')
+      expect(papers().getAttribute('aria-label')).toBe(DEFAULT_LABELS.paper)
+      expect(papers().textContent).toBe('AutoA4LetterCard')
+      expect(pressed()).toEqual(['paperAuto'])
+
+      bar.update({
+        ...state,
+        paper: { size: 'letter' },
+      })
+      expect(pressed()).toEqual(['paperLetter'])
+
+      option('paperCard').click()
+      expect(commands.setPaper).toHaveBeenCalledWith('card')
+    })
+
+    it('keeps Done still while the tool has nothing to keep, and describes it with the hint', () => {
+      const description = () => document.getElementById(button('confirm').getAttribute('aria-describedby') ?? '')
+      bar.setActiveTool(tool('perspective'))
+      bar.update({ ...state, canConfirm: false, hint: DEFAULT_LABELS.perspectiveHint })
+      expect(disabled('confirm')).toBe(true)
+      expect(description()?.textContent).toBe(DEFAULT_LABELS.perspectiveHint)
+      button('confirm').click()
+      expect(commands.confirmTool).not.toHaveBeenCalled()
+
+      bar.update(state)
+      expect(disabled('confirm')).toBe(false)
+      expect(description()).toBeNull()
+      button('confirm').click()
+      expect(commands.confirmTool).toHaveBeenCalledOnce()
     })
 
     it('shows the finishes of Clean up, named, with the one on display pressed, and its ruler', () => {

@@ -277,7 +277,7 @@ A raiz, `.paperpic`, também leva seu estado em [`data-paperpic-status`, `data-p
 A interface se adapta sozinha ao contêiner:
 
 - A barra de ferramentas fica à direita e rola quando o visualizador é baixo demais para os botões dela. Ela se esconde durante a edição.
-- A barra de edição é um cartão embaixo com duas linhas de altura fixa, ou uma linha num visualizador com pelo menos 28rem de largura, então a imagem fica no lugar quando uma ferramenta abre.
+- A barra de edição é um cartão embaixo com duas linhas de altura fixa, ou uma linha num visualizador com pelo menos 38rem de largura, então a imagem fica no lugar quando uma ferramenta abre.
 - Em telas sensíveis ao toque, botões e alças de canto medem pelo menos 44 pixels.
 
 ## Os seus próprios controles

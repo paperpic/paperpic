@@ -14,6 +14,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | edit mode                                     | modo de edição       |
 | editor                                        | editor               |
 | event                                         | evento               |
+| find, the document in the photo               | encontrar            |
 | finish, of Clean up                           | acabamento           |
 | fit, of the image in the viewer               | encaixar, encaixe    |
 | guide                                         | Guia                 |
@@ -24,6 +25,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | option                                        | opção                |
 | pan, move a zoomed image                      | mover                |
 | panel, the controls of an open tool           | painel               |
+| paper size, of Straighten                     | tamanho do papel     |
 | parent element                                | elemento pai         |
 | playground                                    | Playground           |
 | preview                                       | pré-visualização     |

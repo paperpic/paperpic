@@ -9,7 +9,7 @@ Fotos de celular têm 12 megapixels ou mais, e editá-las dá trabalho de verdad
 
 ## Um Web Worker faz o trabalho
 
-O preto e branco e Endireitar levam cerca de um segundo e meio em uma foto de 12 megapixels num celular recente, como mostram os [tempos medidos](#measurements). Na thread principal, a página travaria esse tempo todo. Por isso o PaperPic os roda em um Web Worker, e a página continua respondendo enquanto o Aplicar roda.
+O preto e branco e Endireitar levam cerca de um segundo e meio em uma foto de 12 megapixels num celular recente, como mostram os [tempos medidos](#measurements). Na thread principal, a página travaria esse tempo todo. Por isso o PaperPic os roda em um Web Worker, e a página continua respondendo enquanto o Aplicar roda. A busca do documento também roda ali.
 
 O worker vem dentro do pacote e inicia com o padrão `new Worker(new URL(…, import.meta.url))`, que bundlers como Vite e webpack 5 reconhecem sozinhos, sem configuração. Se o worker não conseguir iniciar, a edição roda na thread principal: continua funcionando, mas a página pode travar por um instante com imagens grandes.
 

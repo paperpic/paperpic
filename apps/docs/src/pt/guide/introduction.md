@@ -19,7 +19,7 @@ Cada passo só acontece quando o usuário pede. Nada muda a foto sozinho.
 
 - Não envia nada. O seu app decide o que fazer com o resultado.
 - Não abre arquivos PDF, só imagens.
-- Não encontra sozinho as bordas do documento: o usuário arrasta os cantos.
+- Nem sempre encontra o documento sozinho: quando não tem certeza, o usuário arrasta os cantos.
 
 ## Pacotes
 

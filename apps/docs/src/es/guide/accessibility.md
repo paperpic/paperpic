@@ -38,7 +38,7 @@ En macOS, `Cmd` funciona como `Ctrl`. Con el foco en un botón, `Enter` pulsa es
 
 - La imagen tiene el rol de imagen, con `alt` como nombre. Sin `alt`, los lectores de pantalla la omiten.
 - La barra de herramientas y la barra de edición tienen nombre propio, como «Controles de la imagen» y «Controles de edición».
-- Un anuncio informa de lo que el usuario no puede ver solo con el foco: la carga de la imagen, el nivel de zoom, el inicio del modo de edición, una esquina seleccionada y la posición de una esquina movida, el valor de una regla, el resultado de Aplicar y cualquier fallo.
+- Un anuncio informa de lo que el usuario no puede ver solo con el foco: la carga de la imagen, el nivel de zoom, el inicio del modo de edición, un documento que encuentra Enderezar, una esquina seleccionada y la posición de una esquina movida, el valor de una regla, el resultado de Aplicar y cualquier fallo.
 - Los acabados de Limpiar son botones que dicen si están pulsados. Una herramienta en uso, que un punto marca en pantalla, se describe como «En uso». En blanco y negro, Ajustar se describe con el motivo por el que está desactivada.
 
 ## Pantallas táctiles
@@ -50,6 +50,6 @@ En macOS, `Cmd` funciona como `Ctrl`. Con el foco en un botón, `Enter` pulsa es
 
 ## Preferencias
 
-- **Menos movimiento.** Con `prefers-reduced-motion: reduce`, los botones cambian de estado sin transiciones.
+- **Menos movimiento.** Con `prefers-reduced-motion: reduce`, los botones cambian de estado sin transiciones, y las esquinas van de inmediato al documento que encuentra Enderezar, sin deslizarse.
 - **Colores forzados.** En el contraste alto de Windows y otros modos de colores forzados, los botones pulsados y las acciones principales conservan un contorno visible.
 - **Modo oscuro.** Los colores siguen el `color-scheme` de tu página, que puede seguir al sistema. Consulta [Estilos](./styling#dark-mode).

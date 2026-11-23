@@ -196,14 +196,6 @@ body {
   font-size: 0.875rem;
 }
 
-/* A field that refines the one above it */
-.field-nested {
-  margin-block-start: -0.25rem;
-  padding-inline-start: 0.75rem;
-  color: var(--color-muted);
-  font-size: 0.75rem;
-}
-
 .select,
 .number,
 .text {
@@ -340,6 +332,11 @@ body {
   font-size: 0.75rem;
 }
 
+/* Keeps a hint with the field above it, and apart from the next one */
+.hint + .field {
+  margin-block-start: 0.75rem;
+}
+
 .stage {
   min-height: 0;
   padding: 1rem;
@@ -348,6 +345,12 @@ body {
 }
 
 @media (width < 640px) {
+  /* The page scrolls, because the options would leave the viewer almost no height */
+  .layout {
+    height: auto;
+    min-height: 100dvh;
+  }
+
   .workspace {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto 1fr;
@@ -356,5 +359,9 @@ body {
   .panel {
     border-inline-end: 0;
     border-block-end: 1px solid var(--color-border);
+  }
+
+  .stage {
+    height: 75dvh;
   }
 }

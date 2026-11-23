@@ -1,20 +1,20 @@
 ---
 title: Proporzioni fisse
-description: Un esempio completo che lascia scegliere all’utente il tipo di documento, come un foglio A4 o una carta d’identità, perché Raddrizza dia al risultato le sue proporzioni esatte.
+description: Un esempio completo che lascia scegliere all’utente il tipo di documento, come un foglio US Legal o una pagina di passaporto, perché Raddrizza dia al risultato le sue proporzioni esatte.
 ---
 
 # Proporzioni fisse
 
-Raddrizza stima le proporzioni del documento dalla foto, e la stima non può essere esatta. Quando la tua app sa cosa fotografa l’utente, come un modulo A4 o una carta d’identità, [`aspectRatio`](../reference/options#aspectratio) dà al risultato la sua forma reale. Questo esempio lascia scegliere all’utente il tipo di documento prima di raddrizzarlo.
+Raddrizza stima le proporzioni del documento dalla foto, e la stima non può essere esatta. Quando la tua app sa cosa fotografa l’utente, come un modulo US Legal o una pagina di passaporto, [`aspectRatio`](../reference/options#aspectratio) dà al risultato la sua forma reale. Questo esempio lascia scegliere all’utente il tipo di documento prima di raddrizzarlo.
 
 :::tabs key:framework
 == JavaScript
 
 ```html
 <select id="type">
-  <option value="a4">Foglio A4</option>
-  <option value="letter">Foglio US Letter</option>
-  <option value="idCard">Carta d’identità</option>
+  <option value="legal">Foglio US Legal</option>
+  <option value="passport">Pagina di passaporto</option>
+  <option value="envelope">Busta DL</option>
   <option value="other">Altro</option>
 </select>
 <div id="viewer" style="height: 480px"></div>
@@ -25,9 +25,9 @@ import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
 const proportions: Record<string, number | undefined> = {
-  a4: 210 / 297,
-  letter: 8.5 / 11,
-  idCard: 85.6 / 53.98,
+  legal: 8.5 / 14,
+  passport: 125 / 88,
+  envelope: 220 / 110,
   other: undefined,
 }
 
@@ -35,7 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/scans/form.jpg',
   alt: 'Modulo firmato',
   tools: ['perspective', 'rotate', 'finish'],
-  aspectRatio: proportions.a4,
+  aspectRatio: proportions.legal,
 })
 
 document.querySelector('#type')!.addEventListener('change', (event) => {
@@ -54,9 +54,9 @@ import { shallowRef } from 'vue'
 import '@paperpic/vue/style.css'
 
 const types = [
-  { name: 'Foglio A4', aspectRatio: 210 / 297 },
-  { name: 'Foglio US Letter', aspectRatio: 8.5 / 11 },
-  { name: 'Carta d’identità', aspectRatio: 85.6 / 53.98 },
+  { name: 'Foglio US Legal', aspectRatio: 8.5 / 14 },
+  { name: 'Pagina di passaporto', aspectRatio: 125 / 88 },
+  { name: 'Busta DL', aspectRatio: 220 / 110 },
   { name: 'Altro', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -85,9 +85,9 @@ import { useState } from 'react'
 import '@paperpic/react/style.css'
 
 const types = [
-  { name: 'Foglio A4', aspectRatio: 210 / 297 },
-  { name: 'Foglio US Letter', aspectRatio: 8.5 / 11 },
-  { name: 'Carta d’identità', aspectRatio: 85.6 / 53.98 },
+  { name: 'Foglio US Legal', aspectRatio: 8.5 / 14 },
+  { name: 'Pagina di passaporto', aspectRatio: 125 / 88 },
+  { name: 'Busta DL', aspectRatio: 220 / 110 },
   { name: 'Altro', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -115,7 +115,8 @@ export function Form() {
 ## Note
 
 - Raddrizza memorizza le proporzioni quando l’utente preme Fatto, quindi scegli il tipo prima di raddrizzare. Cambiarlo dopo vale solo per il raddrizzamento successivo.
-- Per un documento in orizzontale, inverti i numeri, come `297 / 210`.
+- Per un documento in orizzontale, inverti i numeri, come `14 / 8.5`.
 - Le proporzioni valgono per la pagina come appare sullo schermo. Se la foto è di lato, ruotala con Ruota a sinistra prima di usare Raddrizza, altrimenti un foglio in verticale esce schiacciato.
 - Lascia `aspectRatio` non impostato per i documenti senza dimensione fissa, come gli scontrini, e Raddrizza le stima.
+- Il pannello di Raddrizza offre già A4, Lettera e Tessera come [formati carta](../guide/tools/straighten#paper-size), quindi questo esempio aggiunge altri documenti. Il formato che l’utente sceglie lì prevale su `aspectRatio` per quel raddrizzamento.
 - [Raddrizza](../guide/tools/straighten) spiega la stima e cosa fare con gli angoli che escono dalla foto.

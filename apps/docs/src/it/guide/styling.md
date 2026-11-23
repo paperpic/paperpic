@@ -277,7 +277,7 @@ La radice, `.paperpic`, porta anche il suo stato in [`data-paperpic-status`, `da
 L’interfaccia si adatta da sola al suo contenitore:
 
 - La barra degli strumenti sta a destra e scorre quando il visualizzatore è troppo basso per i suoi pulsanti. Si nasconde durante la modifica.
-- La barra di modifica è una scheda in basso con due righe di altezza fissa, o una riga in un visualizzatore largo almeno 28rem, così l’immagine resta al suo posto quando si apre uno strumento.
+- La barra di modifica è una scheda in basso con due righe di altezza fissa, o una riga in un visualizzatore largo almeno 38rem, così l’immagine resta al suo posto quando si apre uno strumento.
 - Sugli schermi touch, i pulsanti e le maniglie d’angolo misurano almeno 44 pixel.
 
 ## I tuoi controlli

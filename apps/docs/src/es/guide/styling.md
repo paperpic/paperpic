@@ -277,7 +277,7 @@ La raíz, `.paperpic`, también lleva su estado en [`data-paperpic-status`, `dat
 La interfaz se adapta sola a su contenedor:
 
 - La barra de herramientas está a la derecha y tiene scroll cuando el visor es demasiado bajo para sus botones. Se oculta durante la edición.
-- La barra de edición es una tarjeta abajo con dos filas de altura fija, o una fila en un visor de al menos 28rem de ancho, así que la imagen no se mueve al abrir una herramienta.
+- La barra de edición es una tarjeta abajo con dos filas de altura fija, o una fila en un visor de al menos 38rem de ancho, así que la imagen no se mueve al abrir una herramienta.
 - En pantallas táctiles, los botones y los tiradores de esquina miden al menos 44 píxeles.
 
 ## Tus propios controles

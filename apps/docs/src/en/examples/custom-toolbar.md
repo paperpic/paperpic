@@ -56,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, canConfirm, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +75,7 @@ function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: Pap
   }
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
+  document.querySelector<HTMLButtonElement>('[data-action="confirmTool"]')!.disabled = !canConfirm
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
   document.querySelector('#hint')!.textContent = hint ?? ''
 }
@@ -120,7 +121,7 @@ function refresh() {
       <p v-if="state.hint">
         {{ state.hint }}
       </p>
-      <button type="button" @click="viewer?.confirmTool()">
+      <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
         Done
       </button>
       <button type="button" @click="viewer?.cancelTool()">
@@ -186,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" onClick={() => viewer().confirmTool()}>Done</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>Done</button>
               <button type="button" onClick={() => viewer().cancelTool()}>Cancel this tool</button>
             </>
           )}
@@ -406,7 +407,8 @@ export function CleanUpRuler() {
 ## Notes
 
 - With `toolbar: false`, the built-in edit bar is hidden too, so Crop and Straighten show their handles but no Done button. Your interface confirms them with [`confirmTool()`](../reference/methods#confirmtool), as `Enter` does. To close them without their changes, call [`cancelTool()`](../reference/methods#canceltool), as `Esc` does.
-- While Crop or Straighten is open, `hint` in the state says what to do, such as "Drag the corners", as the built-in edit bar does. Show it, because with `toolbar: false` nothing else does. A new hint, such as after pressing a corner, comes with `change`.
+- While Crop or Straighten is open, `hint` in the state says what to do, such as "Drag the corners", as the built-in edit bar does. Show it, because with `toolbar: false` nothing else does. A new hint, such as after pressing a corner or once Straighten finds the document, comes with `change`.
+- `canConfirm` in the state says whether `confirmTool()` can keep what the tool shows. Straighten waits until it finds the document or the user moves a corner, so disable your Done button until then.
 - Sliders of your own can call [`setFinish()`](../reference/methods#setfinish) and [`setAdjustments()`](../reference/methods#setadjustments) directly, which adds one edit for each call. To leave one edit for a whole drag, open the tool with [`openTool()`](../reference/methods#opentool) first: the same methods then change what it shows, and `confirmTool()` keeps it.
 - [`cancel()`](../reference/methods#cancel) does not ask before discarding the edits. Ask the user first if there are some, such as when `canApply` is true.
 - The keyboard shortcuts keep working with the focus on the viewer. See [Accessibility](../guide/accessibility).

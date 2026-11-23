@@ -2,6 +2,7 @@ import type { WorkerRequest, WorkerResponse } from '../../../packages/core/src/p
 import type { PreparedThreshold } from '../../../packages/core/src/processing/threshold'
 import type { PixelBuffer, Quad } from '../../../packages/core/src/processing/types'
 import { renderHeader } from 'playground-shared/page'
+import { detectDocument } from '../../../packages/core/src/processing/detection/detect-document'
 import { estimateOutputSize } from '../../../packages/core/src/processing/homography'
 import { adaptiveThreshold, applyThreshold, DEFAULT_SENSITIVITY, DEFAULT_SOFTNESS, prepareThreshold } from '../../../packages/core/src/processing/threshold'
 import { warpPerspective } from '../../../packages/core/src/processing/warp'
@@ -18,6 +19,9 @@ interface Row {
 
 /** A worker request without its id, keeping the union of operations apart. */
 type Job = Omit<WorkerRequest, 'id'>
+
+/** The longest side of the copy that the viewer searches for a document, as in `packages/core/src/pipeline/detection.ts`. */
+const DETECTION_SIDE = 800
 
 const element = <T extends HTMLElement>(id: string) => document.querySelector<T>(`#${id}`)!
 
@@ -222,6 +226,25 @@ async function runBenchmarks() {
   }
 
   const worker = startWorker()
+
+  // The search always works on a copy of the same size, whatever the size of the photo
+  const scale = Math.min(1, DETECTION_SIDE / Math.max(bitmap.width, bitmap.height))
+  const copy = toPixels(bitmap, Math.round(bitmap.width * scale), Math.round(bitmap.height * scale))
+  const copySize = `${copy.width}×${copy.height}`
+  let outcome = ''
+  await measure({ size: copySize, operation: 'detect document', where: 'main' }, runs, () => {
+    outcome = detectDocument(copy)
+      ? 'found'
+      : 'not found'
+  })
+  await measure({ size: copySize, operation: 'detect document', where: 'worker' }, runs, async () => {
+    const response = await worker.send({ operation: 'detect', source: copy, steps: [] })
+    if ('error' in response) {
+      throw new Error(response.error)
+    }
+    return response.milliseconds
+  }, outcome)
+
   for (const size of sizes) {
     const { width, height } = bitmapSize(bitmap, size)
     const label = `${(width * height / 1e6).toFixed(1)} MP`

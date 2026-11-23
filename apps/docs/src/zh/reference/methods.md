@@ -195,7 +195,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-打开带面板的工具：裁剪（`'crop'`）、矫正（`'perspective'`）、调整（`'adjust'`）或清理（`'finish'`）。当效果为原图时，清理在打开时会选择黑白。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)。在此期间，不能开始其他修改，撤销、重做和应用也都不起作用。在编辑模式之外、有其他工具打开时、黑白模式下的调整，以及预览准备期间的裁剪和矫正，什么也不做。
+打开带面板的工具：裁剪（`'crop'`）、矫正（`'perspective'`）、调整（`'adjust'`）或清理（`'finish'`）。当效果为原图时，清理在打开时会选择黑白。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)。在此期间，不能开始其他修改，撤销、重做和应用也都不起作用。在编辑模式之外、有其他工具打开时、黑白模式下的调整，以及预览准备期间的裁剪和矫正，什么也不做。矫正在打开时会寻找文档，[找到后](../guide/tools/straighten#finding-the-document)把四个角放到文档上。
 
 “遮盖”（`'redact'`）也像“裁剪”一样带着角点打开。
 
@@ -205,7 +205,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-关闭打开的工具，并把其中的选择加入修改，与 `Enter` 相同：裁剪或矫正的选区，或者调整或清理的设置，作为一项修改。
+关闭打开的工具，并把其中的选择加入修改，与 `Enter` 相同：裁剪或矫正的选区，或者调整或清理的设置，作为一项修改。在“矫正”中，查看器找到文档或某个角被移动之前，它不做任何事，[状态](./state)的 `canConfirm` 会说明何时可以。
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 修改亮度或对比度，各自范围为 -1 到 1，0 表示保持原样。它们在其他修改之后、灰度之前进行。调整打开时，它会改变调整显示的值，[`confirmTool()`](#confirmtool) 会把它作为一项修改保留。在编辑模式之外、有其他工具打开时或黑白模式下什么也不做：黑白会把每个像素与周围比较，所以亮度和对比度几乎不会改变它的结果。
 
 如果某个值不在 -1 到 1 之间，会抛出 `RangeError`。
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+选择为[矫正](../guide/tools/straighten#paper-size)的结果提供宽高比的纸张：`'a4'`、`'letter'`、用于身份证或银行卡的 `'card'`，或默认的 `'auto'`，它采用 [`aspectRatio`](./options#aspectratio)，没有时则估算。纵向还是横向由四个角决定。“矫正”未打开时它不做任何事，每次打开都从 `'auto'` 开始。
+
+如果 `size` 不是 [`PaperSize`](./types#papersize)，会抛出 `RangeError`。
 
 ### `setRedaction()`
 

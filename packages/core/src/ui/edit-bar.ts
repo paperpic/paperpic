@@ -1,9 +1,11 @@
 import type { FinishMode } from '../pipeline/operations'
+import type { PaperSize } from '../processing/paper'
 import type { RedactColor } from '../processing/redact'
 import type { Tool, ToolId } from '../tools/types'
 import type { PaperPicIcons } from './icons'
 import type { PaperPicLabels } from './labels'
 import { FINISH_MODES, REDACT_COLORS } from '../pipeline/operations'
+import { PAPER_SIZES } from '../processing/paper'
 import { attachRovingFocus, createButton, nameButton, setIcon } from './button'
 import { DEFAULT_ICONS } from './icons'
 import { Ruler } from './ruler'
@@ -19,6 +21,14 @@ const FINISH_LABELS = {
   gray: 'finishGray',
   mono: 'finishMono',
 } as const satisfies Record<FinishMode, keyof PaperPicLabels>
+
+/** The key of `PaperPicLabels` that names each paper size, which its button also carries in `data-paperpic-control`. */
+const PAPER_LABELS = {
+  auto: 'paperAuto',
+  a4: 'paperA4',
+  letter: 'paperLetter',
+  card: 'paperCard',
+} as const satisfies Record<PaperSize, keyof PaperPicLabels>
 
 /** The key of `PaperPicLabels` that names each color of Redact, which its button also carries in `data-paperpic-control`. */
 const REDACT_LABELS = {
@@ -65,6 +75,8 @@ export interface EditBarCommands {
   setAdjustment: (name: AdjustmentName, value: number, released: boolean) => void
   /** Changes what Clean up shows. `released` once the user lets go of the ruler, or chooses a finish. */
   setFinish: (setting: { mode?: FinishMode, sensitivity?: number }, released: boolean) => void
+  /** Chooses the paper that Straighten gives its result the proportions of. */
+  setPaper: (size: PaperSize) => void
   /** Chooses the color that Redact covers with. */
   setRedaction: (color: RedactColor) => void
   undo: () => void
@@ -78,6 +90,8 @@ export interface EditBarState {
   adjustments: Record<AdjustmentName, number>
   busy: boolean
   canApply: boolean
+  /** Whether Done can keep what the open tool shows. */
+  canConfirm: boolean
   /** Whether a tool with its own selection can open. A preview in progress prevents it. */
   canOpenTool: boolean
   canRedo: boolean
@@ -86,6 +100,10 @@ export interface EditBarState {
   canZoomOut: boolean
   /** The finish on display, which an open Clean up may still change. */
   finish: { mode: FinishMode, sensitivity: number }
+  /** What the open tool asks of the user, or `null` if it asks nothing. */
+  hint: string | null
+  /** The paper that Straighten gives its result the proportions of. */
+  paper: { size: PaperSize }
   /** The color that Redact covers with. */
   redaction: { color: RedactColor }
 }
@@ -113,6 +131,7 @@ export class EditBar {
   private readonly rulers: Record<AdjustmentName | 'sensitivity', Ruler>
   private readonly adjustments: Choice<AdjustmentName>
   private readonly finishes: Choice<FinishMode>
+  private readonly papers: Choice<PaperSize>
   private readonly colors: Choice<RedactColor>
   private readonly inUse: HTMLElement
   /** Why Adjust cannot open in black and white, for screen readers. */
@@ -138,8 +157,6 @@ export class EditBar {
   private activeTool: Tool | null = null
   /** The tone that the ruler of Adjust changes. */
   private adjustment: AdjustmentName = 'brightness'
-  /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
-  private hintOverride: string | null = null
   private canApply = false
   private busy = false
 
@@ -212,8 +229,9 @@ export class EditBar {
     this.adjustments = createChoice(ADJUSTMENTS, name => name, name => this.chooseAdjustment(name))
     // The original turns Clean up off without undoing what came after
     this.finishes = createChoice(FINISH_MODES, mode => FINISH_LABELS[mode], mode => commands.setFinish({ mode }, true))
+    this.papers = createChoice(PAPER_SIZES, size => PAPER_LABELS[size], size => commands.setPaper(size))
     this.colors = createChoice(REDACT_COLORS, color => REDACT_LABELS[color], color => commands.setRedaction(color))
-    choice.append(this.title, this.adjustments.element, this.finishes.element, this.colors.element)
+    choice.append(this.title, this.adjustments.element, this.finishes.element, this.papers.element, this.colors.element)
 
     this.toolControls.append(this.cancelToolButton, panel, choice, this.confirmToolButton)
 
@@ -232,6 +250,7 @@ export class EditBar {
     ]
 
     const id = ++ids
+    this.hint.id = `paperpic-hint-${id}`
     this.confirmation = document.createElement('div')
     this.confirmation.className = 'paperpic-edit-confirmation'
     // A group and not a dialog: the question takes the place of the bar, and the rest of the viewer stays usable.
@@ -306,13 +325,16 @@ export class EditBar {
     for (const mode of FINISH_MODES) {
       this.finishes.texts[mode].textContent = labels[FINISH_LABELS[mode]]
     }
+    this.papers.element.setAttribute('aria-label', labels.paper)
+    for (const size of PAPER_SIZES) {
+      this.papers.texts[size].textContent = labels[PAPER_LABELS[size]]
+    }
     this.colors.element.setAttribute('aria-label', labels.redact)
     for (const color of REDACT_COLORS) {
       this.colors.texts[color].textContent = labels[REDACT_LABELS[color]]
     }
     this.inUse.textContent = labels.inUse
     this.adjustUnavailable.textContent = labels.adjustUnavailable
-    this.showHint()
     this.showPanel()
     nameButton(this.cancelButton, labels.cancel)
     nameButton(this.undoButton, labels.undo)
@@ -338,20 +360,17 @@ export class EditBar {
   /** Shows the panel of an open tool, or the usual controls with `null`. */
   setActiveTool(tool: Tool | null): void {
     this.activeTool = tool
-    this.hintOverride = null
     if (tool?.id === 'adjust') {
       this.adjustment = 'brightness'
     }
     this.toolControls.hidden = tool === null
     this.controls.hidden = tool !== null || !this.confirmation.hidden
-    this.showHint()
     this.showPanel()
   }
 
-  /** Replaces the hint of the open tool, or brings it back with `null`. Closing the tool brings it back too. */
+  /** Shows what the open tool asks of the user, or nothing with `null`. */
   setHint(text: string | null): void {
-    this.hintOverride = text
-    this.showHint()
+    this.hint.textContent = text
   }
 
   /** Shows or hides the bar. Hiding it closes any open question. */
@@ -363,13 +382,15 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow, and what the panel of an open tool shows. */
-  update({ canUndo, canRedo, canApply, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments, redaction }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, canConfirm, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments, paper, redaction, hint }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
+    this.setHint(hint)
+    this.updateConfirm(canConfirm)
     this.updateView({ canZoomIn, canZoomOut })
     // A document in black and white has tones of its own, so brightness and contrast are not in effect
     const mono = finish.mode === 'mono'
@@ -388,6 +409,9 @@ export class EditBar {
     for (const mode of FINISH_MODES) {
       this.finishes.buttons[mode].setAttribute('aria-pressed', String(mode === finish.mode))
       this.finishes.buttons[mode].setAttribute('aria-disabled', String(busy))
+    }
+    for (const size of PAPER_SIZES) {
+      this.papers.buttons[size].setAttribute('aria-pressed', String(size === paper.size))
     }
     for (const color of REDACT_COLORS) {
       this.colors.buttons[color].setAttribute('aria-pressed', String(color === redaction.color))
@@ -462,6 +486,7 @@ export class EditBar {
     const choices: Partial<Record<ToolId, HTMLElement>> = {
       adjust: this.adjustments.element,
       finish: this.finishes.element,
+      perspective: this.papers.element,
       redact: this.colors.element,
     }
     const choice = id && choices[id]
@@ -476,6 +501,17 @@ export class EditBar {
     for (const name of ADJUSTMENTS) {
       this.rulers[name].element.hidden = id !== 'adjust' || name !== this.adjustment
       this.adjustments.buttons[name].setAttribute('aria-pressed', String(name === this.adjustment))
+    }
+  }
+
+  /** Allows Done or not. While it waits, the hint describes it to screen readers, so they hear what it waits for. */
+  private updateConfirm(canConfirm: boolean): void {
+    this.confirmToolButton.setAttribute('aria-disabled', String(!canConfirm))
+    if (canConfirm) {
+      this.confirmToolButton.removeAttribute('aria-describedby')
+    }
+    else {
+      this.confirmToolButton.setAttribute('aria-describedby', this.hint.id)
     }
   }
 
@@ -495,13 +531,6 @@ export class EditBar {
     else {
       button.removeAttribute('aria-describedby')
     }
-  }
-
-  private showHint(): void {
-    const hint = this.activeTool?.hint
-    this.hint.textContent = this.hintOverride ?? (hint
-      ? this.labels[hint]
-      : '')
   }
 
   private closeConfirmation(restoreFocus = true): void {

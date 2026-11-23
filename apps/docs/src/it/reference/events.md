@@ -48,7 +48,7 @@ Qualcosa è fallito, e `phase` dice cosa:
 
 - **Dati:** [`PaperPicState`](./state)
 
-Lo stato è cambiato, per mano dell’utente o di un metodo, ad esempio zoomando, aprendo uno strumento o annullando. Invia lo stato completo, lo stesso che restituirebbe [`getState()`](./methods#getstate) in quel momento. Applica lo emette due volte: all’inizio, con `busy: true`, e alla fine se riesce, dopo [`apply`](#apply).
+Lo stato è cambiato, per mano dell’utente o di un metodo, ad esempio zoomando, aprendo uno strumento o annullando, o perché Raddrizza ha [trovato il documento](../guide/tools/straighten#finding-the-document). Invia lo stato completo, lo stesso che restituirebbe [`getState()`](./methods#getstate) in quel momento. Applica lo emette due volte: all’inizio, con `busy: true`, e alla fine se riesce, dopo [`apply`](#apply).
 
 Queste cose cambiano lo stato senza emettere `change`:
 

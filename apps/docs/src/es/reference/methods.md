@@ -195,7 +195,7 @@ Voltea la imagen de izquierda a derecha tal como se ve, así que después de un 
 function openTool(id: ToolId): void
 ```
 
-Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'finish'`), que al abrirse elige blanco y negro cuando el acabado es el original. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar en blanco y negro, ni para Recortar y Enderezar mientras llega una vista previa.
+Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'finish'`), que al abrirse elige blanco y negro cuando el acabado es el original. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar en blanco y negro, ni para Recortar y Enderezar mientras llega una vista previa. Enderezar busca el documento al abrirse, y coloca sobre él sus esquinas [si lo encuentra](../guide/tools/straighten#finding-the-document).
 
 Tapar (`'redact'`) también se abre con esquinas, como Recortar.
 
@@ -205,7 +205,7 @@ Tapar (`'redact'`) también se abre con esquinas, como Recortar.
 function confirmTool(): void
 ```
 
-Cierra la herramienta abierta y añade lo que eligió a los cambios, como hace `Enter`: la selección de Recortar o Enderezar, o los valores de Ajustar o Limpiar, como un solo cambio.
+Cierra la herramienta abierta y añade lo que eligió a los cambios, como hace `Enter`: la selección de Recortar o Enderezar, o los valores de Ajustar o Limpiar, como un solo cambio. En Enderezar no hace nada hasta que el visor encuentra el documento o se mueve una esquina, y el `canConfirm` del [estado](./state) dice cuándo puede.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Cambia el brillo o el contraste, cada uno de -1 a 1, donde 0 deja la imagen como está. Se aplican después de los demás cambios, y antes del gris. Con Ajustar abierta, cambia lo que muestra Ajustar, y [`confirmTool()`](#confirmtool) lo conserva como un solo cambio. No hace nada fuera del modo de edición, con otra herramienta abierta ni en blanco y negro: el blanco y negro compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado.
 
 Lanza un `RangeError` si un valor no está entre -1 y 1.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+Elige el papel que da sus proporciones al resultado de [Enderezar](../guide/tools/straighten#paper-size): `'a4'`, `'letter'`, `'card'` para un carné o una tarjeta bancaria, o `'auto'`, el valor por defecto, que usa [`aspectRatio`](./options#aspectratio) o, si no, una estimación. El papel queda en vertical o en horizontal según las esquinas. No hace nada si Enderezar no está abierta, y cada vez que se abre empieza en `'auto'`.
+
+Lanza un `RangeError` si `size` no es un [`PaperSize`](./types#papersize).
 
 ### `setRedaction()`
 

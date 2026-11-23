@@ -14,6 +14,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | edit mode                                     | mode d’édition        |
 | editor                                        | éditeur               |
 | event                                         | événement             |
+| find, the document in the photo               | trouver               |
 | finish, of Clean up                           | finition              |
 | fit, of the image in the viewer               | adapter, adaptation   |
 | guide                                         | Guide                 |
@@ -24,6 +25,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | option                                        | option                |
 | pan, move a zoomed image                      | déplacer              |
 | panel, the controls of an open tool           | panneau               |
+| paper size, of Straighten                     | format de papier      |
 | parent element                                | élément parent        |
 | playground                                    | Playground            |
 | preview                                       | aperçu                |

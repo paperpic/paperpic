@@ -48,7 +48,7 @@ Etwas ist fehlgeschlagen, und `phase` sagt, was:
 
 - **Daten:** [`PaperPicState`](./state)
 
-Der Zustand hat sich geändert, durch den Nutzer oder durch eine Methode, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig. Es liefert den ganzen Zustand, denselben, den [`getState()`](./methods#getstate) in diesem Moment zurückgeben würde. Übernehmen löst es zweimal aus: beim Start, mit `busy: true`, und beim erfolgreichen Ende, nach [`apply`](#apply).
+Der Zustand hat sich geändert, durch den Nutzer oder durch eine Methode, etwa durch Zoomen, das Öffnen eines Werkzeugs oder Rückgängig, oder weil Begradigen [das Dokument gefunden hat](../guide/tools/straighten#finding-the-document). Es liefert den ganzen Zustand, denselben, den [`getState()`](./methods#getstate) in diesem Moment zurückgeben würde. Übernehmen löst es zweimal aus: beim Start, mit `busy: true`, und beim erfolgreichen Ende, nach [`apply`](#apply).
 
 Diese Dinge ändern den Zustand, ohne `change` auszulösen:
 

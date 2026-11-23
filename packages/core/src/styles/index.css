@@ -175,7 +175,7 @@
   }
 
   /* From this width, each state of the bar fits on one row: Cancel, the content, the middle and Apply or Done */
-  @container (width >= 28rem) {
+  @container (width >= 38rem) {
     .paperpic-edit-bar {
       align-self: center;
       inline-size: min(100% - 1rem, 38rem);
@@ -252,6 +252,11 @@
 
   .paperpic-handle[hidden] {
     display: none;
+  }
+
+  /* On its way to the document, so a press goes to the image */
+  .paperpic-handle-sliding {
+    pointer-events: none;
   }
 
   /* The area of Redact, which moves as a whole. The canvas paints it, so the element only takes the pointer and the focus */
@@ -452,9 +457,13 @@
     background: var(--paperpic-color-accent);
   }
 
+  /* Scrolls when the choices do not fit, such as with long texts on a phone, so they never cover Cancel or Done */
   .paperpic-edit-options {
     display: flex;
     gap: 0.125rem;
+    min-inline-size: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
   .paperpic-edit-option {

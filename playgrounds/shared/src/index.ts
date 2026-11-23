@@ -20,13 +20,6 @@ const tools = [
 
 type PlaygroundTool = typeof tools[number]
 
-/** Common document proportions, as width divided by height. */
-const aspectRatios = [
-  { name: 'A4', value: 210 / 297 },
-  { name: 'US Letter', value: 8.5 / 11 },
-  { name: 'ID card', value: 85.6 / 53.98 },
-]
-
 const formats = ['image/jpeg', 'image/png', 'image/webp']
 
 /** The switches of the Viewer group, which are on by default. */
@@ -180,16 +173,9 @@ export function createPlayground({ name, mount }: Playground): void {
               <legend class="group-heading">Editing</legend>
               <label class="field">
                 <code>aspectRatio</code>
-                <select class="select" name="aspectRatioPreset">
-                  <option value="">Estimated</option>
-                  ${aspectRatios.map(({ name, value }) => `<option value="${value}">${name}</option>`).join('')}
-                  <option value="custom">Custom</option>
-                </select>
-              </label>
-              <label class="field field-nested">
-                Width ÷ height
                 <input class="number" name="aspectRatio" type="number" min="0" step="any" placeholder="Estimated">
               </label>
+              <p class="hint">Width ÷ height. Applies when the paper size of Straighten is Auto.</p>
               <label class="field">
                 <code>softness</code>
                 ${renderRange('softness', {
@@ -301,29 +287,11 @@ export function createPlayground({ name, mount }: Playground): void {
       case 'tools':
         options.tools = tools.filter(tool => form.querySelector<HTMLInputElement>(`[name="tools"][value="${tool}"]`)!.checked)
         break
-      case 'aspectRatioPreset':
-        if (target.value === 'custom') {
-          input('aspectRatio').focus()
-          break
-        }
-        options.aspectRatio = target.value === ''
-          ? undefined
-          : Number(target.value)
-        input('aspectRatio').value = options.aspectRatio === undefined
-          ? ''
-          : String(Number(options.aspectRatio.toFixed(4)))
-        break
-      case 'aspectRatio': {
-        const value = target.valueAsNumber > 0
+      case 'aspectRatio':
+        options.aspectRatio = target.valueAsNumber > 0
           ? target.valueAsNumber
           : undefined
-        options.aspectRatio = value
-        const preset = aspectRatios.find(ratio => value !== undefined && Math.abs(ratio.value - value) < 1e-4)
-        select('aspectRatioPreset').value = value === undefined
-          ? ''
-          : preset?.value.toString() ?? 'custom'
         break
-      }
       case 'softness':
         options.softness = target.valueAsNumber
         break

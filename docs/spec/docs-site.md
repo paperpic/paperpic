@@ -41,13 +41,13 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 
 | Page                    | Path                           | Covers                                                                                                                                                                                       |
 | ----------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF or automatic detection, and how the packages fit together.                                                                                   |
+| Introduction            | `/guide/introduction`          | What PaperPic does and does not do, such as PDF, and how the packages fit together.                                                                                                          |
 | Getting started         | `/guide/getting-started`       | Installing with any package manager or from a CDN, importing the styles, giving the container a height, showing the first image, and removing the viewer with `destroy()`.                   |
 | Loading images          | `/guide/loading`               | Where the image comes from: a URL, a `File` or a `Blob`, images from other origins or behind a login, formats, the EXIF orientation, `load`, `error` and `reload()`.                         |
 | Viewer                  | `/guide/viewer`                | Zoom, pan, fit, wheel zoom, the toolbar, and read-only use with `editable: false`. With a demo.                                                                                              |
 | Editing                 | `/guide/editing`               | Edit mode, the edit bar, Undo and Redo, Apply and Cancel, choosing tools with `tools`, and what discards an edit.                                                                            |
 | Crop                    | `/guide/tools/crop`            | Corner handles, the magnifier, `Enter` and `Esc`. With a demo.                                                                                                                               |
-| Straighten              | `/guide/tools/straighten`      | The `perspective` tool: estimated proportions, `aspectRatio` and corners cut off by the photo. With a demo.                                                                                  |
+| Straighten              | `/guide/tools/straighten`      | The `perspective` tool: how it finds the document, paper sizes, `setPaper()`, estimated proportions, `aspectRatio` and corners cut off by the photo. With a demo.                            |
 | Rotate and flip         | `/guide/tools/rotate-and-flip` | Quarter turns, mirroring, and turns that cancel out. With a demo.                                                                                                                            |
 | Adjust                  | `/guide/tools/adjust`          | Brightness and contrast. With a demo.                                                                                                                                                        |
 | Redact                  | `/guide/tools/redact`          | Areas of solid black or white, `setRedaction()`, and what Apply guarantees about them. With a demo.                                                                                          |
@@ -81,7 +81,7 @@ The top navigation has Guide, Reference, Examples and Playground, and a menu nam
 | Upload to a server | `/examples/upload`            | Sending the result of Apply with `fetch`.                                                             |
 | Read-only viewer   | `/examples/read-only`         | A viewer without editing, with rotate buttons.                                                        |
 | Custom toolbar     | `/examples/custom-toolbar`    | `toolbar: false` and buttons of your own that call the methods, and a ruler of your own for Clean up. |
-| Fixed proportions  | `/examples/fixed-proportions` | `aspectRatio` for known documents, such as A4 sheets or ID cards.                                     |
+| Fixed proportions  | `/examples/fixed-proportions` | `aspectRatio` for documents that are not a paper size of Straighten, such as passports.               |
 | Edit in a dialog   | `/examples/dialog`            | The viewer in a `<dialog>` that opens editing and closes on Apply or Cancel, with `Esc` left to it.   |
 | Send with a form   | `/examples/form`              | The result of Apply put back in a file field with `DataTransfer`, so a plain form sends it.           |
 

@@ -125,7 +125,13 @@ interface PaperPicLabels {
   keepEditing: string
   loadError: string
   loading: string
+  paper: string
+  paperA4: string
+  paperAuto: string
+  paperCard: string
+  paperLetter: string
   perspective: string
+  perspectiveFound: string
   perspectiveHint: string
   previewError: string
   processing: string
@@ -191,6 +197,7 @@ interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   busy: boolean
   canApply: boolean
+  canConfirm: boolean
   canRedo: boolean
   canUndo: boolean
   finish: { mode: FinishMode, sensitivity: number }
@@ -198,6 +205,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  paper: { size: PaperSize }
   redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -214,6 +222,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 The finish of [Clean up](../guide/tools/clean-up): the original tones, gray, or black and white with `'mono'`. [`setFinish()`](./methods#setfinish) takes it, and the `finish` of the [state](./state) holds it.
+
+### `PaperSize`
+
+```ts
+type PaperSize = 'auto' | 'a4' | 'letter' | 'card'
+```
+
+The paper that gives its proportions to the result of [Straighten](../guide/tools/straighten#paper-size). [`setPaper()`](./methods#setpaper) takes it, and the `paper` of the [state](./state) holds it.
 
 ### `RedactColor`
 

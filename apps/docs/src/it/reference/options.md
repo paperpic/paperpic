@@ -152,7 +152,7 @@ Il nome del file salvato. Scrivilo senza estensione: PaperPic aggiunge quella de
 - **Tipo:** `number`
 - **Valore predefinito:** stimate
 
-Le proporzioni reali del documento, come larghezza divisa per altezza, ad esempio `210 / 297` per un foglio A4. Raddrizza dà al suo risultato queste proporzioni. Senza di esse, le stima dalla foto. Ritaglia non le usa: il suo rettangolo resta libero.
+Le proporzioni reali del documento, come larghezza divisa per altezza, ad esempio `210 / 297` per un foglio A4. Raddrizza dà al suo risultato queste proporzioni. Senza di esse, le stima dalla foto. Ritaglia non le usa: il suo rettangolo resta libero. L’utente può anche scegliere un [formato carta](../guide/tools/straighten#paper-size) nel pannello di Raddrizza, che prevale su questa opzione per quel raddrizzamento.
 
 ### `softness`
 

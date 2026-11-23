@@ -1,7 +1,8 @@
 import type { PreparedThreshold } from '../processing/threshold'
-import type { PixelBuffer } from '../processing/types'
+import type { PixelBuffer, Quad } from '../processing/types'
 import type { PipelineStep } from './steps'
-import type { WorkerResponse } from './worker'
+import type { WorkerRequest, WorkerResponse } from './worker'
+import { detectDocument } from '../processing/detection/detect-document'
 import { prepareThreshold } from '../processing/threshold'
 import { applySteps } from './steps'
 
@@ -43,8 +44,26 @@ export class PipelineRunner {
       : prepareThreshold(applySteps(source, steps))
   }
 
+  /**
+   * Runs the steps and looks for the document in the result. Its corners are fractions of the result, and `null` means
+   * that no shape is likely enough to be one, or that nobody wants the result by the time the worker is ready. The buffer
+   * is transferred too.
+   */
+  async detect(source: PixelBuffer, steps: readonly PipelineStep[], wanted: () => boolean): Promise<Quad | null> {
+    const worker = await this.ready()
+    if (!wanted()) {
+      return null
+    }
+    return worker
+      ? this.send(worker, 'detect', source, steps, response => (response as { corners: Quad | null }).corners)
+      : detectDocument(applySteps(source, steps))
+  }
+
   private async ready(): Promise<Worker | null> {
-    this.worker ??= this.start()
+    // Nothing would stop a worker that starts after destroy
+    if (!this.destroyed) {
+      this.worker ??= this.start()
+    }
     const worker = await this.worker
     if (this.destroyed) {
       throw new Error('The viewer was destroyed while processing.')
@@ -131,7 +150,7 @@ export class PipelineRunner {
 
   private send<Result>(
     worker: Worker,
-    operation: 'pipeline' | 'prepare',
+    operation: WorkerRequest['operation'],
     source: PixelBuffer,
     steps: readonly PipelineStep[],
     pick: (response: JobResponse) => Result,

@@ -48,7 +48,7 @@ Algo falló, y `phase` dice qué:
 
 - **Datos:** [`PaperPicState`](./state)
 
-El estado cambió, por el usuario o por un método, por ejemplo al hacer zoom, abrir una herramienta o deshacer. Envía el estado completo, el mismo que devolvería [`getState()`](./methods#getstate) en ese momento. Aplicar lo emite dos veces: al empezar, con `busy: true`, y al terminar bien, después de [`apply`](#apply).
+El estado cambió, por el usuario o por un método, por ejemplo al hacer zoom, abrir una herramienta o deshacer, o porque Enderezar [encontró el documento](../guide/tools/straighten#finding-the-document). Envía el estado completo, el mismo que devolvería [`getState()`](./methods#getstate) en ese momento. Aplicar lo emite dos veces: al empezar, con `busy: true`, y al terminar bien, después de [`apply`](#apply).
 
 Esto cambia el estado sin emitir `change`:
 

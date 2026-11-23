@@ -26,7 +26,7 @@ features:
     link: /ru/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Выравнивание и обрезка"
-    details: "Перетащите четыре угла, чтобы превратить снятую под углом фотографию в ровную страницу, с оценёнными или заданными пропорциями."
+    details: "Превратите снятую под углом фотографию в ровную страницу, с оценёнными или заданными пропорциями. Просмотрщик находит углы, а вы можете их перетащить."
     link: /ru/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Очистка"

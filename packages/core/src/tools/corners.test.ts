@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest'
 import type { ToolHost } from './types'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { rectangleCorners } from '../processing/homography'
 import { toolHost } from '../test/tool-host'
 import { DEFAULT_LABELS } from '../ui/labels'
@@ -114,6 +114,7 @@ describe('cornerEditor', () => {
     announce: Mock<ToolHost['announce']>
     paintMagnifier: Mock<ToolHost['paintMagnifier']>
     reveal: Mock<ToolHost['reveal']>
+    selectionMoved: Mock<ToolHost['selectionMoved']>
     setHint: Mock<ToolHost['setHint']>
   }
   let layer: HTMLElement
@@ -148,6 +149,7 @@ describe('cornerEditor', () => {
       setHint: vi.fn(),
       announce: vi.fn(),
       paintMagnifier: vi.fn(),
+      selectionMoved: vi.fn(),
     }) as typeof host
   })
 
@@ -155,6 +157,169 @@ describe('cornerEditor', () => {
   const handles = () => [
     ...layer.querySelectorAll<HTMLButtonElement>('.paperpic-handle'),
   ]
+
+  it('tells whether a corner is off its start, and that it moved', () => {
+    const corners = editor()
+    expect(corners.moved).toBe(false)
+    expect(host.selectionMoved).not.toHaveBeenCalled()
+    press(handles()[0]!, 'ArrowRight')
+    expect(corners.moved).toBe(true)
+    expect(host.selectionMoved).toHaveBeenCalledOnce()
+    press(handles()[0]!, 'ArrowLeft')
+    expect(corners.moved).toBe(false)
+  })
+
+  it('is back at its start after moving there and back, whatever the zoom rounds', () => {
+    host.frameToViewport = ({ x, y }) => ({ x: x * 0.3819 + 7.3, y: y * 0.3819 + 7.3 })
+    host.viewportToFrame = ({ x, y }) => ({ x: (x - 7.3) / 0.3819, y: (y - 7.3) / 0.3819 })
+    const corners = editor()
+    for (const key of [
+      'ArrowRight',
+      'ArrowRight',
+      'ArrowLeft',
+      'ArrowLeft',
+    ]) {
+      press(handles()[0]!, key)
+    }
+    expect(corners.points).not.toEqual(rectangleCorners(100, 100, 300, 300))
+    expect(corners.moved).toBe(false)
+  })
+
+  describe('suggesting corners', () => {
+    const suggestion = rectangleCorners(200, 120, 700, 400)
+
+    const preferMotion = (allowed: boolean) => vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: allowed && query === '(prefers-reduced-motion: no-preference)',
+    }))
+    const sliding = () => handles().map(handle => handle.classList.contains('paperpic-handle-sliding'))
+
+    beforeEach(() => {
+      HTMLElement.prototype.setPointerCapture = vi.fn()
+      preferMotion(false)
+    })
+
+    afterEach(() => {
+      vi.restoreAllMocks()
+      vi.unstubAllGlobals()
+    })
+
+    it('moves the corners and their handles, and paints them', () => {
+      const corners = editor()
+      vi.mocked(host.requestPaint).mockClear()
+      expect(corners.suggest(suggestion)).toBe(true)
+      expect(corners.points).toEqual(suggestion)
+      expect([handles()[2]!.style.left, handles()[2]!.style.top]).toEqual(['350px', '200px'])
+      expect(host.requestPaint).toHaveBeenCalledOnce()
+    })
+
+    it('keeps the corner with the focus on screen', () => {
+      const corners = editor()
+      corners.focus()
+      vi.mocked(host.reveal).mockClear()
+      corners.suggest(suggestion)
+      expect(host.reveal).toHaveBeenCalledExactlyOnceWith(suggestion[0])
+    })
+
+    it('leaves the view alone when no corner has the focus', () => {
+      editor().suggest(suggestion)
+      expect(host.reveal).not.toHaveBeenCalled()
+    })
+
+    it.each([
+      [
+        'a pressed handle',
+        () => handles()[1]!.dispatchEvent(Object.assign(new MouseEvent('pointerdown', { bubbles: true }), { pointerId: 1, pointerType: 'touch' })),
+      ],
+      [
+        'a selected corner',
+        () => handles()[1]!.click(),
+      ],
+      [
+        'a corner moved with the keyboard',
+        () => press(handles()[1]!, 'ArrowDown'),
+      ],
+    ])('leaves the corners alone after %s', (_, touch) => {
+      const corners = editor()
+      touch()
+      const before = corners.points
+      expect(corners.suggest(suggestion)).toBe(false)
+      expect(corners.points).toBe(before)
+    })
+
+    describe('with motion', () => {
+      let now: number
+      const moveTo = vi.fn()
+      const context = {
+        beginPath: vi.fn(),
+        moveTo,
+        lineTo: vi.fn(),
+        closePath: vi.fn(),
+        fill: vi.fn(),
+        stroke: vi.fn(),
+      } as unknown as CanvasRenderingContext2D
+
+      beforeEach(() => {
+        now = 1000
+        moveTo.mockClear()
+        vi.spyOn(performance, 'now').mockImplementation(() => now)
+        preferMotion(true)
+      })
+
+      it('slides on screen from where they were, with the corners in place at once', () => {
+        const corners = editor()
+        corners.suggest(suggestion)
+        expect(corners.points).toEqual(suggestion)
+        // From 100 in the image, which is 50 on screen, to 200, which is 100
+        expect(handles()[0]!.style.left).toBe('50px')
+        expect(sliding()).toEqual([true, true, true, true])
+
+        now += 125
+        vi.mocked(host.requestPaint).mockClear()
+        corners.drawOverlay(context)
+        expect(Number.parseFloat(handles()[0]!.style.left)).toBeCloseTo(93.75)
+        expect(moveTo.mock.calls[1]![0]).toBeCloseTo(93.75)
+        expect(host.requestPaint).toHaveBeenCalledOnce()
+
+        now += 125
+        vi.mocked(host.requestPaint).mockClear()
+        corners.drawOverlay(context)
+        expect(handles()[0]!.style.left).toBe('100px')
+        expect(sliding()).toEqual([false, false, false, false])
+        expect(host.requestPaint).not.toHaveBeenCalled()
+      })
+
+      it('ends as soon as the keyboard moves a corner, which goes on from its place', () => {
+        const corners = editor()
+        corners.suggest(suggestion)
+        press(handles()[0]!, 'ArrowRight')
+        expect(corners.points[0].x).toBe(202)
+        expect(handles()[0]!.style.left).toBe('101px')
+        expect(sliding()).toEqual([false, false, false, false])
+      })
+
+      it('follows the zoom and the position of the image on the way', () => {
+        const corners = editor()
+        corners.suggest(suggestion)
+        host.frameToViewport = ({ x, y }) => ({ x, y })
+        corners.update()
+        expect(handles()[0]!.style.left).toBe('100px')
+      })
+    })
+
+    it('jumps when the browser cannot tell whether the user accepts motion', () => {
+      vi.stubGlobal('matchMedia', undefined)
+      editor().suggest(suggestion)
+      expect(handles()[0]!.style.left).toBe('100px')
+      expect(sliding()).toEqual([false, false, false, false])
+    })
+
+    it('moves the corners while a handle only has the focus', () => {
+      const corners = editor()
+      corners.focus()
+      press(handles()[0]!, 'Tab')
+      expect(corners.suggest(suggestion)).toBe(true)
+    })
+  })
 
   it('creates four named handles at their positions', () => {
     editor()
@@ -233,8 +398,10 @@ describe('cornerEditor', () => {
       handle.dispatchEvent(pointer('pointermove', 175, 180))
       expect(corners.points[2]).toEqual({ x: 320, y: 320 })
       expect(host.announce).not.toHaveBeenCalled()
+      expect(host.selectionMoved).not.toHaveBeenCalled()
 
       handle.dispatchEvent(pointer('pointerup', 175, 180))
+      expect(host.selectionMoved).toHaveBeenCalledOnce()
       expect(host.announce).toHaveBeenCalledWith('Bottom right corner: 320, 320')
       handle.dispatchEvent(pointer('pointermove', 300, 300))
       expect(corners.points[2]).toEqual({ x: 320, y: 320 })
@@ -345,6 +512,7 @@ describe('cornerEditor', () => {
       expect(handle.style.left).toBe('150px')
       expect(pressed()[2]).toBe('true')
       expect(host.announce).toHaveBeenLastCalledWith(hint)
+      expect(host.selectionMoved).not.toHaveBeenCalled()
     })
 
     it('does not select a corner at the end of a drag, and a drag lets go of the selection', () => {

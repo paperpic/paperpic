@@ -129,6 +129,7 @@ import '@paperpic/react/style.css'
 | Настроить и Очистить            | `brightness` и `contrast` — варианты и их шкалы, `finishOriginal`, `finishGray` и `finishMono` — варианты обработки, `finishSensitivity` — его шкала |
 | Каждый инструмент               | `cancelTool`, `confirm`                                                                                                                              |
 | Обрезать, Выровнять и Закрасить | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                      |
+| «Выровнять»                     | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                   |
 | Закрасить                       | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                             |
 | Вопрос перед отменой изменений  | `keepEditing`, `discard`                                                                                                                             |
 

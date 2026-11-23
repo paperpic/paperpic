@@ -1,7 +1,7 @@
 import type { PerspectiveStep, PipelineStep } from '../pipeline/steps'
 import type { Quad } from '../processing/types'
 import type { ToolHost } from './types'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { photoFrame } from '../pipeline/photo-frame'
 import { planRead, resultSize } from '../pipeline/read-plan'
 import { applySteps } from '../pipeline/steps'
@@ -247,9 +247,9 @@ describe('perspective tool', () => {
   })
 
   /** Opens the tool and places each corner with a tap, `null` leaving one where it starts. */
-  const placed = (points: readonly ({ x: number, y: number } | null)[]) => {
+  const placed = (points: readonly ({ x: number, y: number } | null)[], overrides: Partial<ToolHost> = {}) => {
     const layer = document.createElement('div')
-    const session = perspectiveTool.activate!(host({ layer }))
+    const session = perspectiveTool.activate!(host({ layer, ...overrides }))
     const handles = [
       ...layer.querySelectorAll<HTMLButtonElement>('.paperpic-handle'),
     ]
@@ -271,6 +271,61 @@ describe('perspective tool', () => {
 
   it('gives nothing when the corners are the corners of the image', () => {
     expect(placed(wholeFrame).session.confirm()).toBeNull()
+  })
+
+  it('can confirm only once a corner is off its start', () => {
+    expect(placed([]).session.canConfirm!()).toBe(false)
+    expect(placed([
+      { x: 0, y: 0 },
+    ]).session.canConfirm!()).toBe(true)
+    expect(placed(wholeFrame).session.canConfirm!()).toBe(true)
+  })
+
+  it.each([
+    ['a4', 297 / 210],
+    ['letter', 11 / 8.5],
+    ['card', 85.6 / 53.98],
+  ] as const)('gives the proportions of %s, lying as the corners do, over the ones the consumer knows', (size, landscape) => {
+    const edit = placed([
+      { x: 90, y: 40 },
+    ], {
+      paperSize: () => size,
+      aspectRatio: () => 0.5,
+    }).session.confirm() as PerspectiveStep
+    expect(edit.aspectRatio).toBeCloseTo(landscape)
+  })
+
+  it('stands the paper in portrait when the corners do', () => {
+    const edit = placed([
+      { x: 400, y: 0 },
+      { x: 600, y: 0 },
+      { x: 600, y: 500 },
+      { x: 400, y: 500 },
+    ], {
+      paperSize: () => 'a4',
+    }).session.confirm() as PerspectiveStep
+    expect(edit.aspectRatio).toBeCloseTo(210 / 297)
+  })
+
+  it('gives the whole image the proportions of a paper size', () => {
+    const edit = placed(wholeFrame, {
+      paperSize: () => 'a4',
+    }).session.confirm() as PerspectiveStep
+    expect(edit.quad).toEqual(rectangleCorners(0, 0, 1, 1))
+    expect(edit.aspectRatio).toBeCloseTo(297 / 210)
+  })
+
+  it('gives nothing for the whole image when it already has the proportions of the paper', () => {
+    const a4 = { width: 2970, height: 2100 }
+    const points = rectangleCorners(0, 0, a4.width, a4.height)
+    expect(placed(points, {
+      frameSize: () => a4,
+      paperSize: () => 'a4',
+      photoFrame: () => ({
+        photo: a4,
+        origin: { x: 0, y: 0 },
+      }),
+    }).session.confirm()).toBeNull()
   })
 
   it.each([
@@ -313,6 +368,133 @@ describe('perspective tool', () => {
     const edit = placed(points).session.confirm() as PerspectiveStep
     expect(edit.type).toBe('perspective')
     expect(edit.quad[index]).toEqual({ x: point.x / frame.width, y: point.y / frame.height })
+  })
+
+  describe('finding the document', () => {
+    const sheet = [
+      { x: 0.2, y: 0.1 },
+      { x: 0.7, y: 0.2 },
+      { x: 0.8, y: 0.9 },
+      { x: 0.1, y: 1 },
+    ] as const satisfies Quad
+    const inFrame = scaleQuad(sheet, frame.width, frame.height)
+    const found = 'Document found. Check its corners'
+
+    // The slide of the corners is the editor's, and its tests cover it
+    beforeEach(() => {
+      vi.stubGlobal('matchMedia', () => ({ matches: false }))
+    })
+
+    afterEach(() => {
+      vi.unstubAllGlobals()
+    })
+
+    /** Opens the tool with a search that ends when the test says so. */
+    const searching = () => {
+      let end: (corners: Quad | null) => void = () => {}
+      let isWanted = () => false
+      const overrides = {
+        announce: vi.fn<ToolHost['announce']>(),
+        selectionMoved: vi.fn<ToolHost['selectionMoved']>(),
+        setHint: vi.fn<ToolHost['setHint']>(),
+        findDocument: (wanted: () => boolean) => new Promise<Quad | null>((resolve) => {
+          end = resolve
+          isWanted = wanted
+        }),
+      }
+      const opened = placed([], overrides)
+      return {
+        ...opened,
+        ...overrides,
+        wanted: () => isWanted(),
+        finish: async (corners: Quad | null) => {
+          end(corners)
+          await Promise.resolve()
+        },
+      }
+    }
+
+    it('places the corners on it, and lets the user confirm them without moving any', async () => {
+      const { session, handles, finish, announce, selectionMoved } = searching()
+      expect(session.canConfirm!()).toBe(false)
+      expect(session.hint!()).toBe('perspectiveHint')
+
+      await finish(sheet)
+      expect(handles.map(({ style }) => [style.left, style.top])).toEqual(inFrame.map(({ x, y }) => [`${x}px`, `${y}px`]))
+      expect(session.canConfirm!()).toBe(true)
+      expect(selectionMoved).toHaveBeenCalledOnce()
+      expect(session.hint!()).toBe('perspectiveFound')
+      expect(announce).toHaveBeenCalledExactlyOnceWith(found)
+      expect((session.confirm() as PerspectiveStep).quad).toEqual(sheet)
+    })
+
+    it('leaves the corners where they start when it finds none', async () => {
+      const { session, handles, finish, announce } = searching()
+      await finish(null)
+      expect(handles[0]!.style.left).toBe('100px')
+      expect(session.canConfirm!()).toBe(false)
+      expect(session.hint!()).toBe('perspectiveHint')
+      expect(announce).not.toHaveBeenCalled()
+    })
+
+    it('leaves alone the corners that the user is already placing', async () => {
+      const { session, handles, finish, announce } = searching()
+      handles[0]!.click()
+      session.tap!({ x: 10, y: 10 })
+      announce.mockClear()
+      await finish(sheet)
+      expect([handles[0]!.style.left, handles[1]!.style.left]).toEqual(['10px', '900px'])
+      expect(announce).not.toHaveBeenCalled()
+    })
+
+    it('ignores a search that ends once the tool is closed', async () => {
+      const { session, finish, announce, selectionMoved } = searching()
+      session.deactivate()
+      await finish(sheet)
+      expect(announce).not.toHaveBeenCalled()
+      expect(selectionMoved).not.toHaveBeenCalled()
+    })
+
+    it('wants the document until the tool closes', () => {
+      const { session, wanted } = searching()
+      expect(wanted()).toBe(true)
+      session.deactivate()
+      expect(wanted()).toBe(false)
+    })
+
+    it('wants the document until the user touches a corner', () => {
+      const { handles, wanted } = searching()
+      handles[0]!.focus()
+      expect(wanted()).toBe(true)
+      handles[0]!.click()
+      expect(wanted()).toBe(false)
+    })
+
+    it('can still confirm when the user puts the corners back where they started', async () => {
+      const { session, handles, finish } = searching()
+      await finish(sheet)
+      ;[
+        { x: 100, y: 50 },
+        { x: 900, y: 50 },
+        { x: 900, y: 450 },
+        { x: 100, y: 450 },
+      ].forEach((point, index) => {
+        handles[index]!.click()
+        session.tap!(point)
+      })
+      expect(session.canConfirm!()).toBe(true)
+    })
+
+    it('brings back its hint after the one of a pressed corner', async () => {
+      const { session, handles, finish, setHint } = searching()
+      handles[0]!.focus()
+      await finish(sheet)
+      handles[0]!.click()
+      expect(setHint).toHaveBeenLastCalledWith('Top left corner: tap where it goes')
+      handles[0]!.click()
+      expect(setHint).toHaveBeenLastCalledWith(null)
+      expect(session.hint!()).toBe('perspectiveFound')
+    })
   })
 
   it('opens from its button', () => {

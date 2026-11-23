@@ -125,7 +125,13 @@ interface PaperPicLabels {
   keepEditing: string
   loadError: string
   loading: string
+  paper: string
+  paperA4: string
+  paperAuto: string
+  paperCard: string
+  paperLetter: string
   perspective: string
+  perspectiveFound: string
   perspectiveHint: string
   previewError: string
   processing: string
@@ -191,6 +197,7 @@ interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   busy: boolean
   canApply: boolean
+  canConfirm: boolean
   canRedo: boolean
   canUndo: boolean
   finish: { mode: FinishMode, sensitivity: number }
@@ -198,6 +205,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  paper: { size: PaperSize }
   redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -214,6 +222,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 [정리](../guide/tools/clean-up)의 마무리입니다. 원래 색조, 회색, 또는 `'mono'`의 흑백 중 하나입니다. [`setFinish()`](./methods#setfinish)가 받고, [상태](./state)의 `finish`에 담깁니다.
+
+### `PaperSize`
+
+```ts
+type PaperSize = 'auto' | 'a4' | 'letter' | 'card'
+```
+
+[기울기 보정](../guide/tools/straighten#paper-size)의 결과에 비율을 주는 용지입니다. [`setPaper()`](./methods#setpaper)가 받고, [상태](./state)의 `paper`에 담깁니다.
 
 ### `RedactColor`
 

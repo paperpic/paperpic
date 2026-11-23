@@ -19,6 +19,10 @@ const INITIAL_INSET = 0.1
 /** The smallest selection, in image pixels. */
 const MIN_SIDE = 16
 const SHIFT_STEP = 10
+/** How long the corners take to slide to a suggestion, in milliseconds. */
+const SLIDE_TIME = 250
+/** How far a corner can be from its start and still be there, in image pixels, because moves round through the zoom. */
+const START_TOLERANCE = 0.01
 const REVEAL_DIRECTIONS: Record<string, ViewPoint> = {
   ArrowLeft: { x: -1, y: 0 },
   ArrowRight: { x: 1, y: 0 },
@@ -44,6 +48,20 @@ export function initialCorners(frame: Size): Quad {
   const left = frame.width * INITIAL_INSET
   const top = frame.height * INITIAL_INSET
   return rectangleCorners(left, top, frame.width - left, frame.height - top)
+}
+
+/** Whether the user accepts movement on screen. */
+function allowsMotion(): boolean {
+  return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: no-preference)').matches
+}
+
+/** The corners on their way from one place to another, where `progress` goes from 0 to 1. They slow down as they arrive. */
+function cornersBetween(from: Quad, to: Quad, progress: number): Quad {
+  const eased = 1 - (1 - progress) ** 3
+  return from.map(({ x, y }, index) => ({
+    x: x + (to[index]!.x - x) * eased,
+    y: y + (to[index]!.y - y) * eased,
+  })) as unknown as Quad
 }
 
 /** Keeps the corners a rectangle inside the frame, which never turns inside out. */
@@ -266,10 +284,17 @@ export class CornerEditor {
   private readonly handles: HTMLButtonElement[]
   /** What the keys do, by the label that says it, which screen readers hear on each handle. The hint on screen speaks to a pointer. */
   private readonly descriptions = new Map<TextLabel, HTMLElement>()
+  private readonly initial: Quad
   private corners: Quad
+  /** The corners on screen, which are on their way to `corners` during a slide. */
+  private shown: Quad
+  /** Where the corners slide from, and when they started. */
+  private slide: { from: Quad, start: number } | null = null
   private magnifier: Magnifier | null = null
   /** The handle that the next tap on the image moves. */
   private selected: number | null = null
+  /** Whether the user has pressed a handle, or moved one with the keyboard. */
+  touched = false
 
   constructor(host: ToolHost, corners: Quad, constrain: ConstrainCorner, { draw = dimOutside, under = [], over = [] }: {
     /** Paints the selection. By default, it dims what stays out of it. */
@@ -280,7 +305,9 @@ export class CornerEditor {
     under?: readonly Grip[]
   } = {}) {
     this.host = host
+    this.initial = corners
     this.corners = corners
+    this.shown = corners
     this.draw = draw
     this.grips = [
       ...under,
@@ -306,29 +333,65 @@ export class CornerEditor {
     return this.corners
   }
 
+  /** Whether a corner is off the place where it started. */
+  get moved(): boolean {
+    return this.corners.some(({ x, y }, index) => {
+      const start = this.initial[index]!
+      return Math.hypot(x - start.x, y - start.y) > START_TOLERANCE
+    })
+  }
+
+  /**
+   * Moves the corners to where they seem to go. They are there at once, and slide on screen unless the user prefers less
+   * motion. The one with the focus stays in view. It does nothing once the user has touched a handle, because no corner
+   * may slip away from a finger. Returns whether it moved them.
+   */
+  suggest(corners: Quad): boolean {
+    if (this.touched) {
+      return false
+    }
+    const from = this.corners
+    this.setCorners(corners)
+    const focused = this.focusedHandle()
+    if (focused >= 0) {
+      this.host.reveal(this.position(focused))
+    }
+    if (allowsMotion()) {
+      this.shown = from
+      this.slide = {
+        from,
+        start: performance.now(),
+      }
+      this.updateSliding()
+      this.update()
+    }
+    return true
+  }
+
   /** Takes the keyboard focus on the first corner, without scrolling the page or the viewer. */
   focus(): void {
     this.handles[this.grips.findIndex(grip => grip.label === CORNER_LABELS[0])]!.focus({ preventScroll: true })
   }
 
   update(): void {
-    const corners = this.corners.map(point => this.host.frameToViewport(point))
+    const corners = this.shown.map(point => this.host.frameToViewport(point))
     this.handles.forEach((handle, index) => {
       const grip = this.grips[index]!
       if (grip.cover) {
         grip.cover(handle, corners)
         return
       }
-      const { x, y } = this.host.frameToViewport(grip.position(this.corners, this.host))
+      const { x, y } = this.host.frameToViewport(grip.position(this.shown, this.host))
       handle.style.left = `${x}px`
       handle.style.top = `${y}px`
     })
   }
 
   drawOverlay(context: CanvasRenderingContext2D): void {
+    this.advanceSlide()
     const { width, height } = this.host.frameSize()
     const frame = rectangleCorners(0, 0, width, height).map(point => this.host.frameToViewport(point))
-    this.draw(context, frame, this.corners.map(point => this.host.frameToViewport(point)))
+    this.draw(context, frame, this.shown.map(point => this.host.frameToViewport(point)))
     if (this.magnifier) {
       this.host.paintMagnifier(context, this.magnifier)
     }
@@ -342,13 +405,13 @@ export class CornerEditor {
     }
     this.select(null)
     this.move(index, this.host.viewportToFrame(point))
-    this.announce(index)
+    this.settle(index)
     return true
   }
 
   /** Where zoom keeps its place: the selected handle, or else the focused one, in the viewport. `null` for neither. */
   anchor(): ViewPoint | null {
-    const focused = this.handles.findIndex(handle => handle === document.activeElement)
+    const focused = this.focusedHandle()
     const index = this.selected ?? (focused >= 0
       ? focused
       : null)
@@ -374,6 +437,11 @@ export class CornerEditor {
     }
   }
 
+  /** The index of the handle with the keyboard focus, or -1. */
+  private focusedHandle(): number {
+    return this.handles.findIndex(handle => handle === document.activeElement)
+  }
+
   private position(index: number): Point {
     return this.grips[index]!.position(this.corners, this.host)
   }
@@ -389,6 +457,7 @@ export class CornerEditor {
       this.host.setHint(null)
       return
     }
+    this.touched = true
     const labels = this.host.labels()
     const text = labels.cornerSelected(labels[this.grips[index]!.label])
     this.host.setHint(text)
@@ -401,11 +470,43 @@ export class CornerEditor {
 
   private setCorners(corners: Quad): void {
     this.corners = corners
+    this.endSlide()
     this.update()
     this.host.requestPaint()
   }
 
-  private announce(index: number): void {
+  /** Takes the corners on screen further, once per paint, so their handles and their lines move in the same frame. */
+  private advanceSlide(): void {
+    if (!this.slide) {
+      return
+    }
+    const progress = (performance.now() - this.slide.start) / SLIDE_TIME
+    if (progress < 1) {
+      this.shown = cornersBetween(this.slide.from, this.corners, progress)
+      this.host.requestPaint()
+    }
+    else {
+      this.endSlide()
+    }
+    this.update()
+  }
+
+  private endSlide(): void {
+    this.slide = null
+    this.shown = this.corners
+    this.updateSliding()
+  }
+
+  /** Leaves the handles out of reach of a pointer during a slide, so none slips away from a finger. */
+  private updateSliding(): void {
+    for (const handle of this.handles) {
+      handle.classList.toggle('paperpic-handle-sliding', this.slide !== null)
+    }
+  }
+
+  /** Ends a move of a handle, once it stays. A drag ends when it is let go, so the small shake of a tap reports nothing. */
+  private settle(index: number): void {
+    this.host.selectionMoved()
     const grip = this.grips[index]!
     const labels = this.host.labels()
     const { x, y } = this.position(index)
@@ -441,6 +542,7 @@ export class CornerEditor {
     handle.addEventListener('pointerdown', (event) => {
       // A handle keeps its own drag: the gestures on the viewer would pan the image
       event.stopPropagation()
+      this.touched = true
       handle.setPointerCapture(event.pointerId)
       const { x, y } = this.host.frameToViewport(this.position(index))
       const point = localPoint(event)
@@ -479,12 +581,11 @@ export class CornerEditor {
       if (travelled < TAP_MOVEMENT) {
         // A tap selects the handle, so the small shake of a finger must not move it
         tapped = event.type === 'pointerup'
-        this.corners = before
-        this.update()
+        this.setCorners(before)
       }
       else {
         this.select(null)
-        this.announce(index)
+        this.settle(index)
       }
       this.host.requestPaint()
     }
@@ -513,6 +614,7 @@ export class CornerEditor {
       // The arrow keys move the handle here, instead of panning the image
       event.preventDefault()
       event.stopPropagation()
+      this.touched = true
       if (grip.nudge) {
         this.setCorners(grip.nudge(this.corners, direction, event.shiftKey))
       }
@@ -525,7 +627,7 @@ export class CornerEditor {
         }))
       }
       this.host.reveal(this.position(index))
-      this.announce(index)
+      this.settle(index)
     })
 
     return handle
@@ -549,7 +651,8 @@ export class CornerEditor {
 
 /**
  * The session of a tool that edits corners. Crop, Straighten and Redact differ only in how they constrain and paint the
- * corners, which goes to the editor, and in the edit that their corners mean, which `confirm` returns.
+ * corners, which goes to the editor, and in the edit that their corners mean, which `confirm` returns. Straighten also
+ * says when it can.
  */
 export function cornerSession(editor: CornerEditor, confirm: () => Operation | null): ToolSession {
   return {

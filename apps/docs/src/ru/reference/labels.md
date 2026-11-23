@@ -61,7 +61,13 @@ const pic = new PaperPic(container, {
 | `keepEditing`       | Keep editing                                                     | Кнопка, которая возвращает к редактированию вместо потери изменений                                                  |
 | `loadError`         | The image could not be loaded                                    | Показывается, когда изображение не загрузилось                                                                       |
 | `loading`           | Loading image                                                    | Показывается, пока изображение загружается                                                                           |
+| `paper`             | Paper size                                                       | Название выбора формата бумаги в «Выровнять»                                                                         |
+| `paperA4`           | A4                                                               | Выбирает A4 в «Выровнять»                                                                                            |
+| `paperAuto`         | Auto                                                             | Выбирает автоматические пропорции в «Выровнять»                                                                      |
+| `paperCard`         | Card                                                             | Выбирает формат удостоверения или банковской карты в «Выровнять»                                                     |
+| `paperLetter`       | Letter                                                           | Выбирает US Letter в «Выровнять»                                                                                     |
 | `perspective`       | Straighten                                                       | Кнопка «Выровнять»                                                                                                   |
+| `perspectiveFound`  | Document found. Check its corners                                | Показывается и объявляется, когда «Выровнять» находит документ                                                       |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | Что делать в «Выровнять»                                                                                             |
 | `previewError`      | The changes could not be shown                                   | Показывается, когда изменение не удаётся показать                                                                    |
 | `processing`        | Applying changes                                                 | Показывается, пока идёт применение                                                                                   |

@@ -195,7 +195,7 @@ Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vi
 function openTool(id: ToolId): void
 ```
 
-Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'finish'`), das beim Öffnen Schwarzweiß wählt, wenn das Finish das Original ist. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen in Schwarzweiß und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
+Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'finish'`), das beim Öffnen Schwarzweiß wählt, wenn das Finish das Original ist. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen in Schwarzweiß und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist. Begradigen sucht beim Öffnen das Dokument und setzt seine Ecken darauf, [wenn es eines findet](../guide/tools/straighten#finding-the-document).
 
 Abdecken (`'redact'`) öffnet sich ebenfalls mit Ecken, wie Zuschneiden.
 
@@ -205,7 +205,7 @@ Abdecken (`'redact'`) öffnet sich ebenfalls mit Ecken, wie Zuschneiden.
 function confirmTool(): void
 ```
 
-Schließt das offene Werkzeug und fügt das, was es gewählt hat, zu den Änderungen hinzu, wie `Enter`: die Auswahl von Zuschneiden oder Begradigen, oder die Einstellungen von Anpassen oder Bereinigen, als eine Änderung.
+Schließt das offene Werkzeug und fügt das, was es gewählt hat, zu den Änderungen hinzu, wie `Enter`: die Auswahl von Zuschneiden oder Begradigen, oder die Einstellungen von Anpassen oder Bereinigen, als eine Änderung. In Begradigen tut es nichts, bis der Viewer das Dokument findet oder sich eine Ecke bewegt, und `canConfirm` im [Zustand](./state) sagt, wann es geht.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Ändert die Helligkeit oder den Kontrast, jeweils von -1 bis 1, wobei 0 das Bild lässt, wie es ist. Sie laufen nach den übrigen Änderungen und vor Graustufen. Solange Anpassen offen ist, ändert es, was Anpassen zeigt, und [`confirmTool()`](#confirmtool) behält es als eine Änderung. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug oder in Schwarzweiß: Schwarzweiß vergleicht jedes Pixel mit seiner Umgebung, daher würden Helligkeit und Kontrast sein Ergebnis kaum ändern.
 
 Wirft einen `RangeError`, wenn ein Wert nicht zwischen -1 und 1 liegt.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+Wählt das Papier, dessen Seitenverhältnis das Ergebnis von [Begradigen](../guide/tools/straighten#paper-size) bekommt: `'a4'`, `'letter'`, `'card'` für eine Ausweis- oder Bankkarte, oder `'auto'`, die Voreinstellung, die [`aspectRatio`](./options#aspectratio) nimmt oder sonst schätzt. Hoch- oder Querformat folgt den Ecken. Ohne offenes Begradigen tut es nichts, und jedes Begradigen beginnt mit `'auto'`.
+
+Wirft einen `RangeError`, wenn `size` keine [`PaperSize`](./types#papersize) ist.
 
 ### `setRedaction()`
 

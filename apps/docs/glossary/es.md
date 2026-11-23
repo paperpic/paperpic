@@ -15,6 +15,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | edit, one change in the edit mode             | cambio                |
 | editor                                        | editor                |
 | event                                         | evento                |
+| find, the document in the photo               | encontrar             |
 | finish, of Clean up                           | acabado               |
 | fit, of the image in the viewer               | encajar, encaje       |
 | guide                                         | Guía                  |
@@ -25,6 +26,7 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 | option                                        | opción                |
 | pan, move a zoomed image                      | desplazar             |
 | panel, the controls of an open tool           | panel                 |
+| paper size, of Straighten                     | tamaño de papel       |
 | parent element                                | elemento padre        |
 | playground                                    | Playground            |
 | preview                                       | vista previa          |

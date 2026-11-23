@@ -15,7 +15,7 @@ La foto di un documento di solito ha bisogno di qualche ritocco prima di valere 
 
 Niente cambia l’immagine prima di Applica. Fino ad allora, i cambiamenti sono un elenco di cui il visualizzatore mostra l’anteprima.
 
-In un visualizzatore stretto, la barra di modifica ha due righe: in alto gli strumenti, o il pannello dello strumento aperto, e in basso Annulla a sinistra e Applica, o Fatto, a destra. Da 28rem di larghezza, tutto sta su una riga. In entrambi i casi la barra mantiene la sua altezza quando si apre uno strumento, così l’immagine resta al suo posto. Un punto segna Regola e Pulisci mentre la loro impostazione è in uso.
+In un visualizzatore stretto, la barra di modifica ha due righe: in alto gli strumenti, o il pannello dello strumento aperto, e in basso Annulla a sinistra e Applica, o Fatto, a destra. Da 38rem di larghezza, tutto sta su una riga. In entrambi i casi la barra mantiene la sua altezza quando si apre uno strumento, così l’immagine resta al suo posto. Un punto segna Regola e Pulisci mentre la loro impostazione è in uso.
 
 ## Strumenti
 

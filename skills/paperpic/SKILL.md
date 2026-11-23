@@ -91,20 +91,20 @@ async function upload(blob: Blob) {
 
 ## Common tasks
 
-| Task                                   | How                                                                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Show a document without editing        | `editable: false`. The toolbar then rotates the display only.                                                            |
-| Fix the proportions of known documents | `aspectRatio: 210 / 297` for A4. Straighten gives its result that shape.                                                 |
-| Choose the format of the result        | `output: { type: 'image/jpeg', quality: 0.9 }`                                                                           |
-| Limit the size of the result           | `maxOutputSize: 2000`, the longest side in pixels                                                                        |
-| Offer only some tools                  | `tools: ['crop', 'perspective', 'rotate']`                                                                               |
-| Build your own controls                | `toolbar: false`, then call the methods, such as `edit()` and `apply()`, and show `getState().hint` while a tool is open |
-| Let the user save the image            | `download: true`. The `download` event can save it another way.                                                          |
-| Translate the interface                | `labels: { ... }`, a partial object of texts                                                                             |
-| Bring back the original after an edit  | `reload()`                                                                                                               |
-| Let the wheel scroll a long page       | `wheelZoom: false`                                                                                                       |
+| Task                                   | How                                                                                                                                                                       |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Show a document without editing        | `editable: false`. The toolbar then rotates the display only.                                                                                                             |
+| Fix the proportions of known documents | `aspectRatio: 210 / 297` for A4. Straighten gives its result that shape, unless the user chooses a paper size on its panel.                                               |
+| Choose the format of the result        | `output: { type: 'image/jpeg', quality: 0.9 }`                                                                                                                            |
+| Limit the size of the result           | `maxOutputSize: 2000`, the longest side in pixels                                                                                                                         |
+| Offer only some tools                  | `tools: ['crop', 'perspective', 'rotate']`                                                                                                                                |
+| Build your own controls                | `toolbar: false`, then call the methods, such as `edit()` and `apply()`. While a tool is open, show `getState().hint` and disable your Done while `canConfirm` is `false` |
+| Let the user save the image            | `download: true`. The `download` event can save it another way.                                                                                                           |
+| Translate the interface                | `labels: { ... }`, a partial object of texts                                                                                                                              |
+| Bring back the original after an edit  | `reload()`                                                                                                                                                                |
+| Let the wheel scroll a long page       | `wheelZoom: false`                                                                                                                                                        |
 
-The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `'adjust'`, `'finish'` (Clean up) and `'redact'` (Redact, which covers an area with black or white, chosen with `setRedaction({ color })`). `tools` only chooses the buttons of the edit bar: the methods work with every tool.
+The tool ids are `'crop'`, `'perspective'` (Straighten, which finds the document as it opens and places the corners on it, and whose paper size the user picks on its panel and `setPaper({ size })` sets while it is open), `'rotate'`, `'flip'`, `'adjust'`, `'finish'` (Clean up) and `'redact'` (Redact, which covers an area with black or white, chosen with `setRedaction({ color })`). `tools` only chooses the buttons of the edit bar: the methods work with every tool.
 
 ## Behavior to plan for
 
@@ -112,8 +112,9 @@ The tool ids are `'crop'`, `'perspective'` (Straighten), `'rotate'`, `'flip'`, `
 - **The same `src` keeps the edit.** Passing the value again does not reload the image, so the result of Apply stays on display. Call `reload()` for the original. A new `src` while editing discards the edits.
 - **The result format follows the source.** It keeps JPEG, PNG or WebP, read from the extension of the URL or the type of the `File` or `Blob`. A URL without an extension, or any other format, gives PNG. An image in black and white is PNG, to keep the edges of the letters sharp, unless `output.type` says otherwise. The saved filename takes the matching extension.
 - **Props compare by contents.** An object or array with the same contents as before, such as an inline `tools` or `output`, changes nothing. A function is new on every render, so build `labels` that hold functions, such as `zoomLevel`, with `computed` in Vue, or outside the component or with `useMemo` in React. Inline event handlers are fine in both.
-- **`change` does not report everything.** The user and the methods emit it. `setOptions()`, prop changes and a pan never do. A loaded image comes with `load`, and a failed load or Apply with `error`, so read `getState()` again on those to keep controls in step.
-- **Options have ranges.** `softness` and `output.quality` go from 0 to 1, `aspectRatio` and `maxOutputSize` are positive, and `output.type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`. Anything else throws a `RangeError` that names the option, from the constructor, `setOptions()` or the props. `setFinish()`, `setAdjustments()` and `setRedaction()` throw one too for a value out of range, and `zoomTo()` for `NaN`, which an empty number field gives.
+- **`change` does not report everything.** The user and the methods emit it, and so does Straighten when it finds the document. `setOptions()`, prop changes and a pan never do. A loaded image comes with `load`, and a failed load or Apply with `error`, so read `getState()` again on those to keep controls in step.
+- **Options have ranges.** `softness` and `output.quality` go from 0 to 1, `aspectRatio` and `maxOutputSize` are positive, and `output.type` is `'image/jpeg'`, `'image/png'` or `'image/webp'`. Anything else throws a `RangeError` that names the option, from the constructor, `setOptions()` or the props. `setFinish()`, `setAdjustments()`, `setPaper()` and `setRedaction()` throw one too for a value out of range, and `zoomTo()` for `NaN`, which an empty number field gives.
+- **Straighten waits for its corners.** It looks for the document as it opens, and `confirmTool()` does nothing until it finds one or the user moves a corner, so a script that opens it and confirms at once leaves no edit. Listen to `change` for `canConfirm`. In a photo where it finds none, only the user can place the corners, so never wait for it without them. Do not add a detection library of your own.
 - **Redact hides only in the result.** Its areas become solid pixels when Apply runs. Until then the source is intact, and Undo brings back what an area covers, so upload the `blob` of `apply`, never the original `src`.
 - **Errors arrive as an event.** `error` carries `{ error, phase }`. `phase` is `'load'` when the image fails to load, `'preview'` when an edit cannot be shown, and `'apply'` when Apply fails. After a failed preview or Apply, the edit stays open. `apply()` resolves even when Apply fails, so listen to `error` instead of catching it.
 - **Server-side rendering works with the components.** In Nuxt or Next.js, they render an empty element on the server and create the viewer in the browser. The React component is already marked `'use client'`.

@@ -56,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, canConfirm, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +75,7 @@ function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: Pap
   }
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
+  document.querySelector<HTMLButtonElement>('[data-action="confirmTool"]')!.disabled = !canConfirm
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
   document.querySelector('#hint')!.textContent = hint ?? ''
 }
@@ -120,7 +121,7 @@ function refresh() {
       <p v-if="state.hint">
         {{ state.hint }}
       </p>
-      <button type="button" @click="viewer?.confirmTool()">
+      <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
         Готово
       </button>
       <button type="button" @click="viewer?.cancelTool()">
@@ -186,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" onClick={() => viewer().confirmTool()}>Готово</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>Готово</button>
               <button type="button" onClick={() => viewer().cancelTool()}>Отменить этот инструмент</button>
             </>
           )}
@@ -406,7 +407,8 @@ export function CleanUpRuler() {
 ## Примечания
 
 - С `toolbar: false` скрыта и встроенная панель редактирования, поэтому «Обрезать» и «Выровнять» показывают маркеры, но не кнопку «Готово». Ваш интерфейс подтверждает их через [`confirmTool()`](../reference/methods#confirmtool), как `Enter`. Чтобы закрыть их без изменений, вызовите [`cancelTool()`](../reference/methods#canceltool), как это делает `Esc`.
-- Пока открыт «Обрезать» или «Выровнять», `hint` в состоянии говорит, что делать, например «Drag the corners», как встроенная панель редактирования. Покажите его, потому что с `toolbar: false` больше ничто его не показывает. Новая подсказка, например после нажатия на угол, приходит с `change`.
+- Пока открыт «Обрезать» или «Выровнять», `hint` в состоянии говорит, что делать, например «Drag the corners», как встроенная панель редактирования. Покажите его, потому что с `toolbar: false` больше ничто его не показывает. Новая подсказка, например после нажатия на угол или когда «Выровнять» находит документ, приходит с `change`.
+- `canConfirm` в состоянии говорит, может ли `confirmTool()` сохранить то, что показывает инструмент. «Выровнять» ждёт, пока не найдёт документ или пользователь не сдвинет угол, поэтому до этого отключите вашу кнопку «Готово».
 - Ваши собственные ползунки могут напрямую вызывать [`setFinish()`](../reference/methods#setfinish) и [`setAdjustments()`](../reference/methods#setadjustments), и каждый вызов добавляет изменение. Чтобы всё перетаскивание дало одно изменение, сначала откройте инструмент через [`openTool()`](../reference/methods#opentool): тогда те же методы меняют то, что он показывает, а `confirmTool()` сохраняет это.
 - [`cancel()`](../reference/methods#cancel) не спрашивает перед отменой изменений. Если они есть, спросите пользователя сами, например когда `canApply` равно true.
 - Сочетания клавиш продолжают работать, когда фокус на просмотрщике. См. [Доступность](../guide/accessibility).

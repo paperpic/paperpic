@@ -56,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, canConfirm, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +75,7 @@ function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: Pap
   }
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
+  document.querySelector<HTMLButtonElement>('[data-action="confirmTool"]')!.disabled = !canConfirm
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
   document.querySelector('#hint')!.textContent = hint ?? ''
 }
@@ -120,7 +121,7 @@ function refresh() {
       <p v-if="state.hint">
         {{ state.hint }}
       </p>
-      <button type="button" @click="viewer?.confirmTool()">
+      <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
         완료
       </button>
       <button type="button" @click="viewer?.cancelTool()">
@@ -186,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" onClick={() => viewer().confirmTool()}>완료</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>완료</button>
               <button type="button" onClick={() => viewer().cancelTool()}>이 도구 취소</button>
             </>
           )}
@@ -406,7 +407,8 @@ export function CleanUpRuler() {
 ## 참고
 
 - `toolbar: false`에서는 기본 편집 바도 숨겨지므로, ‘자르기’와 ‘기울기 보정’은 핸들은 보여 주지만 ‘완료’ 버튼은 없습니다. 여러분의 인터페이스에서 `Enter`처럼 [`confirmTool()`](../reference/methods#confirmtool)로 확정하세요. 변경 없이 닫으려면 `Esc`처럼 [`cancelTool()`](../reference/methods#canceltool)을 호출하세요.
-- ‘자르기’나 ‘기울기 보정’이 열려 있는 동안 상태의 `hint`는 내장 편집 바처럼 할 일을 알려 줍니다. 예: ‘Drag the corners’. `toolbar: false`에서는 달리 보여 주는 곳이 없으므로 표시하세요. 모서리를 누른 뒤처럼 새 힌트는 `change`로 옵니다.
+- ‘자르기’나 ‘기울기 보정’이 열려 있는 동안 상태의 `hint`는 내장 편집 바처럼 할 일을 알려 줍니다. 예: ‘Drag the corners’. `toolbar: false`에서는 달리 보여 주는 곳이 없으므로 표시하세요. 모서리를 누른 뒤나 ‘기울기 보정’이 문서를 찾았을 때처럼 새 힌트는 `change`로 옵니다.
+- 상태의 `canConfirm`은 `confirmTool()`이 도구가 보여 주는 내용을 남길 수 있는지 알려 줍니다. ‘기울기 보정’은 문서를 찾거나 사용자가 모서리를 움직일 때까지 기다리므로, 그때까지 여러분의 ‘완료’ 버튼을 비활성화하세요.
 - 여러분의 슬라이더는 [`setFinish()`](../reference/methods#setfinish)와 [`setAdjustments()`](../reference/methods#setadjustments)를 직접 호출할 수 있으며, 호출할 때마다 변경이 하나 더해집니다. 끌기 전체를 변경 하나로 남기려면 먼저 [`openTool()`](../reference/methods#opentool)로 도구를 여세요. 그러면 같은 메서드가 도구에 보이는 내용을 바꾸고, `confirmTool()`이 이를 남깁니다.
 - [`cancel()`](../reference/methods#cancel)은 변경을 버리기 전에 묻지 않습니다. `canApply`가 true일 때처럼 변경이 있으면 사용자에게 먼저 물어보세요.
 - 뷰어에 포커스가 있으면 키보드 단축키는 계속 동작합니다. [접근성](../guide/accessibility)을 참고하세요.

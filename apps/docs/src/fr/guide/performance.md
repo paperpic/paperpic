@@ -9,7 +9,7 @@ Les photos de téléphone font 12 mégapixels ou plus, et les modifier demande u
 
 ## Un Web Worker fait le travail
 
-Le noir et blanc et Redresser prennent environ une seconde et demie sur une photo de 12 mégapixels avec un téléphone récent, comme le montrent les [temps mesurés](#measurements). Sur le thread principal, la page se figerait aussi longtemps. PaperPic les exécute donc dans un Web Worker, et la page continue de répondre pendant Appliquer.
+Le noir et blanc et Redresser prennent environ une seconde et demie sur une photo de 12 mégapixels avec un téléphone récent, comme le montrent les [temps mesurés](#measurements). Sur le thread principal, la page se figerait aussi longtemps. PaperPic les exécute donc dans un Web Worker, et la page continue de répondre pendant Appliquer. La recherche du document s’y fait aussi.
 
 Le worker est livré dans le paquet et démarre avec le standard `new Worker(new URL(…, import.meta.url))`, que des bundlers comme Vite et webpack 5 prennent en charge seuls, sans configuration. Si le worker ne peut pas démarrer, la modification s’exécute sur le thread principal : elle fonctionne toujours, mais la page peut se figer un instant avec de grandes images.
 

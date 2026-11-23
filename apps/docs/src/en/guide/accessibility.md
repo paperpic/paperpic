@@ -38,7 +38,7 @@ On macOS, `Cmd` works like `Ctrl`. With the focus on a button, `Enter` presses t
 
 - The image has the role of an image, named by `alt`. Without `alt`, screen readers skip it.
 - The toolbar and the edit bar have their own names, such as "Image controls" and "Editing controls".
-- An announcement reports what the user cannot see by the focus alone: the loading of the image, the zoom level, the start of the edit mode, a selected corner and the position of a moved corner, the value of a ruler, the result of Apply, and any failure.
+- An announcement reports what the user cannot see by the focus alone: the loading of the image, the zoom level, the start of the edit mode, a document that Straighten finds, a selected corner and the position of a moved corner, the value of a ruler, the result of Apply, and any failure.
 - The finishes of Clean up are buttons that say whether they are pressed. A tool in use, which a dot marks on screen, is described as "In use". In black and white, Adjust is described with the reason it is disabled.
 
 ## Touch screens
@@ -50,6 +50,6 @@ On macOS, `Cmd` works like `Ctrl`. With the focus on a button, `Enter` presses t
 
 ## Preferences
 
-- **Reduced motion.** With `prefers-reduced-motion: reduce`, the buttons change state without transitions.
+- **Reduced motion.** With `prefers-reduced-motion: reduce`, the buttons change state without transitions, and the corners go at once to the document that Straighten finds, without sliding.
 - **Forced colors.** In Windows high contrast and other forced color modes, pressed buttons and the main actions keep a visible outline.
 - **Dark mode.** The colors follow the `color-scheme` of your page, which can follow the system. See [Styling](./styling#dark-mode).

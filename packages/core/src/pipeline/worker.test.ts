@@ -1,5 +1,7 @@
 import type { WorkerRequest, WorkerResponse } from './worker'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
+import { rectangleCorners } from '../processing/homography'
+import { sheetPhoto } from '../test/photos'
 
 interface WorkerScope {
   onmessage: (event: { data: WorkerRequest }) => void
@@ -74,6 +76,40 @@ describe('processing worker', () => {
       prepared: { width: 8, height: 8 },
     })
     expect(transfer).toHaveLength(1)
+  })
+
+  it('looks for the document after the steps, and gives its corners', () => {
+    const [response, transfer] = send({
+      id: 6,
+      operation: 'detect',
+      source: sheetPhoto({ width: 240, height: 180 }, rectangleCorners(60, 30, 180, 150)),
+      steps: [
+        {
+          type: 'crop',
+          rect: {
+            x: 0,
+            y: 0,
+            width: 1,
+            height: 0.95,
+          },
+        },
+      ],
+    })
+    const { corners } = response as Extract<WorkerResponse, { corners: unknown }>
+    expect(corners![0].x).toBeCloseTo(0.25, 1)
+    expect(corners![2].y).toBeCloseTo(150 / 171, 1)
+    expect(response).toMatchObject({ id: 6 })
+    expect(transfer).toEqual([])
+  })
+
+  it('gives no corners when there is no document', () => {
+    const [response] = send({
+      id: 7,
+      operation: 'detect',
+      source: grayImage(32),
+      steps: [],
+    })
+    expect(response).toMatchObject({ id: 7, corners: null })
   })
 
   it('transfers the result of the pipeline, with the time it took', () => {

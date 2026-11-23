@@ -26,7 +26,7 @@ features:
     link: /it/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Raddrizza e ritaglia"
-    details: "Trascina quattro angoli per trasformare una foto scattata di sbieco in una pagina piatta, con le proporzioni stimate o fissate."
+    details: "Trasforma una foto scattata di sbieco in una pagina piatta, con le proporzioni stimate o fissate. Il visualizzatore trova gli angoli, e puoi trascinarli."
     link: /it/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Pulisci"

@@ -56,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, canConfirm, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +75,7 @@ function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: Pap
   }
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
+  document.querySelector<HTMLButtonElement>('[data-action="confirmTool"]')!.disabled = !canConfirm
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
   document.querySelector('#hint')!.textContent = hint ?? ''
 }
@@ -120,7 +121,7 @@ function refresh() {
       <p v-if="state.hint">
         {{ state.hint }}
       </p>
-      <button type="button" @click="viewer?.confirmTool()">
+      <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
         Hecho
       </button>
       <button type="button" @click="viewer?.cancelTool()">
@@ -186,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" onClick={() => viewer().confirmTool()}>Hecho</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>Hecho</button>
               <button type="button" onClick={() => viewer().cancelTool()}>Cancelar esta herramienta</button>
             </>
           )}
@@ -406,7 +407,8 @@ export function CleanUpRuler() {
 ## Notas
 
 - Con `toolbar: false` también se oculta la barra de edición integrada, así que Recortar y Enderezar muestran sus tiradores pero no el botón Hecho. Tu interfaz los confirma con [`confirmTool()`](../reference/methods#confirmtool), como hace `Enter`. Para cerrarlas sin sus cambios, llama a [`cancelTool()`](../reference/methods#canceltool), como hace `Esc`.
-- Mientras Recortar o Enderezar está abierta, `hint` en el estado dice qué hacer, por ejemplo "Drag the corners", como hace la barra de edición integrada. Muéstralo, porque con `toolbar: false` nada más lo muestra. Un hint nuevo, como al pulsar una esquina, llega con `change`.
+- Mientras Recortar o Enderezar está abierta, `hint` en el estado dice qué hacer, por ejemplo "Drag the corners", como hace la barra de edición integrada. Muéstralo, porque con `toolbar: false` nada más lo muestra. Un hint nuevo, como al pulsar una esquina o cuando Enderezar encuentra el documento, llega con `change`.
+- `canConfirm` en el estado dice si `confirmTool()` puede conservar lo que muestra la herramienta. Enderezar espera a encontrar el documento o a que el usuario mueva una esquina, así que desactiva tu botón Hecho hasta entonces.
 - Tus propios controles deslizantes pueden llamar directamente a [`setFinish()`](../reference/methods#setfinish) y [`setAdjustments()`](../reference/methods#setadjustments), lo que añade un cambio por cada llamada. Para dejar un solo cambio por todo un arrastre, abre antes la herramienta con [`openTool()`](../reference/methods#opentool): los mismos métodos cambian entonces lo que muestra, y `confirmTool()` lo conserva.
 - [`cancel()`](../reference/methods#cancel) no pregunta antes de descartar los cambios. Pregunta tú al usuario si los hay, por ejemplo cuando `canApply` es verdadero.
 - Los atajos de teclado siguen funcionando con el foco en el visor. Consulta [Accesibilidad](../guide/accessibility).

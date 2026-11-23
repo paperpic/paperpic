@@ -11,7 +11,7 @@ Vue 3 component to view and edit document images with PaperPic.
 ## Features
 
 - **Nothing leaves the browser**: no server and no requests of its own, so the image stays on the device until your code sends it
-- **Straighten** photos taken at an angle, **crop**, **rotate** in 90° steps and **flip**
+- **Straighten** photos taken at an angle, whose document the viewer finds, to the proportions of A4, Letter or a card, **crop**, **rotate** in 90° steps and **flip**
 - **Clean up** into gray, or into crisp black and white without shadows, and adjust **brightness and contrast**
 - **Redact** what must not be shared with solid black or white, written into the pixels of the result
 - **Undo and redo** every edit until you apply, then get the result as a `Blob`

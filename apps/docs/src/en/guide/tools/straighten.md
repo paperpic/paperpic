@@ -11,15 +11,37 @@ A document photographed at an angle looks like a trapezoid: the far edge is shor
 
 ## Use it
 
-1. Press Edit, then Straighten. A handle appears for each corner.
-2. Drag each handle onto a corner of the document. Zoom in with the buttons of its panel to place them precisely.
-3. Press Done, or `Enter`. The viewer shows the page flat, cut to the four corners.
+1. Press Edit, then Straighten. A handle appears for each corner, on the document if the viewer [finds it](#finding-the-document).
+2. Drag each handle that is off onto its corner of the document. Zoom in with the buttons of its panel to place them precisely.
+3. If you know the paper, choose its [size](#paper-size): A4, Letter or Card. Auto estimates it.
+4. Press Done, or `Enter`. The viewer shows the page flat, cut to the four corners. Done waits until the viewer finds the document or you move a corner.
 
 The handles work as in [Crop](./crop): a magnifier on touch screens, press and tap instead of dragging, and Tab and the arrow keys on the keyboard. The four corners always keep a convex shape, so the page can always be flattened.
 
 Straighten shows the photo without the black and white of [Clean up](./clean-up), because the edges of the paper are hard to find on a cleaned up page. Black and white comes back after Done, and gray stays.
 
-## Proportions
+## Finding the document {#finding-the-document}
+
+As Straighten opens, the viewer looks for the document in the photo and places the four corners on it, so Done is ready at once. The search runs in the browser in a fraction of a second, and it changes nothing until Done.
+
+The viewer proposes only what it is sure enough of. If the paper blends into the table, or the photo has no document, the corners start inside the image and wait for the user. A corner that the user has already touched never moves on its own.
+
+## Paper size {#paper-size}
+
+The panel of Straighten offers paper sizes, which give the result the exact proportions of that paper:
+
+| Choice | Proportions                                                                               |
+| ------ | ----------------------------------------------------------------------------------------- |
+| Auto   | [`aspectRatio`](../../reference/options#aspectratio), or else an [estimate](#proportions) |
+| A4     | 210 × 297 mm, which A3 and A5 share                                                       |
+| Letter | 8.5 × 11 in, US Letter                                                                    |
+| Card   | 85.6 × 53.98 mm, an ID or a bank card                                                     |
+
+A size sets only the proportions: it does not move the corners. The paper stands or lies as the corners do, so there is no orientation to choose. A size that is not the one of the document distorts it, so Straighten starts in Auto each time it opens.
+
+With the four corners on the corners of the image, Auto changes nothing, and a size gives the whole image the proportions of that paper.
+
+## Proportions {#proportions}
 
 A photo does not tell the real shape of the page, so Straighten estimates its proportions from where the corners sit in the photo. The estimate suits photos taken from a normal distance, but it cannot be exact.
 
@@ -72,7 +94,10 @@ Straighten opens with [`openTool('perspective')`](../../reference/methods#opento
 ```ts
 pic.edit()
 pic.openTool('perspective')
+pic.setPaper({ size: 'a4' })
 
 // Later, from a button of your own
 pic.confirmTool()
 ```
+
+Choose the paper size with [`setPaper()`](../../reference/methods#setpaper) while the tool is open. `confirmTool()` waits until the viewer finds the document or a corner moves, and the `canConfirm` of the [state](../../reference/state) says when it can.

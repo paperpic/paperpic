@@ -61,7 +61,13 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | `keepEditing`       | Keep editing                                                     | O botão que volta à edição em vez de perder as alterações                                                       |
 | `loadError`         | The image could not be loaded                                    | Mostrado quando a imagem não carrega                                                                            |
 | `loading`           | Loading image                                                    | Mostrado enquanto a imagem carrega                                                                              |
+| `paper`             | Paper size                                                       | O nome da escolha do tamanho do papel, em Endireitar                                                            |
+| `paperA4`           | A4                                                               | Escolhe A4 em Endireitar                                                                                        |
+| `paperAuto`         | Auto                                                             | Escolhe as proporções automáticas em Endireitar                                                                 |
+| `paperCard`         | Card                                                             | Escolhe o tamanho de um documento de identidade ou cartão bancário em Endireitar                                |
+| `paperLetter`       | Letter                                                           | Escolhe Carta (EUA) em Endireitar                                                                               |
 | `perspective`       | Straighten                                                       | O botão Endireitar                                                                                              |
+| `perspectiveFound`  | Document found. Check its corners                                | Mostrado e anunciado quando Endireitar encontra o documento                                                     |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | O que fazer em Endireitar                                                                                       |
 | `previewError`      | The changes could not be shown                                   | Mostrado quando uma alteração não pode ser mostrada                                                             |
 | `processing`        | Applying changes                                                 | Mostrado enquanto Aplicar está em andamento                                                                     |
