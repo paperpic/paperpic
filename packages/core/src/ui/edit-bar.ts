@@ -157,7 +157,6 @@ export class EditBar {
   private activeTool: Tool | null = null
   /** The tone that the ruler of Adjust changes. */
   private adjustment: AdjustmentName = 'brightness'
-  /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
   private canApply = false
   private busy = false
 
