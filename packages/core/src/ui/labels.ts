@@ -68,6 +68,16 @@ export interface PaperPicLabels {
   /** Shown when the image cannot be loaded. */
   loadError: string
   loading: string
+  /** Names the choice of paper size in Straighten. */
+  paper: string
+  /** Chooses A4 in Straighten. */
+  paperA4: string
+  /** Chooses the automatic proportions in Straighten. */
+  paperAuto: string
+  /** Chooses the size of an ID or a bank card in Straighten. */
+  paperCard: string
+  /** Chooses US Letter in Straighten. */
+  paperLetter: string
   perspective: string
   /** What to do in the perspective tool. */
   perspectiveHint: string
@@ -148,6 +158,11 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   keepEditing: 'Keep editing',
   loadError: 'The image could not be loaded',
   loading: 'Loading image',
+  paper: 'Paper size',
+  paperA4: 'A4',
+  paperAuto: 'Auto',
+  paperCard: 'Card',
+  paperLetter: 'Letter',
   perspective: 'Straighten',
   perspectiveHint: 'Drag each corner to a corner of the document',
   previewError: 'The changes could not be shown',

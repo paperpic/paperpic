@@ -19,6 +19,8 @@ const INITIAL_INSET = 0.1
 /** The smallest selection, in image pixels. */
 const MIN_SIDE = 16
 const SHIFT_STEP = 10
+/** How far a corner can be from its start and still be there, in image pixels, because moves round through the zoom. */
+const START_TOLERANCE = 0.01
 const REVEAL_DIRECTIONS: Record<string, ViewPoint> = {
   ArrowLeft: { x: -1, y: 0 },
   ArrowRight: { x: 1, y: 0 },
@@ -266,6 +268,7 @@ export class CornerEditor {
   private readonly handles: HTMLButtonElement[]
   /** What the keys do, by the label that says it, which screen readers hear on each handle. The hint on screen speaks to a pointer. */
   private readonly descriptions = new Map<TextLabel, HTMLElement>()
+  private readonly initial: Quad
   private corners: Quad
   private magnifier: Magnifier | null = null
   /** The handle that the next tap on the image moves. */
@@ -280,6 +283,7 @@ export class CornerEditor {
     under?: readonly Grip[]
   } = {}) {
     this.host = host
+    this.initial = corners
     this.corners = corners
     this.draw = draw
     this.grips = [
@@ -304,6 +308,14 @@ export class CornerEditor {
   /** The corners, in pixels of the frame. */
   get points(): Quad {
     return this.corners
+  }
+
+  /** Whether a corner is off the place where it started. */
+  get moved(): boolean {
+    return this.corners.some(({ x, y }, index) => {
+      const start = this.initial[index]!
+      return Math.hypot(x - start.x, y - start.y) > START_TOLERANCE
+    })
   }
 
   /** Takes the keyboard focus on the first corner, without scrolling the page or the viewer. */
@@ -342,7 +354,7 @@ export class CornerEditor {
     }
     this.select(null)
     this.move(index, this.host.viewportToFrame(point))
-    this.announce(index)
+    this.settle(index)
     return true
   }
 
@@ -405,7 +417,9 @@ export class CornerEditor {
     this.host.requestPaint()
   }
 
-  private announce(index: number): void {
+  /** Ends a move of a handle, once it stays. A drag ends when it is let go, so the small shake of a tap reports nothing. */
+  private settle(index: number): void {
+    this.host.selectionMoved()
     const grip = this.grips[index]!
     const labels = this.host.labels()
     const { x, y } = this.position(index)
@@ -484,7 +498,7 @@ export class CornerEditor {
       }
       else {
         this.select(null)
-        this.announce(index)
+        this.settle(index)
       }
       this.host.requestPaint()
     }
@@ -525,7 +539,7 @@ export class CornerEditor {
         }))
       }
       this.host.reveal(this.position(index))
-      this.announce(index)
+      this.settle(index)
     })
 
     return handle
@@ -549,7 +563,8 @@ export class CornerEditor {
 
 /**
  * The session of a tool that edits corners. Crop, Straighten and Redact differ only in how they constrain and paint the
- * corners, which goes to the editor, and in the edit that their corners mean, which `confirm` returns.
+ * corners, which goes to the editor, and in the edit that their corners mean, which `confirm` returns. Straighten also
+ * says when it can.
  */
 export function cornerSession(editor: CornerEditor, confirm: () => Operation | null): ToolSession {
   return {

@@ -23,6 +23,7 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 | option                                        | опция                           |
 | pan, move a zoomed image                      | перемещать                      |
 | panel, the controls of an open tool           | элементы управления инструмента |
+| paper size, of Straighten                     | формат бумаги                   |
 | parent element                                | родительский элемент            |
 | playground                                    | Песочница                       |
 | preview                                       | предпросмотр                    |

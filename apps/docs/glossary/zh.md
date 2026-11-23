@@ -23,6 +23,7 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 | option                                        | 选项       |
 | pan, move a zoomed image                      | 平移       |
 | panel, the controls of an open tool           | 面板       |
+| paper size, of Straighten                     | 纸张尺寸   |
 | parent element                                | 父元素     |
 | playground                                    | 演练场     |
 | preview                                       | 预览       |

@@ -23,6 +23,7 @@ Use these words in the German docs, so that each idea has one name on every page
 | option                                        | Option             |
 | pan, move a zoomed image                      | verschieben        |
 | panel, the controls of an open tool           | Bedienfeld         |
+| paper size, of Straighten                     | Papierformat       |
 | parent element                                | Elternelement      |
 | playground                                    | Playground         |
 | preview                                       | Vorschau           |

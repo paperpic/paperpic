@@ -1,5 +1,6 @@
 import type { AdjustSetting, FinishSetting, Operation } from '../pipeline/operations'
 import type { PhotoFrame } from '../pipeline/photo-frame'
+import type { PaperSize } from '../processing/paper'
 import type { RedactColor } from '../processing/redact'
 import type { Point, Size } from '../processing/types'
 import type { Magnifier } from '../render/magnifier'
@@ -43,6 +44,8 @@ export interface ToolHost {
   layer: HTMLElement
   /** Paints a magnified part of the image. */
   paintMagnifier: (context: CanvasRenderingContext2D, magnifier: Magnifier) => void
+  /** The paper that Straighten gives its result the proportions of. */
+  paperSize: () => PaperSize
   /** Where the image on display sits in the photo it comes from. */
   photoFrame: () => PhotoFrame
   /** The color that Redact covers with. */
@@ -50,6 +53,8 @@ export interface ToolHost {
   requestPaint: () => void
   /** Moves the image, if it can, until a point of the frame is on screen. */
   reveal: (point: Point) => void
+  /** The user finished moving the selection, so Done may have become available or not. */
+  selectionMoved: () => void
   /** Replaces the hint of the tool in the edit bar, or brings it back with `null`. */
   setHint: (text: string | null) => void
   viewportToFrame: (point: ViewPoint) => Point
@@ -59,6 +64,8 @@ export interface ToolHost {
 export interface ToolSession {
   /** The point of the viewport that the zoom buttons keep in place, such as the corner the user is placing, or `null` for the center. */
   anchor?: () => ViewPoint | null
+  /** Whether Done can keep the selection. Without it, Done always can. */
+  canConfirm?: () => boolean
   /** The edit the user chose, or `null` if it changes nothing. */
   confirm: () => Operation | null
   deactivate: () => void

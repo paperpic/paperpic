@@ -24,6 +24,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | option                                        | opção                |
 | pan, move a zoomed image                      | mover                |
 | panel, the controls of an open tool           | painel               |
+| paper size, of Straighten                     | tamanho do papel     |
 | parent element                                | elemento pai         |
 | playground                                    | Playground           |
 | preview                                       | pré-visualização     |

@@ -11,8 +11,6 @@ const props = defineProps<{
   attachLabel: string
   cutCornerLabel: string
   downloadLabel: string
-  estimatedLabel: string
-  letterLabel: string
   optionsLabel: string
   photoLabel: string
   receiptLabel: string
@@ -28,23 +26,6 @@ const download = shallowRef(false)
 const softness = shallowRef(0.25)
 // The slider shows its value while it moves, and changes the option when it stops
 const softnessPreview = shallowRef(softness.value)
-
-/** Common document proportions, as width divided by height. An empty value lets straightening estimate them. */
-const aspectRatios = computed(() => [
-  { name: props.estimatedLabel, value: '' },
-  {
-    name: 'A4',
-    value: String(210 / 297),
-  },
-  {
-    name: props.letterLabel,
-    value: String(8.5 / 11),
-  },
-])
-const aspectRatio = shallowRef('')
-const aspectRatioValue = computed(() => aspectRatio.value === ''
-  ? undefined
-  : Number(aspectRatio.value))
 
 /** Every tool, in the order of the edit bar, which the chosen ones keep whatever order they are checked in. */
 const allTools: ToolId[] = [
@@ -182,14 +163,6 @@ onBeforeUnmount(() => setResult(null))
           </span>
         </div>
         <label class="field">
-          <code>aspectRatio</code>
-          <select v-model="aspectRatio" class="select">
-            <option v-for="ratio in aspectRatios" :key="ratio.value" :value="ratio.value">
-              {{ ratio.name }}
-            </option>
-          </select>
-        </label>
-        <label class="field">
           <code>softness</code>
           <span class="range">
             <input v-model.lazy.number="softness" type="range" min="0" max="1" step="0.05" @input="softnessPreview = ($event.target as HTMLInputElement).valueAsNumber">
@@ -220,7 +193,6 @@ onBeforeUnmount(() => setResult(null))
     <div class="stage">
       <PaperPic
         :src :alt :labels :editable :download :softness :tools :output
-        :aspect-ratio="aspectRatioValue"
         @change="onChange" @apply="showResult"
       />
     </div>

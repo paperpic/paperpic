@@ -222,10 +222,12 @@ describe('paperPic', () => {
       canUndo: false,
       canRedo: false,
       canApply: false,
+      canConfirm: false,
       busy: false,
       activeTool: null,
       finish: { mode: 'original', sensitivity: 0.5 },
       adjustments: { brightness: 0, contrast: 0 },
+      paper: { size: 'auto' },
       redaction: { color: 'black' },
     })
   })

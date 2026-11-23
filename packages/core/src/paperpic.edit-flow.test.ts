@@ -773,10 +773,82 @@ describe('editing', () => {
       expect(releasePreview).toHaveBeenCalled()
     })
 
+    const moveCorner = (key = 'ArrowRight') => handles()[0]!.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
+
+    it('waits in Straighten until a corner moves, and reports when Done becomes available', () => {
+      expect(pic.getState().canConfirm).toBe(false)
+      pic.openTool('perspective')
+      expect(pic.getState().canConfirm).toBe(false)
+      expect(button('Done').getAttribute('aria-disabled')).toBe('true')
+
+      pic.confirmTool()
+      expect(pic.getState()).toMatchObject({ activeTool: 'perspective', canUndo: false })
+      expect(container.textContent).toContain('Drag each corner to a corner of the document')
+
+      onChange.mockClear()
+      moveCorner()
+      expect(onChange).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ canConfirm: true }))
+      expect(button('Done').getAttribute('aria-disabled')).toBe('false')
+      moveCorner()
+      expect(onChange).toHaveBeenCalledOnce()
+
+      pic.confirmTool()
+      expect(pic.getState()).toMatchObject({ activeTool: null, canConfirm: false, canUndo: true })
+    })
+
+    it.each(['crop', 'redact', 'adjust', 'finish'] as const)('never makes Done wait in %s', (id) => {
+      pic.openTool(id)
+      expect(pic.getState().canConfirm).toBe(true)
+    })
+
+    it('gives the result of Straighten the paper size on its panel, over the proportions the consumer knows', async () => {
+      pic.setOptions({ aspectRatio: 0.5 })
+      pic.openTool('perspective')
+      bar().querySelector<HTMLButtonElement>('[data-paperpic-control="paperA4"]')!.click()
+      expect(pic.getState().paper).toEqual({ size: 'a4' })
+      expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({
+        paper: { size: 'a4' },
+      }))
+      // A paper size alone says nothing about where the document is
+      expect(pic.getState().canConfirm).toBe(false)
+      moveCorner()
+      pic.confirmTool()
+
+      const [, steps] = mocks.renderPreview.mock.calls[0]!
+      expect(steps[0].type).toBe('perspective')
+      expect(steps[0].aspectRatio).toBeCloseTo(297 / 210)
+    })
+
+    it('starts in the automatic proportions each time Straighten opens', () => {
+      pic.openTool('perspective')
+      pic.setPaper({ size: 'card' })
+      pic.cancelTool()
+      expect(pic.getState().paper).toEqual({ size: 'auto' })
+      pic.openTool('perspective')
+      expect(pic.getState().paper).toEqual({ size: 'auto' })
+    })
+
+    it('ignores a paper size out of Straighten or already in use, and rejects one it does not know', () => {
+      onChange.mockClear()
+      pic.setPaper({ size: 'a4' })
+      expect(pic.getState().paper).toEqual({ size: 'auto' })
+      pic.openTool('crop')
+      onChange.mockClear()
+      pic.setPaper({ size: 'a4' })
+      pic.cancelTool()
+      pic.openTool('perspective')
+      onChange.mockClear()
+      pic.setPaper({ size: 'auto' })
+      pic.setPaper({})
+      expect(onChange).not.toHaveBeenCalled()
+      expect(() => pic.setPaper({ size: 'a3' as 'a4' })).toThrow(/size must be 'auto', 'a4', 'letter', 'card', got a3/)
+    })
+
     it('straightens with the proportions the consumer knows, and exports them', async () => {
       pic.setOptions({ aspectRatio: 0.5 })
       pic.openTool('perspective')
       expect(pic.getState().activeTool).toBe('perspective')
+      moveCorner()
       button('Done').click()
       await flush()
 

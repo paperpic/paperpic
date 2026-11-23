@@ -10,12 +10,14 @@ const state: EditBarState = {
   adjustments: { brightness: 0, contrast: 0 },
   busy: false,
   canApply: false,
+  canConfirm: true,
   canOpenTool: true,
   canRedo: false,
   canUndo: false,
   canZoomIn: true,
   canZoomOut: true,
   finish: { mode: 'original', sensitivity: 0.5 },
+  paper: { size: 'auto' },
   redaction: { color: 'black' },
 }
 
@@ -46,6 +48,7 @@ describe('editBar', () => {
       runTool: vi.fn(),
       setAdjustment: vi.fn(),
       setFinish: vi.fn(),
+      setPaper: vi.fn(),
       setRedaction: vi.fn(),
       undo: vi.fn(),
       zoomIn: vi.fn(),
@@ -247,6 +250,49 @@ describe('editBar', () => {
 
       option('redactBlack').click()
       expect(commands.setRedaction).toHaveBeenCalledWith('black')
+    })
+
+    it('shows the corners of Straighten with the paper sizes in place of its name, the one in use pressed', () => {
+      const pressed = () => [
+        ...panel().querySelectorAll<HTMLElement>('[data-paperpic-control^="paper"][aria-pressed="true"]'),
+      ].map(element => element.dataset.paperpicControl)
+      const papers = () => option('paperAuto').parentElement!
+      bar.setActiveTool(tool('crop'))
+      expect(papers().hidden).toBe(true)
+
+      bar.setActiveTool(tool('perspective'))
+      expect(part('paperpic-edit-corners').textContent).toBe(DEFAULT_LABELS.perspectiveHint)
+      expect(part('paperpic-edit-title').hidden).toBe(true)
+      expect(papers().hidden).toBe(false)
+      expect(papers().getAttribute('role')).toBe('group')
+      expect(papers().getAttribute('aria-label')).toBe(DEFAULT_LABELS.paper)
+      expect(papers().textContent).toBe('AutoA4LetterCard')
+      expect(pressed()).toEqual(['paperAuto'])
+
+      bar.update({
+        ...state,
+        paper: { size: 'letter' },
+      })
+      expect(pressed()).toEqual(['paperLetter'])
+
+      option('paperCard').click()
+      expect(commands.setPaper).toHaveBeenCalledWith('card')
+    })
+
+    it('keeps Done still while the tool has nothing to keep, and describes it with the hint', () => {
+      const description = () => document.getElementById(button('confirm').getAttribute('aria-describedby') ?? '')
+      bar.setActiveTool(tool('perspective'))
+      bar.update({ ...state, canConfirm: false })
+      expect(disabled('confirm')).toBe(true)
+      expect(description()?.textContent).toBe(DEFAULT_LABELS.perspectiveHint)
+      button('confirm').click()
+      expect(commands.confirmTool).not.toHaveBeenCalled()
+
+      bar.update(state)
+      expect(disabled('confirm')).toBe(false)
+      expect(description()).toBeNull()
+      button('confirm').click()
+      expect(commands.confirmTool).toHaveBeenCalledOnce()
     })
 
     it('shows the finishes of Clean up, named, with the one on display pressed, and its ruler', () => {
