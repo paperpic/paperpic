@@ -15,7 +15,7 @@ A photo of a document usually needs a few fixes before it is worth keeping. The 
 
 Nothing changes the image until Apply. Before that, the edits are a list that the viewer previews.
 
-In a narrow viewer, the edit bar has two rows: the tools, or the panel of the open tool, above, and below, Cancel at the left and Apply, or Done, at the right. From 28rem wide, everything fits on one row. Either way, the bar keeps its height when a tool opens, so the image keeps its place. A dot marks Adjust and Clean up while their setting is in effect.
+In a narrow viewer, the edit bar has two rows: the tools, or the panel of the open tool, above, and below, Cancel at the left and Apply, or Done, at the right. From 38rem wide, everything fits on one row. Either way, the bar keeps its height when a tool opens, so the image keeps its place. A dot marks Adjust and Clean up while their setting is in effect.
 
 ## Tools
 

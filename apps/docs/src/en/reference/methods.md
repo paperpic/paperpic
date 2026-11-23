@@ -205,7 +205,7 @@ Redact (`'redact'`) opens with corners too, as Crop does.
 function confirmTool(): void
 ```
 
-Closes the open tool and adds what it chose to the edits, as `Enter` does: the selection of Crop or Straighten, or the settings of Adjust or Clean up, as one edit.
+Closes the open tool and adds what it chose to the edits, as `Enter` does: the selection of Crop or Straighten, or the settings of Adjust or Clean up, as one edit. In Straighten it does nothing until a corner moves, and the `canConfirm` of the [state](./state) says when it can.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Changes the brightness or the contrast, each from -1 to 1, where 0 leaves the image as it is. They run after the other edits, and before gray. While Adjust is open, it changes what Adjust shows, and [`confirmTool()`](#confirmtool) keeps it as one edit. It does nothing outside the edit mode, while another tool is open or in black and white: black and white compares each pixel with its surroundings, so brightness and contrast would barely change its result.
 
 It throws a `RangeError` if a value is not between -1 and 1.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+Chooses the paper that gives its proportions to the result of [Straighten](../guide/tools/straighten#paper-size): `'a4'`, `'letter'`, `'card'` for an ID or a bank card, or `'auto'`, the default, which takes [`aspectRatio`](./options#aspectratio) or else an estimate. The paper stands or lies as the corners do. It does nothing while Straighten is not open, and each Straighten starts in `'auto'`.
+
+It throws a `RangeError` if `size` is not a [`PaperSize`](./types#papersize).
 
 ### `setRedaction()`
 

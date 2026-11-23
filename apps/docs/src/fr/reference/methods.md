@@ -205,7 +205,7 @@ Masquer (`'redact'`) s’ouvre aussi avec des coins, comme Recadrer.
 function confirmTool(): void
 ```
 
-Ferme l’outil ouvert et ajoute ce qu’il a choisi aux changements, comme `Entrée` : la sélection de Recadrer ou de Redresser, ou les réglages d’Ajuster ou de Nettoyer, comme un seul changement.
+Ferme l’outil ouvert et ajoute ce qu’il a choisi aux changements, comme `Entrée` : la sélection de Recadrer ou de Redresser, ou les réglages d’Ajuster ou de Nettoyer, comme un seul changement. Dans Redresser, elle ne fait rien tant qu’aucun coin ne bouge, et le `canConfirm` de l’[état](./state) dit quand elle le peut.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Change la luminosité ou le contraste, chacun de -1 à 1, où 0 laisse l’image telle quelle. Ils s’appliquent après les autres changements, et avant le gris. Tant qu’Ajuster est ouvert, change ce que montre Ajuster, et [`confirmTool()`](#confirmtool) le garde comme un seul changement. Ne fait rien hors du mode d’édition, avec un autre outil ouvert ou en noir et blanc : le noir et blanc compare chaque pixel à son entourage, donc la luminosité et le contraste ne changeraient presque pas son résultat.
 
 Elle lève une `RangeError` si une valeur n’est pas entre -1 et 1.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+Choisit le papier qui donne ses proportions au résultat de [Redresser](../guide/tools/straighten#paper-size) : `'a4'`, `'letter'`, `'card'` pour une carte d’identité ou bancaire, ou `'auto'`, par défaut, qui prend [`aspectRatio`](./options#aspectratio) ou sinon une estimation. Le papier est en portrait ou en paysage selon les coins. Elle ne fait rien si Redresser n’est pas ouvert, et chaque ouverture commence par `'auto'`.
+
+Elle lève une `RangeError` si `size` n’est pas une [`PaperSize`](./types#papersize).
 
 ### `setRedaction()`
 

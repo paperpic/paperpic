@@ -56,7 +56,7 @@ for (const button of buttons) {
   button.addEventListener('click', () => actions[button.dataset.action!]!())
 }
 
-function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: PaperPicState) {
+function update({ status, mode, activeTool, hint, canUndo, canApply, canConfirm, busy }: PaperPicState) {
   const editing = mode === 'edit'
   const visible: Record<string, boolean> = {
     zoomIn: true,
@@ -75,6 +75,7 @@ function update({ status, mode, activeTool, hint, canUndo, canApply, busy }: Pap
   }
   document.querySelector<HTMLButtonElement>('[data-action="edit"]')!.disabled = status !== 'ready'
   document.querySelector<HTMLButtonElement>('[data-action="undo"]')!.disabled = !canUndo || busy
+  document.querySelector<HTMLButtonElement>('[data-action="confirmTool"]')!.disabled = !canConfirm
   document.querySelector<HTMLButtonElement>('[data-action="apply"]')!.disabled = !canApply || busy
   document.querySelector('#hint')!.textContent = hint ?? ''
 }
@@ -120,7 +121,7 @@ function refresh() {
       <p v-if="state.hint">
         {{ state.hint }}
       </p>
-      <button type="button" @click="viewer?.confirmTool()">
+      <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
         Fatto
       </button>
       <button type="button" @click="viewer?.cancelTool()">
@@ -186,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" onClick={() => viewer().confirmTool()}>Fatto</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>Fatto</button>
               <button type="button" onClick={() => viewer().cancelTool()}>Annulla questo strumento</button>
             </>
           )}
@@ -407,6 +408,7 @@ export function CleanUpRuler() {
 
 - Con `toolbar: false` si nasconde anche la barra di modifica integrata, quindi Ritaglia e Raddrizza mostrano le loro maniglie ma non il pulsante Fatto. La tua interfaccia li conferma con [`confirmTool()`](../reference/methods#confirmtool), come `Invio`. Per chiuderli senza i loro cambiamenti, chiama [`cancelTool()`](../reference/methods#canceltool), come fa `Esc`.
 - Mentre Ritaglia o Raddrizza è aperto, `hint` nello stato dice cosa fare, per esempio «Drag the corners», come fa la barra di modifica integrata. Mostralo, perché con `toolbar: false` nient’altro lo mostra. Un nuovo hint, come dopo aver premuto un angolo, arriva con `change`.
+- `canConfirm` nello stato dice se `confirmTool()` può conservare ciò che mostra lo strumento. Raddrizza aspetta che l’utente sposti un angolo, quindi disattiva il tuo pulsante Fatto fino ad allora.
 - I tuoi cursori possono chiamare direttamente [`setFinish()`](../reference/methods#setfinish) e [`setAdjustments()`](../reference/methods#setadjustments), il che aggiunge un cambiamento a ogni chiamata. Per lasciare un solo cambiamento per tutto un trascinamento, apri prima lo strumento con [`openTool()`](../reference/methods#opentool): gli stessi metodi cambiano allora ciò che mostra, e `confirmTool()` lo conserva.
 - [`cancel()`](../reference/methods#cancel) non chiede conferma prima di scartare le modifiche. Chiedila tu all’utente se ce ne sono, ad esempio quando `canApply` è vero.
 - Le scorciatoie da tastiera continuano a funzionare con il focus sul visualizzatore. Vedi [Accessibilità](../guide/accessibility).

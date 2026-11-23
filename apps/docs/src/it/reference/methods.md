@@ -205,7 +205,7 @@ Anche Copri (`'redact'`) si apre con gli angoli, come Ritaglia.
 function confirmTool(): void
 ```
 
-Chiude lo strumento aperto e aggiunge ai cambiamenti ciò che ha scelto, come `Invio`: la selezione di Ritaglia o di Raddrizza, o le impostazioni di Regola o di Pulisci, come un solo cambiamento.
+Chiude lo strumento aperto e aggiunge ai cambiamenti ciò che ha scelto, come `Invio`: la selezione di Ritaglia o di Raddrizza, o le impostazioni di Regola o di Pulisci, come un solo cambiamento. In Raddrizza non fa nulla finché non si sposta un angolo, e il `canConfirm` dello [stato](./state) dice quando può.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 Cambia la luminosità o il contrasto, ciascuno da -1 a 1, dove 0 lascia l’immagine com’è. Vengono dopo gli altri cambiamenti, e prima del grigio. Mentre Regola è aperto, cambia ciò che mostra Regola, e [`confirmTool()`](#confirmtool) lo conserva come un solo cambiamento. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto o in bianco e nero: il bianco e nero confronta ogni pixel con ciò che lo circonda, quindi luminosità e contrasto cambierebbero appena il suo risultato.
 
 Lancia un `RangeError` se un valore non è tra -1 e 1.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+Sceglie la carta che dà le sue proporzioni al risultato di [Raddrizza](../guide/tools/straighten#paper-size): `'a4'`, `'letter'`, `'card'` per una carta d’identità o bancaria, o `'auto'`, il predefinito, che usa [`aspectRatio`](./options#aspectratio) o altrimenti una stima. La carta sta in verticale o in orizzontale come gli angoli. Non fa nulla se Raddrizza non è aperto, e ogni apertura comincia da `'auto'`.
+
+Lancia un `RangeError` se `size` non è un [`PaperSize`](./types#papersize).
 
 ### `setRedaction()`
 

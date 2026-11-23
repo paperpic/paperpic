@@ -277,7 +277,7 @@ Die Wurzel, `.paperpic`, trägt ihren Zustand auch in [`data-paperpic-status`, `
 Die Oberfläche passt sich ihrem Container von selbst an:
 
 - Die Werkzeugleiste sitzt rechts und scrollt, wenn der Viewer zu niedrig für ihre Schaltflächen ist. Beim Bearbeiten blendet sie sich aus.
-- Die Bearbeitungsleiste ist eine Karte unten mit zwei Zeilen fester Höhe, oder einer Zeile in einem Viewer ab 28rem Breite, damit das Bild an seinem Platz bleibt, wenn sich ein Werkzeug öffnet.
+- Die Bearbeitungsleiste ist eine Karte unten mit zwei Zeilen fester Höhe, oder einer Zeile in einem Viewer ab 38rem Breite, damit das Bild an seinem Platz bleibt, wenn sich ein Werkzeug öffnet.
 - Auf Touchscreens sind Schaltflächen und Eckgriffe mindestens 44 Pixel groß.
 
 ## Eigene Bedienelemente

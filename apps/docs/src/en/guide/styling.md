@@ -277,7 +277,7 @@ The root, `.paperpic`, also carries its state in [`data-paperpic-status`, `data-
 The interface adapts to its container on its own:
 
 - The toolbar sits at the right and scrolls when the viewer is too short for its buttons. It hides while editing.
-- The edit bar is a card at the bottom with two rows of fixed height, or one row in a viewer at least 28rem wide, so the image keeps its place when a tool opens.
+- The edit bar is a card at the bottom with two rows of fixed height, or one row in a viewer at least 38rem wide, so the image keeps its place when a tool opens.
 - On touch screens, buttons and corner handles grow to at least 44 pixels.
 
 ## Your own controls

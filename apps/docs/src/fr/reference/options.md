@@ -152,7 +152,7 @@ Le nom du fichier enregistré. Donnez-le sans extension : PaperPic ajoute celle 
 - **Type :** `number`
 - **Valeur par défaut :** estimées
 
-Les proportions réelles du document, en largeur divisée par hauteur, comme `210 / 297` pour une feuille A4. Redresser donne ces proportions à son résultat. Sans elles, il les estime à partir de la photo. Recadrer ne les utilise pas : son rectangle reste libre.
+Les proportions réelles du document, en largeur divisée par hauteur, comme `210 / 297` pour une feuille A4. Redresser donne ces proportions à son résultat. Sans elles, il les estime à partir de la photo. Recadrer ne les utilise pas : son rectangle reste libre. L’utilisateur peut aussi choisir un [format de papier](../guide/tools/straighten#paper-size) dans le panneau de Redresser, qui l’emporte sur cette option pour ce redressement.
 
 ### `softness`
 

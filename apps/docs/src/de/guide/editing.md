@@ -15,7 +15,7 @@ Das Foto eines Dokuments braucht meist ein paar Korrekturen, bevor es sich lohnt
 
 Nichts verändert das Bild vor dem Übernehmen. Bis dahin sind die Änderungen eine Liste, die der Viewer als Vorschau zeigt.
 
-In einem schmalen Viewer hat die Bearbeitungsleiste zwei Zeilen: oben die Werkzeuge oder das Bedienfeld des offenen Werkzeugs, unten links Abbrechen und rechts Übernehmen oder Fertig. Ab 28rem Breite passt alles in eine Zeile. In beiden Fällen behält die Leiste ihre Höhe, wenn sich ein Werkzeug öffnet, sodass das Bild an seinem Platz bleibt. Ein Punkt markiert Anpassen und Bereinigen, solange ihre Einstellung gilt.
+In einem schmalen Viewer hat die Bearbeitungsleiste zwei Zeilen: oben die Werkzeuge oder das Bedienfeld des offenen Werkzeugs, unten links Abbrechen und rechts Übernehmen oder Fertig. Ab 38rem Breite passt alles in eine Zeile. In beiden Fällen behält die Leiste ihre Höhe, wenn sich ein Werkzeug öffnet, sodass das Bild an seinem Platz bleibt. Ein Punkt markiert Anpassen und Bereinigen, solange ihre Einstellung gilt.
 
 ## Werkzeuge
 

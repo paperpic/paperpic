@@ -15,7 +15,7 @@ La foto de un documento suele necesitar unos cuantos arreglos antes de merecer l
 
 Nada cambia la imagen hasta Aplicar. Antes, los cambios son una lista de la que el visor muestra una vista previa.
 
-En un visor estrecho, la barra de edición tiene dos filas: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Hecho, a la derecha. Desde 28rem de ancho, todo cabe en una fila. En los dos casos, la barra mantiene su altura al abrir una herramienta, así que la imagen no se mueve. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
+En un visor estrecho, la barra de edición tiene dos filas: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Hecho, a la derecha. Desde 38rem de ancho, todo cabe en una fila. En los dos casos, la barra mantiene su altura al abrir una herramienta, así que la imagen no se mueve. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
 
 ## Herramientas
 

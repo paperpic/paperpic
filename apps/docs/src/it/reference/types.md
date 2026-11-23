@@ -125,6 +125,11 @@ interface PaperPicLabels {
   keepEditing: string
   loadError: string
   loading: string
+  paper: string
+  paperA4: string
+  paperAuto: string
+  paperCard: string
+  paperLetter: string
   perspective: string
   perspectiveHint: string
   previewError: string
@@ -191,6 +196,7 @@ interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   busy: boolean
   canApply: boolean
+  canConfirm: boolean
   canRedo: boolean
   canUndo: boolean
   finish: { mode: FinishMode, sensitivity: number }
@@ -198,6 +204,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  paper: { size: PaperSize }
   redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -214,6 +221,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 La finitura di [Pulisci](../guide/tools/clean-up): i toni originali, il grigio, o il bianco e nero con `'mono'`. [`setFinish()`](./methods#setfinish) la riceve, e il `finish` dello [stato](./state) la contiene.
+
+### `PaperSize`
+
+```ts
+type PaperSize = 'auto' | 'a4' | 'letter' | 'card'
+```
+
+La carta che dà le sue proporzioni al risultato di [Raddrizza](../guide/tools/straighten#paper-size). [`setPaper()`](./methods#setpaper) la riceve, e il `paper` dello [stato](./state) la contiene.
 
 ### `RedactColor`
 

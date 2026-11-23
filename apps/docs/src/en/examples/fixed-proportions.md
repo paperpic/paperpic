@@ -1,20 +1,20 @@
 ---
 title: Fixed proportions
-description: A complete example that lets the user pick the type of document, such as an A4 sheet or an ID card, so that Straighten gives the result its exact proportions.
+description: A complete example that lets the user pick the type of document, such as a Legal sheet or a passport page, so that Straighten gives the result its exact proportions.
 ---
 
 # Fixed proportions
 
-Straighten estimates the proportions of a document from the photo, and the estimate cannot be exact. When your app knows what the user photographs, such as an A4 form or an ID card, [`aspectRatio`](../reference/options#aspectratio) gives the result its real shape. This example lets the user pick the type of document before straightening it.
+Straighten estimates the proportions of a document from the photo, and the estimate cannot be exact. When your app knows what the user photographs, such as a Legal form or a passport page, [`aspectRatio`](../reference/options#aspectratio) gives the result its real shape. This example lets the user pick the type of document before straightening it.
 
 :::tabs key:framework
 == JavaScript
 
 ```html
 <select id="type">
-  <option value="a4">A4 sheet</option>
-  <option value="letter">US Letter sheet</option>
-  <option value="idCard">ID card</option>
+  <option value="legal">Legal sheet</option>
+  <option value="passport">Passport page</option>
+  <option value="envelope">DL envelope</option>
   <option value="other">Other</option>
 </select>
 <div id="viewer" style="height: 480px"></div>
@@ -25,9 +25,9 @@ import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
 const proportions: Record<string, number | undefined> = {
-  a4: 210 / 297,
-  letter: 8.5 / 11,
-  idCard: 85.6 / 53.98,
+  legal: 8.5 / 14,
+  passport: 125 / 88,
+  envelope: 220 / 110,
   other: undefined,
 }
 
@@ -35,7 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/scans/form.jpg',
   alt: 'Signed form',
   tools: ['perspective', 'rotate', 'finish'],
-  aspectRatio: proportions.a4,
+  aspectRatio: proportions.legal,
 })
 
 document.querySelector('#type')!.addEventListener('change', (event) => {
@@ -54,9 +54,9 @@ import { shallowRef } from 'vue'
 import '@paperpic/vue/style.css'
 
 const types = [
-  { name: 'A4 sheet', aspectRatio: 210 / 297 },
-  { name: 'US Letter sheet', aspectRatio: 8.5 / 11 },
-  { name: 'ID card', aspectRatio: 85.6 / 53.98 },
+  { name: 'Legal sheet', aspectRatio: 8.5 / 14 },
+  { name: 'Passport page', aspectRatio: 125 / 88 },
+  { name: 'DL envelope', aspectRatio: 220 / 110 },
   { name: 'Other', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -85,9 +85,9 @@ import { useState } from 'react'
 import '@paperpic/react/style.css'
 
 const types = [
-  { name: 'A4 sheet', aspectRatio: 210 / 297 },
-  { name: 'US Letter sheet', aspectRatio: 8.5 / 11 },
-  { name: 'ID card', aspectRatio: 85.6 / 53.98 },
+  { name: 'Legal sheet', aspectRatio: 8.5 / 14 },
+  { name: 'Passport page', aspectRatio: 125 / 88 },
+  { name: 'DL envelope', aspectRatio: 220 / 110 },
   { name: 'Other', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -115,7 +115,8 @@ export function Form() {
 ## Notes
 
 - Straighten stores the proportions when the user presses Done, so choose the type before straightening. Changing it later affects only the next straightening.
-- For a document in landscape, swap the numbers, such as `297 / 210`.
+- For a document in landscape, swap the numbers, such as `14 / 8.5`.
 - The proportions apply to the page as it shows on screen. If the photo is sideways, turn it with Rotate left before you use Straighten, or a sheet in portrait comes out squashed.
 - Leave `aspectRatio` out for documents without a fixed size, such as receipts, and Straighten estimates them.
+- The panel of Straighten already offers A4, Letter and Card as [paper sizes](../guide/tools/straighten#paper-size), so this example adds other documents. A size the user chooses there wins over `aspectRatio` for that straightening.
 - [Straighten](../guide/tools/straighten) explains the estimate and how to handle corners that fall outside the photo.

@@ -61,6 +61,11 @@ Five labels are functions, because their text includes a value. A function is ne
 | `keepEditing`       | Keep editing                                                     | The button that goes back to editing instead of losing the changes                                            |
 | `loadError`         | The image could not be loaded                                    | Shown when the image fails to load                                                                            |
 | `loading`           | Loading image                                                    | Shown while the image loads                                                                                   |
+| `paper`             | Paper size                                                       | The name of the choice of paper size, in Straighten                                                           |
+| `paperA4`           | A4                                                               | Chooses A4 in Straighten                                                                                      |
+| `paperAuto`         | Auto                                                             | Chooses the automatic proportions in Straighten                                                               |
+| `paperCard`         | Card                                                             | Chooses the size of an ID or a bank card in Straighten                                                        |
+| `paperLetter`       | Letter                                                           | Chooses US Letter in Straighten                                                                               |
 | `perspective`       | Straighten                                                       | The Straighten button                                                                                         |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | What to do in Straighten                                                                                      |
 | `previewError`      | The changes could not be shown                                   | Shown when an edit cannot be shown                                                                            |

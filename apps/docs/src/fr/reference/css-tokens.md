@@ -129,6 +129,7 @@ Chaque bouton, règle et poignée d’angle porte `data-paperpic-control`, avec 
 | Ajuster et Nettoyer            | `brightness` et `contrast`, les choix et leurs règles, `finishOriginal`, `finishGray` et `finishMono`, les finitions, et `finishSensitivity`, sa règle |
 | Chaque outil                   | `cancelTool`, `confirm`                                                                                                                                |
 | Recadrer, Redresser et Masquer | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                        |
+| Redresser                      | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                     |
 | Masquer                        | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                               |
 | Question avant d’abandonner    | `keepEditing`, `discard`                                                                                                                               |
 

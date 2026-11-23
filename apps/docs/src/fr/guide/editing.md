@@ -15,7 +15,7 @@ La photo d’un document a souvent besoin de quelques corrections avant de valoi
 
 Rien ne modifie l’image avant Appliquer. Jusque-là, les changements sont une liste dont la visionneuse montre un aperçu.
 
-Dans une visionneuse étroite, la barre de modification a deux lignes : en haut, les outils ou le panneau de l’outil ouvert, et en bas, Annuler à gauche et Appliquer, ou Terminé, à droite. À partir de 28rem de large, tout tient sur une ligne. Dans les deux cas, la barre garde sa hauteur quand un outil s’ouvre, donc l’image garde sa place. Un point marque Ajuster et Nettoyer tant que leur réglage s’applique.
+Dans une visionneuse étroite, la barre de modification a deux lignes : en haut, les outils ou le panneau de l’outil ouvert, et en bas, Annuler à gauche et Appliquer, ou Terminé, à droite. À partir de 38rem de large, tout tient sur une ligne. Dans les deux cas, la barre garde sa hauteur quand un outil s’ouvre, donc l’image garde sa place. Un point marque Ajuster et Nettoyer tant que leur réglage s’applique.
 
 ## Outils
 

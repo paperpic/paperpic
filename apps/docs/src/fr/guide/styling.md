@@ -277,7 +277,7 @@ La racine, `.paperpic`, porte aussi son état dans [`data-paperpic-status`, `dat
 L’interface s’adapte seule à son conteneur :
 
 - La barre d’outils se trouve à droite et défile quand la visionneuse est trop basse pour ses boutons. Elle se masque pendant la modification.
-- La barre de modification est une carte en bas avec deux lignes de hauteur fixe, ou une ligne dans une visionneuse d’au moins 28rem de large, donc l’image garde sa place quand un outil s’ouvre.
+- La barre de modification est une carte en bas avec deux lignes de hauteur fixe, ou une ligne dans une visionneuse d’au moins 38rem de large, donc l’image garde sa place quand un outil s’ouvre.
 - Sur les écrans tactiles, les boutons et les poignées d’angle mesurent au moins 44 pixels.
 
 ## Vos propres contrôles

@@ -152,7 +152,7 @@ Der Name der gespeicherten Datei. Gib ihn ohne Endung an: PaperPic hängt die de
 - **Typ:** `number`
 - **Standard:** geschätzt
 
-Das echte Seitenverhältnis des Dokuments, als Breite geteilt durch Höhe, etwa `210 / 297` für ein A4-Blatt. Begradigen gibt seinem Ergebnis dieses Seitenverhältnis. Ohne diese Option schätzt es das Verhältnis aus dem Foto. Zuschneiden nutzt es nicht: Sein Rechteck bleibt frei.
+Das echte Seitenverhältnis des Dokuments, als Breite geteilt durch Höhe, etwa `210 / 297` für ein A4-Blatt. Begradigen gibt seinem Ergebnis dieses Seitenverhältnis. Ohne diese Option schätzt es das Verhältnis aus dem Foto. Zuschneiden nutzt es nicht: Sein Rechteck bleibt frei. Der Nutzer kann stattdessen im Bedienfeld von Begradigen ein [Papierformat](../guide/tools/straighten#paper-size) wählen, das für dieses Begradigen Vorrang vor dieser Option hat.
 
 ### `softness`
 

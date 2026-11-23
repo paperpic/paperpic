@@ -13,13 +13,29 @@ Un document photographié de biais ressemble à un trapèze : le bord éloigné 
 
 1. Appuyez sur Modifier, puis sur Redresser. Une poignée apparaît pour chaque coin.
 2. Faites glisser chaque poignée sur un coin du document. Zoomez avec les boutons de son panneau pour les placer avec précision.
-3. Appuyez sur Terminé, ou `Entrée`. La visionneuse montre la page à plat, découpée aux quatre coins.
+3. Si vous connaissez le papier, choisissez son [format](#paper-size) : A4, Lettre ou Carte. Auto l’estime.
+4. Appuyez sur Terminé, ou `Entrée`. La visionneuse montre la page à plat, découpée aux quatre coins. Terminé attend que vous déplaciez un coin.
 
 Les poignées fonctionnent comme dans [Recadrer](./crop) : une loupe sur les écrans tactiles, appuyer puis toucher au lieu de faire glisser, et Tab et les flèches au clavier. Les quatre coins gardent toujours une forme convexe, donc la page peut toujours être mise à plat.
 
 Redresser montre la photo sans le noir et blanc de [Nettoyer](./clean-up), car les bords du papier sont difficiles à trouver sur une page nettoyée. Le noir et blanc revient après Terminé, et le gris reste.
 
-## Proportions
+## Format de papier {#paper-size}
+
+Le panneau de Redresser propose des formats de papier, qui donnent au résultat les proportions exactes de ce papier :
+
+| Choix  | Proportions                                                                                   |
+| ------ | --------------------------------------------------------------------------------------------- |
+| Auto   | [`aspectRatio`](../../reference/options#aspectratio), ou sinon une [estimation](#proportions) |
+| A4     | 210 × 297 mm, les mêmes que A3 et A5                                                          |
+| Lettre | 8,5 × 11 pouces, Lettre US                                                                    |
+| Carte  | 85,6 × 53,98 mm, une carte d’identité ou bancaire                                             |
+
+Un format ne fixe que les proportions : il ne déplace pas les coins et ne trouve pas le document. Le papier est en portrait ou en paysage selon les coins, donc il n’y a pas d’orientation à choisir. Un format qui n’est pas celui du document le déforme, donc Redresser commence par Auto à chaque ouverture.
+
+Avec les quatre coins sur les coins de l’image, Auto ne change rien, et un format donne à toute l’image les proportions de ce papier.
+
+## Proportions {#proportions}
 
 Une photo ne dit pas la forme réelle de la page, donc Redresser estime ses proportions d’après la place des coins dans la photo. L’estimation convient aux photos prises à une distance normale, mais elle ne peut pas être exacte.
 
@@ -72,7 +88,10 @@ Redresser s’ouvre avec [`openTool('perspective')`](../../reference/methods#ope
 ```ts
 pic.edit()
 pic.openTool('perspective')
+pic.setPaper({ size: 'a4' })
 
 // Plus tard, depuis un de vos boutons
 pic.confirmTool()
 ```
+
+Choisissez le format de papier avec [`setPaper()`](../../reference/methods#setpaper) tant que l’outil est ouvert. `confirmTool()` attend qu’un coin bouge, et le `canConfirm` de l’[état](../../reference/state) dit quand elle le peut.
