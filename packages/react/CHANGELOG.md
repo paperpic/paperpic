@@ -1,5 +1,28 @@
 # @paperpic/react
 
+## 0.6.0
+
+### Minor Changes
+
+- [#107](https://github.com/paperpic/paperpic/pull/107) [`5e21499`](https://github.com/paperpic/paperpic/commit/5e21499a7938262c984635d8c52f694cc4d1ddbe) Thanks [@Unlooper](https://github.com/Unlooper)! - Straighten now finds the document. As it opens, it looks for the document in the photo and places the four corners on it, so Done is ready without a drag. The corners slide there, unless the user prefers less motion. When it is not sure, the corners start inside the image and Done waits for a move, as before. It never moves a corner that the user has already touched.
+  
+  The search runs in the worker, on a small copy of the photo, without dependencies or requests. The new label `perspectiveFound` says on screen and to screen readers that the document was found, and the `canConfirm` of the state turns `true`, with a `change`.
+  
+  Fix the magnifier leaving the screen in a short viewer, where neither above nor below the finger has room for it. It now goes to its side.
+  
+  Fix a viewer destroyed while it starts to process an image leaving a worker behind.
+
+- [#105](https://github.com/paperpic/paperpic/pull/105) [`bd3f295`](https://github.com/paperpic/paperpic/commit/bd3f295d8ba7be847fbc0e6daf3b3006eb5a84d1) Thanks [@Unlooper](https://github.com/Unlooper)! - Add paper sizes to Straighten. Its panel offers Auto, A4, Letter and Card, and a size gives the result the exact proportions of that paper, in portrait or in landscape as the corners are. `setPaper({ size })` chooses it while Straighten is open, `getState().paper` reports it, and the new type `PaperSize` names it. Auto keeps the proportions of `aspectRatio`, or else the estimate.
+  
+  Done now waits in Straighten until a corner moves, so it no longer cuts the image by accident, and `confirmTool()` does nothing until then. The new `canConfirm` of the state reports it, so an interface of your own can disable its Done button.
+  
+  Fix the choices of Clean up covering Cancel and Done in a narrow viewer: they now scroll. The edit bar fits on one row from 38rem wide instead of 28rem.
+
+### Patch Changes
+
+- Updated dependencies [[`5e21499`](https://github.com/paperpic/paperpic/commit/5e21499a7938262c984635d8c52f694cc4d1ddbe), [`bd3f295`](https://github.com/paperpic/paperpic/commit/bd3f295d8ba7be847fbc0e6daf3b3006eb5a84d1)]:
+  - @paperpic/core@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes
