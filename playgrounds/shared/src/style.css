@@ -345,6 +345,12 @@ body {
 }
 
 @media (width < 640px) {
+  /* The page scrolls, because the options would leave the viewer almost no height */
+  .layout {
+    height: auto;
+    min-height: 100dvh;
+  }
+
   .workspace {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto 1fr;
@@ -353,5 +359,9 @@ body {
   .panel {
     border-inline-end: 0;
     border-block-end: 1px solid var(--color-border);
+  }
+
+  .stage {
+    height: 75dvh;
   }
 }

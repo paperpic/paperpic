@@ -67,6 +67,7 @@ Five labels are functions, because their text includes a value. A function is ne
 | `paperCard`         | Card                                                             | Chooses the size of an ID or a bank card in Straighten                                                        |
 | `paperLetter`       | Letter                                                           | Chooses US Letter in Straighten                                                                               |
 | `perspective`       | Straighten                                                       | The Straighten button                                                                                         |
+| `perspectiveFound`  | Document found. Check its corners                                | Shown and announced when Straighten finds the document                                                        |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | What to do in Straighten                                                                                      |
 | `previewError`      | The changes could not be shown                                   | Shown when an edit cannot be shown                                                                            |
 | `processing`        | Applying changes                                                 | Shown while Apply runs                                                                                        |

@@ -131,6 +131,7 @@ interface PaperPicLabels {
   paperCard: string
   paperLetter: string
   perspective: string
+  perspectiveFound: string
   perspectiveHint: string
   previewError: string
   processing: string

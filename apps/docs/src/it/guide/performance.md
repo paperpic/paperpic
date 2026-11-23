@@ -9,7 +9,7 @@ Le foto da telefono hanno 12 megapixel o più, e modificarle richiede lavoro ver
 
 ## Un Web Worker fa il lavoro
 
-Il bianco e nero e Raddrizza impiegano circa un secondo e mezzo su una foto da 12 megapixel con un telefono recente, come mostrano i [tempi misurati](#measurements). Sul thread principale, la pagina resterebbe bloccata per tutto quel tempo. PaperPic li esegue quindi in un Web Worker, e la pagina continua a rispondere durante Applica.
+Il bianco e nero e Raddrizza impiegano circa un secondo e mezzo su una foto da 12 megapixel con un telefono recente, come mostrano i [tempi misurati](#measurements). Sul thread principale, la pagina resterebbe bloccata per tutto quel tempo. PaperPic li esegue quindi in un Web Worker, e la pagina continua a rispondere durante Applica. Anche la ricerca del documento avviene lì.
 
 Il worker è incluso nel pacchetto e parte con lo standard `new Worker(new URL(…, import.meta.url))`, che bundler come Vite e webpack 5 riconoscono da soli, senza configurazione. Se il worker non può partire, la modifica gira sul thread principale: funziona comunque, ma la pagina può bloccarsi per un attimo con immagini grandi.
 

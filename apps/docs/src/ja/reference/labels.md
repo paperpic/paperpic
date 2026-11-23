@@ -67,6 +67,7 @@ const pic = new PaperPic(container, {
 | `paperCard`         | Card                                                             | 「傾き補正」で身分証や銀行カードのサイズを選びます                           |
 | `paperLetter`       | Letter                                                           | 「傾き補正」で US レターを選びます                                           |
 | `perspective`       | Straighten                                                       | 「傾き補正」ボタン                                                           |
+| `perspectiveFound`  | Document found. Check its corners                                | 「傾き補正」が文書を見つけたときに表示され、読み上げられる                   |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | 「傾き補正」での操作の説明                                                   |
 | `previewError`      | The changes could not be shown                                   | 変更を表示できないときに表示                                                 |
 | `processing`        | Applying changes                                                 | 適用の実行中に表示                                                           |

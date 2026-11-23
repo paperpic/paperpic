@@ -10,8 +10,8 @@ export interface PaperPicProps extends PaperPicOptions {
   /** Apply finished, from the button, `Enter` or `apply()`. The result is already on display. */
   onApply?: (result: PaperPicEvents['apply']) => void
   /**
-   * The user or a method changed the state, such as the zoom or the edit. A loaded image comes with `onLoad`, and a
-   * failed Apply with `onError`, instead. A pan and a change of props never call it.
+   * The user or a method changed the state, such as the zoom or the edit, or Straighten found the document. A loaded
+   * image comes with `onLoad`, and a failed Apply with `onError`, instead. A pan and a change of props never call it.
    */
   onChange?: (state: PaperPicEvents['change']) => void
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */

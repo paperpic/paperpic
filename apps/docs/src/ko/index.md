@@ -26,7 +26,7 @@ features:
     link: /ko/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "기울기 보정과 자르기"
-    details: "네 모서리를 끌어 비스듬히 찍은 사진을 평평한 페이지로 만듭니다. 비율은 추정하거나 지정할 수 있습니다."
+    details: "비스듬히 찍은 사진을 평평한 페이지로 만듭니다. 비율은 추정하거나 지정할 수 있습니다. 모서리는 뷰어가 찾아 주며, 끌어서 고칠 수 있습니다."
     link: /ko/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "정리"

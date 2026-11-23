@@ -25,6 +25,7 @@ export function toolHost(frame: Size, overrides: Partial<ToolHost> = {}): ToolHo
     paperSize: () => 'auto',
     redactColor: () => 'black',
     selectionMoved: () => {},
+    findDocument: async () => null,
     paintMagnifier: () => {},
     ...overrides,
   }

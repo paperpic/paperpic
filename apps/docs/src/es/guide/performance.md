@@ -9,7 +9,7 @@ Las fotos de móvil tienen 12 megapíxeles o más, y editarlas cuesta trabajo de
 
 ## Un Web Worker hace el trabajo
 
-El blanco y negro y Enderezar tardan alrededor de un segundo y medio con una foto de 12 megapíxeles en un móvil reciente, como muestran los [tiempos medidos](#measurements). En el hilo principal, la página se congelaría ese tiempo. PaperPic los ejecuta en un Web Worker, así que la página sigue respondiendo mientras se aplica.
+El blanco y negro y Enderezar tardan alrededor de un segundo y medio con una foto de 12 megapíxeles en un móvil reciente, como muestran los [tiempos medidos](#measurements). En el hilo principal, la página se congelaría ese tiempo. PaperPic los ejecuta en un Web Worker, así que la página sigue respondiendo mientras se aplica. La búsqueda del documento también se hace ahí.
 
 El worker viene dentro del paquete y arranca con el estándar `new Worker(new URL(…, import.meta.url))`, que empaquetadores como Vite y webpack 5 detectan solos, sin configuración. Si el worker no puede arrancar, la edición se hace en el hilo principal: sigue funcionando, pero la página puede congelarse un momento con imágenes grandes.
 

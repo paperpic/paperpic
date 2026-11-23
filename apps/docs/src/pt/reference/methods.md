@@ -195,7 +195,7 @@ Espelha a imagem da esquerda para a direita como ela aparece, então depois de u
 function openTool(id: ToolId): void
 ```
 
-Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'finish'`), que ao abrir escolhe preto e branco quando o acabamento é o original. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar em preto e branco, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho.
+Abre uma ferramenta com painel: Recortar (`'crop'`), Endireitar (`'perspective'`), Ajustar (`'adjust'`) ou Limpar (`'finish'`), que ao abrir escolhe preto e branco quando o acabamento é o original. A ferramenta fica aberta até [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Enquanto isso, nenhuma outra alteração pode começar, e Desfazer, Refazer e Aplicar não fazem nada. Não faz nada fora do modo de edição, com outra ferramenta aberta, para Ajustar em preto e branco, nem para Recortar e Endireitar enquanto uma pré-visualização está a caminho. Endireitar procura o documento ao abrir, e posiciona os cantos sobre ele [se o encontrar](../guide/tools/straighten#finding-the-document).
 
 Ocultar (`'redact'`) também abre com cantos, como Recortar.
 
@@ -205,7 +205,7 @@ Ocultar (`'redact'`) também abre com cantos, como Recortar.
 function confirmTool(): void
 ```
 
-Fecha a ferramenta aberta e adiciona o que ela escolheu às alterações, como faz o `Enter`: a seleção de Recortar ou de Endireitar, ou os valores de Ajustar ou de Limpar, como uma única alteração. Em Endireitar não faz nada até que um canto se mova, e o `canConfirm` do [estado](./state) diz quando pode.
+Fecha a ferramenta aberta e adiciona o que ela escolheu às alterações, como faz o `Enter`: a seleção de Recortar ou de Endireitar, ou os valores de Ajustar ou de Limpar, como uma única alteração. Em Endireitar não faz nada até que o visualizador encontre o documento ou um canto se mova, e o `canConfirm` do [estado](./state) diz quando pode.
 
 ### `cancelTool()`
 

@@ -9,7 +9,7 @@ Handyfotos haben 12 Megapixel oder mehr, und ihre Bearbeitung ist echte Arbeit. 
 
 ## Ein Web Worker erledigt die Arbeit
 
-Schwarzweiß und Begradigen brauchen bei einem Foto mit 12 Megapixeln auf einem aktuellen Smartphone etwa anderthalb Sekunden, wie die [gemessenen Zeiten](#measurements) zeigen. Im Hauptthread würde die Seite so lange einfrieren. PaperPic führt sie deshalb in einem Web Worker aus, sodass die Seite reagiert, während Übernehmen läuft.
+Schwarzweiß und Begradigen brauchen bei einem Foto mit 12 Megapixeln auf einem aktuellen Smartphone etwa anderthalb Sekunden, wie die [gemessenen Zeiten](#measurements) zeigen. Im Hauptthread würde die Seite so lange einfrieren. PaperPic führt sie deshalb in einem Web Worker aus, sodass die Seite reagiert, während Übernehmen läuft. Auch die Suche nach dem Dokument läuft dort.
 
 Der Worker steckt im Paket und startet mit dem Standard `new Worker(new URL(…, import.meta.url))`, den Bundler wie Vite und webpack 5 von selbst erkennen, ohne Konfiguration. Kann der Worker nicht starten, läuft die Bearbeitung im Hauptthread: Sie funktioniert weiter, aber die Seite kann bei großen Bildern kurz einfrieren.
 

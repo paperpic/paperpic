@@ -407,8 +407,8 @@ export function CleanUpRuler() {
 ## Notes
 
 - With `toolbar: false`, the built-in edit bar is hidden too, so Crop and Straighten show their handles but no Done button. Your interface confirms them with [`confirmTool()`](../reference/methods#confirmtool), as `Enter` does. To close them without their changes, call [`cancelTool()`](../reference/methods#canceltool), as `Esc` does.
-- While Crop or Straighten is open, `hint` in the state says what to do, such as "Drag the corners", as the built-in edit bar does. Show it, because with `toolbar: false` nothing else does. A new hint, such as after pressing a corner, comes with `change`.
-- `canConfirm` in the state says whether `confirmTool()` can keep what the tool shows. Straighten waits until the user moves a corner, so disable your Done button until then.
+- While Crop or Straighten is open, `hint` in the state says what to do, such as "Drag the corners", as the built-in edit bar does. Show it, because with `toolbar: false` nothing else does. A new hint, such as after pressing a corner or once Straighten finds the document, comes with `change`.
+- `canConfirm` in the state says whether `confirmTool()` can keep what the tool shows. Straighten waits until it finds the document or the user moves a corner, so disable your Done button until then.
 - Sliders of your own can call [`setFinish()`](../reference/methods#setfinish) and [`setAdjustments()`](../reference/methods#setadjustments) directly, which adds one edit for each call. To leave one edit for a whole drag, open the tool with [`openTool()`](../reference/methods#opentool) first: the same methods then change what it shows, and `confirmTool()` keeps it.
 - [`cancel()`](../reference/methods#cancel) does not ask before discarding the edits. Ask the user first if there are some, such as when `canApply` is true.
 - The keyboard shortcuts keep working with the focus on the viewer. See [Accessibility](../guide/accessibility).

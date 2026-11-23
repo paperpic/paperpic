@@ -38,7 +38,7 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche
 
 - Das Bild hat die Rolle eines Bildes, mit `alt` als Namen. Ohne `alt` überspringen Screenreader es.
 - Werkzeugleiste und Bearbeitungsleiste haben eigene Namen, etwa „Bildsteuerung“ und „Bearbeitungssteuerung“.
-- Eine Ansage meldet, was der Nutzer nicht allein am Fokus erkennt: das Laden des Bildes, die Zoomstufe, den Beginn des Bearbeitungsmodus, eine ausgewählte Ecke und die Position einer verschobenen Ecke, den Wert einer Skala, das Ergebnis von Übernehmen und jeden Fehler.
+- Eine Ansage meldet, was der Nutzer nicht allein am Fokus erkennt: das Laden des Bildes, die Zoomstufe, den Beginn des Bearbeitungsmodus, ein Dokument, das Begradigen findet, eine ausgewählte Ecke und die Position einer verschobenen Ecke, den Wert einer Skala, das Ergebnis von Übernehmen und jeden Fehler.
 - Die Finishs von Bereinigen sind Schaltflächen, die sagen, ob sie gedrückt sind. Ein Werkzeug in Verwendung, das auf dem Bildschirm ein Punkt markiert, wird als „Aktiv“ beschrieben. In Schwarzweiß wird Anpassen mit dem Grund beschrieben, warum es deaktiviert ist.
 
 ## Touchscreens
@@ -50,6 +50,6 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche
 
 ## Einstellungen
 
-- **Weniger Bewegung.** Mit `prefers-reduced-motion: reduce` wechseln Schaltflächen ihren Zustand ohne Übergänge.
+- **Weniger Bewegung.** Mit `prefers-reduced-motion: reduce` wechseln Schaltflächen ihren Zustand ohne Übergänge, und die Ecken springen sofort auf das Dokument, das Begradigen findet, ohne zu gleiten.
 - **Erzwungene Farben.** Im Kontrastmodus von Windows und anderen Modi mit erzwungenen Farben behalten gedrückte Schaltflächen und die Hauptaktionen einen sichtbaren Rahmen.
 - **Dunkelmodus.** Die Farben folgen dem `color-scheme` deiner Seite, das dem System folgen kann. Siehe [Gestaltung](./styling#dark-mode).

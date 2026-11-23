@@ -67,6 +67,7 @@ const pic = new PaperPic(container, {
 | `paperCard`         | Card                                                             | 在“矫正”中选择身份证或银行卡的尺寸                         |
 | `paperLetter`       | Letter                                                           | 在“矫正”中选择美国信纸                                     |
 | `perspective`       | Straighten                                                       | “矫正”按钮                                                 |
+| `perspectiveFound`  | Document found. Check its corners                                | “矫正”找到文档时显示并播报                                 |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | 在“矫正”中要做什么                                         |
 | `previewError`      | The changes could not be shown                                   | 修改无法显示时显示                                         |
 | `processing`        | Applying changes                                                 | 应用进行时显示                                             |

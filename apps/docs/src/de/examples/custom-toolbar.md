@@ -407,8 +407,8 @@ export function CleanUpRuler() {
 ## Hinweise
 
 - Mit `toolbar: false` ist auch die eingebaute Bearbeitungsleiste ausgeblendet, Zuschneiden und Begradigen zeigen also ihre Griffe, aber keine Schaltfläche Fertig. Deine Oberfläche bestätigt sie mit [`confirmTool()`](../reference/methods#confirmtool), wie `Enter`. Um sie ohne ihre Änderungen zu schließen, rufe [`cancelTool()`](../reference/methods#canceltool) auf, wie es `Esc` tut.
-- Solange Zuschneiden oder Begradigen offen ist, sagt `hint` im Zustand, was zu tun ist, etwa „Drag the corners“, wie die eingebaute Bearbeitungsleiste. Zeige es an, denn mit `toolbar: false` zeigt es sonst nichts. Ein neuer Hinweis, etwa nach dem Drücken einer Ecke, kommt mit `change`.
-- `canConfirm` im Zustand sagt, ob `confirmTool()` behalten kann, was das Werkzeug zeigt. Begradigen wartet, bis der Nutzer eine Ecke bewegt, also deaktiviere deine Schaltfläche Fertig bis dahin.
+- Solange Zuschneiden oder Begradigen offen ist, sagt `hint` im Zustand, was zu tun ist, etwa „Drag the corners“, wie die eingebaute Bearbeitungsleiste. Zeige es an, denn mit `toolbar: false` zeigt es sonst nichts. Ein neuer Hinweis, etwa nach dem Drücken einer Ecke oder sobald Begradigen das Dokument findet, kommt mit `change`.
+- `canConfirm` im Zustand sagt, ob `confirmTool()` behalten kann, was das Werkzeug zeigt. Begradigen wartet, bis es das Dokument findet oder der Nutzer eine Ecke bewegt, also deaktiviere deine Schaltfläche Fertig bis dahin.
 - Eigene Regler können [`setFinish()`](../reference/methods#setfinish) und [`setAdjustments()`](../reference/methods#setadjustments) direkt aufrufen, was bei jedem Aufruf eine Änderung hinzufügt. Für eine einzige Änderung über ein ganzes Ziehen öffne das Werkzeug vorher mit [`openTool()`](../reference/methods#opentool): Dieselben Methoden ändern dann, was es zeigt, und `confirmTool()` behält es.
 - [`cancel()`](../reference/methods#cancel) fragt nicht nach, bevor es die Änderungen verwirft. Frag selbst nach, wenn es welche gibt, etwa wenn `canApply` wahr ist.
 - Die Tastenkürzel funktionieren weiter, wenn der Viewer den Fokus hat. Siehe [Barrierefreiheit](../guide/accessibility).

@@ -27,7 +27,7 @@ async function dragTopLeftCorner(page: Page) {
   await page.mouse.up()
 }
 
-test('loads an image, crops and straightens it in the worker, and applies it', async ({ page }) => {
+test('loads an image, finds the document and straightens it in the worker, crops it and applies it', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
   page.on('console', (message) => {
@@ -36,7 +36,7 @@ test('loads an image, crops and straightens it in the worker, and applies it', a
     }
   })
 
-  // The worker starts with the first edit that needs it. If it cannot load, the viewer edits on the main thread
+  // The worker starts as Straighten looks for the document. If it cannot load, the viewer works on the main thread
   // without a word, which is the failure this test is here to catch
   const workerStarted = page.waitForEvent('worker')
   await page.goto('/')
@@ -44,13 +44,15 @@ test('loads an image, crops and straightens it in the worker, and applies it', a
   await expect(edit).toBeEnabled()
   await edit.click()
 
-  // A crop alone is read from the canvas, so the perspective is what sends the pixels to the worker
+  // Done waits until a corner moves, or until the viewer finds the document, which places the corners itself
+  await control(page, 'perspective').click()
+  const confirm = control(page, 'confirm')
+  await expect(confirm).toHaveAttribute('aria-disabled', 'false', { timeout: 15_000 })
+  await confirm.click()
+
   await control(page, 'crop').click()
   await dragTopLeftCorner(page)
-  await control(page, 'confirm').click()
-  await control(page, 'perspective').click()
-  await dragTopLeftCorner(page)
-  await control(page, 'confirm').click()
+  await confirm.click()
   await control(page, 'apply').click()
 
   const worker = await workerStarted
@@ -70,8 +72,10 @@ test('loads an image, crops and straightens it in the worker, and applies it', a
   const applied = await imageSize(page, href!)
   expect(applied.width).toBeGreaterThan(0)
   expect(applied.height).toBeGreaterThan(0)
-  expect(applied.width).toBeLessThan(source.width)
-  expect(applied.height).toBeLessThan(source.height)
+  expect(applied.width * applied.height).toBeLessThan(source.width * source.height)
+  // The photo lies, and the receipt in it stands, so the corners were on the receipt
+  expect(source.width).toBeGreaterThan(source.height)
+  expect(applied.height).toBeGreaterThan(applied.width)
 
   // The viewer shows the applied image, ready for another edit
   await expect(edit).toBeEnabled()

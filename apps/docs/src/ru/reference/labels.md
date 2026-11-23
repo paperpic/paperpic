@@ -67,6 +67,7 @@ const pic = new PaperPic(container, {
 | `paperCard`         | Card                                                             | Выбирает формат удостоверения или банковской карты в «Выровнять»                                                     |
 | `paperLetter`       | Letter                                                           | Выбирает US Letter в «Выровнять»                                                                                     |
 | `perspective`       | Straighten                                                       | Кнопка «Выровнять»                                                                                                   |
+| `perspectiveFound`  | Document found. Check its corners                                | Показывается и объявляется, когда «Выровнять» находит документ                                                       |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | Что делать в «Выровнять»                                                                                             |
 | `previewError`      | The changes could not be shown                                   | Показывается, когда изменение не удаётся показать                                                                    |
 | `processing`        | Applying changes                                                 | Показывается, пока идёт применение                                                                                   |

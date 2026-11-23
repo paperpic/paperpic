@@ -14,6 +14,7 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | edit mode                                     | modo de edição       |
 | editor                                        | editor               |
 | event                                         | evento               |
+| find, the document in the photo               | encontrar            |
 | finish, of Clean up                           | acabamento           |
 | fit, of the image in the viewer               | encaixar, encaixe    |
 | guide                                         | Guia                 |

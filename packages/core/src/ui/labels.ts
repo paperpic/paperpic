@@ -79,6 +79,8 @@ export interface PaperPicLabels {
   /** Chooses US Letter in Straighten. */
   paperLetter: string
   perspective: string
+  /** Shown and announced when the perspective tool finds the document and places the corners on it. */
+  perspectiveFound: string
   /** What to do in the perspective tool. */
   perspectiveHint: string
   /** Shown when the changes so far cannot be shown on screen. The edit stays open. */
@@ -164,6 +166,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   paperCard: 'Card',
   paperLetter: 'Letter',
   perspective: 'Straighten',
+  perspectiveFound: 'Document found. Check its corners',
   perspectiveHint: 'Drag each corner to a corner of the document',
   previewError: 'The changes could not be shown',
   processing: 'Applying changes',

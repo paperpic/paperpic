@@ -195,7 +195,7 @@ Voltea la imagen de izquierda a derecha tal como se ve, así que después de un 
 function openTool(id: ToolId): void
 ```
 
-Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'finish'`), que al abrirse elige blanco y negro cuando el acabado es el original. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar en blanco y negro, ni para Recortar y Enderezar mientras llega una vista previa.
+Abre una herramienta con panel: Recortar (`'crop'`), Enderezar (`'perspective'`), Ajustar (`'adjust'`) o Limpiar (`'finish'`), que al abrirse elige blanco y negro cuando el acabado es el original. La herramienta sigue abierta hasta [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Mientras tanto, no se puede empezar otro cambio, y Deshacer, Rehacer y Aplicar no hacen nada. No hace nada fuera del modo de edición, con otra herramienta abierta, para Ajustar en blanco y negro, ni para Recortar y Enderezar mientras llega una vista previa. Enderezar busca el documento al abrirse, y coloca sobre él sus esquinas [si lo encuentra](../guide/tools/straighten#finding-the-document).
 
 Tapar (`'redact'`) también se abre con esquinas, como Recortar.
 
@@ -205,7 +205,7 @@ Tapar (`'redact'`) también se abre con esquinas, como Recortar.
 function confirmTool(): void
 ```
 
-Cierra la herramienta abierta y añade lo que eligió a los cambios, como hace `Enter`: la selección de Recortar o Enderezar, o los valores de Ajustar o Limpiar, como un solo cambio. En Enderezar no hace nada hasta que se mueve una esquina, y el `canConfirm` del [estado](./state) dice cuándo puede.
+Cierra la herramienta abierta y añade lo que eligió a los cambios, como hace `Enter`: la selección de Recortar o Enderezar, o los valores de Ajustar o Limpiar, como un solo cambio. En Enderezar no hace nada hasta que el visor encuentra el documento o se mueve una esquina, y el `canConfirm` del [estado](./state) dice cuándo puede.
 
 ### `cancelTool()`
 

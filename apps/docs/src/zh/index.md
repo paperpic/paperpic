@@ -26,7 +26,7 @@ features:
     link: /zh/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "矫正和裁剪"
-    details: "拖动四个角，把斜着拍的照片变成平整的页面，宽高比可以估算，也可以指定。"
+    details: "把斜着拍的照片变成平整的页面，宽高比可以估算，也可以指定。查看器会找到四个角，你也可以拖动它们。"
     link: /zh/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "清理"

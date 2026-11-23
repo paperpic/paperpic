@@ -195,7 +195,7 @@ Spiegelt das Bild von links nach rechts, so wie es angezeigt wird, nach einer Vi
 function openTool(id: ToolId): void
 ```
 
-Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'finish'`), das beim Öffnen Schwarzweiß wählt, wenn das Finish das Original ist. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen in Schwarzweiß und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist.
+Öffnet ein Werkzeug mit Bedienfeld: Zuschneiden (`'crop'`), Begradigen (`'perspective'`), Anpassen (`'adjust'`) oder Bereinigen (`'finish'`), das beim Öffnen Schwarzweiß wählt, wenn das Finish das Original ist. Das Werkzeug bleibt offen bis [`confirmTool()`](#confirmtool) oder [`cancelTool()`](#canceltool). Solange kann keine andere Änderung beginnen, und Rückgängig, Wiederholen und Übernehmen tun nichts. Tut nichts außerhalb des Bearbeitungsmodus, bei einem anderen offenen Werkzeug, für Anpassen in Schwarzweiß und für Zuschneiden und Begradigen, solange eine Vorschau unterwegs ist. Begradigen sucht beim Öffnen das Dokument und setzt seine Ecken darauf, [wenn es eines findet](../guide/tools/straighten#finding-the-document).
 
 Abdecken (`'redact'`) öffnet sich ebenfalls mit Ecken, wie Zuschneiden.
 
@@ -205,7 +205,7 @@ Abdecken (`'redact'`) öffnet sich ebenfalls mit Ecken, wie Zuschneiden.
 function confirmTool(): void
 ```
 
-Schließt das offene Werkzeug und fügt das, was es gewählt hat, zu den Änderungen hinzu, wie `Enter`: die Auswahl von Zuschneiden oder Begradigen, oder die Einstellungen von Anpassen oder Bereinigen, als eine Änderung. In Begradigen tut es nichts, bis sich eine Ecke bewegt, und `canConfirm` im [Zustand](./state) sagt, wann es geht.
+Schließt das offene Werkzeug und fügt das, was es gewählt hat, zu den Änderungen hinzu, wie `Enter`: die Auswahl von Zuschneiden oder Begradigen, oder die Einstellungen von Anpassen oder Bereinigen, als eine Änderung. In Begradigen tut es nichts, bis der Viewer das Dokument findet oder sich eine Ecke bewegt, und `canConfirm` im [Zustand](./state) sagt, wann es geht.
 
 ### `cancelTool()`
 

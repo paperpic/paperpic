@@ -14,6 +14,7 @@ Use these words in the Korean docs, so that each idea has one name on every page
 | edit mode                                     | 편집 모드      |
 | editor                                        | 편집기         |
 | event                                         | 이벤트         |
+| find, the document in the photo               | 찾다           |
 | finish, of Clean up                           | 마무리         |
 | guide                                         | 가이드         |
 | keyboard shortcut                             | 키보드 단축키  |

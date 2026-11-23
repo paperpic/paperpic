@@ -254,6 +254,11 @@
     display: none;
   }
 
+  /* On its way to the document, so a press goes to the image */
+  .paperpic-handle-sliding {
+    pointer-events: none;
+  }
+
   /* The area of Redact, which moves as a whole. The canvas paints it, so the element only takes the pointer and the focus */
   .paperpic-area {
     position: absolute;

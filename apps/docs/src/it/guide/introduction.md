@@ -19,7 +19,7 @@ Ogni passo avviene solo quando l’utente lo chiede. Niente cambia la foto da so
 
 - Non carica nulla. La tua app decide cosa fare con il risultato.
 - Non apre file PDF, solo immagini.
-- Non trova da solo i bordi del documento: l’utente trascina gli angoli.
+- Non trova sempre da solo il documento: quando non è sicuro, l’utente trascina gli angoli.
 
 ## Pacchetti
 

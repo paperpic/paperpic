@@ -18,6 +18,7 @@ import type { PaperPicLabels } from './ui/labels'
 import { attachGestures } from './input/gestures'
 import { keyToCommand } from './input/keyboard'
 import { DEFAULT_OPTIONS, mergeOptions, OPTION_NAMES, sameOption, validateOptions } from './options'
+import { findDocument } from './pipeline/detection'
 import { downloadName, saveFile } from './pipeline/download'
 import { exportImage } from './pipeline/export'
 import { loadImage } from './pipeline/load-image'
@@ -26,6 +27,7 @@ import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PreviewQueue } from './pipeline/preview-queue'
 import { PipelineRunner } from './pipeline/runner'
+import { isShapeStep } from './pipeline/steps'
 import { PAPER_SIZES } from './processing/paper'
 import { paintMagnifier } from './render/magnifier'
 import { Renderer } from './render/renderer'
@@ -73,7 +75,7 @@ export interface PaperPicState {
   canApply: boolean
   /**
    * Whether `confirmTool()` can keep what the open tool shows, which is when Done is available. Straighten waits until
-   * a corner moves. It is `false` with no tool open.
+   * it finds the document or a corner moves. It is `false` with no tool open.
    */
   canConfirm: boolean
   /** Whether there is an edit to bring back. */
@@ -120,8 +122,9 @@ export interface PaperPicEvents {
   /** Apply finished, from the button, `Enter` or `apply()`. The result is already on display. */
   apply: ExportedImage
   /**
-   * The user or a method changed the state, such as the zoom or the edit. A loaded image comes with `load`, and a failed
-   * Apply with `error`, instead. A pan, `setOptions()` and the props of the components never trigger it.
+   * The user or a method changed the state, such as the zoom or the edit, or Straighten found the document. A loaded
+   * image comes with `load`, and a failed Apply with `error`, instead. A pan, `setOptions()` and the props of the
+   * components never trigger it.
    */
   change: PaperPicState
   /** The image is about to be saved. Call `preventDefault()` to save it another way. */
@@ -594,7 +597,7 @@ export class PaperPic {
   /**
    * Opens a tool: `crop`, `perspective` or `redact`, with their corners, or `adjust` or `finish`, with their panel. It stays open
    * until `confirmTool()` or `cancelTool()`. Opening `finish` from the original chooses black and white, so the preview
-   * shows what it does.
+   * shows what it does. Opening `perspective` looks for the document, and places the corners on it if it finds one.
    * It does nothing outside the edit mode, while another tool is open, or for Crop, Straighten and Redact while a preview is on its way.
    *
    * @example
@@ -647,7 +650,7 @@ export class PaperPic {
 
   /**
    * Closes the open tool and adds what it chose to the edits: a selection, or the settings of Adjust or Clean up.
-   * In Straighten it does nothing until a corner moves, which `getState().canConfirm` reports.
+   * In Straighten it does nothing until the document is found or a corner moves, which `getState().canConfirm` reports.
    */
   confirmTool(): void {
     if (!this.openToolId()) {
@@ -1008,7 +1011,7 @@ export class PaperPic {
       setHint: (text) => {
         const before = this.hint()
         this.hintOverride = text
-        this.editBar.setHint(text)
+        this.editBar.setHint(this.hint())
         // A tool that closes lets go of its corner too, and the close reports the new state itself
         if (this.session && this.hint() !== before) {
           this.emit('change', this.getState())
@@ -1017,6 +1020,7 @@ export class PaperPic {
       announce: text => this.announce(text),
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
+      findDocument: wanted => findDocument(this.image!, toPipelineSteps(this.history.done).filter(isShapeStep), this.runner, wanted),
       aspectRatio: () => this.options.aspectRatio,
       paperSize: () => this.paperSize,
       redactColor: () => this.redactColor,
@@ -1036,7 +1040,7 @@ export class PaperPic {
 
   /** What the open tool asks of the user: its hint, or what replaces it. Only a tool with a selection has one. */
   private hint(): string | null {
-    const key = this.session?.tool.hint
+    const key = this.session?.handle.hint?.() ?? this.session?.tool.hint
     return this.session
       ? this.hintOverride ?? (key ? this.labels[key] : null)
       : null

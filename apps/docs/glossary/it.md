@@ -14,6 +14,7 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 | edit mode                                     | modalità di modifica        |
 | editor                                        | editor                      |
 | event                                         | evento                      |
+| find, the document in the photo               | trovare                     |
 | finish, of Clean up                           | finitura                    |
 | guide                                         | Guida                       |
 | keyboard shortcut                             | scorciatoia da tastiera     |

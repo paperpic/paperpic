@@ -9,7 +9,7 @@ Phone photos have 12 megapixels or more, and editing them takes real work. This 
 
 ## A Web Worker does the work
 
-Black and white and Straighten take about a second and a half on a 12-megapixel photo on a recent phone, as the [measured times](#measurements) show. On the main thread, the page would freeze for that long. PaperPic runs them in a Web Worker instead, so the page keeps responding while Apply runs.
+Black and white and Straighten take about a second and a half on a 12-megapixel photo on a recent phone, as the [measured times](#measurements) show. On the main thread, the page would freeze for that long. PaperPic runs them in a Web Worker instead, so the page keeps responding while Apply runs. Straighten also looks for the document there.
 
 The worker ships inside the package and starts with the standard `new Worker(new URL(…, import.meta.url))`, which bundlers such as Vite and webpack 5 pick up on their own, with no configuration. If the worker cannot start, the editing runs on the main thread: it still works, but the page can freeze for a moment with large images.
 

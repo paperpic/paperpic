@@ -26,7 +26,7 @@ features:
     link: /guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Straighten and crop"
-    details: "Drag four corners to turn a photo taken at an angle into a flat page, with its proportions estimated or set."
+    details: "Turn a photo taken at an angle into a flat page, with its proportions estimated or set. The viewer finds the corners, and you can drag them."
     link: /guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Clean up"

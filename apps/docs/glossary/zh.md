@@ -14,6 +14,7 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 | edit mode                                     | 编辑模式   |
 | editor                                        | 编辑器     |
 | event                                         | 事件       |
+| find, the document in the photo               | 找到       |
 | finish, of Clean up                           | 效果       |
 | guide                                         | 指南       |
 | keyboard shortcut                             | 键盘快捷键 |

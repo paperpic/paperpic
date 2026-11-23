@@ -14,6 +14,7 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 | edit mode                                     | режим редактирования            |
 | editor                                        | редактор                        |
 | event                                         | событие                         |
+| find, the document in the photo               | находить                        |
 | finish, of Clean up                           | обработка                       |
 | guide                                         | Руководство                     |
 | keyboard shortcut                             | сочетание клавиш                |

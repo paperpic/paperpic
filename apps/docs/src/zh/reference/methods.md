@@ -195,7 +195,7 @@ function flip(): void
 function openTool(id: ToolId): void
 ```
 
-打开带面板的工具：裁剪（`'crop'`）、矫正（`'perspective'`）、调整（`'adjust'`）或清理（`'finish'`）。当效果为原图时，清理在打开时会选择黑白。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)。在此期间，不能开始其他修改，撤销、重做和应用也都不起作用。在编辑模式之外、有其他工具打开时、黑白模式下的调整，以及预览准备期间的裁剪和矫正，什么也不做。
+打开带面板的工具：裁剪（`'crop'`）、矫正（`'perspective'`）、调整（`'adjust'`）或清理（`'finish'`）。当效果为原图时，清理在打开时会选择黑白。工具会一直打开，直到 [`confirmTool()`](#confirmtool) 或 [`cancelTool()`](#canceltool)。在此期间，不能开始其他修改，撤销、重做和应用也都不起作用。在编辑模式之外、有其他工具打开时、黑白模式下的调整，以及预览准备期间的裁剪和矫正，什么也不做。矫正在打开时会寻找文档，[找到后](../guide/tools/straighten#finding-the-document)把四个角放到文档上。
 
 “遮盖”（`'redact'`）也像“裁剪”一样带着角点打开。
 
@@ -205,7 +205,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-关闭打开的工具，并把其中的选择加入修改，与 `Enter` 相同：裁剪或矫正的选区，或者调整或清理的设置，作为一项修改。在“矫正”中，移动某个角之前它不做任何事，[状态](./state)的 `canConfirm` 会说明何时可以。
+关闭打开的工具，并把其中的选择加入修改，与 `Enter` 相同：裁剪或矫正的选区，或者调整或清理的设置，作为一项修改。在“矫正”中，查看器找到文档或某个角被移动之前，它不做任何事，[状态](./state)的 `canConfirm` 会说明何时可以。
 
 ### `cancelTool()`
 

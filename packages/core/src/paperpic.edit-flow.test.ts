@@ -7,6 +7,7 @@ import { DEFAULT_LABELS } from './ui/labels'
 
 const mocks = vi.hoisted(() => ({
   exportImage: vi.fn(),
+  findDocument: vi.fn(),
   renderPreview: vi.fn(),
 }))
 
@@ -14,6 +15,7 @@ vi.mock('./pipeline/export', async importOriginal => ({
   ...await importOriginal<typeof import('./pipeline/export')>(),
   exportImage: mocks.exportImage,
 }))
+vi.mock('./pipeline/detection', () => ({ findDocument: mocks.findDocument }))
 vi.mock('./pipeline/preview', () => ({ renderPreview: mocks.renderPreview }))
 
 let images: { resolve: () => void }[]
@@ -83,6 +85,8 @@ describe('editing', () => {
     revoke.mockClear()
     mocks.exportImage.mockReset()
     mocks.exportImage.mockResolvedValue(exported)
+    mocks.findDocument.mockReset()
+    mocks.findDocument.mockResolvedValue(null)
     mocks.renderPreview.mockReset()
     mocks.renderPreview.mockImplementation(async () => preview())
 
@@ -794,6 +798,142 @@ describe('editing', () => {
 
       pic.confirmTool()
       expect(pic.getState()).toMatchObject({ activeTool: null, canConfirm: false, canUndo: true })
+    })
+
+    describe('finding the document in Straighten', () => {
+      const sheet = [
+        { x: 0.2, y: 0.1 },
+        { x: 0.7, y: 0.2 },
+        { x: 0.8, y: 0.9 },
+        { x: 0.1, y: 1 },
+      ]
+      const found = 'Document found. Check its corners'
+
+      beforeEach(() => {
+        mocks.findDocument.mockResolvedValue(sheet)
+        // Nothing paints here, so the corners would never end their slide
+        vi.stubGlobal('matchMedia', () => ({ matches: false }))
+      })
+
+      it('places the corners on it, and makes Done available without a move', async () => {
+        pic.openTool('perspective')
+        expect(pic.getState().canConfirm).toBe(false)
+        onChange.mockClear()
+        await flush()
+
+        // At a zoom of 0.5 the image starts at 0, 12.5 of a viewer of 300 by 150
+        expect((handles() as HTMLElement[]).map(({ style }) => [style.left, style.top])).toEqual([
+          ['60px', '25px'],
+          ['210px', '37.5px'],
+          ['240px', '125px'],
+          ['30px', '137.5px'],
+        ])
+        expect(pic.getState()).toMatchObject({ canConfirm: true, hint: found })
+        expect(button('Done').getAttribute('aria-disabled')).toBe('false')
+        expect(button('Done').hasAttribute('aria-describedby')).toBe(false)
+        expect(button('Done').parentElement!.textContent).toContain(found)
+        expect(announcement()).toBe(found)
+        expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ canConfirm: true, hint: found }))
+
+        pic.confirmTool()
+        expect(mocks.renderPreview.mock.calls[0]![1]).toEqual([
+          expect.objectContaining({ type: 'perspective', quad: sheet }),
+        ])
+        expect(pic.getState()).toMatchObject({ activeTool: null, canUndo: true, hint: null })
+      })
+
+      it('reports each change once', async () => {
+        pic.openTool('perspective')
+        onChange.mockClear()
+        await flush()
+        expect(onChange).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ canConfirm: true, hint: found }))
+      })
+
+      it('leaves no hint behind when the app confirms it at once', async () => {
+        pic.on('change', ({ activeTool, canConfirm }) => {
+          if (activeTool === 'perspective' && canConfirm) {
+            pic.confirmTool()
+          }
+        })
+        pic.openTool('perspective')
+        await flush()
+        expect(pic.getState()).toMatchObject({ activeTool: null, canUndo: true, hint: null })
+        pic.openTool('crop')
+        expect(pic.getState().hint).toBe(DEFAULT_LABELS.cropHint)
+        expect(button('Done').parentElement!.textContent).toContain(DEFAULT_LABELS.cropHint)
+      })
+
+      it('says it in the language of new labels', async () => {
+        pic.openTool('perspective')
+        await flush()
+        pic.setOptions({
+          labels: { perspectiveFound: 'Documento encontrado' },
+        })
+        expect(pic.getState().hint).toBe('Documento encontrado')
+        expect(button('Done').parentElement!.textContent).toContain('Documento encontrado')
+      })
+
+      it('looks at the image with the edits of its shape, and without its tones', async () => {
+        pic.rotate(1)
+        pic.setAdjustments({ brightness: 0.5 })
+        await flush()
+        pic.openTool('redact')
+        pic.confirmTool()
+        await flush()
+        expect(mocks.findDocument).not.toHaveBeenCalled()
+        pic.openTool('perspective')
+        expect(mocks.findDocument).toHaveBeenCalledOnce()
+        const [image, steps] = mocks.findDocument.mock.calls[0]!
+        expect(image).toMatchObject({ width: 600, height: 250 })
+        expect(steps).toEqual([
+          { type: 'rotate', rotation: 90 },
+        ])
+      })
+
+      it('places the corners on the image as the user sees it, turned', async () => {
+        pic.rotate(1)
+        pic.openTool('perspective')
+        await flush()
+        pic.confirmTool()
+        expect(mocks.renderPreview.mock.calls[0]![1]).toEqual([
+          { type: 'rotate', rotation: 90 },
+          expect.objectContaining({ type: 'perspective', quad: sheet }),
+        ])
+      })
+
+      it('looks for it each time Straighten opens, and leaves no trace when cancelled', async () => {
+        pic.openTool('perspective')
+        await flush()
+        pic.cancelTool()
+        expect(pic.getState()).toMatchObject({ canUndo: false, hint: null, canConfirm: false })
+        pic.openTool('perspective')
+        expect(pic.getState().canConfirm).toBe(false)
+        await flush()
+        expect(pic.getState().canConfirm).toBe(true)
+        expect(mocks.findDocument).toHaveBeenCalledTimes(2)
+      })
+
+      it('ignores a document that arrives once the tool is closed, or the viewer destroyed', async () => {
+        pic.openTool('perspective')
+        pic.cancelTool()
+        onChange.mockClear()
+        await flush()
+        expect(onChange).not.toHaveBeenCalled()
+        expect(announcement()).not.toBe(found)
+
+        pic.openTool('perspective')
+        pic.destroy()
+        await flush()
+        expect(announcement).toThrow()
+      })
+
+      it('never looks for it in the other tools', () => {
+        for (const id of ['crop', 'redact', 'adjust', 'finish'] as const) {
+          pic.openTool(id)
+          pic.cancelTool()
+        }
+        expect(mocks.findDocument).not.toHaveBeenCalled()
+      })
     })
 
     it.each(['crop', 'redact', 'adjust', 'finish'] as const)('never makes Done wait in %s', (id) => {

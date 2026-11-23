@@ -1,14 +1,14 @@
 import type { Operation } from '../pipeline/operations'
 import type { Quad } from '../processing/types'
 import type { Tool } from './types'
-import { estimateAspectRatio, estimateOutputSize } from '../processing/homography'
+import { estimateAspectRatio, estimateOutputSize, scaleQuad } from '../processing/homography'
 import { paperAspectRatio } from '../processing/paper'
 import { constrainToConvex, CornerEditor, cornerSession, initialCorners } from './corners'
 
 /**
- * Straightens a document, whose 4 corners the user places on the photo. The proportions of the result come from the
- * paper size of its panel, or else from the consumer or an estimate. Done waits until a corner moves, because the
- * corners start on no document.
+ * Straightens a document, whose 4 corners the user places on the photo. The tool looks for the document as it opens,
+ * and if it finds one, it places the corners on it. Otherwise they start on no document, so Done waits until one moves.
+ * The proportions of the result come from the paper size of its panel, or else from the consumer or an estimate.
  */
 export const perspectiveTool: Tool = {
   id: 'perspective',
@@ -21,7 +21,20 @@ export const perspectiveTool: Tool = {
   ],
   activate(host) {
     const frame = host.frameSize()
+    let open = true
+    let found = false
     const editor = new CornerEditor(host, initialCorners(frame), constrainToConvex)
+
+    void host.findDocument(() => open && !editor.touched).then((corners) => {
+      if (!open || !corners || !editor.suggest(scaleQuad(corners, frame.width, frame.height))) {
+        return
+      }
+      found = true
+      host.announce(host.labels().perspectiveFound)
+      // Last, because a listener of the change may close the tool
+      host.selectionMoved()
+    })
+
     const confirm = (): Operation | null => {
       const corners = editor.points
       const [topLeft, topRight, bottomRight, bottomLeft] = corners
@@ -49,9 +62,17 @@ export const perspectiveTool: Tool = {
         aspectRatio,
       }
     }
+    const session = cornerSession(editor, confirm)
     return {
-      ...cornerSession(editor, confirm),
-      canConfirm: () => editor.moved,
+      ...session,
+      canConfirm: () => found || editor.moved,
+      hint: () => found
+        ? 'perspectiveFound'
+        : 'perspectiveHint',
+      deactivate() {
+        open = false
+        session.deactivate()
+      },
     }
   },
 }
