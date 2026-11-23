@@ -67,6 +67,7 @@ Fünf Beschriftungen sind Funktionen, weil ihr Text einen Wert enthält. Eine Fu
 | `paperCard`         | Card                                                             | Wählt das Format einer Ausweis- oder Bankkarte in Begradigen                                                           |
 | `paperLetter`       | Letter                                                           | Wählt US-Letter in Begradigen                                                                                          |
 | `perspective`       | Straighten                                                       | Die Schaltfläche Begradigen                                                                                            |
+| `perspectiveFound`  | Document found. Check its corners                                | Erscheint und wird angesagt, wenn Begradigen das Dokument findet                                                       |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | Was in Begradigen zu tun ist                                                                                           |
 | `previewError`      | The changes could not be shown                                   | Angezeigt, wenn eine Änderung nicht angezeigt werden kann                                                              |
 | `processing`        | Applying changes                                                 | Angezeigt, während Übernehmen läuft                                                                                    |

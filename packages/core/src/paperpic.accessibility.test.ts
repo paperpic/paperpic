@@ -5,6 +5,7 @@ import { PaperPic } from './index'
 
 const mocks = vi.hoisted(() => ({
   exportImage: vi.fn(),
+  findDocument: vi.fn(),
   renderPreview: vi.fn(),
 }))
 
@@ -12,6 +13,7 @@ vi.mock('./pipeline/export', async importOriginal => ({
   ...await importOriginal<typeof import('./pipeline/export')>(),
   exportImage: mocks.exportImage,
 }))
+vi.mock('./pipeline/detection', () => ({ findDocument: mocks.findDocument }))
 vi.mock('./pipeline/preview', () => ({ renderPreview: mocks.renderPreview }))
 
 let images: { resolve: () => void }[]
@@ -50,6 +52,8 @@ describe('accessibility', () => {
   beforeEach(async () => {
     images = []
     mocks.exportImage.mockReset()
+    mocks.findDocument.mockReset()
+    mocks.findDocument.mockResolvedValue(null)
     mocks.renderPreview.mockReset()
     mocks.renderPreview.mockImplementation(async () => ({
       element: {},
@@ -121,6 +125,21 @@ describe('accessibility', () => {
     await finishLoading()
     pic.edit()
     pic.openTool(tool)
+    expect(await audit()).toEqual([])
+  })
+
+  it('has no violations with the corners on a document that Straighten found', async () => {
+    mocks.findDocument.mockResolvedValue([
+      { x: 0.2, y: 0.1 },
+      { x: 0.7, y: 0.2 },
+      { x: 0.8, y: 0.9 },
+      { x: 0.1, y: 1 },
+    ])
+    await finishLoading()
+    pic.edit()
+    pic.openTool('perspective')
+    await flush()
+    expect(pic.getState().canConfirm).toBe(true)
     expect(await audit()).toEqual([])
   })
 

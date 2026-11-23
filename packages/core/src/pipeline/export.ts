@@ -1,5 +1,6 @@
 import type { PixelBuffer } from '../processing/types'
 import type { PipelineStep } from './steps'
+import { nextPaint } from './next-paint'
 import { pixelsToCanvas, readPixels, releaseCanvas } from './pixels'
 import { planRead } from './read-plan'
 
@@ -86,18 +87,6 @@ function encode(pixels: PixelBuffer, type: string, quality: number): Promise<Blo
         reject(new Error(`The browser could not save an image of ${pixels.width}×${pixels.height}. Set maxOutputSize to a smaller value.`))
       }
     }, type, quality)
-  })
-}
-
-/** Lets the browser paint the message about the work, because reading a large image blocks the page for a moment. */
-function nextPaint(): Promise<void> {
-  return new Promise((resolve) => {
-    // A hidden page gets no frames, and the work must still go on
-    const timer = setTimeout(resolve, 100)
-    requestAnimationFrame(() => {
-      clearTimeout(timer)
-      setTimeout(resolve)
-    })
   })
 }
 

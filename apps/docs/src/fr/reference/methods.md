@@ -195,7 +195,7 @@ Retourne l’image de gauche à droite telle qu’elle est affichée, donc aprè
 function openTool(id: ToolId): void
 ```
 
-Ouvre un outil avec un panneau : Recadrer (`'crop'`), Redresser (`'perspective'`), Ajuster (`'adjust'`) ou Nettoyer (`'finish'`), qui choisit le noir et blanc en s’ouvrant quand la finition est l’original. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Pendant ce temps, aucun autre changement ne peut commencer, et Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition, avec un autre outil ouvert, pour Ajuster en noir et blanc, ni pour Recadrer et Redresser pendant qu’un aperçu est en route.
+Ouvre un outil avec un panneau : Recadrer (`'crop'`), Redresser (`'perspective'`), Ajuster (`'adjust'`) ou Nettoyer (`'finish'`), qui choisit le noir et blanc en s’ouvrant quand la finition est l’original. L’outil reste ouvert jusqu’à [`confirmTool()`](#confirmtool) ou [`cancelTool()`](#canceltool). Pendant ce temps, aucun autre changement ne peut commencer, et Annuler la dernière action, Rétablir et Appliquer ne font rien. Ne fait rien hors du mode d’édition, avec un autre outil ouvert, pour Ajuster en noir et blanc, ni pour Recadrer et Redresser pendant qu’un aperçu est en route. Redresser cherche le document à son ouverture, et place ses coins dessus [s’il en trouve un](../guide/tools/straighten#finding-the-document).
 
 Masquer (`'redact'`) s’ouvre aussi avec des coins, comme Recadrer.
 
@@ -205,7 +205,7 @@ Masquer (`'redact'`) s’ouvre aussi avec des coins, comme Recadrer.
 function confirmTool(): void
 ```
 
-Ferme l’outil ouvert et ajoute ce qu’il a choisi aux changements, comme `Entrée` : la sélection de Recadrer ou de Redresser, ou les réglages d’Ajuster ou de Nettoyer, comme un seul changement. Dans Redresser, elle ne fait rien tant qu’aucun coin ne bouge, et le `canConfirm` de l’[état](./state) dit quand elle le peut.
+Ferme l’outil ouvert et ajoute ce qu’il a choisi aux changements, comme `Entrée` : la sélection de Recadrer ou de Redresser, ou les réglages d’Ajuster ou de Nettoyer, comme un seul changement. Dans Redresser, elle ne fait rien tant que la visionneuse n’a pas trouvé le document et qu’aucun coin ne bouge, et le `canConfirm` de l’[état](./state) dit quand elle le peut.
 
 ### `cancelTool()`
 

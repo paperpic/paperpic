@@ -111,7 +111,7 @@ export function Receipt() {
 | `adjustments` | `{ brightness, contrast }`                   | 亮度和对比度，各自从 -1 到 1。黑白模式下不生效。调整打开时，是它面板上的值                                                                  |
 | `busy`        | `boolean`                                    | 应用是否正在进行                                                                                                                            |
 | `canApply`    | `boolean`                                    | 是否有可应用的修改。相互抵消的旋转和翻转不算修改                                                                                            |
-| `canConfirm`  | `boolean`                                    | [`confirmTool()`](./methods#confirmtool) 能否保留打开的工具所显示的内容。“矫正”会等到某个角被移动。没有打开的工具时为 `false`               |
+| `canConfirm`  | `boolean`                                    | [`confirmTool()`](./methods#confirmtool) 能否保留打开的工具所显示的内容。“矫正”会等到找到文档或某个角被移动。没有打开的工具时为 `false`     |
 | `canRedo`     | `boolean`                                    | 是否有可重做的修改                                                                                                                          |
 | `canUndo`     | `boolean`                                    | 是否有可撤销的修改                                                                                                                          |
 | `finish`      | `{ mode, sensitivity }`                      | 清理的效果，即 [`FinishMode`](./types#finishmode)，以及 0 到 1 的黑白灵敏度。清理打开时，是它面板上的值                                     |

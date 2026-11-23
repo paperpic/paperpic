@@ -19,7 +19,7 @@ Jeder Schritt passiert nur, wenn der Nutzer ihn anstößt. Nichts verändert das
 
 - Es lädt nichts hoch. Deine App entscheidet, was mit dem Ergebnis passiert.
 - Es öffnet keine PDF-Dateien, nur Bilder.
-- Es findet die Ränder des Dokuments nicht selbst: Der Nutzer zieht die Ecken.
+- Es findet das Dokument nicht immer selbst: Wenn es sich nicht sicher ist, zieht der Nutzer die Ecken.
 
 ## Pakete
 

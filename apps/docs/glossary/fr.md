@@ -14,6 +14,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | edit mode                                     | mode d’édition        |
 | editor                                        | éditeur               |
 | event                                         | événement             |
+| find, the document in the photo               | trouver               |
 | finish, of Clean up                           | finition              |
 | fit, of the image in the viewer               | adapter, adaptation   |
 | guide                                         | Guide                 |

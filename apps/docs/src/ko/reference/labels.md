@@ -67,6 +67,7 @@ const pic = new PaperPic(container, {
 | `paperCard`         | Card                                                             | ‘기울기 보정’에서 신분증이나 은행 카드 크기를 고릅니다                          |
 | `paperLetter`       | Letter                                                           | ‘기울기 보정’에서 US 레터를 고릅니다                                            |
 | `perspective`       | Straighten                                                       | ‘기울기 보정’ 버튼                                                              |
+| `perspectiveFound`  | Document found. Check its corners                                | ‘기울기 보정’이 문서를 찾았을 때 표시되고 읽힘                                  |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | ‘기울기 보정’에서 할 일                                                         |
 | `previewError`      | The changes could not be shown                                   | 변경을 표시할 수 없으면 표시                                                    |
 | `processing`        | Applying changes                                                 | 적용이 진행되는 동안 표시                                                       |

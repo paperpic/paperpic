@@ -38,7 +38,7 @@ No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona e
 
 - A imagem tem o papel de imagem, com `alt` como nome. Sem `alt`, os leitores de tela a ignoram.
 - A barra de ferramentas e a barra de edição têm nome próprio, como "Controles da imagem" e "Controles de edição".
-- Um anúncio informa o que o usuário não percebe só pelo foco: o carregamento da imagem, o nível de zoom, o início do modo de edição, um canto selecionado e a posição de um canto movido, o valor de uma régua, o resultado do Aplicar e qualquer falha.
+- Um anúncio informa o que o usuário não percebe só pelo foco: o carregamento da imagem, o nível de zoom, o início do modo de edição, um documento que Endireitar encontra, um canto selecionado e a posição de um canto movido, o valor de uma régua, o resultado do Aplicar e qualquer falha.
 - Os acabamentos do Limpar são botões que dizem se estão pressionados. Uma ferramenta em uso, que um ponto marca na tela, é descrita como “Em uso”. Em preto e branco, Ajustar é descrito com o motivo de estar desativado.
 
 ## Telas sensíveis ao toque
@@ -50,6 +50,6 @@ No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona e
 
 ## Preferências
 
-- **Movimento reduzido.** Com `prefers-reduced-motion: reduce`, os botões mudam de estado sem transições.
+- **Movimento reduzido.** Com `prefers-reduced-motion: reduce`, os botões mudam de estado sem transições, e os cantos vão na hora para o documento que Endireitar encontra, sem deslizar.
 - **Cores forçadas.** No alto contraste do Windows e em outros modos de cores forçadas, botões pressionados e as ações principais mantêm um contorno visível.
 - **Modo escuro.** As cores seguem o `color-scheme` da sua página, que pode seguir o sistema. Veja [Estilos](./styling#dark-mode).

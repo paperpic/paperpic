@@ -195,7 +195,7 @@ Capovolge l’immagine da sinistra a destra così come appare, quindi dopo un qu
 function openTool(id: ToolId): void
 ```
 
-Apre uno strumento con un pannello: Ritaglia (`'crop'`), Raddrizza (`'perspective'`), Regola (`'adjust'`) o Pulisci (`'finish'`), che quando si apre sceglie il bianco e nero se la finitura è l’originale. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Nel frattempo non può cominciare nessun altro cambiamento, e Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola in bianco e nero, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo.
+Apre uno strumento con un pannello: Ritaglia (`'crop'`), Raddrizza (`'perspective'`), Regola (`'adjust'`) o Pulisci (`'finish'`), che quando si apre sceglie il bianco e nero se la finitura è l’originale. Lo strumento resta aperto fino a [`confirmTool()`](#confirmtool) o [`cancelTool()`](#canceltool). Nel frattempo non può cominciare nessun altro cambiamento, e Annulla l’ultima azione, Ripeti e Applica non fanno nulla. Non fa nulla fuori dalla modalità di modifica, con un altro strumento aperto, per Regola in bianco e nero, né per Ritaglia e Raddrizza mentre un’anteprima è in arrivo. Raddrizza cerca il documento quando si apre, e vi posiziona sopra gli angoli [se lo trova](../guide/tools/straighten#finding-the-document).
 
 Anche Copri (`'redact'`) si apre con gli angoli, come Ritaglia.
 
@@ -205,7 +205,7 @@ Anche Copri (`'redact'`) si apre con gli angoli, come Ritaglia.
 function confirmTool(): void
 ```
 
-Chiude lo strumento aperto e aggiunge ai cambiamenti ciò che ha scelto, come `Invio`: la selezione di Ritaglia o di Raddrizza, o le impostazioni di Regola o di Pulisci, come un solo cambiamento. In Raddrizza non fa nulla finché non si sposta un angolo, e il `canConfirm` dello [stato](./state) dice quando può.
+Chiude lo strumento aperto e aggiunge ai cambiamenti ciò che ha scelto, come `Invio`: la selezione di Ritaglia o di Raddrizza, o le impostazioni di Regola o di Pulisci, come un solo cambiamento. In Raddrizza non fa nulla finché il visualizzatore non trova il documento o non si sposta un angolo, e il `canConfirm` dello [stato](./state) dice quando può.
 
 ### `cancelTool()`
 

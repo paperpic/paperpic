@@ -26,7 +26,7 @@ features:
     link: /es/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Enderezar y recortar"
-    details: "Arrastra cuatro esquinas para convertir una foto hecha en ángulo en una página plana, con sus proporciones estimadas o fijadas."
+    details: "Convierte una foto hecha en ángulo en una página plana, con sus proporciones estimadas o fijadas. El visor encuentra las esquinas, y puedes arrastrarlas."
     link: /es/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Limpiar"

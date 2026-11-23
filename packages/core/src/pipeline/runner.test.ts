@@ -1,5 +1,7 @@
 import type { PixelBuffer } from '../processing/types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { rectangleCorners } from '../processing/homography'
+import { sheetPhoto } from '../test/photos'
 import { PipelineRunner } from './runner'
 
 const steps = [
@@ -119,6 +121,66 @@ describe('pipelineRunner', () => {
     await expect(second).resolves.toBe(secondResult)
   })
 
+  it.each([
+    [
+      rectangleCorners(0.1, 0.1, 0.9, 0.9),
+    ],
+    [null],
+  ])('looks for a document in the worker, and gives its corners, such as %o', async (corners) => {
+    const runner = new PipelineRunner()
+    const source = pixels()
+    const job = runner.detect(source, steps, () => true)
+    const worker = await started()
+    worker.onmessage!({
+      data: { ready: true },
+    })
+    await vi.waitFor(() => expect(worker.postMessage).toHaveBeenCalledOnce())
+    const [request, transfer] = worker.postMessage.mock.calls[0]!
+    expect(request).toMatchObject({ operation: 'detect', steps })
+    expect(transfer).toEqual([source.data.buffer])
+
+    worker.onmessage!({
+      data: { id: request.id, corners, milliseconds: 1 },
+    })
+    await expect(job).resolves.toEqual(corners)
+  })
+
+  it('looks for a document on the main thread when the worker cannot be created', async () => {
+    vi.stubGlobal('Worker', class {
+      constructor() {
+        throw new Error('not allowed')
+      }
+    })
+    const photo = sheetPhoto({ width: 240, height: 180 }, rectangleCorners(60, 30, 180, 150))
+    const corners = await new PipelineRunner().detect(photo, [], () => true)
+    expect(corners![0].x).toBeCloseTo(0.25, 1)
+    expect(corners![2].x).toBeCloseTo(0.75, 1)
+  })
+
+  it('drops a search that nobody wants by the time the worker is ready', async () => {
+    let wanted = true
+    const job = new PipelineRunner().detect(pixels(), steps, () => wanted)
+    const worker = await started()
+    wanted = false
+    worker.onmessage!({
+      data: { ready: true },
+    })
+    await expect(job).resolves.toBeNull()
+    expect(worker.postMessage).not.toHaveBeenCalled()
+  })
+
+  it('drops a search that nobody wants before the main thread runs it', async () => {
+    vi.useFakeTimers()
+    let wanted = true
+    const read = vi.fn(() => new Uint8ClampedArray(8))
+    const source = Object.defineProperty(pixels(), 'data', { get: read })
+    const job = new PipelineRunner().detect(source, steps, () => wanted)
+    wanted = false
+    await vi.advanceTimersByTimeAsync(5000)
+    await expect(job).resolves.toBeNull()
+    expect(read).not.toHaveBeenCalled()
+  })
+
   it('fails every job when the worker crashes', async () => {
     const runner = new PipelineRunner()
     const first = runner.run(pixels(), steps)
@@ -230,6 +292,13 @@ describe('pipelineRunner', () => {
     await expect(job).rejects.toThrow('destroyed')
     expect(worker.terminate).toHaveBeenCalled()
     expect(worker.postMessage).not.toHaveBeenCalled()
+  })
+
+  it('starts no worker once destroyed', async () => {
+    const runner = new PipelineRunner()
+    runner.destroy()
+    await expect(runner.detect(pixels(), steps, () => true)).rejects.toThrow('destroyed')
+    expect(FakeWorker.instances).toHaveLength(0)
   })
 
   it('stops the worker and fails the job on destroy', async () => {

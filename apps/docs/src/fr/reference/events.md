@@ -48,7 +48,7 @@ Quelque chose a échoué, et `phase` dit quoi :
 
 - **Données :** [`PaperPicState`](./state)
 
-L’état a changé, par l’utilisateur ou par une méthode, par exemple en zoomant, en ouvrant un outil ou en annulant. Il envoie l’état complet, le même que renverrait [`getState()`](./methods#getstate) à ce moment-là. Appliquer l’émet deux fois : au début, avec `busy: true`, et à la fin quand il réussit, après [`apply`](#apply).
+L’état a changé, par l’utilisateur ou par une méthode, par exemple en zoomant, en ouvrant un outil ou en annulant, ou parce que Redresser a [trouvé le document](../guide/tools/straighten#finding-the-document). Il envoie l’état complet, le même que renverrait [`getState()`](./methods#getstate) à ce moment-là. Appliquer l’émet deux fois : au début, avec `busy: true`, et à la fin quand il réussit, après [`apply`](#apply).
 
 Ceci change l’état sans émettre `change` :
 

@@ -38,7 +38,7 @@ Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme
 
 - L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
-- Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato di Applica e ogni errore.
+- Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un documento trovato da Raddrizza, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato di Applica e ogni errore.
 - Le finiture di Pulisci sono pulsanti che dicono se sono premuti. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo». In bianco e nero, Regola è descritto con il motivo per cui è disattivato.
 
 ## Schermi touch
@@ -50,6 +50,6 @@ Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme
 
 ## Preferenze
 
-- **Movimento ridotto.** Con `prefers-reduced-motion: reduce`, i pulsanti cambiano stato senza transizioni.
+- **Movimento ridotto.** Con `prefers-reduced-motion: reduce`, i pulsanti cambiano stato senza transizioni, e gli angoli vanno subito sul documento trovato da Raddrizza, senza scorrere.
 - **Colori forzati.** Nel contrasto elevato di Windows e negli altri modi a colori forzati, i pulsanti premuti e le azioni principali mantengono un contorno visibile.
 - **Modalità scura.** I colori seguono il `color-scheme` della tua pagina, che può seguire il sistema. Vedi [Stili](./styling#dark-mode).

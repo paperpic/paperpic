@@ -14,6 +14,7 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | edit mode                                     | 編集モード               |
 | editor                                        | エディター               |
 | event                                         | イベント                 |
+| find, the document in the photo               | 見つける                 |
 | finish, of Clean up                           | 仕上げ                   |
 | guide                                         | ガイド                   |
 | keyboard shortcut                             | キーボードショートカット |

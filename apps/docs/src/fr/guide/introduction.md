@@ -19,7 +19,7 @@ Chaque étape n’a lieu que lorsque l’utilisateur la demande. Rien ne modifie
 
 - Il n’envoie rien. Votre application décide quoi faire du résultat.
 - Il n’ouvre pas les fichiers PDF, seulement des images.
-- Il ne trouve pas seul les bords du document : l’utilisateur fait glisser les coins.
+- Il ne trouve pas toujours seul le document : quand il n’est pas sûr, l’utilisateur fait glisser les coins.
 
 ## Paquets
 

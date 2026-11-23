@@ -195,7 +195,7 @@ Mirrors the image left to right as it is on display, so after a quarter turn it 
 function openTool(id: ToolId): void
 ```
 
-Opens a tool with a panel: Crop (`'crop'`), Straighten (`'perspective'`), Adjust (`'adjust'`) or Clean up (`'finish'`), which chooses black and white as it opens when the finish is the original. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool). Meanwhile, no other edit can start, and Undo, Redo and Apply do nothing. It does nothing outside the edit mode, while another tool is open, for Adjust in black and white, and for Crop and Straighten while a preview is on its way.
+Opens a tool with a panel: Crop (`'crop'`), Straighten (`'perspective'`), Adjust (`'adjust'`) or Clean up (`'finish'`), which chooses black and white as it opens when the finish is the original. The tool stays open until [`confirmTool()`](#confirmtool) or [`cancelTool()`](#canceltool). Meanwhile, no other edit can start, and Undo, Redo and Apply do nothing. It does nothing outside the edit mode, while another tool is open, for Adjust in black and white, and for Crop and Straighten while a preview is on its way. Straighten looks for the document as it opens, and places its corners on it [if it finds one](../guide/tools/straighten#finding-the-document).
 
 Redact (`'redact'`) opens with corners too, as Crop does.
 
@@ -205,7 +205,7 @@ Redact (`'redact'`) opens with corners too, as Crop does.
 function confirmTool(): void
 ```
 
-Closes the open tool and adds what it chose to the edits, as `Enter` does: the selection of Crop or Straighten, or the settings of Adjust or Clean up, as one edit. In Straighten it does nothing until a corner moves, and the `canConfirm` of the [state](./state) says when it can.
+Closes the open tool and adds what it chose to the edits, as `Enter` does: the selection of Crop or Straighten, or the settings of Adjust or Clean up, as one edit. In Straighten it does nothing until the viewer finds the document or a corner moves, and the `canConfirm` of the [state](./state) says when it can.
 
 ### `cancelTool()`
 

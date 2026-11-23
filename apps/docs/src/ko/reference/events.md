@@ -48,7 +48,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **페이로드:** [`PaperPicState`](./state)
 
-사용자나 메서드가 상태를 바꿨습니다. 예를 들어 확대/축소, 도구 열기, 실행 취소 등입니다. 상태 전체를 보내며, 그 순간 [`getState()`](./methods#getstate)가 반환할 값과 같습니다. 적용은 이 이벤트를 두 번 발생시킵니다. 시작할 때 `busy: true`로, 성공적으로 끝났을 때 [`apply`](#apply) 다음에 발생합니다.
+사용자나 메서드가 상태를 바꿨습니다. 예를 들어 확대/축소, 도구 열기, 실행 취소 등입니다. ‘기울기 보정’이 [문서를 찾았을 때](../guide/tools/straighten#finding-the-document)도 바뀝니다. 상태 전체를 보내며, 그 순간 [`getState()`](./methods#getstate)가 반환할 값과 같습니다. 적용은 이 이벤트를 두 번 발생시킵니다. 시작할 때 `busy: true`로, 성공적으로 끝났을 때 [`apply`](#apply) 다음에 발생합니다.
 
 다음은 상태를 바꾸지만 `change`를 발생시키지 않습니다.
 

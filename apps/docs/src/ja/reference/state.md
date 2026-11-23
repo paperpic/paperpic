@@ -111,7 +111,7 @@ Vue と React では、ビューアーはコンポーネントがマウントさ
 | `adjustments` | `{ brightness, contrast }`                   | 明るさとコントラスト（それぞれ -1 から 1）。白黒の間は使われません。調整が開いている間は、そのパネルの値                                                                     |
 | `busy`        | `boolean`                                    | 適用の実行中か                                                                                                                                                               |
 | `canApply`    | `boolean`                                    | 適用できる変更があるか。打ち消し合う回転と反転は変更に数えません                                                                                                             |
-| `canConfirm`  | `boolean`                                    | 開いているツールの内容を [`confirmTool()`](./methods#confirmtool) が残せるか。「傾き補正」は角が動くまで待ちます。ツールが開いていなければ `false` です                      |
+| `canConfirm`  | `boolean`                                    | 開いているツールの内容を [`confirmTool()`](./methods#confirmtool) が残せるか。「傾き補正」は、文書を見つけるか、角が動くまで待ちます。ツールが開いていなければ `false` です  |
 | `canRedo`     | `boolean`                                    | やり直せる変更があるか                                                                                                                                                       |
 | `canUndo`     | `boolean`                                    | 元に戻せる変更があるか                                                                                                                                                       |
 | `finish`      | `{ mode, sensitivity }`                      | クリーンアップの仕上げ（[`FinishMode`](./types#finishmode)）と、0 から 1 の白黒の感度。クリーンアップが開いている間は、そのパネルの値                                        |

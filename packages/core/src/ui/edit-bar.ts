@@ -100,6 +100,8 @@ export interface EditBarState {
   canZoomOut: boolean
   /** The finish on display, which an open Clean up may still change. */
   finish: { mode: FinishMode, sensitivity: number }
+  /** What the open tool asks of the user, or `null` if it asks nothing. */
+  hint: string | null
   /** The paper that Straighten gives its result the proportions of. */
   paper: { size: PaperSize }
   /** The color that Redact covers with. */
@@ -155,8 +157,6 @@ export class EditBar {
   private activeTool: Tool | null = null
   /** The tone that the ruler of Adjust changes. */
   private adjustment: AdjustmentName = 'brightness'
-  /** A hint of the open tool that replaces its usual one, such as the next step after selecting a corner. */
-  private hintOverride: string | null = null
   private canApply = false
   private busy = false
 
@@ -335,7 +335,6 @@ export class EditBar {
     }
     this.inUse.textContent = labels.inUse
     this.adjustUnavailable.textContent = labels.adjustUnavailable
-    this.showHint()
     this.showPanel()
     nameButton(this.cancelButton, labels.cancel)
     nameButton(this.undoButton, labels.undo)
@@ -361,20 +360,17 @@ export class EditBar {
   /** Shows the panel of an open tool, or the usual controls with `null`. */
   setActiveTool(tool: Tool | null): void {
     this.activeTool = tool
-    this.hintOverride = null
     if (tool?.id === 'adjust') {
       this.adjustment = 'brightness'
     }
     this.toolControls.hidden = tool === null
     this.controls.hidden = tool !== null || !this.confirmation.hidden
-    this.showHint()
     this.showPanel()
   }
 
-  /** Replaces the hint of the open tool, or brings it back with `null`. Closing the tool brings it back too. */
+  /** Shows what the open tool asks of the user, or nothing with `null`. */
   setHint(text: string | null): void {
-    this.hintOverride = text
-    this.showHint()
+    this.hint.textContent = text
   }
 
   /** Shows or hides the bar. Hiding it closes any open question. */
@@ -386,13 +382,14 @@ export class EditBar {
   }
 
   /** Updates what the buttons allow, and what the panel of an open tool shows. */
-  update({ canUndo, canRedo, canApply, canConfirm, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments, paper, redaction }: EditBarState): void {
+  update({ canUndo, canRedo, canApply, canConfirm, busy, canOpenTool, canZoomIn, canZoomOut, finish, adjustments, paper, redaction, hint }: EditBarState): void {
     this.canApply = canApply
     this.busy = busy
     this.undoButton.setAttribute('aria-disabled', String(busy || !canUndo))
     this.redoButton.setAttribute('aria-disabled', String(busy || !canRedo))
     this.applyButton.setAttribute('aria-disabled', String(busy || !canApply))
     this.cancelButton.setAttribute('aria-disabled', String(busy))
+    this.setHint(hint)
     this.updateConfirm(canConfirm)
     this.updateView({ canZoomIn, canZoomOut })
     // A document in black and white has tones of its own, so brightness and contrast are not in effect
@@ -534,13 +531,6 @@ export class EditBar {
     else {
       button.removeAttribute('aria-describedby')
     }
-  }
-
-  private showHint(): void {
-    const hint = this.activeTool?.hint
-    this.hint.textContent = this.hintOverride ?? (hint
-      ? this.labels[hint]
-      : '')
   }
 
   private closeConfirmation(restoreFocus = true): void {

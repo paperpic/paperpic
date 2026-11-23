@@ -26,7 +26,7 @@ features:
     link: /pt/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "Endireitar e recortar"
-    details: "Arraste quatro cantos para transformar uma foto tirada em ângulo numa página plana, com as proporções estimadas ou definidas."
+    details: "Transforme uma foto tirada em ângulo numa página plana, com as proporções estimadas ou definidas. O visualizador encontra os cantos, e você pode arrastá-los."
     link: /pt/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "Limpar"

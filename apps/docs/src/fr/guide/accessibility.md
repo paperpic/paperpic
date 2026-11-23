@@ -38,7 +38,7 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Quand un bouton a le focus, `Entrée` 
 
 - L’image a le rôle d’une image, nommée par `alt`. Sans `alt`, les lecteurs d’écran l’ignorent.
 - La barre d’outils et la barre de modification ont leur propre nom, comme « Commandes de l’image » et « Commandes de modification ».
-- Une annonce signale ce que l’utilisateur ne peut pas voir avec le seul focus : le chargement de l’image, le niveau de zoom, le début du mode d’édition, un coin sélectionné et la position d’un coin déplacé, la valeur d’une règle, le résultat d’Appliquer et tout échec.
+- Une annonce signale ce que l’utilisateur ne peut pas voir avec le seul focus : le chargement de l’image, le niveau de zoom, le début du mode d’édition, un document que Redresser trouve, un coin sélectionné et la position d’un coin déplacé, la valeur d’une règle, le résultat d’Appliquer et tout échec.
 - Les finitions de Nettoyer sont des boutons qui disent s’ils sont enfoncés. Un outil en usage, qu’un point marque à l’écran, est décrit comme « Actif ». En noir et blanc, Ajuster est décrit avec la raison pour laquelle il est désactivé.
 
 ## Écrans tactiles
@@ -50,6 +50,6 @@ Sur macOS, `Cmd` fonctionne comme `Ctrl`. Quand un bouton a le focus, `Entrée` 
 
 ## Préférences
 
-- **Mouvement réduit.** Avec `prefers-reduced-motion: reduce`, les boutons changent d’état sans transitions.
+- **Mouvement réduit.** Avec `prefers-reduced-motion: reduce`, les boutons changent d’état sans transitions, et les coins vont aussitôt sur le document que Redresser trouve, sans glisser.
 - **Couleurs forcées.** Dans le contraste élevé de Windows et les autres modes de couleurs forcées, les boutons enfoncés et les actions principales gardent un contour visible.
 - **Mode sombre.** Les couleurs suivent le `color-scheme` de votre page, qui peut suivre le système. Voir [Styles](./styling#dark-mode).

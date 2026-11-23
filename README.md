@@ -21,7 +21,7 @@ Straighten, crop and clean up a phone photo, a scan or any image with text.
 - 🔒 **Nothing leaves the browser**: no server and no requests of its own, so the image stays on the device until your code sends it
 - 🔍 **Viewer**: zoom with the buttons, the mouse wheel or a trackpad, pan, and fit to width or height
 - ✂️ **Crop** with draggable corners and a magnifier for touch screens
-- 📐 **Straighten** photos taken at an angle: drag four corners and get a flat page, with its proportions estimated or those of A4, Letter or a card
+- 📐 **Straighten** photos taken at an angle: the viewer finds the document, you correct its corners if they are off, and get a flat page, with its proportions estimated or those of A4, Letter or a card
 - 🔄 **Rotate** in 90° steps, and **flip**
 - ☀️ **Brightness and contrast** with a live ruler
 - 🧼 **Clean up** into gray, or into crisp black & white without shadows, with an adjustable sensitivity

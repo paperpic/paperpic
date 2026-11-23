@@ -26,7 +26,7 @@ features:
     link: /ja/guide/viewer
   - icon: { src: /icons/perspective.svg, wrap: true, width: 24, height: 24 }
     title: "傾き補正と切り抜き"
-    details: "4 つの角をドラッグして、斜めから撮った写真を平らなページにします。縦横比は推定も指定もできます。"
+    details: "斜めから撮った写真を平らなページにします。縦横比は推定も指定もできます。角はビューアーが見つけ、ドラッグで直せます。"
     link: /ja/guide/tools/straighten
   - icon: { src: /icons/contrast.svg, wrap: true, width: 24, height: 24 }
     title: "クリーンアップ"

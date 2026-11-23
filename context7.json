@@ -15,7 +15,8 @@
     "Import types such as ExportedImage, PaperPicState or ToolId from the package you installed. @paperpic/vue and @paperpic/react export every type of @paperpic/core, so never import from @paperpic/core in a Vue or React app.",
     "Set editable: false to show a document without editing.",
     "Straighten, the tool id 'perspective', offers the paper sizes Auto, A4, Letter and Card to the user. Set aspectRatio only when the app already knows the document, since the size the user chooses wins over it.",
-    "With toolbar: false, disable your Done button while getState().canConfirm is false: confirmTool() does nothing in Straighten until the user moves a corner.",
+    "Straighten finds the document as it opens and places the corners on it, with no option to set and no library to add. When it is not sure, the user places the corners, so keep the user in the flow.",
+    "With toolbar: false, disable your Done button while getState().canConfirm is false: confirmTool() does nothing in Straighten until it finds the document or the user moves a corner.",
     "Redact, the tool id 'redact', writes its black or white areas into the pixels only on Apply. When an image must hide something, upload the blob of the apply event, never the original src.",
     "With @paperpic/core, create the viewer in the browser once its element exists, and call destroy() when you remove it.",
     "With a Content Security Policy, allow worker-src 'self' and img-src blob:. If it restricts Trusted Types policies, add paperpic to trusted-types."

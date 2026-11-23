@@ -9,7 +9,7 @@ description: PaperPic 在哪里完成工作，打包工具、Content Security Po
 
 ## 由 Web Worker 完成工作
 
-在较新的手机上，黑白和矫正处理一张 1200 万像素的照片大约需要一秒半，见[实测时间](#measurements)。如果放在主线程上，页面会卡住这么久。因此 PaperPic 在 Web Worker 中运行它们，应用期间页面仍然可以响应。
+在较新的手机上，黑白和矫正处理一张 1200 万像素的照片大约需要一秒半，见[实测时间](#measurements)。如果放在主线程上，页面会卡住这么久。因此 PaperPic 在 Web Worker 中运行它们，应用期间页面仍然可以响应。寻找文档的过程也在那里运行。
 
 worker 随包提供，并通过标准的 `new Worker(new URL(…, import.meta.url))` 启动，Vite 和 webpack 5 等打包工具无需配置就能自动处理。如果 worker 无法启动，编辑会在主线程上运行：仍然可用，但处理大图片时页面可能短暂卡顿。
 

@@ -43,7 +43,7 @@ pnpm install
 
 - **No DOM access at import time.** Use `window` and `document` only once an instance is created, so the packages can load during server-side rendering.
 - **`destroy()` releases everything.** It removes every listener, observer and worker the instance created. Creating and destroying must be repeatable, because a framework can mount a component twice.
-- **Events report user actions only.** `setOptions()` does not emit `change`, so two-way bindings such as `v-model` do not loop.
+- **Events report user actions and their results only.** A result can come later, such as the document that Straighten finds. `setOptions()` does not emit `change`, so two-way bindings such as `v-model` do not loop.
 - **Wrappers hold no business logic.** A wrapper creates the instance on mount, forwards prop changes, translates events and destroys the instance on unmount. Anything else belongs in `@paperpic/core`.
 - **Image processing stays pure.** Code in `packages/core/src/processing` works on pixel arrays, so it can be tested without a browser.
 - **The public API documents itself.** Every public export has JSDoc, and error messages say how to fix the problem, because the published types are what developers and their AI tools read first.

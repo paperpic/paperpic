@@ -19,7 +19,7 @@ Cada paso ocurre solo cuando el usuario lo pide. Nada cambia la foto por su cuen
 
 - No sube nada. Tu app decide qué hacer con el resultado.
 - No abre archivos PDF, solo imágenes.
-- No encuentra por sí solo los bordes del documento: el usuario arrastra las esquinas.
+- No siempre encuentra el documento por sí solo: cuando no está seguro, el usuario arrastra las esquinas.
 
 ## Paquetes
 

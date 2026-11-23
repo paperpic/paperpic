@@ -2,7 +2,7 @@ import type { AdjustSetting, FinishSetting, Operation } from '../pipeline/operat
 import type { PhotoFrame } from '../pipeline/photo-frame'
 import type { PaperSize } from '../processing/paper'
 import type { RedactColor } from '../processing/redact'
-import type { Point, Size } from '../processing/types'
+import type { Point, Quad, Size } from '../processing/types'
 import type { Magnifier } from '../render/magnifier'
 import type { ViewPoint } from '../state/view'
 import type { PaperPicLabels } from '../ui/labels'
@@ -37,6 +37,11 @@ export interface ToolHost {
   announce: (text: string) => void
   /** The proportions the consumer knows for the document, as width divided by height. */
   aspectRatio: () => number | undefined
+  /**
+   * Looks for the document in the image. Its corners are fractions of the frame, or `null` if none is likely enough.
+   * The search stops before its next heavy part once `wanted` says that nobody can use its result.
+   */
+  findDocument: (wanted: () => boolean) => Promise<Quad | null>
   frameSize: () => Size
   frameToViewport: (point: Point) => ViewPoint
   labels: () => PaperPicLabels
@@ -53,12 +58,15 @@ export interface ToolHost {
   requestPaint: () => void
   /** Moves the image, if it can, until a point of the frame is on screen. */
   reveal: (point: Point) => void
-  /** The user finished moving the selection, so Done may have become available or not. */
+  /** The selection has moved and stays there, so Done may have become available or not. */
   selectionMoved: () => void
   /** Replaces the hint of the tool in the edit bar, or brings it back with `null`. */
   setHint: (text: string | null) => void
   viewportToFrame: (point: ViewPoint) => Point
 }
+
+/** The key of a hint in `PaperPicLabels`. */
+export type HintLabel = 'cropHint' | 'perspectiveFound' | 'perspectiveHint' | 'redactHint'
 
 /** A tool while it is open. */
 export interface ToolSession {
@@ -75,6 +83,8 @@ export interface ToolSession {
   escape?: () => boolean
   /** Takes the keyboard focus. */
   focus: () => void
+  /** What the tool asks of the user now. Without it, the hint of the tool stays. */
+  hint?: () => HintLabel
   /** Runs on a tap on the image, at a point of the viewport. Returns whether it used the tap. */
   tap?: (point: ViewPoint) => boolean
   /** Adapts to a new zoom or position of the image. */
@@ -87,7 +97,7 @@ export interface Tool {
   /** Only for a tool with a selection of its own, such as corners. */
   activate?: (host: ToolHost) => ToolSession
   /** Tells the user what to do in the tool. */
-  hint?: 'cropHint' | 'perspectiveHint' | 'redactHint'
+  hint?: HintLabel
   id: ToolId
 }
 
