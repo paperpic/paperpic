@@ -61,6 +61,11 @@ const pic = new PaperPic(container, {
 | `keepEditing`       | Keep editing                                                     | 変更を失わずに編集に戻るボタン                                               |
 | `loadError`         | The image could not be loaded                                    | 画像を読み込めないときに表示                                                 |
 | `loading`           | Loading image                                                    | 画像の読み込み中に表示                                                       |
+| `paper`             | Paper size                                                       | 「傾き補正」の用紙サイズの選択の名前                                         |
+| `paperA4`           | A4                                                               | 「傾き補正」で A4 を選びます                                                 |
+| `paperAuto`         | Auto                                                             | 「傾き補正」で自動の縦横比を選びます                                         |
+| `paperCard`         | Card                                                             | 「傾き補正」で身分証や銀行カードのサイズを選びます                           |
+| `paperLetter`       | Letter                                                           | 「傾き補正」で US レターを選びます                                           |
 | `perspective`       | Straighten                                                       | 「傾き補正」ボタン                                                           |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | 「傾き補正」での操作の説明                                                   |
 | `previewError`      | The changes could not be shown                                   | 変更を表示できないときに表示                                                 |

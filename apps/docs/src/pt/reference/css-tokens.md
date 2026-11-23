@@ -129,6 +129,7 @@ Cada botão, régua e alça de canto leva `data-paperpic-control`, com a chave d
 | Ajustar e Limpar               | `brightness` e `contrast`, as escolhas e as réguas delas, `finishOriginal`, `finishGray` e `finishMono`, os acabamentos, e `finishSensitivity`, a régua dele |
 | Cada ferramenta                | `cancelTool`, `confirm`                                                                                                                                      |
 | Recortar, Endireitar e Ocultar | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                              |
+| Endireitar                     | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                           |
 | Ocultar                        | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                     |
 | Pergunta antes de descartar    | `keepEditing`, `discard`                                                                                                                                     |
 

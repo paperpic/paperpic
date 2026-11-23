@@ -1,20 +1,20 @@
 ---
 title: 固定の縦横比
-description: A4 用紙や身分証明書カードなど、ユーザーが文書の種類を選べるようにし、「傾き補正」の結果を正確な縦横比にする完全な例。
+description: US リーガル用紙やパスポートのページなど、ユーザーが文書の種類を選べるようにし、「傾き補正」の結果を正確な縦横比にする完全な例。
 ---
 
 # 固定の縦横比
 
-「傾き補正」は写真から文書の縦横比を推定しますが、推定は正確にはなりません。A4 の書類や身分証明書カードなど、ユーザーが何を撮るかアプリがわかっている場合は、[`aspectRatio`](../reference/options#aspectratio) で結果を本当の形にできます。この例では、傾き補正の前にユーザーが文書の種類を選びます。
+「傾き補正」は写真から文書の縦横比を推定しますが、推定は正確にはなりません。US リーガルの書類やパスポートのページなど、ユーザーが何を撮るかアプリがわかっている場合は、[`aspectRatio`](../reference/options#aspectratio) で結果を本当の形にできます。この例では、傾き補正の前にユーザーが文書の種類を選びます。
 
 :::tabs key:framework
 == JavaScript
 
 ```html
 <select id="type">
-  <option value="a4">A4 用紙</option>
-  <option value="letter">US レター用紙</option>
-  <option value="idCard">身分証明書カード</option>
+  <option value="legal">US リーガル用紙</option>
+  <option value="passport">パスポートのページ</option>
+  <option value="envelope">DL 封筒</option>
   <option value="other">その他</option>
 </select>
 <div id="viewer" style="height: 480px"></div>
@@ -25,9 +25,9 @@ import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
 const proportions: Record<string, number | undefined> = {
-  a4: 210 / 297,
-  letter: 8.5 / 11,
-  idCard: 85.6 / 53.98,
+  legal: 8.5 / 14,
+  passport: 125 / 88,
+  envelope: 220 / 110,
   other: undefined,
 }
 
@@ -35,7 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/scans/form.jpg',
   alt: '署名済みの書類',
   tools: ['perspective', 'rotate', 'finish'],
-  aspectRatio: proportions.a4,
+  aspectRatio: proportions.legal,
 })
 
 document.querySelector('#type')!.addEventListener('change', (event) => {
@@ -54,9 +54,9 @@ import { shallowRef } from 'vue'
 import '@paperpic/vue/style.css'
 
 const types = [
-  { name: 'A4 用紙', aspectRatio: 210 / 297 },
-  { name: 'US レター用紙', aspectRatio: 8.5 / 11 },
-  { name: '身分証明書カード', aspectRatio: 85.6 / 53.98 },
+  { name: 'US リーガル用紙', aspectRatio: 8.5 / 14 },
+  { name: 'パスポートのページ', aspectRatio: 125 / 88 },
+  { name: 'DL 封筒', aspectRatio: 220 / 110 },
   { name: 'その他', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -85,9 +85,9 @@ import { useState } from 'react'
 import '@paperpic/react/style.css'
 
 const types = [
-  { name: 'A4 用紙', aspectRatio: 210 / 297 },
-  { name: 'US レター用紙', aspectRatio: 8.5 / 11 },
-  { name: '身分証明書カード', aspectRatio: 85.6 / 53.98 },
+  { name: 'US リーガル用紙', aspectRatio: 8.5 / 14 },
+  { name: 'パスポートのページ', aspectRatio: 125 / 88 },
+  { name: 'DL 封筒', aspectRatio: 220 / 110 },
   { name: 'その他', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -115,7 +115,8 @@ export function Form() {
 ## 補足
 
 - 「傾き補正」は、ユーザーが「完了」を押したときに縦横比を記録します。そのため、種類は傾き補正の前に選んでください。あとで変えても、次の傾き補正にしか影響しません。
-- 横向きの文書では、`297 / 210` のように数値を入れ替えます。
+- 横向きの文書では、`14 / 8.5` のように数値を入れ替えます。
 - 縦横比は、画面に表示されているページに適用されます。写真が横向きなら、「傾き補正」の前に「左に回転」で回してください。そうしないと、縦向きの用紙がつぶれて出力されます。
 - レシートのようにサイズが決まっていない文書では `aspectRatio` を指定せず、「傾き補正」に推定させます。
+- 「傾き補正」のパネルには「A4」「レター」「カード」の[用紙サイズ](../guide/tools/straighten#paper-size)がすでにあるため、この例ではほかの文書を追加します。ユーザーがそこで選んだサイズは、その傾き補正では `aspectRatio` より優先されます。
 - [傾き補正](../guide/tools/straighten)では、推定の仕組みと、写真からはみ出した角の扱いを説明しています。

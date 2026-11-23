@@ -129,6 +129,7 @@ import '@paperpic/react/style.css'
 | 調整とクリーンアップ           | `brightness` と `contrast`（選択肢とその目盛り）、`finishOriginal`、`finishGray`、`finishMono`（仕上げ）、`finishSensitivity`（その目盛り） |
 | 各ツール                       | `cancelTool`、`confirm`                                                                                                                     |
 | 切り抜き、傾き補正、塗りつぶし | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                                             |
+| 傾き補正                       | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                          |
 | 塗りつぶし                     | `redactArea`、`redactTurn`、`redactBlack`、`redactWhite`                                                                                    |
 | 破棄する前の確認               | `keepEditing`、`discard`                                                                                                                    |
 

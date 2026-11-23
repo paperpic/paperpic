@@ -1,20 +1,20 @@
 ---
 title: Фиксированные пропорции
-description: Полный пример, в котором пользователь выбирает тип документа, например лист A4 или удостоверение личности, чтобы «Выровнять» придал результату точные пропорции.
+description: Полный пример, в котором пользователь выбирает тип документа, например лист US Legal или страницу паспорта, чтобы «Выровнять» придал результату точные пропорции.
 ---
 
 # Фиксированные пропорции
 
-«Выровнять» оценивает пропорции документа по фотографии, и точной эта оценка быть не может. Когда ваше приложение знает, что фотографирует пользователь, например бланк A4 или удостоверение личности, [`aspectRatio`](../reference/options#aspectratio) придаёт результату его настоящую форму. В этом примере пользователь выбирает тип документа перед выравниванием.
+«Выровнять» оценивает пропорции документа по фотографии, и точной эта оценка быть не может. Когда ваше приложение знает, что фотографирует пользователь, например бланк US Legal или страницу паспорта, [`aspectRatio`](../reference/options#aspectratio) придаёт результату его настоящую форму. В этом примере пользователь выбирает тип документа перед выравниванием.
 
 :::tabs key:framework
 == JavaScript
 
 ```html
 <select id="type">
-  <option value="a4">Лист A4</option>
-  <option value="letter">Лист US Letter</option>
-  <option value="idCard">Удостоверение личности</option>
+  <option value="legal">Лист US Legal</option>
+  <option value="passport">Страница паспорта</option>
+  <option value="envelope">Конверт DL</option>
   <option value="other">Другое</option>
 </select>
 <div id="viewer" style="height: 480px"></div>
@@ -25,9 +25,9 @@ import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
 const proportions: Record<string, number | undefined> = {
-  a4: 210 / 297,
-  letter: 8.5 / 11,
-  idCard: 85.6 / 53.98,
+  legal: 8.5 / 14,
+  passport: 125 / 88,
+  envelope: 220 / 110,
   other: undefined,
 }
 
@@ -35,7 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/scans/form.jpg',
   alt: 'Подписанная форма',
   tools: ['perspective', 'rotate', 'finish'],
-  aspectRatio: proportions.a4,
+  aspectRatio: proportions.legal,
 })
 
 document.querySelector('#type')!.addEventListener('change', (event) => {
@@ -54,9 +54,9 @@ import { shallowRef } from 'vue'
 import '@paperpic/vue/style.css'
 
 const types = [
-  { name: 'Лист A4', aspectRatio: 210 / 297 },
-  { name: 'Лист US Letter', aspectRatio: 8.5 / 11 },
-  { name: 'Удостоверение личности', aspectRatio: 85.6 / 53.98 },
+  { name: 'Лист US Legal', aspectRatio: 8.5 / 14 },
+  { name: 'Страница паспорта', aspectRatio: 125 / 88 },
+  { name: 'Конверт DL', aspectRatio: 220 / 110 },
   { name: 'Другое', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -85,9 +85,9 @@ import { useState } from 'react'
 import '@paperpic/react/style.css'
 
 const types = [
-  { name: 'Лист A4', aspectRatio: 210 / 297 },
-  { name: 'Лист US Letter', aspectRatio: 8.5 / 11 },
-  { name: 'Удостоверение личности', aspectRatio: 85.6 / 53.98 },
+  { name: 'Лист US Legal', aspectRatio: 8.5 / 14 },
+  { name: 'Страница паспорта', aspectRatio: 125 / 88 },
+  { name: 'Конверт DL', aspectRatio: 220 / 110 },
   { name: 'Другое', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -115,7 +115,8 @@ export function Form() {
 ## Примечания
 
 - «Выровнять» запоминает пропорции, когда пользователь нажимает «Готово», поэтому выбирайте тип до выравнивания. Изменение позже влияет только на следующее выравнивание.
-- Для документа в альбомной ориентации поменяйте числа местами, например `297 / 210`.
+- Для документа в альбомной ориентации поменяйте числа местами, например `14 / 8.5`.
 - Пропорции применяются к странице так, как она видна на экране. Если фото лежит на боку, поверните его кнопкой «Повернуть влево» до «Выровнять», иначе лист в книжной ориентации получится сплющенным.
 - Не задавайте `aspectRatio` для документов без фиксированного размера, например чеков, и «Выровнять» оценит их сам.
+- В элементах управления «Выровнять» уже есть [форматы бумаги](../guide/tools/straighten#paper-size) «A4», «Letter» и «Карта», поэтому этот пример добавляет другие документы. Выбранный там формат для этого выравнивания важнее `aspectRatio`.
 - [«Выровнять»](../guide/tools/straighten) объясняет оценку и что делать с углами за пределами фотографии.

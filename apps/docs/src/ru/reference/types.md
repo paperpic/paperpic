@@ -125,6 +125,11 @@ interface PaperPicLabels {
   keepEditing: string
   loadError: string
   loading: string
+  paper: string
+  paperA4: string
+  paperAuto: string
+  paperCard: string
+  paperLetter: string
   perspective: string
   perspectiveHint: string
   previewError: string
@@ -191,6 +196,7 @@ interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   busy: boolean
   canApply: boolean
+  canConfirm: boolean
   canRedo: boolean
   canUndo: boolean
   finish: { mode: FinishMode, sensitivity: number }
@@ -198,6 +204,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  paper: { size: PaperSize }
   redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -214,6 +221,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 Обработка в [«Очистить»](../guide/tools/clean-up): исходные тона, серый или чёрно-белый с `'mono'`. Её принимает [`setFinish()`](./methods#setfinish), а хранит `finish` [состояния](./state).
+
+### `PaperSize`
+
+```ts
+type PaperSize = 'auto' | 'a4' | 'letter' | 'card'
+```
+
+Бумага, которая задаёт пропорции результата [«Выровнять»](../guide/tools/straighten#paper-size). Её принимает [`setPaper()`](./methods#setpaper), а хранит `paper` [состояния](./state).
 
 ### `RedactColor`
 

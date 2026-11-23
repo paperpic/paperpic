@@ -1,20 +1,20 @@
 ---
 title: 고정 비율
-description: 사용자가 A4 용지나 신분증 카드 같은 문서 종류를 고르게 해서, ‘기울기 보정’이 결과에 정확한 비율을 주도록 하는 완전한 예제.
+description: 사용자가 US Legal 용지나 여권 페이지 같은 문서 종류를 고르게 해서, ‘기울기 보정’이 결과에 정확한 비율을 주도록 하는 완전한 예제.
 ---
 
 # 고정 비율
 
-‘기울기 보정’은 사진에서 문서의 비율을 추정하며, 그 추정은 정확할 수 없습니다. A4 서식이나 신분증 카드처럼 사용자가 무엇을 찍는지 앱이 안다면, [`aspectRatio`](../reference/options#aspectratio)가 결과에 실제 모양을 줍니다. 이 예제는 사용자가 기울기를 보정하기 전에 문서 종류를 고르게 합니다.
+‘기울기 보정’은 사진에서 문서의 비율을 추정하며, 그 추정은 정확할 수 없습니다. US Legal 서식이나 여권 페이지처럼 사용자가 무엇을 찍는지 앱이 안다면, [`aspectRatio`](../reference/options#aspectratio)가 결과에 실제 모양을 줍니다. 이 예제는 사용자가 기울기를 보정하기 전에 문서 종류를 고르게 합니다.
 
 :::tabs key:framework
 == JavaScript
 
 ```html
 <select id="type">
-  <option value="a4">A4 용지</option>
-  <option value="letter">US Letter 용지</option>
-  <option value="idCard">신분증 카드</option>
+  <option value="legal">US Legal 용지</option>
+  <option value="passport">여권 페이지</option>
+  <option value="envelope">DL 봉투</option>
   <option value="other">기타</option>
 </select>
 <div id="viewer" style="height: 480px"></div>
@@ -25,9 +25,9 @@ import { PaperPic } from '@paperpic/core'
 import '@paperpic/core/style.css'
 
 const proportions: Record<string, number | undefined> = {
-  a4: 210 / 297,
-  letter: 8.5 / 11,
-  idCard: 85.6 / 53.98,
+  legal: 8.5 / 14,
+  passport: 125 / 88,
+  envelope: 220 / 110,
   other: undefined,
 }
 
@@ -35,7 +35,7 @@ const pic = new PaperPic(document.querySelector<HTMLElement>('#viewer')!, {
   src: '/scans/form.jpg',
   alt: '서명한 서식',
   tools: ['perspective', 'rotate', 'finish'],
-  aspectRatio: proportions.a4,
+  aspectRatio: proportions.legal,
 })
 
 document.querySelector('#type')!.addEventListener('change', (event) => {
@@ -54,9 +54,9 @@ import { shallowRef } from 'vue'
 import '@paperpic/vue/style.css'
 
 const types = [
-  { name: 'A4 용지', aspectRatio: 210 / 297 },
-  { name: 'US Letter 용지', aspectRatio: 8.5 / 11 },
-  { name: '신분증 카드', aspectRatio: 85.6 / 53.98 },
+  { name: 'US Legal 용지', aspectRatio: 8.5 / 14 },
+  { name: '여권 페이지', aspectRatio: 125 / 88 },
+  { name: 'DL 봉투', aspectRatio: 220 / 110 },
   { name: '기타', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -85,9 +85,9 @@ import { useState } from 'react'
 import '@paperpic/react/style.css'
 
 const types = [
-  { name: 'A4 용지', aspectRatio: 210 / 297 },
-  { name: 'US Letter 용지', aspectRatio: 8.5 / 11 },
-  { name: '신분증 카드', aspectRatio: 85.6 / 53.98 },
+  { name: 'US Legal 용지', aspectRatio: 8.5 / 14 },
+  { name: '여권 페이지', aspectRatio: 125 / 88 },
+  { name: 'DL 봉투', aspectRatio: 220 / 110 },
   { name: '기타', aspectRatio: undefined },
 ]
 const tools: ToolId[] = ['perspective', 'rotate', 'finish']
@@ -115,7 +115,8 @@ export function Form() {
 ## 참고
 
 - ‘기울기 보정’은 사용자가 ‘완료’를 누를 때 비율을 저장하므로, 보정하기 전에 종류를 고르세요. 나중에 바꾸면 다음 보정에만 적용됩니다.
-- 가로 방향 문서라면 `297 / 210`처럼 숫자를 바꾸세요.
+- 가로 방향 문서라면 `14 / 8.5`처럼 숫자를 바꾸세요.
 - 비율은 화면에 보이는 페이지에 적용됩니다. 사진이 옆으로 누워 있다면 ‘기울기 보정’ 전에 ‘왼쪽으로 회전’으로 돌리세요. 그렇지 않으면 세로 용지가 납작하게 나옵니다.
 - 영수증처럼 크기가 정해지지 않은 문서는 `aspectRatio`를 지정하지 마세요. 그러면 ‘기울기 보정’이 추정합니다.
+- ‘기울기 보정’ 패널에는 이미 ‘A4’, ‘레터’, ‘카드’ [용지 크기](../guide/tools/straighten#paper-size)가 있으므로, 이 예제는 다른 문서를 더합니다. 사용자가 거기서 고른 크기는 그 보정에서 `aspectRatio`보다 우선합니다.
 - [기울기 보정](../guide/tools/straighten)에서 추정 방식과 사진 밖으로 나간 모서리를 다루는 법을 설명합니다.

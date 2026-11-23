@@ -129,6 +129,7 @@ import '@paperpic/react/style.css'
 | 调整和清理       | `brightness` 和 `contrast`（选项及其刻度尺）、`finishOriginal`、`finishGray` 和 `finishMono`（效果）、`finishSensitivity`（它的刻度尺） |
 | 每个工具         | `cancelTool`、`confirm`                                                                                                                 |
 | 裁剪、矫正和遮盖 | `zoomIn`、`zoomOut`、`cornerTopLeft`、`cornerTopRight`、`cornerBottomRight`、`cornerBottomLeft`                                         |
+| 矫正             | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                      |
 | 遮盖             | `redactArea`、`redactTurn`、`redactBlack`、`redactWhite`                                                                                |
 | 放弃前的提问     | `keepEditing`、`discard`                                                                                                                |
 

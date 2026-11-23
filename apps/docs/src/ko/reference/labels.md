@@ -61,6 +61,11 @@ const pic = new PaperPic(container, {
 | `keepEditing`       | Keep editing                                                     | 변경을 잃지 않고 편집으로 돌아가는 버튼                                         |
 | `loadError`         | The image could not be loaded                                    | 이미지를 불러오지 못하면 표시                                                   |
 | `loading`           | Loading image                                                    | 이미지를 불러오는 동안 표시                                                     |
+| `paper`             | Paper size                                                       | ‘기울기 보정’의 용지 크기 선택의 이름                                           |
+| `paperA4`           | A4                                                               | ‘기울기 보정’에서 A4를 고릅니다                                                 |
+| `paperAuto`         | Auto                                                             | ‘기울기 보정’에서 자동 비율을 고릅니다                                          |
+| `paperCard`         | Card                                                             | ‘기울기 보정’에서 신분증이나 은행 카드 크기를 고릅니다                          |
+| `paperLetter`       | Letter                                                           | ‘기울기 보정’에서 US 레터를 고릅니다                                            |
 | `perspective`       | Straighten                                                       | ‘기울기 보정’ 버튼                                                              |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | ‘기울기 보정’에서 할 일                                                         |
 | `previewError`      | The changes could not be shown                                   | 변경을 표시할 수 없으면 표시                                                    |
