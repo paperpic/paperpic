@@ -152,7 +152,7 @@ O nome do arquivo salvo. Escreva-o sem extensão: o PaperPic adiciona a do forma
 - **Tipo:** `number`
 - **Padrão:** estimadas
 
-As proporções reais do documento, como largura dividida pela altura, por exemplo `210 / 297` para uma folha A4. Endireitar dá essas proporções ao resultado. Sem elas, ele as estima a partir da foto. Recortar não as usa: o retângulo dele fica livre.
+As proporções reais do documento, como largura dividida pela altura, por exemplo `210 / 297` para uma folha A4. Endireitar dá essas proporções ao resultado. Sem elas, ele as estima a partir da foto. Recortar não as usa: o retângulo dele fica livre. O usuário também pode escolher um [tamanho do papel](../guide/tools/straighten#paper-size) no painel de Endireitar, que prevalece sobre esta opção nesse endireitamento.
 
 ### `softness`
 

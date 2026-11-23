@@ -129,6 +129,7 @@ import '@paperpic/react/style.css'
 | 조정과 정리                 | `brightness`와 `contrast`(선택지와 그 눈금자), `finishOriginal`, `finishGray`, `finishMono`(마무리), `finishSensitivity`(그 눈금자) |
 | 각 도구                     | `cancelTool`, `confirm`                                                                                                             |
 | 자르기, 기울기 보정, 가리기 | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                     |
+| 기울기 보정                 | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                  |
 | 가리기                      | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                            |
 | 버리기 전 질문              | `keepEditing`, `discard`                                                                                                            |
 

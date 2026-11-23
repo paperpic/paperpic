@@ -129,6 +129,7 @@ Ogni pulsante, righello e maniglia d’angolo porta `data-paperpic-control`, con
 | Regola e Pulisci            | `brightness` e `contrast`, le scelte e i loro righelli, `finishOriginal`, `finishGray` e `finishMono`, le finiture, e `finishSensitivity`, il suo righello |
 | Ogni strumento              | `cancelTool`, `confirm`                                                                                                                                    |
 | Ritaglia, Raddrizza e Copri | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                            |
+| Raddrizza                   | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                         |
 | Copri                       | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                   |
 | Domanda prima di eliminare  | `keepEditing`, `discard`                                                                                                                                   |
 

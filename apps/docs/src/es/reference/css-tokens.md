@@ -129,6 +129,7 @@ Cada botón, regla y tirador de esquina lleva `data-paperpic-control`, con la cl
 | Ajustar y Limpiar           | `brightness` y `contrast`, las opciones y sus reglas, `finishOriginal`, `finishGray` y `finishMono`, los acabados, y `finishSensitivity`, su regla |
 | Cada herramienta            | `cancelTool`, `confirm`                                                                                                                            |
 | Recortar, Enderezar y Tapar | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                    |
+| Enderezar                   | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                 |
 | Tapar                       | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                           |
 | Pregunta antes de descartar | `keepEditing`, `discard`                                                                                                                           |
 

@@ -205,7 +205,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-開いているツールを閉じ、そこで選んだ内容を変更に加えます。`Enter` と同じです。切り抜きと傾き補正の選択範囲、または調整とクリーンアップの設定が 1 つの変更になります。
+開いているツールを閉じ、そこで選んだ内容を変更に加えます。`Enter` と同じです。切り抜きと傾き補正の選択範囲、または調整とクリーンアップの設定が 1 つの変更になります。「傾き補正」では角が動くまで何もしません。いつ確定できるかは[状態](./state)の `canConfirm` が示します。
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 明るさまたはコントラストを、それぞれ -1 から 1 で変更します。0 は画像をそのままにします。ほかの変更のあと、グレーの前に適用されます。調整が開いている間はその表示を変え、[`confirmTool()`](#confirmtool) がそれを 1 つの変更として残します。編集モード以外、ほかのツールが開いている間、白黒の間は何もしません。白黒は各ピクセルを周囲と比べるので、明るさとコントラストは結果をほとんど変えないためです。
 
 値が -1 から 1 の範囲外なら `RangeError` を投げます。
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+[傾き補正](../guide/tools/straighten#paper-size)の結果に縦横比を与える用紙を選びます。`'a4'`、`'letter'`、身分証や銀行カードの `'card'`、または既定の `'auto'` です。`'auto'` は [`aspectRatio`](./options#aspectratio) を使い、なければ推定します。縦向きか横向きかは角の位置に従います。「傾き補正」が開いていないときは何もせず、開くたびに `'auto'` から始まります。
+
+`size` が [`PaperSize`](./types#papersize) でなければ `RangeError` を投げます。
 
 ### `setRedaction()`
 

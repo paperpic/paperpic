@@ -114,6 +114,7 @@ describe('cornerEditor', () => {
     announce: Mock<ToolHost['announce']>
     paintMagnifier: Mock<ToolHost['paintMagnifier']>
     reveal: Mock<ToolHost['reveal']>
+    selectionMoved: Mock<ToolHost['selectionMoved']>
     setHint: Mock<ToolHost['setHint']>
   }
   let layer: HTMLElement
@@ -148,6 +149,7 @@ describe('cornerEditor', () => {
       setHint: vi.fn(),
       announce: vi.fn(),
       paintMagnifier: vi.fn(),
+      selectionMoved: vi.fn(),
     }) as typeof host
   })
 
@@ -155,6 +157,33 @@ describe('cornerEditor', () => {
   const handles = () => [
     ...layer.querySelectorAll<HTMLButtonElement>('.paperpic-handle'),
   ]
+
+  it('tells whether a corner is off its start, and that it moved', () => {
+    const corners = editor()
+    expect(corners.moved).toBe(false)
+    expect(host.selectionMoved).not.toHaveBeenCalled()
+    press(handles()[0]!, 'ArrowRight')
+    expect(corners.moved).toBe(true)
+    expect(host.selectionMoved).toHaveBeenCalledOnce()
+    press(handles()[0]!, 'ArrowLeft')
+    expect(corners.moved).toBe(false)
+  })
+
+  it('is back at its start after moving there and back, whatever the zoom rounds', () => {
+    host.frameToViewport = ({ x, y }) => ({ x: x * 0.3819 + 7.3, y: y * 0.3819 + 7.3 })
+    host.viewportToFrame = ({ x, y }) => ({ x: (x - 7.3) / 0.3819, y: (y - 7.3) / 0.3819 })
+    const corners = editor()
+    for (const key of [
+      'ArrowRight',
+      'ArrowRight',
+      'ArrowLeft',
+      'ArrowLeft',
+    ]) {
+      press(handles()[0]!, key)
+    }
+    expect(corners.points).not.toEqual(rectangleCorners(100, 100, 300, 300))
+    expect(corners.moved).toBe(false)
+  })
 
   it('creates four named handles at their positions', () => {
     editor()
@@ -233,8 +262,10 @@ describe('cornerEditor', () => {
       handle.dispatchEvent(pointer('pointermove', 175, 180))
       expect(corners.points[2]).toEqual({ x: 320, y: 320 })
       expect(host.announce).not.toHaveBeenCalled()
+      expect(host.selectionMoved).not.toHaveBeenCalled()
 
       handle.dispatchEvent(pointer('pointerup', 175, 180))
+      expect(host.selectionMoved).toHaveBeenCalledOnce()
       expect(host.announce).toHaveBeenCalledWith('Bottom right corner: 320, 320')
       handle.dispatchEvent(pointer('pointermove', 300, 300))
       expect(corners.points[2]).toEqual({ x: 320, y: 320 })
@@ -345,6 +376,7 @@ describe('cornerEditor', () => {
       expect(handle.style.left).toBe('150px')
       expect(pressed()[2]).toBe('true')
       expect(host.announce).toHaveBeenLastCalledWith(hint)
+      expect(host.selectionMoved).not.toHaveBeenCalled()
     })
 
     it('does not select a corner at the end of a drag, and a drag lets go of the selection', () => {

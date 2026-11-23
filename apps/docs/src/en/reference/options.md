@@ -152,7 +152,7 @@ The name of the saved file. Give it without an extension: PaperPic adds the one 
 - **Type:** `number`
 - **Default:** estimated
 
-The real proportions of the document, as width divided by height, such as `210 / 297` for an A4 sheet. Straighten gives its result these proportions. Without them, it estimates them from the photo. Crop does not use them: its rectangle stays free.
+The real proportions of the document, as width divided by height, such as `210 / 297` for an A4 sheet. Straighten gives its result these proportions. Without them, it estimates them from the photo. Crop does not use them: its rectangle stays free. The user can choose a [paper size](../guide/tools/straighten#paper-size) on the panel of Straighten instead, which wins over this option for that straightening.
 
 ### `softness`
 

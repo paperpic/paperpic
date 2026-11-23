@@ -23,6 +23,7 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 | option                                        | opzione                     |
 | pan, move a zoomed image                      | spostare                    |
 | panel, the controls of an open tool           | pannello                    |
+| paper size, of Straighten                     | formato carta               |
 | parent element                                | elemento genitore           |
 | playground                                    | Playground                  |
 | preview                                       | anteprima                   |

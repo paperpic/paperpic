@@ -125,6 +125,11 @@ interface PaperPicLabels {
   keepEditing: string
   loadError: string
   loading: string
+  paper: string
+  paperA4: string
+  paperAuto: string
+  paperCard: string
+  paperLetter: string
   perspective: string
   perspectiveHint: string
   previewError: string
@@ -191,6 +196,7 @@ interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   busy: boolean
   canApply: boolean
+  canConfirm: boolean
   canRedo: boolean
   canUndo: boolean
   finish: { mode: FinishMode, sensitivity: number }
@@ -198,6 +204,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  paper: { size: PaperSize }
   redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -214,6 +221,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 [清理](../guide/tools/clean-up)的效果：原始色调、灰度，或 `'mono'` 的黑白。[`setFinish()`](./methods#setfinish) 接收它，[状态](./state)的 `finish` 保存它。
+
+### `PaperSize`
+
+```ts
+type PaperSize = 'auto' | 'a4' | 'letter' | 'card'
+```
+
+为[矫正](../guide/tools/straighten#paper-size)的结果提供宽高比的纸张。[`setPaper()`](./methods#setpaper) 接收它，[状态](./state)的 `paper` 保存它。
 
 ### `RedactColor`
 

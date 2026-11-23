@@ -18,6 +18,7 @@ export type {
   PaperPicOutput,
   PaperPicSource,
   PaperPicState,
+  PaperSize,
   RedactColor,
   Rotation,
   Size,

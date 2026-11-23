@@ -22,7 +22,9 @@ export function toolHost(frame: Size, overrides: Partial<ToolHost> = {}): ToolHo
       origin: { x: 0, y: 0 },
     }),
     aspectRatio: () => undefined,
+    paperSize: () => 'auto',
     redactColor: () => 'black',
+    selectionMoved: () => {},
     paintMagnifier: () => {},
     ...overrides,
   }

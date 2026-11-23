@@ -196,14 +196,6 @@ body {
   font-size: 0.875rem;
 }
 
-/* A field that refines the one above it */
-.field-nested {
-  margin-block-start: -0.25rem;
-  padding-inline-start: 0.75rem;
-  color: var(--color-muted);
-  font-size: 0.75rem;
-}
-
 .select,
 .number,
 .text {
@@ -338,6 +330,11 @@ body {
   margin: 0;
   color: var(--color-muted);
   font-size: 0.75rem;
+}
+
+/* Keeps a hint with the field above it, and apart from the next one */
+.hint + .field {
+  margin-block-start: 0.75rem;
 }
 
 .stage {

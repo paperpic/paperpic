@@ -205,7 +205,7 @@ function openTool(id: ToolId): void
 function confirmTool(): void
 ```
 
-열린 도구를 닫고 거기서 고른 내용을 변경에 더합니다. `Enter`와 같습니다. 자르기와 기울기 보정의 선택 영역, 또는 조정과 정리의 설정이 변경 하나가 됩니다.
+열린 도구를 닫고 거기서 고른 내용을 변경에 더합니다. `Enter`와 같습니다. 자르기와 기울기 보정의 선택 영역, 또는 조정과 정리의 설정이 변경 하나가 됩니다. ‘기울기 보정’에서는 모서리가 움직일 때까지 아무것도 하지 않으며, 언제 할 수 있는지는 [상태](./state)의 `canConfirm`이 알려 줍니다.
 
 ### `cancelTool()`
 
@@ -234,6 +234,16 @@ function setAdjustments(setting: { brightness?: number, contrast?: number }): vo
 밝기나 대비를 각각 -1부터 1까지로 바꿉니다. 0은 이미지를 그대로 둡니다. 다른 변경 다음, 회색 전에 적용됩니다. 조정이 열려 있는 동안에는 그 패널에 보이는 값을 바꾸고, [`confirmTool()`](#confirmtool)이 이를 변경 하나로 남깁니다. 편집 모드가 아니거나, 다른 도구가 열려 있거나, 흑백이면 아무것도 하지 않습니다. 흑백은 각 픽셀을 주변과 비교하므로, 밝기와 대비는 그 결과를 거의 바꾸지 못하기 때문입니다.
 
 값이 -1부터 1 사이가 아니면 `RangeError`를 던집니다.
+
+### `setPaper()`
+
+```ts
+function setPaper(setting: { size?: PaperSize }): void
+```
+
+[기울기 보정](../guide/tools/straighten#paper-size)의 결과에 비율을 줄 용지를 고릅니다. `'a4'`, `'letter'`, 신분증이나 은행 카드인 `'card'`, 또는 기본값인 `'auto'`입니다. `'auto'`는 [`aspectRatio`](./options#aspectratio)를 쓰고, 없으면 추정합니다. 세로인지 가로인지는 모서리를 따릅니다. ‘기울기 보정’이 열려 있지 않으면 아무것도 하지 않으며, 열 때마다 `'auto'`로 시작합니다.
+
+`size`가 [`PaperSize`](./types#papersize)가 아니면 `RangeError`를 던집니다.
 
 ### `setRedaction()`
 

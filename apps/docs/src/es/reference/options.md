@@ -152,7 +152,7 @@ El nombre del archivo guardado. Escríbelo sin extensión: PaperPic añade la de
 - **Tipo:** `number`
 - **Valor por defecto:** se estiman
 
-Las proporciones reales del documento, como ancho dividido por alto, por ejemplo `210 / 297` para una hoja A4. Enderezar da a su resultado estas proporciones. Sin ellas, las estima a partir de la foto. Recortar no las usa: su rectángulo sigue libre.
+Las proporciones reales del documento, como ancho dividido por alto, por ejemplo `210 / 297` para una hoja A4. Enderezar da a su resultado estas proporciones. Sin ellas, las estima a partir de la foto. Recortar no las usa: su rectángulo sigue libre. El usuario también puede elegir un [tamaño de papel](../guide/tools/straighten#paper-size) en el panel de Enderezar, que manda sobre esta opción en ese enderezado.
 
 ### `softness`
 

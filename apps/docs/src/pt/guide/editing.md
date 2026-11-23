@@ -15,7 +15,7 @@ A foto de um documento costuma precisar de alguns retoques antes de valer a pena
 
 Nada muda a imagem antes do Aplicar. Até lá, as alterações são uma lista que o visualizador mostra em pré-visualização.
 
-Num visualizador estreito, a barra de edição tem duas linhas: em cima, as ferramentas ou o painel da ferramenta aberta, e embaixo, Cancelar à esquerda e Aplicar, ou Concluído, à direita. A partir de 28rem de largura, tudo cabe numa linha. Nos dois casos, a barra mantém a altura quando uma ferramenta abre, então a imagem fica no lugar. Um ponto marca Ajustar e Limpar enquanto o valor deles está em uso.
+Num visualizador estreito, a barra de edição tem duas linhas: em cima, as ferramentas ou o painel da ferramenta aberta, e embaixo, Cancelar à esquerda e Aplicar, ou Concluído, à direita. A partir de 38rem de largura, tudo cabe numa linha. Nos dois casos, a barra mantém a altura quando uma ferramenta abre, então a imagem fica no lugar. Um ponto marca Ajustar e Limpar enquanto o valor deles está em uso.
 
 ## Ferramentas
 

@@ -129,6 +129,7 @@ Every button, ruler and corner handle carries `data-paperpic-control`, with the 
 | Adjust and Clean up         | `brightness` and `contrast`, the choices and their rulers, `finishOriginal`, `finishGray` and `finishMono`, the finishes, and `finishSensitivity`, its ruler |
 | Every tool                  | `cancelTool`, `confirm`                                                                                                                                      |
 | Crop, Straighten and Redact | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                              |
+| Straighten                  | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                           |
 | Redact                      | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                     |
 | Question before discarding  | `keepEditing`, `discard`                                                                                                                                     |
 

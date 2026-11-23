@@ -7,6 +7,7 @@ import type { LoadedImage, PaperPicSource } from './pipeline/load-image'
 import type { FinishMode, Operation } from './pipeline/operations'
 import type { Preview } from './pipeline/preview'
 import type { ToneStep } from './pipeline/steps'
+import type { PaperSize } from './processing/paper'
 import type { RedactColor } from './processing/redact'
 import type { Size } from './processing/types'
 import type { Scene } from './render/renderer'
@@ -25,6 +26,7 @@ import { photoFrame } from './pipeline/photo-frame'
 import { renderPreview } from './pipeline/preview'
 import { PreviewQueue } from './pipeline/preview-queue'
 import { PipelineRunner } from './pipeline/runner'
+import { PAPER_SIZES } from './processing/paper'
 import { paintMagnifier } from './render/magnifier'
 import { Renderer } from './render/renderer'
 import { addToHistory, createHistory, redoHistory, undoHistory } from './state/history'
@@ -69,6 +71,11 @@ export interface PaperPicState {
   busy: boolean
   /** Whether there are changes to apply. Rotations and flips that cancel out are no change. */
   canApply: boolean
+  /**
+   * Whether `confirmTool()` can keep what the open tool shows, which is when Done is available. Straighten waits until
+   * a corner moves. It is `false` with no tool open.
+   */
+  canConfirm: boolean
   /** Whether there is an edit to bring back. */
   canRedo: boolean
   /** Whether there is an edit to undo. */
@@ -92,6 +99,8 @@ export interface PaperPicState {
   image: Size | null
   /** Whether the user is viewing or editing the image. */
   mode: 'view' | 'edit'
+  /** The paper size on the panel of Straighten while it is open, and `'auto'` otherwise. */
+  paper: { size: PaperSize }
   /** The color that Redact covers with: the one it shows while open, and the next one otherwise. */
   redaction: { color: RedactColor }
   /** How far the image on display is turned from `image`, in degrees clockwise. */
@@ -190,6 +199,10 @@ export class PaperPic {
   private hintOverride: string | null = null
   /** The open Adjust or Clean up. */
   private draft: PanelDraft | null = null
+  /** The paper size of the open Straighten. It starts over each time, because a size left behind would distort the next photo. */
+  private paperSize: PaperSize = 'auto'
+  /** Whether Done was available on the last refresh, so a moved corner only reports a change of it. */
+  private couldConfirm = false
   /** The color of Redact, which stays for the next area. */
   private redactColor: RedactColor = 'black'
   private loadStatus: PaperPicState['status'] = 'empty'
@@ -290,6 +303,7 @@ export class PaperPic {
             this.announce(this.labels.finishLevel(Math.round(setting.sensitivity * 100)))
           }
         },
+        setPaper: size => this.setPaper({ size }),
         setRedaction: color => this.setRedaction({ color }),
         setAdjustment: (name, value, released) => {
           this.setAdjustments({ [name]: value })
@@ -456,10 +470,12 @@ export class PaperPic {
       canUndo: this.history.done.length > 0,
       canRedo: this.history.undone.length > 0,
       canApply: toPipelineSteps(this.history.done).length > 0,
+      canConfirm: this.canConfirm(),
       busy: this.busy,
       activeTool: this.openToolId(),
       finish: { mode, sensitivity },
       adjustments: { brightness, contrast },
+      paper: { size: this.paperSize },
       redaction: { color: this.redactColor },
     }
   }
@@ -629,9 +645,17 @@ export class PaperPic {
     this.emit('change', this.getState())
   }
 
-  /** Closes the open tool and adds what it chose to the edits: a selection, or the settings of Adjust or Clean up. */
+  /**
+   * Closes the open tool and adds what it chose to the edits: a selection, or the settings of Adjust or Clean up.
+   * In Straighten it does nothing until a corner moves, which `getState().canConfirm` reports.
+   */
   confirmTool(): void {
     if (!this.openToolId()) {
+      return
+    }
+    if (!this.canConfirm()) {
+      // Enter on a corner would end in silence for screen readers
+      this.announce(this.hint() ?? '')
       return
     }
     const operation = this.session
@@ -736,6 +760,30 @@ export class PaperPic {
     if (edit) {
       this.addOperation(edit)
     }
+  }
+
+  /**
+   * Chooses the paper that the open Straighten gives its result the proportions of: `'a4'`, `'letter'`, `'card'` for an
+   * ID or a bank card, or `'auto'`, the default, which takes `aspectRatio` or else an estimate. The paper stands or
+   * lies as the corners do. It does nothing while Straighten is not open, which starts in `'auto'` each time.
+   *
+   * @throws {RangeError} If `size` is not a paper size.
+   *
+   * @example
+   * pic.edit()
+   * pic.openTool('perspective')
+   * pic.setPaper({ size: 'a4' })
+   */
+  setPaper({ size }: { size?: PaperSize }): void {
+    if (size !== undefined && !PAPER_SIZES.includes(size)) {
+      throw new RangeError(`size must be ${PAPER_SIZES.map(name => `'${name}'`).join(', ')}, got ${String(size)}`)
+    }
+    if (size === undefined || size === this.paperSize || this.openToolId() !== 'perspective') {
+      return
+    }
+    this.paperSize = size
+    this.refresh()
+    this.emit('change', this.getState())
   }
 
   /**
@@ -970,7 +1018,14 @@ export class PaperPic {
       labels: () => this.labels,
       photoFrame: () => photoFrame(this.image!, toPipelineSteps(this.history.done)),
       aspectRatio: () => this.options.aspectRatio,
+      paperSize: () => this.paperSize,
       redactColor: () => this.redactColor,
+      selectionMoved: () => {
+        if (this.canConfirm() !== this.couldConfirm) {
+          this.refresh()
+          this.emit('change', this.getState())
+        }
+      },
       paintMagnifier: (context, magnifier) => paintMagnifier(context, magnifier, {
         view: this.view,
         image: shown(),
@@ -990,6 +1045,13 @@ export class PaperPic {
   /** The open tool, with a selection or a panel of settings of its own. */
   private openToolId(): ToolId | null {
     return this.session?.tool.id ?? this.draft?.tool ?? null
+  }
+
+  /** Whether a tool is open and Done can keep what it shows. */
+  private canConfirm(): boolean {
+    return this.session
+      ? this.session.handle.canConfirm?.() ?? true
+      : this.draft !== null
   }
 
   /** Shows other settings in the open Adjust or Clean up, without any edit. */
@@ -1027,6 +1089,7 @@ export class PaperPic {
     session?.handle.deactivate()
     this.hintOverride = null
     this.draft = null
+    this.paperSize = 'auto'
     this.editBar.setActiveTool(null)
     if (hadFocus && this.options.toolbar) {
       this.editBar.focus(id)
@@ -1324,6 +1387,7 @@ export class PaperPic {
   private refresh(): void {
     const state = this.getState()
     const zoom = this.canZoom()
+    this.couldConfirm = state.canConfirm
     // The toolbar may change size with the interface, such as when it shows again after editing. Watching it with the
     // observer of the viewer made the browser report a loop, because measuring the viewer changes the toolbar
     this.toolbarWidth = null

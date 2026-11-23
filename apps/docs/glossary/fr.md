@@ -24,6 +24,7 @@ Use these words in the French docs, so that each idea has one name on every page
 | option                                        | option                |
 | pan, move a zoomed image                      | déplacer              |
 | panel, the controls of an open tool           | panneau               |
+| paper size, of Straighten                     | format de papier      |
 | parent element                                | élément parent        |
 | playground                                    | Playground            |
 | preview                                       | aperçu                |

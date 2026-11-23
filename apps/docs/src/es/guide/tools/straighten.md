@@ -13,13 +13,29 @@ Un documento fotografiado en ángulo parece un trapecio: el borde lejano es más
 
 1. Pulsa Editar y luego Enderezar. Aparece un tirador para cada esquina.
 2. Arrastra cada tirador a una esquina del documento. Acércate con los botones de zoom de su panel para colocarlos con precisión.
-3. Pulsa Hecho, o `Enter`. El visor muestra la página plana, recortada a las cuatro esquinas.
+3. Si conoces el papel, elige su [tamaño](#paper-size): A4, Carta o Tarjeta. Auto lo estima.
+4. Pulsa Hecho, o `Enter`. El visor muestra la página plana, recortada a las cuatro esquinas. Hecho espera a que muevas una esquina.
 
 Los tiradores funcionan como en [Recortar](./crop): una lupa en pantallas táctiles, pulsar y tocar en lugar de arrastrar, y Tab y las flechas con el teclado. Las cuatro esquinas siempre forman una figura convexa, así que la página siempre se puede aplanar.
 
 Enderezar muestra la foto sin el blanco y negro de [Limpiar](./clean-up), porque en una página limpiada cuesta encontrar los bordes del papel. El blanco y negro vuelve después de Hecho, y el gris se queda.
 
-## Proporciones
+## Tamaño de papel {#paper-size}
+
+El panel de Enderezar ofrece tamaños de papel, que dan al resultado las proporciones exactas de ese papel:
+
+| Opción  | Proporciones                                                                                  |
+| ------- | --------------------------------------------------------------------------------------------- |
+| Auto    | [`aspectRatio`](../../reference/options#aspectratio) o, si no, una [estimación](#proportions) |
+| A4      | 210 × 297 mm, las mismas que A3 y A5                                                          |
+| Carta   | 8,5 × 11 pulgadas, Carta de EE. UU.                                                           |
+| Tarjeta | 85,6 × 53,98 mm, un carné o una tarjeta bancaria                                              |
+
+Un tamaño solo fija las proporciones: no mueve las esquinas ni encuentra el documento. El papel queda en vertical o en horizontal según las esquinas, así que no hay que elegir la orientación. Un tamaño que no es el del documento lo deforma, así que Enderezar empieza en Auto cada vez que se abre.
+
+Con las cuatro esquinas en las esquinas de la imagen, Auto no cambia nada, y un tamaño da a la imagen entera las proporciones de ese papel.
+
+## Proporciones {#proportions}
 
 Una foto no dice la forma real de la página, así que Enderezar estima sus proporciones a partir de dónde quedan las esquinas en la foto. La estimación va bien con fotos hechas desde una distancia normal, pero no puede ser exacta.
 
@@ -72,7 +88,10 @@ Enderezar se abre con [`openTool('perspective')`](../../reference/methods#opento
 ```ts
 pic.edit()
 pic.openTool('perspective')
+pic.setPaper({ size: 'a4' })
 
 // Más tarde, desde un botón tuyo
 pic.confirmTool()
 ```
+
+Elige el tamaño de papel con [`setPaper()`](../../reference/methods#setpaper) mientras la herramienta está abierta. `confirmTool()` espera a que se mueva una esquina, y el `canConfirm` del [estado](../../reference/state) dice cuándo puede.

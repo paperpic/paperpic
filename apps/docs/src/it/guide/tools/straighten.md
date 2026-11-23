@@ -13,13 +13,29 @@ Un documento fotografato di sbieco sembra un trapezio: il bordo lontano è più 
 
 1. Premi Modifica, poi Raddrizza. Compare una maniglia per ogni angolo.
 2. Trascina ogni maniglia su un angolo del documento. Ingrandisci con i pulsanti del suo pannello per posizionarle con precisione.
-3. Premi Fatto, o `Invio`. Il visualizzatore mostra la pagina piatta, ritagliata sui quattro angoli.
+3. Se conosci la carta, scegli il suo [formato](#paper-size): A4, Lettera o Tessera. Auto lo stima.
+4. Premi Fatto, o `Invio`. Il visualizzatore mostra la pagina piatta, ritagliata sui quattro angoli. Fatto aspetta che sposti un angolo.
 
 Le maniglie funzionano come in [Ritaglia](./crop): una lente d’ingrandimento sugli schermi touch, premere e toccare invece di trascinare, e Tab e le frecce con la tastiera. I quattro angoli formano sempre una figura convessa, così la pagina si può sempre rendere piatta.
 
 Raddrizza mostra la foto senza il bianco e nero di [Pulisci](./clean-up), perché i bordi della carta sono difficili da trovare su una pagina pulita. Il bianco e nero torna dopo Fatto, e il grigio resta.
 
-## Proporzioni
+## Formato carta {#paper-size}
+
+Il pannello di Raddrizza offre formati carta, che danno al risultato le proporzioni esatte di quella carta:
+
+| Scelta  | Proporzioni                                                                                  |
+| ------- | -------------------------------------------------------------------------------------------- |
+| Auto    | [`aspectRatio`](../../reference/options#aspectratio), o altrimenti una [stima](#proportions) |
+| A4      | 210 × 297 mm, le stesse di A3 e A5                                                           |
+| Lettera | 8,5 × 11 pollici, Lettera USA                                                                |
+| Tessera | 85,6 × 53,98 mm, una carta d’identità o bancaria                                             |
+
+Un formato fissa solo le proporzioni: non sposta gli angoli e non trova il documento. La carta sta in verticale o in orizzontale come gli angoli, quindi non c’è un orientamento da scegliere. Un formato che non è quello del documento lo deforma, quindi Raddrizza comincia da Auto ogni volta che si apre.
+
+Con i quattro angoli sugli angoli dell’immagine, Auto non cambia nulla, e un formato dà a tutta l’immagine le proporzioni di quella carta.
+
+## Proporzioni {#proportions}
 
 Una foto non dice la forma reale della pagina, quindi Raddrizza ne stima le proporzioni da dove stanno gli angoli nella foto. La stima va bene per le foto scattate da una distanza normale, ma non può essere esatta.
 
@@ -72,7 +88,10 @@ Raddrizza si apre con [`openTool('perspective')`](../../reference/methods#opento
 ```ts
 pic.edit()
 pic.openTool('perspective')
+pic.setPaper({ size: 'a4' })
 
 // Più tardi, da un tuo pulsante
 pic.confirmTool()
 ```
+
+Scegli il formato carta con [`setPaper()`](../../reference/methods#setpaper) mentre lo strumento è aperto. `confirmTool()` aspetta che si sposti un angolo, e il `canConfirm` dello [stato](../../reference/state) dice quando può.

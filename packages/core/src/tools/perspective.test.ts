@@ -247,9 +247,9 @@ describe('perspective tool', () => {
   })
 
   /** Opens the tool and places each corner with a tap, `null` leaving one where it starts. */
-  const placed = (points: readonly ({ x: number, y: number } | null)[]) => {
+  const placed = (points: readonly ({ x: number, y: number } | null)[], overrides: Partial<ToolHost> = {}) => {
     const layer = document.createElement('div')
-    const session = perspectiveTool.activate!(host({ layer }))
+    const session = perspectiveTool.activate!(host({ layer, ...overrides }))
     const handles = [
       ...layer.querySelectorAll<HTMLButtonElement>('.paperpic-handle'),
     ]
@@ -271,6 +271,61 @@ describe('perspective tool', () => {
 
   it('gives nothing when the corners are the corners of the image', () => {
     expect(placed(wholeFrame).session.confirm()).toBeNull()
+  })
+
+  it('can confirm only once a corner is off its start', () => {
+    expect(placed([]).session.canConfirm!()).toBe(false)
+    expect(placed([
+      { x: 0, y: 0 },
+    ]).session.canConfirm!()).toBe(true)
+    expect(placed(wholeFrame).session.canConfirm!()).toBe(true)
+  })
+
+  it.each([
+    ['a4', 297 / 210],
+    ['letter', 11 / 8.5],
+    ['card', 85.6 / 53.98],
+  ] as const)('gives the proportions of %s, lying as the corners do, over the ones the consumer knows', (size, landscape) => {
+    const edit = placed([
+      { x: 90, y: 40 },
+    ], {
+      paperSize: () => size,
+      aspectRatio: () => 0.5,
+    }).session.confirm() as PerspectiveStep
+    expect(edit.aspectRatio).toBeCloseTo(landscape)
+  })
+
+  it('stands the paper in portrait when the corners do', () => {
+    const edit = placed([
+      { x: 400, y: 0 },
+      { x: 600, y: 0 },
+      { x: 600, y: 500 },
+      { x: 400, y: 500 },
+    ], {
+      paperSize: () => 'a4',
+    }).session.confirm() as PerspectiveStep
+    expect(edit.aspectRatio).toBeCloseTo(210 / 297)
+  })
+
+  it('gives the whole image the proportions of a paper size', () => {
+    const edit = placed(wholeFrame, {
+      paperSize: () => 'a4',
+    }).session.confirm() as PerspectiveStep
+    expect(edit.quad).toEqual(rectangleCorners(0, 0, 1, 1))
+    expect(edit.aspectRatio).toBeCloseTo(297 / 210)
+  })
+
+  it('gives nothing for the whole image when it already has the proportions of the paper', () => {
+    const a4 = { width: 2970, height: 2100 }
+    const points = rectangleCorners(0, 0, a4.width, a4.height)
+    expect(placed(points, {
+      frameSize: () => a4,
+      paperSize: () => 'a4',
+      photoFrame: () => ({
+        photo: a4,
+        origin: { x: 0, y: 0 },
+      }),
+    }).session.confirm()).toBeNull()
   })
 
   it.each([

@@ -23,6 +23,7 @@ Use these words in the Korean docs, so that each idea has one name on every page
 | option                                        | 옵션           |
 | pan, move a zoomed image                      | 이동           |
 | panel, the controls of an open tool           | 패널           |
+| paper size, of Straighten                     | 용지 크기      |
 | parent element                                | 부모 요소      |
 | playground                                    | 플레이그라운드 |
 | preview                                       | 미리보기       |

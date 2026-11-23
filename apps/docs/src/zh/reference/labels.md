@@ -61,6 +61,11 @@ const pic = new PaperPic(container, {
 | `keepEditing`       | Keep editing                                                     | 回到编辑而不丢弃修改的按钮                                 |
 | `loadError`         | The image could not be loaded                                    | 图片无法加载时显示                                         |
 | `loading`           | Loading image                                                    | 图片加载时显示                                             |
+| `paper`             | Paper size                                                       | “矫正”中纸张尺寸选择的名称                                 |
+| `paperA4`           | A4                                                               | 在“矫正”中选择 A4                                          |
+| `paperAuto`         | Auto                                                             | 在“矫正”中选择自动宽高比                                   |
+| `paperCard`         | Card                                                             | 在“矫正”中选择身份证或银行卡的尺寸                         |
+| `paperLetter`       | Letter                                                           | 在“矫正”中选择美国信纸                                     |
 | `perspective`       | Straighten                                                       | “矫正”按钮                                                 |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | 在“矫正”中要做什么                                         |
 | `previewError`      | The changes could not be shown                                   | 修改无法显示时显示                                         |

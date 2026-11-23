@@ -125,6 +125,11 @@ interface PaperPicLabels {
   keepEditing: string
   loadError: string
   loading: string
+  paper: string
+  paperA4: string
+  paperAuto: string
+  paperCard: string
+  paperLetter: string
   perspective: string
   perspectiveHint: string
   previewError: string
@@ -191,6 +196,7 @@ interface PaperPicState {
   adjustments: { brightness: number, contrast: number }
   busy: boolean
   canApply: boolean
+  canConfirm: boolean
   canRedo: boolean
   canUndo: boolean
   finish: { mode: FinishMode, sensitivity: number }
@@ -198,6 +204,7 @@ interface PaperPicState {
   hint: string | null
   image: Size | null
   mode: 'view' | 'edit'
+  paper: { size: PaperSize }
   redaction: { color: RedactColor }
   rotation: Rotation
   status: 'empty' | 'loading' | 'ready' | 'error'
@@ -214,6 +221,14 @@ type FinishMode = 'original' | 'gray' | 'mono'
 ```
 
 [クリーンアップ](../guide/tools/clean-up)の仕上げ。元の色調、グレー、または `'mono'` の白黒です。[`setFinish()`](./methods#setfinish) が受け取り、[状態](./state)の `finish` が保持します。
+
+### `PaperSize`
+
+```ts
+type PaperSize = 'auto' | 'a4' | 'letter' | 'card'
+```
+
+[傾き補正](../guide/tools/straighten#paper-size)の結果に縦横比を与える用紙。[`setPaper()`](./methods#setpaper) が受け取り、[状態](./state)の `paper` が保持します。
 
 ### `RedactColor`
 

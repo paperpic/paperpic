@@ -23,6 +23,7 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | option                                        | オプション               |
 | pan, move a zoomed image                      | 移動                     |
 | panel, the controls of an open tool           | パネル                   |
+| paper size, of Straighten                     | 用紙サイズ               |
 | parent element                                | 親要素                   |
 | playground                                    | プレイグラウンド         |
 | preview                                       | プレビュー               |

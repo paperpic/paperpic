@@ -129,6 +129,7 @@ Jede Schaltfläche, jede Skala und jeder Eckgriff trägt `data-paperpic-control`
 | Anpassen und Bereinigen              | `brightness` und `contrast`, die Wahlen und ihre Skalen, `finishOriginal`, `finishGray` und `finishMono`, die Finishs, und `finishSensitivity`, seine Skala |
 | Jedes Werkzeug                       | `cancelTool`, `confirm`                                                                                                                                     |
 | Zuschneiden, Begradigen und Abdecken | `zoomIn`, `zoomOut`, `cornerTopLeft`, `cornerTopRight`, `cornerBottomRight`, `cornerBottomLeft`                                                             |
+| Begradigen                           | `paperAuto`, `paperA4`, `paperLetter`, `paperCard`                                                                                                          |
 | Abdecken                             | `redactArea`, `redactTurn`, `redactBlack`, `redactWhite`                                                                                                    |
 | Frage vor dem Verwerfen              | `keepEditing`, `discard`                                                                                                                                    |
 
