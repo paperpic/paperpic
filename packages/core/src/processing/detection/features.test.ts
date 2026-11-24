@@ -1,6 +1,6 @@
 import type { PixelBuffer, Quad } from '../types'
 import { describe, expect, it } from 'vitest'
-import { painted, sheetPhoto } from '../../test/photos'
+import { painted, shaded, sheetPhoto } from '../../test/photos'
 import { rectangleCorners } from '../homography'
 import { findEdges } from './edges'
 import { countBorders, measureFeatures } from './features'
@@ -28,7 +28,7 @@ describe('measureFeatures', () => {
     const features = measure(sheet)
     expect(features).toMatchObject({ borders: 0, brighter: 1, evenness: 1 })
     expect(features.size).toBeCloseTo(0.5)
-    expect(features.spread).toBeLessThan(0.1)
+    expect(features.roughness).toBeLessThan(0.05)
     expect(features.contrast).toBeGreaterThan(1)
     expect(features.worstContrast).toBe(0.5)
     expect(features.outlineWithoutText).toBeGreaterThan(0.8)
@@ -55,20 +55,18 @@ describe('measureFeatures', () => {
     expect(half.worstContrast).toBeLessThan(0.1)
   })
 
-  it('takes a shadow over the sheet for less than some of the table', () => {
-    const photo = sheetPhoto(size, sheet, { text: false })
-    const shaded = painted(size, (x, y) => {
-      const offset = (y * size.width + x) * 4
-      const light = x < 80
-        ? 1
-        : 0.6
-      return [photo.data[offset]! * light, photo.data[offset + 1]! * light, photo.data[offset + 2]! * light]
-    })
-    const { spread, contrast } = measureIn(shaded, sheet)
-    expect(spread).toBeLessThan(0.6)
-    expect(measureIn(photo, rectangleCorners(20, 10, 140, 110)).spread).toBeGreaterThan(0.9)
+  it('tells the inside with several things from the one with a shadow or a smooth change of light', () => {
+    const { roughness, contrast } = measureIn(shaded(sheetPhoto(size, sheet), 0.3, x => x >= 80), sheet)
+    expect(roughness).toBeLessThan(0.05)
     // The contrast with the table, which is in the same shadow, stays
     expect(contrast).toBeGreaterThan(1)
+
+    expect(measureIn(painted(size, x => [60 + x, 60 + x, 60 + x]), sheet).roughness).toBeLessThan(0.05)
+
+    const things = painted(size, (x, y) => (Math.floor(x / 12) + Math.floor(y / 12)) % 2 === 0
+      ? [220, 220, 220]
+      : [40, 40, 40])
+    expect(measureIn(things, sheet).roughness).toBeGreaterThan(1)
   })
 
   it('compares the light of a dark photo as that of a bright one', () => {
@@ -93,7 +91,6 @@ describe('measureFeatures', () => {
 
   it('tells a shape that takes in some of the table', () => {
     const wide = measure(rectangleCorners(20, 10, 140, 110))
-    expect(wide.spread).toBeGreaterThan(0.9)
     expect(wide.worstContrast).toBeLessThan(0.1)
     expect(wide.outline).toBeLessThan(0.2)
   })

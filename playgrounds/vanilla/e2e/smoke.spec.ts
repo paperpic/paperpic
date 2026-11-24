@@ -2,6 +2,14 @@ import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
 const SAMPLE = '/samples/receipt.jpg'
+/** A receipt whose bottom right corner is outside the photo, and its real corners, as fractions of the photo. */
+const CUT_SAMPLE = '/samples/receipt-cut-corner.jpg'
+const CUT_SAMPLE_CORNERS = {
+  cornerTopLeft: { x: 0.51, y: 0.02 },
+  cornerTopRight: { x: 0.86, y: 0.13 },
+  cornerBottomRight: { x: 0.59, y: 1 },
+  cornerBottomLeft: { x: 0.1, y: 0.81 },
+}
 
 /** The control of the viewer whose `data-paperpic-control` is `name`, which is public and does not depend on the language. */
 const control = (page: Page, name: string) => page.locator(`[data-paperpic-control="${name}"]`)
@@ -25,6 +33,14 @@ async function dragTopLeftCorner(page: Page) {
   await page.mouse.down()
   await page.mouse.move(start.x + viewer.width / 6, start.y + viewer.height / 6, { steps: 8 })
   await page.mouse.up()
+}
+
+/** Where a corner is, in image pixels, as the viewer tells screen readers once an arrow key moves it by 1 screen pixel. */
+async function cornerPosition(page: Page, name: string) {
+  await control(page, name).press('ArrowUp')
+  const announcement = await page.locator('.paperpic-announcement').textContent()
+  const [x, y] = announcement!.match(/\d+/g)!.map(Number)
+  return { x: x!, y: y! }
 }
 
 test('loads an image, finds the document and straightens it in the worker, crops it and applies it', async ({ page }) => {
@@ -80,4 +96,21 @@ test('loads an image, finds the document and straightens it in the worker, crops
   // The viewer shows the applied image, ready for another edit
   await expect(edit).toBeEnabled()
   expect(errors).toEqual([])
+})
+
+test('finds the corners of a document that the photo cuts off', async ({ page }) => {
+  await page.goto('/')
+  await page.locator('[name="sample"]').selectOption(CUT_SAMPLE)
+  const edit = control(page, 'edit')
+  await expect(edit).toBeEnabled()
+  await edit.click()
+  await control(page, 'perspective').click()
+  await expect(control(page, 'confirm')).toHaveAttribute('aria-disabled', 'false', { timeout: 15_000 })
+
+  const { width, height } = await imageSize(page, CUT_SAMPLE)
+  for (const [name, real] of Object.entries(CUT_SAMPLE_CORNERS)) {
+    const found = await cornerPosition(page, name)
+    expect(Math.abs(found.x / width - real.x), `${name}, across`).toBeLessThan(0.03)
+    expect(Math.abs(found.y / height - real.y), `${name}, down`).toBeLessThan(0.03)
+  }
 })

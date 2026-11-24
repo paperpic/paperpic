@@ -12,8 +12,8 @@ const sheet: Features = {
   outlineWithoutText: 0.85,
   pastCorner: 0.1,
   pastSide: 0.05,
+  roughness: 0.02,
   size: 0.7,
-  spread: 0.1,
   worstContrast: 0.5,
   worstSide: 0.7,
 }
@@ -33,8 +33,8 @@ describe('confidence', () => {
       { size: 0.25 },
     ],
     [
-      'with the light of several things inside',
-      { spread: 1.2 },
+      'with several things inside',
+      { roughness: 0.2 },
     ],
     [
       'that is a part of a page, up to a fold',
@@ -59,7 +59,7 @@ describe('confidence', () => {
       { evenness: 1 },
       { pastCorner: 0 },
       { pastSide: 0 },
-      { spread: 0 },
+      { roughness: 0 },
     ] as Partial<Features>[]) {
       expect(confidence({
         ...sheet,

@@ -23,10 +23,10 @@ export interface Features {
   pastCorner: number
   /** The most that both neighbours of a side go on past it, as at a fold in the middle of a page. */
   pastSide: number
+  /** How much the light of its inside changes from one place to the next, as a ratio. The border of a shadow counts little. */
+  roughness: number
   /** The square root of the part of the photo that it takes. */
   size: number
-  /** How much the light of its inside varies, as a ratio. */
-  spread: number
   /** The contrast of the side where it is least. */
   worstContrast: number
   /** How well the worst of its sides lies on the edges that are left without the text. */
@@ -47,9 +47,11 @@ const SATURATION_WEIGHT = 0.5
 const MIN_BRIGHTER = 4
 /** The inside is looked at on a grid with this many cells at each side. */
 const GRID = 16
-/** The spread leaves out the darkest and the brightest places, such as a blot or a highlight. */
-const SPREAD_FROM = 0.15
-const SPREAD_TO = 0.85
+/**
+ * The roughness is larger than this part of the steps from one place of the grid to the next. The border of a shadow is
+ * in the rest, because few steps cross it, and so is that of a blot or a highlight.
+ */
+const ROUGHNESS_SHARE = 0.75
 /**
  * Light is compared as a ratio, which a shadow changes less than a difference. These levels, added to every one, keep
  * the noise of a dark area from looking like a contrast.
@@ -117,24 +119,35 @@ function compareSides(quad: Quad, planes: Planes): Pick<Features, 'brighter' | '
   }
 }
 
-/** How much the light of the inside of a shape varies: the ratio between a bright place and a dark one, as a logarithm. */
-function measureSpread([topLeft, topRight, bottomRight, bottomLeft]: Quad, { channels, width, height }: Planes): number {
+/**
+ * How much the light of the inside of a shape changes from one place to the next: the ratio between the two, as a
+ * logarithm. Paper is smooth, also in a shadow, where several things are not.
+ */
+function measureRoughness([topLeft, topRight, bottomRight, bottomLeft]: Quad, { channels, width, height }: Planes): number {
+  const places = GRID - 1
   const light: number[] = []
-  for (let row = 1; row < GRID; row++) {
-    for (let column = 1; column < GRID; column++) {
-      const right = column / GRID
-      const down = row / GRID
+  const steps: number[] = []
+  for (let row = 0; row < places; row++) {
+    for (let column = 0; column < places; column++) {
+      const right = (column + 1) / GRID
+      const down = (row + 1) / GRID
       const between = (axis: 'x' | 'y', last: number) => Math.min(last, Math.max(0, Math.round(
         (1 - down) * ((1 - right) * topLeft[axis] + right * topRight[axis])
         + down * ((1 - right) * bottomLeft[axis] + right * bottomRight[axis]),
       )))
       const pixel = between('y', height - 1) * width + between('x', width - 1)
-      light.push(Math.log(channels.reduce((sum, channel) => sum + channel[pixel]! + DARK_LEVELS, 0)))
+      const value = Math.log(channels.reduce((sum, channel) => sum + channel[pixel]! + DARK_LEVELS, 0))
+      if (column > 0) {
+        steps.push(Math.abs(value - light.at(-1)!))
+      }
+      if (row > 0) {
+        steps.push(Math.abs(value - light.at(-places)!))
+      }
+      light.push(value)
     }
   }
-  light.sort((first, second) => first - second)
-  const at = (fraction: number) => light[Math.floor(light.length * fraction)]!
-  return at(SPREAD_TO) - at(SPREAD_FROM)
+  steps.sort((first, second) => first - second)
+  return steps[Math.floor(steps.length * ROUGHNESS_SHARE)]!
 }
 
 /** How alike the facing sides of a shape are: the shorter one of a pair as a fraction of the longer one, for the pair that differs most. */
@@ -169,8 +182,8 @@ export function measureFeatures(quad: Quad, { edges, edgesWithoutText, planesWit
     evenness: evenness(quad),
     outline: fitQuad(quad, edges).mean,
     outlineWithoutText: withoutText.mean,
+    roughness: measureRoughness(quad, planesWithoutText),
     size: Math.sqrt(Math.abs(signedArea(quad)) / (edges.width * edges.height)),
-    spread: measureSpread(quad, planesWithoutText),
     worstSide: withoutText.worst,
   }
 }
