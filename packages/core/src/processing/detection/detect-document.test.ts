@@ -1,6 +1,6 @@
 import type { Quad } from '../types'
 import { describe, expect, it } from 'vitest'
-import { noisePhoto, painted, sheetPhoto } from '../../test/photos'
+import { noisePhoto, painted, shaded, sheetPhoto } from '../../test/photos'
 import { rectangleCorners } from '../homography'
 import { detectDocument, findCandidates } from './detect-document'
 
@@ -50,6 +50,23 @@ describe('detectDocument', () => {
     expect(error(detectDocument(sheetPhoto(photo, sheet, {
       table: [168, 140, 112],
     })), sheet)).toBeLessThan(0.01)
+  })
+
+  it.each([
+    [
+      'half of it',
+      (x: number) => x >= 240,
+    ],
+    [
+      'a corner of it',
+      (x: number, y: number) => x + y > 420,
+    ],
+    [
+      'the middle of it',
+      (_: number, y: number) => y > 120 && y < 200,
+    ],
+  ])('finds a sheet with a hard shadow over %s', (_, inShadow) => {
+    expect(error(detectDocument(shaded(sheetPhoto(photo, sheet), 0.25, inShadow)), sheet)).toBeLessThan(0.01)
   })
 
   it('finds the same corners in a copy of another size', () => {
