@@ -38,6 +38,17 @@ export function sheetPhoto(size: Size, corners: Quad, { paper = [236, 234, 228],
   })
 }
 
+/** A photo with a hard shadow, which leaves `light`, from 0 to 1, where `inShadow` says. */
+export function shaded({ data, width, height }: PixelBuffer, light: number, inShadow: (x: number, y: number) => boolean): PixelBuffer {
+  return painted({ width, height }, (x, y) => {
+    const offset = (y * width + x) * 4
+    const share = inShadow(x, y)
+      ? light
+      : 1
+    return [data[offset]! * share, data[offset + 1]! * share, data[offset + 2]! * share]
+  })
+}
+
 /** A photo with no shape in it: each pixel has a tone of its own, always the same ones. */
 export function noisePhoto(size: Size): PixelBuffer {
   let state = 1

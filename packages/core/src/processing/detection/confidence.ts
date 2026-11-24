@@ -5,21 +5,21 @@ import type { Features } from './features'
  * `docs/spec/detection-results.md`.
  */
 const WEIGHTS: Record<keyof Features, number> = {
-  borders: -1.08,
-  brighter: 2.24,
-  contrast: -1.84,
-  evenness: 3.37,
-  outline: 6.17,
-  outlineWithoutText: 8.38,
-  pastCorner: -0.9,
-  pastSide: -1.46,
-  size: 9.13,
-  spread: -5.95,
-  worstContrast: 1.3,
-  worstSide: -1.12,
+  borders: -1.14,
+  brighter: 2.26,
+  contrast: -2.32,
+  evenness: 3.44,
+  outline: 6.87,
+  outlineWithoutText: 9.76,
+  pastCorner: -0.98,
+  pastSide: -1.39,
+  roughness: -26.73,
+  size: 9.76,
+  worstContrast: 1.26,
+  worstSide: -1.31,
 }
 /** Where the confidence starts, so that a shape above 0 is likely enough to propose it. */
-const START = -17.64
+const START = -19.07
 
 /** How likely a shape is to be a document. Above 0, it is likely enough to propose it to the user. */
 export function confidence(features: Features): number {
