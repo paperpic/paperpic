@@ -92,7 +92,37 @@ What they say:
 
 Some of the wrong ones can be mistakes in the corners of the documents, which nobody has reviewed. How many of the photos have a hard shadow is unknown.
 
-These photos stay a test only while nothing is fitted to them or chosen by them.
+These photos stay a test only while nothing is fitted to them or chosen by them. They have been measured for 0.6.0, for the version in use and for the [net](#a-net-in-place-of-the-linear-score).
+
+## A net in place of the linear score
+
+Tried on 2026-11-24 and **not adopted**. The rule was set before: at least 5 points more than the version in use on the new photos, with fewer than 5% of false proposals.
+
+It was fitted to 3240 documents: 861 of the Mendeley photos that are not in the test, 2129 of the training split of DocCornerDataset, from receipts, invoices and papers only, and 250 of the 251 of the 383. With them went 1132 photos without a document, and a third of all of them again with a painted shadow. The photos alike to one of the test were left out, and photos of the same scene stay at one side of the cross-validation.
+
+| Change                                                                           | Found, cross-validated |
+| -------------------------------------------------------------------------------- | ---------------------- |
+| The weights in use                                                               | 63.5%                  |
+| The same formula, fitted again                                                   | 64.2%                  |
+| A net of 16 neurons over the 12 features                                         | 67.7%                  |
+| The same, and the shapes to settle chosen by a learned score in place of by hand | 67.4%                  |
+| The same, and the confidence of a shape adds that of the shapes almost like it   | 69.3%                  |
+| The same, fitted also to painted shadows                                         | 69.7%                  |
+
+The rate is the mean of the three sets, with fewer than 4.5% of false proposals. On the new photos, the threshold is the one for 4.0%, because a set that the net has not seen has more wrong proposals. The learned score puts the right shape among the candidates more often, in 86.5% of the Mendeley documents in place of 80.5%. The whole search takes 78 ms in place of 67 ms (median, Node.js).
+
+| New photos              | In use                     | Net                         |
+| ----------------------- | -------------------------- | --------------------------- |
+| Receipts, 195           | 51.8% found, 8 wrong       | 49.7% found, 7 wrong        |
+| Documents, 191          | 44.5% found, 15 wrong      | 53.4% found, 15 wrong       |
+| **Both, 386**           | **48.2% found**, 7.5% near | **51.6% found**, 12.4% near |
+| Without a document, 210 | 8 proposed                 | 8 proposed                  |
+| **False, of 596**       | **31, which is 5.2%**      | **30, which is 5.0%**       |
+
+- **It gains where it learned.** It finds 8.9 points more of the documents, whose other photos it was fitted to, and 2.1 points fewer of the receipts, whose set it never saw. 33 documents came to be found and 20 stopped being so, which chance alone would do about once in ten times.
+- **The formula was the limit, and then the photos.** With a tenth of the photos the linear score learns the same. The net learns more, and what it learns is of its sets: in cross-validation, a set that it has not seen gains 2 to 3 points only.
+- **It lost a photo of ours.** It is silent on the receipt with a real hard shadow, by 0.02.
+- **Not tried:** real photos of more kinds, and features measured in other ways.
 
 ## What the new images changed
 
