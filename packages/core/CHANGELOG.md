@@ -1,5 +1,11 @@
 # @paperpic/core
 
+## 0.6.1
+
+### Patch Changes
+
+- [#109](https://github.com/paperpic/paperpic/pull/109) [`6697ece`](https://github.com/paperpic/paperpic/commit/6697eceab4b13563dcc20802db0860f38201f201) Thanks [@Unlooper](https://github.com/Unlooper)! - Straighten now finds documents with a hard shadow over them, such as that of the hand that holds the phone. It often found nothing there before, or placed the corners wrong.
+
 ## 0.6.0
 
 ### Minor Changes
