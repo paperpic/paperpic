@@ -1,3 +1,4 @@
+import type { Drag } from '../input/gestures'
 import type { AdjustSetting, FinishSetting, Operation } from '../pipeline/operations'
 import type { PhotoFrame } from '../pipeline/photo-frame'
 import type { PaperSize } from '../processing/paper'
@@ -74,9 +75,13 @@ export interface ToolSession {
   anchor?: () => ViewPoint | null
   /** Whether Done can keep the selection. Without it, Done always can. */
   canConfirm?: () => boolean
+  /** Whether a drag on the image does something else than pan, which the pointer then shows. */
+  canDrag?: () => boolean
   /** The edit the user chose, or `null` if it changes nothing. */
   confirm: () => Operation | null
   deactivate: () => void
+  /** What a drag from a point of the viewport does, or `null` to pan. */
+  drag?: (point: ViewPoint) => Drag | null
   /** Paints over the image, in CSS pixels of the viewport. */
   drawOverlay: (context: CanvasRenderingContext2D) => void
   /** Runs on `Esc` before the tool closes. Returns whether it used the key, which then leaves the tool open. */

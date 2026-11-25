@@ -12,9 +12,11 @@ La foto de un documento puede mostrar más de la cuenta: un número de cuenta, u
 ## Cómo se usa
 
 1. Pulsa Editar y luego Tapar. Aparece una franja en medio de la imagen, con un tirador en cada esquina.
-2. Arrastra la zona sobre lo que quieras ocultar. Gírala con el tirador que tiene encima, para que se incline con una línea de texto, y arrastra sus esquinas para cambiar su tamaño. La zona muestra su color, aún transparente, para que puedas colocarla sobre las palabras justas.
+2. Dibuja la zona sobre lo que quieras ocultar: arrastra desde una de sus esquinas hasta la opuesta, en cualquier parte de la imagen, también sobre la franja. Después arrastra la zona para moverla, gírala con el tirador que tiene encima, para que se incline con una línea de texto, y arrastra sus esquinas para cambiar su tamaño. La zona muestra su color, aún transparente, para que puedas colocarla sobre las palabras justas.
 3. Elige Negro o Blanco en el panel.
 4. Pulsa Hecho, o `Enter`, para añadir la zona a los cambios. Cancelar esta herramienta, o `Esc`, cierra Tapar sin cambiar nada.
+
+Solo puedes dibujar hasta que colocas la zona. En cuanto la dibujas, la mueves, la giras o cambias su tamaño, arrastrar en el resto de la imagen vuelve a desplazarla, para que nada sustituya la zona por accidente. Antes de eso, desplaza una imagen ampliada con dos dedos, o con las flechas mientras el foco está en la imagen. Sin arrastrar, la franja es la zona: muévela con el teclado, o púlsala y luego toca su destino.
 
 Cada Hecho añade una zona, así que abre Tapar otra vez para cubrir otra parte. Deshacer quita la última zona, y el color se mantiene para la siguiente. Los tiradores de esquina funcionan como en [Recortar](./crop): se arrastran, se pulsan y luego se toca su destino, o se mueven con el teclado. En el tirador de encima de la zona, las flechas la giran 1 grado, o 10 con Mayús. Al arrastrarlo, se ajusta a recto.
 

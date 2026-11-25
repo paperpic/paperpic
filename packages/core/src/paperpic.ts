@@ -326,6 +326,7 @@ export class PaperPic {
     this.renderer = new Renderer(this.canvas, overlay, () => this.scene())
 
     this.gestures = attachGestures(this.viewportElement, {
+      onDrag: point => this.session?.handle.drag?.(point) ?? null,
       onPan: (deltaX, deltaY) => this.pan(deltaX, deltaY),
       onZoom: (factor, point) => this.zoomAround(this.view.zoom * factor, point),
       onTap: point => this.session?.handle.tap?.(point) ?? false,
@@ -1012,6 +1013,7 @@ export class PaperPic {
         const before = this.hint()
         this.hintOverride = text
         this.editBar.setHint(this.hint())
+        this.refreshCursor()
         // A tool that closes lets go of its corner too, and the close reports the new state itself
         if (this.session && this.hint() !== before) {
           this.emit('change', this.getState())
@@ -1025,6 +1027,7 @@ export class PaperPic {
       paperSize: () => this.paperSize,
       redactColor: () => this.redactColor,
       selectionMoved: () => {
+        this.refreshCursor()
         if (this.canConfirm() !== this.couldConfirm) {
           this.refresh()
           this.emit('change', this.getState())
@@ -1437,7 +1440,13 @@ export class PaperPic {
       'paperpic-viewport-pannable',
       image !== null && overflows(this.view, image, this.viewport),
     )
+    this.refreshCursor()
     this.renderer.requestPaint()
+  }
+
+  /** Shows whether a drag on the image draws the selection of the open tool instead of panning. */
+  private refreshCursor(): void {
+    this.viewportElement.classList.toggle('paperpic-viewport-drawable', this.session?.handle.canDrag?.() ?? false)
   }
 
   /** Shows another view. Returns whether it differs from the one on display. */

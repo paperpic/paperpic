@@ -45,9 +45,19 @@ jobs:
           console.log(['## Coverage', '', '| Metric | % | Covered |', '| --- | --- | --- |', ...rows].join('\n'))
           EOF
       - run: pnpm build
-      # The smoke tests run the playground against the packages that pnpm build just wrote
-      - run: pnpm --filter playground-vanilla exec playwright install --with-deps chromium firefox webkit
-      - run: pnpm --filter playground-vanilla test:e2e
+      # The smoke tests run the playground against the packages that pnpm build just wrote.
+      # The image brings the browsers and their system packages: installing them with apt hung on slow mirrors
+      - name: Smoke tests
+        run: |
+          version=$(node -p "require('./playgrounds/vanilla/package.json').devDependencies['@playwright/test']")
+          node_dir=$(dirname "$(dirname "$(command -v node)")")
+          docker run --rm --init --ipc=host \
+            --env CI \
+            --env "PATH=$PWD/playgrounds/vanilla/node_modules/.bin:$node_dir/bin:/usr/bin:/bin" \
+            --volume "$PWD:$PWD" \
+            --volume "$node_dir:$node_dir:ro" \
+            --workdir "$PWD/playgrounds/vanilla" \
+            "mcr.microsoft.com/playwright:v$version-noble" playwright test
       - name: Upload the Playwright report
         if: ${{ failure() && hashFiles('playgrounds/vanilla/playwright-report/**') != '' }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

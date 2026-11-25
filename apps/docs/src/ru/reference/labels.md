@@ -75,7 +75,7 @@ const pic = new PaperPic(container, {
 | `redactAngle`       | Angle 12°                                                        | Функция угла в градусах, объявляется после поворота области «Закрасить»                                              |
 | `redactArea`        | Area                                                             | Область «Закрасить», которая перемещает её целиком                                                                   |
 | `redactBlack`       | Black                                                            | Выбирает чёрный в «Закрасить»                                                                                        |
-| `redactHint`        | Drag the area over what to hide                                  | Что делать в «Закрасить»                                                                                             |
+| `redactHint`        | Draw an area over what to hide                                   | Что делать в «Закрасить»                                                                                             |
 | `redactTurn`        | Turn                                                             | Маркер, который поворачивает область «Закрасить»                                                                     |
 | `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | Описание маркера, который поворачивает область: что делают клавиши и что Enter завершает                             |
 | `redactWhite`       | White                                                            | Выбирает белый в «Закрасить»                                                                                         |

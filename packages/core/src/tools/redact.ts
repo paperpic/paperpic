@@ -118,7 +118,8 @@ export const turnGrip: Grip = {
 
 /**
  * Covers an area of the image with black or white. The area is a rectangle, which the user moves by dragging it, turns
- * by its handle, so it can lean with a line of text, and resizes by its corners. Each Done leaves one area, and the
+ * by its handle, so it can lean with a line of text, and resizes by its corners. Until then, a drag on the image
+ * draws it somewhere else. Each Done leaves one area, and the
  * covers run after every other edit, so nothing shows through them.
  */
 export const redactTool: Tool = {
@@ -137,10 +138,15 @@ export const redactTool: Tool = {
       under: [areaGrip],
       over: [turnGrip],
     })
-    return cornerSession(editor, () => ({
-      type: 'redact',
-      color: host.redactColor(),
-      quad: scaleQuad(editor.points, 1 / frame.width, 1 / frame.height),
-    }))
+    return {
+      ...cornerSession(editor, () => ({
+        type: 'redact',
+        color: host.redactColor(),
+        quad: scaleQuad(editor.points, 1 / frame.width, 1 / frame.height),
+      })),
+      canDrag: () => !editor.touched,
+      drag: point => editor.draw(point),
+      tap: point => editor.place(point) || editor.selectArea(point),
+    }
   },
 }

@@ -1,8 +1,20 @@
 import type { ViewPoint } from '../state/view'
 
+/** A drag with one pointer that does something else than pan. */
+export interface Drag {
+  /** Leaves everything as it was, because a second pointer turned the drag into a pinch, or the browser took it over. */
+  cancel: () => void
+  /** The pointer was let go after a move. */
+  end: () => void
+  /** The pointer is at a point, once it has moved too far to be a tap. */
+  move: (point: ViewPoint) => void
+}
+
 /** What the gestures on an element ask for. */
 export interface GestureHandlers {
   onDoubleTap: (point: ViewPoint) => void
+  /** Runs when one pointer goes down. Returns what a drag from there does, or `null` to pan. A tap is still a tap. */
+  onDrag?: (point: ViewPoint) => Drag | null
   onPan: (deltaX: number, deltaY: number) => void
   /** Runs on every tap. Returns whether it used it, so that it does not count towards a double tap. */
   onTap: (point: ViewPoint) => boolean
@@ -34,6 +46,12 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
   const pointers = new Map<number, ViewPoint>()
   let lastTap: { point: ViewPoint, time: number } | null = null
   let travelled = 0
+  let drag: Drag | null = null
+
+  const cancelDrag = () => {
+    drag?.cancel()
+    drag = null
+  }
 
   const localPoint = (event: MouseEvent): ViewPoint => {
     const { left, top } = element.getBoundingClientRect()
@@ -46,9 +64,14 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
     }
     pointers.set(event.pointerId, localPoint(event))
     element.setPointerCapture(event.pointerId)
-    travelled = pointers.size === 1
-      ? 0
-      : TAP_MOVEMENT
+    cancelDrag()
+    if (pointers.size === 1) {
+      travelled = 0
+      drag = handlers.onDrag?.(localPoint(event)) ?? null
+    }
+    else {
+      travelled = TAP_MOVEMENT
+    }
   }
 
   const onPointerMove = (event: PointerEvent) => {
@@ -61,7 +84,12 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
     if (pointers.size === 1) {
       pointers.set(event.pointerId, point)
       travelled += Math.hypot(point.x - previous.x, point.y - previous.y)
-      handlers.onPan(point.x - previous.x, point.y - previous.y)
+      if (!drag) {
+        handlers.onPan(point.x - previous.x, point.y - previous.y)
+      }
+      else if (travelled >= TAP_MOVEMENT) {
+        drag.move(point)
+      }
       return
     }
 
@@ -77,7 +105,16 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
   }
 
   const onPointerUp = (event: PointerEvent) => {
-    if (!pointers.delete(event.pointerId) || pointers.size > 0 || travelled >= TAP_MOVEMENT) {
+    if (!pointers.delete(event.pointerId)) {
+      return
+    }
+    const ended = drag
+    drag = null
+    if (pointers.size > 0) {
+      return
+    }
+    if (travelled >= TAP_MOVEMENT) {
+      ended?.end()
       return
     }
     const point = localPoint(event)
@@ -99,7 +136,9 @@ export function attachGestures(element: HTMLElement, handlers: GestureHandlers):
 
   // The browser takes over a touch to scroll the page, so the tap never completes
   const onPointerCancel = (event: PointerEvent) => {
-    pointers.delete(event.pointerId)
+    if (pointers.delete(event.pointerId)) {
+      cancelDrag()
+    }
     lastTap = null
   }
 

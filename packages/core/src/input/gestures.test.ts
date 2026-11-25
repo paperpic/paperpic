@@ -1,4 +1,4 @@
-import type { Gestures } from './gestures'
+import type { Drag, Gestures } from './gestures'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attachGestures } from './gestures'
 
@@ -25,6 +25,12 @@ describe('attachGestures', () => {
     onZoom: vi.fn(),
     onDoubleTap: vi.fn(),
     onTap: vi.fn<(point: { x: number, y: number }) => boolean>(() => false),
+    onDrag: vi.fn<() => Drag | null>(() => null),
+  }
+  const drag = {
+    move: vi.fn(),
+    end: vi.fn(),
+    cancel: vi.fn(),
   }
 
   beforeEach(() => {
@@ -42,6 +48,47 @@ describe('attachGestures', () => {
     element.dispatchEvent(pointer('pointermove', 1, 25, 5))
     expect(handlers.onPan).toHaveBeenCalledWith(15, -5)
     expect(element.setPointerCapture).toHaveBeenCalledWith(1)
+  })
+
+  it('gives a drag to whoever wants it instead of panning, once it is too long for a tap', () => {
+    handlers.onDrag.mockReturnValueOnce(drag)
+    element.dispatchEvent(pointer('pointerdown', 1, 10, 10))
+    element.dispatchEvent(pointer('pointermove', 1, 13, 10))
+    expect(drag.move).not.toHaveBeenCalled()
+    element.dispatchEvent(pointer('pointermove', 1, 40, 30))
+    element.dispatchEvent(pointer('pointerup', 1, 40, 30))
+    expect(handlers.onDrag).toHaveBeenCalledWith({ x: 10, y: 10 })
+    expect(drag.move).toHaveBeenCalledExactlyOnceWith({ x: 40, y: 30 })
+    expect(drag.end).toHaveBeenCalledOnce()
+    expect(drag.cancel).not.toHaveBeenCalled()
+    expect(handlers.onPan).not.toHaveBeenCalled()
+  })
+
+  it('still takes a short drag for a tap', () => {
+    handlers.onDrag.mockReturnValueOnce(drag)
+    element.dispatchEvent(pointer('pointerdown', 1, 10, 10))
+    element.dispatchEvent(pointer('pointerup', 1, 12, 10))
+    expect(handlers.onTap).toHaveBeenCalledOnce()
+    expect(drag.end).not.toHaveBeenCalled()
+  })
+
+  it('cancels a drag that becomes a pinch, or that the browser takes over', () => {
+    handlers.onDrag.mockReturnValueOnce(drag)
+    element.dispatchEvent(pointer('pointerdown', 1, 10, 10))
+    element.dispatchEvent(pointer('pointermove', 1, 40, 10))
+    element.dispatchEvent(pointer('pointerdown', 2, 100, 10))
+    expect(drag.cancel).toHaveBeenCalledOnce()
+    element.dispatchEvent(pointer('pointermove', 2, 130, 10))
+    expect(handlers.onZoom).toHaveBeenCalledOnce()
+    element.dispatchEvent(pointer('pointerup', 2, 130, 10))
+    element.dispatchEvent(pointer('pointerup', 1, 40, 10))
+    expect(drag.end).not.toHaveBeenCalled()
+
+    handlers.onDrag.mockReturnValueOnce(drag)
+    element.dispatchEvent(pointer('pointerdown', 1, 10, 10))
+    element.dispatchEvent(pointer('pointermove', 1, 40, 10))
+    element.dispatchEvent(pointer('pointercancel', 1, 40, 10))
+    expect(drag.cancel).toHaveBeenCalledTimes(2)
   })
 
   it('ignores movement without a press, and the other mouse buttons', () => {

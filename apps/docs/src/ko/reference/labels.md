@@ -75,7 +75,7 @@ const pic = new PaperPic(container, {
 | `redactAngle`       | Angle 12°                                                        | 각도(도)의 함수로, ‘가리기’ 영역을 회전한 뒤 읽어 줍니다                        |
 | `redactArea`        | Area                                                             | ‘가리기’ 영역으로, 전체를 옮깁니다                                              |
 | `redactBlack`       | Black                                                            | ‘가리기’에서 검정을 고릅니다                                                    |
-| `redactHint`        | Drag the area over what to hide                                  | ‘가리기’에서 할 일                                                              |
+| `redactHint`        | Draw an area over what to hide                                   | ‘가리기’에서 할 일                                                              |
 | `redactTurn`        | Turn                                                             | ‘가리기’ 영역을 회전하는 핸들                                                   |
 | `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | 영역을 회전하는 핸들의 설명으로, 키가 하는 일과 Enter로 마친다는 것             |
 | `redactWhite`       | White                                                            | ‘가리기’에서 흰색을 고릅니다                                                    |

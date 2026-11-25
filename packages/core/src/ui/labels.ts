@@ -174,7 +174,7 @@ export const DEFAULT_LABELS: PaperPicLabels = {
   redactAngle: degrees => `Angle ${degrees}°`,
   redactArea: 'Area',
   redactBlack: 'Black',
-  redactHint: 'Drag the area over what to hide',
+  redactHint: 'Draw an area over what to hide',
   redactTurn: 'Turn',
   redactTurnKeys: 'Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.',
   redactWhite: 'White',

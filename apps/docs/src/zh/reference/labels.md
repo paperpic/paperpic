@@ -75,7 +75,7 @@ const pic = new PaperPic(container, {
 | `redactAngle`       | Angle 12°                                                        | 角度（度）的函数，旋转“遮盖”的区域后播报                   |
 | `redactArea`        | Area                                                             | “遮盖”的区域，用来整体移动它                               |
 | `redactBlack`       | Black                                                            | 在“遮盖”中选择黑色                                         |
-| `redactHint`        | Drag the area over what to hide                                  | 在“遮盖”中要做什么                                         |
+| `redactHint`        | Draw an area over what to hide                                   | 在“遮盖”中要做什么                                         |
 | `redactTurn`        | Turn                                                             | 旋转“遮盖”区域的手柄                                       |
 | `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | 旋转区域的手柄的说明：各个键的作用，以及按 Enter 完成      |
 | `redactWhite`       | White                                                            | 在“遮盖”中选择白色                                         |
