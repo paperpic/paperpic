@@ -1,6 +1,6 @@
 # Document detection results
 
-**Status:** in Straighten. It does not meet its criterion on [new photos](#new-photos): it finds 48.2% of the documents, with 5.2% of false proposals. In cross-validation, over the photos it was designed with, it does. Measured on 2026-11-23 and 2026-11-24 on desktop. Phones are not measured.
+**Status:** in Straighten. It does not meet its criterion on [new photos](#new-photos): it finds 48.2% of the documents, with 5.2% of false proposals. In cross-validation, over the photos it was designed with, it does. Measured on 2026-11-23 to 2026-11-25 on desktop, and its time on one top Android phone. Mid-range Android and iOS are not measured.
 
 Straighten looks for the document as it opens ([D72](paperpic-component.md#decisions)). This page holds the measurements behind it.
 
@@ -21,8 +21,8 @@ The criterion was set before any code: at least 60% of the documents found, and 
 | Question                         | Answer                                                                                                                                                                                                                                     |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Does it meet the criterion?      | Not on new photos: it finds 48.2% of the documents, with 5.2% of false proposals. In cross-validation, yes: 60.9%, with 4.0%. With the weights and the threshold of one half of those photos, it finds 60.6% in the other half, with 5.2%. |
-| Is it better than the libraries? | Yes. The best classical one finds 25.9% without a threshold, and 17.9% with under 5% of false proposals.                                                                                                                                   |
-| Is it fast enough?               | Yes on desktop: 100 to 180 ms in the worker the first time, and 70 ms once the code is warm. Phones are not measured: in the [spike](spike-results.md#android), our JavaScript was 5 to 7 times slower on a top Android phone.             |
+| Is it better than the libraries? | Than the classical ones, yes: on new photos the best finds 19.2%. The learned model of Scanic is better than ours: it finds 67.1%, with 4.7% of false proposals, and downloads about 2 MB ([libraries](#other-libraries)).                 |
+| Is it fast enough?               | Yes on desktop: 100 to 180 ms in the worker the first time, and 70 ms once the code is warm. On a Pixel 10 Pro with Chrome 158, 329 ms in the worker (median, one photo read at 450×800). Mid-range Android and iOS are not measured.      |
 
 ## Photos
 
@@ -65,7 +65,7 @@ A stricter test takes the weights and the threshold from one half of the photos,
 | Scanic 1.8.0, with a confidence | 17.9% | Under 5%                             |
 | jscanify                        | 21.9% | About every photo without a document |
 
-Scanic also has a learned model. It needs about 2 MB from a CDN, which conflicts with no dependencies and no requests of its own.
+These are the photos that our search was designed with, so the comparison favors it. The fair one is [on new photos](#other-libraries).
 
 ## New photos
 
@@ -93,6 +93,29 @@ What they say:
 Some of the wrong ones can be mistakes in the corners of the documents, which nobody has reviewed. How many of the photos have a hard shadow is unknown.
 
 These photos stay a test only while nothing is fitted to them or chosen by them. They have been measured for 0.6.0, for the version in use and for the [net](#a-net-in-place-of-the-linear-score).
+
+## Other libraries
+
+Measured on 2026-11-25 on the same new photos, as the viewer reads them. The libraries ran in Chromium without network, and our search in Node.js.
+
+| Library                             | Found     | Receipts | Documents | Wrong, on documents | Without one, of 210 | False, of 596 |
+| ----------------------------------- | --------- | -------- | --------- | ------------------- | ------------------- | ------------- |
+| Scanic 1.8.0, learned               | **67.1%** | 73.3%    | 60.7%     | 28                  | 0                   | 4.7%          |
+| The same, with a confidence of 0.99 | 65.5%     | 73.3%    | 57.6%     | 22                  | 0                   | 3.7%          |
+| **Our search**                      | **48.2%** | 51.8%    | 44.5%     | 23                  | 8                   | 5.2%          |
+| Scanic, classical                   | 19.2%     | 13.8%    | 24.6%     | 257                 | 210                 | 78.4%         |
+| The same, with a confidence of 0.5  | 18.9%     | 13.8%    | 24.1%     | 173                 | 130                 | 50.8%         |
+| jscanify 1.4.3                      | 14.8%     | 12.8%    | 16.8%     | 239                 | 210                 | 75.3%         |
+
+**The learned model of Scanic meets our criterion, and ours does not.** Part of the photos may favor it. Its model has the architecture of the author of DocCornerDataset, and its card measures it on that dataset. The photos without a document come from there, and 16 photos of its training split look like one of these. The documents are the cleanest part, and there it finds 16.2 points more.
+
+It is not used, and this was decided knowing that it is better:
+
+- **Size.** Its first search downloads 2.07 MB: 1.65 MB of model and 0.41 MB of WebAssembly, with Brotli. The whole of `@paperpic/core` is about 62 KB with gzip.
+- **No dependencies and no requests of its own.** Scanic gets those files from a CDN, unless they are hosted.
+- **A miss costs little.** When our search proposes nothing, the user places the corners, as before.
+
+Two things would change the decision: the search failing too often on photos of real users, or a model of our own that is small enough.
 
 ## A net in place of the linear score
 
