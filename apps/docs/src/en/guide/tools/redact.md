@@ -12,9 +12,11 @@ A photo of a document can show more than it should: an account number, a signatu
 ## Use it
 
 1. Press Edit, then Redact. A band appears across the middle of the image, with a handle at each corner.
-2. Drag the area over what to hide. Turn it by the handle above it, so it leans with a line of text, and drag its corners to resize it. The area shows its color, still see-through, so you can place it over the right words.
+2. Draw the area over what to hide: drag from one corner of it to the opposite one, anywhere on the image, the band included. Then drag the area to move it, turn it by the handle above it, so it leans with a line of text, and drag its corners to resize it. The area shows its color, still see-through, so you can place it over the right words.
 3. Choose Black or White in the panel.
 4. Press Done, or `Enter`, to add the area to the edits. Cancel this tool, or `Esc`, closes Redact without changing anything.
+
+You can only draw until you place the area. Once you draw, move, turn or resize it, a drag on the rest of the image pans again, so nothing replaces the area by accident. Before that, pan a zoomed image with two fingers, or with the arrow keys while the focus is on the image. Without dragging, the band is the area: move it with the keyboard, or press it and then tap where it goes.
 
 Each Done adds one area, so open Redact again to cover another part. Undo removes the last area, and the color stays for the next one. The corner handles work as in [Crop](./crop): drag them, press one and then tap where it goes, or move them with the keyboard. On the handle above the area, the arrow keys turn it 1 degree, or 10 with Shift. Dragged, it snaps to level.
 

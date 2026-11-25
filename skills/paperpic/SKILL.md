@@ -104,7 +104,7 @@ async function upload(blob: Blob) {
 | Bring back the original after an edit  | `reload()`                                                                                                                                                                |
 | Let the wheel scroll a long page       | `wheelZoom: false`                                                                                                                                                        |
 
-The tool ids are `'crop'`, `'perspective'` (Straighten, which finds the document as it opens and places the corners on it, and whose paper size the user picks on its panel and `setPaper({ size })` sets while it is open), `'rotate'`, `'flip'`, `'adjust'`, `'finish'` (Clean up) and `'redact'` (Redact, which covers an area with black or white, chosen with `setRedaction({ color })`). `tools` only chooses the buttons of the edit bar: the methods work with every tool.
+The tool ids are `'crop'`, `'perspective'` (Straighten, which finds the document as it opens and places the corners on it, and whose paper size the user picks on its panel and `setPaper({ size })` sets while it is open), `'rotate'`, `'flip'`, `'adjust'`, `'finish'` (Clean up) and `'redact'` (Redact, which covers an area that the user draws with a drag, in black or white, chosen with `setRedaction({ color })`). `tools` only chooses the buttons of the edit bar: the methods work with every tool.
 
 ## Behavior to plan for
 

@@ -74,6 +74,95 @@ describe('redact tool', () => {
     })
   })
 
+  it('draws the area with a drag on the image, inside it and in any direction', () => {
+    const announce = vi.fn()
+    host.announce = announce
+    const session = redactTool.activate!(host)
+    expect(session.canDrag!()).toBe(true)
+    const drag = session.drag!({ x: 300, y: 400 })!
+    drag.move({ x: 200, y: 450 })
+    drag.move({ x: -50, y: 350 })
+    drag.end()
+    expect(session.confirm()).toMatchObject({
+      quad: scaleQuad(rectangleCorners(0, 350, 300, 400), 1 / frame.width, 1 / frame.height),
+    })
+    expect(announce).toHaveBeenCalledWith('Area: 150, 375')
+  })
+
+  it('never draws an area too small to grab, not even at an edge', () => {
+    const session = redactTool.activate!(host)
+    session.drag!({ x: 1000, y: 500 })!.move({ x: 1000, y: 490 })
+    expect(session.confirm()).toMatchObject({
+      quad: scaleQuad(rectangleCorners(984, 484, 1000, 500), 1 / frame.width, 1 / frame.height),
+    })
+  })
+
+  it('goes back to the area it had when a drag is cancelled, and can be drawn again', () => {
+    const session = redactTool.activate!(host)
+    const start = session.confirm()
+    const drag = session.drag!({ x: 10, y: 10 })!
+    drag.move({ x: 100, y: 100 })
+    drag.cancel()
+    expect(session.confirm()).toEqual(start)
+    expect(session.canDrag!()).toBe(true)
+  })
+
+  it('leaves the drag to pan once the user has placed the area', () => {
+    const drawn = redactTool.activate!(host)
+    const drag = drawn.drag!({ x: 10, y: 10 })!
+    drag.move({ x: 100, y: 100 })
+    drag.end()
+    expect(drawn.canDrag!()).toBe(false)
+    expect(drawn.drag!({ x: 10, y: 10 })).toBeNull()
+    drawn.deactivate()
+
+    const nudged = redactTool.activate!(host)
+    press(control('redactArea'), 'ArrowLeft')
+    expect(nudged.drag!({ x: 10, y: 10 })).toBeNull()
+  })
+
+  it('leaves a press on the area to the image until it is placed, and keeps it after that', () => {
+    const session = redactTool.activate!(host)
+    const onPress = vi.fn()
+    host.layer.addEventListener('pointerdown', onPress)
+    const area = control('redactArea')
+    area.setPointerCapture = vi.fn()
+    const pressArea = () => area.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
+    pressArea()
+    expect(onPress).toHaveBeenCalledOnce()
+    expect(session.canDrag!()).toBe(true)
+
+    press(area, 'ArrowLeft')
+    pressArea()
+    expect(onPress).toHaveBeenCalledOnce()
+    expect(area.setPointerCapture).toHaveBeenCalledOnce()
+  })
+
+  it('selects the area with a tap on it, and then moves it to the next tap', () => {
+    const session = redactTool.activate!(host)
+    expect(session.tap!({ x: 10, y: 10 })).toBe(false)
+    expect(session.tap!({ x: 500, y: 250 })).toBe(true)
+    expect(control('redactArea').getAttribute('aria-pressed')).toBe('true')
+    expect(session.canDrag!()).toBe(false)
+    expect(session.tap!({ x: 300, y: 100 })).toBe(true)
+    expect(session.confirm()).toMatchObject({
+      quad: scaleQuad(rectangleCorners(50, 50, 550, 150), 1 / frame.width, 1 / frame.height),
+    })
+    // The area takes its own presses from here on
+    expect(session.tap!({ x: 300, y: 100 })).toBe(false)
+  })
+
+  it('says nothing when the tool closes during a drag', () => {
+    const announce = vi.fn()
+    host.announce = announce
+    const session = redactTool.activate!(host)
+    const drag = session.drag!({ x: 10, y: 10 })!
+    drag.move({ x: 100, y: 100 })
+    session.deactivate()
+    drag.end()
+    expect(announce).not.toHaveBeenCalled()
+  })
+
   it('turns by its handle, keeps its size, and tells the angle', () => {
     const announce = vi.fn()
     host.announce = announce

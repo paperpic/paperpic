@@ -1,5 +1,6 @@
 import type { Mock } from 'vitest'
 import type { PaperPicState } from './index'
+import type { ViewPoint } from './state/view'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PaperPic } from './index'
 import { ALL_TOOL_IDS } from './tools'
@@ -1838,7 +1839,7 @@ describe('editing', () => {
       redact().click()
       expect(pic.getState()).toMatchObject({
         activeTool: 'redact',
-        hint: 'Drag the area over what to hide',
+        hint: 'Draw an area over what to hide',
         redaction: { color: 'black' },
         canUndo: false,
       })
@@ -1848,6 +1849,41 @@ describe('editing', () => {
       expect(color('redactBlack').parentElement!.hidden).toBe(false)
       expect(bar().querySelector<HTMLElement>('.paperpic-edit-title')!.hidden).toBe(true)
       expect(mocks.renderPreview).not.toHaveBeenCalled()
+    })
+
+    it('draws the area with a drag, even one that starts on it, and then pans with the next one', () => {
+      HTMLElement.prototype.setPointerCapture = vi.fn()
+      const viewport = container.querySelector<HTMLElement>('.paperpic-viewport')!
+      const area = () => container.querySelector<HTMLElement>('.paperpic-area')!
+      const drag = (target: Element, from: ViewPoint, to: ViewPoint) => {
+        const send = (type: string, { x, y }: ViewPoint) => {
+          const event = new MouseEvent(type, { bubbles: true, clientX: x, clientY: y })
+          Object.defineProperties(event, {
+            pointerId: { value: 1 },
+            pointerType: { value: 'mouse' },
+          })
+          target.dispatchEvent(event)
+        }
+        send('pointerdown', from)
+        send('pointermove', to)
+        send('pointerup', to)
+      }
+      redact().click()
+      expect(viewport.classList.contains('paperpic-viewport-drawable')).toBe(true)
+      const start = area().style.cssText
+
+      drag(area(), { x: 60, y: 60 }, { x: 120, y: 90 })
+      const drawn = area().style.cssText
+      expect(drawn).not.toBe(start)
+      expect(announcement()).toMatch(/^Area: \d+, \d+$/)
+      expect(viewport.classList.contains('paperpic-viewport-drawable')).toBe(false)
+
+      drag(viewport, { x: 10, y: 10 }, { x: 40, y: 40 })
+      expect(area().style.cssText).toBe(drawn)
+
+      button('Cancel this tool').click()
+      redact().click()
+      expect(viewport.classList.contains('paperpic-viewport-drawable')).toBe(true)
     })
 
     it('leaves one area with Done, which the preview covers over the tones', () => {

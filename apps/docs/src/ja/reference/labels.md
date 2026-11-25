@@ -75,7 +75,7 @@ const pic = new PaperPic(container, {
 | `redactAngle`       | Angle 12°                                                        | 角度 (度) の関数。「塗りつぶし」の領域を回転したあとに読み上げます           |
 | `redactArea`        | Area                                                             | 「塗りつぶし」の領域。全体を動かします                                       |
 | `redactBlack`       | Black                                                            | 「塗りつぶし」で黒を選びます                                                 |
-| `redactHint`        | Drag the area over what to hide                                  | 「塗りつぶし」ですること                                                     |
+| `redactHint`        | Draw an area over what to hide                                   | 「塗りつぶし」ですること                                                     |
 | `redactTurn`        | Turn                                                             | 「塗りつぶし」の領域を回転するハンドル                                       |
 | `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | 領域を回転するハンドルの説明。キーの働きと、Enter で完了すること             |
 | `redactWhite`       | White                                                            | 「塗りつぶし」で白を選びます                                                 |
