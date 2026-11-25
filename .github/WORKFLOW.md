@@ -25,7 +25,7 @@ There is no hotfix branch: fixes follow the same path as any other change.
 3. **Add a changeset** if the change affects `@paperpic/core`, `@paperpic/vue` or `@paperpic/react`. See [Changesets](#changesets).
 4. **Open a pull request against `development`.** Fill in the template. The title must follow Conventional Commits with a lowercase subject, for example `feat(vue): add zoom controls`. The `emoji` job then adds the type's [gitmoji](https://gitmoji.dev) after the colon (`feat(vue): ✨ add zoom controls`) and swaps it when the type changes. PRs from forks and Dependabot keep the plain title, since their token cannot edit it.
 5. **Get it merged.** `development` requires:
-   - the `ci` check (lint, typecheck, test, build) and the `pr-title` check, on a branch that is up to date with `development`;
+   - the `ci` check, which passes when every job of the CI workflow does (lint, typecheck, test, docs, e2e), and the `pr-title` check, on a branch that is up to date with `development`;
    - one approval from a code owner (`@Unlooper`, see [CODEOWNERS](CODEOWNERS)); a new push dismisses earlier approvals;
    - every review thread resolved.
 
@@ -135,7 +135,7 @@ Nothing has to be merged back into `development`: the versions were bumped there
 
 | What                   | When                                        | Does                                                                                                        |
 | ---------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, `build`, the Playwright smoke tests; coverage in the run summary |
+| `ci.yml`               | Pushes and PRs on `development` and `main`  | `pnpm lint`, `typecheck`, `test:coverage`, the docs build, the packages build and smoke tests, one job each |
 | `pr-title.yml`         | PRs into `development`                      | Checks Conventional Commits and a lowercase subject; adds the type's gitmoji                                |
 | `release.yml`          | Pushes to `development` and `main`          | Version PR on `development`; publish on `main`                                                              |
 | `audit.yml`            | Mondays, and PRs that change the lockfile   | `pnpm audit --audit-level high` over every dependency, transitive ones included                             |
@@ -143,7 +143,9 @@ Nothing has to be merged back into `development`: the versions were bumped there
 | CodeQL                 | PRs and pushes                              | GitHub code scanning                                                                                        |
 | Dependabot             | Weekly (npm), monthly (actions)             | npm: security fixes only. Actions: version bumps after a 7-day cooldown                                     |
 
-Every action in a workflow must be pinned to a full commit SHA, and only GitHub-owned actions plus an allowlist can run. A new third-party action needs a repository admin to add it under **Settings → Actions → General**.
+The rulesets require the `ci` job of `ci.yml`, not the jobs it waits for. A new job there blocks a merge only once it is in the `needs` of `ci`. The run summary shows the coverage.
+
+Every action in a workflow or in `.github/actions` must be pinned to a full commit SHA, and only GitHub-owned actions, the ones of this repository and an allowlist can run. A new third-party action needs a repository admin to add it under **Settings → Actions → General**.
 
 When a Dependabot security fix touches a dependency that a published package ships, add a changeset to its PR (usually `patch`).
 
