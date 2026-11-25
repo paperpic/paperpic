@@ -1,3 +1,4 @@
+import type { Drag } from '../input/gestures'
 import type { Operation } from '../pipeline/operations'
 import type { Point, Quad, Size } from '../processing/types'
 import type { Magnifier } from '../render/magnifier'
@@ -83,6 +84,28 @@ export const constrainToRectangle: ConstrainCorner = (corners, index, point, fra
     isLeft ? opposite.x : x,
     isTop ? opposite.y : y,
   )
+}
+
+/** The part of a side between two points of it: at least `min` long, and inside the side. */
+function span(from: number, to: number, min: number, side: number): [start: number, end: number] {
+  const a = clamp(from, 0, side)
+  const b = clamp(to, 0, side)
+  const start = b < a
+    ? Math.min(b, a - min)
+    : a
+  const inside = clamp(start, 0, side - min)
+  return [
+    inside,
+    Math.max(inside + min, a, b),
+  ]
+}
+
+/** The level rectangle between two points, inside the frame and never smaller than a selection can be. */
+export function rectangleBetween(from: Point, to: Point, { width, height }: Size): Quad {
+  const minSide = Math.min(MIN_SIDE, width, height)
+  const [left, right] = span(from.x, to.x, minSide, width)
+  const [top, bottom] = span(from.y, to.y, minSide, height)
+  return rectangleCorners(left, top, right, bottom)
 }
 
 function isConvex(corners: Quad, minTurn: number): boolean {
@@ -279,7 +302,7 @@ function cornerGrips(constrain: ConstrainCorner): Grip[] {
  */
 export class CornerEditor {
   private readonly host: ToolHost
-  private readonly draw: DrawSelection
+  private readonly paint: DrawSelection
   private readonly grips: readonly Grip[]
   private readonly handles: HTMLButtonElement[]
   /** What the keys do, by the label that says it, which screen readers hear on each handle. The hint on screen speaks to a pointer. */
@@ -293,7 +316,8 @@ export class CornerEditor {
   private magnifier: Magnifier | null = null
   /** The handle that the next tap on the image moves. */
   private selected: number | null = null
-  /** Whether the user has pressed a handle, or moved one with the keyboard. */
+  private active = true
+  /** Whether the user has pressed a handle, moved one with the keyboard, or drawn the selection. */
   touched = false
 
   constructor(host: ToolHost, corners: Quad, constrain: ConstrainCorner, { draw = dimOutside, under = [], over = [] }: {
@@ -308,7 +332,7 @@ export class CornerEditor {
     this.initial = corners
     this.corners = corners
     this.shown = corners
-    this.draw = draw
+    this.paint = draw
     this.grips = [
       ...under,
       ...cornerGrips(constrain),
@@ -391,7 +415,7 @@ export class CornerEditor {
     this.advanceSlide()
     const { width, height } = this.host.frameSize()
     const frame = rectangleCorners(0, 0, width, height).map(point => this.host.frameToViewport(point))
-    this.draw(context, frame, this.shown.map(point => this.host.frameToViewport(point)))
+    this.paint(context, frame, this.shown.map(point => this.host.frameToViewport(point)))
     if (this.magnifier) {
       this.host.paintMagnifier(context, this.magnifier)
     }
@@ -406,6 +430,43 @@ export class CornerEditor {
     this.select(null)
     this.move(index, this.host.viewportToFrame(point))
     this.settle(index)
+    return true
+  }
+
+  /**
+   * Draws the selection anew, as a level rectangle from a point of the viewport. Only while the user has not touched a
+   * handle: after that, a drag on the image pans it, so it never throws away a placed selection.
+   */
+  draw(point: ViewPoint): Drag | null {
+    if (this.touched) {
+      return null
+    }
+    const before = this.corners
+    const from = this.host.viewportToFrame(point)
+    return {
+      move: to => this.setCorners(rectangleBetween(from, this.host.viewportToFrame(to), this.host.frameSize())),
+      cancel: () => this.setCorners(before),
+      end: () => {
+        // The tool may have closed under the pointer, with Esc
+        if (this.active) {
+          this.touched = true
+          this.settle(this.areaIndex())
+        }
+      },
+    }
+  }
+
+  /**
+   * Selects the area if it covers a point of the viewport. Until the user touches a handle, a press on the area goes to
+   * the image, where a drag draws, so a tap on it comes back here. Returns whether it selected it.
+   */
+  selectArea(point: ViewPoint): boolean {
+    const { x, y } = this.host.viewportToFrame(point)
+    const [{ x: left, y: top }, , { x: right, y: bottom }] = this.corners
+    if (this.touched || x < left || x > right || y < top || y > bottom) {
+      return false
+    }
+    this.select(this.areaIndex())
     return true
   }
 
@@ -428,6 +489,7 @@ export class CornerEditor {
   }
 
   deactivate(): void {
+    this.active = false
     this.select(null)
     for (const handle of this.handles) {
       handle.remove()
@@ -435,6 +497,11 @@ export class CornerEditor {
     for (const description of this.descriptions.values()) {
       description.remove()
     }
+  }
+
+  /** The index of the grip that covers the whole area. */
+  private areaIndex(): number {
+    return this.grips.findIndex(grip => grip.cover)
   }
 
   /** The index of the handle with the keyboard focus, or -1. */
@@ -540,6 +607,10 @@ export class CornerEditor {
     }
 
     handle.addEventListener('pointerdown', (event) => {
+      if (grip.cover && !this.touched) {
+        // The area still lets a drag on the image draw over it
+        return
+      }
       // A handle keeps its own drag: the gestures on the viewer would pan the image
       event.stopPropagation()
       this.touched = true

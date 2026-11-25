@@ -12,9 +12,11 @@ La photo d’un document en montre parfois trop : un numéro de compte, une sign
 ## Utilisation
 
 1. Appuyez sur Modifier, puis sur Masquer. Une bande apparaît au milieu de l’image, avec une poignée à chaque coin.
-2. Faites glisser la zone sur ce qu’il faut cacher. Tournez-la avec la poignée au-dessus d’elle, pour qu’elle suive une ligne de texte inclinée, et faites glisser ses coins pour la redimensionner. La zone montre sa couleur, encore transparente, pour que vous puissiez la placer sur les bons mots.
+2. Dessinez la zone sur ce qu’il faut cacher : faites glisser d’un de ses coins au coin opposé, n’importe où sur l’image, y compris sur la bande. Ensuite, faites glisser la zone pour la déplacer, tournez-la avec la poignée au-dessus d’elle, pour qu’elle suive une ligne de texte inclinée, et faites glisser ses coins pour la redimensionner. La zone montre sa couleur, encore transparente, pour que vous puissiez la placer sur les bons mots.
 3. Choisissez Noir ou Blanc dans le panneau.
 4. Appuyez sur Terminé, ou `Entrée`, pour ajouter la zone aux changements. Annuler cet outil, ou `Échap`, ferme Masquer sans rien changer.
+
+Vous ne pouvez dessiner que jusqu’à ce que la zone soit placée. Dès que vous la dessinez, la déplacez, la tournez ou la redimensionnez, faire glisser le reste de l’image la déplace à nouveau, pour que rien ne remplace la zone par accident. Avant cela, déplacez une image zoomée avec deux doigts, ou avec les flèches quand l’image a le focus. Sans faire glisser, la bande est la zone : déplacez-la au clavier, ou touchez-la puis l’endroit voulu.
 
 Chaque Terminé ajoute une zone : rouvrez Masquer pour recouvrir une autre partie. Annuler la dernière action retire la dernière zone, et la couleur reste pour la suivante. Les poignées d’angle fonctionnent comme dans [Recadrer](./crop) : faites-les glisser, touchez-en une puis l’endroit voulu, ou déplacez-les au clavier. Sur la poignée au-dessus de la zone, les flèches la tournent de 1 degré, ou de 10 avec Maj. Glissée, elle se cale à l’horizontale.
 

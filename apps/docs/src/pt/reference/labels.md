@@ -75,7 +75,7 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | `redactAngle`       | Angle 12°                                                        | Função do ângulo em graus, anunciada depois de girar a área de Ocultar                                          |
 | `redactArea`        | Area                                                             | A área de Ocultar, que a move inteira                                                                           |
 | `redactBlack`       | Black                                                            | Escolhe preto em Ocultar                                                                                        |
-| `redactHint`        | Drag the area over what to hide                                  | O que fazer em Ocultar                                                                                          |
+| `redactHint`        | Draw an area over what to hide                                   | O que fazer em Ocultar                                                                                          |
 | `redactTurn`        | Turn                                                             | A alça que gira a área de Ocultar                                                                               |
 | `redactTurnKeys`    | Arrow keys turn it 1 degree, or 10 with Shift. Enter finishes.   | A descrição da alça que gira a área: o que as teclas fazem, e que Enter conclui                                 |
 | `redactWhite`       | White                                                            | Escolhe branco em Ocultar                                                                                       |

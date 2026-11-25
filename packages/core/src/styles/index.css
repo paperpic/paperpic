@@ -58,6 +58,11 @@
     touch-action: none;
   }
 
+  /* A drag draws the area of Redact, until the user has placed it */
+  .paperpic-viewport.paperpic-viewport-drawable {
+    cursor: crosshair;
+  }
+
   /* A card like the toolbar, outside the image, so it never covers a corner */
   .paperpic-edit-bar {
     flex: none;
@@ -270,6 +275,10 @@
     translate: -50% -50%;
     pointer-events: auto;
     touch-action: none;
+  }
+
+  .paperpic-viewport-drawable .paperpic-area {
+    cursor: crosshair;
   }
 
   .paperpic-area[hidden] {

@@ -12,9 +12,11 @@ La foto di un documento può mostrare più del dovuto: un numero di conto, una f
 ## Come si usa
 
 1. Premi Modifica, poi Copri. Al centro dell’immagine compare una fascia, con una maniglia a ogni angolo.
-2. Trascina l’area su ciò che vuoi nascondere. Ruotala con la maniglia sopra di essa, perché segua una riga di testo inclinata, e trascina i suoi angoli per ridimensionarla. L’area mostra il suo colore, ancora trasparente, così puoi metterla sulle parole giuste.
+2. Disegna l’area su ciò che vuoi nascondere: trascina da un suo angolo a quello opposto, ovunque sull’immagine, anche sulla fascia. Poi trascina l’area per spostarla, ruotala con la maniglia sopra di essa, perché segua una riga di testo inclinata, e trascina i suoi angoli per ridimensionarla. L’area mostra il suo colore, ancora trasparente, così puoi metterla sulle parole giuste.
 3. Scegli Nero o Bianco nel pannello.
 4. Premi Fatto, o `Invio`, per aggiungere l’area ai cambiamenti. Annulla questo strumento, o `Esc`, chiude Copri senza cambiare nulla.
+
+Puoi disegnare solo finché non posizioni l’area. Appena la disegni, la sposti, la ruoti o la ridimensioni, trascinare sul resto dell’immagine torna a spostarla, così nulla sostituisce l’area per errore. Prima, sposta un’immagine ingrandita con due dita, o con le frecce mentre il focus è sull’immagine. Senza trascinare, la fascia è l’area: spostala con la tastiera, oppure toccala e poi tocca il punto di arrivo.
 
 Ogni Fatto aggiunge un’area, quindi riapri Copri per coprire un’altra parte. Annulla l’ultima azione toglie l’ultima area, e il colore resta per la successiva. Le maniglie d’angolo funzionano come in [Ritaglia](./crop): trascinale, toccane una e poi il punto di arrivo, o spostale con la tastiera. Sulla maniglia sopra l’area, le frecce la ruotano di 1 grado, o di 10 con Maiusc. Trascinata, si aggancia in orizzontale.
 
