@@ -110,6 +110,8 @@ export default defineConfig({
     plugins: llmstxt({
       // The name on the home has HTML for its colors
       title: 'PaperPic',
+      // Full URLs, so the links work when the file is read away from the site
+      domain: hostname,
       // Coding agents read English, and one language keeps the files small
       workDir: 'en',
       ignoreFiles: ['playground.md'],
