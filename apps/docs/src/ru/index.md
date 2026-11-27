@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Чистые и читаемые изображения документов прямо в браузере
   tagline: Выравнивайте, обрезайте и очищайте фото с телефона, сканы и любые изображения с текстом. На JavaScript, Vue или React, и ничего не покидает устройство, пока это не отправит ваш код.
+  image:
+    src: /hero.svg
+    alt: ""
   actions:
     - theme: brand
       text: Начать

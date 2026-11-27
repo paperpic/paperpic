@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Imágenes de documentos limpias y legibles, en el propio navegador
   tagline: Endereza, recorta y limpia una foto del móvil, un escaneo o cualquier imagen con texto. Con JavaScript, Vue o React, y nada sale del dispositivo hasta que tu código lo envía.
+  image:
+    src: /hero.svg
+    alt: ""
   actions:
     - theme: brand
       text: Empezar

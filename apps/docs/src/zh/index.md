@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: 在浏览器中得到清晰易读的文档图像
   tagline: 矫正、裁剪和清理手机照片、扫描件或任何带文字的图片。支持原生 JavaScript、Vue 和 React，在你的代码发送之前，任何内容都不会离开设备。
+  image:
+    src: /hero.svg
+    alt: ""
   actions:
     - theme: brand
       text: 快速开始

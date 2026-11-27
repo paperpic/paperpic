@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Des images de documents nettes et lisibles, directement dans le navigateur
   tagline: Redressez, recadrez et nettoyez une photo de téléphone, un scan ou toute image avec du texte. En JavaScript, Vue ou React, et rien ne quitte l’appareil avant que votre code ne l’envoie.
+  image:
+    src: /hero.svg
+    alt: ""
   actions:
     - theme: brand
       text: Commencer
