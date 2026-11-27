@@ -58,16 +58,16 @@ comparison:
   afterAlt: "同一张收据，经过矫正并清理成黑白"
 ---
 
-## 数据不会离开浏览器
-
-PaperPic 在用户的设备上、在 Web Worker 中编辑图片，不需要服务器，也不会自行发出任何请求。收据、身份证或合同的照片只有在你的代码发送结果时才会离开设备。
-
 ## 几行代码即可开始
 
 安装对应框架的包，给容器设置高度，然后监听应用：
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

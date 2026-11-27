@@ -58,16 +58,16 @@ comparison:
   afterAlt: "Derselbe Kassenbon, begradigt und zu Schwarzweiß bereinigt"
 ---
 
-## Nichts verlässt den Browser
-
-PaperPic bearbeitet das Bild auf dem Gerät des Nutzers, in einem Web Worker, ohne Server und ohne eigene Anfragen. Das Foto eines Kassenbons, eines Ausweises oder eines Vertrags verlässt das Gerät erst, wenn dein Code das Ergebnis sendet.
-
 ## In wenigen Zeilen loslegen
 
 Installiere das Paket für dein Framework, gib dem Container eine Höhe und reagiere auf Übernehmen:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

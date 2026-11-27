@@ -58,16 +58,16 @@ comparison:
   afterAlt: "Тот же чек, выровненный и очищенный до чёрно-белого"
 ---
 
-## Ничего не покидает браузер
-
-PaperPic редактирует изображение на устройстве пользователя, в Web Worker, без сервера и без собственных запросов. Фото чека, удостоверения личности или договора покидает устройство, только когда ваш код отправляет результат.
-
 ## Начните с нескольких строк
 
 Установите пакет для своего фреймворка, задайте контейнеру высоту и слушайте применение:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

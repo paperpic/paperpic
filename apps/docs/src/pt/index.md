@@ -58,16 +58,16 @@ comparison:
   afterAlt: "O mesmo recibo, endireitado e limpo em preto e branco"
 ---
 
-## Nada sai do navegador
-
-O PaperPic edita a imagem no dispositivo do usuário, em um Web Worker, sem servidor e sem requisições próprias. A foto de um recibo, de uma carteira de identidade ou de um contrato só sai do dispositivo quando o seu código envia o resultado.
-
 ## Comece em poucas linhas
 
 Instale o pacote do seu framework, dê uma altura ao contêiner e escute o Aplicar:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

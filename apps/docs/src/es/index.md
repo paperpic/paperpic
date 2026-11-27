@@ -58,16 +58,16 @@ comparison:
   afterAlt: "El mismo tique, enderezado y limpiado en blanco y negro"
 ---
 
-## Nada sale del navegador
-
-PaperPic edita la imagen en el dispositivo del usuario, en un Web Worker, sin servidor y sin peticiones propias. La foto de un tique, un DNI o un contrato solo sale del dispositivo cuando tu código envía el resultado.
-
 ## Empieza en pocas líneas
 
 Instala el paquete de tu framework, da una altura al contenedor y escucha Aplicar:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

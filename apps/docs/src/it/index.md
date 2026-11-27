@@ -58,16 +58,16 @@ comparison:
   afterAlt: "Lo stesso scontrino, raddrizzato e pulito in bianco e nero"
 ---
 
-## Niente lascia il browser
-
-PaperPic modifica l’immagine sul dispositivo dell’utente, in un Web Worker, senza server e senza richieste proprie. La foto di uno scontrino, di una carta d’identità o di un contratto lascia il dispositivo solo quando il tuo codice invia il risultato.
-
 ## Inizia in poche righe
 
 Installa il pacchetto del tuo framework, dai un’altezza al contenitore e ascolta Applica:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

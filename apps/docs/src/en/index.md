@@ -58,16 +58,16 @@ comparison:
   afterAlt: "The same receipt, straightened and cleaned up into black and white"
 ---
 
-## Nothing leaves the browser
-
-PaperPic edits the image on the device of the user, in a Web Worker, without a server and without requests of its own. A photo of a receipt, an ID card or a contract leaves the device only when your code sends the result.
-
 ## Start in a few lines
 
 Install the package for your framework, give the container a height, and listen to Apply:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
