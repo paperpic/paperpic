@@ -45,7 +45,7 @@ features:
     link: /fr/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Tout framework"
-    details: "Un cœur pour JavaScript sans framework, des wrappers légers pour Vue et React, et aucune dépendance à l’exécution."
+    details: "Un cœur pour JavaScript sans framework, des wrappers légers pour Vue et React, aucune dépendance à l’exécution, et moins de 40 ko avec gzip, styles compris."
     link: /fr/guide/getting-started
 
 comparison:

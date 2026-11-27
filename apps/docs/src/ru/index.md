@@ -45,7 +45,7 @@ features:
     link: /ru/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Любой фреймворк"
-    details: "Ядро для чистого JavaScript, лёгкие обёртки для Vue и React и никаких зависимостей во время выполнения."
+    details: "Ядро для чистого JavaScript, лёгкие обёртки для Vue и React никаких зависимостей во время выполнения и меньше 40 КБ в gzip вместе со стилями."
     link: /ru/guide/getting-started
 
 comparison:

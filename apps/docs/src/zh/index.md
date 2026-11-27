@@ -45,7 +45,7 @@ features:
     link: /zh/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "任意框架"
-    details: "核心适用于原生 JavaScript，并为 Vue 和 React 提供轻量封装，没有运行时依赖。"
+    details: "核心适用于原生 JavaScript，并为 Vue 和 React 提供轻量封装，没有运行时依赖，包含样式在内 gzip 后不到 40 kB。"
     link: /zh/guide/getting-started
 
 comparison:

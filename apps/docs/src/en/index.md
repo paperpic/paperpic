@@ -45,7 +45,7 @@ features:
     link: /guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Any framework"
-    details: "One core for plain JavaScript, with thin wrappers for Vue and React, and no runtime dependencies."
+    details: "One core for plain JavaScript, with thin wrappers for Vue and React, no runtime dependencies, and under 40 kB gzipped with its styles."
     link: /guide/getting-started
 
 comparison:

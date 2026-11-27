@@ -45,7 +45,7 @@ features:
     link: /ko/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "모든 프레임워크"
-    details: "순수 JavaScript용 코어와 Vue, React용 가벼운 래퍼. 런타임 의존성이 없습니다."
+    details: "순수 JavaScript용 코어와 Vue, React용 가벼운 래퍼. 런타임 의존성이 없고, 스타일을 포함해 gzip 후 40 kB 미만입니다."
     link: /ko/guide/getting-started
 
 comparison:
