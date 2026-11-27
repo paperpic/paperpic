@@ -24,7 +24,11 @@ export interface Translation {
   /** The link to the contribution guide on GitHub, in the version menu. */
   contributing: string
   description: string
+  /** The link at the end of each page that opens its source on GitHub. */
+  editLink: string
   examples: string
+  /** The footer of the pages without a sidebar, where `{license}` becomes the name of the license, linked to it. */
+  footer: string
   /** The titles of the sidebar groups. */
   groups: Record<SidebarGroup, string>
   guide: string

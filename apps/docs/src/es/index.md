@@ -45,7 +45,7 @@ features:
     link: /es/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Cualquier framework"
-    details: "Un core para JavaScript sin framework, con wrappers ligeros para Vue y React, y sin dependencias en tiempo de ejecución."
+    details: "Un core para JavaScript sin framework, con wrappers ligeros para Vue y React, sin dependencias en tiempo de ejecución y menos de 40 kB con gzip, estilos incluidos."
     link: /es/guide/getting-started
 
 comparison:

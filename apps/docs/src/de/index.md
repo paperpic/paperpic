@@ -45,7 +45,7 @@ features:
     link: /de/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Jedes Framework"
-    details: "Ein Kern für JavaScript ohne Framework, schlanke Wrapper für Vue und React, und keine Laufzeitabhängigkeiten."
+    details: "Ein Kern für JavaScript ohne Framework, schlanke Wrapper für Vue und React, keine Laufzeitabhängigkeiten und unter 40 kB mit gzip, Styles inklusive."
     link: /de/guide/getting-started
 
 comparison:

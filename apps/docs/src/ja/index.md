@@ -45,7 +45,7 @@ features:
     link: /ja/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "あらゆるフレームワーク"
-    details: "素の JavaScript 用のコアと、Vue と React 用の軽量ラッパー。実行時の依存関係はありません。"
+    details: "素の JavaScript 用のコアと、Vue と React 用の軽量ラッパー。実行時の依存関係はなく、スタイル込みで gzip 後 40 kB 未満です。"
     link: /ja/guide/getting-started
 
 comparison:
