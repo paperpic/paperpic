@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: 깨끗하고 읽기 쉬운 문서 이미지를 브라우저 안에서 바로
   tagline: 휴대폰 사진, 스캔, 글자가 있는 모든 이미지의 기울기 보정, 자르기, 정리를 할 수 있습니다. JavaScript, Vue, React에서 쓸 수 있고, 여러분의 코드가 보내기 전까지 아무것도 기기를 떠나지 않습니다.
+  image:
+    src: /hero.svg
+    alt: ""
   actions:
     - theme: brand
       text: 시작하기

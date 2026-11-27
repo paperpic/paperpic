@@ -1,7 +1,7 @@
 {
   "label": "Español",
   "lang": "es",
-  "ogImageAlt": "Foto de un tique hecha en ángulo, junto al documento recto en blanco y negro que PaperPic ha sacado de ella",
+  "ogImageAlt": "Logo de PaperPic",
   "ogLocale": "es_ES",
   "description": "Visor y editor de imágenes de documentos para el navegador: endereza, recorta, gira y limpia fotos del móvil, escaneos y cualquier imagen con texto. Para JavaScript, Vue y React.",
   "guide": "Guía",

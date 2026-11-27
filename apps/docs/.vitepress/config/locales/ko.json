@@ -1,7 +1,7 @@
 {
   "label": "한국어",
   "lang": "ko",
-  "ogImageAlt": "비스듬히 찍은 영수증 사진과, PaperPic이 그 사진으로 만든 반듯한 흑백 문서",
+  "ogImageAlt": "PaperPic 로고",
   "ogLocale": "ko_KR",
   "description": "브라우저용 문서 이미지 뷰어 및 편집기: 휴대폰 사진, 스캔, 글자가 있는 모든 이미지의 기울기 보정, 자르기, 회전, 정리. JavaScript, Vue, React용.",
   "guide": "가이드",

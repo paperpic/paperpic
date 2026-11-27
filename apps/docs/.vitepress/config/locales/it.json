@@ -1,7 +1,7 @@
 {
   "label": "Italiano",
   "lang": "it",
-  "ogImageAlt": "Foto di uno scontrino scattata di sbieco, accanto al documento dritto in bianco e nero che PaperPic ne ha ricavato",
+  "ogImageAlt": "Logo di PaperPic",
   "ogLocale": "it_IT",
   "description": "Visualizzatore ed editor di immagini di documenti per il browser: raddrizza, ritaglia, ruota e pulisci foto del telefono, scansioni e qualsiasi immagine con del testo. Per JavaScript, Vue e React.",
   "guide": "Guida",

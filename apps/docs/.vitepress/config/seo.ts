@@ -72,18 +72,18 @@ export function transformHead({ pageData, siteConfig, title, description }: Tran
       'meta',
       { property: 'og:url', content: url },
     ],
-    // The comparison of the home, which shows what PaperPic does better than the logo
+    // The logo, so a shared link shows the brand. The comparison stays in the READMEs and the home
     [
       'meta',
-      { property: 'og:image', content: `${hostname}/og-image.jpg` },
+      { property: 'og:image', content: `${hostname}/logo.png` },
     ],
     [
       'meta',
-      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:width', content: '512' },
     ],
     [
       'meta',
-      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:height', content: '512' },
     ],
     [
       'meta',
@@ -101,7 +101,7 @@ export function transformHead({ pageData, siteConfig, title, description }: Tran
       ]),
     [
       'meta',
-      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:card', content: 'summary' },
     ],
   ]
 

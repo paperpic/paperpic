@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: きれいで読みやすい文書画像を、ブラウザーだけで
   tagline: スマートフォンの写真、スキャン、文字の入ったあらゆる画像の傾き補正、切り抜き、クリーンアップ。JavaScript、Vue、React で使え、あなたのコードが送るまで何も端末から出ません。
+  image:
+    src: /hero.svg
+    alt: ""
   actions:
     - theme: brand
       text: はじめる
