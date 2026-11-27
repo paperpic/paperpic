@@ -9,6 +9,7 @@ dist
 # VitePress
 **/.vitepress/cache
 **/.vitepress/dist
+**/.vitepress/.temp
 
 # Vite
 .vite
