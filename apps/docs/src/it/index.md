@@ -9,7 +9,7 @@ hero:
   text: Immagini di documenti pulite e leggibili, direttamente nel browser
   tagline: Raddrizza, ritaglia e pulisci una foto del telefono, una scansione o qualsiasi immagine con del testo. Con JavaScript, Vue o React, e niente lascia il dispositivo finché il tuo codice non lo invia.
   image:
-    src: /hero.svg
+    src: /logo.webp
     alt: ""
   actions:
     - theme: brand

@@ -9,7 +9,7 @@ hero:
   text: Clean, readable document images, right in the browser
   tagline: Straighten, crop and clean up a phone photo, a scan or any image with text. With plain JavaScript, Vue or React, and nothing leaves the device until your code sends it.
   image:
-    src: /hero.svg
+    src: /logo.webp
     alt: ""
   actions:
     - theme: brand

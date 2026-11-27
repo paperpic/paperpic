@@ -59,4 +59,10 @@
   color: var(--vp-home-hero-name-color);
 }
 
+/* The logo of the hero has a square navy background, so it takes the rounded corners of an app icon over the gradient */
+.VPHome .VPHero .image-src {
+  border-radius: 22%;
+  box-shadow: 0 12px 32px rgb(10 30 60 / 25%);
+}
+
 /* stylelint-enable selector-class-pattern */
