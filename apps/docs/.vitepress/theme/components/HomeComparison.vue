@@ -33,8 +33,11 @@ function srcset(src: string) {
   ].join(', ')
 }
 
-/** The width that the frame takes at each width of the window, following the padding of `.comparison` and its border. */
-const sizes = '(min-width: 1280px) 1150px, (min-width: 960px) calc(100vw - 130px), (min-width: 640px) calc(100vw - 98px), calc(100vw - 50px)'
+/**
+ * The width that the images take at each width of the window. The frame is 3:2 and at most 780px wide, following the
+ * padding of `.comparison` and its border, and the 1600 by 893 images cover it, so they are 1.2 times its width.
+ */
+const sizes = '(min-width: 878px) 932px, (min-width: 640px) calc((100vw - 98px) * 1.2), calc((100vw - 50px) * 1.2)'
 </script>
 
 <template>
@@ -96,10 +99,12 @@ const sizes = '(min-width: 1280px) 1150px, (min-width: 960px) calc(100vw - 130px
 
 .frame {
   position: relative;
-  max-width: 1152px;
+
+  /* 520px tall at most, so the features show sooner. The images lose their sides, where the result is only background */
+  max-width: 780px;
   margin-inline: auto;
   overflow: hidden;
-  aspect-ratio: 1600 / 893;
+  aspect-ratio: 3 / 2;
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
   background: var(--vp-c-bg-soft);

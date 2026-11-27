@@ -58,16 +58,16 @@ comparison:
   afterAlt: "Le même ticket, redressé et nettoyé en noir et blanc"
 ---
 
-## Rien ne quitte le navigateur
-
-PaperPic modifie l’image sur l’appareil de l’utilisateur, dans un Web Worker, sans serveur et sans requête de sa part. La photo d’un ticket de caisse, d’une carte d’identité ou d’un contrat ne quitte l’appareil que lorsque votre code envoie le résultat.
-
 ## Démarrer en quelques lignes
 
 Installez le paquet de votre framework, donnez une hauteur au conteneur et écoutez Appliquer :
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

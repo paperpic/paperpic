@@ -58,16 +58,16 @@ comparison:
   afterAlt: "同じレシートを傾き補正し、白黒にクリーンアップしたもの"
 ---
 
-## ブラウザーの外には何も出ません
-
-PaperPic は画像をユーザーの端末上の Web Worker で編集し、サーバーも使わず、自分からリクエストも送りません。レシートや身分証、契約書の写真が端末から出るのは、あなたのコードが結果を送るときだけです。
-
 ## 数行で始める
 
 フレームワークに合ったパッケージをインストールし、コンテナに高さを与えて、適用を受け取ります。
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -78,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -91,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'
