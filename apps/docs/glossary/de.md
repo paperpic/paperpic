@@ -44,3 +44,5 @@ Use these words in the German docs, so that each idea has one name on every page
 | viewer                                        | Viewer             |
 | wrapper, such as `@paperpic/vue`              | Wrapper            |
 | zoom                                          | zoomen             |
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. For the action, use the nominalized verb with an article, or a verb: "beim Übernehmen", "das Übernehmen schlägt fehl", "das übernommene Ergebnis", not "Übernehmen berechnet" or "das Ergebnis von Übernehmen". A button that does something takes "die Schaltfläche" or "ein Druck auf": "ein Druck auf Fertig fügt … hinzu", "mit Rückgängig entfernst du ihn".

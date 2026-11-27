@@ -18,16 +18,16 @@ La foto di un documento può mostrare più del dovuto: un numero di conto, una f
 
 Puoi disegnare solo finché non posizioni l’area. Appena la disegni, la sposti, la ruoti o la ridimensioni, trascinare sul resto dell’immagine torna a spostarla, così nulla sostituisce l’area per errore. Prima, sposta un’immagine ingrandita con due dita, o con le frecce mentre il focus è sull’immagine. Senza trascinare, la fascia è l’area: spostala con la tastiera, oppure toccala e poi tocca il punto di arrivo.
 
-Ogni Fatto aggiunge un’area, quindi riapri Copri per coprire un’altra parte. Annulla l’ultima azione toglie l’ultima area, e il colore resta per la successiva. Le maniglie d’angolo funzionano come in [Ritaglia](./crop): trascinale, toccane una e poi il punto di arrivo, o spostale con la tastiera. Sulla maniglia sopra l’area, le frecce la ruotano di 1 grado, o di 10 con Maiusc. Trascinata, si aggancia in orizzontale.
+Ogni volta che premi Fatto si aggiunge un’area, quindi riapri Copri per coprire un’altra parte. Con Annulla l’ultima azione si toglie l’ultima area, e il colore resta per la successiva. Le maniglie d’angolo funzionano come in [Ritaglia](./crop): trascinale, toccane una e poi il punto di arrivo, o spostale con la tastiera. Sulla maniglia sopra l’area, le frecce la ruotano di 1 grado, o di 10 con Maiusc. Trascinata, si aggancia in orizzontale.
 
 ## Cosa garantisce {#guarantees}
 
 - Le aree vengono coperte dopo tutti gli altri cambiamenti, quindi Regola e Pulisci non schiariscono mai il loro nero o bianco.
 - Un’area segue i cambiamenti successivi: una rotazione, un capovolgimento o un ritaglio la spostano con l’immagine, e Raddrizza la deforma con la pagina.
 - Copre ogni pixel che i suoi bordi toccano, anche in parte, ed è opaca anche in un PNG trasparente.
-- Applica scrive pixel pieni nel risultato, quindi il file non conserva nulla di ciò che coprono.
+- Quando si applicano le modifiche, le aree diventano pixel pieni nel risultato, quindi il file non conserva nulla di ciò che coprono.
 
-Fino ad Applica, il visualizzatore conserva l’immagine originale, quindi Annulla l’ultima azione riporta ciò che un’area copre. Condividi il risultato di Applica, mai l’immagine originale.
+Finché non si applicano le modifiche, il visualizzatore conserva l’immagine originale, quindi con Annulla l’ultima azione ricompare ciò che un’area copre. Condividi sempre il risultato modificato, mai l’immagine originale.
 
 ## Dal codice
 

@@ -48,7 +48,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **载荷：** [`PaperPicState`](./state)
 
-状态改变了，来自用户或方法，例如缩放、打开工具或撤销，或者因为“矫正”[找到了文档](../guide/tools/straighten#finding-the-document)。它发送完整的状态，与此刻 [`getState()`](./methods#getstate) 返回的相同。应用会触发它两次：开始时带 `busy: true`，成功结束时在 [`apply`](#apply) 之后。
+状态改变了，来自用户或方法，例如缩放、打开工具或撤销，或者因为“矫正”[找到了文档](../guide/tools/straighten#finding-the-document)。它发送完整的状态，与此刻 [`getState()`](./methods#getstate) 返回的相同。应用修改时会触发它两次：开始时带 `busy: true`，成功结束时在 [`apply`](#apply) 之后。
 
 以下情况会改变状态，但不触发 `change`：
 

@@ -20,7 +20,7 @@ Begradige zuerst den Kassenbon, dann bereinige ihn.
 3. Wähle stattdessen Graustufen für ein graues Bild oder Original für die Töne des Fotos. Die Skala funktioniert nur in Schwarzweiß.
 4. Drücke Fertig, um es als eine Änderung zu behalten, oder Dieses Werkzeug abbrechen, um das Bild zu lassen, wie es war.
 
-Sobald Bereinigen eine Änderung ist, öffnet es sich wieder mit seinem Finish. Zum Ausschalten wähle Original: Die Änderungen danach bleiben. Rückgängig würde dagegen auch diese Änderungen entfernen.
+Ist Bereinigen schon unter den Änderungen, öffnet es sich wieder mit seinem Finish. Zum Ausschalten wähle Original: Die Änderungen danach bleiben. Mit Rückgängig würdest du dagegen auch diese Änderungen entfernen.
 
 Bereinigen läuft immer nach den übrigen Änderungen. Zuschneiden zeigt das Bild mit seinem Finish, wie es sein wird. Begradigen zeigt es ohne Schwarzweiß, weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind, und behält Graustufen.
 

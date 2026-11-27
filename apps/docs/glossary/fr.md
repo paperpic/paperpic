@@ -47,3 +47,5 @@ Use these words in the French docs, so that each idea has one name on every page
 | zoom                                          | zoomer                |
 
 The prose says adapter for a fit, so that it never mixes with Ajuster, the tool of brightness and contrast. The buttons keep their labels, Ajuster à la largeur and Ajuster à la hauteur.
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. For the action, use the noun or the verb: "l’application des modifications", "après avoir appliqué les modifications", "le dernier résultat appliqué", not "après Appliquer" or "le résultat d’Appliquer". A button that does something takes "le bouton" or "un appui sur": "un appui sur Terminé ajoute…", "il se retire avec Annuler la dernière action".

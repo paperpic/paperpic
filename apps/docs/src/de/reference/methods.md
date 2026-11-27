@@ -179,7 +179,7 @@ Startet die Bearbeitung. Tut nichts, wenn das Bild nicht bereit ist oder [`edita
 function rotate(direction?: 1 | -1): void
 ```
 
-Dreht das Bild um eine Vierteldrehung: im Uhrzeigersinn mit `1`, dem Standard, und gegen den Uhrzeigersinn mit `-1`. Während der Bearbeitung fügt es eine Änderung hinzu, die [`apply()`](#apply) dauerhaft macht, und tut nichts, solange ein Werkzeug offen ist oder Übernehmen läuft. In einem schreibgeschützten Viewer ändert es nur die Anzeige. Sonst tut es nichts.
+Dreht das Bild um eine Vierteldrehung: im Uhrzeigersinn mit `1`, dem Standard, und gegen den Uhrzeigersinn mit `-1`. Während der Bearbeitung fügt es eine Änderung hinzu, die [`apply()`](#apply) dauerhaft macht, und tut nichts, solange ein Werkzeug offen ist oder das Übernehmen läuft. In einem schreibgeschützten Viewer ändert es nur die Anzeige. Sonst tut es nichts.
 
 ### `flip()`
 
@@ -261,7 +261,7 @@ Wirft einen `RangeError`, wenn `color` keine [`RedactColor`](./types#redactcolor
 function undo(): void
 ```
 
-Macht die letzte Änderung rückgängig. Tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder solange Übernehmen läuft.
+Macht die letzte Änderung rückgängig. Tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder solange das Übernehmen läuft.
 
 ### `redo()`
 
@@ -269,7 +269,7 @@ Macht die letzte Änderung rückgängig. Tut nichts außerhalb des Bearbeitungsm
 function redo(): void
 ```
 
-Stellt die zuletzt rückgängig gemachte Änderung wieder her. Tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder solange Übernehmen läuft.
+Stellt die zuletzt rückgängig gemachte Änderung wieder her. Tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder solange das Übernehmen läuft.
 
 ### `apply()`
 
@@ -277,9 +277,9 @@ Stellt die zuletzt rückgängig gemachte Änderung wieder her. Tut nichts außer
 function apply(): Promise<void>
 ```
 
-Übernimmt die Änderungen in voller Auflösung oder in [`maxOutputSize`](./options#maxoutputsize). Das Ergebnis wird zum angezeigten Bild, der Verlauf leert sich, der Viewer kehrt in den Ansichtsmodus zurück, und das Ereignis [`apply`](./events#apply) liefert das Ergebnis. Übernehmen lässt sich nicht unterbrechen und sperrt die Bedienelemente, solange es läuft. Es tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder wenn es nichts zu übernehmen gibt.
+Übernimmt die Änderungen in voller Auflösung oder in [`maxOutputSize`](./options#maxoutputsize). Das Ergebnis wird zum angezeigten Bild, der Verlauf leert sich, der Viewer kehrt in den Ansichtsmodus zurück, und das Ereignis [`apply`](./events#apply) liefert das Ergebnis. Das Übernehmen lässt sich nicht unterbrechen und sperrt die Bedienelemente, solange es läuft. Es tut nichts außerhalb des Bearbeitungsmodus, bei einem offenen Werkzeug oder wenn es nichts zu übernehmen gibt.
 
-Schlägt es fehl, meldet das Ereignis [`error`](./events#error) den Fehler, und die Bearbeitung bleibt offen. Das Promise wird aufgelöst, wenn Übernehmen endet, auch bei einem Fehler: Höre also auf `error`, statt ihn mit `try/catch` abzufangen.
+Schlägt es fehl, meldet das Ereignis [`error`](./events#error) den Fehler, und die Bearbeitung bleibt offen. Das Promise wird aufgelöst, wenn das Übernehmen endet, auch bei einem Fehler: Höre also auf `error`, statt ihn mit `try/catch` abzufangen.
 
 ### `cancel()`
 
@@ -287,7 +287,7 @@ Schlägt es fehl, meldet das Ereignis [`error`](./events#error) den Fehler, und 
 function cancel(): void
 ```
 
-Verwirft die Änderungen und kehrt in den Ansichtsmodus zurück. Es fragt nicht nach: Das tun die eingebaute Schaltfläche Abbrechen und `Esc`. Tut nichts, solange Übernehmen läuft.
+Verwirft die Änderungen und kehrt in den Ansichtsmodus zurück. Es fragt nicht nach: Das tun die eingebaute Schaltfläche Abbrechen und `Esc`. Tut nichts, solange das Übernehmen läuft.
 
 ## Bild
 

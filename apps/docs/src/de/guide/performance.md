@@ -9,7 +9,7 @@ Handyfotos haben 12 Megapixel oder mehr, und ihre Bearbeitung ist echte Arbeit. 
 
 ## Ein Web Worker erledigt die Arbeit
 
-Schwarzweiß und Begradigen brauchen bei einem Foto mit 12 Megapixeln auf einem aktuellen Smartphone etwa anderthalb Sekunden, wie die [gemessenen Zeiten](#measurements) zeigen. Im Hauptthread würde die Seite so lange einfrieren. PaperPic führt sie deshalb in einem Web Worker aus, sodass die Seite reagiert, während Übernehmen läuft. Auch die Suche nach dem Dokument läuft dort.
+Schwarzweiß und Begradigen brauchen bei einem Foto mit 12 Megapixeln auf einem aktuellen Smartphone etwa anderthalb Sekunden, wie die [gemessenen Zeiten](#measurements) zeigen. Im Hauptthread würde die Seite so lange einfrieren. PaperPic führt sie deshalb in einem Web Worker aus, sodass die Seite reagiert, während die Änderungen übernommen werden. Auch die Suche nach dem Dokument läuft dort.
 
 Der Worker steckt im Paket und startet mit dem Standard `new Worker(new URL(…, import.meta.url))`, den Bundler wie Vite und webpack 5 von selbst erkennen, ohne Konfiguration. Kann der Worker nicht starten, läuft die Bearbeitung im Hauptthread: Sie funktioniert weiter, aber die Seite kann bei großen Bildern kurz einfrieren.
 
@@ -18,7 +18,7 @@ Der Worker steckt im Paket und startet mit dem Standard `new Worker(new URL(…,
 Erlaube mit einer Content Security Policy:
 
 - `worker-src 'self'` für den Worker.
-- `img-src blob:`, weil der Viewer angehängte Dateien und die Ergebnisse von Übernehmen über `blob:`-URLs zeigt.
+- `img-src blob:`, weil der Viewer angehängte Dateien und übernommene Ergebnisse über `blob:`-URLs zeigt.
 - `paperpic` in `trusted-types`, wenn deine Richtlinie die Richtlinien von Trusted Types einschränkt, weil die Icons der Schaltflächen durch diese Richtlinie laufen.
 - Eine `default`-Richtlinie von Trusted Types, deren `createScriptURL` die URL des Workers annimmt, wenn deine Richtlinie Trusted Types verlangt. Bundler erkennen nur einen Worker, der mit einer einfachen URL erstellt wird, und die blockiert Trusted Types. Ohne diese Richtlinie läuft die Bearbeitung also im Hauptthread.
 
@@ -26,11 +26,11 @@ Erlaube mit einer Content Security Policy:
 
 - **Beim Bearbeiten** arbeitet die Vorschau auf einer Kopie mit etwa 2 Megapixeln, damit Skalen und Werkzeuge mit jedem Foto flüssig bleiben.
 - **Beim Übernehmen** läuft jede Änderung in voller Auflösung. Große Fotos brauchen ein paar Sekunden, deshalb zeigt der Viewer eine Meldung und sperrt währenddessen die Bedienelemente.
-- **Um Zeit und Speicher zu sparen**, setze [`maxOutputSize`](../reference/options#maxoutputsize). Eine Grenze wie 2000 oder 3000 Pixel hält Dokumente lesbar, macht Übernehmen schneller und die Dateien kleiner.
+- **Um Zeit und Speicher zu sparen**, setze [`maxOutputSize`](../reference/options#maxoutputsize). Eine Grenze wie 2000 oder 3000 Pixel hält Dokumente lesbar, macht das Übernehmen schneller und die Dateien kleiner.
 
 ## Gemessene Zeiten {#measurements}
 
-Jeder Schritt von Übernehmen, im Worker, auf einem Pixel 10 Pro mit Chrome 156:
+Jeder Schritt beim Übernehmen, im Worker, auf einem Pixel 10 Pro mit Chrome 156:
 
 | Schritt                       | 2 MP   | 12 MP  | 37,5 MP |
 | ----------------------------- | ------ | ------ | ------- |

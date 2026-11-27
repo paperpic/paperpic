@@ -44,3 +44,5 @@ Use these words in the Italian docs, so that each idea has one name on every pag
 | viewer                                        | visualizzatore              |
 | wrapper, such as `@paperpic/vue`              | wrapper                     |
 | zoom                                          | zoomare                     |
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. For the action, use the noun or the verb: "l’applicazione delle modifiche", "quando si applicano le modifiche", "l’ultimo risultato modificato", not "dopo Applica" or "il risultato di Applica". A button that does something takes "il pulsante" or "premendo": "premendo Fatto si aggiunge…", "si toglie con Annulla l’ultima azione".

@@ -14,15 +14,15 @@ Un documento fotografiado en ángulo parece un trapecio: el borde lejano es más
 1. Pulsa Editar y luego Enderezar. Aparece un tirador para cada esquina, sobre el documento si el visor [lo encuentra](#finding-the-document).
 2. Arrastra a su esquina del documento cada tirador que no esté en su sitio. Acércate con los botones de zoom de su panel para colocarlos con precisión.
 3. Si conoces el papel, elige su [tamaño](#paper-size): A4, Carta o Tarjeta. Auto lo estima.
-4. Pulsa Hecho, o `Enter`. El visor muestra la página plana, recortada a las cuatro esquinas. Hecho espera a que el visor encuentre el documento o a que muevas una esquina.
+4. Pulsa Aceptar, o `Enter`. El visor muestra la página plana, recortada a las cuatro esquinas. Aceptar se activa cuando el visor encuentra el documento o cuando mueves una esquina.
 
 Los tiradores funcionan como en [Recortar](./crop): una lupa en pantallas táctiles, pulsar y tocar en lugar de arrastrar, y Tab y las flechas con el teclado. Las cuatro esquinas siempre forman una figura convexa, así que la página siempre se puede aplanar.
 
-Enderezar muestra la foto sin el blanco y negro de [Limpiar](./clean-up), porque en una página limpiada cuesta encontrar los bordes del papel. El blanco y negro vuelve después de Hecho, y el gris se queda.
+Enderezar muestra la foto sin el blanco y negro de [Limpiar](./clean-up), porque en una página limpiada cuesta encontrar los bordes del papel. Al pulsar Aceptar vuelve el blanco y negro, y el gris se mantiene.
 
 ## Encontrar el documento {#finding-the-document}
 
-Al abrirse Enderezar, el visor busca el documento en la foto y coloca sobre él las cuatro esquinas, así que Hecho está listo al momento. La búsqueda se hace en el navegador en una fracción de segundo, y no cambia nada hasta Hecho.
+Al abrirse Enderezar, el visor busca el documento en la foto y coloca sobre él las cuatro esquinas, así que puedes pulsar Aceptar enseguida. La búsqueda se hace en el navegador en una fracción de segundo, y no cambia nada hasta que pulsas Aceptar.
 
 El visor solo propone aquello de lo que está bastante seguro. Si el papel se confunde con la mesa, o la foto no tiene ningún documento, las esquinas empiezan dentro de la imagen y esperan al usuario. Una esquina que el usuario ya ha tocado nunca se mueve sola.
 

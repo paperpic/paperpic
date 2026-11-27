@@ -44,3 +44,5 @@ Use these words in the Korean docs, so that each idea has one name on every page
 | viewer                                        | 뷰어           |
 | wrapper, such as `@paperpic/vue`              | 래퍼           |
 | zoom                                          | 확대/축소      |
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. 적용 alone works as a noun ("적용 중", "적용한 결과"). A quoted button takes a verb: "‘완료’를 누르면", "‘적용’을 누르기 전에는", not "‘적용’은 결과를 계산합니다" or "‘완료’ 뒤에".

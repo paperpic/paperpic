@@ -32,13 +32,13 @@ Su macOS, `Cmd` funziona come `Ctrl`. Con il focus su un pulsante, `Invio` preme
 
 - **Barra degli strumenti e barra di modifica.** Tab raggiunge ogni barra, e al suo interno le frecce passano da un pulsante all’altro, con `Home` e `Fine` per il primo e l’ultimo.
 - **Maniglie d’angolo.** Con Ritaglia o Raddrizza aperto, Tab passa da una maniglia all’altra, e le frecce spostano quella con il focus di 1 pixel dello schermo, o di 10 con Maiusc. I lettori di schermo sentono questi tasti, e che Invio termina, nella descrizione di ogni maniglia.
-- **Righelli.** I righelli di Regola e di Pulisci sono cursori nativi: le frecce, `Pag su`, `Pag giù`, `Home` e `Fine` li spostano. `Invio` conserva il valore, come Fatto, e `Esc` chiude lo strumento senza di esso.
+- **Righelli.** I righelli di Regola e di Pulisci sono cursori nativi: le frecce, `Pag su`, `Pag giù`, `Home` e `Fine` li spostano. `Invio` conserva il valore, come il pulsante Fatto, e `Esc` chiude lo strumento senza di esso.
 
 ## Lettori di schermo
 
 - L’immagine ha il ruolo di immagine, con `alt` come nome. Senza `alt`, i lettori di schermo la saltano.
 - La barra degli strumenti e la barra di modifica hanno un nome proprio, come «Controlli dell’immagine» e «Controlli di modifica».
-- Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un documento trovato da Raddrizza, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato di Applica e ogni errore.
+- Un annuncio segnala ciò che l’utente non vede dal solo focus: il caricamento dell’immagine, il livello di zoom, l’inizio della modalità di modifica, un documento trovato da Raddrizza, un angolo selezionato e la posizione di un angolo spostato, il valore di un righello, il risultato dell’applicazione delle modifiche e ogni errore.
 - Le finiture di Pulisci sono pulsanti che dicono se sono premuti. Uno strumento in uso, che un punto segna sullo schermo, è descritto come «Attivo». In bianco e nero, Regola è descritto con il motivo per cui è disattivato.
 
 ## Schermi touch

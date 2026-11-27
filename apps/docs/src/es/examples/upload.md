@@ -5,7 +5,7 @@ description: Un ejemplo completo que envía a tu servidor la imagen editada en P
 
 # Subir a un servidor
 
-El visor muestra el resultado de Aplicar al momento, pero guardarlo es cosa de tu app. Este ejemplo envía la imagen editada a tu servidor y le dice al usuario cómo ha ido.
+El visor muestra el resultado en cuanto se aplican los cambios, pero guardarlo es cosa de tu app. Este ejemplo envía la imagen editada a tu servidor y le dice al usuario cómo ha ido.
 
 Esta función envía la imagen como un archivo en un formulario, y falla cuando el servidor no la acepta:
 
@@ -126,5 +126,5 @@ export function Invoice() {
 
 - `role="status"` hace que los lectores de pantalla anuncien el resultado de la subida.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene el archivo pequeño. Los documentos siguen siendo legibles con 3000 píxeles en el lado más largo.
-- Después de Aplicar, el historial está vacío, así que el usuario no puede deshacer hasta la imagen anterior. Para ofrecer un botón de reintentar, guarda el último `blob` y `type` y vuelve a llamar a `upload`.
+- Después de aplicar los cambios, el historial se vacía, así que el usuario no puede volver a la imagen anterior con Deshacer. Para ofrecer un botón de reintentar, guarda el último `blob` y `type` y vuelve a llamar a `upload`.
 - El servidor recibe PNG si el documento está en blanco y negro, y si no, el formato de la imagen original cuando es JPEG, PNG o WebP. Consulta [Guardar el resultado](../guide/saving#format) para saber cómo reconoce PaperPic el formato y para elegir otro.

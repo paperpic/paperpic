@@ -1,6 +1,6 @@
 ---
 title: Bearbeitung
-description: Wie der Bearbeitungsmodus von PaperPic funktioniert, von der Schaltfläche Bearbeiten bis Übernehmen, mit den Werkzeugen, Rückgängig und Wiederholen, der Vorschau und den Ereignissen für deinen Code.
+description: Wie der Bearbeitungsmodus von PaperPic funktioniert, von der Schaltfläche Bearbeiten bis zum Übernehmen, mit den Werkzeugen, Rückgängig und Wiederholen, der Vorschau und den Ereignissen für deinen Code.
 ---
 
 # Bearbeitung
@@ -10,8 +10,8 @@ Das Foto eines Dokuments braucht meist ein paar Korrekturen, bevor es sich lohnt
 ## Der Ablauf
 
 1. Der Nutzer drückt Bearbeiten, den Stift in der Werkzeugleiste. Die Werkzeugleiste blendet sich aus, damit nichts das Bild verdeckt, und die Bearbeitungsleiste erscheint unten im Viewer.
-2. Nach links drehen und Spiegeln fügen sofort eine Änderung hinzu. Die übrigen Werkzeuge öffnen ein Bedienfeld in der Bearbeitungsleiste, und Fertig fügt das, was der Nutzer dort gewählt hat, als eine Änderung hinzu. Rückgängig und Wiederholen gehen durch die Änderungen.
-3. Übernehmen berechnet das Ergebnis und kehrt zur Ansicht zurück. Abbrechen verwirft die Änderungen und fragt vorher nach, wenn es welche gibt.
+2. Nach links drehen und Spiegeln fügen sofort eine Änderung hinzu. Die übrigen Werkzeuge öffnen ein Bedienfeld in der Bearbeitungsleiste, und ein Druck auf Fertig fügt das, was der Nutzer dort gewählt hat, als eine Änderung hinzu. Mit Rückgängig und Wiederholen geht man durch die Änderungen.
+3. Bei einem Druck auf Übernehmen berechnet der Viewer das Ergebnis und kehrt zur Ansicht zurück. Abbrechen verwirft die Änderungen und fragt vorher nach, wenn es welche gibt.
 
 Nichts verändert das Bild vor dem Übernehmen. Bis dahin sind die Änderungen eine Liste, die der Viewer als Vorschau zeigt.
 
@@ -71,15 +71,15 @@ export function Receipt() {
 
 :::
 
-Zuschneiden, Begradigen, Abdecken, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge. Solange eines davon offen ist, warten die anderen Werkzeuge, Rückgängig, Wiederholen und Übernehmen. Fertig, oder `Enter`, fügt das, was das Werkzeug gewählt hat, zu den Änderungen hinzu, und Dieses Werkzeug abbrechen, oder `Esc`, verwirft es.
+Zuschneiden, Begradigen, Abdecken, Anpassen und Bereinigen öffnen ein Bedienfeld anstelle der Werkzeuge. Solange eines davon offen ist, sind die anderen Werkzeuge, Rückgängig, Wiederholen und Übernehmen gesperrt. Mit Fertig oder `Enter` kommt das, was im Werkzeug gewählt ist, zu den Änderungen hinzu, mit Dieses Werkzeug abbrechen oder `Esc` wird es verworfen.
 
 In einem Bedienfeld sieht das Bild so aus, wie das Ergebnis wird, mit Bereinigen. Begradigen ist die Ausnahme: Es zeigt das Foto ohne Schwarzweiß, damit die Ränder des Papiers sichtbar bleiben.
 
 ## Vorschau und Übernehmen
 
-Während der Bearbeitung zeigt der Viewer die Änderungen als Vorschau auf einer Kopie des Bildes mit etwa 2 Megapixeln, damit er auch bei großen Fotos schnell bleibt. Stark vergrößert wirkt die Vorschau weicher als das Ergebnis. Übernehmen berechnet jede Änderung in voller Auflösung oder in [`maxOutputSize`](../reference/options#maxoutputsize), in einem Web Worker.
+Während der Bearbeitung zeigt der Viewer die Änderungen als Vorschau auf einer Kopie des Bildes mit etwa 2 Megapixeln, damit er auch bei großen Fotos schnell bleibt. Stark vergrößert wirkt die Vorschau weicher als das Ergebnis. Beim Übernehmen wird jede Änderung in voller Auflösung oder in [`maxOutputSize`](../reference/options#maxoutputsize) berechnet, in einem Web Worker.
 
-Übernehmen lässt sich nicht unterbrechen. Es sperrt die Bedienelemente und zeigt eine Meldung, solange es läuft. Danach ersetzt das Ergebnis das angezeigte Bild, der Verlauf leert sich, und der Viewer kehrt in den Ansichtsmodus zurück. Schlägt Übernehmen fehl, bleibt die Bearbeitung offen, damit der Nutzer es erneut versuchen kann.
+Das Übernehmen lässt sich nicht unterbrechen. Es sperrt die Bedienelemente und zeigt eine Meldung, solange es läuft. Danach ersetzt das Ergebnis das angezeigte Bild, der Verlauf leert sich, und der Viewer kehrt in den Ansichtsmodus zurück. Schlägt es fehl, bleibt die Bearbeitung offen, damit der Nutzer es erneut versuchen kann.
 
 ## Was dein Code erhält
 

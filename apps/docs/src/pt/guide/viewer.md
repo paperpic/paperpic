@@ -44,7 +44,7 @@ Com `toolbar: false`, a barra de ferramentas e a barra de edição ficam ocultas
 
 ## Visualizador somente leitura {#read-only}
 
-Com `editable: false`, o botão Editar some, e a barra de ferramentas ganha dois botões que giram a imagem. Esse giro muda só a exibição, e nada é salvo: Baixar salva a imagem sem ele. Use para documentos que devem ser lidos mas não alterados, como os anexos de um registro.
+Com `editable: false`, o botão Editar some, e a barra de ferramentas ganha dois botões que giram a imagem. Esse giro muda só a exibição, e nada é salvo: o botão Baixar salva a imagem sem ele. Use para documentos que devem ser lidos mas não alterados, como os anexos de um registro.
 
 :::tabs key:framework
 == JavaScript

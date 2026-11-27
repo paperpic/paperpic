@@ -44,3 +44,5 @@ Use these words in the Chinese docs, so that each idea has one name on every pag
 | viewer                                        | 查看器     |
 | wrapper, such as `@paperpic/vue`              | 封装组件   |
 | zoom                                          | 缩放       |
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. 应用 also means "app", so write the action as "应用修改" and a press as "点击“应用”" or "按“完成”": "应用修改时", "点击“应用”后才会生效", never a bare 应用 as a subject, as in "应用会计算结果".

@@ -1,6 +1,6 @@
 ---
 title: Modification
-description: Comment fonctionne le mode d’édition de PaperPic, du bouton Modifier jusqu’à Appliquer, avec les outils, Annuler la dernière action et Rétablir, l’aperçu et les événements que reçoit votre code.
+description: Comment fonctionne le mode d’édition de PaperPic, du bouton Modifier jusqu’à l’application des modifications, avec les outils, Annuler la dernière action et Rétablir, l’aperçu et les événements que reçoit votre code.
 ---
 
 # Modification
@@ -10,10 +10,10 @@ La photo d’un document a souvent besoin de quelques corrections avant de valoi
 ## Le déroulé
 
 1. L’utilisateur appuie sur Modifier, le crayon de la barre d’outils. La barre d’outils se masque, pour que rien ne cache l’image, et la barre de modification apparaît en bas de la visionneuse.
-2. Pivoter à gauche et Retourner ajoutent aussitôt un changement. Les autres outils ouvrent un panneau dans la barre de modification, et Terminé ajoute ce que l’utilisateur y a choisi comme un seul changement. Annuler la dernière action et Rétablir parcourent les changements.
-3. Appliquer calcule le résultat et revient à l’affichage. Annuler abandonne les changements, et demande d’abord s’il y en a.
+2. Pivoter à gauche et Retourner ajoutent aussitôt un changement. Les autres outils ouvrent un panneau dans la barre de modification, et un appui sur Terminé ajoute ce que l’utilisateur y a choisi comme un seul changement. Annuler la dernière action et Rétablir permettent de reculer et d’avancer dans les changements.
+3. Un appui sur Appliquer calcule le résultat et ramène la visionneuse à l’affichage. Annuler abandonne les changements, après confirmation s’il y en a.
 
-Rien ne modifie l’image avant Appliquer. Jusque-là, les changements sont une liste dont la visionneuse montre un aperçu.
+Rien ne modifie l’image tant que l’utilisateur n’a pas appuyé sur Appliquer. Jusque-là, les changements sont une liste dont la visionneuse montre un aperçu.
 
 Dans une visionneuse étroite, la barre de modification a deux lignes : en haut, les outils ou le panneau de l’outil ouvert, et en bas, Annuler à gauche et Appliquer, ou Terminé, à droite. À partir de 38rem de large, tout tient sur une ligne. Dans les deux cas, la barre garde sa hauteur quand un outil s’ouvre, donc l’image garde sa place. Un point marque Ajuster et Nettoyer tant que leur réglage s’applique.
 
@@ -71,15 +71,15 @@ export function Receipt() {
 
 :::
 
-Recadrer, Redresser, Masquer, Ajuster et Nettoyer ouvrent un panneau à la place des outils. Tant que l’un d’eux est ouvert, les autres outils, Annuler la dernière action, Rétablir et Appliquer attendent. Terminé, ou `Entrée`, ajoute aux changements ce que l’outil a choisi, et Annuler cet outil, ou `Échap`, l’abandonne.
+Recadrer, Redresser, Masquer, Ajuster et Nettoyer ouvrent un panneau à la place des outils. Tant que l’un d’eux est ouvert, les autres outils, Annuler la dernière action, Rétablir et Appliquer sont désactivés. Terminé, ou `Entrée`, ajoute aux changements ce qui est choisi dans l’outil, et Annuler cet outil, ou `Échap`, l’abandonne.
 
 Dans un panneau, l’image apparaît telle que sera le résultat, Nettoyer compris. Redresser fait exception : il montre la photo sans le noir et blanc, pour que les bords du papier restent visibles.
 
-## Aperçu et Appliquer
+## Aperçu et résultat
 
-Pendant la modification, la visionneuse montre un aperçu des changements sur une copie de l’image d’environ 2 mégapixels, pour rester rapide avec de grandes photos. En zoomant, l’aperçu paraît plus doux que le résultat. Appliquer calcule tous les changements en pleine résolution, ou à [`maxOutputSize`](../reference/options#maxoutputsize), dans un Web Worker.
+Pendant la modification, la visionneuse montre un aperçu des changements sur une copie de l’image d’environ 2 mégapixels, pour rester rapide avec de grandes photos. En zoomant, l’aperçu paraît plus doux que le résultat. L’application des modifications calcule tous les changements en pleine résolution, ou à [`maxOutputSize`](../reference/options#maxoutputsize), dans un Web Worker.
 
-Appliquer ne peut pas être interrompu. Il bloque les commandes et affiche un message pendant son exécution. Ensuite, le résultat remplace l’image affichée, l’historique se vide et la visionneuse revient au mode d’affichage. Si Appliquer échoue, la modification reste ouverte pour que l’utilisateur puisse réessayer.
+Une fois lancée, l’application des modifications ne peut pas être interrompue. Elle bloque les commandes et affiche un message pendant son exécution. Ensuite, le résultat remplace l’image affichée, l’historique se vide et la visionneuse revient au mode d’affichage. En cas d’échec, la modification reste ouverte pour que l’utilisateur puisse réessayer.
 
 ## Ce que reçoit votre code
 
@@ -125,7 +125,7 @@ pic.on('error', ({ error }) => console.error(error))
 - Un nouveau `src`, ou [`reload()`](../reference/methods#reload), pendant la modification.
 - Un changement d’`editable` pendant la modification.
 
-Après Appliquer, passer le même `src` une nouvelle fois ne fait rien, donc le résultat reste affiché. [`reload()`](../reference/methods#reload) ramène l’original.
+Après l’application des modifications, passer le même `src` une nouvelle fois ne fait rien, donc le résultat reste affiché. [`reload()`](../reference/methods#reload) ramène l’original.
 
 ## Clavier
 

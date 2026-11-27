@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Données :** [`Size`](./types#size)
 
-L’image est chargée et affichée. `width` et `height` sont sa taille en pixels. Il est émis à chaque chargement d’un `src`, y compris avec [`reload()`](./methods#reload), mais pas après Appliquer, dont le résultat arrive avec [`apply`](#apply).
+L’image est chargée et affichée. `width` et `height` sont sa taille en pixels. Il est émis à chaque chargement d’un `src`, y compris avec [`reload()`](./methods#reload), mais pas après l’application des modifications, dont le résultat arrive avec [`apply`](#apply).
 
 ## `error`
 
@@ -48,12 +48,12 @@ Quelque chose a échoué, et `phase` dit quoi :
 
 - **Données :** [`PaperPicState`](./state)
 
-L’état a changé, par l’utilisateur ou par une méthode, par exemple en zoomant, en ouvrant un outil ou en annulant, ou parce que Redresser a [trouvé le document](../guide/tools/straighten#finding-the-document). Il envoie l’état complet, le même que renverrait [`getState()`](./methods#getstate) à ce moment-là. Appliquer l’émet deux fois : au début, avec `busy: true`, et à la fin quand il réussit, après [`apply`](#apply).
+L’état a changé, par l’utilisateur ou par une méthode, par exemple en zoomant, en ouvrant un outil ou en annulant, ou parce que Redresser a [trouvé le document](../guide/tools/straighten#finding-the-document). Il envoie l’état complet, le même que renverrait [`getState()`](./methods#getstate) à ce moment-là. L’application des modifications l’émet deux fois : au début, avec `busy: true`, et à la fin quand il réussit, après [`apply`](#apply).
 
 Ceci change l’état sans émettre `change` :
 
 - Le chargement d’une image, que signale [`load`](#load) ou [`error`](#error).
-- Un Appliquer qui échoue, que signale [`error`](#error). `busy` revient à `false`.
+- Une application des modifications qui échoue, que signale [`error`](#error). `busy` revient à `false`.
 - `setOptions()` et les props des composants, donc les liaisons bidirectionnelles ne bouclent pas.
 - Un redimensionnement de la visionneuse, qui change `zoom` tant qu’une adaptation est en vigueur.
 
@@ -63,13 +63,13 @@ Déplacer l’image n’émet rien, car l’état ne contient pas sa position. [
 
 - **Données :** [`ExportedImage`](./types#exportedimage)
 
-Appliquer est terminé, depuis le bouton, `Entrée` ou [`apply()`](./methods#apply), et le résultat est déjà affiché. `blob` contient l’image au format `type`, que choisit [`output`](./options#output).
+Les modifications sont appliquées, depuis le bouton Appliquer, `Entrée` ou [`apply()`](./methods#apply), et le résultat est déjà affiché. `blob` contient l’image au format `type`, que choisit [`output`](./options#output).
 
 ## `download`
 
 - **Données :** [`PaperPicDownload`](./types#paperpicdownload)
 
-L’image est sur le point d’être enregistrée, depuis le bouton de téléchargement ou depuis [`download()`](./methods#download). `source` est l’image affichée : le résultat du dernier Appliquer, ou sinon le `src`. `filename` est le nom du fichier.
+L’image est sur le point d’être enregistrée, depuis le bouton de téléchargement ou depuis [`download()`](./methods#download). `source` est l’image affichée : le dernier résultat appliqué, ou sinon le `src`. `filename` est le nom du fichier.
 
 Appelez `preventDefault()` pour que le navigateur n’enregistre pas le fichier, par exemple pour l’enregistrer autrement :
 

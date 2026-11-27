@@ -1,6 +1,6 @@
 ---
 title: Dépannage
-description: Que faire quand la visionneuse PaperPic n’a ni hauteur ni styles, que Tailwind CSS la modifie, qu’une image ne se charge pas ou ne peut pas être modifiée, que la page se fige pendant Appliquer ou qu’une grande photo échoue.
+description: Que faire quand la visionneuse PaperPic n’a ni hauteur ni styles, que Tailwind CSS la modifie, qu’une image ne se charge pas ou ne peut pas être modifiée, que la page se fige pendant l’application des modifications ou qu’une grande photo échoue.
 ---
 
 # Dépannage
@@ -27,7 +27,7 @@ L’[`error`](../reference/events#error) indique que l’image vient d’une aut
 
 La visionneuse indique que l’image n’a pas pu être chargée, et `error` porte `phase: 'load'`. Vérifiez que l’URL existe et que le navigateur ouvre le format : HEIC ne s’ouvre que dans Safari, et un SVG a besoin des attributs `width` et `height`. [Charger des images](./loading#formats) liste les formats.
 
-## La page se fige pendant Appliquer {#worker}
+## La page se fige pendant l’application des modifications {#worker}
 
 Le worker n’a pas démarré, donc la modification s’exécute sur le thread principal. Elle fonctionne, mais les grandes photos figent la page un instant. Les causes habituelles sont :
 
@@ -36,7 +36,7 @@ Le worker n’a pas démarré, donc la modification s’exécute sur le thread p
 
 Le panneau réseau du navigateur montre si la page a demandé le fichier du worker, dont le nom commence par `worker`.
 
-## Appliquer échoue avec une grande photo {#too-large}
+## L’application échoue avec une grande photo {#too-large}
 
 L’`error` indique `The browser could not read an image of …`, ou `could not save an image of …`. Les navigateurs limitent la taille d’un canvas, et Safari sur iOS plus que les autres. Définissez [`maxOutputSize`](../reference/options#maxoutputsize), par exemple à 3000 pixels, ce qui garde les documents lisibles.
 

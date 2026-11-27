@@ -13,7 +13,7 @@ Handys speichern das Foto eines Dokuments oft seitlich oder kopfüber, und manch
 
 In der Bearbeitungsleiste dreht Nach links drehen das Bild um eine Vierteldrehung gegen den Uhrzeigersinn, wie in Fotogalerien. Drücke zweimal für eine halbe Drehung oder dreimal für eine Vierteldrehung im Uhrzeigersinn.
 
-Eine Drehung ist eine Änderung: Rückgängig entfernt sie, und Übernehmen macht sie dauerhaft. Vier Drehungen bringen das Bild an seinen Ausgangspunkt zurück, und dann gibt es nichts zu übernehmen.
+Eine Drehung ist eine Änderung: Mit Rückgängig entfernst du sie, mit Übernehmen wird sie dauerhaft. Vier Drehungen bringen das Bild an seinen Ausgangspunkt zurück, und dann gibt es nichts zu übernehmen.
 
 Aus dem Code dreht [`rotate()`](../../reference/methods#rotate) mit `1` im Uhrzeigersinn und mit `-1` dagegen:
 

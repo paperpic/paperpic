@@ -11,11 +11,11 @@ Las fotos hechas con poca luz salen oscuras o grises. Ajustar cambia el brillo y
 
 ## Cómo se usa
 
-1. Pulsa Editar y luego Ajustar. Su panel ocupa el lugar de las herramientas: una regla, y Brillo y Contraste para elegir qué tono cambia.
-2. Arrastra la regla. La vista previa cambia mientras arrastras. Elige Contraste para cambiar el otro tono con la misma regla.
-3. Pulsa Hecho para conservar ambos tonos como un solo cambio, que Deshacer quita. Cancelar esta herramienta deja la imagen como estaba.
+1. Pulsa Editar y luego Ajustar. Su panel ocupa el lugar de las herramientas: una regla, y Brillo y Contraste para elegir qué valor cambia.
+2. Arrastra la regla. La vista previa cambia mientras arrastras. Elige Contraste para cambiarlo con la misma regla.
+3. Pulsa Aceptar para conservar los dos valores como un solo cambio, que se quita con Deshacer. Con Cancelar esta herramienta, la imagen se queda como estaba.
 
-El centro de la regla deja la imagen como está, y la aguja se detiene ahí, así que es fácil volver a dejar la imagen como estaba. Los lectores de pantalla anuncian el valor de -100 a 100, como «Brillo +30». Un punto en Ajustar marca valores distintos de 0.
+El centro de la regla deja la imagen como está, y el control se detiene ahí, así que es fácil volver a dejar la imagen como estaba. Los lectores de pantalla anuncian el valor de -100 a 100, como «Brillo +30». Un punto en Ajustar marca valores distintos de 0.
 
 Ajustar se aplica después de los demás cambios, así que Recortar y Enderezar muestran la imagen con él.
 
@@ -27,7 +27,7 @@ Ajustar se aplica después de los demás cambios, así que Recortar y Enderezar 
 | Para formularios en color, sellos y fotos | Para texto sobre papel                              |
 | Mantiene el formato de la imagen original | Da PNG                                              |
 
-En blanco y negro, Ajustar está desactivada. El blanco y negro compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado. Los lectores de pantalla oyen por qué está desactivada. Con el gris, Ajustar funciona, y el gris va después.
+En blanco y negro, Ajustar está desactivada. El blanco y negro compara cada píxel con lo que lo rodea, así que el brillo y el contraste apenas cambiarían su resultado. Los lectores de pantalla anuncian por qué está desactivada. Con el gris, Ajustar funciona, y el gris va después.
 
 ## Desde el código
 

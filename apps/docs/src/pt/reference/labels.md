@@ -27,7 +27,7 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | `adjustUnavailable` | Not available in black and white                                 | A descrição de Ajustar em preto e branco, que o deixa desativado                                                |
 | `applied`           | Changes applied                                                  | Anunciado quando as alterações são aplicadas                                                                    |
 | `apply`             | Apply                                                            | O botão que aplica as alterações                                                                                |
-| `applyError`        | The changes could not be applied                                 | Mostrado quando Aplicar falha                                                                                   |
+| `applyError`        | The changes could not be applied                                 | Mostrado quando não é possível aplicar as alterações                                                            |
 | `brightness`        | Brightness                                                       | A escolha do brilho em Ajustar, e o nome da régua dele                                                          |
 | `cancel`            | Cancel                                                           | O botão que sai do modo de edição                                                                               |
 | `cancelTool`        | Cancel this tool                                                 | O botão que fecha uma ferramenta e descarta as alterações dela                                                  |
@@ -70,7 +70,7 @@ Cinco rótulos são funções, porque o texto deles inclui um valor. Uma funçã
 | `perspectiveFound`  | Document found. Check its corners                                | Mostrado e anunciado quando Endireitar encontra o documento                                                     |
 | `perspectiveHint`   | Drag each corner to a corner of the document                     | O que fazer em Endireitar                                                                                       |
 | `previewError`      | The changes could not be shown                                   | Mostrado quando uma alteração não pode ser mostrada                                                             |
-| `processing`        | Applying changes                                                 | Mostrado enquanto Aplicar está em andamento                                                                     |
+| `processing`        | Applying changes                                                 | Mostrado enquanto as alterações são aplicadas                                                                   |
 | `redact`            | Redact                                                           | O botão Ocultar, e o nome da sua escolha de cor                                                                 |
 | `redactAngle`       | Angle 12°                                                        | Função do ângulo em graus, anunciada depois de girar a área de Ocultar                                          |
 | `redactArea`        | Area                                                             | A área de Ocultar, que a move inteira                                                                           |

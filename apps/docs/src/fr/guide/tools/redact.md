@@ -18,16 +18,16 @@ La photo d’un document en montre parfois trop : un numéro de compte, une sign
 
 Vous ne pouvez dessiner que jusqu’à ce que la zone soit placée. Dès que vous la dessinez, la déplacez, la tournez ou la redimensionnez, faire glisser le reste de l’image la déplace à nouveau, pour que rien ne remplace la zone par accident. Avant cela, déplacez une image zoomée avec deux doigts, ou avec les flèches quand l’image a le focus. Sans faire glisser, la bande est la zone : déplacez-la au clavier, ou touchez-la puis l’endroit voulu.
 
-Chaque Terminé ajoute une zone : rouvrez Masquer pour recouvrir une autre partie. Annuler la dernière action retire la dernière zone, et la couleur reste pour la suivante. Les poignées d’angle fonctionnent comme dans [Recadrer](./crop) : faites-les glisser, touchez-en une puis l’endroit voulu, ou déplacez-les au clavier. Sur la poignée au-dessus de la zone, les flèches la tournent de 1 degré, ou de 10 avec Maj. Glissée, elle se cale à l’horizontale.
+Chaque appui sur Terminé ajoute une zone : rouvrez Masquer pour recouvrir une autre partie. Annuler la dernière action permet de retirer la dernière zone, et la couleur reste pour la suivante. Les poignées d’angle fonctionnent comme dans [Recadrer](./crop) : faites-les glisser, touchez-en une puis l’endroit voulu, ou déplacez-les au clavier. Sur la poignée au-dessus de la zone, les flèches la tournent de 1 degré, ou de 10 avec Maj. Glissée, elle se cale à l’horizontale.
 
 ## Ce qui est garanti {#guarantees}
 
 - Les zones sont recouvertes après tous les autres changements, donc Ajuster et Nettoyer n’éclaircissent jamais leur noir ou leur blanc.
 - Une zone suit les changements suivants : une rotation, un retournement ou un recadrage la déplacent avec l’image, et Redresser la déforme avec la page.
 - Elle recouvre chaque pixel que ses bords touchent, même en partie, et reste opaque dans un PNG transparent.
-- Appliquer écrit des pixels opaques dans le résultat, donc le fichier ne garde rien de ce qu’ils recouvrent.
+- L’application des modifications écrit des pixels opaques dans le résultat, donc le fichier ne garde rien de ce qu’ils recouvrent.
 
-Jusqu’à Appliquer, la visionneuse garde l’image source, donc Annuler la dernière action fait revenir ce qu’une zone recouvre. Partagez le résultat d’Appliquer, jamais l’image source.
+Tant que les modifications ne sont pas appliquées, la visionneuse garde l’image source, donc Annuler la dernière action fait revenir ce qu’une zone recouvre. Partagez toujours le résultat appliqué, jamais l’image source.
 
 ## Depuis le code
 

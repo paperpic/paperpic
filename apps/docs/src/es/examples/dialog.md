@@ -187,5 +187,5 @@ export function PhotoEditor() {
 
 - El visor puede estar en el diálogo mientras está cerrado. Entonces no tiene tamaño, y encaja la imagen en cuanto el diálogo se abre.
 - Abrir el diálogo empieza el modo de edición. Si la foto aún está cargando, lo empieza el evento `load`.
-- Aplicar y Cancelar terminan la edición, y el [`change`](../reference/events#change) que sigue cierra el diálogo. Si Aplicar falla, la edición sigue abierta, y el diálogo también.
-- Cada vez que se abre, se edita la imagen en pantalla, que después de Aplicar es el resultado. Para empezar siempre desde la original, llama a [`reload()`](../reference/methods#reload) antes de `edit()`.
+- Los botones Aplicar y Cancelar terminan la edición, y el [`change`](../reference/events#change) que llega después cierra el diálogo. Si no se pueden aplicar los cambios, la edición sigue abierta, y el diálogo también.
+- Cada vez que se abre, se edita la imagen en pantalla, que es el resultado si ya se aplicaron cambios. Para empezar siempre desde la original, llama a [`reload()`](../reference/methods#reload) antes de `edit()`.

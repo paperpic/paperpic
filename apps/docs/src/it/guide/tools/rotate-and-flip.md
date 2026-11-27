@@ -13,7 +13,7 @@ I telefoni salvano spesso la foto di un documento di lato o sottosopra, e alcune
 
 Nella barra di modifica, Ruota a sinistra ruota l’immagine di un quarto di giro in senso antiorario, come nelle gallerie di foto. Premilo due volte per mezzo giro, o tre volte per un quarto di giro in senso orario.
 
-Una rotazione è un cambiamento: Annulla l’ultima azione la toglie, e Applica la rende permanente. Quattro rotazioni riportano l’immagine dov’era, e allora non c’è nulla da applicare.
+Una rotazione è un cambiamento: si toglie con Annulla l’ultima azione e diventa permanente quando premi Applica. Quattro rotazioni riportano l’immagine dov’era, e allora non c’è nulla da applicare.
 
 Dal codice, [`rotate()`](../../reference/methods#rotate) ruota in senso orario con `1`, e in senso antiorario con `-1`:
 

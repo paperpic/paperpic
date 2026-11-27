@@ -149,7 +149,7 @@ export function ExpenseForm() {
 
 ## Remarques
 
-- Appliquer met l’image modifiée dans le champ de fichier avec un [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), pour que le formulaire l’envoie sous le même nom. Avant tout Appliquer, le formulaire envoie la photo telle que l’utilisateur l’a choisie.
+- À l’application des modifications, l’exemple met l’image modifiée dans le champ de fichier avec un [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), pour que le formulaire l’envoie sous le même nom. Tant que rien n’a été appliqué, le formulaire envoie la photo telle que l’utilisateur l’a choisie.
 - Changer les fichiers du champ depuis le code ne déclenche pas son événement `change`, donc la visionneuse garde le résultat affiché.
 - Le fichier garde le nom de la photo, avec l’extension du résultat, comme `receipt.png` après Nettoyer en noir et blanc.
 - Les boutons de la visionneuse n’envoient jamais le formulaire.

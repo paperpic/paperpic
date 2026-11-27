@@ -32,7 +32,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **Datos:** [`Size`](./types#size)
 
-La imagen se ha cargado y está en pantalla. `width` y `height` son su tamaño en píxeles. Se emite cada vez que carga un `src`, también con [`reload()`](./methods#reload), pero no después de Aplicar, cuyo resultado llega con [`apply`](#apply).
+La imagen se ha cargado y está en pantalla. `width` y `height` son su tamaño en píxeles. Se emite cada vez que carga un `src`, también con [`reload()`](./methods#reload), pero no después de aplicar los cambios, cuyo resultado llega con [`apply`](#apply).
 
 ## `error`
 
@@ -48,12 +48,12 @@ Algo falló, y `phase` dice qué:
 
 - **Datos:** [`PaperPicState`](./state)
 
-El estado cambió, por el usuario o por un método, por ejemplo al hacer zoom, abrir una herramienta o deshacer, o porque Enderezar [encontró el documento](../guide/tools/straighten#finding-the-document). Envía el estado completo, el mismo que devolvería [`getState()`](./methods#getstate) en ese momento. Aplicar lo emite dos veces: al empezar, con `busy: true`, y al terminar bien, después de [`apply`](#apply).
+El estado cambió, por el usuario o por un método, por ejemplo al hacer zoom, abrir una herramienta o deshacer, o porque Enderezar [encontró el documento](../guide/tools/straighten#finding-the-document). Envía el estado completo, el mismo que devolvería [`getState()`](./methods#getstate) en ese momento. Al aplicar los cambios se emite dos veces: al empezar, con `busy: true`, y al terminar bien, después de [`apply`](#apply).
 
 Esto cambia el estado sin emitir `change`:
 
 - Cargar una imagen, de lo que avisa [`load`](#load) o [`error`](#error).
-- Un Aplicar que falla, de lo que avisa [`error`](#error). `busy` vuelve a ser `false`.
+- Un intento fallido de aplicar los cambios, del que avisa [`error`](#error). `busy` vuelve a ser `false`.
 - `setOptions()` y las props de los componentes, para que los enlaces bidireccionales no entren en bucle.
 - Un cambio de tamaño del visor, que cambia `zoom` mientras hay un encaje vigente.
 
@@ -63,13 +63,13 @@ Desplazar la imagen no emite nada, porque el estado no guarda su posición. [Est
 
 - **Datos:** [`ExportedImage`](./types#exportedimage)
 
-Aplicar terminó, desde el botón, `Enter` o [`apply()`](./methods#apply), y el resultado ya está en pantalla. `blob` contiene la imagen en el formato `type`, que elige [`output`](./options#output).
+Los cambios se han aplicado, desde el botón Aplicar, `Enter` o [`apply()`](./methods#apply), y el resultado ya está en pantalla. `blob` contiene la imagen en el formato `type`, que elige [`output`](./options#output).
 
 ## `download`
 
 - **Datos:** [`PaperPicDownload`](./types#paperpicdownload)
 
-La imagen está a punto de guardarse, desde el botón de descarga o desde [`download()`](./methods#download). `source` es la imagen en pantalla: el resultado del último Aplicar, o si no, el `src`. `filename` es el nombre del archivo.
+La imagen está a punto de guardarse, desde el botón de descarga o desde [`download()`](./methods#download). `source` es la imagen en pantalla: el último resultado editado, o si no, el `src`. `filename` es el nombre del archivo.
 
 Llama a `preventDefault()` para que el navegador no guarde el archivo, por ejemplo para guardarlo de otra forma:
 

@@ -195,8 +195,8 @@ export function AttachDocument() {
 ## Remarques
 
 - `capture="environment"` ouvre la caméra arrière sur les téléphones, et les ordinateurs l’ignorent. Sans lui, les téléphones proposent la caméra et la photothèque, ce qui convient aux documents que l’utilisateur a déjà.
-- Vider le champ après chaque choix permet de choisir à nouveau la même photo, par exemple pour recommencer après Appliquer.
+- Vider le champ après chaque choix permet de choisir à nouveau la même photo, par exemple pour recommencer après avoir appliqué les modifications.
 - La visionneuse ouvre le mode d’édition dès que la photo est chargée, si bien que l’utilisateur passe directement à Redresser ou Nettoyer. Retirez l’écouteur de `load` pour montrer d’abord la photo.
 - `phase: 'load'` distingue un fichier que le navigateur ne peut pas ouvrir, comme une photo HEIC hors de Safari, d’une modification qui échoue. [Charger des images](../guide/loading#formats) liste les formats.
-- La photo reste dans le navigateur jusqu’à ce que Appliquer appelle `upload`. PaperPic n’envoie rien de lui-même.
+- La photo reste dans le navigateur jusqu’à ce que l’utilisateur applique les modifications et que votre code appelle `upload`. PaperPic n’envoie rien de lui-même.
 - [`maxOutputSize`](../reference/options#maxoutputsize) garde l’envoi léger. Les photos de téléphone font 12 mégapixels ou plus, et les documents restent lisibles à 3000 pixels sur le plus grand côté.

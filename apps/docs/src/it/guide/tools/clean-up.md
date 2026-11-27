@@ -20,7 +20,7 @@ Raddrizza prima lo scontrino, poi puliscilo.
 3. Scegli invece Grigio per un’immagine in grigio, o Originale per i toni della foto. Il righello funziona solo in bianco e nero.
 4. Premi Fatto per conservarlo come un solo cambiamento, o Annulla questo strumento per lasciare l’immagine com’era.
 
-Quando Pulisci è già un cambiamento, si riapre con la sua finitura. Per disattivarlo, scegli Originale: i cambiamenti venuti dopo restano. Annulla l’ultima azione, invece, toglierebbe anche quei cambiamenti.
+Se Pulisci è già tra i cambiamenti, si riapre con la sua finitura. Per disattivarlo, scegli Originale: i cambiamenti venuti dopo restano. Con Annulla l’ultima azione, invece, toglieresti anche quei cambiamenti.
 
 Pulisci viene sempre dopo gli altri cambiamenti. Ritaglia mostra l’immagine con la sua finitura, come sarà. Raddrizza la mostra senza il bianco e nero, perché i bordi della carta sono difficili da trovare su una pagina pulita, e conserva il grigio.
 

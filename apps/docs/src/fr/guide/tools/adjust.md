@@ -13,7 +13,7 @@ Les photos prises avec peu de lumière sortent sombres ou grises. Ajuster change
 
 1. Appuyez sur Modifier, puis sur Ajuster. Son panneau prend la place des outils : une règle, avec Luminosité et Contraste pour choisir le ton qu’elle change.
 2. Faites glisser la règle. L’aperçu change pendant le glissement. Choisissez Contraste pour changer l’autre ton avec la même règle.
-3. Appuyez sur Terminé pour garder les deux tons comme un seul changement, qu’Annuler la dernière action retire. Annuler cet outil laisse l’image telle qu’elle était.
+3. Appuyez sur Terminé pour garder les deux valeurs comme un seul changement, que vous pouvez retirer avec Annuler la dernière action. Avec Annuler cet outil, l’image reste telle qu’elle était.
 
 Le milieu de la règle laisse l’image telle quelle, et l’aiguille s’y arrête, donc il est facile de revenir à aucun changement. Les lecteurs d’écran annoncent la valeur de -100 à 100, comme « Luminosité +30 ». Un point sur Ajuster marque des valeurs différentes de 0.
 

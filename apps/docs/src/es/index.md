@@ -37,7 +37,7 @@ features:
     link: /es/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "Resolución completa"
-    details: "Aplicar entrega a tu código la imagen editada como un Blob, procesada en un Web Worker para que la página siga respondiendo."
+    details: "Al aplicar los cambios, tu código recibe la imagen editada como un Blob, procesada en un Web Worker para que la página no se bloquee."
     link: /es/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "Accesible"
@@ -60,7 +60,7 @@ comparison:
 
 ## Empieza en pocas líneas
 
-Instala el paquete de tu framework, da una altura al contenedor y escucha Aplicar:
+Instala el paquete de tu framework, da una altura al contenedor y escucha el evento `apply`:
 
 :::tabs key:framework
 == JavaScript

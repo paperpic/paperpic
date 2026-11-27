@@ -44,3 +44,5 @@ Use these words in the Russian docs, so that each idea has one name on every pag
 | viewer                                        | просмотрщик                     |
 | wrapper, such as `@paperpic/vue`              | обёртка                         |
 | zoom                                          | масштабировать                  |
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. Make the button the object of a verb, or name it as a button: "нажмите «Готово»", "после нажатия «Применить»", "кнопка «Отменить» убирает…", not "«Готово» добавляет…" or "до «Применить»". For the action, use "применение изменений".

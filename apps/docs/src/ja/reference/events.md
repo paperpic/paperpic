@@ -48,7 +48,7 @@ pic.on('apply', ({ blob }) => upload(blob))
 
 - **データ:** [`PaperPicState`](./state)
 
-ユーザーかメソッドによって状態が変わりました。たとえばズーム、ツールを開く、元に戻すなどです。「傾き補正」が[文書を見つけた](../guide/tools/straighten#finding-the-document)ときにも変わります。状態全体を送り、その時点で [`getState()`](./methods#getstate) が返すものと同じです。適用はこのイベントを 2 回発生させます。開始時に `busy: true` で、成功して終わったときに [`apply`](#apply) の後で発生します。
+ユーザーかメソッドによって状態が変わりました。たとえばズーム、ツールを開く、元に戻すなどです。「傾き補正」が[文書を見つけた](../guide/tools/straighten#finding-the-document)ときにも変わります。状態全体を送り、その時点で [`getState()`](./methods#getstate) が返すものと同じです。変更を適用すると、このイベントは 2 回発生します。開始時に `busy: true` で、成功して終わったときに [`apply`](#apply) の後で発生します。
 
 次の場合は、状態が変わっても `change` は発生しません。
 

@@ -14,15 +14,15 @@ Um documento fotografado em ângulo parece um trapézio: a borda mais distante f
 1. Toque em Editar e depois em Endireitar. Aparece uma alça para cada canto, sobre o documento se o visualizador [o encontrar](#finding-the-document).
 2. Arraste cada alça fora do lugar até o seu canto do documento. Dê zoom com os botões do painel dele para posicioná-las com precisão.
 3. Se você conhece o papel, escolha o [tamanho](#paper-size) dele: A4, Carta ou Cartão. Auto o estima.
-4. Toque em Concluído, ou `Enter`. O visualizador mostra a página plana, recortada nos quatro cantos. Concluído espera que o visualizador encontre o documento ou que você mova um canto.
+4. Toque em Concluído, ou `Enter`. O visualizador mostra a página plana, recortada nos quatro cantos. Concluído só fica ativo quando o visualizador encontra o documento ou quando você move um canto.
 
 As alças funcionam como em [Recortar](./crop): uma lupa em telas sensíveis ao toque, pressionar e tocar em vez de arrastar, e Tab e as setas no teclado. Os quatro cantos sempre formam uma figura convexa, então a página sempre pode ficar plana.
 
-Endireitar mostra a foto sem o preto e branco de [Limpar](./clean-up), porque numa página limpa é difícil achar as bordas do papel. O preto e branco volta depois de Concluído, e o cinza fica.
+Endireitar mostra a foto sem o preto e branco de [Limpar](./clean-up), porque numa página limpa é difícil achar as bordas do papel. O preto e branco volta ao tocar em Concluído, e o cinza fica.
 
 ## Encontrar o documento {#finding-the-document}
 
-Quando Endireitar abre, o visualizador procura o documento na foto e posiciona os quatro cantos sobre ele, então Concluído fica pronto na hora. A busca acontece no navegador em uma fração de segundo, e não muda nada até Concluído.
+Quando Endireitar abre, o visualizador procura o documento na foto e posiciona os quatro cantos sobre ele, então você pode tocar em Concluído na hora. A busca acontece no navegador em uma fração de segundo, e não muda nada até você tocar em Concluído.
 
 O visualizador só propõe aquilo de que tem certeza suficiente. Se o papel se confunde com a mesa, ou a foto não tem documento, os cantos começam dentro da imagem e esperam o usuário. Um canto que o usuário já tocou nunca se move sozinho.
 

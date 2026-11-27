@@ -18,16 +18,16 @@ A foto de um documento pode mostrar mais do que deveria: um número de conta, um
 
 Só é possível desenhar até posicionar a área. Assim que a desenha, move, gira ou muda o seu tamanho, arrastar no resto da imagem volta a movê-la, para que nada substitua a área por acidente. Antes disso, mova uma imagem ampliada com dois dedos, ou com as setas enquanto o foco está na imagem. Sem arrastar, a faixa é a área: mova-a com o teclado, ou toque nela e depois no destino.
 
-Cada Concluído adiciona uma área, por isso abra Ocultar de novo para cobrir outra parte. Desfazer remove a última área, e a cor fica para a seguinte. As alças de canto funcionam como em [Recortar](./crop): arraste-as, toque numa e depois no destino, ou mova-as com o teclado. Na alça acima da área, as setas a giram 1 grau, ou 10 com Shift. Ao arrastá-la, ela se ajusta na horizontal.
+Cada toque em Concluído adiciona uma área, por isso abra Ocultar de novo para cobrir outra parte. Com Desfazer, a última área é removida, e a cor fica para a seguinte. As alças de canto funcionam como em [Recortar](./crop): arraste-as, toque numa e depois no destino, ou mova-as com o teclado. Na alça acima da área, as setas a giram 1 grau, ou 10 com Shift. Ao arrastá-la, ela se ajusta na horizontal.
 
 ## O que garante {#guarantees}
 
 - As áreas são cobertas depois de todas as outras alterações, por isso Ajustar e Limpar nunca clareiam o seu preto ou branco.
 - Uma área segue as alterações posteriores: uma rotação, um espelhamento ou um recorte movem-na com a imagem, e Endireitar deforma-a com a página.
 - Cobre cada pixel que as suas bordas tocam, mesmo em parte, e é opaca também num PNG transparente.
-- Aplicar escreve pixels sólidos no resultado, por isso o arquivo não guarda nada do que eles cobrem.
+- Ao aplicar as alterações, as áreas viram pixels sólidos no resultado, por isso o arquivo não guarda nada do que eles cobrem.
 
-Até Aplicar, o visualizador guarda a imagem original, por isso Desfazer traz de volta o que uma área cobre. Partilhe o resultado de Aplicar, nunca a imagem original.
+Enquanto as alterações não forem aplicadas, o visualizador guarda a imagem original, por isso Desfazer traz de volta o que uma área cobre. Compartilhe sempre o resultado editado, nunca a imagem original.
 
 ## Pelo código
 

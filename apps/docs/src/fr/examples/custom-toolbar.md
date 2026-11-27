@@ -7,7 +7,7 @@ description: Un exemple complet qui masque la barre d’outils intégrée de Pap
 
 Quand les commandes de la visionneuse doivent s’accorder avec le reste de votre interface, masquez celles intégrées avec `toolbar: false` et appelez les [méthodes](../reference/methods) depuis vos propres boutons. Cet exemple propose le zoom, Redresser, Annuler la dernière action et Appliquer, et n’active chaque bouton que lorsqu’il peut agir.
 
-L’événement [`change`](../reference/events#change) envoie l’[état](../reference/state) après chaque action, y compris celles lancées par vos boutons. `load` et `error` signalent l’arrivée de l’image ou l’échec d’Appliquer.
+L’événement [`change`](../reference/events#change) envoie l’[état](../reference/state) après chaque action, y compris celles lancées par vos boutons. `load` et `error` signalent l’arrivée de l’image ou l’échec de l’application des modifications.
 
 :::tabs key:framework
 == JavaScript
@@ -221,7 +221,7 @@ export function Receipt() {
 
 ## Un curseur à vous {#slider}
 
-Un curseur à vous pour Nettoyer ouvre d’abord l’outil. Chaque mouvement appelle alors `setFinish()`, qui change ce que Nettoyer affiche, et `confirmTool()` garde la dernière valeur comme une seule modification. Ici, Terminé applique aussi le résultat, et Annuler quitte le mode d’édition, si bien que ces contrôles forment toute l’interface.
+Un curseur à vous pour Nettoyer ouvre d’abord l’outil. Chaque mouvement appelle alors `setFinish()`, qui change ce que Nettoyer affiche, et `confirmTool()` garde la dernière valeur comme une seule modification. Ici, le bouton Terminé applique aussi le résultat, et Annuler quitte le mode d’édition, si bien que ces contrôles forment toute l’interface.
 
 :::tabs key:framework
 == JavaScript
