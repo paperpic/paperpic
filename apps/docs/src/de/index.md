@@ -9,7 +9,7 @@ hero:
   text: Saubere, lesbare Dokumentbilder, direkt im Browser
   tagline: Begradige, beschneide und bereinige ein Smartphone-Foto, einen Scan oder jedes Bild mit Text. Mit JavaScript, Vue oder React, und nichts verlässt das Gerät, bis dein Code es sendet.
   image:
-    src: /hero.svg
+    src: /logo.webp
     alt: ""
   actions:
     - theme: brand

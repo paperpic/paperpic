@@ -9,7 +9,7 @@ hero:
   text: Imagens de documentos limpas e legíveis, direto no navegador
   tagline: Endireite, corte e limpe uma foto de celular, um escaneamento ou qualquer imagem com texto. Com JavaScript, Vue ou React, e nada sai do dispositivo até o seu código enviar.
   image:
-    src: /hero.svg
+    src: /logo.webp
     alt: ""
   actions:
     - theme: brand
