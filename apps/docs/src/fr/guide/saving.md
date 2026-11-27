@@ -9,7 +9,7 @@ PaperPic n’envoie ni ne stocke jamais rien. Quand l’utilisateur applique les
 
 ## L’événement `apply`
 
-Appliquer calcule le résultat et émet [`apply`](../reference/events#apply) avec :
+À l’application des modifications, PaperPic calcule le résultat et émet [`apply`](../reference/events#apply) avec :
 
 | Champ             | Type     | Description                     |
 | ----------------- | -------- | ------------------------------- |
@@ -38,7 +38,7 @@ pic.on('apply', ({ blob, type }) => upload(blob, type))
 
 :::
 
-Après Appliquer, le résultat est l’image affichée, l’historique est vide, et la modification suivante part du résultat. [`reload()`](../reference/methods#reload) ramène le `src` d’origine.
+Après l’application des modifications, le résultat est l’image affichée, l’historique est vide, et la modification suivante part du résultat. [`reload()`](../reference/methods#reload) ramène le `src` d’origine.
 
 ## L’envoyer
 
@@ -129,19 +129,19 @@ const pic = new PaperPic(container, {
 
 L’aperçu pendant la modification fait au plus environ 2 mégapixels, donc `maxOutputSize` ne change que le résultat.
 
-Safari sur iOS limite un canvas à environ 16 mégapixels, et les iPhone récents prennent des photos de 24 mégapixels ou plus, donc Appliquer peut échouer en pleine résolution. Si vos utilisateurs modifient des photos depuis un iPhone, définissez `maxOutputSize`. 3000 pixels gardent les documents lisibles et restent bien en dessous de la limite. [Appliquer échoue avec une grande photo](./troubleshooting#too-large) montre l’erreur.
+Safari sur iOS limite un canvas à environ 16 mégapixels, et les iPhone récents prennent des photos de 24 mégapixels ou plus, donc l’application des modifications peut échouer en pleine résolution. Si vos utilisateurs modifient des photos depuis un iPhone, définissez `maxOutputSize`. 3000 pixels gardent les documents lisibles et restent bien en dessous de la limite. [L’application échoue avec une grande photo](./troubleshooting#too-large) montre l’erreur.
 
 ## Métadonnées {#metadata}
 
-Le résultat d’Appliquer ne contient aucune métadonnée. PaperPic dessine l’image sur un canvas, donc les données EXIF de la photo, comme la position GPS, l’appareil et la date, disparaissent. Le bouton de téléchargement enregistre l’image source telle quelle jusqu’au premier Appliquer, avec ses métadonnées.
+Le résultat appliqué ne contient aucune métadonnée. PaperPic dessine l’image sur un canvas, donc les données EXIF de la photo, comme la position GPS, l’appareil et la date, disparaissent. Le bouton de téléchargement enregistre l’image source telle quelle, avec ses métadonnées, tant qu’aucune modification n’a été appliquée.
 
 ## Le bouton de téléchargement {#download}
 
-[`download: true`](../reference/options#download) ajoute un bouton à la fin de la barre d’outils qui enregistre l’image affichée : le résultat du dernier Appliquer, ou sinon l’image source telle quelle. Il est masqué pendant la modification, car les changements ne sont pas encore appliqués. [`download()`](../reference/methods#download) fait de même depuis le code, avec ou sans le bouton. Le menu contextuel du navigateur ne s’ouvre pas sur la visionneuse, donc ce bouton est le moyen d’en enregistrer l’image.
+[`download: true`](../reference/options#download) ajoute un bouton à la fin de la barre d’outils qui enregistre l’image affichée : le dernier résultat appliqué, ou sinon l’image source telle quelle. Il est masqué pendant la modification, car les changements ne sont pas encore appliqués. [`download()`](../reference/methods#download) fait de même depuis le code, avec ou sans le bouton. Le menu contextuel du navigateur ne s’ouvre pas sur la visionneuse, donc ce bouton est le moyen d’en enregistrer l’image.
 
-Le fichier garde le nom de la source et prend l’extension de son format, donc un `receipt.jpg` en noir et blanc s’enregistre en `receipt.png`. [`filename`](../reference/options#filename) choisit un autre nom. Sans aucun nom, comme pour un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
+Le fichier garde le nom de la source et prend l’extension de son format, donc un `receipt.jpg` en noir et blanc s’enregistre en `receipt.png`. [`filename`](../reference/options#filename) choisit un autre nom. Sans aucun nom, comme pour un `Blob`, le fichier s’appelle `image`. Tant qu’aucune modification n’a été appliquée, une URL sans extension s’enregistre sans extension, car son format est inconnu.
 
-Avec un `src` d’une autre origine, les navigateurs n’enregistrent pas le fichier avant le premier Appliquer : ils ouvrent l’image à la place, et l’utilisateur quitte votre page. Passez l’image en `Blob`, comme le montre [Charger des images](./loading#fetch), ou enregistrez-la vous-même dans l’événement `download`.
+Avec un `src` d’une autre origine, les navigateurs n’enregistrent pas le fichier tant qu’aucune modification n’a été appliquée : ils ouvrent l’image à la place, et l’utilisateur quitte votre page. Passez l’image en `Blob`, comme le montre [Charger des images](./loading#fetch), ou enregistrez-la vous-même dans l’événement `download`.
 
 ### L’enregistrer autrement
 

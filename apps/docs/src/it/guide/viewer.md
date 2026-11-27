@@ -44,7 +44,7 @@ Con `toolbar: false`, la barra degli strumenti e la barra di modifica sono nasco
 
 ## Visualizzatore di sola lettura {#read-only}
 
-Con `editable: false`, il pulsante Modifica sparisce, e la barra degli strumenti riceve due pulsanti che ruotano l’immagine. Quella rotazione cambia solo la visualizzazione, e non si salva nulla: Scarica salva l’immagine senza di essa. Usalo per documenti da leggere ma non da modificare, come gli allegati di una pratica.
+Con `editable: false`, il pulsante Modifica sparisce, e la barra degli strumenti riceve due pulsanti che ruotano l’immagine. Quella rotazione cambia solo la visualizzazione, e non si salva nulla: il pulsante Scarica salva l’immagine senza di essa. Usalo per documenti da leggere ma non da modificare, come gli allegati di una pratica.
 
 :::tabs key:framework
 == JavaScript

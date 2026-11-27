@@ -1,6 +1,6 @@
 ---
 title: Modifica
-description: Come funziona la modalità di modifica di PaperPic, dal pulsante Modifica fino ad Applica, con gli strumenti, Annulla l’ultima azione e Ripeti, l’anteprima e gli eventi che riceve il tuo codice.
+description: Come funziona la modalità di modifica di PaperPic, dal pulsante Modifica fino all’applicazione delle modifiche, con gli strumenti, Annulla l’ultima azione e Ripeti, l’anteprima e gli eventi che riceve il tuo codice.
 ---
 
 # Modifica
@@ -10,10 +10,10 @@ La foto di un documento di solito ha bisogno di qualche ritocco prima di valere 
 ## Il flusso
 
 1. L’utente preme Modifica, la matita nella barra degli strumenti. La barra degli strumenti si nasconde, così niente copre l’immagine, e la barra di modifica compare in basso nel visualizzatore.
-2. Ruota a sinistra e Capovolgi aggiungono subito un cambiamento. Gli altri strumenti aprono un pannello nella barra di modifica, e Fatto aggiunge ciò che l’utente ha scelto lì come un solo cambiamento. Annulla l’ultima azione e Ripeti scorrono i cambiamenti.
-3. Applica calcola il risultato e torna alla visualizzazione. Annulla scarta i cambiamenti, e prima chiede conferma se ce ne sono.
+2. Ruota a sinistra e Capovolgi aggiungono subito un cambiamento. Gli altri strumenti aprono un pannello nella barra di modifica, e premendo Fatto ciò che l’utente ha scelto lì si aggiunge come un solo cambiamento. Con Annulla l’ultima azione e Ripeti si torna indietro e avanti tra i cambiamenti.
+3. Premendo Applica, il visualizzatore calcola il risultato e torna alla visualizzazione. Annulla scarta i cambiamenti, e prima chiede conferma se ce ne sono.
 
-Niente cambia l’immagine prima di Applica. Fino ad allora, i cambiamenti sono un elenco di cui il visualizzatore mostra l’anteprima.
+L’immagine non cambia finché l’utente non preme Applica. Fino ad allora, i cambiamenti sono un elenco di cui il visualizzatore mostra l’anteprima.
 
 In un visualizzatore stretto, la barra di modifica ha due righe: in alto gli strumenti, o il pannello dello strumento aperto, e in basso Annulla a sinistra e Applica, o Fatto, a destra. Da 38rem di larghezza, tutto sta su una riga. In entrambi i casi la barra mantiene la sua altezza quando si apre uno strumento, così l’immagine resta al suo posto. Un punto segna Regola e Pulisci mentre la loro impostazione è in uso.
 
@@ -71,15 +71,15 @@ export function Receipt() {
 
 :::
 
-Ritaglia, Raddrizza, Copri, Regola e Pulisci aprono un pannello al posto degli strumenti. Mentre uno di loro è aperto, gli altri strumenti, Annulla l’ultima azione, Ripeti e Applica aspettano. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che lo strumento ha scelto, e Annulla questo strumento, o `Esc`, lo scarta.
+Ritaglia, Raddrizza, Copri, Regola e Pulisci aprono un pannello al posto degli strumenti. Mentre uno di loro è aperto, gli altri strumenti, Annulla l’ultima azione, Ripeti e Applica sono disattivati. Fatto, o `Invio`, aggiunge ai cambiamenti ciò che è scelto nello strumento, e Annulla questo strumento, o `Esc`, lo scarta.
 
 Dentro un pannello, l’immagine appare come sarà il risultato, Pulisci compreso. Raddrizza è l’eccezione: mostra la foto senza il bianco e nero, così i bordi della carta restano visibili.
 
-## Anteprima e Applica
+## Anteprima e risultato
 
-Durante la modifica, il visualizzatore mostra l’anteprima dei cambiamenti su una copia dell’immagine di circa 2 megapixel, così resta veloce con foto grandi. Con molto zoom, l’anteprima sembra più morbida del risultato. Applica calcola ogni cambiamento alla risoluzione piena, o a [`maxOutputSize`](../reference/options#maxoutputsize), in un Web Worker.
+Durante la modifica, il visualizzatore mostra l’anteprima dei cambiamenti su una copia dell’immagine di circa 2 megapixel, così resta veloce con foto grandi. Con molto zoom, l’anteprima sembra più morbida del risultato. Quando si applicano le modifiche, ogni cambiamento viene calcolato alla risoluzione piena, o a [`maxOutputSize`](../reference/options#maxoutputsize), in un Web Worker.
 
-Applica non si può interrompere. Blocca i controlli e mostra un messaggio mentre è in corso. Poi il risultato sostituisce l’immagine visualizzata, la cronologia si svuota e il visualizzatore torna alla modalità di visualizzazione. Se Applica fallisce, la modifica resta aperta, così l’utente può riprovare.
+Una volta avviata, l’applicazione delle modifiche non si può interrompere. Blocca i controlli e mostra un messaggio mentre è in corso. Poi il risultato sostituisce l’immagine visualizzata, la cronologia si svuota e il visualizzatore torna alla modalità di visualizzazione. Se fallisce, la modifica resta aperta, così l’utente può riprovare.
 
 ## Cosa riceve il tuo codice
 
@@ -125,7 +125,7 @@ pic.on('error', ({ error }) => console.error(error))
 - Un nuovo `src`, o [`reload()`](../reference/methods#reload), durante la modifica.
 - Un cambio di `editable` durante la modifica.
 
-Dopo Applica, passare di nuovo lo stesso `src` non fa nulla, quindi il risultato resta visualizzato. [`reload()`](../reference/methods#reload) riporta l’originale.
+Dopo aver applicato le modifiche, passare di nuovo lo stesso `src` non fa nulla, quindi il risultato resta visualizzato. [`reload()`](../reference/methods#reload) riporta l’originale.
 
 ## Tastiera
 

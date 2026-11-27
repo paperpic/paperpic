@@ -1,7 +1,9 @@
 {
   "label": "Português (Brasil)",
   "lang": "pt-BR",
-  "ogImageAlt": "Foto de um recibo tirada de lado, junto ao documento reto em preto e branco que o PaperPic fez a partir dela",
+  "ogImageAlt": "Logo do PaperPic",
+  "editLink": "Editar esta página no GitHub",
+  "footer": "Publicado sob a licença {license}.",
   "ogLocale": "pt_BR",
   "description": "Visualizador e editor de imagens de documentos para o navegador: endireite, corte, gire e limpe fotos de celular, escaneamentos e qualquer imagem com texto. Para JavaScript, Vue e React.",
   "guide": "Guia",

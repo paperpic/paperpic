@@ -7,7 +7,7 @@ description: Un ejemplo completo que oculta la barra de herramientas integrada d
 
 Cuando los controles del visor deben encajar con el resto de tu interfaz, oculta los integrados con `toolbar: false` y llama a los [métodos](../reference/methods) desde tus propios botones. Este ejemplo ofrece zoom, Enderezar, Deshacer y Aplicar, y activa cada botón solo cuando puede actuar.
 
-El evento [`change`](../reference/events#change) envía el [estado](../reference/state) después de cada acción, incluidas las que inician tus botones. `load` y `error` avisan de cuándo llega la imagen o de cuándo falla Aplicar.
+El evento [`change`](../reference/events#change) envía el [estado](../reference/state) después de cada acción, incluidas las que inician tus botones. `load` y `error` avisan de cuándo llega la imagen o de cuándo no se pueden aplicar los cambios.
 
 :::tabs key:framework
 == JavaScript
@@ -18,7 +18,7 @@ El evento [`change`](../reference/events#change) envía el [estado](../reference
   <button type="button" data-action="zoomOut">Alejar</button>
   <button type="button" data-action="edit">Editar</button>
   <button type="button" data-action="straighten">Enderezar</button>
-  <button type="button" data-action="confirmTool">Hecho</button>
+  <button type="button" data-action="confirmTool">Aceptar</button>
   <button type="button" data-action="cancelTool">Cancelar esta herramienta</button>
   <button type="button" data-action="undo">Deshacer</button>
   <button type="button" data-action="cancel">Cancelar</button>
@@ -122,7 +122,7 @@ function refresh() {
         {{ state.hint }}
       </p>
       <button type="button" :disabled="!state.canConfirm" @click="viewer?.confirmTool()">
-        Hecho
+        Aceptar
       </button>
       <button type="button" @click="viewer?.cancelTool()">
         Cancelar esta herramienta
@@ -187,7 +187,7 @@ export function Receipt() {
           {state.hint && <p>{state.hint}</p>}
           {state.mode === 'edit' && state.activeTool && (
             <>
-              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>Hecho</button>
+              <button type="button" disabled={!state.canConfirm} onClick={() => viewer().confirmTool()}>Aceptar</button>
               <button type="button" onClick={() => viewer().cancelTool()}>Cancelar esta herramienta</button>
             </>
           )}
@@ -221,7 +221,7 @@ export function Receipt() {
 
 ## Un control deslizante propio {#slider}
 
-Un control deslizante propio para Limpiar abre antes la herramienta. Cada movimiento llama entonces a `setFinish()`, que cambia lo que muestra Limpiar, y `confirmTool()` guarda el último valor como un solo cambio. Aquí Hecho también aplica el resultado, y Cancelar sale del modo de edición, así que estos controles son toda la interfaz.
+Un control deslizante propio para Limpiar abre antes la herramienta. Cada movimiento llama entonces a `setFinish()`, que cambia lo que muestra Limpiar, y `confirmTool()` guarda el último valor como un solo cambio. Aquí el botón Aceptar también aplica el resultado, y Cancelar sale del modo de edición, así que estos controles son toda la interfaz.
 
 :::tabs key:framework
 == JavaScript
@@ -233,7 +233,7 @@ Un control deslizante propio para Limpiar abre antes la herramienta. Cada movimi
     Sensibilidad
     <input id="sensitivity" type="range" min="0" max="1" step="0.05" />
   </label>
-  <button id="done" type="button">Hecho</button>
+  <button id="done" type="button">Aceptar</button>
   <button id="cancel" type="button">Cancelar</button>
 </div>
 <div id="viewer" style="height: 480px"></div>
@@ -312,7 +312,7 @@ function cancel() {
       <input type="range" min="0" max="1" step="0.05" :value="state.finish.sensitivity" @input="slide">
     </label>
     <button type="button" @click="done">
-      Hecho
+      Aceptar
     </button>
     <button type="button" @click="cancel">
       Cancelar
@@ -379,7 +379,7 @@ export function CleanUpRuler() {
                   onChange={event => viewer().setFinish({ sensitivity: event.target.valueAsNumber })}
                 />
               </label>
-              <button type="button" onClick={done}>Hecho</button>
+              <button type="button" onClick={done}>Aceptar</button>
               <button type="button" onClick={cancel}>Cancelar</button>
             </div>
           )
@@ -406,9 +406,9 @@ export function CleanUpRuler() {
 
 ## Notas
 
-- Con `toolbar: false` también se oculta la barra de edición integrada, así que Recortar y Enderezar muestran sus tiradores pero no el botón Hecho. Tu interfaz los confirma con [`confirmTool()`](../reference/methods#confirmtool), como hace `Enter`. Para cerrarlas sin sus cambios, llama a [`cancelTool()`](../reference/methods#canceltool), como hace `Esc`.
-- Mientras Recortar o Enderezar está abierta, `hint` en el estado dice qué hacer, por ejemplo "Drag the corners", como hace la barra de edición integrada. Muéstralo, porque con `toolbar: false` nada más lo muestra. Un hint nuevo, como al pulsar una esquina o cuando Enderezar encuentra el documento, llega con `change`.
-- `canConfirm` en el estado dice si `confirmTool()` puede conservar lo que muestra la herramienta. Enderezar espera a encontrar el documento o a que el usuario mueva una esquina, así que desactiva tu botón Hecho hasta entonces.
+- Con `toolbar: false` también se oculta la barra de edición integrada, así que Recortar y Enderezar muestran sus tiradores pero no el botón Aceptar. Tu interfaz los confirma con [`confirmTool()`](../reference/methods#confirmtool), como hace `Enter`. Para cerrarlas sin sus cambios, llama a [`cancelTool()`](../reference/methods#canceltool), como hace `Esc`.
+- Mientras Recortar o Enderezar está abierta, `hint` en el estado dice qué hacer, por ejemplo "Drag the corners", como hace la barra de edición integrada. Muéstralo tú, porque con `toolbar: false` no lo muestra nadie más. Una pista nueva, como al pulsar una esquina o cuando Enderezar encuentra el documento, llega con `change`.
+- `canConfirm` en el estado dice si `confirmTool()` puede conservar lo que muestra la herramienta. Enderezar espera a encontrar el documento o a que el usuario mueva una esquina, así que desactiva tu botón Aceptar hasta entonces.
 - Tus propios controles deslizantes pueden llamar directamente a [`setFinish()`](../reference/methods#setfinish) y [`setAdjustments()`](../reference/methods#setadjustments), lo que añade un cambio por cada llamada. Para dejar un solo cambio por todo un arrastre, abre antes la herramienta con [`openTool()`](../reference/methods#opentool): los mismos métodos cambian entonces lo que muestra, y `confirmTool()` lo conserva.
 - [`cancel()`](../reference/methods#cancel) no pregunta antes de descartar los cambios. Pregunta tú al usuario si los hay, por ejemplo cuando `canApply` es verdadero.
 - Los atajos de teclado siguen funcionando con el foco en el visor. Consulta [Accesibilidad](../guide/accessibility).

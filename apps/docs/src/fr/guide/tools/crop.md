@@ -15,7 +15,7 @@ La photo d’un document montre souvent la table, une main ou d’autres papiers
 2. Faites glisser les coins jusqu’à ce que le rectangle encadre le document. Le panneau de Recadrer a des boutons de zoom pour placer les coins avec précision.
 3. Appuyez sur Terminé, ou `Entrée`, pour ajouter le recadrage aux changements. Annuler cet outil, ou `Échap`, ferme Recadrer sans rien changer.
 
-Tant que Recadrer est ouvert, l’image apparaît telle que sera le résultat, Ajuster et Nettoyer compris. Le recadrage est un changement comme un autre : Annuler la dernière action le retire, et Appliquer le rend définitif.
+Tant que Recadrer est ouvert, l’image apparaît telle que sera le résultat, Ajuster et Nettoyer compris. Le recadrage est un changement comme un autre : il se retire avec Annuler la dernière action et devient définitif quand vous appuyez sur Appliquer.
 
 ## Poignées d’angle
 

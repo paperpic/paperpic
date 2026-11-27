@@ -187,5 +187,5 @@ export function PhotoEditor() {
 
 - Der Viewer kann im Dialog sein, während dieser geschlossen ist. Dann hat er keine Größe, und er passt das Bild ein, sobald sich der Dialog öffnet.
 - Das Öffnen des Dialogs startet den Bearbeitungsmodus. Lädt das Foto noch, startet ihn stattdessen das Ereignis `load`.
-- Übernehmen und Abbrechen beenden die Bearbeitung, und das folgende [`change`](../reference/events#change) schließt den Dialog. Schlägt Übernehmen fehl, bleiben die Bearbeitung und der Dialog offen.
+- Die Schaltflächen Übernehmen und Abbrechen beenden die Bearbeitung, und das folgende [`change`](../reference/events#change) schließt den Dialog. Schlägt das Übernehmen fehl, bleiben die Bearbeitung und der Dialog offen.
 - Jedes Öffnen bearbeitet das angezeigte Bild, nach einem Übernehmen also das Ergebnis. Um jedes Mal vom Original auszugehen, rufe [`reload()`](../reference/methods#reload) vor `edit()` auf.

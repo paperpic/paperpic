@@ -11,7 +11,7 @@ Les photos de documents arrivent de travers, avec des ombres et beaucoup de fond
 
 - **Afficher.** Zoomer avec les boutons, la molette, un pincement, un double-clic ou le clavier, déplacer l’image, et adapter à la visionneuse l’image entière, sa largeur ou sa hauteur. Une visionneuse en lecture seule peut aussi faire pivoter l’image.
 - **Modifier.** En mode d’édition, l’utilisateur peut recadrer, redresser une photo prise de biais, faire pivoter, retourner, régler la luminosité et le contraste, et nettoyer le document en gris ou en noir et blanc. Chaque changement peut être annulé jusqu’à ce que l’utilisateur applique les changements.
-- **Livrer.** Appliquer calcule le résultat en pleine résolution et le remet à votre code sous forme de `Blob`. Un bouton de téléchargement peut aussi l’enregistrer.
+- **Livrer.** À l’application des modifications, PaperPic calcule le résultat en pleine résolution et le remet à votre code sous forme de `Blob`. Un bouton de téléchargement peut aussi l’enregistrer.
 
 Chaque étape n’a lieu que lorsque l’utilisateur la demande. Rien ne modifie la photo de lui-même.
 

@@ -96,7 +96,7 @@ O core também carrega de uma CDN que serve os arquivos do pacote como estão, c
 </script>
 ```
 
-Os navegadores só iniciam um worker da origem da página, então com o pacote num CDN a edição roda na thread principal: funciona, mas fotos grandes travam a página por um momento no Aplicar. Sirva os arquivos da sua própria origem, ou use um bundler, para manter o worker. Os componentes de Vue e React precisam de um bundler.
+Os navegadores só iniciam um worker da origem da página, então com o pacote num CDN a edição roda na thread principal: funciona, mas fotos grandes travam a página por um momento ao aplicar as alterações. Sirva os arquivos da sua própria origem, ou use um bundler, para manter o worker. Os componentes de Vue e React precisam de um bundler.
 
 ## Mostrar uma imagem
 

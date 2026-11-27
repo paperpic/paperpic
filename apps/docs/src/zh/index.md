@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: 在浏览器中得到清晰易读的文档图像
   tagline: 矫正、裁剪和清理手机照片、扫描件或任何带文字的图片。支持原生 JavaScript、Vue 和 React，在你的代码发送之前，任何内容都不会离开设备。
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: 快速开始
@@ -34,7 +37,7 @@ features:
     link: /zh/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "完整分辨率"
-    details: "应用后以 Blob 的形式把编辑后的图片交给你的代码，处理在 Web Worker 中进行，页面保持流畅。"
+    details: "应用修改后，你的代码会以 Blob 的形式收到编辑后的图片，处理在 Web Worker 中进行，页面保持流畅。"
     link: /zh/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "无障碍"
@@ -42,7 +45,7 @@ features:
     link: /zh/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "任意框架"
-    details: "核心适用于原生 JavaScript，并为 Vue 和 React 提供轻量封装，没有运行时依赖。"
+    details: "核心适用于原生 JavaScript，并为 Vue 和 React 提供轻量封装，没有运行时依赖，包含样式在内 gzip 后不到 40 kB。"
     link: /zh/guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "同一张收据，经过矫正并清理成黑白"
 ---
 
-## 数据不会离开浏览器
-
-PaperPic 在用户的设备上、在 Web Worker 中编辑图片，不需要服务器，也不会自行发出任何请求。收据、身份证或合同的照片只有在你的代码发送结果时才会离开设备。
-
 ## 几行代码即可开始
 
-安装对应框架的包，给容器设置高度，然后监听应用：
+安装对应框架的包，给容器设置高度，然后监听 `apply` 事件：
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

@@ -44,3 +44,5 @@ Use these words in the Japanese docs, so that each idea has one name on every pa
 | viewer                                        | ビューアー               |
 | wrapper, such as `@paperpic/vue`              | ラッパー                 |
 | zoom                                          | ズーム                   |
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. 適用 alone works as a noun ("適用のあと", "適用中"). A quoted button takes a verb: "「完了」を押すと", "「適用」を押すまで", not "「適用」は結果を計算します" or "「完了」1 回で".

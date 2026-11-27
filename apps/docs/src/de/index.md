@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Saubere, lesbare Dokumentbilder, direkt im Browser
   tagline: Begradige, beschneide und bereinige ein Smartphone-Foto, einen Scan oder jedes Bild mit Text. Mit JavaScript, Vue oder React, und nichts verlässt das Gerät, bis dein Code es sendet.
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: Loslegen
@@ -34,7 +37,7 @@ features:
     link: /de/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "Volle Auflösung"
-    details: "Übernehmen gibt deinem Code das bearbeitete Bild als Blob, verarbeitet in einem Web Worker, damit die Seite reaktionsschnell bleibt."
+    details: "Beim Übernehmen bekommt dein Code das bearbeitete Bild als Blob, verarbeitet in einem Web Worker, damit die Seite reaktionsschnell bleibt."
     link: /de/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "Barrierefrei"
@@ -42,7 +45,7 @@ features:
     link: /de/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Jedes Framework"
-    details: "Ein Kern für JavaScript ohne Framework, schlanke Wrapper für Vue und React, und keine Laufzeitabhängigkeiten."
+    details: "Ein Kern für JavaScript ohne Framework, schlanke Wrapper für Vue und React, keine Laufzeitabhängigkeiten und unter 40 kB mit gzip, Styles inklusive."
     link: /de/guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "Derselbe Kassenbon, begradigt und zu Schwarzweiß bereinigt"
 ---
 
-## Nichts verlässt den Browser
-
-PaperPic bearbeitet das Bild auf dem Gerät des Nutzers, in einem Web Worker, ohne Server und ohne eigene Anfragen. Das Foto eines Kassenbons, eines Ausweises oder eines Vertrags verlässt das Gerät erst, wenn dein Code das Ergebnis sendet.
-
 ## In wenigen Zeilen loslegen
 
-Installiere das Paket für dein Framework, gib dem Container eine Höhe und reagiere auf Übernehmen:
+Installiere das Paket für dein Framework, gib dem Container eine Höhe und reagiere auf das Ereignis `apply`:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

@@ -1,7 +1,9 @@
 {
   "label": "日本語",
   "lang": "ja",
-  "ogImageAlt": "斜めから撮ったレシートの写真と、PaperPic がそこから作ったまっすぐな白黒の文書",
+  "ogImageAlt": "PaperPic のロゴ",
+  "editLink": "GitHub でこのページを編集",
+  "footer": "{license} ライセンスで公開されています。",
   "ogLocale": "ja_JP",
   "description": "ブラウザー向けの文書画像ビューアー兼エディター。スマートフォンの写真、スキャン、文字の入ったあらゆる画像の傾き補正、切り抜き、回転、クリーンアップ。JavaScript、Vue、React 向け。",
   "guide": "ガイド",

@@ -187,5 +187,5 @@ export function PhotoEditor() {
 
 - La visionneuse peut se trouver dans la boîte de dialogue fermée. Elle n’a alors pas de taille, et adapte l’image dès que la boîte de dialogue s’ouvre.
 - Ouvrir la boîte de dialogue lance le mode d’édition. Si la photo est encore en chargement, c’est l’événement `load` qui le lance.
-- Appliquer et Annuler terminent la modification, et le [`change`](../reference/events#change) qui suit ferme la boîte de dialogue. Si Appliquer échoue, la modification reste ouverte, et la boîte de dialogue aussi.
-- Chaque ouverture modifie l’image affichée, qui après un Appliquer est le résultat. Pour repartir de l’original à chaque fois, appelez [`reload()`](../reference/methods#reload) avant `edit()`.
+- Les boutons Appliquer et Annuler terminent la modification, et le [`change`](../reference/events#change) qui suit ferme la boîte de dialogue. Si l’application des modifications échoue, la modification reste ouverte, et la boîte de dialogue aussi.
+- Chaque ouverture modifie l’image affichée, qui est le résultat si des modifications ont déjà été appliquées. Pour repartir de l’original à chaque fois, appelez [`reload()`](../reference/methods#reload) avant `edit()`.

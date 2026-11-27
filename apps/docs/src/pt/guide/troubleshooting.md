@@ -1,6 +1,6 @@
 ---
 title: Solução de problemas
-description: O que fazer quando o visualizador do PaperPic não tem altura nem estilo, o Tailwind CSS o altera, uma imagem não carrega ou não pode ser editada, a página trava no Aplicar ou uma foto grande falha.
+description: O que fazer quando o visualizador do PaperPic não tem altura nem estilo, o Tailwind CSS o altera, uma imagem não carrega ou não pode ser editada, a página trava ao aplicar as alterações ou uma foto grande falha.
 ---
 
 # Solução de problemas
@@ -27,7 +27,7 @@ O [`error`](../reference/events#error) diz que a imagem vem de outra origem. Os 
 
 O visualizador mostra que não foi possível carregar a imagem, e `error` chega com `phase: 'load'`. Confira se a URL existe e se o navegador abre o formato: HEIC só abre no Safari, e um SVG precisa dos atributos `width` e `height`. [Carregar imagens](./loading#formats) lista os formatos.
 
-## A página trava enquanto o Aplicar roda {#worker}
+## A página trava ao aplicar as alterações {#worker}
 
 O worker não iniciou, então a edição roda na thread principal. Continua funcionando, mas fotos grandes travam a página por um momento. As causas mais comuns são:
 
@@ -36,7 +36,7 @@ O worker não iniciou, então a edição roda na thread principal. Continua func
 
 O painel de rede do navegador mostra se a página pediu o arquivo do worker, cujo nome começa com `worker`.
 
-## O Aplicar falha com uma foto grande {#too-large}
+## Falha ao aplicar com uma foto grande {#too-large}
 
 O `error` diz `The browser could not read an image of …`, ou `could not save an image of …`. Os navegadores limitam o tamanho de um canvas, e o Safari no iOS mais que todos. Defina [`maxOutputSize`](../reference/options#maxoutputsize), por exemplo em 3000 pixels, o que mantém os documentos legíveis.
 

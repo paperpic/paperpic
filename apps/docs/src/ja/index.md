@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: きれいで読みやすい文書画像を、ブラウザーだけで
   tagline: スマートフォンの写真、スキャン、文字の入ったあらゆる画像の傾き補正、切り抜き、クリーンアップ。JavaScript、Vue、React で使え、あなたのコードが送るまで何も端末から出ません。
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: はじめる
@@ -42,7 +45,7 @@ features:
     link: /ja/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "あらゆるフレームワーク"
-    details: "素の JavaScript 用のコアと、Vue と React 用の軽量ラッパー。実行時の依存関係はありません。"
+    details: "素の JavaScript 用のコアと、Vue と React 用の軽量ラッパー。実行時の依存関係はなく、スタイル込みで gzip 後 40 kB 未満です。"
     link: /ja/guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "同じレシートを傾き補正し、白黒にクリーンアップしたもの"
 ---
 
-## ブラウザーの外には何も出ません
-
-PaperPic は画像をユーザーの端末上の Web Worker で編集し、サーバーも使わず、自分からリクエストも送りません。レシートや身分証、契約書の写真が端末から出るのは、あなたのコードが結果を送るときだけです。
-
 ## 数行で始める
 
-フレームワークに合ったパッケージをインストールし、コンテナに高さを与えて、適用を受け取ります。
+フレームワークに合ったパッケージをインストールし、コンテナに高さを与えて、`apply` イベントを受け取ります。
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

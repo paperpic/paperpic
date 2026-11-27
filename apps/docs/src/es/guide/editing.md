@@ -1,6 +1,6 @@
 ---
 title: Edición
-description: Cómo funciona el modo de edición de PaperPic, desde el botón Editar hasta Aplicar, con las herramientas, Deshacer y Rehacer, la vista previa y los eventos que recibe tu código.
+description: Cómo funciona el modo de edición de PaperPic, desde el botón Editar hasta que se aplican los cambios, con las herramientas, Deshacer y Rehacer, la vista previa y los eventos que recibe tu código.
 ---
 
 # Edición
@@ -10,12 +10,12 @@ La foto de un documento suele necesitar unos cuantos arreglos antes de merecer l
 ## El flujo de edición
 
 1. El usuario pulsa Editar, el lápiz de la barra de herramientas. La barra de herramientas se oculta, para que nada tape la imagen, y la barra de edición aparece en la parte inferior del visor.
-2. Girar a la izquierda y Voltear añaden un cambio al momento. Las demás herramientas abren un panel en la barra de edición, y Hecho añade lo que el usuario eligió en él como un solo cambio. Deshacer y Rehacer recorren los cambios.
-3. Aplicar calcula el resultado y vuelve a la visualización. Cancelar descarta los cambios, y pregunta antes si los hay.
+2. Girar a la izquierda y Voltear añaden un cambio en cuanto se pulsan. Las demás herramientas abren un panel en la barra de edición, y al pulsar Aceptar lo que el usuario eligió en él se añade como un solo cambio. Con Deshacer y Rehacer se retrocede y se avanza por los cambios.
+3. Al pulsar Aplicar, el visor calcula el resultado y vuelve al modo de visualización. Cancelar descarta los cambios, y si hay alguno pide confirmación antes de hacerlo.
 
-Nada cambia la imagen hasta Aplicar. Antes, los cambios son una lista de la que el visor muestra una vista previa.
+La imagen no cambia hasta que el usuario pulsa Aplicar. Hasta entonces, los cambios son solo una lista, y el visor muestra una vista previa de ellos.
 
-En un visor estrecho, la barra de edición tiene dos filas: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Hecho, a la derecha. Desde 38rem de ancho, todo cabe en una fila. En los dos casos, la barra mantiene su altura al abrir una herramienta, así que la imagen no se mueve. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
+En un visor estrecho, la barra de edición tiene dos filas: arriba, las herramientas o el panel de la herramienta abierta, y abajo, Cancelar a la izquierda y Aplicar, o Aceptar, a la derecha. Desde 38rem de ancho, todo cabe en una fila. En los dos casos, la barra mantiene su altura al abrir una herramienta, así que la imagen no se mueve. Un punto marca Ajustar y Limpiar mientras su valor está en uso.
 
 ## Herramientas
 
@@ -71,15 +71,15 @@ export function Receipt() {
 
 :::
 
-Recortar, Enderezar, Tapar, Ajustar y Limpiar abren un panel en lugar de las herramientas. Mientras una de ellas está abierta, las demás herramientas, Deshacer, Rehacer y Aplicar esperan. Hecho, o `Enter`, añade a los cambios lo que eligió la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
+Recortar, Enderezar, Tapar, Ajustar y Limpiar abren un panel en lugar de las herramientas. Mientras una de ellas está abierta, las demás herramientas, Deshacer, Rehacer y Aplicar quedan desactivados. Aceptar, o `Enter`, añade a los cambios lo elegido en la herramienta, y Cancelar esta herramienta, o `Esc`, lo descarta.
 
 Dentro de un panel, la imagen se ve como quedará el resultado, con Limpiar incluida. Enderezar es la excepción: muestra la foto sin blanco y negro, para que los bordes del papel se sigan viendo.
 
-## Vista previa y Aplicar
+## Vista previa y resultado
 
-Durante la edición, el visor muestra los cambios sobre una copia de la imagen de unos 2 megapíxeles, para que siga siendo rápido con fotos grandes. Con mucho zoom, la vista previa se ve menos nítida que el resultado. Aplicar calcula todos los cambios a resolución completa, o a [`maxOutputSize`](../reference/options#maxoutputsize), en un Web Worker.
+Durante la edición, el visor muestra los cambios sobre una copia de la imagen de unos 2 megapíxeles, para que siga siendo rápido con fotos grandes. Con mucho zoom, la vista previa se ve menos nítida que el resultado. Al aplicar, todos los cambios se calculan a resolución completa, o a [`maxOutputSize`](../reference/options#maxoutputsize), en un Web Worker.
 
-Aplicar no se puede interrumpir. Bloquea los controles y muestra un mensaje mientras dura. Después, el resultado sustituye a la imagen en pantalla, el historial se vacía y el visor vuelve al modo de visualización. Si Aplicar falla, la edición sigue abierta para que el usuario pueda volver a intentarlo.
+Una vez empezado, el proceso no se puede interrumpir: bloquea los controles y muestra un mensaje mientras dura. Después, el resultado sustituye a la imagen en pantalla, el historial se vacía y el visor vuelve al modo de visualización. Si falla, la edición sigue abierta para que el usuario pueda volver a intentarlo.
 
 ## Qué recibe tu código
 
@@ -125,7 +125,7 @@ pic.on('error', ({ error }) => console.error(error))
 - Un `src` nuevo, o [`reload()`](../reference/methods#reload), durante la edición.
 - Un cambio de `editable` durante la edición.
 
-Después de Aplicar, pasar el mismo `src` otra vez no hace nada, así que el resultado sigue en pantalla. [`reload()`](../reference/methods#reload) recupera la imagen original.
+Después de aplicar los cambios, pasar el mismo `src` otra vez no hace nada, así que el resultado sigue en pantalla. [`reload()`](../reference/methods#reload) recupera la imagen original.
 
 ## Teclado
 

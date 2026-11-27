@@ -14,15 +14,15 @@ Ein schräg fotografiertes Dokument sieht wie ein Trapez aus: Die hintere Kante 
 1. Drücke Bearbeiten, dann Begradigen. Für jede Ecke erscheint ein Griff, auf dem Dokument, wenn der Viewer [es findet](#finding-the-document).
 2. Ziehe jeden Griff, der nicht passt, auf seine Ecke des Dokuments. Zoome mit den Schaltflächen seines Bedienfelds hinein, um sie genau zu platzieren.
 3. Wenn du das Papier kennst, wähle sein [Format](#paper-size): A4, Letter oder Karte. Auto schätzt es.
-4. Drücke Fertig oder `Enter`. Der Viewer zeigt die Seite flach, auf die vier Ecken zugeschnitten. Fertig wartet, bis der Viewer das Dokument findet oder du eine Ecke bewegst.
+4. Drücke Fertig oder `Enter`. Der Viewer zeigt die Seite flach, auf die vier Ecken zugeschnitten. Fertig ist erst aktiv, wenn der Viewer das Dokument findet oder du eine Ecke bewegst.
 
 Die Griffe funktionieren wie bei [Zuschneiden](./crop): eine Lupe auf Touchscreens, Drücken und Tippen statt Ziehen, Tab und Pfeiltasten auf der Tastatur. Die vier Ecken bilden immer eine konvexe Form, damit sich die Seite immer flach machen lässt.
 
-Begradigen zeigt das Foto ohne das Schwarzweiß von [Bereinigen](./clean-up), weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind. Schwarzweiß kommt nach Fertig zurück, und Graustufen bleiben.
+Begradigen zeigt das Foto ohne das Schwarzweiß von [Bereinigen](./clean-up), weil die Ränder des Papiers auf einer bereinigten Seite schwer zu finden sind. Nach einem Druck auf Fertig kommt Schwarzweiß zurück, und Graustufen bleiben.
 
 ## Das Dokument finden {#finding-the-document}
 
-Sobald sich Begradigen öffnet, sucht der Viewer das Dokument im Foto und setzt die vier Ecken darauf, sodass Fertig sofort bereit ist. Die Suche läuft im Browser in Sekundenbruchteilen und ändert bis Fertig nichts.
+Sobald sich Begradigen öffnet, sucht der Viewer das Dokument im Foto und setzt die vier Ecken darauf, sodass du sofort Fertig drücken kannst. Die Suche läuft im Browser in Sekundenbruchteilen und ändert nichts, bis du Fertig drückst.
 
 Der Viewer schlägt nur vor, was ihm sicher genug ist. Wenn sich das Papier kaum vom Tisch abhebt oder das Foto kein Dokument zeigt, beginnen die Ecken innerhalb des Bildes und warten auf den Nutzer. Eine Ecke, die der Nutzer schon berührt hat, bewegt sich nie von selbst.
 

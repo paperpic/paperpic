@@ -1,7 +1,9 @@
 {
   "label": "Français",
   "lang": "fr",
-  "ogImageAlt": "Photo d’un ticket de caisse prise de biais, à côté du document droit en noir et blanc que PaperPic en a tiré",
+  "ogImageAlt": "Logo de PaperPic",
+  "editLink": "Modifier cette page sur GitHub",
+  "footer": "Publié sous licence {license}.",
   "ogLocale": "fr_FR",
   "description": "Visionneuse et éditeur d’images de documents pour le navigateur : redressez, recadrez, faites pivoter et nettoyez photos de téléphone, scans et toute image avec du texte. Pour JavaScript, Vue et React.",
   "guide": "Guide",

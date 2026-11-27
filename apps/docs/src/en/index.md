@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Clean, readable document images, right in the browser
   tagline: Straighten, crop and clean up a phone photo, a scan or any image with text. With plain JavaScript, Vue or React, and nothing leaves the device until your code sends it.
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: Get started
@@ -42,7 +45,7 @@ features:
     link: /guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Any framework"
-    details: "One core for plain JavaScript, with thin wrappers for Vue and React, and no runtime dependencies."
+    details: "One core for plain JavaScript, with thin wrappers for Vue and React, no runtime dependencies, and under 40 kB gzipped with its styles."
     link: /guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "The same receipt, straightened and cleaned up into black and white"
 ---
 
-## Nothing leaves the browser
-
-PaperPic edits the image on the device of the user, in a Web Worker, without a server and without requests of its own. A photo of a receipt, an ID card or a contract leaves the device only when your code sends the result.
-
 ## Start in a few lines
 
 Install the package for your framework, give the container a height, and listen to Apply:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Immagini di documenti pulite e leggibili, direttamente nel browser
   tagline: Raddrizza, ritaglia e pulisci una foto del telefono, una scansione o qualsiasi immagine con del testo. Con JavaScript, Vue o React, e niente lascia il dispositivo finché il tuo codice non lo invia.
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: Inizia
@@ -34,7 +37,7 @@ features:
     link: /it/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "Risoluzione piena"
-    details: "Applica consegna al tuo codice l’immagine modificata come Blob, elaborata in un Web Worker così la pagina resta reattiva."
+    details: "Quando applichi le modifiche, il tuo codice riceve l’immagine modificata come Blob, elaborata in un Web Worker così la pagina resta reattiva."
     link: /it/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "Accessibile"
@@ -42,7 +45,7 @@ features:
     link: /it/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Qualsiasi framework"
-    details: "Un core per JavaScript senza framework, wrapper leggeri per Vue e React, e nessuna dipendenza a runtime."
+    details: "Un core per JavaScript senza framework, wrapper leggeri per Vue e React, nessuna dipendenza a runtime e meno di 40 kB con gzip, stili inclusi."
     link: /it/guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "Lo stesso scontrino, raddrizzato e pulito in bianco e nero"
 ---
 
-## Niente lascia il browser
-
-PaperPic modifica l’immagine sul dispositivo dell’utente, in un Web Worker, senza server e senza richieste proprie. La foto di uno scontrino, di una carta d’identità o di un contratto lascia il dispositivo solo quando il tuo codice invia il risultato.
-
 ## Inizia in poche righe
 
-Installa il pacchetto del tuo framework, dai un’altezza al contenitore e ascolta Applica:
+Installa il pacchetto del tuo framework, dai un’altezza al contenitore e ascolta l’evento `apply`:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

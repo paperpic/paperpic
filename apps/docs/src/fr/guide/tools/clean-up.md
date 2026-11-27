@@ -20,7 +20,7 @@ Redressez d’abord le ticket, puis nettoyez-le.
 3. Choisissez plutôt Gris pour une image en gris, ou Original pour les tons de la photo. La règle ne fonctionne qu’en noir et blanc.
 4. Appuyez sur Terminé pour le garder comme un seul changement, ou sur Annuler cet outil pour laisser l’image comme elle était.
 
-Une fois que Nettoyer est un changement, il se rouvre avec sa finition. Pour le désactiver, choisissez Original : les changements faits après restent. Annuler la dernière action, en revanche, retirerait aussi ces changements.
+Si Nettoyer fait déjà partie des changements, il se rouvre avec sa finition. Pour le désactiver, choisissez Original : les changements faits après restent. Avec Annuler la dernière action, en revanche, vous retireriez aussi ces changements.
 
 Nettoyer s’applique toujours après les autres changements. Recadrer montre l’image avec sa finition, telle qu’elle sera. Redresser la montre sans le noir et blanc, car les bords du papier sont difficiles à trouver sur une page nettoyée, et garde le gris.
 

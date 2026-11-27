@@ -11,9 +11,9 @@ Las fotos de documentos llegan torcidas, con sombras y con mucho fondo. PaperPic
 
 - **Ver.** Hacer zoom con los botones, la rueda, el gesto de pellizcar, un doble clic o el teclado, desplazar la imagen y encajar en el visor la imagen entera, su ancho o su alto. Un visor de solo lectura también puede girar la imagen.
 - **Editar.** En el modo de edición, el usuario puede recortar, enderezar una foto hecha en ángulo, girar, voltear, ajustar el brillo y el contraste, y limpiar el documento en gris o en blanco y negro. Cada cambio se puede deshacer hasta que el usuario aplica los cambios.
-- **Entregar.** Aplicar calcula el resultado a resolución completa y se lo pasa a tu código como un `Blob`. Un botón de descarga también puede guardarlo.
+- **Entregar.** Al aplicar los cambios, PaperPic calcula el resultado a resolución completa y se lo pasa a tu código como un `Blob`. Un botón de descarga también puede guardarlo.
 
-Cada paso ocurre solo cuando el usuario lo pide. Nada cambia la foto por su cuenta.
+Nada cambia la foto sin que el usuario lo pida.
 
 ## Qué no hace
 
@@ -29,7 +29,7 @@ Cada paso ocurre solo cuando el usuario lo pide. Nada cambia la foto por su cuen
 | `@paperpic/vue`   | Vue 3.5 o posterior                             |
 | `@paperpic/react` | React 19 o posterior                            |
 
-Los tres tienen las mismas opciones, eventos y métodos, y el core no tiene dependencias en tiempo de ejecución. La edición se hace en un Web Worker, así que la página sigue respondiendo con fotos grandes.
+Los tres tienen las mismas opciones, eventos y métodos, y el core no tiene dependencias en tiempo de ejecución. La edición se hace en un Web Worker, así que la página no se bloquea con fotos grandes.
 
 ## Pruébalo
 

@@ -12,7 +12,7 @@ L’état est un instantané de la visionneuse : s’il y a une image, le mode, 
 
 ## Synchroniser vos commandes {#in-step}
 
-`change` ne signale pas l’image. Une image chargée arrive avec [`load`](./events#load), et un chargement ou un Appliquer qui échoue arrive avec [`error`](./events#error). Pour synchroniser vos propres commandes, comme un bouton Appliquer, lisez l’état au début, prenez-le de chaque `change` et relisez-le sur `load` et `error` :
+`change` ne signale pas l’image. Une image chargée arrive avec [`load`](./events#load), et un chargement ou une application des modifications qui échoue arrive avec [`error`](./events#error). Pour synchroniser vos propres commandes, comme un bouton Appliquer, lisez l’état au début, prenez-le de chaque `change` et relisez-le sur `load` et `error` :
 
 :::tabs key:framework
 == JavaScript
@@ -109,7 +109,7 @@ En Vue et en React, la visionneuse n’existe qu’une fois le composant monté,
 | ------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeTool`  | [`ToolId \| null`](./types#toolid)           | L’outil ouvert, comme `'crop'` ou `'adjust'`, ou `null`                                                                                                                                                  |
 | `adjustments` | `{ brightness, contrast }`                   | La luminosité et le contraste, chacun de -1 à 1. Ils ne s’appliquent pas en noir et blanc. Tant qu’Ajuster est ouvert, les valeurs de son panneau                                                        |
-| `busy`        | `boolean`                                    | Si Appliquer est en cours                                                                                                                                                                                |
+| `busy`        | `boolean`                                    | Si les modifications sont en cours d’application                                                                                                                                                         |
 | `canApply`    | `boolean`                                    | S’il y a des changements à appliquer. Les rotations et retournements qui s’annulent ne comptent pas                                                                                                      |
 | `canConfirm`  | `boolean`                                    | Si [`confirmTool()`](./methods#confirmtool) peut garder ce que montre l’outil ouvert. Redresser attend de trouver le document ou qu’un coin bouge. Vaut `false` sans outil ouvert                        |
 | `canRedo`     | `boolean`                                    | S’il y a un changement à rétablir                                                                                                                                                                        |
@@ -125,4 +125,4 @@ En Vue et en React, la visionneuse n’existe qu’une fois le composant monté,
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `'empty'` sans `src`, `'loading'` pendant le chargement, `'ready'` une fois affichée, et `'error'` si elle n’a pas pu être chargée                                                                       |
 | `zoom`        | `number`                                     | Pixels d’écran par pixel de l’image                                                                                                                                                                      |
 
-Avec une `rotation` de 90 ou 270, l’image affichée, et le résultat d’Appliquer, ont la largeur et la hauteur de `image` inversées. [`maxOutputSize`](./options#maxoutputsize) peut rendre le résultat plus petit.
+Avec une `rotation` de 90 ou 270, l’image affichée, et le résultat appliqué, ont la largeur et la hauteur de `image` inversées. [`maxOutputSize`](./options#maxoutputsize) peut rendre le résultat plus petit.

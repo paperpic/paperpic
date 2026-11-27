@@ -5,7 +5,7 @@ description: Cómo integrar PaperPic en el aspecto de tu app, con su hoja de est
 
 # Estilos
 
-PaperPic debe parecer parte de tu app. Incluye una sola hoja de estilos, toma sus colores y esquinas de unos pocos tokens CSS, sigue el esquema de color de tu página y guarda sus reglas en una capa de cascada, así que tu propio CSS siempre gana.
+PaperPic debe parecer parte de tu app. Incluye una sola hoja de estilos, toma sus colores y esquinas de unos pocos tokens CSS, sigue el esquema de color de tu página y guarda sus reglas en una capa de cascada, así que tu propio CSS siempre tiene prioridad.
 
 ## Importar la hoja de estilos
 
@@ -184,7 +184,7 @@ export function Receipt() {
 
 :::
 
-- Cada clave nombra un icono, y algunos iconos aparecen en dos botones: `apply` también está en Hecho, y `cancel` también cierra una herramienta. [Opciones](../reference/options#icons) recoge todas las claves.
+- Cada clave nombra un icono, y algunos iconos aparecen en dos botones: `apply` también se usa en Aceptar, y `cancel` también cierra una herramienta. [Opciones](../reference/options#icons) recoge todas las claves.
 - PaperPic da al icono la clase `paperpic-icon`, que fija su tamaño, y lo oculta a los lectores de pantalla, porque el botón ya tiene nombre.
 - Dibuja el icono con `currentColor`, para que tome el color del botón en cualquier tema.
 - El marcado entra en la página como HTML, así que pasa solo marcado de confianza.
@@ -200,7 +200,7 @@ Para cambiar todos los iconos a la vez, como su tamaño o el grosor de sus líne
 }
 ```
 
-## Tu CSS gana
+## Tu CSS tiene prioridad
 
 Las reglas de PaperPic están en la capa de cascada `paperpic`, y cualquier CSS fuera de una capa las sobrescribe, tenga la especificidad que tenga. Eso facilita personalizarlo, pero un reset global fuera de una capa, como una regla sobre `button`, también llega a los botones del visor.
 

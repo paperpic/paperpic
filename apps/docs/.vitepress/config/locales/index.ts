@@ -44,7 +44,7 @@ function sidebarOf(prefix: string, { groups, pages }: Translation): DefaultTheme
 
 export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
   Object.entries(translations).map(([key, translation]) => {
-    const { label, lang, description, examples, guide, reference, playground, changelog, contributing, theme } = translation
+    const { label, lang, description, editLink, examples, footer, guide, reference, playground, changelog, contributing, theme } = translation
     const prefix = key === 'root'
       ? ''
       : `/${key}`
@@ -62,10 +62,18 @@ export const locales: LocaleConfig<DefaultTheme.Config> = Object.fromEntries(
             ...theme.outline,
             level: [2, 3],
           },
+          // :path is the file under src, before the rewrite of English to the root, so it points at the right language
+          editLink: {
+            pattern: 'https://github.com/paperpic/paperpic/edit/development/apps/docs/src/:path',
+            text: editLink,
+          },
+          footer: {
+            message: footer.replace('{license}', '<a href="https://github.com/paperpic/paperpic/blob/development/LICENSE">MIT</a>'),
+          },
           nav: [
             { text: guide, link: `${prefix}/guide/introduction`, activeMatch: `^${prefix}/guide/` },
             { text: reference, link: `${prefix}/reference/options`, activeMatch: `^${prefix}/reference/` },
-            { text: examples, link: `${prefix}/examples/upload`, activeMatch: `^${prefix}/examples/` },
+            { text: examples, link: `${prefix}/examples/attach-and-scan`, activeMatch: `^${prefix}/examples/` },
             { text: playground, link: `${prefix}/playground` },
             // The packages share one version, as a fixed group in .changeset/config.json
             {

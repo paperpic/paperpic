@@ -7,7 +7,7 @@ description: Ein vollständiges Beispiel, das die eingebaute Werkzeugleiste von 
 
 Wenn die Bedienelemente des Viewers zum Rest deiner Oberfläche passen müssen, blende die eingebauten mit `toolbar: false` aus und rufe die [Methoden](../reference/methods) über eigene Schaltflächen auf. Dieses Beispiel bietet Zoom, Begradigen, Rückgängig und Übernehmen und aktiviert jede Schaltfläche nur, wenn sie etwas bewirken kann.
 
-Das Ereignis [`change`](../reference/events#change) liefert nach jeder Aktion den [Zustand](../reference/state), auch nach denen, die deine Schaltflächen auslösen. `load` und `error` melden, wann das Bild ankommt oder Übernehmen fehlschlägt.
+Das Ereignis [`change`](../reference/events#change) liefert nach jeder Aktion den [Zustand](../reference/state), auch nach denen, die deine Schaltflächen auslösen. `load` und `error` melden, wann das Bild ankommt oder das Übernehmen fehlschlägt.
 
 :::tabs key:framework
 == JavaScript
@@ -221,7 +221,7 @@ export function Receipt() {
 
 ## Ein eigener Schieberegler {#slider}
 
-Ein eigener Schieberegler für Bereinigen öffnet zuerst das Werkzeug. Jede Bewegung ruft dann `setFinish()` auf, was ändert, was Bereinigen zeigt, und `confirmTool()` behält den letzten Wert als eine Bearbeitung. Hier übernimmt Fertig auch das Ergebnis, und Abbrechen verlässt den Bearbeitungsmodus, sodass diese Bedienelemente die ganze Oberfläche sind.
+Ein eigener Schieberegler für Bereinigen öffnet zuerst das Werkzeug. Jede Bewegung ruft dann `setFinish()` auf, was ändert, was Bereinigen zeigt, und `confirmTool()` behält den letzten Wert als eine Bearbeitung. Hier übernimmt die Schaltfläche Fertig auch das Ergebnis, und Abbrechen verlässt den Bearbeitungsmodus, sodass diese Bedienelemente die ganze Oberfläche sind.
 
 :::tabs key:framework
 == JavaScript

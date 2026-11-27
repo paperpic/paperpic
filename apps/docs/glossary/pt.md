@@ -47,3 +47,5 @@ Use these words in the Portuguese docs, so that each idea has one name on every 
 | zoom                                          | dar zoom             |
 
 The prose says encaixar for a fit, so that it never mixes with Ajustar, the tool of brightness and contrast. The buttons keep their labels, Ajustar à largura and Ajustar à altura. For the setting of a tool, say valor, not ajuste.
+
+A button name is only what the user presses, never the action or its result. English does this naturally, and this language does not. For the action, use the verb: "ao aplicar as alterações", "depois de aplicar as alterações", "o último resultado editado", not "depois do Aplicar" or "o resultado do Aplicar". A button that does something takes "o botão" or "tocar em": "ao tocar em Concluído…", "é removido com Desfazer".

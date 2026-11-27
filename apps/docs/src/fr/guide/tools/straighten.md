@@ -14,15 +14,15 @@ Un document photographié de biais ressemble à un trapèze : le bord éloigné 
 1. Appuyez sur Modifier, puis sur Redresser. Une poignée apparaît pour chaque coin, sur le document si la visionneuse [le trouve](#finding-the-document).
 2. Faites glisser chaque poignée mal placée sur son coin du document. Zoomez avec les boutons de son panneau pour les placer avec précision.
 3. Si vous connaissez le papier, choisissez son [format](#paper-size) : A4, Lettre ou Carte. Auto l’estime.
-4. Appuyez sur Terminé, ou `Entrée`. La visionneuse montre la page à plat, découpée aux quatre coins. Terminé attend que la visionneuse trouve le document ou que vous déplaciez un coin.
+4. Appuyez sur Terminé, ou `Entrée`. La visionneuse montre la page à plat, découpée aux quatre coins. Terminé ne s’active que lorsque la visionneuse trouve le document ou que vous déplacez un coin.
 
 Les poignées fonctionnent comme dans [Recadrer](./crop) : une loupe sur les écrans tactiles, appuyer puis toucher au lieu de faire glisser, et Tab et les flèches au clavier. Les quatre coins gardent toujours une forme convexe, donc la page peut toujours être mise à plat.
 
-Redresser montre la photo sans le noir et blanc de [Nettoyer](./clean-up), car les bords du papier sont difficiles à trouver sur une page nettoyée. Le noir et blanc revient après Terminé, et le gris reste.
+Redresser montre la photo sans le noir et blanc de [Nettoyer](./clean-up), car les bords du papier sont difficiles à trouver sur une page nettoyée. Le noir et blanc revient quand vous appuyez sur Terminé, et le gris reste.
 
 ## Trouver le document {#finding-the-document}
 
-À l’ouverture de Redresser, la visionneuse cherche le document dans la photo et place les quatre coins dessus, donc Terminé est prêt aussitôt. La recherche se fait dans le navigateur en une fraction de seconde, et ne change rien avant Terminé.
+À l’ouverture de Redresser, la visionneuse cherche le document dans la photo et place les quatre coins dessus, donc vous pouvez appuyer sur Terminé tout de suite. La recherche se fait dans le navigateur en une fraction de seconde, et ne change rien tant que vous n’appuyez pas sur Terminé.
 
 La visionneuse ne propose que ce dont elle est assez sûre. Si le papier se confond avec la table, ou si la photo ne contient pas de document, les coins commencent à l’intérieur de l’image et attendent l’utilisateur. Un coin que l’utilisateur a déjà touché ne bouge jamais tout seul.
 

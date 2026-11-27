@@ -198,5 +198,5 @@ export function AttachDocument() {
 - Das Leeren des Eingabefelds nach jeder Auswahl erlaubt es, dasselbe Foto erneut zu wählen, etwa um nach dem Übernehmen neu anzufangen.
 - Der Viewer öffnet den Bearbeitungsmodus, sobald das Foto geladen ist, sodass der Nutzer direkt zu Begradigen oder Bereinigen kommt. Lass den Listener für `load` weg, um zuerst das Foto zu zeigen.
 - `phase: 'load'` unterscheidet eine Datei, die der Browser nicht öffnen kann, etwa ein HEIC-Foto außerhalb von Safari, von einer fehlgeschlagenen Bearbeitung. [Bilder laden](../guide/loading#formats) listet die Formate auf.
-- Das Foto bleibt im Browser, bis Übernehmen `upload` aufruft. PaperPic sendet von sich aus nichts.
+- Das Foto bleibt im Browser, bis der Nutzer die Änderungen übernimmt und dein Code `upload` aufruft. PaperPic sendet von sich aus nichts.
 - [`maxOutputSize`](../reference/options#maxoutputsize) hält den Upload klein. Smartphone-Fotos haben 12 Megapixel oder mehr, und Dokumente bleiben bei 3000 Pixeln an der längsten Seite lesbar.

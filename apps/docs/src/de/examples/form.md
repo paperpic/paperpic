@@ -149,7 +149,7 @@ export function ExpenseForm() {
 
 ## Hinweise
 
-- Übernehmen legt das bearbeitete Bild mit einem [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer) in das Dateifeld, sodass das Formular es unter demselben Namen sendet. Vor dem ersten Übernehmen sendet das Formular das Foto so, wie der Nutzer es gewählt hat.
+- Beim Übernehmen legt das Beispiel das bearbeitete Bild mit einem [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer) in das Dateifeld, sodass das Formular es unter demselben Namen sendet. Vor dem ersten Übernehmen sendet das Formular das Foto so, wie der Nutzer es gewählt hat.
 - Ändert Code die Dateien des Felds, löst das sein Ereignis `change` nicht aus, also zeigt der Viewer weiter das Ergebnis.
 - Die Datei behält den Namen des Fotos mit der Endung des Ergebnisses, etwa `receipt.png` nach Bereinigen in Schwarzweiß.
 - Die Schaltflächen des Viewers senden das Formular nie ab.

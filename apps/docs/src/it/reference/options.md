@@ -78,7 +78,7 @@ Se la rotellina zooma l’immagine. Disattivala quando il visualizzatore sta in 
 - **Tipo:** `boolean`
 - **Valore predefinito:** `false`
 
-Se la barra degli strumenti ha un pulsante che salva l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale. Il pulsante è nascosto durante la modifica. L’evento [`download`](./events#download) ti permette di salvare il file in un altro modo. Prima del primo Applica, uno `src` da un’altra origine si apre nel browser invece di salvarsi: [Salvare il risultato](../guide/saving#download) spiega cosa fare.
+Se la barra degli strumenti ha un pulsante che salva l’immagine visualizzata: l’ultimo risultato modificato, altrimenti l’immagine originale. Il pulsante è nascosto durante la modifica. L’evento [`download`](./events#download) ti permette di salvare il file in un altro modo. Finché non si applica nessuna modifica, uno `src` da un’altra origine si apre nel browser invece di salvarsi: [Salvare il risultato](../guide/saving#download) spiega cosa fare.
 
 ### `labels`
 
@@ -143,7 +143,7 @@ Il lato più lungo dell’immagine modificata, in pixel. Un risultato più grand
 - **Tipo:** `string`
 - **Valore predefinito:** il nome dell’immagine originale
 
-Il nome del file salvato. Scrivilo senza estensione: PaperPic aggiunge quella del formato, quindi un `receipt.jpg` in bianco e nero si salva come `receipt.png`. Se l’originale non ha un nome, come un `Blob`, il file si chiama `image`. Prima del primo Applica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
+Il nome del file salvato. Scrivilo senza estensione: PaperPic aggiunge quella del formato, quindi un `receipt.jpg` in bianco e nero si salva come `receipt.png`. Se l’originale non ha un nome, come un `Blob`, il file si chiama `image`. Finché non si applica nessuna modifica, un URL senza estensione si salva senza estensione, perché il suo formato è sconosciuto.
 
 ## Strumenti
 

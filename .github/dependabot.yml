@@ -10,10 +10,15 @@ updates:
       prefix-development: chore
       include: scope
   - package-ecosystem: github-actions
-    directory: /
+    directories:
+      - / # the workflows
+      - /.github/actions/*
     schedule:
       interval: monthly
     cooldown:
       default-days: 7
+    groups:
+      actions:
+        group-by: dependency-name # one PR for each action, not one for each directory that uses it
     commit-message:
       prefix: ci

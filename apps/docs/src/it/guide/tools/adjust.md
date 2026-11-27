@@ -13,7 +13,7 @@ Le foto scattate con poca luce escono scure o grigie. Regola cambia la luminosit
 
 1. Premi Modifica, poi Regola. Il suo pannello prende il posto degli strumenti: un righello, con Luminosità e Contrasto per scegliere quale tono cambia.
 2. Trascina il righello. L’anteprima cambia mentre trascini. Scegli Contrasto per cambiare l’altro tono con lo stesso righello.
-3. Premi Fatto per conservare entrambi i toni come un solo cambiamento, che Annulla l’ultima azione toglie. Annulla questo strumento lascia l’immagine com’era.
+3. Premi Fatto per conservare entrambi i valori come un solo cambiamento, che puoi togliere con Annulla l’ultima azione. Con Annulla questo strumento, l’immagine resta com’era.
 
 Il centro del righello lascia l’immagine com’è, e l’ago vi si aggancia, così è facile tornare a lasciare l’immagine com’era. I lettori di schermo annunciano il valore da -100 a 100, come «Luminosità +30». Un punto su Regola segna valori diversi da 0.
 

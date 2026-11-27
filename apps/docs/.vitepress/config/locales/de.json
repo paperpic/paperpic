@@ -1,7 +1,9 @@
 {
   "label": "Deutsch",
   "lang": "de",
-  "ogImageAlt": "Ein schräg aufgenommenes Foto eines Kassenbons neben dem geraden Schwarz-Weiß-Dokument, das PaperPic daraus gemacht hat",
+  "ogImageAlt": "Das Logo von PaperPic",
+  "editLink": "Diese Seite auf GitHub bearbeiten",
+  "footer": "Veröffentlicht unter der {license}-Lizenz.",
   "ogLocale": "de_DE",
   "description": "Viewer und Editor für Dokumentbilder im Browser: Smartphone-Fotos, Scans und jedes Bild mit Text begradigen, beschneiden, drehen und bereinigen. Für JavaScript, Vue und React.",
   "guide": "Anleitung",

@@ -151,7 +151,7 @@ function zoomTo(zoom: number, point?: ViewPoint): void
 
 Fija el zoom, donde `1` muestra un píxel de la imagen por cada píxel de pantalla. [`point`](./types#viewpoint) se queda en su sitio: va en píxeles CSS desde la esquina superior izquierda del visor, y por defecto es su centro.
 
-El zoom va desde el que encaja la imagen entera, o `1` si es menor, hasta `8`. Un valor fuera de ese rango se limita.
+El zoom va desde el nivel que encaja la imagen entera, o `1` si es menor, hasta `8`. Un valor fuera de ese rango se limita.
 
 Lanza un `RangeError` si `zoom` es `NaN` o una coordenada de `point` no es un número finito, y entonces el zoom no cambia.
 
@@ -277,9 +277,9 @@ Recupera el último cambio deshecho. No hace nada fuera del modo de edición, co
 function apply(): Promise<void>
 ```
 
-Aplica los cambios a resolución completa, o a [`maxOutputSize`](./options#maxoutputsize). El resultado pasa a ser la imagen en pantalla, el historial se vacía, el visor vuelve al modo de visualización y el evento [`apply`](./events#apply) entrega el resultado. Aplicar no se puede interrumpir, y bloquea los controles mientras dura. No hace nada fuera del modo de edición, con una herramienta abierta o cuando no hay nada que aplicar.
+Aplica los cambios a resolución completa, o a [`maxOutputSize`](./options#maxoutputsize). El resultado pasa a ser la imagen en pantalla, el historial se vacía, el visor vuelve al modo de visualización y el evento [`apply`](./events#apply) entrega el resultado. Una vez empezado, no se puede interrumpir, y bloquea los controles mientras dura. No hace nada fuera del modo de edición, con una herramienta abierta o cuando no hay nada que aplicar.
 
-Si falla, el evento [`error`](./events#error) lo notifica y la edición sigue abierta. La promesa se resuelve cuando Aplicar termina, también si falla, así que escucha `error`: un `try/catch` no lo detecta.
+Si falla, el evento [`error`](./events#error) lo notifica y la edición sigue abierta. La promesa se resuelve cuando termina, también si falla, así que escucha `error`: un `try/catch` no lo detecta.
 
 ### `cancel()`
 
@@ -297,7 +297,7 @@ Descarta los cambios y vuelve al modo de visualización. No pregunta antes: eso 
 function download(): void
 ```
 
-Guarda como archivo la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original. Funciona sin la opción [`download`](./options#download), que solo muestra un botón. El evento [`download`](./events#download) llega antes y puede impedirlo. No hace nada durante la edición, porque los cambios aún no se han aplicado. Antes del primer Aplicar, un `src` de otro origen se abre en el navegador: consulta [Guardar el resultado](../guide/saving#download).
+Guarda como archivo la imagen en pantalla: el último resultado editado, o si no, la imagen original. Funciona sin la opción [`download`](./options#download), que solo muestra un botón. El evento [`download`](./events#download) llega antes y puede impedirlo. No hace nada durante la edición, porque los cambios aún no se han aplicado. Si aún no se ha aplicado ningún cambio, un `src` de otro origen se abre en el navegador: consulta [Guardar el resultado](../guide/saving#download).
 
 ### `reload()`
 
@@ -305,4 +305,4 @@ Guarda como archivo la imagen en pantalla: el resultado del último Aplicar, o s
 function reload(): void
 ```
 
-Vuelve a cargar el [`src`](./options#src) actual, lo que recupera la imagen original después de Aplicar. Durante la edición, descarta los cambios. Sin `src`, no hace nada.
+Vuelve a cargar el [`src`](./options#src) actual, lo que recupera la imagen original después de aplicar los cambios. Durante la edición, descarta los cambios. Sin `src`, no hace nada.

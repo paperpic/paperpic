@@ -24,7 +24,7 @@ pic.setOptions({ editable: false })
 
 La imagen que se muestra: una URL, o un `File` o un `Blob`. Una imagen de otro origen se muestra, pero no se puede editar: [Cargar imágenes](../guide/loading#fetch) explica por qué y qué hacer.
 
-Pasar el mismo valor otra vez no recarga la imagen, así que el resultado de Aplicar sigue en pantalla. Llama a [`reload()`](./methods#reload) para recuperar la original. Un valor nuevo durante la edición descarta los cambios.
+Pasar el mismo valor otra vez no recarga la imagen, así que el resultado editado sigue en pantalla. Llama a [`reload()`](./methods#reload) para recuperar la original. Un valor nuevo durante la edición descarta los cambios.
 
 ### `alt`
 
@@ -78,7 +78,7 @@ Si la rueda hace zoom en la imagen. Desactívala cuando el visor esté en una p�
 - **Tipo:** `boolean`
 - **Valor por defecto:** `false`
 
-Si la barra de herramientas tiene un botón que guarda la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original. El botón se oculta durante la edición. El evento [`download`](./events#download) te permite guardar el archivo de otra forma. Antes del primer Aplicar, un `src` de otro origen se abre en el navegador en vez de guardarse: [Guardar el resultado](../guide/saving#download) explica qué hacer.
+Si la barra de herramientas tiene un botón que guarda la imagen en pantalla: el último resultado editado, o si no, la imagen original. El botón se oculta durante la edición. El evento [`download`](./events#download) te permite guardar el archivo de otra forma. Si aún no se ha aplicado ningún cambio, un `src` de otro origen se abre en el navegador en vez de guardarse: [Guardar el resultado](../guide/saving#download) explica qué hacer.
 
 ### `labels`
 
@@ -99,7 +99,7 @@ Cada clave nombra un icono, y algunos iconos aparecen en dos botones:
 | Clave            | Botón                                                                         |
 | ---------------- | ----------------------------------------------------------------------------- |
 | `adjust`         | Ajustar                                                                       |
-| `apply`          | Aplicar, y Hecho en cada herramienta                                          |
+| `apply`          | Aplicar, y Aceptar en cada herramienta                                        |
 | `brightness`     | Brillo, en el panel de Ajustar                                                |
 | `cancel`         | Cancelar, y Cancelar esta herramienta                                         |
 | `contrast`       | Contraste, en el panel de Ajustar                                             |
@@ -143,7 +143,7 @@ El lado más largo de la imagen editada, en píxeles. Un resultado mayor se redu
 - **Tipo:** `string`
 - **Valor por defecto:** el nombre de la imagen original
 
-El nombre del archivo guardado. Escríbelo sin extensión: PaperPic añade la del formato, así que un `receipt.jpg` en blanco y negro se guarda como `receipt.png`. Si la imagen original no tiene nombre, como un `Blob`, el archivo se llama `image`. Antes del primer Aplicar, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
+El nombre del archivo guardado. Escríbelo sin extensión: PaperPic añade la del formato, así que un `receipt.jpg` en blanco y negro se guarda como `receipt.png`. Si la imagen original no tiene nombre, como un `Blob`, el archivo se llama `image`. Si aún no se ha aplicado ningún cambio, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
 
 ## Herramientas
 

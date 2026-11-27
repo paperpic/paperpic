@@ -75,7 +75,7 @@ Estas clases son públicas: sus nombres, y los elementos que marcan, se mantiene
 | `paperpic`                | La raíz del visor                                                                                                         |
 | `paperpic-button`         | Cada botón de la barra de herramientas y de la barra de edición                                                           |
 | `paperpic-button-danger`  | Descartar, en la pregunta antes de descartar los cambios                                                                  |
-| `paperpic-button-primary` | Aplicar, y Hecho en cada herramienta                                                                                      |
+| `paperpic-button-primary` | Aplicar, y Aceptar en cada herramienta                                                                                    |
 | `paperpic-button-text`    | Los botones de la pregunta antes de descartar los cambios                                                                 |
 | `paperpic-edit-bar`       | La barra de edición, una tarjeta abajo durante la edición                                                                 |
 | `paperpic-editing`        | La raíz, durante la edición                                                                                               |

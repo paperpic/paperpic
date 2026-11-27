@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Imagens de documentos limpas e legíveis, direto no navegador
   tagline: Endireite, corte e limpe uma foto de celular, um escaneamento ou qualquer imagem com texto. Com JavaScript, Vue ou React, e nada sai do dispositivo até o seu código enviar.
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: Começar
@@ -34,7 +37,7 @@ features:
     link: /pt/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "Resolução completa"
-    details: "Aplicar entrega ao seu código a imagem editada como um Blob, processada num Web Worker para a página continuar respondendo."
+    details: "Ao aplicar as alterações, o seu código recebe a imagem editada como um Blob, processada num Web Worker para a página não travar."
     link: /pt/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "Acessível"
@@ -42,7 +45,7 @@ features:
     link: /pt/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Qualquer framework"
-    details: "Um core para JavaScript sem framework, wrappers leves para Vue e React, e nenhuma dependência em tempo de execução."
+    details: "Um core para JavaScript sem framework, wrappers leves para Vue e React, nenhuma dependência em tempo de execução e menos de 40 kB com gzip, estilos incluídos."
     link: /pt/guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "O mesmo recibo, endireitado e limpo em preto e branco"
 ---
 
-## Nada sai do navegador
-
-O PaperPic edita a imagem no dispositivo do usuário, em um Web Worker, sem servidor e sem requisições próprias. A foto de um recibo, de uma carteira de identidade ou de um contrato só sai do dispositivo quando o seu código envia o resultado.
-
 ## Comece em poucas linhas
 
-Instale o pacote do seu framework, dê uma altura ao contêiner e escute o Aplicar:
+Instale o pacote do seu framework, dê uma altura ao contêiner e escute o evento `apply`:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

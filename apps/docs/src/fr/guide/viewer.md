@@ -44,7 +44,7 @@ Avec `toolbar: false`, la barre d’outils et la barre de modification sont masq
 
 ## Visionneuse en lecture seule {#read-only}
 
-Avec `editable: false`, le bouton Modifier disparaît, et la barre d’outils gagne deux boutons qui font pivoter l’image. Cette rotation ne change que l’affichage, et rien n’est enregistré : Télécharger enregistre l’image sans elle. Utilisez-la pour des documents à lire mais pas à modifier, comme les pièces jointes d’un dossier.
+Avec `editable: false`, le bouton Modifier disparaît, et la barre d’outils gagne deux boutons qui font pivoter l’image. Cette rotation ne change que l’affichage, et rien n’est enregistré : le bouton Télécharger enregistre l’image sans elle. Utilisez-la pour des documents à lire mais pas à modifier, comme les pièces jointes d’un dossier.
 
 :::tabs key:framework
 == JavaScript

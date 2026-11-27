@@ -9,7 +9,7 @@ Les photos de téléphone font 12 mégapixels ou plus, et les modifier demande u
 
 ## Un Web Worker fait le travail
 
-Le noir et blanc et Redresser prennent environ une seconde et demie sur une photo de 12 mégapixels avec un téléphone récent, comme le montrent les [temps mesurés](#measurements). Sur le thread principal, la page se figerait aussi longtemps. PaperPic les exécute donc dans un Web Worker, et la page continue de répondre pendant Appliquer. La recherche du document s’y fait aussi.
+Le noir et blanc et Redresser prennent environ une seconde et demie sur une photo de 12 mégapixels avec un téléphone récent, comme le montrent les [temps mesurés](#measurements). Sur le thread principal, la page se figerait aussi longtemps. PaperPic les exécute donc dans un Web Worker, et la page reste réactive pendant l’application des modifications. La recherche du document s’y fait aussi.
 
 Le worker est livré dans le paquet et démarre avec le standard `new Worker(new URL(…, import.meta.url))`, que des bundlers comme Vite et webpack 5 prennent en charge seuls, sans configuration. Si le worker ne peut pas démarrer, la modification s’exécute sur le thread principal : elle fonctionne toujours, mais la page peut se figer un instant avec de grandes images.
 
@@ -18,7 +18,7 @@ Le worker est livré dans le paquet et démarre avec le standard `new Worker(new
 Avec une Content Security Policy, autorisez :
 
 - `worker-src 'self'`, pour le worker.
-- `img-src blob:`, car la visionneuse affiche les fichiers joints et les résultats d’Appliquer par des URL `blob:`.
+- `img-src blob:`, car la visionneuse affiche les fichiers joints et les résultats appliqués par des URL `blob:`.
 - `paperpic` dans `trusted-types`, si votre politique limite les politiques Trusted Types, car les icônes des boutons passent par cette politique.
 - Une politique Trusted Types `default` dont `createScriptURL` accepte l’URL du worker, si votre politique exige Trusted Types. Les bundlers ne prennent en charge qu’un worker créé avec une URL simple, que Trusted Types bloque : sans cette politique, la modification s’exécute donc sur le thread principal.
 
@@ -26,11 +26,11 @@ Avec une Content Security Policy, autorisez :
 
 - **Pendant la modification**, l’aperçu travaille sur une copie d’environ 2 mégapixels, donc les règles et les outils restent fluides avec n’importe quelle photo.
 - **À l’application**, chaque changement est calculé en pleine résolution. Les grandes photos prennent quelques secondes, donc la visionneuse affiche un message et bloque les commandes pendant ce temps.
-- **Pour gagner du temps et de la mémoire**, utilisez [`maxOutputSize`](../reference/options#maxoutputsize). Une limite comme 2000 ou 3000 pixels garde les documents lisibles, accélère Appliquer et réduit la taille des fichiers.
+- **Pour gagner du temps et de la mémoire**, utilisez [`maxOutputSize`](../reference/options#maxoutputsize). Une limite comme 2000 ou 3000 pixels garde les documents lisibles, accélère l’application des modifications et réduit la taille des fichiers.
 
 ## Temps mesurés {#measurements}
 
-Chaque étape d’Appliquer, dans le worker, sur un Pixel 10 Pro avec Chrome 156 :
+Chaque étape de l’application des modifications, dans le worker, sur un Pixel 10 Pro avec Chrome 156 :
 
 | Étape                       | 2 MP   | 12 MP  | 37,5 MP |
 | --------------------------- | ------ | ------ | ------- |

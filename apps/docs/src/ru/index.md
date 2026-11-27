@@ -8,6 +8,9 @@ hero:
   name: Paper<span class="name-accent">Pic</span>
   text: Чистые и читаемые изображения документов прямо в браузере
   tagline: Выравнивайте, обрезайте и очищайте фото с телефона, сканы и любые изображения с текстом. На JavaScript, Vue или React, и ничего не покидает устройство, пока это не отправит ваш код.
+  image:
+    src: /logo.webp
+    alt: ""
   actions:
     - theme: brand
       text: Начать
@@ -42,7 +45,7 @@ features:
     link: /ru/guide/accessibility
   - icon: { src: /icons/frameworks.svg, wrap: true, width: 24, height: 24 }
     title: "Любой фреймворк"
-    details: "Ядро для чистого JavaScript, лёгкие обёртки для Vue и React и никаких зависимостей во время выполнения."
+    details: "Ядро для чистого JavaScript, лёгкие обёртки для Vue и React никаких зависимостей во время выполнения и меньше 40 КБ в gzip вместе со стилями."
     link: /ru/guide/getting-started
 
 comparison:
@@ -55,16 +58,16 @@ comparison:
   afterAlt: "Тот же чек, выровненный и очищенный до чёрно-белого"
 ---
 
-## Ничего не покидает браузер
-
-PaperPic редактирует изображение на устройстве пользователя, в Web Worker, без сервера и без собственных запросов. Фото чека, удостоверения личности или договора покидает устройство, только когда ваш код отправляет результат.
-
 ## Начните с нескольких строк
 
 Установите пакет для своего фреймворка, задайте контейнеру высоту и слушайте применение:
 
 :::tabs key:framework
 == JavaScript
+
+```sh
+npm install @paperpic/core
+```
 
 ```ts
 import { PaperPic } from '@paperpic/core'
@@ -75,6 +78,10 @@ pic.on('apply', ({ blob }) => upload(blob))
 ```
 
 == Vue
+
+```sh
+npm install @paperpic/vue
+```
 
 ```vue
 <script setup lang="ts">
@@ -88,6 +95,10 @@ import '@paperpic/vue/style.css'
 ```
 
 == React
+
+```sh
+npm install @paperpic/react
+```
 
 ```tsx
 import { PaperPic } from '@paperpic/react'

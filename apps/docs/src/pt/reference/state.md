@@ -12,7 +12,7 @@ O estado é um retrato do visualizador: se há uma imagem, o modo, o zoom, a fer
 
 ## Sincronizar seus controles {#in-step}
 
-`change` não avisa sobre a imagem. Uma imagem carregada chega com [`load`](./events#load), e um carregamento ou um Aplicar que falha chega com [`error`](./events#error). Para sincronizar seus próprios controles, como um botão Aplicar, leia o estado no início, pegue-o de cada `change` e leia-o de novo em `load` e `error`:
+`change` não avisa sobre a imagem. Uma imagem carregada chega com [`load`](./events#load), e um carregamento ou uma aplicação de alterações que falha chega com [`error`](./events#error). Para sincronizar seus próprios controles, como um botão Aplicar, leia o estado no início, pegue-o de cada `change` e leia-o de novo em `load` e `error`:
 
 :::tabs key:framework
 == JavaScript
@@ -109,7 +109,7 @@ Em Vue e React o visualizador só existe depois que o componente é montado, ent
 | ------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeTool`  | [`ToolId \| null`](./types#toolid)           | A ferramenta aberta, como `'crop'` ou `'adjust'`, ou `null`                                                                                                                                        |
 | `adjustments` | `{ brightness, contrast }`                   | O brilho e o contraste, cada um de -1 a 1. Não são aplicados em preto e branco. Enquanto Ajustar está aberto, os valores do seu painel                                                             |
-| `busy`        | `boolean`                                    | Se o Aplicar está em andamento                                                                                                                                                                     |
+| `busy`        | `boolean`                                    | Se as alterações estão sendo aplicadas                                                                                                                                                             |
 | `canApply`    | `boolean`                                    | Se há alterações para aplicar. Giros e espelhamentos que se anulam não contam                                                                                                                      |
 | `canConfirm`  | `boolean`                                    | Se [`confirmTool()`](./methods#confirmtool) pode manter o que a ferramenta aberta mostra. Endireitar espera encontrar o documento ou que um canto se mova. É `false` sem nenhuma ferramenta aberta |
 | `canRedo`     | `boolean`                                    | Se há uma alteração para trazer de volta                                                                                                                                                           |
@@ -125,4 +125,4 @@ Em Vue e React o visualizador só existe depois que o componente é montado, ent
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `'empty'` sem `src`, `'loading'` enquanto carrega, `'ready'` quando está na tela, e `'error'` se não pôde ser carregada                                                                            |
 | `zoom`        | `number`                                     | Pixels da tela por pixel da imagem                                                                                                                                                                 |
 
-Com uma `rotation` de 90 ou 270, a imagem na tela, e o resultado do Aplicar, têm a largura e a altura de `image` trocadas. [`maxOutputSize`](./options#maxoutputsize) pode deixar o resultado menor.
+Com uma `rotation` de 90 ou 270, a imagem na tela, e o resultado editado, têm a largura e a altura de `image` trocadas. [`maxOutputSize`](./options#maxoutputsize) pode deixar o resultado menor.

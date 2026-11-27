@@ -78,7 +78,7 @@ Indique si la molette zoome sur l’image. Désactivez-la quand la visionneuse s
 - **Type :** `boolean`
 - **Valeur par défaut :** `false`
 
-Indique si la barre d’outils a un bouton qui enregistre l’image affichée : le résultat du dernier Appliquer, ou sinon l’image source. Le bouton est masqué pendant la modification. L’événement [`download`](./events#download) vous permet d’enregistrer le fichier autrement. Avant le premier Appliquer, un `src` d’une autre origine s’ouvre dans le navigateur au lieu d’être enregistré : [Enregistrer le résultat](../guide/saving#download) explique quoi faire.
+Indique si la barre d’outils a un bouton qui enregistre l’image affichée : le dernier résultat appliqué, ou sinon l’image source. Le bouton est masqué pendant la modification. L’événement [`download`](./events#download) vous permet d’enregistrer le fichier autrement. Tant qu’aucune modification n’a été appliquée, un `src` d’une autre origine s’ouvre dans le navigateur au lieu d’être enregistré : [Enregistrer le résultat](../guide/saving#download) explique quoi faire.
 
 ### `labels`
 
@@ -143,7 +143,7 @@ Le plus grand côté de l’image modifiée, en pixels. Un résultat plus grand 
 - **Type :** `string`
 - **Valeur par défaut :** le nom de l’image source
 
-Le nom du fichier enregistré. Donnez-le sans extension : PaperPic ajoute celle du format, donc un `receipt.jpg` en noir et blanc s’enregistre en `receipt.png`. Quand la source n’a pas de nom, comme un `Blob`, le fichier s’appelle `image`. Avant le premier Appliquer, une URL sans extension s’enregistre sans extension, car son format est inconnu.
+Le nom du fichier enregistré. Donnez-le sans extension : PaperPic ajoute celle du format, donc un `receipt.jpg` en noir et blanc s’enregistre en `receipt.png`. Quand la source n’a pas de nom, comme un `Blob`, le fichier s’appelle `image`. Tant qu’aucune modification n’a été appliquée, une URL sans extension s’enregistre sans extension, car son format est inconnu.
 
 ## Outils
 

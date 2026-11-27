@@ -13,7 +13,7 @@ Les téléphones enregistrent souvent la photo d’un document de côté ou à l
 
 Dans la barre de modification, Pivoter à gauche fait pivoter l’image d’un quart de tour dans le sens inverse des aiguilles d’une montre, comme dans les galeries de photos. Appuyez deux fois pour un demi-tour, ou trois fois pour un quart de tour dans le sens des aiguilles d’une montre.
 
-Une rotation est un changement : Annuler la dernière action la retire, et Appliquer la rend définitive. Quatre rotations ramènent l’image à sa position, et il n’y a alors rien à appliquer.
+Une rotation est un changement : elle se retire avec Annuler la dernière action et devient définitive quand vous appuyez sur Appliquer. Quatre rotations ramènent l’image à sa position, et il n’y a alors rien à appliquer.
 
 Depuis le code, [`rotate()`](../../reference/methods#rotate) fait pivoter dans le sens des aiguilles d’une montre avec `1`, et dans le sens inverse avec `-1` :
 

@@ -1,7 +1,9 @@
 {
   "label": "English",
   "lang": "en",
-  "ogImageAlt": "A photo of a receipt taken at an angle, next to the straight black and white document that PaperPic made from it",
+  "ogImageAlt": "The PaperPic logo",
+  "editLink": "Edit this page on GitHub",
+  "footer": "Released under the {license} License.",
   "ogLocale": "en_US",
   "description": "Document image viewer and editor for the browser: straighten, crop, rotate and clean up phone photos, scans and any image with text. For plain JavaScript, Vue and React.",
   "guide": "Guide",

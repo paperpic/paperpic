@@ -195,8 +195,8 @@ export function AttachDocument() {
 ## Note
 
 - `capture="environment"` apre la fotocamera posteriore sui telefoni, e i computer lo ignorano. Senza, i telefoni offrono la fotocamera e la libreria foto, il che va bene per i documenti che l’utente ha già.
-- Svuotare il campo dopo ogni scelta permette di scegliere di nuovo la stessa foto, ad esempio per ricominciare dopo Applica.
+- Svuotare il campo dopo ogni scelta permette di scegliere di nuovo la stessa foto, ad esempio per ricominciare dopo aver applicato le modifiche.
 - Il visualizzatore apre la modalità di modifica appena la foto è caricata, così l’utente passa subito a Raddrizza o Pulisci. Togli il listener di `load` per mostrare prima la foto.
 - `phase: 'load'` distingue un file che il browser non può aprire, come una foto HEIC fuori da Safari, da una modifica fallita. [Caricare le immagini](../guide/loading#formats) elenca i formati.
-- La foto resta nel browser finché Applica non chiama `upload`. PaperPic non invia niente da solo.
+- La foto resta nel browser finché l’utente non applica le modifiche e il tuo codice non chiama `upload`. PaperPic non invia niente da solo.
 - [`maxOutputSize`](../reference/options#maxoutputsize) tiene piccolo il caricamento. Le foto dei telefoni hanno 12 megapixel o più, e i documenti restano leggibili a 3000 pixel sul lato più lungo.

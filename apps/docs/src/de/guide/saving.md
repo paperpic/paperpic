@@ -9,7 +9,7 @@ PaperPic lädt nie etwas hoch und speichert nichts. Wenn der Nutzer die Änderun
 
 ## Das Ereignis `apply`
 
-Übernehmen berechnet das Ergebnis und löst [`apply`](../reference/events#apply) aus mit:
+Beim Übernehmen berechnet PaperPic das Ergebnis und löst [`apply`](../reference/events#apply) aus, mit:
 
 | Feld              | Typ      | Beschreibung                    |
 | ----------------- | -------- | ------------------------------- |
@@ -129,11 +129,11 @@ const pic = new PaperPic(container, {
 
 Die Vorschau beim Bearbeiten hat höchstens etwa 2 Megapixel, `maxOutputSize` ändert also nur das Ergebnis.
 
-Safari auf iOS begrenzt ein Canvas auf etwa 16 Megapixel, und neuere iPhones machen Fotos mit 24 Megapixeln oder mehr, also kann Übernehmen in voller Auflösung fehlschlagen. Wenn deine Nutzer Fotos von einem iPhone bearbeiten, setze `maxOutputSize`. 3000 Pixel halten Dokumente lesbar und liegen weit unter der Grenze. [Übernehmen schlägt bei einem großen Foto fehl](./troubleshooting#too-large) zeigt den Fehler.
+Safari auf iOS begrenzt ein Canvas auf etwa 16 Megapixel, und neuere iPhones machen Fotos mit 24 Megapixeln oder mehr, also kann das Übernehmen in voller Auflösung fehlschlagen. Wenn deine Nutzer Fotos von einem iPhone bearbeiten, setze `maxOutputSize`. 3000 Pixel halten Dokumente lesbar und liegen weit unter der Grenze. [Das Übernehmen schlägt bei einem großen Foto fehl](./troubleshooting#too-large) zeigt den Fehler.
 
 ## Metadaten {#metadata}
 
-Das Ergebnis von Übernehmen enthält keine Metadaten. PaperPic zeichnet das Bild auf ein Canvas, also gehen die EXIF-Daten des Fotos verloren, etwa die GPS-Position, die Kamera und das Datum. Die Download-Schaltfläche speichert bis zum ersten Übernehmen das Quellbild unverändert, mit seinen Metadaten.
+Das übernommene Ergebnis enthält keine Metadaten. PaperPic zeichnet das Bild auf ein Canvas, also gehen die EXIF-Daten des Fotos verloren, etwa die GPS-Position, die Kamera und das Datum. Die Download-Schaltfläche speichert bis zum ersten Übernehmen das Quellbild unverändert, mit seinen Metadaten.
 
 ## Die Download-Schaltfläche {#download}
 
