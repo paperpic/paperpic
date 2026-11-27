@@ -13,9 +13,9 @@ Das Foto eines Dokuments zeigt oft den Tisch, eine Hand oder andere Papiere drum
 
 1. Drücke Bearbeiten, dann Zuschneiden. Im Bild erscheint ein Rechteck mit einem Griff an jeder Ecke.
 2. Ziehe die Ecken, bis das Rechteck das Dokument einrahmt. Das Bedienfeld von Zuschneiden hat Zoom-Schaltflächen, damit du zum genauen Platzieren hineinzoomen kannst.
-3. Drücke Fertig oder `Enter`, um den Zuschnitt zu den Änderungen hinzuzufügen. Dieses Werkzeug abbrechen oder `Esc` schließt Zuschneiden, ohne etwas zu ändern.
+3. Drücke Fertig oder `Enter`, um den Zuschnitt zu den Änderungen hinzuzufügen. Mit Dieses Werkzeug abbrechen oder `Esc` schließt du Zuschneiden, ohne etwas zu ändern.
 
-Solange Zuschneiden offen ist, sieht das Bild so aus, wie das Ergebnis wird, mit Anpassen und Bereinigen. Der Zuschnitt ist eine Änderung wie jede andere: Rückgängig entfernt ihn, und Übernehmen macht ihn dauerhaft.
+Solange Zuschneiden offen ist, sieht das Bild so aus, wie das Ergebnis wird, mit Anpassen und Bereinigen. Der Zuschnitt ist eine Änderung wie jede andere: Mit Rückgängig entfernst du ihn, mit Übernehmen wird er dauerhaft.
 
 ## Eckgriffe
 

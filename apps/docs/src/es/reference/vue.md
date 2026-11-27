@@ -69,7 +69,7 @@ const pic = useTemplateRef('pic')
 
 El componente crea el visor al montarse y lo destruye al desmontarse, así que no llames a `destroy()`. Cambia las props en vez de llamar a `setOptions()`, que el siguiente cambio de una prop desharía, y usa los eventos del componente en vez de `on()`.
 
-Pasar el mismo `src` otra vez no recarga la imagen, así que conserva el resultado de Aplicar. Para recuperar la original, llama a `instance.reload()`.
+Pasar el mismo `src` otra vez no recarga la imagen, así que conserva el resultado editado. Para recuperar la original, llama a `instance.reload()`.
 
 ## Tipos {#types}
 

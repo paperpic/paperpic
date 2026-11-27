@@ -149,8 +149,8 @@ export function ExpenseForm() {
 
 ## Notas
 
-- Aplicar pone la imagen editada en el campo de archivo con un [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), así que el formulario la envía con el mismo nombre. Antes de cualquier Aplicar, el formulario envía la foto tal como la eligió el usuario.
+- Al aplicar los cambios, el ejemplo pone la imagen editada en el campo de archivo con un [`DataTransfer`](https://developer.mozilla.org/docs/Web/API/DataTransfer), así que el formulario la envía con el mismo nombre. Si el usuario no ha aplicado ningún cambio, el formulario envía la foto tal como la eligió.
 - Cambiar los archivos del campo desde el código no emite su evento `change`, así que el visor mantiene el resultado en pantalla.
-- El archivo conserva el nombre de la foto, con la extensión del resultado, como `receipt.png` después de Limpiar en blanco y negro.
+- El archivo conserva el nombre de la foto, con la extensión del resultado, como `receipt.png` después de limpiarla en blanco y negro.
 - Los botones del visor nunca envían el formulario.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene ligero el formulario. Las fotos del móvil tienen 12 megapíxeles o más, y los documentos siguen legibles a 3000 píxeles en el lado más largo.

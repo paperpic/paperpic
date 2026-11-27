@@ -51,3 +51,5 @@ Use these words in the Spanish docs, so that each idea has one name on every pag
 The prose says encajar for a fit, so that it never mixes with Ajustar, the tool of brightness and contrast. The buttons keep their labels, Ajustar al ancho and Ajustar al alto.
 
 Tool names take the feminine, as la herramienta does: "con Recortar abierta", "mientras Limpiar está activada".
+
+A button name is only what the user presses, never the action or its result. Write "pulsa Aplicar", "el botón Aceptar" or "con Deshacer se quita", and use the verb for the action: "al aplicar los cambios", not "después de Aplicar"; "el último resultado editado", not "el resultado del último Aplicar"; "al pulsar Aceptar", not "Aceptar añade". English does this naturally, and Spanish does not.

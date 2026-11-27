@@ -195,8 +195,8 @@ export function AttachDocument() {
 ## Notas
 
 - `capture="environment"` abre la cámara trasera en los móviles, y los ordenadores lo ignoran. Sin él, los móviles ofrecen la cámara y la galería, lo que va mejor para documentos que el usuario ya tiene.
-- Vaciar el input después de cada elección permite volver a elegir la misma foto, por ejemplo para empezar de nuevo después de Aplicar.
+- Vaciar el input después de cada elección permite volver a elegir la misma foto, por ejemplo para empezar de nuevo después de aplicar los cambios.
 - El visor abre el modo de edición en cuanto carga la foto, así que el usuario va directo a Enderezar o Limpiar. Quita el listener de `load` para mostrar antes la foto.
 - `phase: 'load'` distingue un archivo que el navegador no puede abrir, como una foto HEIC fuera de Safari, de un cambio que falla. [Cargar imágenes](../guide/loading#formats) enumera los formatos.
-- La foto se queda en el navegador hasta que Aplicar llama a `upload`. PaperPic no envía nada por su cuenta.
+- La foto no sale del navegador hasta que el usuario aplica los cambios y tu código llama a `upload`. PaperPic no envía nada por su cuenta.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene pequeño el envío. Las fotos del móvil tienen 12 megapíxeles o más, y los documentos siguen legibles a 3000 píxeles en el lado más largo.

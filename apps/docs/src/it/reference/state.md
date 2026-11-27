@@ -12,7 +12,7 @@ Lo stato è un’istantanea del visualizzatore: se c’è un’immagine, la moda
 
 ## Sincronizzare i tuoi controlli {#in-step}
 
-`change` non segnala l’immagine. Un’immagine caricata arriva con [`load`](./events#load), e un caricamento o un Applica che falliscono arrivano con [`error`](./events#error). Per sincronizzare i tuoi controlli, come un pulsante Applica, leggi lo stato all’inizio, prendilo da ogni `change` e rileggilo con `load` ed `error`:
+`change` non segnala l’immagine. Un’immagine caricata arriva con [`load`](./events#load), e un caricamento o un’applicazione delle modifiche che falliscono arrivano con [`error`](./events#error). Per sincronizzare i tuoi controlli, come un pulsante Applica, leggi lo stato all’inizio, prendilo da ogni `change` e rileggilo con `load` ed `error`:
 
 :::tabs key:framework
 == JavaScript
@@ -109,7 +109,7 @@ In Vue e React il visualizzatore esiste solo dopo il montaggio del componente, q
 | ------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeTool`  | [`ToolId \| null`](./types#toolid)           | Lo strumento aperto, come `'crop'` o `'adjust'`, o `null`                                                                                                                                            |
 | `adjustments` | `{ brightness, contrast }`                   | La luminosità e il contrasto, ciascuno da -1 a 1. Non si applicano in bianco e nero. Mentre Regola è aperto, i valori del suo pannello                                                               |
-| `busy`        | `boolean`                                    | Se Applica è in corso                                                                                                                                                                                |
+| `busy`        | `boolean`                                    | Se si stanno applicando le modifiche                                                                                                                                                                 |
 | `canApply`    | `boolean`                                    | Se ci sono cambiamenti da applicare. Rotazioni e capovolgimenti che si annullano non contano                                                                                                         |
 | `canConfirm`  | `boolean`                                    | Se [`confirmTool()`](./methods#confirmtool) può conservare ciò che mostra lo strumento aperto. Raddrizza aspetta di trovare il documento o che si sposti un angolo. È `false` senza strumenti aperti |
 | `canRedo`     | `boolean`                                    | Se c’è un cambiamento da ripristinare                                                                                                                                                                |
@@ -125,4 +125,4 @@ In Vue e React il visualizzatore esiste solo dopo il montaggio del componente, q
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `'empty'` senza `src`, `'loading'` durante il caricamento, `'ready'` quando è visualizzata, e `'error'` se non si è potuta caricare                                                                  |
 | `zoom`        | `number`                                     | Pixel dello schermo per pixel dell’immagine                                                                                                                                                          |
 
-Con una `rotation` di 90 o 270, l’immagine visualizzata, e il risultato di Applica, hanno larghezza e altezza di `image` scambiate. [`maxOutputSize`](./options#maxoutputsize) può rendere il risultato più piccolo.
+Con una `rotation` di 90 o 270, l’immagine visualizzata, e il risultato modificato, hanno larghezza e altezza di `image` scambiate. [`maxOutputSize`](./options#maxoutputsize) può rendere il risultato più piccolo.

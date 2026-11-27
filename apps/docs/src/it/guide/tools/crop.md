@@ -15,7 +15,7 @@ La foto di un documento mostra spesso il tavolo, una mano o altri fogli intorno.
 2. Trascina gli angoli finché il rettangolo non inquadra il documento. Il pannello di Ritaglia ha i pulsanti dello zoom, così puoi ingrandire per posizionarli con precisione.
 3. Premi Fatto, o `Invio`, per aggiungere il ritaglio ai cambiamenti. Annulla questo strumento, o `Esc`, chiude Ritaglia senza cambiare nulla.
 
-Mentre Ritaglia è aperto, l’immagine appare come sarà il risultato, con Regola e Pulisci compresi. Il ritaglio è un cambiamento come gli altri: Annulla l’ultima azione lo toglie, e Applica lo rende permanente.
+Mentre Ritaglia è aperto, l’immagine appare come sarà il risultato, con Regola e Pulisci compresi. Il ritaglio è un cambiamento come gli altri: si toglie con Annulla l’ultima azione e diventa permanente quando premi Applica.
 
 ## Maniglie d’angolo
 

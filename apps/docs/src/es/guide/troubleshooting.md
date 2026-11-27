@@ -5,7 +5,7 @@ description: Qué hacer cuando el visor de PaperPic no tiene altura ni estilos, 
 
 # Solución de problemas
 
-Casi todos los problemas con PaperPic vienen de su configuración, y no de la imagen. Busca lo que ves, y debajo está el arreglo.
+Casi todos los problemas con PaperPic vienen de su configuración, y no de la imagen. Busca el síntoma y, debajo, encontrarás la solución.
 
 ## El visor es una franja fina, o no se ve {#no-height}
 
@@ -36,7 +36,7 @@ El worker no ha arrancado, así que la edición se hace en el hilo principal. Si
 
 El panel de red del navegador muestra si la página ha pedido el archivo del worker, cuyo nombre empieza por `worker`.
 
-## Aplicar falla con una foto grande {#too-large}
+## Fallo al aplicar con una foto grande {#too-large}
 
 El `error` dice `The browser could not read an image of …`, o `could not save an image of …`. Los navegadores limitan el tamaño de un canvas, y Safari en iOS más que ninguno. Pon [`maxOutputSize`](../reference/options#maxoutputsize), por ejemplo a 3000 píxeles, que mantiene legibles los documentos.
 

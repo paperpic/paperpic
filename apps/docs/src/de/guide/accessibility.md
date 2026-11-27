@@ -32,13 +32,13 @@ Unter macOS funktioniert `Cmd` wie `Strg`. Mit dem Fokus auf einer Schaltfläche
 
 - **Werkzeugleiste und Bearbeitungsleiste.** Tab erreicht jede Leiste, und darin wechseln die Pfeiltasten zwischen den Schaltflächen, mit `Pos1` und `Ende` für die erste und die letzte.
 - **Eckgriffe.** Bei offenem Zuschneiden oder Begradigen wechselt Tab zwischen den Griffen, und die Pfeiltasten bewegen den fokussierten um 1 Bildschirmpixel, mit Umschalt um 10. Screenreader hören diese Tasten, und dass die Eingabetaste abschließt, in der Beschreibung jedes Griffs.
-- **Skalen.** Die Skalen von Anpassen und Bereinigen sind native Schieberegler: Die Pfeiltasten, `Bild auf`, `Bild ab`, `Pos1` und `Ende` bewegen sie. `Enter` behält den Wert, wie Fertig, und `Esc` schließt das Werkzeug ohne ihn.
+- **Skalen.** Die Skalen von Anpassen und Bereinigen sind native Schieberegler: Die Pfeiltasten, `Bild auf`, `Bild ab`, `Pos1` und `Ende` bewegen sie. `Enter` behält den Wert, wie die Schaltfläche Fertig, und `Esc` schließt das Werkzeug ohne ihn.
 
 ## Screenreader
 
 - Das Bild hat die Rolle eines Bildes, mit `alt` als Namen. Ohne `alt` überspringen Screenreader es.
 - Werkzeugleiste und Bearbeitungsleiste haben eigene Namen, etwa „Bildsteuerung“ und „Bearbeitungssteuerung“.
-- Eine Ansage meldet, was der Nutzer nicht allein am Fokus erkennt: das Laden des Bildes, die Zoomstufe, den Beginn des Bearbeitungsmodus, ein Dokument, das Begradigen findet, eine ausgewählte Ecke und die Position einer verschobenen Ecke, den Wert einer Skala, das Ergebnis von Übernehmen und jeden Fehler.
+- Eine Ansage meldet, was der Nutzer nicht allein am Fokus erkennt: das Laden des Bildes, die Zoomstufe, den Beginn des Bearbeitungsmodus, ein Dokument, das Begradigen findet, eine ausgewählte Ecke und die Position einer verschobenen Ecke, den Wert einer Skala, das Ergebnis des Übernehmens und jeden Fehler.
 - Die Finishs von Bereinigen sind Schaltflächen, die sagen, ob sie gedrückt sind. Ein Werkzeug in Verwendung, das auf dem Bildschirm ein Punkt markiert, wird als „Aktiv“ beschrieben. In Schwarzweiß wird Anpassen mit dem Grund beschrieben, warum es deaktiviert ist.
 
 ## Touchscreens

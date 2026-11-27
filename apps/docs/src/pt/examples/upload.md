@@ -5,7 +5,7 @@ description: Um exemplo completo que envia ao seu servidor a imagem editada no P
 
 # Enviar para um servidor
 
-O visualizador mostra o resultado do Aplicar na hora, mas salvá-lo é tarefa do seu app. Este exemplo envia a imagem editada para o seu servidor e conta ao usuário como foi.
+O visualizador mostra o resultado assim que as alterações são aplicadas, mas salvá-lo é tarefa do seu app. Este exemplo envia a imagem editada para o seu servidor e conta ao usuário como foi.
 
 Esta função envia a imagem como arquivo num formulário, e falha quando o servidor não a aceita:
 
@@ -20,7 +20,7 @@ async function upload(blob: Blob, type: string) {
 }
 ```
 
-O visualizador a chama no Aplicar, e uma linha de status informa o resultado:
+O visualizador a chama ao aplicar as alterações, e uma linha de status informa o resultado:
 
 :::tabs key:framework
 == JavaScript
@@ -126,5 +126,5 @@ export function Invoice() {
 
 - `role="status"` faz os leitores de tela anunciarem o resultado do envio.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantém o arquivo pequeno. Os documentos continuam legíveis com 3000 pixels no lado mais longo.
-- Depois do Aplicar, o histórico fica vazio, então o usuário não pode desfazer até a imagem anterior. Para oferecer um botão de tentar de novo, guarde o último `blob` e `type` e chame `upload` de novo.
+- Depois de aplicar as alterações, o histórico fica vazio, então o usuário não consegue voltar à imagem anterior com Desfazer. Para oferecer um botão de tentar de novo, guarde o último `blob` e `type` e chame `upload` de novo.
 - O servidor recebe PNG para um documento em preto e branco, e senão o formato da imagem original quando é JPEG, PNG ou WebP. Veja [Salvar o resultado](../guide/saving#format) para saber como o PaperPic reconhece o formato e para escolher outro.

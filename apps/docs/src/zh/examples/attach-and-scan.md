@@ -198,5 +198,5 @@ export function AttachDocument() {
 - 每次选择后清空 input，用户就能再次选择同一张照片，例如在应用之后重新开始。
 - 照片加载后，查看器会进入编辑模式，用户可以直接使用矫正或清理。去掉 `load` 监听器即可先显示照片。
 - `phase: 'load'` 能把浏览器无法打开的文件（例如 Safari 之外的 HEIC 照片）与编辑失败区分开。[加载图片](../guide/loading#formats)列出了支持的格式。
-- 在应用调用 `upload` 之前，照片一直留在浏览器中。PaperPic 不会自行发送任何内容。
+- 在用户应用修改、你的代码调用 `upload` 之前，照片一直留在浏览器中。PaperPic 不会自行发送任何内容。
 - [`maxOutputSize`](../reference/options#maxoutputsize) 让上传保持小巧。手机照片通常有 1200 万像素或更多，而文档在最长边 3000 像素时仍然清晰可读。

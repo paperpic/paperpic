@@ -44,7 +44,7 @@ Mit `toolbar: false` sind die Werkzeugleiste und die Bearbeitungsleiste ausgeble
 
 ## Schreibgeschützter Viewer {#read-only}
 
-Mit `editable: false` verschwindet die Schaltfläche Bearbeiten, und die Werkzeugleiste bekommt zwei Schaltflächen, die das Bild drehen. Diese Drehung ändert nur die Anzeige, und nichts wird gespeichert: Herunterladen speichert das Bild ohne sie. Nutze das für Dokumente, die man lesen, aber nicht ändern soll, etwa die Anhänge einer Akte.
+Mit `editable: false` verschwindet die Schaltfläche Bearbeiten, und die Werkzeugleiste bekommt zwei Schaltflächen, die das Bild drehen. Diese Drehung ändert nur die Anzeige, und nichts wird gespeichert: die Schaltfläche Herunterladen speichert das Bild ohne sie. Nutze das für Dokumente, die man lesen, aber nicht ändern soll, etwa die Anhänge einer Akte.
 
 :::tabs key:framework
 == JavaScript

@@ -36,7 +36,7 @@ Der Worker ist nicht gestartet, also läuft die Bearbeitung im Hauptthread. Sie 
 
 Das Netzwerk-Panel des Browsers zeigt, ob die Seite die Datei des Workers angefordert hat, deren Name mit `worker` beginnt.
 
-## Übernehmen schlägt bei einem großen Foto fehl {#too-large}
+## Das Übernehmen schlägt bei einem großen Foto fehl {#too-large}
 
 Der `error` meldet `The browser could not read an image of …` oder `could not save an image of …`. Browser begrenzen die Größe eines Canvas, Safari auf iOS am stärksten. Setze [`maxOutputSize`](../reference/options#maxoutputsize), etwa auf 3000 Pixel, wobei Dokumente lesbar bleiben.
 

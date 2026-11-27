@@ -43,7 +43,7 @@ PaperPic öffnet jedes Format, das der Browser in einem `<img>` anzeigt:
 - **SVG** öffnet sich, wenn die Datei die Attribute `width` und `height` hat. Ohne sie hat sie keine Größe, und das Laden schlägt fehl.
 - **HEIC**, das Format von iPhone-Fotos, öffnet sich nur in Safari. Wählt ein iPhone-Nutzer ein Foto mit `<input type="file" accept="image/*">`, gibt iOS der Seite meist eine JPEG-Kopie. Eine HEIC-Datei, die auf anderem Weg in einen anderen Browser gelangt, lädt nicht.
 
-Smartphones speichern ein Foto oft seitlich, mit einem EXIF-Tag, das sagt, wie es zu drehen ist. PaperPic zeigt das Foto so, wie das Tag sagt, wie ein `<img>` es tut, und das Ergebnis von Übernehmen kommt aufrecht heraus.
+Smartphones speichern ein Foto oft seitlich, mit einem EXIF-Tag, das sagt, wie es zu drehen ist. PaperPic zeigt das Foto so, wie das Tag sagt, wie ein `<img>` es tut, und das übernommene Ergebnis ist aufrecht.
 
 ## Wissen, wann es lädt oder fehlschlägt
 
@@ -126,5 +126,5 @@ Der `status` von [`getState()`](../reference/state) gibt jederzeit dieselbe Antw
 ## Das Bild wechseln oder neu laden
 
 - **Ein neues `src`** lädt das neue Bild. Während der Nutzer bearbeitet, verwirft es die Bearbeitungen.
-- **Dasselbe `src`** tut nichts, sodass das Ergebnis von Übernehmen angezeigt bleibt.
-- **[`reload()`](../reference/methods#reload)** lädt das aktuelle `src` erneut, was nach Übernehmen das Original zurückbringt. Während der Nutzer bearbeitet, verwirft es auch die Änderungen.
+- **Dasselbe `src`** tut nichts, sodass das übernommene Ergebnis angezeigt bleibt.
+- **[`reload()`](../reference/methods#reload)** lädt das aktuelle `src` erneut, was nach dem Übernehmen das Original zurückbringt. Während der Nutzer bearbeitet, verwirft es auch die Änderungen.

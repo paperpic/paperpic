@@ -7,7 +7,7 @@ description: 一个完整示例：隐藏 PaperPic 的内置工具栏，用你自
 
 当查看器的控件需要与界面的其余部分一致时，用 `toolbar: false` 隐藏内置控件，并从你自己的按钮调用[方法](../reference/methods)。这个示例提供缩放、“矫正”、“撤销”和“应用”，并且只在按钮能起作用时才启用它。
 
-[`change`](../reference/events#change) 事件在每次操作之后携带[状态](../reference/state)，包括由你的按钮发起的操作。`load` 和 `error` 报告图片到达或应用失败的时刻。
+[`change`](../reference/events#change) 事件在每次操作之后携带[状态](../reference/state)，包括由你的按钮发起的操作。`load` 和 `error` 报告图片到达或应用修改失败的时刻。
 
 :::tabs key:framework
 == JavaScript
@@ -221,7 +221,7 @@ export function Receipt() {
 
 ## 自定义滑块 {#slider}
 
-为清理做一个自定义滑块时，先打开该工具。之后每次移动都调用 `setFinish()`，它会改变清理显示的内容，而 `confirmTool()` 会把最后的值保存为一次编辑。这里的完成还会应用结果，取消会退出编辑模式，因此这些控件就是全部界面。
+为清理做一个自定义滑块时，先打开该工具。之后每次移动都调用 `setFinish()`，它会改变清理显示的内容，而 `confirmTool()` 会把最后的值保存为一次编辑。这里的“完成”按钮还会应用结果，“取消”按钮会退出编辑模式，因此这些控件就是全部界面。
 
 :::tabs key:framework
 == JavaScript

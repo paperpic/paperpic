@@ -5,11 +5,11 @@ description: Dónde hace PaperPic su trabajo, qué necesitan los empaquetadores,
 
 # Rendimiento y compatibilidad
 
-Las fotos de móvil tienen 12 megapíxeles o más, y editarlas cuesta trabajo de verdad. Esta página explica dónde se hace ese trabajo, qué necesitan tu build y tu servidor, y qué navegadores admite PaperPic.
+Las fotos de móvil tienen 12 megapíxeles o más, y editarlas exige mucho cálculo. Esta página explica dónde se hace ese trabajo, qué necesitan tu build y tu servidor, y qué navegadores admite PaperPic.
 
 ## Un Web Worker hace el trabajo
 
-El blanco y negro y Enderezar tardan alrededor de un segundo y medio con una foto de 12 megapíxeles en un móvil reciente, como muestran los [tiempos medidos](#measurements). En el hilo principal, la página se congelaría ese tiempo. PaperPic los ejecuta en un Web Worker, así que la página sigue respondiendo mientras se aplica. La búsqueda del documento también se hace ahí.
+El blanco y negro y Enderezar tardan alrededor de un segundo y medio con una foto de 12 megapíxeles en un móvil reciente, como muestran los [tiempos medidos](#measurements). En el hilo principal, la página se congelaría ese tiempo. PaperPic los ejecuta en un Web Worker, así que la página no se bloquea mientras se aplican los cambios. La búsqueda del documento también se hace ahí.
 
 El worker viene dentro del paquete y arranca con el estándar `new Worker(new URL(…, import.meta.url))`, que empaquetadores como Vite y webpack 5 detectan solos, sin configuración. Si el worker no puede arrancar, la edición se hace en el hilo principal: sigue funcionando, pero la página puede congelarse un momento con imágenes grandes.
 
@@ -18,7 +18,7 @@ El worker viene dentro del paquete y arranca con el estándar `new Worker(new UR
 Con una Content Security Policy, permite:
 
 - `worker-src 'self'`, para el worker.
-- `img-src blob:`, porque el visor muestra los archivos adjuntos y los resultados de Aplicar con URLs `blob:`.
+- `img-src blob:`, porque el visor muestra los archivos adjuntos y los resultados editados con URLs `blob:`.
 - `paperpic` en `trusted-types`, si tu política limita las políticas de Trusted Types, porque los iconos de los botones pasan por esa política.
 - Una política `default` de Trusted Types cuyo `createScriptURL` acepte la URL del worker, si tu política exige Trusted Types. Los empaquetadores solo detectan un worker creado con una URL normal, que Trusted Types bloquea, así que sin esa política la edición se hace en el hilo principal.
 
@@ -26,11 +26,11 @@ Con una Content Security Policy, permite:
 
 - **Durante la edición**, la vista previa trabaja sobre una copia de unos 2 megapíxeles, así que las reglas y las herramientas van fluidas con cualquier foto.
 - **Al aplicar**, cada cambio se calcula a resolución completa. Las fotos grandes tardan unos segundos, así que el visor muestra un mensaje y bloquea los controles mientras tanto.
-- **Para ahorrar tiempo y memoria**, usa [`maxOutputSize`](../reference/options#maxoutputsize). Un límite como 2000 o 3000 píxeles mantiene legibles los documentos, y hace Aplicar más rápido y los archivos más pequeños.
+- **Para ahorrar tiempo y memoria**, usa [`maxOutputSize`](../reference/options#maxoutputsize). Un límite como 2000 o 3000 píxeles mantiene legibles los documentos, y hace que aplicar los cambios sea más rápido y que los archivos sean más pequeños.
 
 ## Tiempos medidos {#measurements}
 
-Cada paso de Aplicar, en el worker, en un Pixel 10 Pro con Chrome 156:
+Lo que tarda cada paso al aplicar los cambios, en el worker, en un Pixel 10 Pro con Chrome 156:
 
 | Paso                         | 2 MP   | 12 MP  | 37,5 MP |
 | ---------------------------- | ------ | ------ | ------- |

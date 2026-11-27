@@ -83,7 +83,7 @@ export const PAPERPIC_LABELS: Record<string, PaperPicLabels> = {
     brightness: 'Brillo',
     cancel: 'Cancelar',
     cancelTool: 'Cancelar esta herramienta',
-    confirm: 'Hecho',
+    confirm: 'Aceptar',
     contrast: 'Contraste',
     cornerBottomLeft: 'Esquina inferior izquierda',
     cornerBottomRight: 'Esquina inferior derecha',

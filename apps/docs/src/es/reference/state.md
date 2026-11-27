@@ -5,14 +5,14 @@ description: Lo que devuelve getState() y envía el evento change, como el estad
 
 # Estado
 
-El estado es una foto del visor: si hay imagen, el modo, el zoom, la herramienta abierta y si hay cambios para aplicar. Puedes obtenerlo de dos formas, y las dos dan el mismo objeto [`PaperPicState`](./types#paperpicstate):
+El estado es una instantánea del visor: si hay imagen, el modo, el zoom, la herramienta abierta y si hay cambios para aplicar. Puedes obtenerlo de dos formas, y las dos dan el mismo objeto [`PaperPicState`](./types#paperpicstate):
 
 - [`getState()`](./methods#getstate) lo devuelve cuando se lo pides.
 - El evento [`change`](./events#change) lo envía cada vez que el usuario o un método lo cambian.
 
 ## Sincronizar tus controles {#in-step}
 
-`change` no avisa de la imagen. Una imagen cargada llega con [`load`](./events#load), y una carga o un Aplicar que fallan llegan con [`error`](./events#error). Para sincronizar tus propios controles, como un botón Aplicar, lee el estado al empezar, tómalo de cada `change` y vuelve a leerlo con `load` y `error`:
+`change` no avisa de la imagen. Una imagen cargada llega con [`load`](./events#load), y una carga o una aplicación de cambios que fallan llegan con [`error`](./events#error). Para sincronizar tus propios controles, como un botón Aplicar, lee el estado al empezar, tómalo de cada `change` y vuelve a leerlo con `load` y `error`:
 
 :::tabs key:framework
 == JavaScript
@@ -109,7 +109,7 @@ En Vue y React el visor solo existe cuando el componente se monta, así que el e
 | ------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeTool`  | [`ToolId \| null`](./types#toolid)           | La herramienta abierta, como `'crop'` o `'adjust'`, o `null`                                                                                                                                                          |
 | `adjustments` | `{ brightness, contrast }`                   | El brillo y el contraste, cada uno de -1 a 1. No se aplican en blanco y negro. Con Ajustar abierta, son los valores de su panel                                                                                       |
-| `busy`        | `boolean`                                    | Si Aplicar está en marcha                                                                                                                                                                                             |
+| `busy`        | `boolean`                                    | Si se están aplicando los cambios                                                                                                                                                                                     |
 | `canApply`    | `boolean`                                    | Si hay cambios para aplicar. Los giros y volteos que se anulan entre sí no cuentan como cambio                                                                                                                        |
 | `canConfirm`  | `boolean`                                    | Si [`confirmTool()`](./methods#confirmtool) puede conservar lo que muestra la herramienta abierta. Enderezar espera a encontrar el documento o a que se mueva una esquina. Es `false` sin ninguna herramienta abierta |
 | `canRedo`     | `boolean`                                    | Si hay un cambio para recuperar                                                                                                                                                                                       |
@@ -125,4 +125,4 @@ En Vue y React el visor solo existe cuando el componente se monta, así que el e
 | `status`      | `'empty' \| 'loading' \| 'ready' \| 'error'` | `'empty'` sin `src`, `'loading'` mientras carga, `'ready'` cuando está en pantalla, y `'error'` si no se pudo cargar                                                                                                  |
 | `zoom`        | `number`                                     | Píxeles de pantalla por cada píxel de la imagen                                                                                                                                                                       |
 
-Con un `rotation` de 90 o 270, la imagen en pantalla, y el resultado de Aplicar, tienen el ancho y el alto de `image` intercambiados. [`maxOutputSize`](./options#maxoutputsize) puede hacer el resultado más pequeño.
+Con un `rotation` de 90 o 270, la imagen en pantalla, y el resultado editado, tienen el ancho y el alto de `image` intercambiados. [`maxOutputSize`](./options#maxoutputsize) puede hacer el resultado más pequeño.

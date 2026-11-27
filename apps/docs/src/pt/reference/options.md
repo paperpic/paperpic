@@ -78,7 +78,7 @@ Se a roda do mouse dá zoom na imagem. Desative quando o visualizador estiver nu
 - **Tipo:** `boolean`
 - **Padrão:** `false`
 
-Se a barra de ferramentas tem um botão que salva a imagem na tela: o resultado do último Aplicar, ou então a imagem original. O botão fica oculto durante a edição. O evento [`download`](./events#download) permite salvar o arquivo de outro jeito. Antes do primeiro Aplicar, um `src` de outra origem abre no navegador em vez de ser salvo: [Salvar o resultado](../guide/saving#download) explica o que fazer.
+Se a barra de ferramentas tem um botão que salva a imagem na tela: o último resultado editado, ou então a imagem original. O botão fica oculto durante a edição. O evento [`download`](./events#download) permite salvar o arquivo de outro jeito. Enquanto nenhuma alteração for aplicada, um `src` de outra origem abre no navegador em vez de ser salvo: [Salvar o resultado](../guide/saving#download) explica o que fazer.
 
 ### `labels`
 
@@ -143,7 +143,7 @@ O lado mais longo da imagem editada, em pixels. Um resultado maior é reduzido.
 - **Tipo:** `string`
 - **Padrão:** o nome da imagem original
 
-O nome do arquivo salvo. Escreva-o sem extensão: o PaperPic adiciona a do formato, então um `receipt.jpg` em preto e branco é salvo como `receipt.png`. Quando a original não tem nome, como um `Blob`, o arquivo se chama `image`. Antes do primeiro Aplicar, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
+O nome do arquivo salvo. Escreva-o sem extensão: o PaperPic adiciona a do formato, então um `receipt.jpg` em preto e branco é salvo como `receipt.png`. Quando a original não tem nome, como um `Blob`, o arquivo se chama `image`. Enquanto nenhuma alteração for aplicada, uma URL sem extensão é salva sem extensão, porque o formato dela é desconhecido.
 
 ## Ferramentas
 

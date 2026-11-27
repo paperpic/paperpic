@@ -187,5 +187,5 @@ export function PhotoEditor() {
 
 - Il visualizzatore può stare nella finestra di dialogo mentre è chiusa. In quel momento non ha dimensioni, e adatta l’immagine appena la finestra si apre.
 - Aprire la finestra avvia la modalità di modifica. Se la foto è ancora in caricamento, la avvia invece l’evento `load`.
-- Applica e Annulla chiudono la modifica, e il [`change`](../reference/events#change) che segue chiude la finestra. Se Applica fallisce, la modifica resta aperta, e la finestra anche.
-- Ogni apertura modifica l’immagine visualizzata, che dopo un Applica è il risultato. Per ripartire ogni volta dall’originale, chiama [`reload()`](../reference/methods#reload) prima di `edit()`.
+- I pulsanti Applica e Annulla chiudono la modifica, e il [`change`](../reference/events#change) che segue chiude la finestra. Se l’applicazione delle modifiche fallisce, la modifica resta aperta, e la finestra anche.
+- Ogni apertura modifica l’immagine visualizzata, che è il risultato se le modifiche sono già state applicate. Per ripartire ogni volta dall’originale, chiama [`reload()`](../reference/methods#reload) prima di `edit()`.

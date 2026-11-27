@@ -13,9 +13,9 @@ La foto de un documento suele mostrar la mesa, una mano u otros papeles alrededo
 
 1. Pulsa Editar y luego Recortar. Aparece un rectángulo dentro de la imagen, con un tirador en cada esquina.
 2. Arrastra las esquinas hasta que el rectángulo enmarque el documento. El panel de Recortar tiene botones de zoom, así que puedes acercarte para colocarlas con precisión.
-3. Pulsa Hecho, o `Enter`, para añadir el recorte a los cambios. Cancelar esta herramienta, o `Esc`, cierra Recortar sin cambiar nada.
+3. Pulsa Aceptar, o `Enter`, para añadir el recorte a los cambios. Cancelar esta herramienta, o `Esc`, cierra Recortar sin cambiar nada.
 
-Mientras Recortar está abierta, la imagen se ve como quedará el resultado, con Ajustar y Limpiar incluidas. El recorte es un cambio como cualquier otro: Deshacer lo quita y Aplicar lo hace permanente.
+Mientras Recortar está abierta, la imagen se ve como quedará el resultado, con Ajustar y Limpiar incluidas. El recorte es un cambio como cualquier otro: se quita con Deshacer y se hace permanente al pulsar Aplicar.
 
 ## Tiradores de esquina
 

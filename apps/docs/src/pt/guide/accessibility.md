@@ -32,13 +32,13 @@ No macOS, `Cmd` funciona como `Ctrl`. Com o foco num botão, `Enter` pressiona e
 
 - **Barra de ferramentas e barra de edição.** Tab chega a cada barra, e dentro dela as setas passam de um botão para outro, com `Home` e `End` para o primeiro e o último.
 - **Alças de canto.** Com Recortar ou Endireitar aberto, Tab passa de uma alça para outra, e as setas movem a que tem foco 1 pixel da tela, ou 10 com Shift. Os leitores de tela ouvem essas teclas, e que Enter conclui, na descrição de cada alça.
-- **Réguas.** As réguas do Ajustar e do Limpar são controles deslizantes nativos: as setas, `Page Up`, `Page Down`, `Home` e `End` as movem. `Enter` mantém o valor, como Concluído, e `Esc` fecha a ferramenta sem ele.
+- **Réguas.** As réguas do Ajustar e do Limpar são controles deslizantes nativos: as setas, `Page Up`, `Page Down`, `Home` e `End` as movem. `Enter` mantém o valor, como o botão Concluído, e `Esc` fecha a ferramenta sem ele.
 
 ## Leitores de tela
 
 - A imagem tem o papel de imagem, com `alt` como nome. Sem `alt`, os leitores de tela a ignoram.
 - A barra de ferramentas e a barra de edição têm nome próprio, como "Controles da imagem" e "Controles de edição".
-- Um anúncio informa o que o usuário não percebe só pelo foco: o carregamento da imagem, o nível de zoom, o início do modo de edição, um documento que Endireitar encontra, um canto selecionado e a posição de um canto movido, o valor de uma régua, o resultado do Aplicar e qualquer falha.
+- Um anúncio informa o que o usuário não percebe só pelo foco: o carregamento da imagem, o nível de zoom, o início do modo de edição, um documento que Endireitar encontra, um canto selecionado e a posição de um canto movido, o valor de uma régua, o resultado ao aplicar as alterações e qualquer falha.
 - Os acabamentos do Limpar são botões que dizem se estão pressionados. Uma ferramenta em uso, que um ponto marca na tela, é descrita como “Em uso”. Em preto e branco, Ajustar é descrito com o motivo de estar desativado.
 
 ## Telas sensíveis ao toque

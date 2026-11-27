@@ -96,7 +96,7 @@ Le core se charge aussi depuis un CDN qui sert les fichiers du paquet tels quels
 </script>
 ```
 
-Les navigateurs ne démarrent un worker que depuis l’origine de la page, donc avec le paquet sur un CDN la modification s’exécute sur le thread principal : elle fonctionne, mais les grandes photos figent la page un instant pendant Appliquer. Servez les fichiers depuis votre propre origine, ou utilisez un bundler, pour garder le worker. Les composants Vue et React ont besoin d’un bundler.
+Les navigateurs ne démarrent un worker que depuis l’origine de la page, donc avec le paquet sur un CDN la modification s’exécute sur le thread principal : elle fonctionne, mais les grandes photos figent la page un instant pendant l’application des modifications. Servez les fichiers depuis votre propre origine, ou utilisez un bundler, pour garder le worker. Les composants Vue et React ont besoin d’un bundler.
 
 ## Afficher une image
 

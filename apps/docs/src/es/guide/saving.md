@@ -9,7 +9,7 @@ PaperPic nunca sube ni guarda nada. Cuando el usuario aplica los cambios, entreg
 
 ## El evento `apply`
 
-Aplicar calcula el resultado y emite [`apply`](../reference/events#apply) con:
+Al aplicar los cambios, PaperPic calcula el resultado y emite [`apply`](../reference/events#apply) con:
 
 | Campo             | Tipo     | Descripción                    |
 | ----------------- | -------- | ------------------------------ |
@@ -38,7 +38,7 @@ pic.on('apply', ({ blob, type }) => upload(blob, type))
 
 :::
 
-Después de Aplicar, el resultado es la imagen en pantalla, el historial está vacío y el siguiente cambio parte del resultado. [`reload()`](../reference/methods#reload) recupera el `src` original.
+Después de aplicar los cambios, el resultado es la imagen en pantalla, el historial está vacío y el siguiente cambio parte del resultado. [`reload()`](../reference/methods#reload) recupera el `src` original.
 
 ## Subirlo
 
@@ -129,19 +129,19 @@ const pic = new PaperPic(container, {
 
 La vista previa durante la edición tiene como mucho unos 2 megapíxeles, así que `maxOutputSize` solo cambia el resultado.
 
-Safari en iOS limita un canvas a unos 16 megapíxeles, y los iPhone recientes hacen fotos de 24 megapíxeles o más, así que Aplicar puede fallar a resolución completa. Si tus usuarios editan fotos desde un iPhone, fija `maxOutputSize`. 3000 píxeles mantienen los documentos legibles y quedan muy por debajo del límite. [Aplicar falla con una foto grande](./troubleshooting#too-large) muestra el error.
+Safari en iOS limita un canvas a unos 16 megapíxeles, y los iPhone recientes hacen fotos de 24 megapíxeles o más, así que aplicar los cambios a resolución completa puede fallar. Si tus usuarios editan fotos desde un iPhone, fija `maxOutputSize`. 3000 píxeles mantienen los documentos legibles y quedan muy por debajo del límite. [Fallo al aplicar con una foto grande](./troubleshooting#too-large) muestra el error.
 
 ## Metadatos {#metadata}
 
-El resultado de Aplicar no lleva metadatos. PaperPic dibuja la imagen en un canvas, así que los datos EXIF de la foto, como la posición GPS, la cámara y la fecha, desaparecen. El botón de descarga guarda la imagen original tal cual hasta el primer Aplicar, con sus metadatos.
+El resultado no lleva metadatos. PaperPic dibuja la imagen en un canvas, así que los datos EXIF de la foto, como la posición GPS, la cámara y la fecha, desaparecen. El botón de descarga guarda la imagen original tal cual, con sus metadatos, mientras no se haya aplicado ningún cambio.
 
 ## El botón de descarga {#download}
 
-[`download: true`](../reference/options#download) añade un botón al final de la barra de herramientas que guarda la imagen en pantalla: el resultado del último Aplicar, o si no, la imagen original tal cual. Se oculta durante la edición, porque los cambios aún no se han aplicado. [`download()`](../reference/methods#download) hace lo mismo desde el código, con o sin el botón. El menú contextual del navegador no se abre sobre el visor, así que este botón es la forma de guardar la imagen desde él.
+[`download: true`](../reference/options#download) añade un botón al final de la barra de herramientas que guarda la imagen en pantalla: el último resultado editado, o si no, la imagen original tal cual. Se oculta durante la edición, porque los cambios aún no se han aplicado. [`download()`](../reference/methods#download) hace lo mismo desde el código, con o sin el botón. El menú contextual del navegador no se abre sobre el visor, así que este botón es la forma de guardar la imagen desde él.
 
-El archivo conserva el nombre de la imagen original y toma la extensión de su formato, así que un `receipt.jpg` en blanco y negro se guarda como `receipt.png`. [`filename`](../reference/options#filename) fija otro nombre. Sin ningún nombre, como en un `Blob`, el archivo se llama `image`. Antes del primer Aplicar, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
+El archivo conserva el nombre de la imagen original y toma la extensión de su formato, así que un `receipt.jpg` en blanco y negro se guarda como `receipt.png`. [`filename`](../reference/options#filename) fija otro nombre. Sin ningún nombre, como en un `Blob`, el archivo se llama `image`. Si aún no se ha aplicado ningún cambio, una URL sin extensión se guarda sin ella, porque no se sabe su formato.
 
-Con un `src` de otro origen, los navegadores no guardan el archivo antes del primer Aplicar: abren la imagen, y el usuario sale de tu página. Pasa la imagen como un `Blob`, como muestra [Cargar imágenes](./loading#fetch), o guárdala tú en el evento `download`.
+Con un `src` de otro origen, los navegadores no guardan el archivo mientras no se haya aplicado ningún cambio: abren la imagen, y el usuario sale de tu página. Pasa la imagen como un `Blob`, como muestra [Cargar imágenes](./loading#fetch), o guárdala tú en el evento `download`.
 
 ### Guardarlo de otra forma
 

@@ -5,7 +5,7 @@ description: Un esempio completo che invia al tuo server l’immagine modificata
 
 # Caricare su un server
 
-Il visualizzatore mostra subito il risultato di Applica, ma salvarlo spetta alla tua app. Questo esempio invia l’immagine modificata al tuo server e dice all’utente com’è andata.
+Il visualizzatore mostra il risultato appena si applicano le modifiche, ma salvarlo spetta alla tua app. Questo esempio invia l’immagine modificata al tuo server e dice all’utente com’è andata.
 
 Questa funzione invia l’immagine come file in un modulo, e fallisce quando il server non la accetta:
 
@@ -20,7 +20,7 @@ async function upload(blob: Blob, type: string) {
 }
 ```
 
-Il visualizzatore la chiama ad Applica, e una riga di stato riporta il risultato:
+Il visualizzatore la chiama quando si applicano le modifiche, e una riga di stato riporta il risultato:
 
 :::tabs key:framework
 == JavaScript
@@ -126,5 +126,5 @@ export function Invoice() {
 
 - `role="status"` fa annunciare ai lettori di schermo il risultato del caricamento.
 - [`maxOutputSize`](../reference/options#maxoutputsize) mantiene il file piccolo. I documenti restano leggibili con 3000 pixel sul lato più lungo.
-- Dopo Applica la cronologia è vuota, quindi l’utente non può tornare all’immagine precedente. Per offrire un pulsante Riprova, conserva l’ultimo `blob` e `type` e chiama di nuovo `upload`.
+- Dopo aver applicato le modifiche la cronologia è vuota, quindi l’utente non può tornare all’immagine precedente. Per offrire un pulsante Riprova, conserva l’ultimo `blob` e `type` e chiama di nuovo `upload`.
 - Il server riceve PNG per un documento in bianco e nero, altrimenti il formato dell’immagine originale quando è JPEG, PNG o WebP. Vedi [Salvare il risultato](../guide/saving#format) per sapere come PaperPic riconosce il formato, e per sceglierne un altro.

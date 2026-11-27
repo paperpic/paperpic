@@ -13,7 +13,7 @@ Celulares costumam salvar a foto de um documento de lado ou de cabeça para baix
 
 Na barra de edição, Girar para a esquerda gira a imagem um quarto de volta no sentido anti-horário, como nas galerias de fotos. Toque duas vezes para meia volta, ou três vezes para um quarto de volta no sentido horário.
 
-Um giro é uma alteração: Desfazer o remove, e Aplicar o torna permanente. Quatro giros trazem a imagem de volta para onde estava, e então não há nada a aplicar.
+Um giro é uma alteração: ele é removido com Desfazer e se torna permanente ao tocar em Aplicar. Quatro giros trazem a imagem de volta para onde estava, e então não há nada a aplicar.
 
 Pelo código, [`rotate()`](../../reference/methods#rotate) gira no sentido horário com `1`, e no anti-horário com `-1`:
 

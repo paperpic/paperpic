@@ -20,7 +20,7 @@ Endireite o recibo primeiro e depois limpe-o.
 3. Escolha Cinza para uma imagem em cinza, ou Original para os tons da foto. A régua só funciona em preto e branco.
 4. Toque em Concluído para mantê-la como uma única alteração, ou em Cancelar esta ferramenta para deixar a imagem como estava.
 
-Quando Limpar já é uma alteração, ela abre de novo com o seu acabamento. Para desligá-la, escolha Original: as alterações feitas depois ficam. Desfazer, ao contrário, também removeria essas alterações.
+Se Limpar já está entre as alterações, ela abre de novo com o seu acabamento. Para desligá-la, escolha Original: as alterações feitas depois ficam. Com Desfazer, ao contrário, você também removeria essas alterações.
 
 Limpar sempre vem depois das outras alterações. Recortar mostra a imagem com o seu acabamento, como vai ficar. Endireitar a mostra sem o preto e branco, porque as bordas do papel são difíceis de achar numa página limpa, e mantém o cinza.
 

@@ -179,7 +179,7 @@ Começa a edição. Não faz nada se a imagem não estiver pronta ou se [`editab
 function rotate(direction?: 1 | -1): void
 ```
 
-Gira a imagem um quarto de volta: no sentido horário com `1`, o padrão, e no anti-horário com `-1`. Durante a edição, adiciona uma alteração que [`apply()`](#apply) torna permanente, e não faz nada com uma ferramenta aberta ou enquanto o Aplicar roda. Num visualizador somente leitura, muda só a exibição. Nos outros casos, não faz nada.
+Gira a imagem um quarto de volta: no sentido horário com `1`, o padrão, e no anti-horário com `-1`. Durante a edição, adiciona uma alteração que [`apply()`](#apply) torna permanente, e não faz nada com uma ferramenta aberta ou enquanto as alterações são aplicadas. Num visualizador somente leitura, muda só a exibição. Nos outros casos, não faz nada.
 
 ### `flip()`
 
@@ -261,7 +261,7 @@ Lança um `RangeError` se `color` não for uma [`RedactColor`](./types#redactcol
 function undo(): void
 ```
 
-Desfaz a última alteração. Não faz nada fora do modo de edição, com uma ferramenta aberta ou enquanto o Aplicar roda.
+Desfaz a última alteração. Não faz nada fora do modo de edição, com uma ferramenta aberta ou enquanto as alterações são aplicadas.
 
 ### `redo()`
 
@@ -269,7 +269,7 @@ Desfaz a última alteração. Não faz nada fora do modo de edição, com uma fe
 function redo(): void
 ```
 
-Traz de volta a última alteração desfeita. Não faz nada fora do modo de edição, com uma ferramenta aberta ou enquanto o Aplicar roda.
+Traz de volta a última alteração desfeita. Não faz nada fora do modo de edição, com uma ferramenta aberta ou enquanto as alterações são aplicadas.
 
 ### `apply()`
 
@@ -277,9 +277,9 @@ Traz de volta a última alteração desfeita. Não faz nada fora do modo de edi�
 function apply(): Promise<void>
 ```
 
-Aplica as alterações na resolução completa, ou em [`maxOutputSize`](./options#maxoutputsize). O resultado vira a imagem na tela, o histórico se esvazia, o visualizador volta ao modo de visualização, e o evento [`apply`](./events#apply) entrega o resultado. Aplicar não pode ser interrompido, e bloqueia os controles enquanto roda. Não faz nada fora do modo de edição, com uma ferramenta aberta, ou quando não há nada para aplicar.
+Aplica as alterações na resolução completa, ou em [`maxOutputSize`](./options#maxoutputsize). O resultado vira a imagem na tela, o histórico se esvazia, o visualizador volta ao modo de visualização, e o evento [`apply`](./events#apply) entrega o resultado. Depois de iniciada, a aplicação não pode ser interrompida, e bloqueia os controles enquanto roda. Não faz nada fora do modo de edição, com uma ferramenta aberta, ou quando não há nada para aplicar.
 
-Se falhar, o evento [`error`](./events#error) informa, e a edição continua aberta. A promise se resolve quando o Aplicar termina, mesmo se falhar: escute `error`, porque um `try/catch` não o detecta.
+Se falhar, o evento [`error`](./events#error) informa, e a edição continua aberta. A promise se resolve quando a aplicação termina, mesmo se falhar: escute `error`, porque um `try/catch` não o detecta.
 
 ### `cancel()`
 
@@ -287,7 +287,7 @@ Se falhar, o evento [`error`](./events#error) informa, e a edição continua abe
 function cancel(): void
 ```
 
-Descarta as alterações e volta ao modo de visualização. Não pergunta antes: quem pergunta são o botão Cancelar integrado e o `Esc`. Não faz nada enquanto o Aplicar roda.
+Descarta as alterações e volta ao modo de visualização. Não pergunta antes: quem pergunta são o botão Cancelar integrado e o `Esc`. Não faz nada enquanto as alterações são aplicadas.
 
 ## Imagem
 
@@ -297,7 +297,7 @@ Descarta as alterações e volta ao modo de visualização. Não pergunta antes:
 function download(): void
 ```
 
-Salva a imagem na tela como arquivo: o resultado do último Aplicar, ou então a imagem original. Funciona sem a opção [`download`](./options#download), que só mostra um botão. O evento [`download`](./events#download) vem antes e pode impedir o salvamento. Não faz nada durante a edição, porque as alterações ainda não foram aplicadas. Antes do primeiro Aplicar, um `src` de outra origem abre no navegador: veja [Salvar o resultado](../guide/saving#download).
+Salva a imagem na tela como arquivo: o último resultado editado, ou então a imagem original. Funciona sem a opção [`download`](./options#download), que só mostra um botão. O evento [`download`](./events#download) vem antes e pode impedir o salvamento. Não faz nada durante a edição, porque as alterações ainda não foram aplicadas. Enquanto nenhuma alteração for aplicada, um `src` de outra origem abre no navegador: veja [Salvar o resultado](../guide/saving#download).
 
 ### `reload()`
 
@@ -305,4 +305,4 @@ Salva a imagem na tela como arquivo: o resultado do último Aplicar, ou então a
 function reload(): void
 ```
 
-Carrega de novo o [`src`](./options#src) atual, o que traz de volta a original depois de um Aplicar. Durante a edição, descarta as alterações. Sem `src`, não faz nada.
+Carrega de novo o [`src`](./options#src) atual, o que traz de volta a original depois de aplicar as alterações. Durante a edição, descarta as alterações. Sem `src`, não faz nada.

@@ -19,7 +19,7 @@ Pour un `File` ou un `Blob`, PaperPic crée l’URL `blob:` dont il a besoin, et
 
 ## Images d’une autre origine, ou derrière une connexion {#fetch}
 
-PaperPic lit les pixels de l’image pour la modifier. Les navigateurs ne l’autorisent pour une image d’une autre origine que si elle arrive avec CORS, ce que PaperPic ne demande pas. Une telle image s’affiche, mais la modifier échoue : une [`error`](../reference/events#error) le signale dès qu’un changement a besoin de ses pixels, ou pendant Appliquer.
+PaperPic lit les pixels de l’image pour la modifier. Les navigateurs ne l’autorisent pour une image d’une autre origine que si elle arrive avec CORS, ce que PaperPic ne demande pas. Une telle image s’affiche, mais la modifier échoue : une [`error`](../reference/events#error) le signale dès qu’un changement a besoin de ses pixels, ou pendant l’application des modifications.
 
 Récupérez l’image vous-même, et passez le `Blob` comme `src`. Cela couvre aussi les images derrière une connexion, car votre requête porte les cookies de l’utilisateur :
 
@@ -43,7 +43,7 @@ PaperPic ouvre tout format que le navigateur affiche dans un `<img>` :
 - **SVG** s’ouvre quand le fichier a les attributs `width` et `height`. Sans eux, il n’a pas de taille, et le chargement échoue.
 - **HEIC**, le format des photos d’iPhone, ne s’ouvre que dans Safari. Quand un utilisateur d’iPhone choisit une photo avec `<input type="file" accept="image/*">`, iOS donne en général à la page une copie en JPEG. Un fichier HEIC qui arrive dans un autre navigateur par un autre chemin ne se charge pas.
 
-Les téléphones enregistrent souvent une photo de côté, avec une balise EXIF qui indique comment la tourner. PaperPic affiche la photo comme l’indique la balise, comme le fait un `<img>`, et le résultat de Appliquer sort droit.
+Les téléphones enregistrent souvent une photo de côté, avec une balise EXIF qui indique comment la tourner. PaperPic affiche la photo comme l’indique la balise, comme le fait un `<img>`, et le résultat appliqué sort droit.
 
 ## Savoir quand elle charge ou échoue
 
@@ -119,12 +119,12 @@ export function Invoice() {
 
 :::
 
-`load` est émis à chaque chargement d’un `src`, y compris avec [`reload()`](../reference/methods#reload), mais pas après Appliquer : le résultat arrive avec l’événement [`apply`](../reference/events#apply).
+`load` est émis à chaque chargement d’un `src`, y compris avec [`reload()`](../reference/methods#reload), mais pas après l’application des modifications : le résultat arrive avec l’événement [`apply`](../reference/events#apply).
 
 Le `status` de [`getState()`](../reference/state) donne la même réponse à tout moment : `'empty'`, `'loading'`, `'ready'` ou `'error'`.
 
 ## Changer ou recharger l’image
 
 - **Un nouveau `src`** charge la nouvelle image. Pendant que l’utilisateur modifie, il abandonne les modifications.
-- **Le même `src`** ne fait rien, si bien que le résultat de Appliquer reste affiché.
-- **[`reload()`](../reference/methods#reload)** recharge le `src` actuel, ce qui ramène l’original après Appliquer. Pendant la modification, il abandonne aussi les changements.
+- **Le même `src`** ne fait rien, si bien que le résultat appliqué reste affiché.
+- **[`reload()`](../reference/methods#reload)** recharge le `src` actuel, ce qui ramène l’original après l’application des modifications. Pendant la modification, il abandonne aussi les changements.

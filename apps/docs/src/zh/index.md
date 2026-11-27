@@ -37,7 +37,7 @@ features:
     link: /zh/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "完整分辨率"
-    details: "应用后以 Blob 的形式把编辑后的图片交给你的代码，处理在 Web Worker 中进行，页面保持流畅。"
+    details: "应用修改后，你的代码会以 Blob 的形式收到编辑后的图片，处理在 Web Worker 中进行，页面保持流畅。"
     link: /zh/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "无障碍"
@@ -60,7 +60,7 @@ comparison:
 
 ## 几行代码即可开始
 
-安装对应框架的包，给容器设置高度，然后监听应用：
+安装对应框架的包，给容器设置高度，然后监听 `apply` 事件：
 
 :::tabs key:framework
 == JavaScript

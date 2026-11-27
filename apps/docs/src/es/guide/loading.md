@@ -43,7 +43,7 @@ PaperPic abre cualquier formato que el navegador muestre en un `<img>`:
 - **SVG** se abre cuando el archivo tiene los atributos `width` y `height`. Sin ellos no tiene tamaño, y la carga falla.
 - **HEIC**, el formato de las fotos del iPhone, solo se abre en Safari. Cuando un usuario de iPhone elige una foto con `<input type="file" accept="image/*">`, iOS suele dar a la página una copia en JPEG. Un archivo HEIC que llega a otro navegador por otro camino no carga.
 
-Los móviles suelen guardar la foto de lado, con una etiqueta EXIF que dice cómo girarla. PaperPic muestra la foto como dice la etiqueta, igual que un `<img>`, y el resultado de Aplicar sale derecho.
+Los móviles suelen guardar la foto de lado, con una etiqueta EXIF que dice cómo girarla. PaperPic muestra la foto como dice la etiqueta, igual que un `<img>`, y el resultado editado sale derecho.
 
 ## Saber cuándo carga o falla
 
@@ -119,12 +119,12 @@ export function Invoice() {
 
 :::
 
-`load` se emite cada vez que carga un `src`, también con [`reload()`](../reference/methods#reload), pero no después de Aplicar: el resultado llega con el evento [`apply`](../reference/events#apply).
+`load` se emite cada vez que carga un `src`, también con [`reload()`](../reference/methods#reload), pero no después de aplicar los cambios: el resultado llega con el evento [`apply`](../reference/events#apply).
 
 El `status` de [`getState()`](../reference/state) da la misma respuesta en cualquier momento: `'empty'`, `'loading'`, `'ready'` o `'error'`.
 
 ## Cambiar o recargar la imagen
 
 - **Un `src` nuevo** carga la imagen nueva. Si el usuario está editando, descarta los cambios.
-- **El mismo `src`** no hace nada, así que el resultado de Aplicar sigue en pantalla.
-- **[`reload()`](../reference/methods#reload)** vuelve a cargar el `src` actual, lo que recupera el original después de Aplicar. Si el usuario está editando, también descarta los cambios.
+- **El mismo `src`** no hace nada, así que el resultado editado sigue en pantalla.
+- **[`reload()`](../reference/methods#reload)** vuelve a cargar el `src` actual, lo que recupera el original después de aplicar los cambios. Si el usuario está editando, también descarta los cambios.

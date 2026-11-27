@@ -13,7 +13,7 @@ Los móviles guardan a menudo la foto de un documento de lado o boca abajo, y al
 
 En la barra de edición, Girar a la izquierda gira la imagen un cuarto de vuelta en sentido contrario a las agujas del reloj, como en las galerías de fotos. Púlsalo dos veces para media vuelta, o tres para un cuarto de vuelta en el sentido de las agujas del reloj.
 
-Un giro es un cambio: Deshacer lo quita y Aplicar lo hace permanente. Cuatro giros devuelven la imagen a donde estaba, y entonces no hay nada que aplicar.
+Un giro es un cambio: se quita con Deshacer y se hace permanente al pulsar Aplicar. Cuatro giros devuelven la imagen a su posición inicial, y entonces no hay nada que aplicar.
 
 Desde el código, [`rotate()`](../../reference/methods#rotate) gira en el sentido de las agujas del reloj con `1` y en el contrario con `-1`:
 

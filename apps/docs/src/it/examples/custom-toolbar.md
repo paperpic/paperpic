@@ -7,7 +7,7 @@ description: Un esempio completo che nasconde la barra degli strumenti integrata
 
 Quando i controlli del visualizzatore devono accordarsi con il resto della tua interfaccia, nascondi quelli integrati con `toolbar: false` e chiama i [metodi](../reference/methods) da pulsanti tuoi. Questo esempio offre lo zoom, Raddrizza, Annulla l’ultima azione e Applica, e attiva ogni pulsante solo quando può agire.
 
-L’evento [`change`](../reference/events#change) invia lo [stato](../reference/state) dopo ogni azione, comprese quelle avviate dai tuoi pulsanti. `load` ed `error` segnalano l’arrivo dell’immagine o il fallimento di Applica.
+L’evento [`change`](../reference/events#change) invia lo [stato](../reference/state) dopo ogni azione, comprese quelle avviate dai tuoi pulsanti. `load` ed `error` segnalano l’arrivo dell’immagine o il fallimento dell’applicazione delle modifiche.
 
 :::tabs key:framework
 == JavaScript
@@ -221,7 +221,7 @@ export function Receipt() {
 
 ## Uno slider tutto tuo {#slider}
 
-Uno slider tutto tuo per Pulisci apre prima lo strumento. Ogni movimento chiama poi `setFinish()`, che cambia quello che mostra Pulisci, e `confirmTool()` tiene l’ultimo valore come una sola modifica. Qui Fatto applica anche il risultato, e Annulla esce dalla modalità di modifica, così questi controlli sono tutta l’interfaccia.
+Uno slider tutto tuo per Pulisci apre prima lo strumento. Ogni movimento chiama poi `setFinish()`, che cambia quello che mostra Pulisci, e `confirmTool()` tiene l’ultimo valore come una sola modifica. Qui il pulsante Fatto applica anche il risultato, e Annulla esce dalla modalità di modifica, così questi controlli sono tutta l’interfaccia.
 
 :::tabs key:framework
 == JavaScript

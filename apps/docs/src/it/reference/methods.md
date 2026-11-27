@@ -179,7 +179,7 @@ Avvia la modifica. Non fa nulla se l’immagine non è pronta o se [`editable`](
 function rotate(direction?: 1 | -1): void
 ```
 
-Ruota l’immagine di un quarto di giro: in senso orario con `1`, il valore predefinito, e in senso antiorario con `-1`. Durante la modifica aggiunge un cambiamento che [`apply()`](#apply) rende permanente, e non fa nulla con uno strumento aperto o mentre Applica è in corso. In un visualizzatore di sola lettura cambia solo la visualizzazione. Negli altri casi non fa nulla.
+Ruota l’immagine di un quarto di giro: in senso orario con `1`, il valore predefinito, e in senso antiorario con `-1`. Durante la modifica aggiunge un cambiamento che [`apply()`](#apply) rende permanente, e non fa nulla con uno strumento aperto o mentre si applicano le modifiche. In un visualizzatore di sola lettura cambia solo la visualizzazione. Negli altri casi non fa nulla.
 
 ### `flip()`
 
@@ -261,7 +261,7 @@ Lancia un `RangeError` se `color` non è un [`RedactColor`](./types#redactcolor)
 function undo(): void
 ```
 
-Annulla l’ultimo cambiamento. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o mentre Applica è in corso.
+Annulla l’ultimo cambiamento. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o mentre si applicano le modifiche.
 
 ### `redo()`
 
@@ -269,7 +269,7 @@ Annulla l’ultimo cambiamento. Non fa nulla fuori dalla modalità di modifica, 
 function redo(): void
 ```
 
-Ripristina l’ultimo cambiamento annullato. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o mentre Applica è in corso.
+Ripristina l’ultimo cambiamento annullato. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto o mentre si applicano le modifiche.
 
 ### `apply()`
 
@@ -277,9 +277,9 @@ Ripristina l’ultimo cambiamento annullato. Non fa nulla fuori dalla modalità 
 function apply(): Promise<void>
 ```
 
-Applica i cambiamenti alla risoluzione piena, o a [`maxOutputSize`](./options#maxoutputsize). Il risultato diventa l’immagine visualizzata, la cronologia si svuota, il visualizzatore torna alla modalità di visualizzazione e l’evento [`apply`](./events#apply) invia il risultato. Applica non si può interrompere, e blocca i controlli mentre è in corso. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto, o quando non c’è nulla da applicare.
+Applica i cambiamenti alla risoluzione piena, o a [`maxOutputSize`](./options#maxoutputsize). Il risultato diventa l’immagine visualizzata, la cronologia si svuota, il visualizzatore torna alla modalità di visualizzazione e l’evento [`apply`](./events#apply) invia il risultato. Una volta avviata, l’applicazione non si può interrompere, e blocca i controlli mentre è in corso. Non fa nulla fuori dalla modalità di modifica, con uno strumento aperto, o quando non c’è nulla da applicare.
 
-Se fallisce, l’evento [`error`](./events#error) lo segnala e la modifica resta aperta. La promessa si risolve quando Applica finisce, anche se fallisce: ascolta quindi `error`, perché un `try/catch` non lo vede.
+Se fallisce, l’evento [`error`](./events#error) lo segnala e la modifica resta aperta. La promessa si risolve quando l’applicazione finisce, anche se fallisce: ascolta quindi `error`, perché un `try/catch` non lo vede.
 
 ### `cancel()`
 
@@ -287,7 +287,7 @@ Se fallisce, l’evento [`error`](./events#error) lo segnala e la modifica resta
 function cancel(): void
 ```
 
-Scarta i cambiamenti e torna alla modalità di visualizzazione. Non chiede conferma: lo fanno il pulsante Annulla integrato e `Esc`. Non fa nulla mentre Applica è in corso.
+Scarta i cambiamenti e torna alla modalità di visualizzazione. Non chiede conferma: lo fanno il pulsante Annulla integrato e `Esc`. Non fa nulla mentre si applicano le modifiche.
 
 ## Immagine
 
@@ -297,7 +297,7 @@ Scarta i cambiamenti e torna alla modalità di visualizzazione. Non chiede confe
 function download(): void
 ```
 
-Salva come file l’immagine visualizzata: il risultato dell’ultimo Applica, altrimenti l’immagine originale. Funziona senza l’opzione [`download`](./options#download), che mostra solo un pulsante. L’evento [`download`](./events#download) arriva prima e può impedirlo. Non fa nulla durante la modifica, perché i cambiamenti non sono ancora applicati. Prima del primo Applica, uno `src` da un’altra origine si apre invece nel browser: vedi [Salvare il risultato](../guide/saving#download).
+Salva come file l’immagine visualizzata: l’ultimo risultato modificato, altrimenti l’immagine originale. Funziona senza l’opzione [`download`](./options#download), che mostra solo un pulsante. L’evento [`download`](./events#download) arriva prima e può impedirlo. Non fa nulla durante la modifica, perché i cambiamenti non sono ancora applicati. Finché non si applica nessuna modifica, uno `src` da un’altra origine si apre invece nel browser: vedi [Salvare il risultato](../guide/saving#download).
 
 ### `reload()`
 
@@ -305,4 +305,4 @@ Salva come file l’immagine visualizzata: il risultato dell’ultimo Applica, a
 function reload(): void
 ```
 
-Ricarica il [`src`](./options#src) attuale, il che riporta l’originale dopo un Applica. Durante la modifica, scarta i cambiamenti. Senza `src`, non fa nulla.
+Ricarica il [`src`](./options#src) attuale, il che riporta l’originale dopo l’applicazione delle modifiche. Durante la modifica, scarta i cambiamenti. Senza `src`, non fa nulla.

@@ -14,20 +14,20 @@ La foto de un documento puede mostrar más de la cuenta: un número de cuenta, u
 1. Pulsa Editar y luego Tapar. Aparece una franja en medio de la imagen, con un tirador en cada esquina.
 2. Dibuja la zona sobre lo que quieras ocultar: arrastra desde una de sus esquinas hasta la opuesta, en cualquier parte de la imagen, también sobre la franja. Después arrastra la zona para moverla, gírala con el tirador que tiene encima, para que se incline con una línea de texto, y arrastra sus esquinas para cambiar su tamaño. La zona muestra su color, aún transparente, para que puedas colocarla sobre las palabras justas.
 3. Elige Negro o Blanco en el panel.
-4. Pulsa Hecho, o `Enter`, para añadir la zona a los cambios. Cancelar esta herramienta, o `Esc`, cierra Tapar sin cambiar nada.
+4. Pulsa Aceptar, o `Enter`, para añadir la zona a los cambios. Cancelar esta herramienta, o `Esc`, cierra Tapar sin cambiar nada.
 
 Solo puedes dibujar hasta que colocas la zona. En cuanto la dibujas, la mueves, la giras o cambias su tamaño, arrastrar en el resto de la imagen vuelve a desplazarla, para que nada sustituya la zona por accidente. Antes de eso, desplaza una imagen ampliada con dos dedos, o con las flechas mientras el foco está en la imagen. Sin arrastrar, la franja es la zona: muévela con el teclado, o púlsala y luego toca su destino.
 
-Cada Hecho añade una zona, así que abre Tapar otra vez para cubrir otra parte. Deshacer quita la última zona, y el color se mantiene para la siguiente. Los tiradores de esquina funcionan como en [Recortar](./crop): se arrastran, se pulsan y luego se toca su destino, o se mueven con el teclado. En el tirador de encima de la zona, las flechas la giran 1 grado, o 10 con Mayús. Al arrastrarlo, se ajusta a recto.
+Cada vez que pulsas Aceptar se añade una zona, así que abre Tapar otra vez para cubrir otra parte. Con Deshacer se quita la última zona, y el color se mantiene para la siguiente. Los tiradores de esquina funcionan como en [Recortar](./crop): se arrastran, se pulsan y luego se toca su destino, o se mueven con el teclado. En el tirador de encima de la zona, las flechas la giran 1 grado, o 10 con Mayús. Al arrastrarlo, se imanta a la posición recta.
 
 ## Qué garantiza {#guarantees}
 
 - Las zonas se cubren después de todos los demás cambios, así que Ajustar y Limpiar nunca aclaran su negro ni su blanco.
 - Una zona sigue a los cambios posteriores: un giro, un volteo o un recorte la mueven con la imagen, y Enderezar la deforma con la página.
 - Cubre cada píxel que tocan sus bordes, aunque sea en parte, y es opaca también en un PNG transparente.
-- Aplicar escribe píxeles sólidos en el resultado, así que el archivo no guarda nada de lo que cubren.
+- Al aplicar los cambios, las zonas se escriben como píxeles sólidos en el resultado, así que el archivo no guarda nada de lo que cubren.
 
-Hasta Aplicar, el visor conserva la imagen original, así que Deshacer recupera lo que cubre una zona. Comparte el resultado de Aplicar, nunca la imagen original.
+Mientras no se aplican los cambios, el visor conserva la imagen original, así que con Deshacer se recupera lo que cubre una zona. Comparte siempre el resultado editado, nunca la imagen original.
 
 ## Desde el código
 

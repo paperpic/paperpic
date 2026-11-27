@@ -7,7 +7,7 @@ description: Um exemplo completo que esconde a barra de ferramentas integrada do
 
 Quando os controles do visualizador precisam combinar com o resto da sua interface, esconda os integrados com `toolbar: false` e chame os [métodos](../reference/methods) a partir de botões seus. Este exemplo oferece zoom, Endireitar, Desfazer e Aplicar, e ativa cada botão só quando ele pode agir.
 
-O evento [`change`](../reference/events#change) envia o [estado](../reference/state) depois de cada ação, inclusive as que os seus botões iniciam. `load` e `error` avisam quando a imagem chega ou quando o Aplicar falha.
+O evento [`change`](../reference/events#change) envia o [estado](../reference/state) depois de cada ação, inclusive as que os seus botões iniciam. `load` e `error` avisam quando a imagem chega ou quando não é possível aplicar as alterações.
 
 :::tabs key:framework
 == JavaScript
@@ -221,7 +221,7 @@ export function Receipt() {
 
 ## Um slider próprio {#slider}
 
-Um slider próprio para o Limpar abre a ferramenta antes. Cada movimento então chama `setFinish()`, que muda o que o Limpar mostra, e `confirmTool()` guarda o último valor como uma única edição. Aqui o Concluído também aplica o resultado, e o Cancelar sai do modo de edição, então esses controles são toda a interface.
+Um slider próprio para o Limpar abre a ferramenta antes. Cada movimento então chama `setFinish()`, que muda o que o Limpar mostra, e `confirmTool()` guarda o último valor como uma única edição. Aqui o botão Concluído também aplica o resultado, e o botão Cancelar sai do modo de edição, então esses controles são toda a interface.
 
 :::tabs key:framework
 == JavaScript

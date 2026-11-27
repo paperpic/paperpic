@@ -1,6 +1,6 @@
 ---
 title: Edição
-description: Como funciona o modo de edição do PaperPic, do botão Editar até Aplicar, com as ferramentas, Desfazer e Refazer, a pré-visualização e os eventos que o seu código recebe.
+description: Como funciona o modo de edição do PaperPic, do botão Editar até a aplicação das alterações, com as ferramentas, Desfazer e Refazer, a pré-visualização e os eventos que o seu código recebe.
 ---
 
 # Edição
@@ -10,10 +10,10 @@ A foto de um documento costuma precisar de alguns retoques antes de valer a pena
 ## O fluxo de edição
 
 1. O usuário toca em Editar, o lápis na barra de ferramentas. A barra de ferramentas se esconde, para que nada cubra a imagem, e a barra de edição aparece na parte de baixo do visualizador.
-2. Girar para a esquerda e Espelhar adicionam uma alteração na hora. As outras ferramentas abrem um painel na barra de edição, e Concluído adiciona o que o usuário escolheu nele como uma única alteração. Desfazer e Refazer percorrem as alterações.
-3. Aplicar calcula o resultado e volta à visualização. Cancelar descarta as alterações, e pergunta antes se houver alguma.
+2. Girar para a esquerda e Espelhar adicionam uma alteração na hora. As outras ferramentas abrem um painel na barra de edição, e ao tocar em Concluído o que o usuário escolheu nele entra como uma única alteração. Com Desfazer e Refazer, o usuário volta e avança pelas alterações.
+3. Ao tocar em Aplicar, o visualizador calcula o resultado e volta ao modo de visualização. Cancelar descarta as alterações, e pede confirmação antes se houver alguma.
 
-Nada muda a imagem antes do Aplicar. Até lá, as alterações são uma lista que o visualizador mostra em pré-visualização.
+A imagem não muda até o usuário tocar em Aplicar. Até lá, as alterações são uma lista que o visualizador mostra em pré-visualização.
 
 Num visualizador estreito, a barra de edição tem duas linhas: em cima, as ferramentas ou o painel da ferramenta aberta, e embaixo, Cancelar à esquerda e Aplicar, ou Concluído, à direita. A partir de 38rem de largura, tudo cabe numa linha. Nos dois casos, a barra mantém a altura quando uma ferramenta abre, então a imagem fica no lugar. Um ponto marca Ajustar e Limpar enquanto o valor deles está em uso.
 
@@ -71,15 +71,15 @@ export function Receipt() {
 
 :::
 
-Recortar, Endireitar, Ocultar, Ajustar e Limpar abrem um painel no lugar das ferramentas. Enquanto uma delas está aberta, as outras ferramentas, Desfazer, Refazer e Aplicar esperam. Concluído, ou `Enter`, adiciona às alterações o que a ferramenta escolheu, e Cancelar esta ferramenta, ou `Esc`, o descarta.
+Recortar, Endireitar, Ocultar, Ajustar e Limpar abrem um painel no lugar das ferramentas. Enquanto uma delas está aberta, as outras ferramentas, Desfazer, Refazer e Aplicar ficam desativados. Concluído, ou `Enter`, adiciona às alterações o que foi escolhido na ferramenta, e Cancelar esta ferramenta, ou `Esc`, o descarta.
 
 Dentro de um painel, a imagem aparece como o resultado vai ficar, com Limpar incluído. Endireitar é a exceção: mostra a foto sem o preto e branco, para que as bordas do papel continuem visíveis.
 
-## Pré-visualização e Aplicar
+## Pré-visualização e resultado
 
-Durante a edição, o visualizador mostra as alterações numa cópia da imagem de cerca de 2 megapixels, para continuar rápido com fotos grandes. Com muito zoom, a pré-visualização parece mais suave que o resultado. Aplicar calcula todas as alterações na resolução completa, ou em [`maxOutputSize`](../reference/options#maxoutputsize), num Web Worker.
+Durante a edição, o visualizador mostra as alterações numa cópia da imagem de cerca de 2 megapixels, para continuar rápido com fotos grandes. Com muito zoom, a pré-visualização parece mais suave que o resultado. Ao aplicar, todas as alterações são calculadas na resolução completa, ou em [`maxOutputSize`](../reference/options#maxoutputsize), num Web Worker.
 
-Aplicar não pode ser interrompido. Ele bloqueia os controles e mostra uma mensagem enquanto roda. Depois, o resultado substitui a imagem na tela, o histórico se esvazia e o visualizador volta ao modo de visualização. Se Aplicar falhar, a edição continua aberta para o usuário tentar de novo.
+Depois de iniciada, a aplicação não pode ser interrompida. Ela bloqueia os controles e mostra uma mensagem enquanto roda. Depois, o resultado substitui a imagem na tela, o histórico se esvazia e o visualizador volta ao modo de visualização. Se falhar, a edição continua aberta para o usuário tentar de novo.
 
 ## O que o seu código recebe
 
@@ -125,7 +125,7 @@ pic.on('error', ({ error }) => console.error(error))
 - Um `src` novo, ou [`reload()`](../reference/methods#reload), durante a edição.
 - Uma mudança de `editable` durante a edição.
 
-Depois do Aplicar, passar o mesmo `src` de novo não faz nada, então o resultado continua na tela. [`reload()`](../reference/methods#reload) traz de volta a original.
+Depois de aplicar as alterações, passar o mesmo `src` de novo não faz nada, então o resultado continua na tela. [`reload()`](../reference/methods#reload) traz de volta a original.
 
 ## Teclado
 

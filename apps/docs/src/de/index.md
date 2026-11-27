@@ -37,7 +37,7 @@ features:
     link: /de/guide/tools/clean-up
   - icon: { src: /icons/download.svg, wrap: true, width: 24, height: 24 }
     title: "Volle Auflösung"
-    details: "Übernehmen gibt deinem Code das bearbeitete Bild als Blob, verarbeitet in einem Web Worker, damit die Seite reaktionsschnell bleibt."
+    details: "Beim Übernehmen bekommt dein Code das bearbeitete Bild als Blob, verarbeitet in einem Web Worker, damit die Seite reaktionsschnell bleibt."
     link: /de/guide/saving
   - icon: { src: /icons/keyboard.svg, wrap: true, width: 24, height: 24 }
     title: "Barrierefrei"
@@ -60,7 +60,7 @@ comparison:
 
 ## In wenigen Zeilen loslegen
 
-Installiere das Paket für dein Framework, gib dem Container eine Höhe und reagiere auf Übernehmen:
+Installiere das Paket für dein Framework, gib dem Container eine Höhe und reagiere auf das Ereignis `apply`:
 
 :::tabs key:framework
 == JavaScript

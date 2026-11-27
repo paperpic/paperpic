@@ -11,7 +11,7 @@ Fotos de documentos chegam tortas, com sombras e cheias de fundo. O PaperPic as 
 
 - **Ver.** Dar zoom com os botões, a roda do mouse, o gesto de pinça, um clique duplo ou o teclado, mover a imagem e encaixar no visualizador a imagem inteira, a largura ou a altura. Um visualizador somente leitura também pode girar a imagem.
 - **Editar.** No modo de edição, o usuário pode recortar, endireitar uma foto tirada em ângulo, girar, espelhar, ajustar o brilho e o contraste, e limpar o documento em cinza ou em preto e branco. Cada alteração pode ser desfeita até o usuário aplicar as alterações.
-- **Entregar.** Aplicar calcula o resultado na resolução completa e o entrega ao seu código como um `Blob`. Um botão de download também pode salvá-lo.
+- **Entregar.** Ao aplicar as alterações, o PaperPic calcula o resultado na resolução completa e o entrega ao seu código como um `Blob`. Um botão de download também pode salvá-lo.
 
 Cada passo só acontece quando o usuário pede. Nada muda a foto sozinho.
 

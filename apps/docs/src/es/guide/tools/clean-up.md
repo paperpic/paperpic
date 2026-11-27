@@ -15,12 +15,12 @@ Endereza primero el tique y después límpialo.
 
 ## Cómo se usa
 
-1. Pulsa Editar y luego Limpiar. Su panel ocupa el lugar de las herramientas, con tres acabados: Original, Gris y Blanco y negro. Se abre en blanco y negro, así que la vista previa pasa a blanco y negro y la regla Sensibilidad funciona.
+1. Pulsa Editar y luego Limpiar. Su panel ocupa el lugar de las herramientas, con tres acabados: Original, Gris y Blanco y negro. Se abre en blanco y negro, así que la vista previa pasa a blanco y negro y la regla Sensibilidad está activa.
 2. Arrastra la regla. Más sensibilidad oscurece más píxeles, lo que recupera texto tenue o gastado. Menos sensibilidad deja una página más limpia, sin lo impreso que se transparenta desde el dorso.
 3. Elige Gris si quieres una imagen en gris, u Original para los tonos de la foto. La regla solo funciona en blanco y negro.
-4. Pulsa Hecho para conservarlo como un solo cambio, o Cancelar esta herramienta para dejar la imagen como estaba.
+4. Pulsa Aceptar para conservarlo como un solo cambio, o Cancelar esta herramienta para dejar la imagen como estaba.
 
-Cuando Limpiar ya es un cambio, se vuelve a abrir con su acabado. Para desactivarla, elige Original: los cambios que vinieron después se quedan. Deshacer, en cambio, también quitaría esos cambios.
+Si Limpiar ya está entre los cambios, se vuelve a abrir con su acabado. Para desactivarla, elige Original: los cambios posteriores se mantienen. Deshacer, en cambio, también quitaría esos cambios.
 
 Limpiar siempre se aplica después de los demás cambios. Recortar muestra la imagen con su acabado, como quedará. Enderezar la muestra sin blanco y negro, porque los bordes del papel son difíciles de encontrar en una página limpia, y conserva el gris.
 

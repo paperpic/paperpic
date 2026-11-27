@@ -13,7 +13,7 @@ Fotos bei schlechtem Licht werden dunkel oder grau. Anpassen ändert Helligkeit 
 
 1. Drücke Bearbeiten, dann Anpassen. Sein Bedienfeld nimmt den Platz der Werkzeuge ein: eine Skala, dazu Helligkeit und Kontrast, um den Ton zu wählen, den sie ändert.
 2. Ziehe die Skala. Die Vorschau ändert sich beim Ziehen. Wähle Kontrast, um den anderen Ton mit derselben Skala zu ändern.
-3. Drücke Fertig, um beide Töne als eine Änderung zu behalten, die Rückgängig entfernt. Dieses Werkzeug abbrechen lässt das Bild, wie es war.
+3. Drücke Fertig, um beide Werte als eine Änderung zu behalten, die du mit Rückgängig entfernst. Mit Dieses Werkzeug abbrechen bleibt das Bild, wie es war.
 
 Die Mitte der Skala lässt das Bild, wie es ist, und die Nadel rastet dort ein, damit du leicht zu keiner Änderung zurückfindest. Screenreader sagen den Wert von -100 bis 100 an, etwa „Helligkeit +30“. Ein Punkt auf Anpassen markiert Werte, die nicht 0 sind.
 

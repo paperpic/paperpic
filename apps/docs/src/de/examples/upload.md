@@ -5,7 +5,7 @@ description: Ein vollständiges Beispiel, das das in PaperPic bearbeitete Bild a
 
 # Auf einen Server hochladen
 
-Der Viewer zeigt das Ergebnis von Übernehmen sofort, aber das Speichern ist Sache deiner App. Dieses Beispiel sendet das bearbeitete Bild an deinen Server und sagt dem Nutzer, wie es gelaufen ist.
+Der Viewer zeigt das übernommene Ergebnis sofort, aber das Speichern ist Sache deiner App. Dieses Beispiel sendet das bearbeitete Bild an deinen Server und sagt dem Nutzer, wie es gelaufen ist.
 
 Diese Funktion sendet das Bild als Datei in einem Formular und schlägt fehl, wenn der Server es nicht annimmt:
 

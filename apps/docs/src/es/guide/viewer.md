@@ -20,7 +20,7 @@ La letra pequeña y los tiques largos son difíciles de leer de un vistazo en un
 
 Las teclas funcionan con el foco dentro del visor. En un botón, las flechas pasan de un botón a otro, y mientras no hay nada que desplazar, hacen scroll en la página. Al pellizcar, el zoom se centra en el punto entre los dedos. En una pantalla táctil, un dedo hace scroll en la página mientras la imagen está encajada, y desplaza la imagen cuando tiene zoom.
 
-El zoom va desde el que encaja la imagen entera, o el 100 % para una imagen pequeña, hasta el 800 %. Una imagen que cabe se queda centrada, y una que se sale se desplaza hasta sus bordes.
+El zoom va desde el nivel que encaja la imagen entera, o el 100 % para una imagen pequeña, hasta el 800 %. Una imagen que cabe se queda centrada, y una que se sale se desplaza hasta sus bordes.
 
 Al cargarse, la imagen se encaja entera en el visor, y sigue encajada cuando el visor cambia de tamaño, hasta que el usuario hace zoom a mano.
 
@@ -44,7 +44,7 @@ Con `toolbar: false`, la barra de herramientas y la barra de edición se ocultan
 
 ## Visor de solo lectura {#read-only}
 
-Con `editable: false`, el botón Editar desaparece y la barra de herramientas gana dos botones que giran la imagen. Ese giro solo cambia lo que se ve, y no se guarda nada: Descargar guarda la imagen sin él. Úsalo para documentos que se deben leer pero no cambiar, como los adjuntos de un expediente.
+Con `editable: false`, el botón Editar desaparece y la barra de herramientas gana dos botones que giran la imagen. Ese giro solo cambia lo que se ve, y no se guarda nada: el botón Descargar guarda la imagen sin él. Úsalo para documentos que se deben leer pero no cambiar, como los adjuntos de un expediente.
 
 :::tabs key:framework
 == JavaScript

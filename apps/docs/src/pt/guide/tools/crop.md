@@ -15,7 +15,7 @@ A foto de um documento costuma mostrar a mesa, uma mão ou outros papéis em vol
 2. Arraste os cantos até o retângulo enquadrar o documento. O painel de Recortar tem botões de zoom, então você pode ampliar para posicioná-los com precisão.
 3. Toque em Concluído, ou `Enter`, para adicionar o recorte às alterações. Cancelar esta ferramenta, ou `Esc`, fecha Recortar sem mudar nada.
 
-Enquanto Recortar está aberto, a imagem aparece como o resultado vai ficar, com Ajustar e Limpar incluídos. O recorte é uma alteração como qualquer outra: Desfazer a remove, e Aplicar a torna permanente.
+Enquanto Recortar está aberto, a imagem aparece como o resultado vai ficar, com Ajustar e Limpar incluídos. O recorte é uma alteração como qualquer outra: ela é removida com Desfazer e se torna permanente ao tocar em Aplicar.
 
 ## Alças de canto
 
